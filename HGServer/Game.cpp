@@ -3,11 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "Game.h"
-#include "Team.h"
 
 class CDebugWindow *DbgWnd;
 class Crusade* CSade;
-class Team* c_team; // Centu - Team Arena
 
 extern void PutLogList(char * cMsg);
 extern char G_cTxt[512];
@@ -137,7 +135,6 @@ int ITEMSPREAD_FIEXD_COORD[25][2] =
 CGame::CGame(HWND hWnd)
 {
 	int i, x;
-	c_team = new Team; // Centu - Team Arena
 	m_bIsGameServerRegistered = FALSE;
 	ReceivedAllConfig		= FALSE;
 	m_bIsGameStarted = FALSE;
@@ -724,20 +721,8 @@ BOOL CGame::bInit()
 
 	m_dwCleanTime = dwTime;
 
-	RemoveFile("GameConfigs\\team.csv");
-	ofstream outputFile("GameConfigs\\team.csv");
-	outputFile.close();
-	c_team->UpdateTeamFile();
-
 	return TRUE;
 }
-
-
-void CGame::RemoveFile(char* name)
-{
-	const int result1 = remove(name);
-}
-
 
 /*********************************************************************************************************************
 **  void CGame::OnClientRead																						**
@@ -2325,7 +2310,6 @@ void CGame::OnTimer(char cType)
  int i;
 	NpcProcess();
 	MsgProcess();
-	c_team->TeamTimer();
 	if ((dwTime - m_dwGameTime2) > 3000) {
 		CheckClientResponseTime();
 		SendMsgToGateServer(MSGID_GAMESERVERALIVE, NULL, NULL);
@@ -2504,24 +2488,6 @@ void CGame::CheckClientResponseTime()
 				}
 			}
 			else if (m_pClientList[i]->m_bIsInitComplete == TRUE) {
-				
-				// Centu - Team Arena
-				if (string(m_pClientList[i]->m_cMapName) == "team" && !c_team->bteam && !m_pClientList[i]->m_bIsKilled)
-				{
-					if (m_pClientList[i]->IsLocation("elvine"))
-						RequestTeleportHandler(i, "2", "elvine", -1, -1, true);
-					else
-						RequestTeleportHandler(i, "2", "aresden", -1, -1, true);
-				}
-
-				if (string(m_pClientList[i]->m_cMapName) == "team" && !m_pClientList[i]->IsTeamPlayer() && !m_pClientList[i]->m_bIsKilled)
-				{
-					if (m_pClientList[i]->IsLocation("elvine"))
-						RequestTeleportHandler(i, "2", "elvine", -1, -1, true);
-					else
-						RequestTeleportHandler(i, "2", "aresden", -1, -1, true);
-				}
-
 				m_pClientList[i]->m_iTimeLeft_ShutUp--;
 				if (m_pClientList[i]->m_iTimeLeft_ShutUp < 0) m_pClientList[i]->m_iTimeLeft_ShutUp = 0;
 				m_pClientList[i]->m_iTimeLeft_Rating--;
@@ -4619,7 +4585,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				cReadModeA = 0;
 				break;
 
-			case 44:
+				case 44:
 				// AdminUserLevel
 				if (_bGetIsStringIsNumber(token) == FALSE) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName); 
@@ -4983,15 +4949,6 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				break;
 
 			case 58:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
-					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
-					PutLogList(cTxt);
-					delete pContents;
-					delete pStrTok;
-					return FALSE;
-				}
-
-				m_pClientList[iClientH]->iteam = atoi(token);
 				cReadModeA = 0;
 				break;
 
@@ -5713,7 +5670,6 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				cReadModeA = 57;
 				cReadModeB = 1;
 			}
-			if (memcmp(token, "character-team", 14) == 0)    cReadModeA = 58;
 			if (memcmp(token, "quest-reward-type", 17) == 0) {
 				cReadModeA = 59;
 				cReadModeB = 1;
@@ -6122,10 +6078,6 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	}
 	strcat(pData, "\n");
 
-	wsprintf(cTxt, "character-team = %d", m_pClientList[iClientH]->iteam);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-
 	strcat(pData, "quest-reward-type = ");
 	for (i = 0; i < DEF_MAXQUEST; i++) {
 		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestRewardType[i]);
@@ -6324,10 +6276,6 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	// Â°Â¢Â°Â¢Ã€Ã‡ Â¾Ã†Ã€ÃŒÃ…Ã›Ã€Â» Ã€ÃºÃ€Ã¥Ã‡Ã‘Â´Ã™.
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
-		
-		if (m_pClientList[iClientH]->m_pItemList[i]->teamcape) continue;
-		if (m_pClientList[iClientH]->m_pItemList[i]->teamboots) continue;
-		
 		// v1.4 Â¾Ã†Ã€ÃŒÃ…Ã› Â¼Ã¸Â¼Â­Â¸Â¦ Ã€Ã§Â¹Ã¨Ã„Â¡Ã‡Ã‘Â´Ã™. 
 		TempItemPosList[i].x = m_pClientList[iClientH]->m_ItemPosList[i].x;
 		TempItemPosList[i].y = m_pClientList[iClientH]->m_ItemPosList[i].y;
@@ -6953,25 +6901,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-		else if (strcmp(cp, "/team") == 0)
-		{
-			if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) return;
-			
-			if (c_team->bteam) c_team->bteam = false; 
-			else c_team->bteam = true;
-
-			if (c_team->bteam) c_team->EnableEvent();
-			else c_team->DisableEvent();
-		}
-
-		else if (strcmp(cp, "/tpteam") == 0)
-		{
-			RequestDismissPartyHandler(iClientH);
-			c_team->Join(iClientH);
-		}
-
 		else if (memcmp(cp, "/createparty", 12) == 0) {
-			if (m_pClientList[iClientH]->IsInMap("team")) return;
 			RequestCreatePartyHandler(iClientH);
 			
 		}
@@ -8889,20 +8819,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 		}
 		
 		if (iAttackerH == iClientH) return; // ÀÚÆøÀÌ´Ù.
-		
-		if (cAttackerType == DEF_OWNERTYPE_PLAYER)
-		{
-			if (m_pClientList[iAttackerH] != NULL && m_pClientList[iClientH] != NULL)
-			{
-				if (m_pClientList[iAttackerH]->IsInMap("team") && m_pClientList[iClientH]->IsInMap("team"))
-				{
-					c_team->Kill(iAttackerH, iClientH);
-					return;
-				}
-			}
-		}
-
-											// ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌ¾î¸¦ Á×¿´´Ù¸é PKÀÎÁö ÀüÅõÁß ½Â¸®ÀÎÁö¸¦ ÆÇº°ÇÏ¿© °æÇèÄ¡¸¦ ¿Ã¸°´Ù. 
+		// ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌ¾î¸¦ Á×¿´´Ù¸é PKÀÎÁö ÀüÅõÁß ½Â¸®ÀÎÁö¸¦ ÆÇº°ÇÏ¿© °æÇèÄ¡¸¦ ¿Ã¸°´Ù. 
 		if (memcmp(m_pClientList[iAttackerH]->m_cMapName, "fightzone1", 10) == 0) 
 		{ 	
 			char cScanMessage[50];
@@ -10873,19 +10790,6 @@ void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTarg
 	iDamage = (iDice(sV1, sV2) + sV3);
 	if (iDamage <= 0) iDamage = 0;
 
-	switch (cAttackerType)
-	{
-	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
-		{
-			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
-			{
-				if (m_pClientList[sAttackerH]->IsInsideTeam()) return;
-			}
-		}
-		break;
-	}
-
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:	
 		//LifeX Fix Admin Hit NPC
@@ -11830,19 +11734,6 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 	if (iDamage <= 0) iDamage = 0;
 
 	iPartyID = 0;
-
-	switch (cAttackerType)
-	{
-	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
-		{
-			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
-			{
-				if (m_pClientList[sAttackerH]->IsInsideTeam()) return;
-			}
-		}
-		break;
-	}
 
 	// °ø°ÝÀÚ°¡ ÇÃ·¹ÀÌ¾î¶ó¸é Mag¿¡ µû¸¥ º¸³Ê½º ´ë¹ÌÁö¸¦ °¡»ê 
 	switch (cAttackerType) {
@@ -22386,7 +22277,7 @@ void CGame::bCheckLevelUp(int iClientH)
 	}
 }
 
-void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, int dX, int dY, bool deleteteam)
+void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, int dX, int dY)
 {
  char  * pBuffer, cTempMapName[21];
  DWORD * dwp;
@@ -22422,12 +22313,6 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 				return;
 		}
 	}*/
-
-	if (deleteteam)
-	{
-		c_team->DeleteCape(iClientH);
-		c_team->DeleteBoots(iClientH);
-	}
 
 	bIsLockedMapNotify = FALSE;
 	// Prevent recalls spells/scrolls, and any recall type magic if forbidden on the map
@@ -23194,18 +23079,6 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 				}
 				break;
 		}
-	}
-	SendLoginData(iClientH);
-}
-
-void CGame::SendLoginData(int client)
-{
-	auto p = m_pClientList[client];
-	if (!p) return;
-
-	if (p->IsInsideTeam())
-	{
-		c_team->NotPoints(client);
 	}
 }
 

@@ -59,37 +59,6 @@ warning C4700: local variable 'i' used without having been initialized
 #include "Heldenian.h"
 #include "Apocalypse.h"
 #include "Crusade.h"
-#include <string>
-using namespace std;
-
-//global
-//#define clc m_pClientList[iClientH]
-#define cli m_pClientList[i]
-#define ibli m_pItemInBankList[i]
-//#define ili m_pItemList[i]
-#define icli m_pItemConfigList[iItemConfigListIndex]
-#define clit m_pClientList[iToH]
-#define itemid m_pItemList[sItemIndex]->m_sIDnum 
-#define itemlist m_pItemList[sItemIndex]
-#define itemlist2 m_pItemList[iItemIndex]
-#define itemwandlist m_pItemList[wand]
-#define itemnecklist m_pItemList[neck]
-#define attacker m_pClientList[sAttackerH]
-#define weapon m_pItemList[sWeaponIndex]
-#define itemswordlist m_pItemList[sword]
-//master hero
-#define HeroLeggs m_pItemList[sLeggings]
-#define HeroBerk  m_pItemList[sHauberk]
-#define HeroArmor m_pItemList[sArmor]
-#define HeroHelm  m_pItemList[sHelm]
-#define npc m_pNpcList[iNpcH]->m_sType
-
-// Time
-#define _ms					_s / 1000
-#define _s					* CLOCKS_PER_SEC
-#define _m					_s * 60
-#define _h					_m * 60
-#define _d					_h * 24
 
 class CGame
 {
@@ -122,10 +91,7 @@ public:
 
 	class CMap* m_pMapList[DEF_MAXMAPS];
 
-//private:
-
-	void RemoveFile(char* name);
-	void SendLoginData(int client);
+private:
 
 	void CalcExpStock(int iClientH);
 
@@ -563,7 +529,7 @@ public:
 	BOOL _bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize);
 	void ReleaseFollowMode(short sOwnerH);
 	BOOL bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerType);
-	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1, bool deleteteam = false);
+	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1);
 	void PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect = FALSE, int iV1 = NULL);
 	int  iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cDir);
 	void SendMsgToGateServer(DWORD dwMsg, int iClientH, char* pData = NULL);

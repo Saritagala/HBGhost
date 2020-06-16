@@ -229,7 +229,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 #ifdef _DEBUG
 	if (OpenMutex(MUTEX_ALL_ACCESS, FALSE, "0543kjg3j31%") != NULL) {
-		MessageBox(NULL, "Only one Helbreath Ghost client program allowed!", "ERROR!", MB_OK);
+		MessageBox(NULL, "Only one Helbreath client program allowed!", "ERROR!", MB_OK);
 		return 0;
 	}
 	HANDLE hMutex = CreateMutex(NULL, FALSE, "0543kjg3j31%");

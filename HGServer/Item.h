@@ -25,8 +25,6 @@ public:
 	CItem();
 	virtual ~CItem();
 
-	BOOL teamcape, teamboots;
-
 	char  m_cName[21];
 	
 	short m_sIDnum;					// 아이템의 고유 번호

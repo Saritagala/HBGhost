@@ -2089,17 +2089,8 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 
 				// Ã€ÃšÂ½Ã…Ã€ÃŒ Â¼Ã’Â¼Ã“ÂµÃˆ Â¸Â¶Ã€Â»Â·ÃŽ Ã…ÃšÂ·Â¹Ã†Ã·Ã†Â®. RecallÃ€ÃŒÂ´Ã™.
 				if ((cOwnerType == DEF_OWNERTYPE_PLAYER) && (sOwnerH == iClientH)) {
-					if (m_pClientList[iClientH]->IsInMap("team"))
-					{
-						if (m_pClientList[iClientH]->IsLocation("elvine"))
-							RequestTeleportHandler(iClientH, "2", "elvine", -1, -1, true);
-						else
-							RequestTeleportHandler(iClientH, "2", "aresden", -1, -1, true);
-					}
-					else
-					{
-						RequestTeleportHandler(iClientH, "1   ");
-					}
+					// Ã€ÃšÂ½Ã…Â¿ÃœÂ¿Â¡Â´Ã‚ RecallÃ‡Ã’ Â¼Ã¶ Â¾Ã¸Â´Ã™.
+					RequestTeleportHandler(iClientH, "1   ");
 				}
 				break;
 			}

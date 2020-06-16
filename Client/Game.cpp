@@ -35,12 +35,6 @@ CGame::CGame()
 	DEF_STATS_LIMIT = 0;
 	bDeathmatch = FALSE;
 
-	// Centu - Team Arena
-	redkills = 0;
-	bluekills = 0;
-	greenkills = 0;
-	yellowkills = 0;
-
 	bChangeBigItems = FALSE;
 	
 	m_bGrid = FALSE; //Grid - by luqah
@@ -25113,27 +25107,6 @@ void CGame::NotifyMsgHandler(char * pData)
 
 		break;
 
-	// Centu - Team Arena
-	case DEF_NOTIFY_TEAMKILL:
-		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
-		
-		sp = (short*)cp;
-		redkills = *sp;
-		cp += 2;
-		
-		sp = (short*)cp;
-		bluekills = *sp;
-		cp += 2;
-		
-		sp = (short*)cp;
-		greenkills = *sp;
-		cp += 2;
-		
-		sp = (short*)cp;
-		yellowkills = *sp;
-		cp += 2;
-		break;
-
 	// Slates - Diuuude
 	case DEF_NOTIFY_SLATE_CREATESUCCESS:	// 0x0BC1
 		AddEventList( DEF_MSG_NOTIFY_SLATE_CREATESUCCESS, 10 );
@@ -28228,45 +28201,22 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	}
 	ZeroMemory(cTxt, sizeof(cTxt));
 	ZeroMemory(cTxt2, sizeof(cTxt2));
-	// Centu - Team Arena
-	if (strcmp(m_cMapName, "team") != 0) 
-	{
-		if (m_iIlusionOwnerH == NULL)
-		{
-			if (m_bIsCrusadeMode == FALSE) wsprintf(cTxt, "%s", pName);
+
+	if (m_iIlusionOwnerH == NULL)
+	{	if (m_bIsCrusadeMode == FALSE) wsprintf(cTxt, "%s", pName);
+		else
+		{	if (_tmp_wObjectID >= 10000) strcpy(cTxt, NPC_NAME_MERCENARY); //"Mercenary"
 			else
-			{
-				if (_tmp_wObjectID >= 10000) strcpy(cTxt, NPC_NAME_MERCENARY); //"Mercenary"
-				else
-				{
-					if (iFOE == -1) wsprintf(cTxt, "%d", _tmp_wObjectID);
-					else strcpy(cTxt, pName);
-				}
-			}
-			if (m_iPartyStatus != NULL)
-			{
-				for (i = 0; i < DEF_MAXPARTYMEMBERS; i++)
-				{
-					if (strcmp(m_stPartyMemberNameList[i].cName, pName) == 0)
-					{
-						strcat(cTxt, " (Party Member)"); // ", Party Member"
-						break;
-					}
-				}
-			}
-		}
-		else strcpy(cTxt, "?????");
-	}
-	if ((strcmp(m_cMapName, "team") == 0) && (memcmp(pName, m_cPlayerName, 10) != 0))
-	{
-		strcpy(cTxt, "?????");
-		PutString2(sX, sY, cTxt, 255, 255, 255);
-		ZeroMemory(cTxt, sizeof(cTxt));
-		strcpy(cTxt, "(Enemy)");
-		PutString2(sX, sY + 14 + iAddY, cTxt, 255, 0, 9);
-		ZeroMemory(cTxt, sizeof(cTxt));
-		return;
-	}
+			{	if( iFOE == -1 ) wsprintf(cTxt, "%d", _tmp_wObjectID);
+				else strcpy(cTxt, pName);
+		}	}
+		if (m_iPartyStatus != NULL)
+		{	for (i = 0; i < DEF_MAXPARTYMEMBERS; i++)
+			{	if (strcmp(m_stPartyMemberNameList[i].cName, pName) == 0)
+				{	strcat(cTxt, " (Party Member)"); // ", Party Member"
+					break;
+		}	}	}
+	}else strcpy(cTxt, "?????");
 
 	if ((iStatus & 0x20) != 0) strcat(cTxt, " (Berserked)");//" Berserk"
 	if ((iStatus & 0x40) != 0) strcat(cTxt, " (Frozen)");//" Frozen"
@@ -28275,7 +28225,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	ZeroMemory(cTxt, sizeof(cTxt));
 
 	// centu - deathmatch show only enemies
-	if ((strcmp(m_cMapName, "fightzone1") == 0) && (bDeathmatch) && ( memcmp(pName, m_cPlayerName, 10) != 0 ))
+	if ((strcmp(m_cMapName, "fightzone1") == 0) && (bDeathmatch) && ( memcmp(pName, m_cPlayerName, 12) != 0 ))
 	{
 		strcpy(cTxt, DRAW_OBJECT_NAME90);
 		PutString2(sX, sY+14, cTxt, 255, 0, 0);
@@ -31782,37 +31732,6 @@ void CGame::UpdateScreen_OnGame()
 			else if (m_iPing >= 500) PutString(10, 575, G_cTxt, RGB(255, 0, 0));
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		}
-
-		// Centu - Team Arena
-		if (strcmp(m_cMapName, "team") == 0)
-		{
-			wsprintf(G_cTxt, "Team");
-			PutString(480, 165, G_cTxt, RGB(220, 200, 200));
-			wsprintf(G_cTxt, "Red");
-			PutString(480, 180, G_cTxt, RGB(255, 0, 9));
-			wsprintf(G_cTxt, "Blue");
-			PutString(480, 195, G_cTxt, RGB(61, 100, 255));
-			wsprintf(G_cTxt, "Green");
-			PutString(480, 210, G_cTxt, RGB(51, 204, 0));
-			wsprintf(G_cTxt, "Yellow");
-			PutString(480, 225, G_cTxt, RGB(255, 255, 0));
-
-			wsprintf(G_cTxt, "Kills");
-			PutString(540, 165, G_cTxt, RGB(220, 200, 200));
-
-			wsprintf(G_cTxt, "%d/200", redkills);
-			PutString(540, 180, G_cTxt, RGB(220, 200, 200));
-
-			wsprintf(G_cTxt, "%d/200", bluekills);
-			PutString(540, 195, G_cTxt, RGB(220, 200, 200));
-
-			wsprintf(G_cTxt, "%d/200", greenkills);
-			PutString(540, 210, G_cTxt, RGB(220, 200, 200));
-
-			wsprintf(G_cTxt, "%d/200", yellowkills);
-			PutString(540, 225, G_cTxt, RGB(220, 200, 200));
-		}
-
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
 	}
 

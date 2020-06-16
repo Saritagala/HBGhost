@@ -147,8 +147,6 @@ class CGame
 {
 public:
 
-	short redkills, bluekills, greenkills, yellowkills;
-
 	// centuu
 	int iHungerStatus = 0; // MORLA2 - Hunger Status
 	int m_iMaxEK = 0;

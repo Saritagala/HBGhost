@@ -17,8 +17,6 @@
 
 #define MSGID_REQUEST_TOPEK 0x3B1890EC
 
-#define DEF_NOTIFY_TEAMKILL 0x0BEE // Centu - Team Arena
-
 //News Addons - ZeroEoyPnk
 #define DEF_SEND_PARTYCOORDS				0x1F07
 #define DEF_SEND_PARTYHP					0x1F08

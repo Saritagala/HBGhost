@@ -162,7 +162,6 @@
     <ClInclude Include="SkillNum.h" />
     <ClInclude Include="StrategicPoint.h" />
     <ClInclude Include="StrTok.h" />
-    <ClInclude Include="Team.h" />
     <ClInclude Include="Teleport.h" />
     <ClInclude Include="TeleportLoc.h" />
     <ClInclude Include="TempNpcItem.h" />
@@ -200,7 +199,6 @@
     <ClCompile Include="Skill.cpp" />
     <ClCompile Include="StrategicPoint.cpp" />
     <ClCompile Include="StrTok.cpp" />
-    <ClCompile Include="Team.cpp" />
     <ClCompile Include="Teleport.cpp" />
     <ClCompile Include="TeleportLoc.cpp" />
     <ClCompile Include="TempNpcItem.cpp" />

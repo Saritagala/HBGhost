@@ -21,26 +21,6 @@
 class CClient  
 {
 public:
-
-	bool IsInMap(char* mapname);
-	bool IsLocation(char* location);
-
-	int GetItemCount()
-	{
-		int t = 0;
-		for (int i = 0; i < DEF_MAXITEMS; i++)
-		{
-			if (m_pItemList[i])
-				t++;
-		}
-
-		return t;
-	}
-
-	bool IsInsideTeam();
-	bool IsTeamPlayer();
-
-	short iteam;
 	
 	int  m_iAngelicStr; // By Snoopy81
 	int  m_iAngelicInt; // By Snoopy81

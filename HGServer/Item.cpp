@@ -57,9 +57,6 @@ CItem::CItem()
 	m_sIDnum    = 0;
 
 	m_bIsForSale = FALSE;
-
-	teamcape = false;
-	teamboots = false;
 }
 
 CItem::~CItem()
@@ -3541,17 +3538,6 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 
-	if (m_pClientList[iClientH]->IsInsideTeam())
-	{
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Cape") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Cape+1") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Shoes") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "LongBoots") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "AresdenHeroCape") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "ElvineHeroCape") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "AresdenHeroCape+1") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "ElvineHeroCape+1") return;
-	}
 
 	if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE) ||
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_EAT)) {

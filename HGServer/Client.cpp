@@ -30,7 +30,7 @@ CClient::CClient(HWND hWnd)
 	m_iGuildGUID = -1;
 	m_bIsInitComplete = FALSE;
 	m_iLU_Pool = 0; // removed
-	iteam = 0;
+	
 	m_cWarType = 0;
 	m_iEnemyKillCount = 0;
 	m_iMaxEK = 0;
@@ -344,26 +344,4 @@ int CClient::bCreateNewParty()
 		ZeroMemory(m_stPartyMemberName[i].cName, sizeof(m_stPartyMemberName[i].cName));
 	}
 	return 1;
-}
-
-bool CClient::IsInMap(char* mapname)
-{
-	return string(m_cMapName) == mapname;
-}
-
-
-
-bool CClient::IsLocation(char* location)
-{
-	return string(m_cLocation) == location;
-}
-
-bool CClient::IsInsideTeam()
-{
-	return string(m_cMapName) == "team" && c_team->bteam;
-}
-
-bool CClient::IsTeamPlayer()
-{
-	return std::find(c_team->m_team.begin(), c_team->m_team.end(), m_cCharName) != c_team->m_team.end();
 }

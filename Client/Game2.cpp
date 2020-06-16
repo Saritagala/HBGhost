@@ -3033,12 +3033,6 @@ void CGame::UseMagic(int iMagicNo)
 	if (iMagicNo < 0 || iMagicNo >= 100) return;
 	if ((m_cMagicMastery[iMagicNo] == NULL) || (m_pMagicCfgList[iMagicNo] == NULL)) return;
 
-	// Centu - Team Arena
-	if (strcmp(m_cMapName, "team") == 0)
-	{
-		if (iMagicNo == 12) return;
-	}
-
 	// Casting
 	if (m_iHP <= 0) return;
 	if (m_bIsGetPointingMode == TRUE) return;
@@ -6556,11 +6550,11 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			wsprintf(cStr4, "Total Eks: %d", m_iEnemyKillCount);
 			PutAlignedString(sX + 10, sX + 150, sY + 30, cStr4, 255, 255, 255);
 			break;
-		case 2: //Trade Contrib
+		case 2: //Trade Ek
 			wsprintf(cStr4, "Contrib. Points: %d", m_iContribution);
 			PutAlignedString(sX + 10, sX + 150, sY + 30, cStr4, 255, 255, 255);
 			break;
-		case 3: //Trade Coin
+		case 3: //Trade Ek
 			wsprintf(cStr4, "Coin Points: %d", m_iCoinPoints);
 			PutAlignedString(sX + 10, sX + 150, sY + 30, cStr4, 255, 255, 255);
 			break;
