@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/5/31/0/38)  IP(10.0.0.104)
+
+[NAME]
+
+account-name     = magnos
+
+[PASSWORD]
+
+account-password = a
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 6 7
+
+account-change-password = 2020 5 31
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = ..a.a@>>
+account-Quiz     = a
+account-Answer   = a
+account-created-by = 
+
+[CHARACTERS]
+account-character  = magnos
+

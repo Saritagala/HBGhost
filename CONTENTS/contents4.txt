@@ -1,0 +1,11 @@
+;-------Name----------------Type--EPos--Effect--ETValue--------MaxLife--MFixC--Spr--SFrame--Price--Wgt--ApprV-Speed--L.Lmt 
+Item = ZemstoneofSacrifice 0 0 26 0 0 0 0 0 0 3 0 16 39 3 5000 -1 0 0
+Item = StoneOfXelima 0 0 0 0 0 0 0 0 0 3 0 6 128 4 4000 -1 0 0
+Item = StoneOfMerien 0 0 0 0 0 0 0 0 0 3 0 6 129 4 4000 -1 0 0
+
+Item  = -		      0     0     0     0  0 0  0 0 0   0       0      0    0     0       0       0     0      0
+  
+Item = RingofDemonpower 1 10 14 3 4 0 0 0 0 300 0 16 28 10 500 -1 0 0
+Item = RingofGrandMage 1 10 14 6 3 0 0 0 0 300 0 16 32 10 500 -1 0 0
+
+Item  = -		      0     0     0     0  0 0  0 0 0   0       0      0    0     0       0       0     0      0

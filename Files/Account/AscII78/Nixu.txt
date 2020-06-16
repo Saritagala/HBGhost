@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/5/23/16/21)  IP(181.171.128.211)
+
+[NAME]
+
+account-name     = Nixu
+
+[PASSWORD]
+
+account-password = helbreath1
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 5 30
+
+account-change-password = 2020 5 23
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = asdasd@gmail.com
+account-Quiz     = hola
+account-Answer   = como
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Nixu
+
