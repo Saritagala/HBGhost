@@ -93,6 +93,8 @@ public:
 
 private:
 
+	void AdminOrder_SetObserverMode(int iClientH);
+
 	void CalcExpStock(int iClientH);
 
 	void CheckDenialServiceAttack(int iClientH, DWORD dwClientTime);

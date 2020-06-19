@@ -2411,7 +2411,7 @@ void CGame::OnTimer(char cType)
 	
 	if ((dwTime - m_dwWhetherTime) > 20000) {
 		WeatherProcessor();
-		SendThunders();
+		//SendThunders();
 		m_dwWhetherTime = dwTime;
 	}
 	
@@ -6998,6 +6998,11 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			AdminOrder_CleanMap(iClientH, cp, dwMsgSize);
 		}
 
+		else if (memcmp(cp, "/setobservermode ", 17) == 0) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= m_iAdminLevelObserver)
+				AdminOrder_SetObserverMode(iClientH);
+		}
+
 		else if (memcmp(cp, "/who", 4) == 0) 
 		{
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_TOTALUSERS, NULL, NULL, NULL, NULL);
@@ -8245,6 +8250,28 @@ BOOL CGame::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, 
 	return TRUE;
 }
 
+void CGame::AdminOrder_SetObserverMode(int iClientH)
+{
+
+	if (m_pClientList[iClientH] == NULL) return;
+
+	if (m_pClientList[iClientH]->m_bIsObserverMode == TRUE) {
+		// »õ À§Ä¡¿¡ Ç¥½ÃÇÑ´Ù. 
+		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->SetOwner(iClientH, DEF_OWNERTYPE_PLAYER, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
+		SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_LOG, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_OBSERVERMODE, 0, NULL, NULL, NULL);
+		m_pClientList[iClientH]->m_bIsObserverMode = FALSE;
+	}
+	else {
+		// ÇöÀç À§Ä¡¿¡¼­ Áö¿î´Ù. ¾ø¾îÁø ÇàÀ§¸¦ ¾Ë·ÁÁà¾ß ÇÑ´Ù. ¾ÆÁ÷ ¹Ì±¸Çö
+		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->ClearOwner(1, iClientH, DEF_OWNERTYPE_PLAYER, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
+		SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_LOG, DEF_MSGTYPE_REJECT, NULL, NULL, NULL);
+		//iRequestPanningMapDataRequest(iClientH, pData)
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_OBSERVERMODE, 1, NULL, NULL, NULL);
+		m_pClientList[iClientH]->m_bIsObserverMode = TRUE;
+	}
+}
+
 
 BOOL CGame::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
 {
@@ -9460,7 +9487,7 @@ void CGame::SendMsgToGateServer(DWORD dwMsg, int iClientH, char * pData)
 		cp += 4;
 
 		dwp = (DWORD *)cp;
-		*dwp = 1126;
+		*dwp = 3289;
 		cp += 4;
 
 		iRet = m_pGateSock->iSendMsg(cData, 45 + m_iTotalMaps*11);
@@ -26135,8 +26162,8 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
-		//m_pGameMaster->AdminOrder_SetObserverMode(iClientH);
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not working.");
+		AdminOrder_SetObserverMode(iClientH);
+		//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not working.");
 		break;
 
 	case 34: //DC All

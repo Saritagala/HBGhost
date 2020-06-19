@@ -1488,7 +1488,7 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 				m_pClientList[iClientH]->m_iAskedQuest = iQuestNum;
 				//m_pClientList[iClientH]->m_iQuestRewardType[i] = iRewardType;
 				//m_pClientList[iClientH]->m_iQuestRewardAmount[i] = iRewardAmount;
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Send Quest Data");
+				//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Send Quest Data");
 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, iQuestType, iResMode, iRewardAmount, cRewardName, iContribution,
 					iTargetType, iTargetCount, iX, iY, iRange, cTargetName);

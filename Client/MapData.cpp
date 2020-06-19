@@ -736,7 +736,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[73][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[73][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[73][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[73][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[73][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME; // Centu - Tiempo reducido
 	m_stFrame[73][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// GiantCrayFish
@@ -824,7 +824,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[81][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[81][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[81][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[81][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[81][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME; // Centu - Tiempo reducido
 	m_stFrame[81][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
 
 	//82  Sorceress

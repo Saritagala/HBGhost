@@ -31687,8 +31687,8 @@ void CGame::UpdateScreen_OnGame()
 	{
 		if (m_bShowFPS)
 		{
-			wsprintf(G_cTxt, "FPS: %.3d", m_sFPS);
-			PutString(10, 560, G_cTxt, RGB(255, 255, 255));
+			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
+			PutString(10, 565, G_cTxt, RGB(255, 255, 255));
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		}
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
