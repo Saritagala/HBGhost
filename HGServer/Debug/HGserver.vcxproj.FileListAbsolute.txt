@@ -1,0 +1,2 @@
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Debug\HGserver.exe
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Debug\HGserver.pdb

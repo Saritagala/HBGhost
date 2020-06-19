@@ -17237,46 +17237,48 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		// centuu - mostrar pits en mapa CHICO
 		// Nixu - acomodado de Pits
 		if (m_cMapIndex == 11) { // Aresden
-			// Ice Golem Abajo Medio Derecha
+			// Ogre Abajo Medio Derecha
 			if (141 >= shX && 141 <= shX + 128 && 240 >= shY && 240 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 65, m_dwCurTime);
-			// Werewolf Abajo Derecha
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 29, m_dwCurTime);
+			// Esqueleton Abajo Derecha
 			if (253 >= shX && 253 <= shX + 128 && 203 >= shY && 203 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 33, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 11, m_dwCurTime);
 			//Stone Golem Izquierda
 			if (43 >= shX && 43 <= shX + 128 && 182 >= shY && 182 <= shY + 128)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 182 - shY, 12, m_dwCurTime);
 			//Zombies
 			if (122 >= shX && 122 <= shX + 128 && 50 >= shY && 50 <= shY + 128)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 50 - shY, 18, m_dwCurTime);
-			// Ice Golem Abajo Medio
+			// Dark Elf Abajo Medio
 			if (203 >= shX && 203 <= shX + 128 && 236 >= shY && 236 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 65, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 54, m_dwCurTime);
 			// Werewolf Arriba
 			if (102 >= shX && 102 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 102 - shX, sY + 36 - shY, 33, m_dwCurTime);
+
 		}
 		else if (m_cMapIndex == 3) { // Elvine
-			
+
 			// Werewolf Arriba
 			if (154 >= shX && 154 <= shX + 128 && 38 >= shY && 38 <= shY + 128)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 154 - shX, sY + 38 - shY, 33, m_dwCurTime);
+			// Skeleton Arriba
+			if (127 >= shX && 127 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 127 - shX, sY + 36 - shY, 11, m_dwCurTime);
 			//Zombies Izquierda Arriba
 			if (54 >= shX && 54 <= shX + 128 && 65 >= shY && 65 <= shY + 128)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 54 - shX, sY + 65 - shY, 18, m_dwCurTime);
-			//Werewolf Abajo
+			//Ogre Abajo
 			if (135 >= shX && 135 <= shX + 128 && 248 >= shY && 248 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 33, m_dwCurTime);
-			// Ice Golem Abajo Derecha Inferior
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 29, m_dwCurTime);
+			// Dark Elf Derecha Inferior
 			if (240 >= shX && 240 <= shX + 128 && 214 >= shY && 214 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 65, m_dwCurTime);
-			//Ice Golem Abajo Derecha Superior
-			if (260 >= shX && 260 <= shX + 128 && 184 >= shY && 184 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 260 - shX, sY + 184 - shY, 65, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 54, m_dwCurTime);
+
 			// Snake
 			if (48 >= shX && 48 <= shX + 128 && 202 >= shY && 202 <= shY + 128)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 12, m_dwCurTime);
-			
+
 		}
 
 	}
@@ -17331,31 +17333,33 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		// centuu - mostrar pits en mapa GRANDE
 		//Nixu - Acomodado de Pits
 		if (m_cMapIndex == 11) { // Aresden
-			// Ice Golem Abajo Medio
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
-			//Werewolf Abajo Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
+			// Ogre Abajo Medio 
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
+			//Esqueleton Abajo Derecha
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
 			//Stone Golem Izquierda
 			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((182 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
 			// Zombies Arriba Derecha
 			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((50 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
-			// Ice Golem Abajo Medio Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
+			// Dark elf Abajo Medio Derecha
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
 			// Werewolf Arriba Izquierda
 			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((102 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
 		}
 		else if (m_cMapIndex == 3) { // Elvine
 			// Wereolf Arriba Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime); 
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
+			//Skeleton Arriba Izquierda
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((127 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
 			// Zombies Arriba Izquierda
 			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((54 * 128) / m_pMapData->m_sMapSizeX), sY + ((65 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
-			// Werewolf Abajo Medio
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-			// Ice Golem Abajo Derecho
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
+			// Ogre Abajo Medio
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
+			// Dark Elf Abajo Derecho
+			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
 			// Stone Golem Abajo Izquierda
 			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
-			
+
 		}
 	}
 	if (cLB != 0) return;

@@ -142,14 +142,13 @@ random-mob-generator	= 1  1
 npc-avoidrect           = 1  86 67 214 213
 
 //------------------------Num-Type-RECT---------------Mob-MobNum
-spot-mob-generator	= 1  1     148 29 166 47      33  80 //Werewolf Arriba Derecha
-spot-mob-generator	= 2  1     123 28 138 44      33  30 //Werewolf Arriba Izquierda
+spot-mob-generator	= 1  1     148 29 166 47      33  40 //Werewolf Arriba Derecha
+spot-mob-generator	= 2  1     123 28 138 44      11  30 //Skeleton Arriba Izquierda
 spot-mob-generator	= 3  1     46 56 62 71        18  70 //Zombies Arriba Izquierda
 spot-mob-generator	= 4  1     31 176 61 192      12  80 // Stone GolemIzquierda al medio superior
 spot-mob-generator	= 5  1     41 203 64 221      12  80 // Stone Golem Izquierda al medio inferior
-spot-mob-generator	= 6  1     122 234 159 266    33  80 // Werewolf Abajo al Medio
-spot-mob-generator	= 7  1     234 201 254 223    65  80 // Ice Golem Abajo Derecha Inferior
-spot-mob-generator	= 8  1     234 201 254 223    65  80 // Ice Golem Abajo Derecha Superior
+spot-mob-generator	= 6  1     122 234 159 266    29  80 // Ogre Abajo al Medio
+spot-mob-generator	= 8  1     234 201 254 223    54  40 // Ice Golem Abajo Derecha Superior
 
 
 
