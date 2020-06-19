@@ -8484,7 +8484,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 
 	bInv = FALSE;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81) bInvy = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 73) bInvy = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -9000,7 +9000,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 ) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -9532,7 +9532,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 
 	bInv = FALSE;
 
-	if(_tmp_sOwnerType == 35 ) bInvy = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInvy = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -9748,7 +9748,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 ) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -9984,7 +9984,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 ) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11109,7 +11109,7 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if( _tmp_sOwnerType == 66) return FALSE;
+	if(_tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) return FALSE;
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11250,8 +11250,9 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
 			break;
 
 		case 66: // Wyvern
-			iFrame = 15;
+			iFrame = 7;
 			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
+			bTrans = TRUE;
 			break;
 
 		case 73: // FireWyvern
@@ -11395,7 +11396,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 )	bInv = TRUE; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66)	bInv = TRUE; //Energy-Ball, Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12044,7 +12045,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
  int iSkirtDraw = 0;
 
 	if(_tmp_sOwnerType == 67 || _tmp_sOwnerType == 68 || _tmp_sOwnerType == 69 || _tmp_sOwnerType == 81) return FALSE;
-	if(_tmp_sOwnerType == 35 ) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12820,7 +12821,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81) bInv = TRUE; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball, Wyvern
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
 		iShieldColor = 0;
@@ -14504,7 +14505,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 	int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
 	int iSkirtDraw = 0;
 
-	if (_tmp_sOwnerType == 35) bInv = TRUE; //Energy-Ball,Wyvern
+	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{
