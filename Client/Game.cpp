@@ -1056,7 +1056,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		break;
 
 	case MSGID_REQUEST_PING:
-        dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
+        /*dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
         *dwp = dwMsgID;
         wp  = (WORD *)(cMsg + DEF_INDEX2_MSGTYPE);
         *wp = NULL;
@@ -1066,7 +1066,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
         *dwp = dwTime;
         cp += 4;
 
-        iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
+        iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);*/
         break;
 
 	case DEF_REQUEST_ANGEL:	// to Game Server
@@ -1441,13 +1441,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		cp = (char *)(cMsg + DEF_INDEX2_MSGTYPE + 2);
 		dwp = (DWORD *)cp;
 
-#ifdef DEF_ANTI_HACK
-		*dwp = (DWORD) iV1;
-		//CheckProcesses(); // Bloque simplement les mouvements.
-		// Mais la detection de la fenêtre correspondante, blocquera le CCM et -> lag / deco par serveur.
-#else
 		*dwp = dwTime;
-#endif
 
 		cp += 4;
 		iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
@@ -3576,42 +3570,23 @@ void CGame::OnTimer()
 	DWORD dwTime = timeGetTime();
 
 	if (m_cGameMode != DEF_GAMEMODE_ONLOADING) {
-#ifdef DEF_ANTI_HACK
-		if (((dwTime - m_dwCheckSprTime) > 6150) && ( m_dwCheckSprTime != 0))
-		{	m_dwCheckSprTime = dwTime;
-			if( m_bIsProgramActive ) ReleaseUnusedSprites();			
-			if ((m_pGSock != NULL) && (m_pGSock->m_bIsAvailable == TRUE))
-				bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, NULL, dwTime, NULL, NULL, NULL);
-		}	
-#else
+
 		if ((dwTime - m_dwCheckSprTime) > 8000)
 		{	m_dwCheckSprTime = dwTime;
 			if( m_bIsProgramActive ) ReleaseUnusedSprites();
 			if ((m_pGSock != NULL) && (m_pGSock->m_bIsAvailable == TRUE))
 				bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL, NULL, NULL);
 		}
-#endif
 	}
 
 	if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME)
 	{	if ((dwTime - m_dwCheckConnTime) > 5000)
 		{	m_dwCheckConnTime = dwTime;
 			if ((m_bIsCrusadeMode) && (m_iCrusadeDuty == NULL)) EnableDialogBox(33, 1, NULL, NULL);
-		}
-
-		if ((dwTime - m_dwCheckWhoTime) > 5000)
-        {
-			m_dwCheckWhoTime = dwTime;
 #ifdef DEF_ANTI_HACK
 			CheckProcesses(); // centu
 #endif
-        }
-
-		if ((dwTime - m_dwCheckPingTime) > 5000)
-        {
-            m_dwCheckPingTime = dwTime;
-            bSendCommand(MSGID_REQUEST_PING, NULL, NULL, NULL, NULL, NULL, NULL);
-        }
+		}
 
 		if ((dwTime - m_dwCheckChatTime) > 2000)
 		{	m_dwCheckChatTime = m_dwTime;
@@ -7982,15 +7957,11 @@ void CGame::DrawEffectLights()
 {int i, dX, dY, iDvalue;
  DWORD dwTime = m_dwCurTime;
  char  cTempFrame;
-	for (i = 0;	i < DEF_MAXEFFECTS; i++)
+	for (i = 0;	i < DEF_MAXEFFECTS; i++) 
 	if (m_pEffectList[i] != NULL) {
 		switch (m_pEffectList[i]->m_sType) {
 		case 1:
-			break;
-
 		case 2:
-			break;
-
 		case 4:
 			break;
 
@@ -7999,9 +7970,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 7)*(-1);
-				if (m_pEffectList[i]->m_cFrame < 6)
+				//if (m_pEffectList[i]->m_cFrame < 6)
 					 m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY+30, 1, dwTime);
-				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 
@@ -8011,9 +7982,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 9)*(-1);
-				if (m_pEffectList[i]->m_cFrame < 8)
+				//if (m_pEffectList[i]->m_cFrame < 8)
 					 m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY+30, 1, dwTime);
-				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 		case 7: // Magic Missile Explosion
@@ -8021,9 +7992,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 2)*(-1);
-				if (m_pEffectList[i]->m_cFrame < 2)
+				//if (m_pEffectList[i]->m_cFrame < 2)
 					 m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY+30, 1, dwTime);
-				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 
@@ -8039,14 +8010,16 @@ void CGame::DrawEffectLights()
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 			iDvalue = -5;
-			m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+			//m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+			m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY + 30, 1, dwTime);
 			break;
 
 		case 69:
 		case 70:
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
-			m_pEffectSpr[0]->PutTransSprite25(dX, dY+30, 1, dwTime);
+			//m_pEffectSpr[0]->PutTransSprite25(dX, dY+30, 1, dwTime);
+			m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY + 30, 1, dwTime);
 			break;
 
 		case 33: //
@@ -8059,9 +8032,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 7)*(-1);
-				if (m_pEffectList[i]->m_cFrame < 6)
+				//if (m_pEffectList[i]->m_cFrame < 6)
 					 m_pEffectSpr[0]->PutTransSprite(dX, dY, 1, dwTime);
-				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 
@@ -8093,7 +8066,7 @@ void CGame::DrawEffectLights()
 			m_pEffectSpr[75]->PutTransSprite(dX, dY+35, m_pEffectList[i]->m_cFrame, dwTime);
 			break;
 
-		case 75: // Icegolem
+		/*case 75: // Icegolem
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 			m_pEffectSpr[76]->PutTransSprite25(dX+m_pEffectList[i]->m_dX*m_pEffectList[i]->m_cFrame, dY+m_pEffectList[i]->m_dY*m_pEffectList[i]->m_cFrame, m_pEffectList[i]->m_cFrame, dwTime);
@@ -8109,7 +8082,7 @@ void CGame::DrawEffectLights()
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 			m_pEffectSpr[78]->PutTransSprite25(dX+m_pEffectList[i]->m_dX*m_pEffectList[i]->m_cFrame, dY+m_pEffectList[i]->m_dY*m_pEffectList[i]->m_cFrame, m_pEffectList[i]->m_cFrame, dwTime);
-			break;
+			break;*/
 
 		case 150: // Berserk : Cirlcle 6 magic
 			dX  = (m_pEffectList[i]->m_dX*32)  - m_sViewPointX;
@@ -8955,12 +8928,10 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
 			
-	}	}
+	}	
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID))
 		{	m_pChatMsgList[_tmp_iChatIndex]->m_sX = sX;
@@ -9529,12 +9500,10 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 	
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX + dx, sY + dy, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
             
-	}   }
+	}   
 
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID)) {
@@ -9754,12 +9723,10 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
             
-    }    }
+    }    
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID))
 		{	m_pChatMsgList[_tmp_iChatIndex]->m_sX = sX;
@@ -9989,12 +9956,10 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
             
-    }    }
+    }    
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID))
 		{	m_pChatMsgList[_tmp_iChatIndex]->m_sX = sX;
@@ -10728,12 +10693,10 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 		}
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
             
-    }    }
+    }    
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID))
 		{	m_pChatMsgList[_tmp_iChatIndex]->m_sX = sX;
@@ -11700,13 +11663,13 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 		case 2: m_pEffectSpr[27]->PutTransSprite(sX+dx, sY+dy, _tmp_iEffectFrame, dwTime); break; // Special Ability: Protect Effect
 	}	}
 
-	if( _tmp_sOwnerType == 65 ) // IceGolem
+	/*if( _tmp_sOwnerType == 65 ) // IceGolem
 	{	switch( rand()%3 ) {
 		case 0:	m_pEffectSpr[76]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime); break;
 		case 1:	m_pEffectSpr[77]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime); break;
 		case 2:	m_pEffectSpr[78]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime); break;
 		}
-	}
+	}*/
 	if (bTrans == FALSE)
 	{	CheckActiveAura(sX+dx, sY+dy, dwTime, _tmp_sOwnerType);
 		if (_cDrawingOrder[_tmp_cDir] == 1)
@@ -12004,12 +11967,10 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX + dx, sY + dy, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
             
-    }    }
+    }    
 
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID))
@@ -12474,12 +12435,10 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX + dx, sY + dy, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
             
-    }    }
+    }    
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID))
 		{	m_pChatMsgList[_tmp_iChatIndex]->m_sX = sX+dx;
@@ -13383,12 +13342,10 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX, sY, _tmp_sOwnerType, _tmp_iStatus);
             
-    }    }
+    }    
 
 	if (_tmp_iChatIndex != NULL)
 	{	if ((m_pChatMsgList[_tmp_iChatIndex] != NULL) && (m_pChatMsgList[_tmp_iChatIndex]->m_iObjectID == _tmp_wObjectID)) {
@@ -15061,12 +15018,10 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 	else if (strlen(_tmp_cName) > 0)
 	{
 		if ((_tmp_sOwnerType >= 1) && (_tmp_sOwnerType <= 6)) DrawObjectName(sX + dx, sY + dy, _tmp_cName, _tmp_iStatus);
-		//50Cent - HP Bar
-		else
-		{
-			DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
+		
+		else DrawNpcName(sX + dx, sY + dy, _tmp_sOwnerType, _tmp_iStatus);
 			
-		}
+		
 	}
 
 	if (_tmp_iChatIndex != NULL)
@@ -19349,25 +19304,25 @@ void CGame::DrawWhetherEffects()
 				dY = m_stWhetherObject[i].sY - m_sViewPointY;
 
 				// Snoopy: Snow on lower bar
-				if (dY >= 547)
+				/*if (dY >= 547)
 				{
 					cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3;
 					dX = m_stWhetherObject[i].sBX;
 					dY = 547;
 				}
-				else cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3 + (rand() % 3);
+				else*/ cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3 + (rand() % 3);
 
 				m_pEffectSpr[11]->PutTransSprite(dX, dY, cTempFrame, dwTime);
 
 				if (m_bIsXmas == TRUE)
 				{
-					if (dY == 547)
+					/*if (dY == 547)
 					{
 						ix1[iNum] = dX;
 						iy2[iNum] = dY + (rand() % 5);
 						iFrame[iNum] = cTempFrame;
 						iNum++;
-					}
+					}*/
 					if (iNum >= MAXNUM) iNum = 0;
 				}
 			}
@@ -19452,7 +19407,7 @@ void CGame::WhetherObjectFrameCounter()
 				m_stWhetherObject[i].sY = m_stWhetherObject[i].sY + cAdd;
 
 				//Snoopy: Snow on lower bar
-				if (m_stWhetherObject[i].sY > (547 + m_sViewPointY))
+				/*if (m_stWhetherObject[i].sY > (547 + m_sViewPointY))
 				{
 					m_stWhetherObject[i].sY = 547 + m_sViewPointY;
 					if ((rand() % 10) != 2) m_stWhetherObject[i].cStep--;
@@ -19460,7 +19415,7 @@ void CGame::WhetherObjectFrameCounter()
 
 
 				}
-				else m_stWhetherObject[i].sX += 1 - (rand() % 3);
+				else*/ m_stWhetherObject[i].sX += 1 - (rand() % 3);
 			}
 			else if (m_stWhetherObject[i].cStep >= 80)
 			{
@@ -27566,14 +27521,21 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 					return;
 			}	}
 
-			/* Cuando te metes al wh, y abrís el panel para meter items, no hace falta que los arrastres, 
-			les vas dando doble click y se te van metiendo solos. Eso hace el code, solo cuando estas dentro del wh y 
-			abrís el panel del mismo. */
 			if(m_bIsDialogEnabled[14])
-            {
+            {	// centu - wh
                 bItemDrop_Bank(msX, msY);
                 return;
             }
+			else if (m_bIsDialogEnabled[31])
+			{	// centu - sell
+				bItemDrop_SellList(msX, msY);
+				return;
+			}
+			else if (m_bIsDialogEnabled[34])
+			{	// centu - upgrade
+				bItemDrop_ItemUpgrade();
+				return;
+			}
 
 			if (   (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_PERM)
@@ -28116,8 +28078,8 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		PutString2(sX, sY+14, cTxt, 150,150,150); // v2.171
 	}
 
-
-		switch ((iStatus & 0x0F00) >> 8) {
+	switch ((iStatus & 0x0F00) >> 8) 
+	{
 		case 0: break;
 		case 1: strcpy(cTxt2, DRAW_OBJECT_NAME52); break;//"Clairvoyant"
 		case 2: strcpy(cTxt2, DRAW_OBJECT_NAME53); break;//"Destruction of Magic Protection"
@@ -28127,9 +28089,9 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		case 6: strcpy(cTxt2, DRAW_OBJECT_NAME57); break;//"Critical Poisonous"
 		case 7: strcpy(cTxt2, DRAW_OBJECT_NAME58); break;//"Explosive"
 		case 8: strcpy(cTxt2, DRAW_OBJECT_NAME59); break;//"Critical Explosive"
-		}
-		if( m_Misc.bCheckIMEString(cTxt2) ) PutString_SprFont3(sX, sY + 22, cTxt2, m_wR[13]*4, m_wG[13]*4, m_wB[13]*4, FALSE, 2);
-		else PutString2(sX, sY + 28, cTxt2, 240,240,70);
+	}
+	if( m_Misc.bCheckIMEString(cTxt2) ) PutString_SprFont3(sX, sY + 22, cTxt2, m_wR[13]*4, m_wG[13]*4, m_wB[13]*4, FALSE, 2);
+	else PutString2(sX, sY + 28, cTxt2, 240,240,70);
 
 	// centu: no muestra la barra de hp de algunos npc
 	switch (sOwnerType) {
@@ -31726,10 +31688,6 @@ void CGame::UpdateScreen_OnGame()
 		{
 			wsprintf(G_cTxt, "FPS: %.3d", m_sFPS);
 			PutString(10, 560, G_cTxt, RGB(255, 255, 255));
-			wsprintf(G_cTxt, "PING: %.3d", m_iPing);
-			if (m_iPing <200) PutString(10, 575, G_cTxt, RGB(0, 255, 0));
-			else if (m_iPing >= 200 && m_iPing < 500) PutString(10, 575, G_cTxt, RGB(255, 165, 0));
-			else if (m_iPing >= 500) PutString(10, 575, G_cTxt, RGB(255, 0, 0));
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		}
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();

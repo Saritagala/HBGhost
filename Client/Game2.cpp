@@ -16170,16 +16170,16 @@ BOOL CGame::bEffectFrameCounter()
 					if (m_pEffectList[i]->m_cFrame == 1)
 					{
 						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
 					}
 					if (m_pEffectList[i]->m_cFrame == 7)
 					{
 						bAddNewEffect(15, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), 0, NULL, NULL);
-						bAddNewEffect(15, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), 0, NULL, NULL);
-						bAddNewEffect(15, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), 0, NULL, NULL);
+						//bAddNewEffect(15, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), 0, NULL, NULL);
+						//bAddNewEffect(15, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), 0, NULL, NULL);
 					}
 					if (m_pEffectList[i]->m_cFrame > m_pEffectList[i]->m_cMaxFrame)
 					{
@@ -16192,10 +16192,10 @@ BOOL CGame::bEffectFrameCounter()
 					if (m_pEffectList[i]->m_cFrame == 1)
 					{
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
 					}
 					if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
 					{
@@ -16208,8 +16208,8 @@ BOOL CGame::bEffectFrameCounter()
 					if (m_pEffectList[i]->m_cFrame == 1)
 					{
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
 					}
 					if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
 					{
@@ -16234,7 +16234,7 @@ BOOL CGame::bEffectFrameCounter()
 					if (m_pEffectList[i]->m_cFrame == 1)
 					{
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
+						/*bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1*(rand() % 2));
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1*(rand() % 2));
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1*(rand() % 2));
@@ -16243,7 +16243,7 @@ BOOL CGame::bEffectFrameCounter()
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
+						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));*/
 					}
 					if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
 					{
@@ -16287,10 +16287,10 @@ BOOL CGame::bEffectFrameCounter()
 					{
 						bAddNewEffect(18, m_pEffectList[i]->m_dX, m_pEffectList[i]->m_dY, NULL, NULL, 0); // testcode 0111 18
 						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
+						//bAddNewEffect(9, m_pEffectList[i]->m_mX + 20 - (rand() % 40), m_pEffectList[i]->m_mY + 20 - (rand() % 40), NULL, NULL, -1 * (rand() % 2));
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
 					}
@@ -16359,10 +16359,10 @@ BOOL CGame::bEffectFrameCounter()
 						&m_pEffectList[i]->m_mX, &m_pEffectList[i]->m_mY,
 						&m_pEffectList[i]->m_iErr, 50);
 					bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
+					//bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
+					//bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
+					//bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
+					//bAddNewEffect(8, m_pEffectList[i]->m_mX + 10 - (rand() % 20), m_pEffectList[i]->m_mY + 10 - (rand() % 20), NULL, NULL, 0);//-1*(rand() % 4));
 					if ((abs(m_pEffectList[i]->m_mX - m_pEffectList[i]->m_dX * 32) <= 2) &&
 						(abs(m_pEffectList[i]->m_mY - (m_pEffectList[i]->m_dY * 32 - 40)) <= 2))
 					{
@@ -16392,10 +16392,10 @@ BOOL CGame::bEffectFrameCounter()
 					if (m_pEffectList[i]->m_cFrame == 9)
 					{
 						bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 100) - 50), m_pEffectList[i]->m_mY + ((rand() % 70) - 35), NULL, NULL, 0, 0);
-						bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 100) - 50), m_pEffectList[i]->m_mY + ((rand() % 70) - 35), NULL, NULL, 0, 0);
-						bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 100) - 50), m_pEffectList[i]->m_mY + ((rand() % 70) - 35), NULL, NULL, 0, 0);
-						bAddNewEffect(51, m_pEffectList[i]->m_mX +((rand() % 100)-50), m_pEffectList[i]->m_mY +((rand() % 70)-35), NULL, NULL, 0, 0);
-						bAddNewEffect(51, m_pEffectList[i]->m_mX +((rand() % 100)-50), m_pEffectList[i]->m_mY +((rand() % 70)-35), NULL, NULL, 0, 0);
+						//bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 100) - 50), m_pEffectList[i]->m_mY + ((rand() % 70) - 35), NULL, NULL, 0, 0);
+						//bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 100) - 50), m_pEffectList[i]->m_mY + ((rand() % 70) - 35), NULL, NULL, 0, 0);
+						//bAddNewEffect(51, m_pEffectList[i]->m_mX +((rand() % 100)-50), m_pEffectList[i]->m_mY +((rand() % 70)-35), NULL, NULL, 0, 0);
+						//bAddNewEffect(51, m_pEffectList[i]->m_mX +((rand() % 100)-50), m_pEffectList[i]->m_mY +((rand() % 70)-35), NULL, NULL, 0, 0);
 					}
 					if (m_pEffectList[i]->m_cFrame > m_pEffectList[i]->m_cMaxFrame)
 					{
@@ -16423,10 +16423,10 @@ BOOL CGame::bEffectFrameCounter()
 						{
 							bAddNewEffect(50, m_pEffectList[i]->m_mX, m_pEffectList[i]->m_mY, NULL, NULL, 0);
 							bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
-							bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
-							bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
+							//bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
+							//bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
 							bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
-							bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
+							//bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
 						}
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
@@ -16448,11 +16448,11 @@ BOOL CGame::bEffectFrameCounter()
 							bAddNewEffect(72, m_pEffectList[i]->m_mX, m_pEffectList[i]->m_mY, NULL, NULL, 0);
 						else bAddNewEffect(50, m_pEffectList[i]->m_mX, m_pEffectList[i]->m_mY, NULL, NULL, 0);
 						bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
-						bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
-						bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
+						//bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
+						//bAddNewEffect(14, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
 
 						bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
-						bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
+						//bAddNewEffect(51, m_pEffectList[i]->m_mX + ((rand() % 20) - 10), m_pEffectList[i]->m_mY + ((rand() % 20) - 10), NULL, NULL, 0, 0);
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
 					}
@@ -16465,10 +16465,10 @@ BOOL CGame::bEffectFrameCounter()
 						bAddNewEffect(61, m_pEffectList[i]->m_mX, m_pEffectList[i]->m_mY, NULL, NULL, 0, 0);
 						bAddNewEffect(63, m_pEffectList[i]->m_mX, m_pEffectList[i]->m_mY, NULL, NULL, 0, 0);
 						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
-						bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+				//		bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+				//		bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+				//		bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
+				//		bAddNewEffect(12, m_pEffectList[i]->m_mX + 5 - (rand() % 10), m_pEffectList[i]->m_mY + 5 - (rand() % 10), NULL, NULL, -1 * (rand() % 2));
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
 					}
@@ -16583,7 +16583,7 @@ BOOL CGame::bEffectFrameCounter()
 						&m_pEffectList[i]->m_mX, &m_pEffectList[i]->m_mY,
 						&m_pEffectList[i]->m_iErr, 50);
 					bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
+					//bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
 					if ((abs(m_pEffectList[i]->m_mX - m_pEffectList[i]->m_dX * 32) <= 2)
 						&& (abs(m_pEffectList[i]->m_mY - m_pEffectList[i]->m_dY * 32) <= 2))
 					{
@@ -16630,8 +16630,8 @@ BOOL CGame::bEffectFrameCounter()
 						&m_pEffectList[i]->m_mX, &m_pEffectList[i]->m_mY,
 						&m_pEffectList[i]->m_iErr, 50);
 					bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
-					bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
+				//	bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
+				//	bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
 					if ((abs(m_pEffectList[i]->m_mX - m_pEffectList[i]->m_dX * 32) <= 2)
 						&& (abs(m_pEffectList[i]->m_mY - m_pEffectList[i]->m_dY * 32) <= 2))
 					{
@@ -16666,12 +16666,9 @@ BOOL CGame::bEffectFrameCounter()
 					break;
 
 				case 147:  // Triple-Energy-Bolt
-					bAddNewEffect(110, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY,
-						m_pEffectList[i]->m_dX - 1, m_pEffectList[i]->m_dY - 1, 0);
-					bAddNewEffect(110, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY,
-						m_pEffectList[i]->m_dX + 1, m_pEffectList[i]->m_dY - 1, 0);
-					bAddNewEffect(110, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY,
-						m_pEffectList[i]->m_dX + 1, m_pEffectList[i]->m_dY + 1, 0);
+					bAddNewEffect(110, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY, m_pEffectList[i]->m_dX - 1, m_pEffectList[i]->m_dY - 1, 0);
+					bAddNewEffect(110, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY, m_pEffectList[i]->m_dX + 1, m_pEffectList[i]->m_dY - 1, 0);
+					bAddNewEffect(110, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY, m_pEffectList[i]->m_dX + 1, m_pEffectList[i]->m_dY + 1, 0);
 					bAddNewEffect(8, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, -1 * (rand() % 4));
 					lPan = -(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX) * 1000;
 					PlaySound('E', 1, sDist, lPan);
@@ -16765,9 +16762,9 @@ BOOL CGame::bEffectFrameCounter()
 					bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + 35, m_pEffectList[i]->m_dY * 32 - 30, NULL, NULL, -6);
 					bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + 20, m_pEffectList[i]->m_dY * 32 + 30, NULL, NULL, -3);
 					bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
-					bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
-					bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
-					bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
+				//	bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
+				//	bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
+				//	bAddNewEffect(56, m_pEffectList[i]->m_dX * 32 + (rand() % 100) - 50, m_pEffectList[i]->m_dY * 32 + (rand() % 70) - 35, NULL, NULL, -1 * (rand() % 10));
 					delete m_pEffectList[i];
 					m_pEffectList[i] = NULL;
 					break;
@@ -16808,13 +16805,13 @@ BOOL CGame::bEffectFrameCounter()
 				case 172: // Mass-Ice-Strike
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32, m_pEffectList[i]->m_dY * 32, NULL, NULL, 0);
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
+					/*bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
 					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
-					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
-					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));
+					bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * (rand() % 3));*/
 					for (x = 0; x < 16; x++)
 					{
 						bAddNewEffect(44, m_pEffectList[i]->m_dX * 32 + (rand() % 110) - 55 + 10, m_pEffectList[i]->m_dY * 32 + (rand() % 100) - 50, NULL, NULL, -1 * x - 1);
@@ -16978,13 +16975,10 @@ BOOL CGame::bEffectFrameCounter()
 						bAddNewEffect(204, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 70, NULL, NULL, 0, 0);
 						bAddNewEffect(205, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 75, NULL, NULL, 0, 0);
 						bAddNewEffect(206, m_pEffectList[i]->m_sX - 7, m_pEffectList[i]->m_sY + 27, NULL, NULL, 0, 0);
-#ifdef RES_HIGH
-						bAddNewEffect(201, (rand() % 160) + 400, (rand() % 120) + 300, NULL, NULL, 0, 1);
-						bAddNewEffect(202, (rand() % 160) + 400, (rand() % 120) + 300, NULL, NULL, 0, 1);
-#else
+
 						bAddNewEffect(201, (rand() % 160) + 320, (rand() % 120) + 240, NULL, NULL, 0, 1);
 						bAddNewEffect(202, (rand() % 160) + 320, (rand() % 120) + 240, NULL, NULL, 0, 1);
-#endif
+
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
 					}
@@ -17001,11 +16995,9 @@ BOOL CGame::bEffectFrameCounter()
 						bAddNewEffect(203, m_pEffectList[i]->m_sX + 110, m_pEffectList[i]->m_sY + 120, NULL, NULL, 0, 0);
 						bAddNewEffect(204, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 70, NULL, NULL, 0, 0);
 						bAddNewEffect(205, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 75, NULL, NULL, 0, 0);
-#ifdef RES_HIGH
-						bAddNewEffect(202, (rand() % 160) + 400, (rand() % 120) + 300, NULL, NULL, 0, 1);
-#else
+
 						bAddNewEffect(202, (rand() % 160) + 320, (rand() % 120) + 240, NULL, NULL, 0, 1);
-#endif
+
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
 					}
@@ -17151,9 +17143,9 @@ BOOL CGame::bEffectFrameCounter()
 						m_pEffectList[i] = NULL;
 					}
 					break;
-					}
-					}
-					}
+				}
+			}
+		}
 	return bRet;
 }
 
