@@ -8014,7 +8014,7 @@ DWORD * dwp, dwTimeRcv;
 				
 				//Change ping response
 
-				if (m_pClientList[iClientH] == NULL) return;
+				/*if (m_pClientList[iClientH] == NULL) return;
 
 				cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 				dwp = (DWORD *)cp;
@@ -8030,7 +8030,7 @@ DWORD * dwp, dwTimeRcv;
 				*dwp = dwTimeRcv;
 				cp += 4;
 
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cBuffer, 10);
+				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cBuffer, 10);*/
 				break;
 
 			case DEF_REQUEST_ANGEL: // Angels by Snoopy...
@@ -21890,7 +21890,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	case DEF_NOTIFY_GIZONITEMUPGRADELEFT:
-	case DEF_SEND_NPCHP: //50Cent - HP Ba
+	case DEF_SEND_NPCHP: //50Cent - HP Bar
 	case DEF_NOTIFY_ENERGYSPHERECREATED:
 		ip = (int*)cp;
 		*ip = (int)sV1;
