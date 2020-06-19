@@ -8,6 +8,12 @@ initial-point = 1  50 41
 teleport-loc     =      60     43     elvine             149    131    4
 teleport-loc     =      59     42     elvine             149    131    4
 teleport-loc     =      58     42     elvine             149    131    4
+teleport-loc     =      32     44     arebrk11            80    50     4
+teleport-loc     =      33     44     arebrk11            56    44     4
+teleport-loc     =      32     45     arebrk11            101   39     4
+teleport-loc     =      35     43     arebrk11            65    40     4
+teleport-loc     =      34     43     arebrk11            90    90     4
+teleport-loc     =      34     44     arebrk11            50    50     4
 
 //-WayPoint-Set---------Num-----X-----Y----;
 waypoint          =     1      43     42

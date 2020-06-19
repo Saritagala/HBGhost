@@ -36,3 +36,17 @@
 2020:06:19:17:04:29	Loc(fightzone1) IP(192.168.0.12) GM(GM1):"/summon Abaddon 20"
 2020:06:19:17:04:34	Loc(fightzone1) IP(192.168.0.12) GM(GM1):"/clearnpc"
 2020:06:19:17:05:30	Loc(fightzone1) IP(192.168.0.12) GM(GM1):"!asd"
+2020:06:19:17:43:14	Loc(elvine) IP(192.168.0.12) GM(GM1):"/setinvi 0"
+2020:06:19:17:51:08	Loc(elvine) IP(192.168.0.12) GM(GM1):"/tp fightzone1"
+2020:06:19:17:51:24	Loc(fightzone1) IP(192.168.0.12) GM(GM1):"/summon Orge  50"
+2020:06:19:17:51:42	Loc(fightzone1) IP(192.168.0.12) GM(GM1):"/clearnpc"
+2020:06:19:17:53:51	Loc(elvine) IP(192.168.0.12) GM(GM1):"/who"
+2020:06:19:17:54:27	Loc(cityhall_2) IP(192.168.0.12) GM(GM1):"/createitem GhostSword"
+2020:06:19:17:54:27	(192.168.0.12) GM Order(GM1): Create ItemName(GhostSword)
+2020:06:19:17:56:04	Loc(cityhall_2) IP(192.168.0.12) GM(GM1):"/tp arebrk11"
+2020:06:19:18:02:08	Loc(arebrk11) IP(192.168.0.12) GM(GM1):"/createitem SupremaHeroSword"
+2020:06:19:18:02:12	Loc(arebrk11) IP(192.168.0.12) GM(GM1):"/createitem SupremoHeroSword"
+2020:06:19:18:02:12	(192.168.0.12) GM Order(GM1): Create ItemName(SupremoHeroSword)
+2020:06:19:18:02:48	Loc(arebrk11) IP(192.168.0.12) GM(GM1):"/who"
+2020:06:19:18:12:44	Loc(arebrk11) IP(192.168.0.12) GM(GM1):"/tp cityhall_1"
+2020:06:19:18:12:52	Loc(arebrk11) IP(192.168.0.12) GM(GM1):"/tp cityhall_2"
