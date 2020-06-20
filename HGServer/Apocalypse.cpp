@@ -722,15 +722,17 @@ void CGame::Use_ApocalypseGate(int iClientH)
 	case 5: // Admin created gate
 		break;
 	}
-	if ((m_pClientList[iClientH]->m_sX >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX1)
-		&& (m_pClientList[iClientH]->m_sX <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX2)
-		&& (m_pClientList[iClientH]->m_sY >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY1)
-		&& (m_pClientList[iClientH]->m_sY <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY2))
-	{
-		RequestTeleportHandler(iClientH, "2   "
-			, m_pMapList[iMapIndex]->m_cDynamicGateCoordDestMap
-			, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtX
-			, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtY);
+	if (m_bIsApocalypseMode) {
+		if ((m_pClientList[iClientH]->m_sX >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX1)
+			&& (m_pClientList[iClientH]->m_sX <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX2)
+			&& (m_pClientList[iClientH]->m_sY >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY1)
+			&& (m_pClientList[iClientH]->m_sY <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY2))
+		{
+			RequestTeleportHandler(iClientH, "2   "
+				, m_pMapList[iMapIndex]->m_cDynamicGateCoordDestMap
+				, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtX
+				, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtY);
+		}
 	}
 }
 
