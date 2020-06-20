@@ -6,6 +6,7 @@ initial-point = 2  110 89
 initial-point = 3  170 145
 initial-point = 4  242 129
 initial-point = 5  158 249
+initial-point = 6  77  175
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 
@@ -121,18 +122,20 @@ waypoint          =     6       250   140
 waypoint          =     7        80   215
 waypoint          =     8       165   235
 waypoint          =     9       230   230
+waypoint          =     10      73    173
+
 
 
 
 //-No-Attack-Area----------Num-----RECT-------------
 no-attack-area           = 1       21 272 33 277
 no-attack-area           = 2       248 269 260 273
-
 no-attack-area           = 3       154 54 163 61
 no-attack-area           = 4       106 86 115 93
 no-attack-area           = 5       166 142 175 149
 no-attack-area           = 6       238 126 247 133
 no-attack-area           = 7       154 246 163 253
+no-attack-area           = 8       73  173 82  178
 
 maximum-object		= 600
 random-mob-generator	= 1  1

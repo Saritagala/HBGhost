@@ -6,6 +6,7 @@ initial-point = 2  68 125
 initial-point = 3  170 145
 initial-point = 4  140 205
 initial-point = 5  116 245
+initial-point = 6  255 117
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 teleport-loc     =     135    129     cityhall_1          55     44    6
@@ -136,6 +137,7 @@ no-attack-area           = 4       64 122 73 129
 no-attack-area           = 5       166 142 175 149
 no-attack-area           = 6       112 242 121 249
 no-attack-area           = 7       136 201 144 210
+no-attack-area           = 8       253 115 259 120
 
 
 maximum-object		= 600
