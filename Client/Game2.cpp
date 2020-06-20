@@ -761,7 +761,7 @@ void CGame::NotifyMsg_Skill(char *pData)
 	{
 		wsprintf(cTxt, NOTIFYMSG_SKILL1, m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
 		AddEventList(cTxt, 10);
-		PlaySound('E', 23, 0);
+		//PlaySound('E', 23, 0);
 		for (i = 1; i < DEF_MAXCHATMSGS; i++)
 			if (m_pChatMsgList[i] == NULL)
 			{
@@ -780,7 +780,7 @@ void CGame::NotifyMsg_Skill(char *pData)
 	else if (m_pSkillCfgList[sSkillIndex]->m_iLevel > sValue) {
 		wsprintf(cTxt, NOTIFYMSG_SKILL2, m_pSkillCfgList[sSkillIndex]->m_cName, m_pSkillCfgList[sSkillIndex]->m_iLevel - sValue);
 		AddEventList(cTxt, 10);
-		PlaySound('E', 24, 0);
+		//PlaySound('E', 24, 0);
 		for (i = 1; i < DEF_MAXCHATMSGS; i++)
 			if (m_pChatMsgList[i] == NULL)
 			{
