@@ -684,7 +684,7 @@ void CGame::NotifyMsg_ServerChange(char * pData)
 		m_pLSock = NULL;
 	}
 	m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-	GetIPByDNS();
+	//GetIPByDNS();
 	m_pLSock->bConnect(m_cLogServerAddr, iWorldServerPort, WM_USER_LOGSOCKETEVENT);
 	m_pLSock->bInitBufferSize(30000);
 

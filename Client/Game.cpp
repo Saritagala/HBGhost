@@ -587,11 +587,7 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 		return FALSE;
 	}
 
-	if(bReadIp() == FALSE)
-	{	
-		MessageBox(m_hWnd, "UNKNOWN ADDRESS.","ERROR",MB_ICONEXCLAMATION | MB_OK);
-		return FALSE;
-	}
+	bReadIp();
 	
 	if(bReadItemNameConfigFile() == FALSE)
 	{	MessageBox(m_hWnd, "ItemName.cfg file contains wrong infomation.","ERROR",MB_ICONEXCLAMATION | MB_OK);
@@ -1219,46 +1215,47 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		memcpy(cTxt, m_cAccountName, 10);
 		memcpy(cp, cTxt, 10);
 		cp += 10;
-
+		//10
 		ZeroMemory(cTxt, sizeof(cTxt));
 		memcpy(cTxt, m_cAccountPassword, 10);
 		memcpy(cp, cTxt, 10);
 		cp += 10;
-
+		//20
 		memcpy(cp, m_cEmailAddr, 50);
 		cp += 50;
-
+		//70
 		ZeroMemory(cTxt, sizeof(cTxt));
 		strcpy(cTxt, " "); // gender
 		memcpy(cp, cTxt, 10);
 		cp += 10;
-
+		//80
 		memcpy(cp, m_cAccountAge, 10);
 		cp += 10;
-
+		//90
 		memcpy(cp, " ", 4);
 		cp += 4;
-
+		//94
 		memcpy(cp, " ", 2);
 		cp += 2;
-
+		//96
 		memcpy(cp, " ", 2);
 		cp += 2;
-
+		//98
 		memcpy(cp, m_cAccountCountry, 17);
 		cp += 17;
-
+		//115
 		memcpy(cp, m_cAccountSSN, 28);
 		cp += 28;
-
+		//143
  		memcpy(cp, m_cAccountQuiz, 45);
 		cp += 45;
-
+		//188
 		memcpy(cp, m_cAccountAnswer, 20);
 		cp += 20;
-
+		//208
 		memcpy(cp, G_cCmdLineTokenA_Lowercase, 50);
-
+		cp += 50;
+		//258
 		iRet = m_pLSock->iSendMsg(cMsg, 214	+50, cKey);
 		break;
 
@@ -14234,12 +14231,15 @@ void CGame::ChangeGameMode(char cMode)
 	}
 }
 
-BOOL CGame::bReadIp()
-{	
+void CGame::bReadIp()
+{
+
 	ZeroMemory(m_cLogServerAddr, sizeof(m_cLogServerAddr));
-    strcpy(m_cLogServerAddrBuffer, DEF_SERVER_DNS);
+	strcpy(m_cLogServerAddr, DEF_SERVER_IP);
+
+	//strcpy(m_cLogServerAddrBuffer, DEF_SERVER_DNS);
+
 	m_iLogServerPort = DEF_SERVER_PORT;
-	return TRUE;
 }
 
 void CGame::ReleaseUnusedSprites()
@@ -18033,7 +18033,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 					m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->_iCloseSprite();
 					m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->_iCloseSprite();
 					m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-					GetIPByDNS();
+					//GetIPByDNS();
 					m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort + (rand() % 1), WM_USER_LOGSOCKETEVENT);
 					m_pLSock->bInitBufferSize(30000);
 					ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -18105,7 +18105,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 							m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->_iCloseSprite();
 							m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->_iCloseSprite();
 							m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-							GetIPByDNS();
+							//GetIPByDNS();
 							m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort + (rand() % 1), WM_USER_LOGSOCKETEVENT);
 							m_pLSock->bInitBufferSize(30000);
 							ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -18143,7 +18143,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 						m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->_iCloseSprite();
 						m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->_iCloseSprite();
 						m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-						GetIPByDNS();
+						//GetIPByDNS();
 						m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort + (rand() % 1), WM_USER_LOGSOCKETEVENT);
 						m_pLSock->bInitBufferSize(30000);
 						ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -22227,7 +22227,7 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 			ZeroMemory(m_cPlayerName, sizeof(m_cPlayerName));
 			strcpy(m_cPlayerName, cName);
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			GetIPByDNS();
+			//GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -23079,7 +23079,7 @@ void CGame::UpdateScreen_OnLogin()
 			strcpy(m_cAccountName, cName);
 			strcpy(m_cAccountPassword, cPassword);
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			GetIPByDNS();
+			//GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort +(rand()%1), WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -23147,7 +23147,7 @@ void CGame::UpdateScreen_OnLogin()
 			strcpy(m_cAccountName, cName);
 			strcpy(m_cAccountPassword, cPassword);
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-            GetIPByDNS();
+           // GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort +(rand()%1), WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -24104,7 +24104,7 @@ void CGame::UpdateScreen_OnQueryForceLogin()
 		switch (iMIbuttonNum) {
 		case 1:
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			GetIPByDNS();
+			//GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -24461,7 +24461,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 		switch (iMIbuttonNum) {
 		case 1:
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			GetIPByDNS();
+			//GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -27780,7 +27780,7 @@ void CGame::UpdateScreen_OnChangePassword()
 			strcpy(m_cNewPassword, cNewPassword);
 			strcpy(m_cNewPassConfirm, cNewPassConfirm);
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			GetIPByDNS();
+			//GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
@@ -27921,7 +27921,7 @@ void CGame::UpdateScreen_OnChangePassword()
 			strcpy(m_cNewPassword, cNewPassword);
 			strcpy(m_cNewPassConfirm, cNewPassConfirm);
 			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			GetIPByDNS();
+			//GetIPByDNS();
 			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
 			m_pLSock->bInitBufferSize(30000);
 			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);

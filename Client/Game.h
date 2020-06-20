@@ -589,7 +589,7 @@ public:
 	void ReleaseTimeoverChatMsg();
 	void ChatMsgHandler(char * pData);
 	void ReleaseUnusedSprites();
-	BOOL bReadIp();
+	void bReadIp();
 	void OnKeyUp(WPARAM wParam);
 	void OnSysKeyDown(WPARAM wParam);
 	void OnSysKeyUp(WPARAM wParam);
