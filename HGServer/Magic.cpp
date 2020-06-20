@@ -395,7 +395,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 		return;
 	}
 	m_pClientList[iClientH]->m_dwRecentAttackTime = dwTime;
-	m_pClientList[iClientH]->m_dwLastActionTime = m_pClientList[iClientH]->m_dwAFKCheckTime = dwTime;
+	m_pClientList[iClientH]->m_dwLastActionTime = dwTime;//m_pClientList[iClientH]->m_dwAFKCheckTime = dwTime;
 
 	if (m_pClientList[iClientH]->m_cMapIndex < 0) return;
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex] == NULL) return;

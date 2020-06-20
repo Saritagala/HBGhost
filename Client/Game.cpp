@@ -7055,14 +7055,14 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			break;
 
 		case 247: // AFKChecker
-            m_pEffectList[i]->m_mX     = sX*32;
+            /*m_pEffectList[i]->m_mX     = sX*32;
             m_pEffectList[i]->m_mY     = sY*32;
             m_pEffectList[i]->m_cMaxFrame   = 17;
             m_pEffectList[i]->m_dwFrameTime = 200;
             m_pEffectList[i]->m_mX3    = sDist;
             m_pEffectList[i]->m_mY3    = -(((m_sViewPointX / 32) + 12) - dX)*1000;
             m_pEffectList[i]->m_iV1    = rand()%35;
-            m_pEffectList[i]->m_cFrame = - rand() %12;
+            m_pEffectList[i]->m_cFrame = - rand() %12;*/
             break;
 
 		case 250: //
@@ -7912,9 +7912,9 @@ void CGame::DrawEffects()
 			break;
 
 		case 247: // AFKChecker
-            dX = (m_pEffectList[i]->m_mX) - m_sViewPointX;
+            /*dX = (m_pEffectList[i]->m_mX) - m_sViewPointX;
             dY = (m_pEffectList[i]->m_mY) - m_sViewPointY;
-            m_pEffectSpr[85]->PutTransSprite_NoColorKey(dX+50, dY+30, m_pEffectList[i]->m_cFrame, dwTime);
+            m_pEffectSpr[85]->PutTransSprite_NoColorKey(dX+50, dY+30, m_pEffectList[i]->m_cFrame, dwTime);*/
             break;
 
 		case 250: // Gate (round one)
@@ -8114,12 +8114,12 @@ void CGame::DrawEffectLights()
 			break;
 
 		case 247: // AFKChecker
-			if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
+			/*if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
 			{	delete m_pEffectList[i];
                 m_pEffectList[i] = NULL;
 			}else if (m_pEffectList[i]->m_iV1 == m_pEffectList[i]->m_cFrame)
 			{    PlaySound('M', 45, m_pEffectList[i]->m_mX3, m_pEffectList[i]->m_mY3 );
-			}
+			}*/
             break;
 		}
 	}
@@ -28609,7 +28609,7 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME55);	// Revival Zone
 		return -1;
 	}else if (strcmp(pMapName, "arebrk11") == 0)
-	{	strcpy(pName, GET_OFFICIAL_MAP_NAME4);	// Aresden Barrack 1
+	{	strcpy(pName, "Barracks");	// Aresden Barrack 1
 		return -1;
 	}else if (strcmp(pMapName, "arebrk12") == 0)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME5);	// Aresden Barrack 1

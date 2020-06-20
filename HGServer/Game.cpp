@@ -840,7 +840,7 @@ void CGame::ClientMotionHandler(int iClientH, char * pData)
 	dwClientTime = *dwp;
 	cp += 4;
 
-	m_pClientList[iClientH]->m_dwLastActionTime = m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
+	m_pClientList[iClientH]->m_dwLastActionTime = timeGetTime(); //m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 
 	switch (wCommand) {
 	case DEF_OBJECTSTOP:
@@ -1845,7 +1845,7 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	/*if (iMapSide > 3) iMapSide2 = iMapSide - 2;
 	else iMapSide2 = iMapSide;*/
 	m_pClientList[iClientH]->m_bIsInsideEnemyBuilding = FALSE; // new
-	if (m_pClientList[iClientH]->m_cSide != iMapSide) {
+	if (m_pClientList[iClientH]->m_cSide != iMapSide && iMapSide != 0) {
 		if ((iMapSide <= 2) && (m_pClientList[iClientH]->m_iAdminUserLevel < 1)) {
 			if (m_pClientList[iClientH]->m_cSide != 0) {
 				m_pClientList[iClientH]->m_dwWarBeginTime = timeGetTime();
@@ -2405,7 +2405,7 @@ void CGame::OnTimer(char cType)
 		{	HeldenianStartWarNow();
 			HeldenianEndWarNow();
 		}
-		AFKChecker();
+		//AFKChecker();
 		m_dwFishTime = dwTime;
 	}
 	
@@ -2706,12 +2706,12 @@ void CGame::CheckClientResponseTime()
 
 				// Recall clients from apocalypse map if not Apocalypse time
 				
-				if (   (m_pMapList[m_pClientList[i]->m_cMapIndex]->m_bIsApocalypseMap == TRUE) 
+				/*if (   (m_pMapList[m_pClientList[i]->m_cMapIndex]->m_bIsApocalypseMap == TRUE) 
 					&& (m_bIsApocalypseMode == FALSE)
 					&& (m_pClientList[i]->m_iAdminUserLevel == 0))
 				{	m_pClientList[i]->m_bIsWarLocation = TRUE;
 					m_pClientList[i]->m_iTimeLeft_ForceRecall = 0;				
-				}
+				}*/
 
 
 				// SNOOPY:added Apoc teleport Gates here		
@@ -6510,7 +6510,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 	}
 
 	cp = (char *)(pData + 21);
-	m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
+	//m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 	// Modification - chat logging
 	switch (m_bLogChatOption) {
 		// Chat Logs of only players
@@ -22343,7 +22343,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 
 	bIsLockedMapNotify = FALSE;
 	// Prevent recalls spells/scrolls, and any recall type magic if forbidden on the map
-	if ((m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsRecallImpossible == TRUE) 
+	/*if ((m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsRecallImpossible == TRUE) 
 		&& (m_pClientList[iClientH]->m_iAdminUserLevel == 0) 
 		&& (m_pClientList[iClientH]->m_bIsKilled == FALSE) 
 		&& (m_pClientList[iClientH]->m_iHP > 0)) 
@@ -22359,13 +22359,13 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			// '' Means client is on TP tile and asks the server to perform the TP.
 			{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NORECALL, NULL, NULL, NULL, NULL);
 				return;
-	}	}	}
+	}	}	}*/
 	if (m_pClientList[iClientH]->m_cExchangeMode != 0) {
 		iExH = m_pClientList[iClientH]->m_iExchangeH;
 		_ClearExchangeStatus(iExH);
 		_ClearExchangeStatus(iClientH);
 	}
-	m_pClientList[iClientH]->m_dwLastActionTime = m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
+	m_pClientList[iClientH]->m_dwLastActionTime = timeGetTime();//m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 	
 	RemoveFromTarget(iClientH, DEF_OWNERTYPE_PLAYER, DEF_MAGICTYPE_TELEPORT);
 	
@@ -22378,7 +22378,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 	if ((strcmp(m_pClientList[iClientH]->m_cLockedMapName, "NONE") != 0) && (m_pClientList[iClientH]->m_iLockedMapTime > 0)) {
 		iMapSide = iGetMapLocationSide(cDestMapName);
 		//if (iMapSide > 3) iMapSide -= 2;
-		if (m_pClientList[iClientH]->m_cSide != iMapSide) {
+		if (m_pClientList[iClientH]->m_cSide != iMapSide && iMapside != 0) {
 			iDestX = -1;
 			iDestY = -1;
 			bIsLockedMapNotify = TRUE;
@@ -22710,7 +22710,7 @@ RTH_NEXTSTEP:;
 	/*if (iMapside > 3) iMapside2 = iMapside - 2;
 	else iMapside2 = iMapside;*/
 	m_pClientList[iClientH]->m_bIsInsideEnemyBuilding = FALSE;
-	if (m_pClientList[iClientH]->m_cSide != iMapside)  {
+	if (m_pClientList[iClientH]->m_cSide != iMapside && iMapside != 0)  {
 		if ((m_pClientList[iClientH]->m_iAdminUserLevel == 0) && 
 			(m_pClientList[iClientH]->m_cSide != 0)) {
 			m_pClientList[iClientH]->m_dwWarBeginTime = timeGetTime();
@@ -23091,7 +23091,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 		}
 	}
 
-	m_pClientList[iClientH]->m_dwLastActionTime = m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
+	m_pClientList[iClientH]->m_dwLastActionTime = timeGetTime(); //m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 
 	if (m_iTotalClients > DEF_MAXONESERVERUSERS) {
 		switch (iDice(1,2)) {
@@ -23254,7 +23254,7 @@ void CGame::PlayerOrder_ChangeCity(int iClientH, BOOL bChange)
 }
 
 void CGame::AFKChecker()
-{     int i;
+{   /*  int i;
     int sX, sY;
     DWORD dwTimeNow = timeGetTime();
     for (i = 1; i < DEF_MAXCLIENTS; i++)
@@ -23269,7 +23269,7 @@ void CGame::AFKChecker()
                 else sY = m_pClientList[i]->m_sY;        
                 SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_MAGIC, m_pClientList[i]->m_cMapIndex
                     , sX, sY, sX, sY, 247, m_pClientList[i]->m_sType);
-    }    }    }
+    }    }    }*/
 }
 
 void CGame::ParseCommand(char * pMsg) 

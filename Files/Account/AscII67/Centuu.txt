@@ -29,5 +29,7 @@ account-Answer   = Perro
 account-created-by = 
 
 [CHARACTERS]
+account-character  = uxiN
+account-character  = Testin
 account-character  = Centuu
 

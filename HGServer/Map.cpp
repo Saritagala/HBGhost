@@ -3966,14 +3966,14 @@ void CGame::GetMapInitialPoint(int iMapIndex, short* pX, short* pY, char* pPlaye
 int CGame::iGetMapLocationSide(char* pMapName)
 {
 
-	if (strcmp(pMapName, "aresden") == 0) return 1;
-	if (strcmp(pMapName, "elvine") == 0) return 2;
-	if (strcmp(pMapName, "arebrk11") == 0) return 1;
-	if (strcmp(pMapName, "elvbrk11") == 0) return 2;
+	//if (strcmp(pMapName, "aresden") == 0) return 1;
+	//if (strcmp(pMapName, "elvine") == 0) return 2;
+	//if (strcmp(pMapName, "arebrk11") == 0) return 1;
+	//if (strcmp(pMapName, "elvbrk11") == 0) return 2;
 
 	if (strcmp(pMapName, "cityhall_1") == 0) return 1;
 	if (strcmp(pMapName, "cityhall_2") == 0) return 2;
-	if (strcmp(pMapName, "cath_1") == 0) return 1;
+	/*if (strcmp(pMapName, "cath_1") == 0) return 1;
 	if (strcmp(pMapName, "cath_2") == 0) return 2;
 	if (strcmp(pMapName, "gshop_1") == 0) return 1;
 	if (strcmp(pMapName, "gshop_2") == 0) return 2;
@@ -3990,7 +3990,7 @@ int CGame::iGetMapLocationSide(char* pMapName)
 	if (strcmp(pMapName, "arewrhus") == 0) return 1;
 	if (strcmp(pMapName, "elvwrhus") == 0) return 2;
 	if (strcmp(pMapName, "cmdhall_1") == 0) return 1;
-	if (strcmp(pMapName, "Cmdhall_2") == 0) return 2;
+	if (strcmp(pMapName, "Cmdhall_2") == 0) return 2;*/
 
 	return 0;
 }
