@@ -1030,11 +1030,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 	dwTime = timeGetTime();
 	ZeroMemory(cMsg, sizeof(cMsg));
 
-#ifdef DEF_ANTI_HACK
-	cKey = (char)(rand() % 245) +1;
-#else
 	cKey = (char)(rand() % 255) +1;
-#endif
 
 	switch (dwMsgID) {
 
@@ -29000,21 +28996,21 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 	if ((m_bIsObserverCommanded == FALSE) && (m_bIsObserverMode == TRUE))
 	{
 #ifdef RES_HIGH
-		if ((msX == 0) && (msY == 0) && (m_sViewDstX > 32 * 26) && (m_sViewDstY > 32 * 21))
+		if ((msX == 0) && (msY == 0) && (m_sViewDstX > 32 * 25) && (m_sViewDstY > 32 * 19))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 8, NULL, NULL, NULL, NULL);
-		else if ((msX == 799) && (msY == 0) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY > 32 * 21))
+		else if ((msX == 799) && (msY == 0) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 25) && (m_sViewDstY > 32 * 19))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 2, NULL, NULL, NULL, NULL);
-		else if ((msX == 799) && (msY == 599) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 21))
+		else if ((msX == 799) && (msY == 599) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 25) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 19))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 4, NULL, NULL, NULL, NULL);
 		else if ((msX == 0) && (msY == 599))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 6, NULL, NULL, NULL, NULL);
-		else if ((msX == 0) && (m_sViewDstX > 32 * 26))
+		else if ((msX == 0) && (m_sViewDstX > 32 * 25))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 7, NULL, NULL, NULL, NULL);
-		else if ((msX == 799) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26))
+		else if ((msX == 799) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 25))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 3, NULL, NULL, NULL, NULL);
-		else if ((msY == 0) && (m_sViewDstY > 32 * 21))
+		else if ((msY == 0) && (m_sViewDstY > 32 * 19))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 1, NULL, NULL, NULL, NULL);
-		else if ((msY == 599) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 21))
+		else if ((msY == 599) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 19))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 5, NULL, NULL, NULL, NULL);
 		else return;
 #else

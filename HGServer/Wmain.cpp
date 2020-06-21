@@ -70,35 +70,14 @@ HWND    BCX_Button(char*,HWND,int,int,int,int,int,int=0,int=-1);
 HWND    BCX_Button2(char*,HWND,int,int,int,int,int,int=0,int=-1);
 int ItemCount=0;
 
-// 2020
-unsigned __stdcall ThreadProc(void* ch)
+void ThreadProc(void* ch)
 {
-	class CTile* pTile;
-	while (G_bIsThread)
-	{
-		Sleep(100); // centu - 10000 -> 100
-		
-		for (int a = 0; a < DEF_MAXMAPS; a++)
-		{
-			if (G_pGame->m_pMapList[a] != NULL)
-			{
-				for (register int iy = 0; iy < G_pGame->m_pMapList[a]->m_sSizeY; iy++)
-				{
-					for (register int ix = 0; ix < G_pGame->m_pMapList[a]->m_sSizeX; ix++)
-					{
-						pTile = (class CTile*)(G_pGame->m_pMapList[a]->m_pTile + ix + iy * G_pGame->m_pMapList[a]->m_sSizeY);
-						if ((pTile != NULL) && (pTile->m_sOwner != NULL) && (pTile->m_cOwnerClass == NULL))
-						{
-							pTile->m_sOwner = NULL;
-						}
-					}
-				}
-			}
-		}
+	while (G_bIsThread == TRUE) {
+		if (G_pGame == NULL)	G_pGame->OnTimer(NULL);
+		Sleep(100);
 	}
 
-	_endthread();
-	return 0;
+	ExitThread(0);
 }
 
 LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )

@@ -26,7 +26,7 @@ extern HWND	G_hWnd;
 //////////////////////////////////////////////////////////////////////
 
 extern BOOL	G_bIsThread;
-extern unsigned __stdcall ThreadProc(void *ch);
+extern void ThreadProc(void *ch);
 
 // Move lock para 800 x 600
 int _tmp_iMoveLocX[9][47] = {
@@ -24184,12 +24184,20 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 	return TRUE;
 }
 
+/*********************************************************************************************************************
+**  int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char * pData)						**
+**  DESCRIPTION			:: updates client screen on movement														**
+**  LAST_UPDATED		:: March 16, 2005; 1:11 PM; Hypnotoad														**
+**	RETURN_VALUE		:: void																						**
+**  NOTES				::	- added iGetPlayerStatus on PLAYER														**
+**	MODIFICATION		::  - invis hack 																			**
+**********************************************************************************************************************/
 int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char* pData)
 {
-	int* ip, ix, iy, iSize, iTileExists, iIndex;
-	class CTile* pTileSrc, *pTile;
+	register int* ip, ix, iy, iSize, iTileExists, iIndex;
+	class CTile* pTileSrc, * pTile;
 	unsigned char ucHeader;
-	short* sp, *pTotal;
+	short* sp, * pTotal;
 	int iTemp, iTemp2;
 	WORD* wp;
 	char* cp;
@@ -24201,15 +24209,21 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 	iTileExists = 0;
 	pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 	iIndex = 0;
-
-	while (TRUE) {
-
+	while (1) {
 		ix = _tmp_iMoveLocX[cDir][iIndex];
 		iy = _tmp_iMoveLocY[cDir][iIndex];
 		if ((ix == -1) || (iy == -1)) break;
 		iIndex++;
-		
 		pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+
+		//If player not same side and is invied (Beholder Hack)
+		// there is another person on the tiles, and the owner is not the player
+		if ((m_pClientList[pTile->m_sOwner] != NULL) && (pTile->m_sOwner != iClientH))
+			if ((m_pClientList[pTile->m_sOwner]->m_cSide != 0) &&
+				(m_pClientList[pTile->m_sOwner]->m_cSide != m_pClientList[iClientH]->m_cSide) &&
+				((m_pClientList[pTile->m_sOwner]->m_iStatus & 0x00000010) != 0)) {
+				continue;
+			}
 
 		if ((pTile->m_sOwner != NULL) || (pTile->m_sDeadOwner != NULL) || (pTile->m_pItem[0] != NULL) || (pTile->m_sDynamicObjectType != NULL)) {
 			iTileExists++;
@@ -24249,7 +24263,6 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 			*cp = ucHeader;
 			cp++;
 			iSize++;
-
 			if ((ucHeader & 0x01) != 0) {
 				switch (pTile->m_cOwnerClass) {
 				case DEF_OWNERTYPE_PLAYER:
@@ -24294,7 +24307,7 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 
 					ip = (int*)cp;
 
-					iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner); // new
+					iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner);
 					iTemp = 0x0FFFFFFF & iTemp;
 					iTemp2 = iGetPlayerABSStatus(pTile->m_sOwner, iClientH);
 					iTemp = (iTemp | (iTemp2 << 28));
@@ -24339,13 +24352,13 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 					memcpy(cp, m_pNpcList[pTile->m_sOwner]->m_cName, 5);
 					cp += 5;
 					iSize += 5;
-					break;
-				}//end switch
-			}// if 
+				}
+			}
 
 			if ((ucHeader & 0x02) != 0) {
 				switch (pTile->m_cDeadOwnerClass) {
 				case DEF_OWNERTYPE_PLAYER:
+
 					sp = (short*)cp;
 					*sp = pTile->m_sDeadOwner;
 					cp += 2;
@@ -24387,7 +24400,7 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 
 					ip = (int*)cp;
 
-					iTemp = iGetPlayerStatus(iClientH, pTile->m_sDeadOwner); // new
+					iTemp = iGetPlayerStatus(iClientH, pTile->m_sDeadOwner);
 					iTemp = 0x0FFFFFFF & iTemp;
 					iTemp2 = iGetPlayerABSStatus(pTile->m_sDeadOwner, iClientH);
 					iTemp = (iTemp | (iTemp2 << 28));
@@ -24435,8 +24448,8 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 					cp += 5;
 					iSize += 5;
 					break;
-				}//End Switch
-			}// if 
+				}
+			}
 			if (pTile->m_pItem[0] != NULL) {
 				sp = (short*)cp;
 				*sp = pTile->m_pItem[0]->m_sSprite;
@@ -24463,9 +24476,9 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 				*sp = pTile->m_sDynamicObjectType;
 				cp += 2;
 				iSize += 2;
-			} //
-		} //
-	} // end While(1)
+			}
+		}
+	}
 	*pTotal = iTileExists;
 	return iSize;
 }
@@ -24487,9 +24500,8 @@ char CGame::cGetNextMoveArea(short sOwnerH, short sX, short sY, short dstX, shor
 	else m_Misc.GetPoint(dX, dY, dstX, dstY, &iResX, &iResY, pError);
 	cDir = m_Misc.cGetNextMoveDir(dX, dY, iResX, iResY);
 
-	// centu - fixed stun
 	if (cTurn == 0) {
-		for (i = cDir; i <= cDir + 2; i++) {
+		for (i = cDir; i <= cDir + 7; i++) {
 			cTmpDir = i;
 			if (cTmpDir != 0) {
 				if (cTmpDir > 8) cTmpDir -= 8;
@@ -24502,7 +24514,7 @@ char CGame::cGetNextMoveArea(short sOwnerH, short sX, short sY, short dstX, shor
 		}
 	}
 	if (cTurn == 1) {
-		for (i = cDir; i >= cDir - 2; i--) {
+		for (i = cDir; i >= cDir - 7; i--) {
 			cTmpDir = i;
 			if (cTmpDir < 1) cTmpDir += 8;
 			aX = _tmp_cTmpDirX[cTmpDir];
@@ -24515,6 +24527,15 @@ char CGame::cGetNextMoveArea(short sOwnerH, short sX, short sY, short dstX, shor
 	return 0;
 }
 
+/*********************************************************************************************************************
+**  char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, char cMapIndex, char cTurn,				**
+**		int * pError)																								**
+**  DESCRIPTION			:: gets next direction																		**
+**  LAST_UPDATED		:: March 19, 2005; 1:34 PM; Hypnotoad														**
+**	RETURN_VALUE		:: char																						**
+**  NOTES				::	n/a																						**
+**	MODIFICATION		::	n/a																						**
+**********************************************************************************************************************/
 char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, char cMapIndex, char cTurn, int* pError)
 {
 	char  cDir, cTmpDir;
@@ -24531,9 +24552,8 @@ char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, char cMa
 	else m_Misc.GetPoint(dX, dY, dstX, dstY, &iResX, &iResY, pError);
 	cDir = m_Misc.cGetNextMoveDir(dX, dY, iResX, iResY);
 	
-	// centu - fixed stun
 	if (cTurn == 0) {
-		for (i = cDir; i <= cDir + 2; i++) {
+		for (i = cDir; i <= cDir + 7; i++) {
 			cTmpDir = i;
 			if (cTmpDir > 8) cTmpDir -= 8;
 			aX = _tmp_cTmpDirX[cTmpDir];
@@ -24542,7 +24562,7 @@ char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, char cMa
 		}
 	}
 	if (cTurn == 1) {
-		for (i = cDir; i >= cDir - 2; i--) {
+		for (i = cDir; i >= cDir - 7; i--) {
 			cTmpDir = i;
 			if (cTmpDir < 1) cTmpDir += 8;
 			aX = _tmp_cTmpDirX[cTmpDir];

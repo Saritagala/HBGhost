@@ -147,26 +147,21 @@ npc-avoidrect           = 1  86 67 214 213
 //------------------------Num-Type-RECT---------------Mob-MobNum
 spot-mob-generator	= 1  1     148 29 166 47      33  40 //Werewolf Arriba Derecha
 spot-mob-generator	= 2  1     123 28 138 44      11  30 //Skeleton Arriba Izquierda
-spot-mob-generator	= 3  1     46 56 62 71        18  70 //Zombies Arriba Izquierda
-spot-mob-generator	= 4  1     31 176 61 192      12  80 // Stone GolemIzquierda al medio superior
-spot-mob-generator	= 5  1     41 203 64 221      12  80 // Stone Golem Izquierda al medio inferior
-spot-mob-generator	= 6  1     122 234 159 266    29  80 // Ogre Abajo al Medio
+spot-mob-generator	= 3  1     46 56 62 71        18  50 //Zombies Arriba Izquierda
+spot-mob-generator	= 4  1     31 176 61 192      12  60 // Stone GolemIzquierda al medio superior
+spot-mob-generator	= 5  1     41 203 64 221      12  60 // Stone Golem Izquierda al medio inferior
+spot-mob-generator	= 6  1     122 234 149 256    29  60 // Ogre Abajo al Medio
 spot-mob-generator	= 8  1     234 201 254 223    54  40 // Ice Golem Abajo Derecha Superior
 
 
 
 // 경비병 고정 좌표
-spot-mob-generator	= 9   1    153 52 164 63      25  2
-spot-mob-generator	= 10  1    105 84 116 95      25  2
-spot-mob-generator	= 11  1    165 140 176 151    25  2
-spot-mob-generator	= 12  1    237 124 248 135    25  2
-spot-mob-generator	= 13  1    153 244 163 255    25  2
-
-//도우미 고정 지역
-spot-mob-generator	= 14  1    142 131 175 149    67  1
-spot-mob-generator	= 15  1    216 148 240 163    68  1
-spot-mob-generator	= 16  1    192 121 213 133    69  1
-spot-mob-generator	= 17  1    222 105 244 117    67  1
+spot-mob-generator	= 9   1    153 52 164 63      25  3
+spot-mob-generator	= 10  1    105 84 116 95      25  3
+spot-mob-generator	= 11  1    165 140 176 151    25  3
+spot-mob-generator	= 12  1    237 124 248 135    25  3
+spot-mob-generator	= 13  1    153 244 163 255    25  3
+spot-mob-generator	= 14  1    72 170 83 181    25  3 
 
 
 max-fish   = 25

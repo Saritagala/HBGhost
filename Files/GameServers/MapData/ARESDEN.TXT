@@ -154,7 +154,7 @@ spot-mob-generator	= 3  1    24 198 44 203      12   15 // Stone Golem Izquierda
 spot-mob-generator	= 4  1    134 235 144 256    29   40 // Ogre Abajo  Medio Izquierda
 spot-mob-generator	= 5  1    186 227 224 236    54   40 // Dark Elf Abajo Medio Derecha
 spot-mob-generator	= 6  1    253 189 264 208    11   40 // Skeleton abajo derecha
-spot-mob-generator	= 7  1    109 49 126 50      18   80 // Zombies Arriba derecha
+spot-mob-generator	= 7  1    109 49 126 50      18   60 // Zombies Arriba derecha
 
 
 
@@ -162,17 +162,13 @@ spot-mob-generator	= 7  1    109 49 126 50      18   80 // Zombies Arriba derech
 
 
 // 경비병 고정 지역 
-spot-mob-generator	= 9  1    135 44 146 55      24  2
-spot-mob-generator	= 10 1    63 121 74 131      24  2
-spot-mob-generator	= 11 1    165 140 176 151    24  2
-spot-mob-generator	= 12 1    135 201 145 210    24  2
-spot-mob-generator	= 13 1    111 241 121 250    24  2
+spot-mob-generator	= 9  1    135 44 146 55      24  3 
+spot-mob-generator	= 10 1    63 121 74 131      24  3
+spot-mob-generator	= 11 1    165 140 176 151    24  3
+spot-mob-generator	= 12 1    135 201 145 210    24  3
+spot-mob-generator	= 13 1    111 241 121 250    24  3
+spot-mob-generator	= 14 1    250 112 261 123    24  3 
 
-//도우미 고정 지역
-spot-mob-generator	= 14  1    142 127 166 144    67  1
-spot-mob-generator	= 15  1    116 166 137 177    68  1
-spot-mob-generator	= 16  1    96 181 117 193     69  1
-spot-mob-generator	= 17  1    150 195 172 206    67  1
 
 
 // 낚시 포인트
