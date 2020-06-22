@@ -29,5 +29,6 @@ account-Answer   = como
 account-created-by = 
 
 [CHARACTERS]
+account-character  = TTTT
 account-character  = Nixu
 
