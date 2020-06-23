@@ -790,7 +790,7 @@ void CGame::Quit()
 
 void CGame::UpdateScreen()
 { 	G_dwGlobalTime = timeGetTime();
-	StartBGM(); // MP3
+	BOOL bFlag = FALSE;
 	switch (m_cGameMode) {
 
 	case DEF_GAMEMODE_ONAGREEMENT:
@@ -809,6 +809,7 @@ void CGame::UpdateScreen()
 		break;
 
 	case DEF_GAMEMODE_ONMAINMENU:
+		StartBGM(); // MP3
 		UpdateScreen_OnMainMenu();
 		break;
 
@@ -817,11 +818,16 @@ void CGame::UpdateScreen()
 		break;
 
 	case DEF_GAMEMODE_ONMAINGAME:
+		if (bFlag) StopBGM();
+		else {
+			if (m_bMusicStat) StartBGM(); // MP3
+		}
 		UpdateScreen_OnGame(); 
 		break;
 
 	case DEF_GAMEMODE_ONWAITINGINITDATA:
 		UpdateScreen_OnWaitInitData();
+		bFlag = TRUE;
 		break;
 
 	case DEF_GAMEMODE_ONCONNECTIONLOST:
@@ -31407,7 +31413,7 @@ void CGame::UpdateScreen_OnGame()
 
 	DrawTopMsg();
 
-#ifndef _DEBUG
+#ifdef _DEBUG
 	wsprintf(G_cTxt, "(%d,%d)", msX, msY);
 	PutString(msX, msY + 30, G_cTxt, RGB(255, 255, 255));
 #endif
