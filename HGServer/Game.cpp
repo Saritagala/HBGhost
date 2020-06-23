@@ -2411,7 +2411,7 @@ void CGame::OnTimer(char cType)
 	}
 	
 	if ((dwTime - m_dwWhetherTime) > 20000) {
-		WeatherProcessor();
+		//WeatherProcessor();
 		//SendThunders();
 		m_dwWhetherTime = dwTime;
 	}
