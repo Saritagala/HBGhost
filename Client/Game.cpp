@@ -790,9 +790,8 @@ void CGame::Quit()
 
 void CGame::UpdateScreen()
 { 	G_dwGlobalTime = timeGetTime();
-if (m_cGameMode != DEF_GAMEMODE_ONMAINGAME)	StopBGM(); // MP3
+	StartBGM(); // MP3
 	switch (m_cGameMode) {
-
 
 	case DEF_GAMEMODE_ONAGREEMENT:
 		break;
@@ -2655,9 +2654,9 @@ void CGame::UpdateScreen_OnMainMenu()
 
         // CLEROTH - INTERFACE
 #ifdef RES_HIGH
-        pMI->AddRect(384 + 97,177 + 42,548 + 135,198 + 42);
-        pMI->AddRect(384 + 97,215 + 52,548 + 135,236 + 52);
-        pMI->AddRect(384 + 97,254 + 60,548 + 135,275 + 60);
+        pMI->AddRect(195,177 + 42,359,198 + 42); //ok
+        pMI->AddRect(162,215 + 40,326,236 + 40); //ok
+        pMI->AddRect(195,256 + 40,359,277 + 40); //ok
 #else
 		pMI->AddRect(384, 177, 548, 198);
 		pMI->AddRect(384, 215, 548, 236);
@@ -2677,27 +2676,27 @@ void CGame::UpdateScreen_OnMainMenu()
 
     m_DDraw.ClearBackB4();
 
-    DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_MAINMENU, -1, -1, 0, TRUE);
+    DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_MAINMENU, 80, 60, 0, TRUE); // centu - new menu
 
     // CLEROTH
     m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
 
-	if ((msX >= 384 + 97) && (msY >= 177 + 42) && (msX <= 548 + 135) && (msY <= 198 + 42)) m_cCurFocus = 1;
-	if ((msX >= 384 + 97) && (msY >= 215 + 52) && (msX <= 548 + 135) && (msY <= 236 + 52)) m_cCurFocus = 2;
-	if ((msX >= 384 + 97) && (msY >= 254 + 60) && (msX <= 548 + 135) && (msY <= 275 + 60)) m_cCurFocus = 3;
+	if ((msX >= 195) && (msY >= 177 + 42) && (msX <= 359) && (msY <= 198 + 42)) m_cCurFocus = 1; //ok
+	if ((msX >= 162) && (msY >= 215 + 40) && (msX <= 326) && (msY <= 236 + 40)) m_cCurFocus = 2; //ok
+	if ((msX >= 195) && (msY >= 256 + 40) && (msX <= 359) && (msY <= 277 + 40)) m_cCurFocus = 3; //ok
 
     switch (m_cCurFocus) 
 	{
 
     case 1:
-        m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->PutSpriteFast(384 + 97, 177 + 42, 1, dwTime);
+        m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->PutSpriteFast(195, 177 + 42, 1, dwTime); //ok
         break;
     case 2:
-        m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->PutSpriteFast(384 + 97, 215 + 52, 2, dwTime);
+        m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->PutSpriteFast(162, 215 + 40, 2, dwTime); //ok
         break;
 
     case 3:
-        m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->PutSpriteFast(384 + 97, 254 + 60, 3, dwTime);
+        m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->PutSpriteFast(195, 256 + 40, 3, dwTime); //ok
         break;
  
     }
@@ -3546,13 +3545,13 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 void CGame::UpdateScreen_OnLoading_Progress()
 {
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOADING, 0,0,0, TRUE);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOADING, 80,60,0, TRUE); // centu - new loading
 	DrawVersion(TRUE);
 
-	wsprintf(G_cTxt, "%d%%", m_cLoading);
+	wsprintf(G_cTxt, "Loading... %d%%", m_cLoading);
 
-	PutString_SprFont2(592 + SCREENX+39+10, 442 + SCREENY + 39, G_cTxt, 255, 255, 0);
-	m_pSprite[DEF_SPRID_INTERFACE_ND_LOADING]->PutSpriteFastWidth(472 + SCREENX+39,442 + SCREENY+39, 1, (int)m_cLoading, G_dwGlobalTime, false);
+	PutString_SprFont2(590, 440 + SCREENY, G_cTxt, 255, 255, 0);
+	//m_pSprite[DEF_SPRID_INTERFACE_ND_LOADING]->PutSpriteFastWidth(472 + SCREENX+39,442 + SCREENY+39, 1, (int)m_cLoading, G_dwGlobalTime, false);
 
 	m_DDraw.iFlip();
 }
@@ -17724,7 +17723,7 @@ void CGame::CrusadeWarResult(int iWinnerSide)
 void CGame::_Draw_UpdateScreen_OnCreateNewAccount()
 {
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_NEWACCOUNT, 0,0,0, TRUE);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_NEWACCOUNT, 80,60,0, TRUE);
 	PutString2(329 + SCREENX, 110 + SCREENY, m_cAccountName, 200,200,200);
 	PutString( 329 + SCREENX, 125 + SCREENY, m_cAccountPassword, RGB(200,200,200), TRUE, 1);
 	PutString( 329 + SCREENX, 140 + SCREENY, m_cAccountPassword, RGB(200,200,200), TRUE, 1);
@@ -22671,13 +22670,13 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	}
 
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_NEWACCOUNT, 0, 0, 0, TRUE);
-	PutString(377 + SCREENX, 84 + SCREENY, "Account:", RGB(100, 100, 200));
-	PutString(372 + SCREENX, 106 + SCREENY, "Password:", RGB(100, 100, 200));
-	PutString(372 + SCREENX, 129 + SCREENY, "(confirm)", RGB(100, 100, 200));
-	PutString(271 + SCREENX, 215 + SCREENY, "eMail:", RGB(100, 100, 200));
-	PutString(276 + SCREENX, 253 + SCREENY, "Quiz:", RGB(100, 100, 200));
-	PutString(266 + SCREENX, 291 + SCREENY, "Answer:", RGB(100, 100, 200));
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_NEWACCOUNT, 80, 60, 0, TRUE); // centu - new create acc
+	PutString(377 + SCREENX, 84 + SCREENY, "Account:", RGB(255,255,255));
+	PutString(372 + SCREENX, 106 + SCREENY, "Password:", RGB(255, 255, 255));
+	PutString(372 + SCREENX, 129 + SCREENY, "(confirm)", RGB(255, 255, 255));
+	PutString(271 + SCREENX, 215 + SCREENY, "eMail:", RGB(255, 255, 255));
+	PutString(276 + SCREENX, 253 + SCREENY, "Quiz:", RGB(255, 255, 255));
+	PutString(266 + SCREENX, 291 + SCREENY, "Answer:", RGB(255, 255, 255));
 
 	if ((m_cCurFocus == 2) || (m_cCurFocus == 3))
 		ShowReceivedString(TRUE);
@@ -23011,10 +23010,10 @@ void CGame::UpdateScreen_OnLogin()
 	if (m_cGameModeCount == 0)
 	{	EndInputString();
 		pMI = new class CMouseInterface;
-		pMI->AddRect(350, 280, 500, 300);
-		pMI->AddRect(350, 320, 500, 340);
-		pMI->AddRect(240, 400, 400, 430);
-		pMI->AddRect(460, 400, 600, 430);
+		pMI->AddRect(350-90, 280-65, 500-90, 300-65);
+		pMI->AddRect(350-90, 320-65, 500-90, 340-65);
+		pMI->AddRect(240-90, 400-65, 400-90, 430-65);
+		pMI->AddRect(440-90, 400-65, 600-90, 430-65);
 		cPrevFocus  = 1;
 		m_cCurFocus = 1;
 		m_cMaxFocus = 4;
@@ -23022,7 +23021,7 @@ void CGame::UpdateScreen_OnLogin()
 		m_cArrowPressed = 0;
 		ZeroMemory(cName, sizeof(cName));
 		ZeroMemory(cPassword, sizeof(cPassword));
-		StartInputString(350, 285, 11, cName);
+		StartInputString(350-90, 285-65, 11, cName);
 		ClearInputString();
 	}
 
@@ -23105,11 +23104,11 @@ void CGame::UpdateScreen_OnLogin()
 		switch (m_cCurFocus)
 		{
 		case 1:
-			StartInputString(350, 285, 11, cName);
+			StartInputString(350-90, 285-65, 11, cName);
 			break;
 		
 		case 2:
-			StartInputString(350, 325, 11, cPassword, TRUE);
+			StartInputString(350-90, 310-65, 11, cPassword, TRUE);
 			break;
 		case 3:
 		case 4:
@@ -23159,8 +23158,12 @@ void CGame::UpdateScreen_OnLogin()
 			return;
 	}	}
 
-	if ((msX >= 240) && (msX <= 330) && (msY >= 400) && (msY <= 420)) m_cCurFocus = 3;
-	if ((msX >= 460) && (msX <= 550) && (msY >= 400) && (msY <= 420)) m_cCurFocus = 4;
+	/*
+		pMI->AddRect(240-90, 400-65, 400-90, 430-65);
+		pMI->AddRect(460-90, 400-65, 600-90, 430-65);
+	*/
+	if ((msX >= 240-90) && (msX <= 400-90) && (msY >= 400-65) && (msY <= 430-65)) m_cCurFocus = 3;
+	if ((msX >= 440-90) && (msX <= 600-90) && (msY >= 400-65) && (msY <= 430-65)) m_cCurFocus = 4;
 
 	_Draw_OnLogin(cName, cPassword, msX, msY, m_cGameModeCount);
 	if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
@@ -23989,9 +23992,9 @@ void CGame::UpdateScreen_OnQuit()
 		SendMessage(m_hWnd, WM_DESTROY, NULL, NULL);
 		return;
 	}
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_QUIT, 0,0,0, TRUE);
-	if (m_cGameModeCount > 20) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_QUIT, 255,123,1, TRUE);
-	else if ((m_cGameModeCount >= 15) && (m_cGameModeCount <= 20)) m_pSprite[DEF_SPRID_INTERFACE_ND_QUIT]->PutTransSprite25(255,123,1, TRUE);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_QUIT, 80,60,0, TRUE); // centu - new quit
+	if (m_cGameModeCount > 20) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_QUIT, 255+80,123+60,1, TRUE);
+	else if ((m_cGameModeCount >= 15) && (m_cGameModeCount <= 20)) m_pSprite[DEF_SPRID_INTERFACE_ND_QUIT]->PutTransSprite25(255+80,123+60,1, TRUE);
 	DrawVersion(TRUE);
 	if(m_cGameModeCount == 100)
 	{	ChangeGameMode(DEF_GAMEMODE_NULL);
@@ -31404,7 +31407,7 @@ void CGame::UpdateScreen_OnGame()
 
 	DrawTopMsg();
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 	wsprintf(G_cTxt, "(%d,%d)", msX, msY);
 	PutString(msX, msY + 30, G_cTxt, RGB(255, 255, 255));
 #endif

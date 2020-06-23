@@ -993,19 +993,19 @@ void CGame::_Draw_OnLogin(char *pAccount, char *pPassword, int msX, int msY, int
 
 	m_DDraw.ClearBackB4();
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 0, 0, 0, TRUE);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 80, 60, 0, TRUE); // centu - new login
 	DrawVersion();
 
 	if ((iFrame >= 15) && (iFrame <= 20)) 
-		m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->PutTransSprite25(43, 121, 2, TRUE);
+		m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->PutTransSprite25(43+75, 121+61, 2, TRUE);
 	else if (iFrame > 20) 
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 43, 121, 2, TRUE);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 43+75, 121+61, 2, TRUE);
 
 	if (m_cCurFocus != 1) 
 	{
 		if (m_Misc.bCheckValidName(pAccount) != FALSE)
-			PutString2(350, 285, pAccount, 200, 200, 200);
-		else PutString2(350, 285, pAccount, 200, 100, 100);
+			PutString2(350-90, 285-65, pAccount, 200, 200, 200);
+		else PutString2(350-90, 285-65, pAccount, 200, 100, 100);
 	}
 
 	if ((m_Misc.bCheckValidName(pAccount) == FALSE) || (strlen(pAccount) == 0)) bFlag = FALSE;
@@ -1013,8 +1013,8 @@ void CGame::_Draw_OnLogin(char *pAccount, char *pPassword, int msX, int msY, int
 	if (m_cCurFocus != 2) 
 	{
 		if ((m_Misc.bCheckValidString(pPassword) != FALSE))
-			PutString(350, 325, pPassword, RGB(200, 200, 200), TRUE, 1);
-		else PutString(350, 325, pPassword, RGB(200, 100, 100), TRUE, 1);
+			PutString(350-90, 310-65, pPassword, RGB(200, 200, 200), TRUE, 1);
+		else PutString(350-90, 310-65, pPassword, RGB(200, 100, 100), TRUE, 1);
 	}
 
 	if ((m_Misc.bCheckValidString(pPassword) == FALSE) || (strlen(pPassword) == 0)) bFlag = FALSE;
@@ -1027,9 +1027,9 @@ void CGame::_Draw_OnLogin(char *pAccount, char *pPassword, int msX, int msY, int
 
 	if (bFlag == TRUE)
 	{
-		if (m_cCurFocus == 3) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 80, 282, 3, TRUE);
+		if (m_cCurFocus == 3) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 80+80, 282+60, 3, TRUE);
 	}
-	if (m_cCurFocus == 4) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 256, 282, 4, TRUE);
+	if (m_cCurFocus == 4) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_LOGIN, 256+80, 282+60, 4, TRUE);
 	if ((m_bIsHideLocalCursor != TRUE) && (msX != 0) && (msY != 0)) {
 		m_pSprite[DEF_SPRID_MOUSECURSOR]->PutSpriteFast(msX, msY, 0, dwTime);
 	}
@@ -18236,21 +18236,28 @@ void CGame::StartBGM()
 	}
 	char cWavFileName[32];
 	ZeroMemory(cWavFileName, sizeof(cWavFileName));
-	if ((m_bIsXmas == TRUE) && (m_cWhetherEffectType >= 4)) strcpy(cWavFileName, "music\\Carol.wav");
-	else
-	{
-		if (memcmp(m_cCurLocation, "aresden", 7) == 0) strcpy(cWavFileName, "music\\aresden.wav");
-		else if (memcmp(m_cCurLocation, "elvine", 6) == 0) strcpy(cWavFileName, "music\\elvine.wav");
-		else if (memcmp(m_cCurLocation, "dglv", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-		else if (memcmp(m_cCurLocation, "middled1", 8) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-		else if (memcmp(m_cCurLocation, "middleland", 10) == 0) strcpy(cWavFileName, "music\\middleland.wav");
-		// Snoopy: new musics
-		else if (memcmp(m_cCurLocation, "druncncity", 10) == 0) strcpy(cWavFileName, "music\\druncncity.wav");
-		else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
-		else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
-		else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-		else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) strcpy(cWavFileName, "music\\abaddon.wav");
-		else strcpy(cWavFileName, "music\\MainTm.wav");
+	if (m_cGameMode == DEF_GAMEMODE_ONMAINMENU || m_cGameMode == DEF_GAMEMODE_ONCREATENEWACCOUNT ||
+		m_cGameMode == DEF_GAMEMODE_ONLOGIN || m_cGameMode == DEF_GAMEMODE_ONSELECTCHARACTER ||
+		m_cGameMode == DEF_GAMEMODE_ONCREATENEWCHARACTER) {
+		strcpy(cWavFileName, "music\\MainMenu.mp3");
+	}
+	else if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
+		if ((m_bIsXmas == TRUE) && (m_cWhetherEffectType >= 4)) strcpy(cWavFileName, "music\\Carol.wav");
+		else
+		{
+			if (memcmp(m_cCurLocation, "aresden", 7) == 0) strcpy(cWavFileName, "music\\aresden.wav");
+			else if (memcmp(m_cCurLocation, "elvine", 6) == 0) strcpy(cWavFileName, "music\\elvine.wav");
+			else if (memcmp(m_cCurLocation, "dglv", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
+			else if (memcmp(m_cCurLocation, "middled1", 8) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
+			else if (memcmp(m_cCurLocation, "middleland", 10) == 0) strcpy(cWavFileName, "music\\middleland.wav");
+			// Snoopy: new musics
+			else if (memcmp(m_cCurLocation, "druncncity", 10) == 0) strcpy(cWavFileName, "music\\druncncity.wav");
+			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
+			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
+			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
+			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) strcpy(cWavFileName, "music\\abaddon.wav");
+			else strcpy(cWavFileName, "music\\MainTm.wav");
+		}
 	}
 
 	//Snoopy: mp3 support

@@ -2681,7 +2681,7 @@ void CGame::NpcBehavior_Dead(int iNpcH)
 }
 
 // v2.15 2002-8-7 // 2002-09-06 #1
-void CGame::_bDecodeNpcItemConfigFileContents(char* pData, DWORD dwMsgSize)
+/*void CGame::_bDecodeNpcItemConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token;
 	char seps[] = "= \t\n";
@@ -2873,8 +2873,227 @@ void CGame::_bDecodeNpcItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	m_bNpcItemConfig = TRUE;
 
-}
+}*/
 
+BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
+{
+	/*char* pContents, * token;
+	char seps[] = "= \t\n";
+	char cReadModeA = 0;
+	char cReadModeB = 0;
+	int  iNpcConfigListIndex = 0, k = 0;
+	class CStrTok* pStrTok;
+	class CNpcItem* pTempNpcItem = NULL;
+
+	pContents = new char[dwMsgSize + 1];
+	ZeroMemory(pContents, dwMsgSize + 1);
+	memcpy(pContents, pData, dwMsgSize);
+
+	pStrTok = new class CStrTok(pContents, seps);*/
+
+	FILE* pFile;
+	HANDLE hFile;
+	DWORD  dwFileSize;
+	char* cp, * token, cGSMode[16] = "";
+	char seps[] = "= \t\n";
+	class CStrTok* pStrTok;
+	char cReadModeA = 0;
+	char cReadModeB = 0;
+	int  iNpcConfigListIndex = 0, k = 0;
+	class CNpcItem* pTempNpcItem = NULL;
+
+	hFile = CreateFile(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	dwFileSize = GetFileSize(hFile, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
+
+	pFile = fopen(cFn, "rt");
+	if (pFile != NULL) {
+
+		PutLogList("(!) Reading Npc Item file...");
+		cp = new char[dwFileSize + 2];
+		ZeroMemory(cp, dwFileSize + 2);
+		fread(cp, dwFileSize, 1, pFile);
+
+		pStrTok = new class CStrTok(cp, seps);
+		token = pStrTok->pGet();
+		while (token != NULL) {
+			if (cReadModeA != 0) {
+				switch (cReadModeA) {
+				case 1:
+
+					switch (cReadModeB) {
+
+					case 1:
+						// NPC 이름
+						if (strlen(token) > 20) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Too long Npc name.");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+						for (iNpcConfigListIndex = 0; iNpcConfigListIndex < DEF_MAXNPCTYPES; iNpcConfigListIndex++)
+							if (m_pNpcConfigList[iNpcConfigListIndex] != NULL) {
+								if (strcmp(m_pNpcConfigList[iNpcConfigListIndex]->m_cNpcName, token) == 0) {
+									PutLogList(token);
+									break;
+								}
+							}
+						if (iNpcConfigListIndex == DEF_MAXNPCTYPES) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - No exist Npc Name");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+						cReadModeB = 2;
+						break;
+
+					case 2:
+						if (strlen(token) > 2) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Type Error.");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+						m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemType = atoi(token);
+						cReadModeB = 3;
+						break;
+
+					case 3:
+						if (strlen(token) > 20) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Too long Item name.");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+						if (pTempNpcItem == NULL)
+							pTempNpcItem = new class CNpcItem();
+
+						if (memcmp(token, "[ENDITEM]", 9) == 0) {
+							cReadModeA = 0;
+							cReadModeB = 0;
+
+							if (pTempNpcItem != NULL) {
+								delete pTempNpcItem;
+								pTempNpcItem = NULL;
+							}
+							break;
+						}
+
+						strcpy(pTempNpcItem->m_cName, token);
+						if (!m_bReceivedItemList)	// ITEM List가 오지 않았다.
+						{
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration error - Before Item List receiving.");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+
+						for (k = 0; k < DEF_MAXITEMTYPES; k++)
+						{
+							if (m_pItemConfigList[k] == NULL)
+								continue;
+
+							if (strcmp(token, m_pItemConfigList[k]->m_cName) == 0) {
+								pTempNpcItem->m_sItemID = m_pItemConfigList[k]->m_sIDnum;
+								break;
+							}
+						}
+
+						if (k == DEF_MAXITEMTYPES) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration error - Do Not exist in ITEM LIST");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+
+						cReadModeB = 4;
+						break;
+
+					case 4:
+						// 첫번째 확률
+						if (_bGetIsStringIsNumber(token) == FALSE) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Wrong Data format.");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+						pTempNpcItem->m_sFirstProbability = atoi(token);
+
+						if (pTempNpcItem->m_sFirstProbability <= 0) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - First probability have wrong value");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+
+						// 첫번째 확률에 대한 타겟값을 임의로 준다. 
+
+
+						cReadModeB = 5;
+						break;
+
+					case 5:
+						// 두번째 확률
+						if (_bGetIsStringIsNumber(token) == FALSE) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Wrong Data format.");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+
+						pTempNpcItem->m_sSecondProbability = atoi(token);
+
+						if (pTempNpcItem->m_sSecondProbability <= 0) {
+							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Second probability have wrong value");
+							delete[] cp;
+							delete pStrTok;
+							return FALSE;
+						}
+
+						// 두번째 확률에 대한 타겟값을 임의로 준다. 
+
+
+						cReadModeB = 3;
+
+						// vector에 현재 까지 읽어 드린 값을 넣는다. 
+						m_pNpcConfigList[iNpcConfigListIndex]->m_vNpcItem.push_back(*pTempNpcItem);
+
+						// 2002-09-17 #1 NPCITEM Type 2일 경우
+						if (m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax < pTempNpcItem->m_sSecondProbability)
+							m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax = pTempNpcItem->m_sSecondProbability;
+
+						break;
+
+					} // switch #2
+					break;
+
+				default:
+					break;
+
+				} // switch #1
+			} // if
+			else {
+
+				if (memcmp(token, "NpcItem", 7) == 0) {
+					cReadModeA = 1;
+					cReadModeB = 1;
+
+				}
+			}
+			token = pStrTok->pGet();
+		}
+
+		delete pStrTok;
+		delete[] cp;
+	}
+	if ((cReadModeA != 0) || (cReadModeB != 0)) {
+		PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file contents error!");
+		return FALSE;
+	}
+
+	return TRUE;
+
+}
 BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 {
 	if (m_bNpcItemConfig == TRUE) {
@@ -2904,8 +3123,9 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
-			if (iDice(1, CTempNpcItem.m_sFirstProbability) == CTempNpcItem.m_cFirstTargetValue) bFirstDice = TRUE;
-			if (iDice(1, CTempNpcItem.m_sSecondProbability) == CTempNpcItem.m_cSecondTargetValue) bSecondDice = TRUE;
+			// centu - fixed que lea probabilidades
+			if (iDice(1, CTempNpcItem.m_sFirstProbability) <= m_iPrimaryDropRate) bFirstDice = TRUE;
+			if (iDice(1, CTempNpcItem.m_sSecondProbability) <= m_iSecondaryDropRate) bSecondDice = TRUE;
 
 			if ((bFirstDice == TRUE) && (bSecondDice == TRUE)) {
 				iItemID = CTempNpcItem.m_sItemID;

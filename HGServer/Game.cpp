@@ -228,7 +228,7 @@ CGame::CGame(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	m_dwHeldenianWarTime	= 5*60*1000;  // 5 minutes before effective War start
 	m_dwHeldenianEndTime	= 105*60*1000; // 90 minutes effective battle
-	m_bNpcItemConfig = FALSE;
+	m_bNpcItemConfig = TRUE;
 	m_iNotifyCleanMap = TRUE;
 
 	m_iExpSetting = 0;
@@ -637,6 +637,7 @@ BOOL CGame::bInit()
 		PutLogList("(!!!) CRITICAL ERROR! Cannot execute server! TeleportList.cfg file contents error!");
 		return FALSE;
 	}	
+	
 	/********END*********/
 	srand((unsigned)time(NULL));   
 	m_pMainLogSock = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
@@ -7933,6 +7934,13 @@ DWORD * dwp, dwTimeRcv;
 					PutLogList(" ");
 					PutLogList("(!!!) STOPPED! POTION configuration error.");
 				}
+
+				// centu - leer NpcItem.cfg 
+				if (_bDecodeNpcItemConfigFileContents("GameConfigs\\NpcItem.cfg") == FALSE)
+				{
+					PutLogList(" ");
+					PutLogList("(!!!) STOPPED! NpcItem configuration error.");
+				}
 				break;
 
 			case MSGID_RESPONSE_PLAYERDATA:
@@ -7990,8 +7998,8 @@ DWORD * dwp, dwTimeRcv;
 
 			// v2.17 2002-8-7 // 2002-09-06 #1
 			case MSGID_NPCITEMCONFIGCONTENTS:
-				PutLogList("(!) NpcItemConfig file contents received. Now decoding...");
-				_bDecodeNpcItemConfigFileContents((char *)(pData + DEF_INDEX2_MSGTYPE + 2), dwMsgSize);
+				//PutLogList("(!) NpcItemConfig file contents received. Now decoding...");
+				//_bDecodeNpcItemConfigFileContents((char *)(pData + DEF_INDEX2_MSGTYPE + 2), dwMsgSize);
 				break;
 
 			}

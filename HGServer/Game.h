@@ -167,7 +167,7 @@ private:
 
 
 	BOOL _bCheckCharacterData(int iClientH);
-	void _bDecodeNpcItemConfigFileContents(char* pData, DWORD dwMsgSize);
+	BOOL _bDecodeNpcItemConfigFileContents(char* cFn);
 	void GlobalUpdateConfigs(char cConfigType);
 	void LocalUpdateConfigs(char cConfigType);
 	void GlobalEndHeldenianMode();

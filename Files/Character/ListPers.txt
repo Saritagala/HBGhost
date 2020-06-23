@@ -1,0 +1,9 @@
+Centuu     180  Aresden  
+GM1          0  [GameMaster]
+GM2          0  [GameMaster]
+magnos     180  Aresden  
+Nixu       180  Elvine   
+Nixu2       19  Traveller
+Testin     180  Elvine   
+TTTT        19  Traveller
+uxiN         1  Traveller
