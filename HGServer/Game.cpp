@@ -26,7 +26,7 @@ extern HWND	G_hWnd;
 //////////////////////////////////////////////////////////////////////
 
 extern BOOL	G_bIsThread;
-extern void ThreadProc(void *ch);
+extern unsigned __stdcall ThreadProc(void *ch);
 
 // Move lock para 800 x 600
 int _tmp_iMoveLocX[9][47] = {

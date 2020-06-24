@@ -809,7 +809,7 @@ void CGame::UpdateScreen()
 		break;
 
 	case DEF_GAMEMODE_ONMAINMENU:
-		StartBGM(); // MP3
+		if (m_bMusicStat) StartBGM(); // MP3
 		UpdateScreen_OnMainMenu();
 		break;
 
@@ -2118,9 +2118,10 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 							m_sViewDstX = (indexX*32) - 288 - 32;
 							m_sViewDstY = (indexY*32) - 224;
 #endif
+							SetRect(&m_rcPlayerRect, m_rcBodyRect.left, m_rcBodyRect.top, m_rcBodyRect.right, m_rcBodyRect.bottom);
+							bIsPlayerDrawed = TRUE;
 						}
-						SetRect(&m_rcPlayerRect, m_rcBodyRect.left, m_rcBodyRect.top, m_rcBodyRect.right, m_rcBodyRect.bottom);
-						bIsPlayerDrawed = TRUE;
+						
 		   	}	}	}
 
 			// CLEROTH
@@ -2891,6 +2892,12 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				CloseHandle(m_hPakFile);
 			}
 
+			m_hPakFile = CreateFile("sprites\\GameDialog3.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+			if (m_hPakFile != INVALID_HANDLE_VALUE) {
+				m_pSprite[DEF_SPRID_INTERFACE_ND_SELECTCHAR2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog3", 8, FALSE);
+				CloseHandle(m_hPakFile);
+			}
+
 			m_hPakFile = CreateFile("sprites\\GameDialog2.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 			if (m_hPakFile != INVALID_HANDLE_VALUE) {
 				m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog2", 6, FALSE);
@@ -3556,7 +3563,7 @@ void CGame::UpdateScreen_OnLoading_Progress()
 
 	wsprintf(G_cTxt, "Loading... %d%%", m_cLoading);
 
-	PutString_SprFont2(590, 440 + SCREENY, G_cTxt, 255, 255, 0);
+	PutString_SprFont2(590, 440 + SCREENY + 10, G_cTxt, 255, 255, 0);
 	//m_pSprite[DEF_SPRID_INTERFACE_ND_LOADING]->PutSpriteFastWidth(472 + SCREENX+39,442 + SCREENY+39, 1, (int)m_cLoading, G_dwGlobalTime, false);
 
 	m_DDraw.iFlip();
@@ -3928,7 +3935,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 	// Enemy Kills
 	// centu - muestra el maximo total de eks
 	wsprintf(G_cTxt, "%d/%d", m_iEnemyKillCount, m_iMaxEK);
-	PutAlignedString(sX + 198, sX + 250, sY + 203 - 13, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 203 - 13, G_cTxt, 45, 25, 25);
 
 	// Majestic Points
 	wsprintf(G_cTxt, "%d", m_iGizonItemUpgradeLeft);
@@ -7968,9 +7975,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 7)*(-1);
-				//if (m_pEffectList[i]->m_cFrame < 6)
+				if (m_pEffectList[i]->m_cFrame < 6)
 					 m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY+30, 1, dwTime);
-				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 
@@ -7980,9 +7987,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 9)*(-1);
-				//if (m_pEffectList[i]->m_cFrame < 8)
+				if (m_pEffectList[i]->m_cFrame < 8)
 					 m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY+30, 1, dwTime);
-				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 		case 7: // Magic Missile Explosion
@@ -7990,9 +7997,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 2)*(-1);
-				//if (m_pEffectList[i]->m_cFrame < 2)
+				if (m_pEffectList[i]->m_cFrame < 2)
 					 m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY+30, 1, dwTime);
-				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 
@@ -8008,16 +8015,14 @@ void CGame::DrawEffectLights()
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 			iDvalue = -5;
-			//m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
-			m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY + 30, 1, dwTime);
+			m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY+30, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			break;
 
 		case 69:
 		case 70:
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
-			//m_pEffectSpr[0]->PutTransSprite25(dX, dY+30, 1, dwTime);
-			m_pEffectSpr[0]->PutTransSprite_NoColorKey(dX, dY + 30, 1, dwTime);
+			m_pEffectSpr[0]->PutTransSprite25(dX, dY+30, 1, dwTime);
 			break;
 
 		case 33: //
@@ -8030,9 +8035,9 @@ void CGame::DrawEffectLights()
 			{	dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 				dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 				iDvalue = (m_pEffectList[i]->m_cFrame - 7)*(-1);
-				//if (m_pEffectList[i]->m_cFrame < 6)
+				if (m_pEffectList[i]->m_cFrame < 6)
 					 m_pEffectSpr[0]->PutTransSprite(dX, dY, 1, dwTime);
-				//else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY, 1, iDvalue, iDvalue, iDvalue, dwTime);
+				else m_pEffectSpr[0]->PutTransSpriteRGB(dX, dY, 1, iDvalue, iDvalue, iDvalue, dwTime);
 			}
 			break;
 
@@ -21266,10 +21271,11 @@ void CGame::NotifyMsg_TimeChange(char * pData)
 	case 1:	m_bIsXmas = FALSE; PlaySound('E', 32, 0); break;
 	case 2: m_bIsXmas = FALSE; PlaySound('E', 31, 0); break;
 	case 3: // Snoopy Special night with chrismas bulbs
-		if (m_cWhetherEffectType >3) m_bIsXmas = TRUE;
+		/*if (m_cWhetherEffectType >3) m_bIsXmas = TRUE;
 		else m_bIsXmas = FALSE;
-		PlaySound('E', 31, 0);
-		G_cSpriteAlphaDegree = 2;break;
+		PlaySound('E', 31, 0);*/
+		G_cSpriteAlphaDegree = 2;
+		break;
 	}
 	m_cGameModeCount = 1;
 	m_bIsRedrawPDBGS = TRUE;
@@ -24140,7 +24146,7 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	DWORD dwTime = timeGetTime();
 	sY = 10;
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_SELECTCHAR, 0 + SCREENX, 0 + SCREENY, 0);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_SELECTCHAR2, 0 + SCREENX, 0 + SCREENY, 0);
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 50);
 
 	iTemp1 = 0;
@@ -24183,7 +24189,7 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 					int	_sLevel = m_pCharList[i]->m_sLevel;
 					wsprintf(G_cTxt, "%d", _sLevel);
 					PutString(sX + 138 + i * 109 + SCREENX, sY + 196 - 10 + SCREENY, G_cTxt, RGB(51, 0, 51)); //25,35,25
-					wsprintf(G_cTxt, "%d", m_pCharList[i]->m_iExp);
+					wsprintf(G_cTxt, "%d", m_pCharList[i]->m_iExp); //aca
 					PutString(sX + 138 + i * 109 + SCREENX, sY + 211 - 10 + SCREENY, G_cTxt, RGB(51, 0, 51)); //25,35,25
 				}
 				iTemp2 = m_pCharList[i]->m_iYear * 1000000 + m_pCharList[i]->m_iMonth * 60000 + m_pCharList[i]->m_iDay * 1700 + m_pCharList[i]->m_iHour * 70 + m_pCharList[i]->m_iMinute;
@@ -29005,21 +29011,21 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 	if ((m_bIsObserverCommanded == FALSE) && (m_bIsObserverMode == TRUE))
 	{
 #ifdef RES_HIGH
-		if ((msX == 0) && (msY == 0) && (m_sViewDstX > 32 * 25) && (m_sViewDstY > 32 * 19))
+		if ((msX == 0) && (msY == 0) && (m_sViewDstX > 32 * 26) && (m_sViewDstY > 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 8, NULL, NULL, NULL, NULL);
-		else if ((msX == 799) && (msY == 0) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 25) && (m_sViewDstY > 32 * 19))
+		else if ((msX == 800) && (msY == 0) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY > 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 2, NULL, NULL, NULL, NULL);
-		else if ((msX == 799) && (msY == 599) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 25) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 19))
+		else if ((msX == 800) && (msY == 600) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 4, NULL, NULL, NULL, NULL);
-		else if ((msX == 0) && (msY == 599))
+		else if ((msX == 0) && (msY == 600))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 6, NULL, NULL, NULL, NULL);
-		else if ((msX == 0) && (m_sViewDstX > 32 * 25))
+		else if ((msX == 0) && (m_sViewDstX > 32 * 26))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 7, NULL, NULL, NULL, NULL);
-		else if ((msX == 799) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 25))
+		else if ((msX == 800) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 3, NULL, NULL, NULL, NULL);
-		else if ((msY == 0) && (m_sViewDstY > 32 * 19))
+		else if ((msY == 0) && (m_sViewDstY > 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 1, NULL, NULL, NULL, NULL);
-		else if ((msY == 599) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 19))
+		else if ((msY == 600) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, NULL, 5, NULL, NULL, NULL, NULL);
 		else return;
 #else
@@ -30930,12 +30936,12 @@ void CGame::UpdateScreen_OnGame()
 		DrawEffectLights();
 		DrawObjects(sPivotX, sPivotY, sDivX, sDivY, sModX, sModY, msX, msY);
 		DrawEffects();
-		DrawWhetherEffects();
+		//DrawWhetherEffects();
 		DrawChatMsgs(-100, 0, 800, 600);
-		WhetherObjectFrameCounter();
+		//WhetherObjectFrameCounter();
 	}
 
-	if (m_cMapIndex == 26)	//Snoopy: Add Apocalypse map effect (fires in inferniaA)
+	/*if (m_cMapIndex == 26)	//Snoopy: Add Apocalypse map effect (fires in inferniaA)
 	{
 		m_pEffectSpr[89]->PutTransSprite(1296 - m_sViewPointX, 1283 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
 		m_pEffectSpr[89]->PutTransSprite(1520 - m_sViewPointX, 1123 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
@@ -30949,7 +30955,8 @@ void CGame::UpdateScreen_OnGame()
 		m_pEffectSpr[89]->PutTransSprite(944 - m_sViewPointX, 3881 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
 		m_pEffectSpr[89]->PutTransSprite(1325 - m_sViewPointX, 4137 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
 		m_pEffectSpr[89]->PutTransSprite(1648 - m_sViewPointX, 3913 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
-	}
+	}*/
+
 	//Snoopy: Add Apocalypse Gate and apocalypse map effects (if no Gate, m_iGatePositX will be -1...
 	if ((m_iGatePositX >= m_sViewPointX / 32) && (m_iGatePositX <= m_sViewPointX / 32 + 50) // 20
 		&& (m_iGatePositY >= m_sViewPointY / 32) && (m_iGatePositY <= m_sViewPointY / 32 + 45)) // 15
@@ -31368,7 +31375,7 @@ void CGame::UpdateScreen_OnGame()
 	if (m_cMapIndex == 25)
 	{
 #ifdef RES_HIGH
-		bAddNewEffect(13, m_sViewPointX + rand() % 800, m_sViewPointY + rand() % 600, 0, 0, -1 * (rand() % 80), 1);
+		//bAddNewEffect(13, m_sViewPointX + rand() % 800, m_sViewPointY + rand() % 600, 0, 0, -1 * (rand() % 80), 1);
 #else
 		bAddNewEffect(13, m_sViewPointX + rand() % 640, m_sViewPointY + rand() % 480, 0, 0, -1 * (rand() % 80), 1);
 #endif
@@ -31511,7 +31518,6 @@ void CGame::UpdateScreen_OnGame()
 		m_DDraw.PutPixel(msX, msY - 1, 255, 255, 255);
 	}
 	else m_pSprite[DEF_SPRID_MOUSECURSOR]->PutSpriteFast(msX, msY, m_stMCursor.sCursorFrame, dwTime);
-
 
 	// centuu - si esta en Arena 1 desactiva el mapa para mostrar las auras arriba
 	if (memcmp(m_cCurLocation, "fightzone1", 10) == 0)
@@ -31693,7 +31699,7 @@ void CGame::UpdateScreen_OnGame()
 		if (m_bShowFPS)
 		{
 			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
-			PutString(10, 565, G_cTxt, RGB(255, 255, 255));
+			PutString(10, 567, G_cTxt, RGB(255, 255, 255));
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		}
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
