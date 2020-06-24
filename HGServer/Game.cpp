@@ -232,7 +232,7 @@ CGame::CGame(HWND hWnd)
 	m_iNotifyCleanMap = TRUE;
 
 	m_iExpSetting = 0;
-
+	m_iBuildDate = 0;
 	m_iClearMapTime = 0;
 	m_iGoldRate = 0;
 	m_iGuildCost = 0;
@@ -600,11 +600,6 @@ BOOL CGame::bInit()
 		PutLogList(" ");
 		PutLogList("(!!!) CRITICAL ERROR! Cannot execute server! GServer.cfg file contents error!");
 		return FALSE;	
-	}
-	if (bReadProgramConfigFile2("GameConfigs\\Server.cfg") == FALSE) {
-		PutLogList(" ");
-		PutLogList("(!!!) CRITICAL ERROR! Cannot execute server! Server.cfg file contents error!");
-		return FALSE;
 	}
 	if (bReadTopPlayersFile("GameConfigs\\TopPlayers.cfg") == FALSE) {
 		PutLogList(" ");
@@ -3368,56 +3363,6 @@ BOOL CGame::bReadProgramConfigFile(char * cFn)
 					cReadMode = 0;
 					break;
 
-				
-				}
-			}
-			else {
-				if (memcmp(token, "game-server-name", 16) == 0)					cReadMode = 1;
-				if (memcmp(token, "game-server-port", 16) == 0)					cReadMode = 2;
-				
-				if (memcmp(token, "game-server-map", 15) == 0)					cReadMode = 5;
-				
-
-			}
-			token = pStrTok->pGet();
-		}
-		delete pStrTok;
-		fclose(pFile);
-		return TRUE;
-	}
-
-	return FALSE;
-}
-
-BOOL CGame::bReadProgramConfigFile2(char* cFn)
-{
-	FILE* pFile;
-	HANDLE hFile;
-	DWORD  dwFileSize;
-	char* cp, * token, cReadMode, cTxt[120], cGSMode[16] = "";
-	char seps[] = "= \t\n";
-	class CStrTok* pStrTok;
-
-	cReadMode = 0;
-
-	hFile = CreateFile(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-	pFile = fopen(cFn, "rt");
-	if (pFile != NULL) {
-
-		PutLogList("(!) Reading configuration file...");
-		cp = new char[dwFileSize + 2];
-		ZeroMemory(cp, dwFileSize + 2);
-		fread(cp, dwFileSize, 1, pFile);
-
-		pStrTok = new class CStrTok(cp, seps);
-		token = pStrTok->pGet();
-		while (token != NULL) {
-
-			if (cReadMode != 0) {
-				switch (cReadMode) {
-
 				case 3:
 					ZeroMemory(m_cLogServerAddr, sizeof(m_cLogServerAddr));
 					if (strlen(token) > 15) {
@@ -3531,13 +3476,22 @@ BOOL CGame::bReadProgramConfigFile2(char* cFn)
 					PutLogList(cTxt);
 					cReadMode = 0;
 					break;
+
+				case 12:
+					m_iBuildDate = atoi(token);
+					cReadMode = 0;
+					break;
 				}
 			}
 			else {
+				if (memcmp(token, "game-server-name", 16) == 0)					cReadMode = 1;
+				if (memcmp(token, "game-server-port", 16) == 0)					cReadMode = 2;
+				
+				if (memcmp(token, "game-server-map", 15) == 0)					cReadMode = 5;
 				
 				if (memcmp(token, "log-server-address", 18) == 0)				cReadMode = 3;
 				if (memcmp(token, "internal-log-server-port", 24) == 0)			cReadMode = 4;
-				
+
 				if (memcmp(token, "gate-server-address", 19) == 0)				cReadMode = 6;
 				if (memcmp(token, "gate-server-port", 16) == 0)					cReadMode = 7;
 
@@ -3546,6 +3500,7 @@ BOOL CGame::bReadProgramConfigFile2(char* cFn)
 				if (memcmp(token, "game-server-address", 19) == 0)				cReadMode = 10;// modification
 				if (memcmp(token, "game-server-mode", 16) == 0)					cReadMode = 11;// modification
 
+				if (memcmp(token, "build-date", 10) == 0)					cReadMode = 12;
 			}
 			token = pStrTok->pGet();
 		}
@@ -3556,6 +3511,7 @@ BOOL CGame::bReadProgramConfigFile2(char* cFn)
 
 	return FALSE;
 }
+
 
 /*********************************************************************************************************************
 **  BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwSize)							**
@@ -9495,7 +9451,7 @@ void CGame::SendMsgToGateServer(DWORD dwMsg, int iClientH, char * pData)
 		cp += 4;
 
 		dwp = (DWORD *)cp;
-		*dwp = 3289;
+		*dwp = m_iBuildDate;
 		cp += 4;
 
 		iRet = m_pGateSock->iSendMsg(cData, 45 + m_iTotalMaps*11);
