@@ -4095,8 +4095,8 @@ BOOL CMapData::bSetDynamicObject(short sX, short sY, WORD wID, short sType, BOOL
 		if (sPrevType == DEF_DYNAMICOBJECT_FIRE)
 		{	m_pGame->bAddNewEffect(15, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32, NULL, NULL, 0, 0);
 			m_pGame->bAddNewEffect(15, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32  +(20-(rand()%40)), NULL, NULL, 0, 0);
-			m_pGame->bAddNewEffect(15, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32  +(20-(rand()%40)), NULL, NULL, 0, 0);
-			m_pGame->bAddNewEffect(15, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32  +(20-(rand()%40)), NULL, NULL, 0, 0);
+			//m_pGame->bAddNewEffect(15, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32  +(20-(rand()%40)), NULL, NULL, 0, 0);
+			//m_pGame->bAddNewEffect(15, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32  +(20-(rand()%40)), NULL, NULL, 0, 0);
 		}else if ((sPrevType == DEF_DYNAMICOBJECT_PCLOUD_BEGIN) || (sPrevType == DEF_DYNAMICOBJECT_PCLOUD_LOOP)) 
 		{	m_pData[dX][dY].m_sDynamicObjectType  = DEF_DYNAMICOBJECT_PCLOUD_END;
 			m_pData[dX][dY].m_cDynamicObjectFrame = 0;

@@ -180,7 +180,7 @@ CGame::CGame()
 
 	//Guide Map Dialog
 #ifdef RES_HIGH
-	m_stDialogBoxInfo[9].sX = 672; //LifeX Fix Map
+	m_stDialogBoxInfo[9].sX = 800-128; //LifeX Fix Map
 #else
 	m_stDialogBoxInfo[9].sX = 512;
 #endif
