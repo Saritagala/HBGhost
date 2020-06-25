@@ -147,6 +147,9 @@ class CGame
 {
 public:
 
+	void DlgBoxClick_SetTrap(short msX, short msY);
+	void DrawDialogBox_SetTrap(short msX, short msY);
+
 	// centuu
 	int iHungerStatus = 0; // MORLA2 - Hunger Status
 	int m_iMaxEK = 0;

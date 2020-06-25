@@ -367,7 +367,7 @@ void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, BOOL bStatus
 **********************************************************************************************************************/
 int  _tmp_iMCProb[] = { 0, 300, 250, 200, 150, 100, 80, 70, 60, 50, 40 };
 int  _tmp_iMLevelPenalty[] = { 0,   5,   5,   8,   8,  10, 14, 28, 32, 36, 40 };
-void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect, int iV1)
+void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect, int iV1, BOOL bIgnoreOwnerLimits)
 {
 	short* sp, sX, sY, sOwnerH, sMagicCircle, rx, ry, sRemainItemSprite, sRemainItemSpriteFrame, sLevelMagic, sTemp;
 	char* cp, cData[120], cDir, cOwnerType, cName[11], cItemName[21], cNpcWaypoint[11], cName_Master[11], cNpcName[21], cRemainItemColor, cScanMessage[256];
@@ -380,7 +380,6 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	short sEqStatus;
 
 	dwTime = timeGetTime();
-	m_pClientList[iClientH]->m_bMagicConfirm = TRUE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -396,7 +395,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	}
 	m_pClientList[iClientH]->m_dwRecentAttackTime = dwTime;
 	m_pClientList[iClientH]->m_dwLastActionTime = dwTime;//m_pClientList[iClientH]->m_dwAFKCheckTime = dwTime;
-
+	//m_pClientList[iClientH]->m_bMagicConfirm = TRUE; //centu
 	if (m_pClientList[iClientH]->m_cMapIndex < 0) return;
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex] == NULL) return;
 
@@ -407,37 +406,39 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 
 	if ((m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsAttackEnabled == FALSE) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) return;
 
-	if (((m_pClientList[iClientH]->m_iStatus & 0x100000) != 0) && (bItemEffect != TRUE)) {
-		SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTDAMAGE, NULL, -1, NULL);
-		return;
-	}
-
-	if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND] != -1) {
-		wWeaponType = ((m_pClientList[iClientH]->m_sAppr2 & 0x0FF0) >> 4);
-		if ((wWeaponType < 34) || (wWeaponType > 39))
+	if (!bIgnoreOwnerLimits) {
+		if (((m_pClientList[iClientH]->m_iStatus & 0x100000) != 0) && (bItemEffect != TRUE)) {
+			SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTDAMAGE, NULL, -1, NULL);
 			return;
-	}
+		}
 
-	if ((m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] != -1) ||
-		(m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)) return;
+		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND] != -1) {
+			wWeaponType = ((m_pClientList[iClientH]->m_sAppr2 & 0x0FF0) >> 4);
+			if ((wWeaponType < 34) || (wWeaponType > 39))
+				return;
+		}
 
-	if ((m_pClientList[iClientH]->m_iSpellCount > 1) && (bItemEffect == FALSE)) {
-		wsprintf(G_cTxt, "TSearch Spell Hack: (%s) Player: (%s) - casting magic without precasting.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
-		PutHackLogFileList(G_cTxt);
-		DeleteClient(iClientH, TRUE, TRUE);
-		return;
-	}
+		if ((m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] != -1) ||
+			(m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)) return;
 
-	if (m_pClientList[iClientH]->m_bInhibition == TRUE) {
-		SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTDAMAGE, 0, -1, NULL);
-		return;
-	}
+		if ((m_pClientList[iClientH]->m_iSpellCount > 1) && (bItemEffect == FALSE)) {
+			wsprintf(G_cTxt, "TSearch Spell Hack: (%s) Player: (%s) - casting magic without precasting.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
+			PutHackLogFileList(G_cTxt);
+			DeleteClient(iClientH, TRUE, TRUE);
+			return;
+		}
 
-	if (m_pMagicConfigList[sType]->m_sType == 32) { // Invisiblity
-		sEqStatus = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
-		if ((sEqStatus != -1) && (m_pClientList[iClientH]->m_pItemList[sEqStatus] != NULL)) {
-			if ((m_pClientList[iClientH]->m_pItemList[sEqStatus]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sEqStatus]->m_sIDnum == 866)) {
-				bItemEffect = TRUE;
+		if (m_pClientList[iClientH]->m_bInhibition == TRUE) {
+			SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTDAMAGE, 0, -1, NULL);
+			return;
+		}
+
+		if (m_pMagicConfigList[sType]->m_sType == 32) { // Invisiblity
+			sEqStatus = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
+			if ((sEqStatus != -1) && (m_pClientList[iClientH]->m_pItemList[sEqStatus] != NULL)) {
+				if ((m_pClientList[iClientH]->m_pItemList[sEqStatus]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sEqStatus]->m_sIDnum == 866)) {
+					bItemEffect = TRUE;
+				}
 			}
 		}
 	}
@@ -527,7 +528,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 		return;
 	}
 
-	if (m_pClientList[iClientH]->m_iMP < iManaCost) {
+	if (!bIgnoreOwnerLimits && m_pClientList[iClientH]->m_iMP < iManaCost) {
 		return;
 	}
 
@@ -564,7 +565,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	}
 
 	iMagicAttr = m_pMagicConfigList[sType]->m_iAttribute;
-	if ((m_pClientList[iClientH]->m_iStatus & 0x10) != 0) {
+	if ((m_pClientList[iClientH]->m_iStatus & 0x10) != 0 && !bIgnoreOwnerLimits) {
 		SetInvisibilityFlag(iClientH, DEF_OWNERTYPE_PLAYER, FALSE);
 		bRemoveFromDelayEventList(iClientH, DEF_OWNERTYPE_PLAYER, DEF_MAGICTYPE_INVISIBILITY);
 		m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_INVISIBILITY] = NULL;
@@ -3077,18 +3078,20 @@ MAGIC_NOEFFECT:;
 		iManaCost = 0;
 	}
 
-	//Magn0S:: Remove mana cost for GM's
-	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
-		iManaCost = 0;
-	else iManaCost = iManaCost;
+	if (!bIgnoreOwnerLimits) {
+		//Magn0S:: Remove mana cost for GM's
+		if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
+			iManaCost = 0;
+		else iManaCost = iManaCost;
 
-	m_pClientList[iClientH]->m_iMP -= iManaCost; // Mana Cost
-	if (m_pClientList[iClientH]->m_iMP < 0)
-		m_pClientList[iClientH]->m_iMP = 0;
+		m_pClientList[iClientH]->m_iMP -= iManaCost; // Mana Cost
+		if (m_pClientList[iClientH]->m_iMP < 0)
+			m_pClientList[iClientH]->m_iMP = 0;
 
-	CalculateSSN_SkillIndex(iClientH, 4, 1);
+		CalculateSSN_SkillIndex(iClientH, 4, 1);
 
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MP, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MP, NULL, NULL, NULL, NULL);
+	}
 	SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_MAGIC, m_pClientList[iClientH]->m_cMapIndex,
 		m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, dX, dY, (sType + 100), m_pClientList[iClientH]->m_sType);
 

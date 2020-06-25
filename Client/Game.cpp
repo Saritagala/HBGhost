@@ -401,7 +401,11 @@ CGame::CGame()
 	m_stDialogBoxInfo[44].sSizeX = 258;
 	m_stDialogBoxInfo[44].sSizeY = 339;
 
-	// 45
+	//SetTrap Dialog
+	m_stDialogBoxInfo[45].sX = 162;
+	m_stDialogBoxInfo[45].sY = 40;
+	m_stDialogBoxInfo[45].sSizeX = 315;
+	m_stDialogBoxInfo[45].sSizeY = 171;
 
 	// Snoopy: Resurection
 	m_stDialogBoxInfo[50].sX = 185 + SCREENX;
@@ -1038,6 +1042,24 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 	cKey = (char)(rand() % 255) +1;
 
 	switch (dwMsgID) {
+
+	case MSGID_REQUEST_SETTRAP:
+		if (m_stDialogBoxInfo[45].sV1 != NULL || m_stDialogBoxInfo[45].sV2 != NULL || m_stDialogBoxInfo[45].sV3 != NULL) {
+			dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
+			*dwp = dwMsgID;
+			wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
+			*wp = wCommand;
+			cp = (char*)(cMsg + DEF_INDEX2_MSGTYPE + 2);
+			*cp = m_stDialogBoxInfo[45].sV1;
+			cp++;
+			*cp = m_stDialogBoxInfo[45].sV2;
+			cp++;
+			*cp = m_stDialogBoxInfo[45].sV3;
+			cp++;
+			iRet = m_pGSock->iSendMsg(cMsg, 9);
+		}
+		else AddEventList("You must setup your magic trap configurations.", 10);
+		break;
 
 	//Magn0S:: Quest List
 	case DEF_MSGID_REQUEST_QUEST_LIST:
@@ -2237,6 +2259,10 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 			// Dynamic Object
 			if ( (bRet == TRUE) && (sDynamicObject != NULL) )
 			{	switch (sDynamicObject) {
+				case DEF_DYNAMICOBJECT_MAGICTRAP:
+					m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(ix, iy, 156, dwTime);
+					break;
+
 				case DEF_DYNAMICOBJECT_PCLOUD_BEGIN:	// 10
 					if (sDynamicObjectFrame >= 0)
 						m_pEffectSpr[23]->PutTransSprite50_NoColorKey(ix+(rand() % 2), iy+(rand() % 2), sDynamicObjectFrame, dwTime);
@@ -3770,6 +3796,9 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
 			case 43:
 			   DlgBoxClick_FriendList(msX, msY);
 			   break;
+			case 45: // kamal
+				DlgBoxClick_SetTrap(msX, msY);
+				break;
 			case 50:
 				DlgBoxClick_Resurect(msX, msY);
 				break;
@@ -23369,6 +23398,12 @@ void CGame::OnKeyUp(WPARAM wParam)
 		m_bCtrlPressed = FALSE;
 		break;
 
+	case 90: //'Z'
+		if (m_bCtrlPressed == TRUE && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus)) {
+			bSendCommand(MSGID_REQUEST_SETTRAP, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL, NULL, NULL);
+		}
+		break;
+
 	case 65://'A'
 		
 		break;
@@ -27624,6 +27659,11 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 				{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY6, 10);//"You can't use this item because it is exhausted."
 				}else
 				{	switch (m_pItemList[cItemID]->m_sSpriteFrame) {
+					// kamal
+					case 156: // Magic Trap
+						EnableDialogBox(45, NULL, NULL, NULL);
+						AddEventList("Setting up a magic trap...", 10);
+						break;
 					case 55: // Alchemy pot
 						if (m_cSkillMastery[12] == 0)
 						{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY9, 10);//"You should learn alchemy skill to use this item."

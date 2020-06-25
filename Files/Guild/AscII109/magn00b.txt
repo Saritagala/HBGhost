@@ -1,0 +1,11 @@
+;Guild file - Updated 2020/ 6/24/20/38
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = GM1
+guild-GUID = 11855306
+guild-location       = elvine
+
+[GUILDSMAN]
+

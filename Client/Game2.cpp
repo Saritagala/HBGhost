@@ -17594,6 +17594,9 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 			case 43:
 				DrawDialogBox_FriendList(msX, msY); //drajwer: friendlist
 				break;
+			case 45: // kamal
+				DrawDialogBox_SetTrap(msX, msY);
+				break;
 			case 50: // Snoopy: Resurection?
 				DrawDialogBox_Resurect(msX, msY);
 				break;
@@ -17794,6 +17797,7 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 					case 40:
 					case 50: // resur
 						// NPC
+					case 45: // kamal
 					case 67:
 					case 68:
 					case 69:
@@ -19504,4 +19508,95 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 
 		break;
 	}
+}
+
+void CGame::DlgBoxClick_SetTrap(short msX, short msY)
+{
+	short sX, sY, szx, szy;
+	sX = m_stDialogBoxInfo[45].sX;
+	sY = m_stDialogBoxInfo[45].sY;
+	szx = m_stDialogBoxInfo[45].sSizeX;
+	szy = m_stDialogBoxInfo[45].sSizeY;
+
+	if (m_pMagicCfgList[m_iCastingMagicType] != NULL) {
+		// Magic Slot[1]
+		/*if ((msX >= sX + 20) && (msX <= sX + 20 + szx - 20) && (msY >= sY + 60) && (msY <= sY + 60 + 15))
+		{
+			if (m_stDialogBoxInfo[45].sV1 == m_iCastingMagicType + 1) m_stDialogBoxInfo[45].sV1 = NULL;
+			else m_stDialogBoxInfo[45].sV1 = m_iCastingMagicType + 1;
+		}
+		// Magic Slot[2]
+		else if ((msX >= sX + 20) && (msX <= sX + 20 + szx - 20) && (msY >= sY + 60 + 15 * 1) && (msY <= sY + 60 + 15 * 1 + 15))
+		{
+			if (m_stDialogBoxInfo[45].sV2 == m_iCastingMagicType + 1) m_stDialogBoxInfo[45].sV2 = NULL;
+			else m_stDialogBoxInfo[45].sV2 = m_iCastingMagicType + 1;
+		}
+		// Magic Slot[3]
+		else if ((msX >= sX + 20) && (msX <= sX + 20 + szx - 20) && (msY >= sY + 60 + 15 * 2) && (msY <= sY + 60 + 15 * 2 + 15))
+		{
+			if (m_stDialogBoxInfo[45].sV3 == m_iCastingMagicType + 1) m_stDialogBoxInfo[45].sV3 = NULL;
+			else m_stDialogBoxInfo[45].sV3 = m_iCastingMagicType + 1;
+		}*/
+
+		// Magic Slot
+		if ((msX >= sX + 20) && (msX <= sX + 20 + szx - 20) && (msY >= sY + 60 + 15 * 1) && (msY <= sY + 60 + 15 * 1 + 15))
+		{
+			if (m_stDialogBoxInfo[45].sV1 == m_iCastingMagicType + 1) m_stDialogBoxInfo[45].sV1 = NULL;
+			else m_stDialogBoxInfo[45].sV1 = m_iCastingMagicType + 1;
+		}
+	}
+
+	// Create
+	if ((msX >= sX + (szx / 2 - DEF_BTNSZX) / 2) && (msX <= sX + (szx / 2 - DEF_BTNSZX) / 2 + DEF_BTNSZX) && (msY >= sY + szy - 25 - DEF_BTNSZY) && (msY <= sY + szy - 25 - DEF_BTNSZY + DEF_BTNSZY))
+	{
+		bSendCommand(MSGID_REQUEST_SETTRAP, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL, NULL, NULL);
+		DisableDialogBox(45);
+		PlaySound('E', 14, 5);
+	}
+
+	// Cancel
+	if ((msX >= sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2) && (msX <= sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2 + DEF_BTNSZX) && (msY >= sY + szy - 25 - DEF_BTNSZY) && (msY <= sY + szy - 25 - DEF_BTNSZY + DEF_BTNSZY))
+	{
+		DisableDialogBox(45);
+		PlaySound('E', 14, 5);
+	}
+}
+
+void CGame::DrawDialogBox_SetTrap(short msX, short msY)
+{
+	short sX, sY, szx, szy;
+	sX = m_stDialogBoxInfo[45].sX;
+	sY = m_stDialogBoxInfo[45].sY;
+	szx = m_stDialogBoxInfo[45].sSizeX;
+	szy = m_stDialogBoxInfo[45].sSizeY;
+
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, sX, sY, 2);
+
+	PutAlignedString(sX, sX + szx, sY + 30, "Setup Your Trap Configuration", 255, 255, 255);
+
+	/*if (m_stDialogBoxInfo[45].sV1 == NULL) strcpy(G_cTxt, "Magic Slot[1]: (Not set)");
+	else sprintf(G_cTxt, "Magic Slot[1]: %s", m_pMagicCfgList[m_stDialogBoxInfo[45].sV1 - 1]->m_cName);
+	PutString(sX + 20, sY + 60, G_cTxt, RGB(25, 35, 25));
+
+	if (m_stDialogBoxInfo[45].sV2 == NULL) strcpy(G_cTxt, "Magic Slot[2]: (Not set)");
+	else sprintf(G_cTxt, "Magic Slot[2]: %s", m_pMagicCfgList[m_stDialogBoxInfo[45].sV2 - 1]->m_cName);
+	PutString(sX + 20, sY + 60 + 15, G_cTxt, RGB(25, 35, 25));
+
+	if (m_stDialogBoxInfo[45].sV3 == NULL) strcpy(G_cTxt, "Magic Slot[3]: (Not set)");
+	else sprintf(G_cTxt, "Magic Slot[3]: %s", m_pMagicCfgList[m_stDialogBoxInfo[45].sV3 - 1]->m_cName);
+	PutString(sX + 20, sY + 60 + 15 * 2, G_cTxt, RGB(25, 35, 25));*/
+
+	if (m_stDialogBoxInfo[45].sV1 == NULL) strcpy(G_cTxt, "Magic Slot: (Not set)");
+	else sprintf(G_cTxt, "Magic Slot: %s", m_pMagicCfgList[m_stDialogBoxInfo[45].sV1 - 1]->m_cName);
+	PutString(sX + 20, sY + 60 + 15, G_cTxt, RGB(25, 35, 25));
+
+	// Create
+	if ((msX >= sX + (szx / 2 - DEF_BTNSZX) / 2) && (msX <= sX + (szx / 2 - DEF_BTNSZX) / 2 + DEF_BTNSZX) && (msY >= sY + szy - 20 - DEF_BTNSZY) && (msY <= sY + szy - 20 - DEF_BTNSZY + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + (szx / 2 - DEF_BTNSZX) / 2, sY + szy - 20 - DEF_BTNSZY, 25);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + (szx / 2 - DEF_BTNSZX) / 2, sY + szy - 20 - DEF_BTNSZY, 24);
+
+	// Cancel
+	if ((msX >= sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2) && (msX <= sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2 + DEF_BTNSZX) && (msY >= sY + szy - 25 - DEF_BTNSZY) && (msY <= sY + szy - 25 - DEF_BTNSZY + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2, sY + szy - 25 - DEF_BTNSZY, 17);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2, sY + szy - 25 - DEF_BTNSZY, 16);
 }

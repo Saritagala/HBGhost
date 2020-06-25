@@ -1066,12 +1066,28 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 		m_pClientList[iClientH]->m_sY   = dY;
 		m_pClientList[iClientH]->m_cDir = cDir;
 		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->SetOwner(iClientH, DEF_OWNERTYPE_PLAYER, dX, dY);
+		pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + dX + dY * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 		switch (sDOtype) {
 		case DEF_DYNAMICOBJECT_SPIKE:
 			if (!(m_pClientList[iClientH]->m_bIsNeutral == TRUE && (m_pClientList[iClientH]->m_sAppr2 & 0xF000) == 0)) {
 				iDamage = iDice(2, 4);
 				if (m_pClientList[iClientH]->m_iAdminUserLevel == 0)
 					m_pClientList[iClientH]->m_iHP -= iDamage;
+			}
+			break;
+		case DEF_DYNAMICOBJECT_MAGICTRAP: // kamal
+			iTemp = pTile->m_wDynamicObjectID;
+			if (m_pClientList[m_pDynamicObjectList[iTemp]->m_sOwner] != NULL && m_pClientList[m_pDynamicObjectList[iTemp]->m_sOwner]->m_cSide != m_pClientList[iClientH]->m_cSide) {
+				if (m_pDynamicObjectList[iTemp]->m_iV1 != NULL) PlayerMagicHandler(m_pDynamicObjectList[iTemp]->m_sOwner, dX, dY, m_pDynamicObjectList[iTemp]->m_iV1-1,0,0, TRUE);
+				if (m_pDynamicObjectList[iTemp]->m_iV2 != NULL) PlayerMagicHandler(m_pDynamicObjectList[iTemp]->m_sOwner, dX, dY, m_pDynamicObjectList[iTemp]->m_iV2-1,0,0, TRUE);
+				if (m_pDynamicObjectList[iTemp]->m_iV3 != NULL) PlayerMagicHandler(m_pDynamicObjectList[iTemp]->m_sOwner, dX, dY, m_pDynamicObjectList[iTemp]->m_iV3-1,0,0, TRUE);
+
+				SendEventToNearClient_TypeC(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iTemp]->m_cMapIndex, m_pDynamicObjectList[iTemp]->m_sX, m_pDynamicObjectList[iTemp]->m_sY, m_pDynamicObjectList[iTemp]->m_sType, iTemp, NULL);
+
+				m_pMapList[m_pDynamicObjectList[iTemp]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[iTemp]->m_sX, m_pDynamicObjectList[iTemp]->m_sY, dwTime);
+
+				delete m_pDynamicObjectList[iTemp];
+				m_pDynamicObjectList[iTemp] = NULL;
 			}
 			break;
 		}
@@ -1118,7 +1134,6 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 		else *cp = 0;
 		cp++;
 
-		pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + dX + dY * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 		*cp = (char)pTile->m_iOccupyStatus;
 		cp++;
 		
@@ -7966,6 +7981,10 @@ DWORD * dwp, dwTimeRcv;
 			dwpMsgID = (DWORD *)(pData + DEF_INDEX4_MSGID);
 			switch (*dwpMsgID) { // 84148741
 
+			case MSGID_REQUEST_SETTRAP: // kamal
+				RequestSetTrapHandler(iClientH, pData);
+				break;
+
 			case MSGID_REQUEST_ONLINE:
 				
 				if (m_pClientList[iClientH])
@@ -10456,7 +10475,7 @@ void CGame::ApplyCombatKilledPenalty(int iClientH, int cPenaltyLevel, BOOL bIsSA
 	}
 }
 
-int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, DWORD dwLastTime, int iV1)
+int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, DWORD dwLastTime, int iV1, int iV2, int iV3)
 {
  int i;
  short sPreType;
@@ -10527,9 +10546,13 @@ int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, cha
 		if (dwLastTime != NULL) 
 			dwLastTime += (iDice(1,4)*1000);
 
-		m_pDynamicObjectList[i] = new class CDynamicObject(sOwner, cOwnerType, sType, cMapIndex, sX, sY, dwTime, dwLastTime, iV1);
+		m_pDynamicObjectList[i] = new class CDynamicObject(sOwner, cOwnerType, sType, cMapIndex, sX, sY, dwTime, dwLastTime, iV1, iV2, iV3);
 		m_pMapList[cMapIndex]->SetDynamicObject(i, sType, sX, sY, dwTime);
-		SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_CONFIRM, cMapIndex, sX, sY, sType, i, NULL);
+		
+		if (sType == DEF_DYNAMICOBJECT_MAGICTRAP)
+			SendEventToNearClient_TypeC(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_CONFIRM, cMapIndex, sX, sY, sType, i, NULL);
+		else
+			SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_CONFIRM, cMapIndex, sX, sY, sType, i, NULL);
 
 		return i;
 	}
@@ -26635,4 +26658,33 @@ void CGame::AdminOrder_SetAdminLvl(int iClientH, char* pData, DWORD dwMsgSize)
 		}
 	}
 	delete pStrTok;
+}
+
+void CGame::RequestSetTrapHandler(int iClientH, char* pData)
+{
+	char* cp, cMagicID[3];
+	int iItemID = -1;
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	cMagicID[0] = *cp;
+	cp++;
+	cMagicID[1] = *cp;
+	cp++;
+	cMagicID[2] = *cp;
+	cp++;
+
+	if (cMagicID[0] == NULL && cMagicID[1] == NULL && cMagicID[2] == NULL) return;
+
+	for (int i = 0; i < DEF_MAXITEMS; i++)
+		if (m_pClientList[iClientH]->m_pItemList[i] != NULL && m_pClientList[iClientH]->m_pItemList[i]->m_sIDnum == 1050) {
+			iItemID = i;
+			break;
+		}
+
+	if (iItemID != -1 && (cMagicID[0] == NULL || m_pMagicConfigList[cMagicID[0] - 1] != NULL) && (cMagicID[1] == NULL || m_pMagicConfigList[cMagicID[1] - 1] != NULL) && (cMagicID[2] == NULL || m_pMagicConfigList[cMagicID[2] - 1] != NULL)) {
+		if (iAddDynamicObjectList(iClientH, DEF_OWNERTYPE_PLAYER, DEF_DYNAMICOBJECT_MAGICTRAP, m_pClientList[iClientH]->m_cMapIndex, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, 1000 * 60 * 10, cMagicID[0], cMagicID[1], cMagicID[2]) == NULL) return;
+
+		m_pClientList[iClientH]->m_pItemList[iItemID]->m_dwCount--;
+		if (m_pClientList[iClientH]->m_pItemList[iItemID]->m_dwCount <= 0) ItemDepleteHandler(iClientH, iItemID, FALSE, FALSE);
+	}
 }

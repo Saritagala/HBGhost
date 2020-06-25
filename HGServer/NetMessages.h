@@ -17,6 +17,8 @@
 
 #define MSGID_REQUEST_TOPEK 0x3B1890EC
 
+#define MSGID_REQUEST_SETTRAP		0x0BFB
+
 //News Addons - ZeroEoyPnk
 #define DEF_SEND_PARTYCOORDS				0x1F07
 #define DEF_SEND_PARTYHP					0x1F08

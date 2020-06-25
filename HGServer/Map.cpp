@@ -3848,6 +3848,10 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	WORD* wp;
 	short* sp;
 	BOOL bFlag;
+	char  cKey;
+
+	cKey = (char)(rand() % 255) + 1; // v1.4
+
 
 	ZeroMemory(cData, sizeof(cData));
 
@@ -3899,7 +3903,76 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 				(m_pClientList[i]->m_sY >= sY - 10) &&
 				(m_pClientList[i]->m_sY <= sY + 10)) {
 
-				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 18);
+				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 18, cKey);
+			}
+		}
+	}
+}
+
+void CGame::SendEventToNearClient_TypeC(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4)
+{
+	int i, iRet, iShortCutIndex;
+	char* cp, cData[100];
+	DWORD* dwp, dwTime;
+	WORD* wp;
+	short* sp;
+	BOOL bFlag;
+	char  cKey;
+
+	cKey = (char)(rand() % 255) + 1; // v1.4
+
+	ZeroMemory(cData, sizeof(cData));
+
+	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	*dwp = dwMsgID;
+	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	*wp = wMsgType;
+
+	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+
+	sp = (short*)cp;
+	*sp = sX;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sY;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV1;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV2;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV3;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV4;
+	cp += 2;
+
+	dwTime = timeGetTime();
+
+	//for (i = 1; i < DEF_MAXCLIENTS; i++)
+	bFlag = TRUE;
+	iShortCutIndex = 0;
+	while (bFlag == TRUE) {
+		i = m_iClientShortCut[iShortCutIndex];
+		iShortCutIndex++;
+		if (i == 0) bFlag = FALSE;
+
+		if ((bFlag == TRUE) && (m_pClientList[i] != NULL)) {
+			if ((m_pClientList[i]->m_cMapIndex == cMapIndex) &&
+				(m_pClientList[i]->m_sX >= sX - 12) &&
+				(m_pClientList[i]->m_sX <= sX + 12) &&
+				(m_pClientList[i]->m_sY >= sY - 10) &&
+				(m_pClientList[i]->m_sY <= sY + 10) &&
+				!(dwMsgID == MSGID_DYNAMICOBJECT && sV1 == DEF_DYNAMICOBJECT_MAGICTRAP && m_pDynamicObjectList[sV2] != NULL && m_pClientList[m_pDynamicObjectList[sV2]->m_sOwner]->m_cSide != m_pClientList[i]->m_cSide)) {
+
+				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 18, cKey);
 			}
 		}
 	}

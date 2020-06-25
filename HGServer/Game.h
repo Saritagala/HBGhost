@@ -93,6 +93,8 @@ public:
 
 private:
 
+	void RequestSetTrapHandler(int iClientH, char* pData);
+
 	void AdminOrder_SetObserverMode(int iClientH);
 
 	void CalcExpStock(int iClientH);
@@ -499,7 +501,7 @@ private:
 	void CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue);
 	void CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue);
 	void CheckDynamicObjectList();
-	int  iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, DWORD dwLastTime, int iV1 = NULL);
+	int  iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, DWORD dwLastTime, int iV1 = NULL, int iV2 = NULL, int iV3 = NULL);
 	int _iCalcMaxLoad(int iClientH);
 	void GetRewardMoneyHandler(int iClientH);
 	void _PenaltyItemDrop(int iClientH, int iTotal, BOOL bIsSAattacked = FALSE);
@@ -532,7 +534,7 @@ private:
 	void ReleaseFollowMode(short sOwnerH);
 	BOOL bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerType);
 	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1);
-	void PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect = FALSE, int iV1 = NULL);
+	void PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect = FALSE, int iV1 = NULL, BOOL bIgnoreOwnerLimits = FALSE);
 	int  iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cDir);
 	void SendMsgToGateServer(DWORD dwMsg, int iClientH, char* pData = NULL);
 	void OnGateRead();
@@ -607,6 +609,7 @@ private:
 	void CheckClientResponseTime();
 
 	int iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char* pData);
+	void SendEventToNearClient_TypeC(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4 = NULL);
 	void SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4 = NULL);
 	void SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dwMsgID, WORD wMsgType, short sV1, short sV2, short sV3);
 	void DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogout = TRUE, BOOL bForceCloseConn = FALSE);
