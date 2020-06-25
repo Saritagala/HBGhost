@@ -10518,22 +10518,6 @@ int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, cha
 		m_pMapList[cMapIndex]->SetTempMoveAllowedFlag(sX, sY, FALSE);
 		break;
 
-	case DEF_DYNAMICOBJECT_FIRE2: // centu - burning crusade structures
-		if (dwLastTime != NULL) {
-			switch (m_pMapList[cMapIndex]->m_cWhetherStatus) {
-			case 1:	dwLastTime = dwLastTime - (dwLastTime / 2);       break;
-			case 2:	dwLastTime = (dwLastTime / 2) - (dwLastTime / 3); break;
-			case 3:	dwLastTime = (dwLastTime / 3) - (dwLastTime / 4); break;
-				// SNOOPY: Added reduced duration if snow whether
-			case 4:	dwLastTime = dwLastTime - (dwLastTime / 6);       break;
-			case 5:	dwLastTime = dwLastTime - (dwLastTime / 4);		  break;
-			case 6:	dwLastTime = dwLastTime - (dwLastTime / 2);		  break;
-			default:break;
-			}
-			if (dwLastTime == NULL) dwLastTime = 1000;
-		}
-		break;
-
 	}
    	
 	for (i = 1; i < DEF_MAXDYNAMICOBJECTS; i++) 
@@ -10563,7 +10547,6 @@ void CGame::CheckDynamicObjectList()
 	{	if ( (m_pDynamicObjectList[i] != NULL) && (m_pDynamicObjectList[i]->m_dwLastTime != NULL) ) 
 		{	switch (m_pDynamicObjectList[i]->m_sType) {
 			case DEF_DYNAMICOBJECT_FIRE3:
-			case DEF_DYNAMICOBJECT_FIRE2: // centu - burning crusade structures
 			case DEF_DYNAMICOBJECT_FIRE:
 				switch (m_pMapList[m_pDynamicObjectList[i]->m_cMapIndex]->m_cWhetherStatus) {
 				case 0: 
@@ -13022,7 +13005,6 @@ void CGame::DynamicObjectEffectProcessor()
 			break;
 		
 		case DEF_DYNAMICOBJECT_FIRE3:
-		case DEF_DYNAMICOBJECT_FIRE2:
 		case DEF_DYNAMICOBJECT_FIRE:
 			// Fire-Wall·ùÀÇ Å¸´Â ºÒ²É
 			if (m_pDynamicObjectList[i]->m_iCount == 1) {

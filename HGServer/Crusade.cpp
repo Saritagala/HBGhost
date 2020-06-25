@@ -1132,7 +1132,7 @@ void CGame::MeteorStrikeHandler(int iMapIndex)
 					// °Ç¹°ÀÌ ÆÄ±«µÇ¾ú´Ù.
 					m_pMapList[iMapIndex]->m_stStrikePoint[iTargetIndex].iHP = 0;
 					// °Ç¹° ±â´É »ó½Ç
-					m_pMapList[m_pMapList[iMapIndex]->m_stStrikePoint[iTargetIndex].iMapIndex]->m_bIsDisabled = TRUE;
+					//m_pMapList[m_pMapList[iMapIndex]->m_stStrikePoint[iTargetIndex].iMapIndex]->m_bIsDisabled = TRUE;
 					m_stMeteorStrikeResult.iCrashedStructureNum++;
 				}
 				else {
@@ -1149,9 +1149,9 @@ void CGame::MeteorStrikeHandler(int iMapIndex)
 		}
 
 		// 1ÃÊ ÈÄ ¸ÞÅ×¿À ½ºÆ®¶óÀÌÅ© °ø°Ý ´ë¹ÌÁö È¿°ú
-		bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, NULL, dwTime + 1000, NULL, NULL, iMapIndex, NULL, NULL, NULL, NULL, NULL);
+		//bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, NULL, dwTime + 1000, NULL, NULL, iMapIndex, NULL, NULL, NULL, NULL, NULL);
 		// 4ÃÊ ÈÄ ¸ÞÅ×¿À ½ºÆ®¶óÀÌÅ© °ø°Ý ´ë¹ÌÁö È¿°ú
-		bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, NULL, dwTime + 4000, NULL, NULL, iMapIndex, NULL, NULL, NULL, NULL, NULL);
+		bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, NULL, dwTime + 5000, NULL, NULL, iMapIndex, NULL, NULL, NULL, NULL, NULL);
 		// 6ÃÊ ÈÄ °ø°Ý °á°ú ÆÇ´Ü.
 		bRegisterDelayEvent(DEF_DELAYEVENTTYPE_CALCMETEORSTRIKEEFFECT, NULL, dwTime + 6000, NULL, NULL, iMapIndex, NULL, NULL, NULL, NULL, NULL);
 	}
@@ -1513,7 +1513,7 @@ void CGame::MeteorStrikeMsgHandler(char cAttackerSide)
 						SendNotifyMsg(NULL, i, DEF_NOTIFY_METEORSTRIKECOMING, 4, NULL, NULL, NULL);
 					}
 				}
-			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_METEORSTRIKE, NULL, dwTime + 1000 * 5, NULL, NULL, m_iAresdenMapIndex, NULL, NULL, NULL, NULL, NULL);
+			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_METEORSTRIKE, NULL, dwTime + 5000, NULL, NULL, m_iAresdenMapIndex, NULL, NULL, NULL, NULL, NULL);
 		}
 		else {
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
