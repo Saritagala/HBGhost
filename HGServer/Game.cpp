@@ -720,17 +720,7 @@ BOOL CGame::bInit()
 
 	m_dwCleanTime = dwTime;
 
-	RemoveFile("GameConfigs\\team.csv");
-	ofstream outputFile("GameConfigs\\team.csv");
-	outputFile.close();
-	c_team->UpdateTeamFile();
-
 	return TRUE;
-}
-
-void CGame::RemoveFile(char* name)
-{
-	const int result1 = remove(name);
 }
 
 /*********************************************************************************************************************
@@ -1078,6 +1068,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 		m_pClientList[iClientH]->m_sX   = dX;
 		m_pClientList[iClientH]->m_sY   = dY;
 		m_pClientList[iClientH]->m_cDir = cDir;
+		minimap_update(iClientH);
 		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->SetOwner(iClientH, DEF_OWNERTYPE_PLAYER, dX, dY);
 		pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + dX + dY * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 		switch (sDOtype) {
@@ -1543,7 +1534,19 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	*bp = _drop_inhib;
 	cp ++;
 
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 124);
+	bp = (bool*)cp;
+	*bp = c_team->bteam;
+	cp++;
+
+	bp = (bool*)cp;
+	*bp = bShinning;
+	cp++;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
+	cp += 4;
+
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 130);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -1937,6 +1940,9 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 10) != 0) && (c_team->bteam))
 		SendAlertMsg(iClientH, "Event Team Arena Enabled");
 
+	if (bShinning)
+		SendAlertMsg(iClientH, "Event Shinning Enabled");
+
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 10) == 0) && (c_team->bteam)) {
 		if (m_pClientList[iClientH]->IsLocation("elvine"))
 			RequestTeleportHandler(iClientH, "2", "elvine", -1, -1, true);
@@ -2099,6 +2105,8 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 			SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_LOG, DEF_MSGTYPE_REJECT, NULL, NULL, NULL);
 
 		RemoveFromTarget(iClientH, DEF_OWNERTYPE_PLAYER);
+
+		minimap_clear(iClientH);
 
 		for (i = 1; i < DEF_MAXCLIENTS; i++) 
 			if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_iWhisperPlayerIndex	== iClientH)) {
@@ -6921,7 +6929,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 
 		else if (memcmp(cp, "/begincrusade", 13) == 0) {
-			if (m_pClientList[iClientH]->m_iAdminUserLevel > 3) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel > 2) {
 				GlobalStartCrusadeMode();
 				wsprintf(cTemp, "(%s) GM Order(%s): begincrusadetotalwar", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 				bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
@@ -6938,7 +6946,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 #endif
 		
 		else if (memcmp(cp, "/endcrusade", 11) == 0) {
-			if (m_pClientList[iClientH]->m_iAdminUserLevel > 3) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel > 2) {
 				ManualEndCrusadeMode(0);
 				wsprintf(cTemp, "(%s) GM Order(%s): endcrusadetotalwar", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 				bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
@@ -6946,7 +6954,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-		if (strcmp(cp, "/team") == 0)
+		else if (strcmp(cp, "/team") == 0)
 		{
 			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
 			if (c_team->bteam) c_team->bteam = false; 
@@ -6954,10 +6962,11 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 			if (c_team->bteam) c_team->EnableEvent();
 			else c_team->DisableEvent();
-			
+
+			NotifyEvents();
 		}
 
-		if (strcmp(cp, "/tpteam") == 0)
+		else if (strcmp(cp, "/tpteam") == 0)
 		{
 			RequestDismissPartyHandler(iClientH);
 			c_team->Join(iClientH);
@@ -7038,16 +7047,24 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		}	
 
 		else if (memcmp(cp, "/beginheldenian ", 16) == 0)	//m_iAdminLevelSpecialEvents
-		{	wsprintf(cTemp, "GM Order(%-10s): /beginheldenian", m_pClientList[iClientH]->m_cCharName);
-			bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
-			ManualStartHeldenianMode(iClientH, cp, dwMsgSize - 21); 
-			
+		{	
+			if ((m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
+				&& (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == TRUE))
+			{
+				wsprintf(cTemp, "GM Order(%-10s): /beginheldenian", m_pClientList[iClientH]->m_cCharName);
+				bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
+				ManualStartHeldenianMode(iClientH, cp, dwMsgSize - 21);
+			}
 		}		
 		else if (memcmp(cp, "/endheldenian ", 14) == 0)		//m_iAdminLevelSpecialEvents
-		{	wsprintf(cTemp, "GM Order(%-10s): /endheldenian", m_pClientList[iClientH]->m_cCharName);
-			bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
-			ManualEndHeldenianMode(iClientH, cp, dwMsgSize - 21);
-			
+		{	
+			if ((m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
+				&& (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == TRUE))
+			{
+				wsprintf(cTemp, "GM Order(%-10s): /endheldenian", m_pClientList[iClientH]->m_cCharName);
+				bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
+				ManualEndHeldenianMode(iClientH, cp, dwMsgSize - 21);
+			}
 		}
 
 		// Modification 
@@ -7149,6 +7166,15 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 				_drop_inhib = !_drop_inhib;
 				NotifyEvents();
 			}
+		}
+
+		else if (strcmp(cp, "/shinning") == 0)
+		{
+			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
+			if (bShinning) bShinning = false; 
+			else bShinning = true;
+			ManageShinning();
+			NotifyEvents();
 		}
 
 		else if (memcmp(cp, "/who", 4) == 0) 
@@ -10138,7 +10164,7 @@ void CGame::RequestCivilRightHandler(int iClientH, char *pData)
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 
 	// ?횑쨔횑 횉횗 쨍쨋?쨩?횉 쩌횘쩌횙?횑 ?횜쨈횢쨍챕 쩍횄쨔횓짹횉?쨩 째징횁첬 쩌철 쩐첩쨈횢. 
 	if (memcmp(m_pClientList[iClientH]->m_cLocation, "NONE", 4) != 0) wResult = 0;
@@ -18784,7 +18810,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 
 		if (m_pClientList[sAttackerH] == NULL) return 0;
 		//LifeX Fix Admin Hit NPC
-		if ((m_pClientList[sAttackerH]->m_iAdminUserLevel > 0) && (m_pClientList[sAttackerH]->m_iAdminUserLevel < 4))
+		if ((m_bAdminSecurity == TRUE) && (m_pClientList[sAttackerH]->m_iAdminUserLevel > 0 && m_pClientList[sAttackerH]->m_iAdminUserLevel < 4))
 		{
 			//SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot do any damage as a GM.");
 			return 0;
@@ -22606,7 +22632,10 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 	}
 	m_pClientList[iClientH]->m_dwLastActionTime = timeGetTime();//m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 	
-	RemoveFromTarget(iClientH, DEF_OWNERTYPE_PLAYER, DEF_MAGICTYPE_TELEPORT);
+	//RemoveFromTarget(iClientH, DEF_OWNERTYPE_PLAYER, DEF_MAGICTYPE_TELEPORT);
+	RemoveFromTarget(iClientH, DEF_OWNERTYPE_PLAYER);
+
+	minimap_clear(iClientH);
 	
 	m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->ClearOwner(13, iClientH, DEF_OWNERTYPE_PLAYER, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
 	SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_LOG, DEF_MSGTYPE_REJECT, NULL, NULL, NULL);
@@ -22672,24 +22701,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			}
 			for (i = 0; i < DEF_MAXMAPS; i++) {
 				if ((m_pMapList[i] != NULL) && (memcmp(m_pMapList[i]->m_cName, cTempMapName, 10) == 0)) {
-					/*
-					short playerCoordX = m_pClientList[iClientH]->m_sX;
-					short playerCoordY = m_pClientList[iClientH]->m_sY;
-
-					GetMapInitialPoint(i, &m_pClientList[iClientH]->m_sX, &m_pClientList[iClientH]->m_sY, m_pClientList[iClientH]->m_cLocation);
-
-					if (playerCoordX == m_pClientList[iClientH]->m_sX && playerCoordY == m_pClientList[iClientH]->m_sY)
-					{
-						RequestTeleportHandler(iClientH, "1");
-						return;
-					}
-
-					m_pClientList[iClientH]->m_cMapIndex = i;
-					ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
-					memcpy(m_pClientList[iClientH]->m_cMapName, m_pMapList[i]->m_cName, 10);
-					goto RTH_NEXTSTEP;
-					*/
-
+					
 					// centu - recall fix
 					GetMapInitialPoint(i, &aX, &aY, m_pClientList[iClientH]->m_cLocation);
 					if ((m_pClientList[iClientH]->m_sX == aX) && (m_pClientList[iClientH]->m_sY == aY))
@@ -22702,6 +22714,24 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 					}
 					m_pClientList[iClientH]->m_sX = aX;
 					m_pClientList[iClientH]->m_sY = aY;
+
+					/*
+					short playerCoordX = m_pClientList[iClientH]->m_sX;
+					short playerCoordY = m_pClientList[iClientH]->m_sY;
+
+					GetMapInitialPoint(i, &m_pClientList[iClientH]->m_sX, &m_pClientList[iClientH]->m_sY, m_pClientList[iClientH]->m_cLocation);
+
+					if (playerCoordX == m_pClientList[iClientH]->m_sX && playerCoordY == m_pClientList[iClientH]->m_sY)
+					{
+						RequestTeleportHandler(iClientH, "1");
+						return;
+					}
+					*/
+
+					m_pClientList[iClientH]->m_cMapIndex = i;
+					ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
+					memcpy(m_pClientList[iClientH]->m_cMapName, m_pMapList[i]->m_cName, 10);
+					goto RTH_NEXTSTEP;
 				}
 			}
 			m_pClientList[iClientH]->m_sX   = -1;
@@ -26174,7 +26204,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;*/
 
 	case 2: // GM Order = Enable Attacks
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 4) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26189,7 +26219,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 3: // Revive
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 2) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26213,7 +26243,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 4: // Kill
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 2) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26242,7 +26272,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 5: // Shut up
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 2) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26265,7 +26295,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 6: //Disconnect
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 2) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26286,7 +26316,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 7: // players info
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 4) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26307,7 +26337,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 8: // 1 semana em Bisle
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 4) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26336,7 +26366,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 9: // Block Char (1 month)
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 4) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26375,7 +26405,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 10: // Ban IP
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 4) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26406,7 +26436,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 28: // Teleport Request
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26423,7 +26453,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 29: // GM Auto TP by Mini Map Click
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -26442,7 +26472,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 31: // Observe Mode
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 4) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
@@ -27019,12 +27049,20 @@ void CGame::NotifyEvents()
 	*bp = _drop_inhib;
 	cp ++;
 
+	bp = (bool*)cp;
+	*bp = c_team->bteam;
+	cp++;
+
+	bp = (bool*)cp;
+	*bp = bShinning;
+	cp++;
+
 	for (int iClientH = 0; iClientH < DEF_MAXCLIENTS; iClientH++)
 	{
 		if (!m_pClientList[iClientH])
 			continue;
 
-		auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 10);
+		auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 12);
 		switch (iRet) {
 		case DEF_XSOCKEVENT_QUENEFULL:
 		case DEF_XSOCKEVENT_SOCKETERROR:
@@ -27050,4 +27088,142 @@ void CGame::SendAlertMsg(int client, char* pMsg)
 	ZeroMemory(message, sizeof(message));
 	strcpy(message, pMsg);
 	SendNotifyMsg(NULL, client, NOTIFYMSG, NULL, NULL, NULL, message);
+}
+
+void CGame::ManageShinning()
+{
+	if (bShinning)
+	{
+		for (int i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			auto pi = m_pClientList[i];
+			if (!pi) continue;
+			SendAlertMsg(i, "Event Shinning Enabled");
+		}
+	}
+	else
+	{
+		for (int i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			auto pi = m_pClientList[i];
+			if (!pi) continue;
+			SendAlertMsg(i, "Event Shinning Disabled");
+		}
+	}
+}
+
+void CGame::minimap_clear(int client)
+{
+	auto p = m_pClientList[client];
+	if (!p) return;
+
+	if (bShinning)
+	{
+		if (p->IsInMap("elvine") ||
+			p->IsInMap("aresden") ||
+			p->IsInMap("middleland") ||
+			p->IsInMap("2ndmiddle") ||
+			p->IsInMap("middled1n") ||
+			p->IsInMap("icebound"))
+		{
+			char cData[56];
+			DWORD* dwp;
+			WORD* wp;
+			char* cp;
+			int* ip;
+
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			if (p->IsLocation("elvine"))
+			{
+				*wp = MINIMAPBLUE_CLEAR;
+			}
+			else
+			{
+				*wp = MINIMAPRED_CLEAR;
+			}
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				if (pi == p) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				pi->m_pXSock->iSendMsg(cData, 10);
+			}
+		}
+	}
+}
+
+void CGame::minimap_update(int client)
+{
+	auto p = m_pClientList[client];
+	if (!p) return;
+
+	if (bShinning)
+	{
+		if (p->IsInMap("elvine") ||
+			p->IsInMap("aresden") ||
+			p->IsInMap("middleland") ||
+			p->IsInMap("2ndmiddle") ||
+			p->IsInMap("middled1n") ||
+			p->IsInMap("icebound"))
+		{
+			char cData[56];
+			DWORD* dwp;
+			WORD* wp;
+			char* cp;
+			int* ip;
+			short* sp;
+
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			if (p->IsLocation("elvine"))
+			{
+				*wp = MINIMAPBLUE_UPDATE;
+			}
+			else
+			{
+				*wp = MINIMAPRED_UPDATE;
+			}
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			sp = (short*)cp;
+			*sp = p->m_sX;
+			cp += 2;
+			sp = (short*)cp;
+			*sp = p->m_sY;
+			cp += 2;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				if (pi == p) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				pi->m_pXSock->iSendMsg(cData, 14);
+			}
+		}
+	}
 }

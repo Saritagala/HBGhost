@@ -250,6 +250,8 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 	if (m_bIsHeldenianMode == TRUE) return;
 	if (m_bIsApocalypseMode == TRUE) return;
 
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
+
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	cp += 30;
 
@@ -716,12 +718,12 @@ void CGame::AdminOrder_SummonGuild(int iClientH, char* pData, DWORD dwMsgSize)
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((dwMsgSize) <= 0) return;
-	if ((m_pClientList[iClientH]->m_iAdminUserLevel < 4)
+	/*if ((m_pClientList[iClientH]->m_iAdminUserLevel < 4)
 		&& (m_pClientList[iClientH]->m_iAdminUserLevel != 0))
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 		return;
-	}
+	}*/
 	if (m_pClientList[iClientH]->m_iAdminUserLevel == 0) // Check if gm:
 	{
 		if (m_pClientList[iClientH]->m_iGuildRank != 0) return;

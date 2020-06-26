@@ -39,7 +39,7 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 	int i;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 
 	switch (iV1) {
 	case 0: // ÆÄÆ¼ Å»Åð ½ÅÃ»
@@ -568,7 +568,7 @@ void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_NULL) return;
 	if ((dwMsgSize) <= 0) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 
 	if (m_pClientList[iClientH]->IsInMap("team")) return;
 	ZeroMemory(cBuff, sizeof(cBuff));

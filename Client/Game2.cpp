@@ -3097,8 +3097,17 @@ void CGame::ReleaseEquipHandler(char cEquipPos)
 
 void CGame::ItemEquipHandler(char cItemID)
 {
+	if (strcmp(m_cMapName, "team") == 0)
+	{
+		if ((m_pItemList[cItemID]->m_cEquipPos == DEF_EQUIPPOS_BACK) || (m_pItemList[cItemID]->m_cEquipPos == DEF_EQUIPPOS_BOOTS))
+		{
+			return;
+		}
+	}
+
 	if (bCheckItemOperationEnabled(cItemID) == FALSE) return;
 	if (m_bIsItemEquipped[cItemID] == TRUE) return;
+	
 	if (m_pItemList[cItemID]->m_cEquipPos == DEF_EQUIPPOS_NONE)
 	{
 		AddEventList(BITEMDROP_CHARACTER3, 10);//"The item is not available."
@@ -5022,6 +5031,12 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/shinning");
+			PlaySound('E', 14, 5);
+		}
+
 		//Back
 		if ((msX > sX + 220) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
 			m_stDialogBoxInfo[56].cMode = 0; // Return to Game Adm
@@ -5979,6 +5994,15 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + 15, sY + iNext * 17 + 45, "Team Arena", 255, 255, 255);
 		if (!_team_arena) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Shinning Event", 255, 255, 255);
+		if (!bShinning) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
 		else {
@@ -8691,18 +8715,12 @@ void CGame::InitGameSettings()
 	m_iIlusionOwnerH = NULL;
 	m_cIlusionOwnerType = NULL;
 
-	//50Cent - Capture The Flag
-	m_bIsCTFMode = false;
-	m_sElvineFlagCount = 0;
-	m_sAresdenFlagCount = 0;
-	m_bIsElvineFlagStatus = true;
-	m_bIsAresdenFlagStatus = true;
-
 	m_iDrawFlag = 0;
 	m_bDrawFlagDir = FALSE;
 	m_bIsCrusadeMode = FALSE;
 	m_iCrusadeDuty = NULL;
 
+	m_bIsCTFMode = FALSE;
 	m_bIsHeldenian = FALSE;
 
 	//Magn0S:: New Variables
@@ -13496,6 +13514,15 @@ void CGame::bItemDrop_Inventory(short msX, short msY)
 		return;
 	}
 	if (m_bIsItemDisabled[m_stMCursor.sSelectedObjectID] == TRUE) return;
+
+	if (strcmp(m_cMapName, "team") == 0)
+	{
+		if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == TRUE && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BACK || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BOOTS))
+		{
+			return;
+		}
+	}
+
 	sY = m_stDialogBoxInfo[2].sY;
 	sX = m_stDialogBoxInfo[2].sX;
 	dX = msX - sX - 32 - m_stMCursor.sDistX;
@@ -17272,6 +17299,34 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		m_DDraw.PutPixel(sX + 128, sY + shY, 50, 50, 50);
 		m_DDraw.PutPixel(sX + 129, sY + shY, 50, 50, 50);
 	}
+	
+		auto pixblue = [&](int x, int y, int r, int g, int b)
+		{
+			m_DDraw.PutPixel(x - 1, y, 0, 0, 255);
+			m_DDraw.PutPixel(x, y - 1, 0, 0, 255);
+			m_DDraw.PutPixel(x - 2, y, 0, 0, 255);
+			m_DDraw.PutPixel(x, y - 2, 0, 0, 255);
+			m_DDraw.PutPixel(x, y, 0, 0, 255);
+			m_DDraw.PutPixel(x, y + 1, 0, 0, 255);
+			m_DDraw.PutPixel(x + 1, y, 0, 0, 255);
+			m_DDraw.PutPixel(x, y + 2, 0, 0, 255);
+			m_DDraw.PutPixel(x + 2, y, 0, 0, 255);
+		};
+
+		auto pixred = [&](int x, int y, int r, int g, int b)
+		{
+			m_DDraw.PutPixel(x - 1, y, 255, 0, 0);
+			m_DDraw.PutPixel(x, y - 1, 255, 0, 0);
+			m_DDraw.PutPixel(x - 2, y, 255, 0, 0);
+			m_DDraw.PutPixel(x, y - 2, 255, 0, 0);
+			m_DDraw.PutPixel(x, y, 255, 0, 0);
+			m_DDraw.PutPixel(x, y + 1, 255, 0, 0);
+			m_DDraw.PutPixel(x + 1, y, 255, 0, 0);
+			m_DDraw.PutPixel(x, y + 2, 255, 0, 0);
+			m_DDraw.PutPixel(x + 2, y, 255, 0, 0);
+		};
+	
+
 	if (m_bZoomMap)
 	{
 		shX = m_sPlayerX - 64;
@@ -17298,6 +17353,35 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
+
+		if (bShinning)
+		{
+			for (auto& u : m_minimapblue.list)
+			{
+				auto* p = &u;
+				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+					continue;
+
+				if (m_dwTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+				pixblue(sX + p->x - shX, sY + p->y - shY, 0, 0, 255);
+			}
+
+			for (auto& u : m_minimapred.list)
+			{
+				auto* p = &u;
+				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+					continue;
+
+				if (m_dwTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+				pixred(sX + p->x - shX, sY + p->y - shY, 255, 0, 0);
+			}
+		}
 
 		if ((m_dwCurTime - m_dwMonsterEventTime) < 30000)
 		{
@@ -17393,6 +17477,51 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+
+		if (bShinning)
+		{
+			for (auto& u : m_minimapblue.list) {
+				auto* p = &u;
+				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+
+				if (m_dwCurTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+
+				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 0, 0, 255);
+			}
+
+			for (auto& u : m_minimapred.list) {
+				auto* p = &u;
+				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+
+				if (m_dwCurTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+
+				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 0, 0);
+			}
+		}
 
 		if ((G_dwGlobalTime - m_dwMonsterEventTime) < 30000)
 		{
@@ -19708,6 +19837,14 @@ void CGame::NotifyEvents(char* pData)
 	_drop_inhib = *bp;
 	cp ++;
 
+	bp = (bool*)cp;
+	_team_arena = *bp;
+	cp++;
+
+	bp = (bool*)cp;
+	bShinning = *bp;
+	cp++;
+
 	// ON
 	if (_candy_boost && !candy)
 	{
@@ -19749,4 +19886,102 @@ void CGame::NotifyEvents(char* pData)
 	{
 		SetTopMsg("Drop Inhibition event finished", 10);
 	}
+}
+
+void CGame::minimapblue_update(char* cp)
+{
+	int* ip = (int*)cp;
+	int h = *ip;
+	cp += 4;
+
+	short* sp = (short*)cp;
+	short x = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	short y = *sp;
+	cp += 2;
+
+	MinimapBlue::Unit u;
+	u.id = h;
+	u.x = x;
+	u.y = y;
+	auto t = timeGetTime();
+	u.time = t;
+	m_minimapblue.Remove(h);
+	m_minimapblue.list.push_back(u);
+}
+
+void CGame::minimapblue_clear(char* cp)
+{
+	int h;
+
+	int* ip = (int*)cp;
+	h = *ip;
+	cp += 4;
+
+	m_minimapred.Remove(h);
+}
+
+void CGame::minimapred_update(char* cp)
+{
+	int* ip = (int*)cp;
+	int h = *ip;
+	cp += 4;
+
+	short* sp = (short*)cp;
+	short x = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	short y = *sp;
+	cp += 2;
+
+	MinimapRed::Unit u;
+	u.id = h;
+	u.x = x;
+	u.y = y;
+	auto t = timeGetTime();
+	u.time = t;
+	m_minimapred.Remove(h);
+
+
+	m_minimapred.list.push_back(u);
+}
+
+void CGame::minimapred_clear(char* cp)
+{
+	int h;
+
+	int* ip = (int*)cp;
+	h = *ip;
+	cp += 4;
+
+	m_minimapred.Remove(h);
+}
+
+void CGame::MinimapRed::Clear()
+{
+	list.clear();
+}
+
+void CGame::MinimapBlue::Clear()
+{
+	list.clear();
+}
+
+#define stdremove(list, func) list.erase(remove_if(list.begin(), list.end(), func), list.end());
+
+void CGame::MinimapBlue::Remove(int handle) {
+	stdremove(list, [&](MinimapBlue::Unit& p)
+		{
+			return p.id == handle;
+		});
+}
+
+void CGame::MinimapRed::Remove(int handle) {
+	stdremove(list, [&](MinimapRed::Unit& p)
+		{
+			return p.id == handle;
+		});
 }

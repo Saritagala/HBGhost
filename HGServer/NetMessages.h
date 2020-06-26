@@ -4,6 +4,11 @@
 #define DEF_VERSIONPLUSMODIFIER 0 // If the antihack was noy defined don't change any msgid
 #endif
 
+#define MINIMAPBLUE_CLEAR									0x1F34
+#define MINIMAPBLUE_UPDATE									0x1F35
+#define MINIMAPRED_CLEAR									0x1F36
+#define MINIMAPRED_UPDATE									0x1F37
+
 // SQL
 #define MSGID_UPDATECONFIGFILES					0x0FA40005
 #define MSGID_ADMINSETTINGSCONFIGURATIONCONTENTS	0x0FA314D3

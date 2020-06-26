@@ -39,9 +39,12 @@ void Team::TeamTimer()
 		{
 			endcount++;
 
-			if (endcount == 20)
+			if (endcount == 10)
 			{
 				DisableEvent();
+
+				bteam = false;
+				g->NotifyEvents();
 			}
 		}
 
@@ -67,17 +70,11 @@ void Team::Join(int client)
 
 	if (!p->IsTeamPlayer())
 	{
-		std::ofstream outfile;
-		outfile.open("GameConfigs\\team.csv", std::ios_base::app);
-		outfile << p->m_cCharName;
-		outfile << ",";
-		outfile.close();
 
 		if (iteam == 3) iteam = -1;
 		iteam++;
 		p->iteam = iteam;
 
-		UpdateTeamFile();
 	}
 
 	switch (iteam)
@@ -272,24 +269,9 @@ void Team::Reward(int iteam)
 	}
 }
 
-void Team::UpdateTeamFile()
-{
-	m_team.clear();
-	ifstream file("GameConfigs\\team.csv");
-	if (!file.is_open()) {
-		return;
-	}
-
-	string line;
-	while (getline(file, line, ';')) {
-		m_team.push_back(line);
-	}
-}
-
 void Team::EnableEvent()
 {
 	auto g = G_pGame;
-
 	bend = false;
 	endcount = 0;
 	pjoin = 0;
@@ -300,23 +282,18 @@ void Team::EnableEvent()
 		//team[i].maxkills = 200;
 	}
 
-	g->RemoveFile("GameConfigs\\team.csv");
-	ofstream outputFile("GameConfigs\\team.csv");
-	outputFile.close();
-	UpdateTeamFile();
-
 	for (int i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		auto pi = g->m_pClientList[i];
 		if (!pi) continue;
 		g->SendAlertMsg(i, "Event Team Arena Enabled");
 	}
+	
 }
 
 void Team::DisableEvent()
 {
 	auto g = G_pGame;
-
 	bend = false;
 	endcount = 0;
 	pjoin = 0;
@@ -326,17 +303,13 @@ void Team::DisableEvent()
 		team[i].kills = 0;
 	}
 
-	g->RemoveFile("GameConfigs\\team.csv");
-	ofstream outputFile("GameConfigs\\team.csv");
-	outputFile.close();
-	UpdateTeamFile();
-
 	for (int i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		auto pi = g->m_pClientList[i];
 		if (!pi) continue;
 		g->SendAlertMsg(i, "Event Team Arena Disabled");
 	}
+	
 }
 
 void Team::CreateCape(int client, char* itemname, char color)

@@ -3,6 +3,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "Item.h"
+#include <string>
+#include "team.h"
+using namespace std;
+extern class Team* c_team;
 
 extern void PutLogList(char* cMsg);
 extern char G_cTxt[512];
@@ -1771,7 +1775,7 @@ void CGame::SetExchangeItem(int iClientH, int iItemIndex, int iAmount)
 	if (m_pClientList[iClientH]->m_iExchangeCount > 8) return;	//only 4 items trade
 
 	//no admin trade
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) {
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) {
 		_ClearExchangeStatus(m_pClientList[iClientH]->m_iExchangeH);
 		_ClearExchangeStatus(iClientH);
 	}
@@ -1847,7 +1851,7 @@ void CGame::ConfirmExchangeItem(int iClientH)
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == TRUE) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 
 	if ((m_pClientList[iClientH]->m_bIsExchangeMode == TRUE) && (m_pClientList[iClientH]->m_iExchangeH != NULL)) {
 		iExH = m_pClientList[iClientH]->m_iExchangeH;
@@ -2074,7 +2078,7 @@ void CGame::ExchangeItemHandler(int iClientH, short sItemIndex, int iAmount, sho
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount < iAmount) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == TRUE) return;
@@ -2087,7 +2091,7 @@ void CGame::ExchangeItemHandler(int iClientH, short sItemIndex, int iAmount, sho
 
 	if ((sOwnerH != NULL) && (cOwnerType == DEF_OWNERTYPE_PLAYER)) {
 
-		if ((m_bAdminSecurity == TRUE) && (m_pClientList[sOwnerH]->m_iAdminUserLevel > 0)) return;
+		if ((m_bAdminSecurity == TRUE) && (m_pClientList[sOwnerH]->m_iAdminUserLevel > 0 && m_pClientList[sOwnerH]->m_iAdminUserLevel < 4)) return;
 
 		// v1.4 �ְ��� �� ��ü�� �´��� �Ǵ��Ѵ�.
 		if (wObjectID != NULL) {
@@ -3540,18 +3544,6 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
-
-	if (m_pClientList[iClientH]->IsInsideTeam())
-	{
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Cape") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Cape+1") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Shoes") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "LongBoots") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "AresdenHeroCape") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "ElvineHeroCape") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "AresdenHeroCape+1") return;
-		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "ElvineHeroCape+1") return;
-	}
 
 	if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE) ||
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_EAT)) {
@@ -5517,7 +5509,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == TRUE) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
@@ -7196,11 +7188,14 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == TRUE) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 	if ((iAmount != -1) && (iAmount < 0)) return;
+
+	if (m_pClientList[iClientH]->IsInMap("team"))
+		return;
 
 	// Amount°¡ -1ÀÌ°í ¼Ò¸ðÇ°ÀÌ¸é ¼ö·®ÀÇ ÀüºÎ¸¦ ¶³¾î¶ß¸°´Ù.
 	if (((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_CONSUME) ||
@@ -8421,7 +8416,7 @@ void CGame::_PenaltyItemDrop(int iClientH, int iTotal, BOOL bIsSAattacked)
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 
 	// kazin
-	if (_drop_inhib)
+	if (_drop_inhib || m_pClientList[iClientH]->IsInMap("team"))
 		return;
 
 	// SNOOPY: Lucky effect will prevent drops,  even of a ZEM.

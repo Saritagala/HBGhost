@@ -5581,6 +5581,18 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	bp = (bool*)cp;
 	_drop_inhib = *bp;
 	cp ++;
+
+	bp = (bool*)cp;
+	_team_arena = *bp;
+	cp++;
+
+	bp = (bool*)cp;
+	bShinning = *bp;
+	cp++;
+
+	ip = (int*)cp;
+	m_iAdminUserLevel = *ip;
+	cp += 4;
 }
 
 
@@ -19223,7 +19235,7 @@ void CGame::DlgBoxClick_ItemDrop(short msX, short msY)
 
 	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
 	{
-	    m_stDialogBoxInfo[4].cMode = 3;
+		m_stDialogBoxInfo[4].cMode = 3;
         bSendCommand(MSGID_COMMAND_COMMON,
                      DEF_COMMONTYPE_ITEMDROP,
                      NULL,
@@ -23436,9 +23448,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 		
 		break;
 
-	// VAMP - online users list
 	case 81://'Q'
-		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
+		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) && (m_iAdminUserLevel > 0))
 		{
 			if (m_bIsDialogEnabled[56] == FALSE)
 				EnableDialogBox(56, NULL, NULL, NULL);
@@ -25031,62 +25042,6 @@ void CGame::NotifyMsgHandler(char * pData)
 		AddEventList( "You are recalled by force, because the Apocalypse is started.", 10 );
 		break;
 
-		//50Cent - Capture The Flag
-	case DEF_NOTIFY_CAPTURETHEFLAGSTART:
-		m_bIsCTFMode = true;
-		SetTopMsg("Capture The Flag Event has started!", 10);
-		break;
-	case DEF_NOTIFY_ARESDENCAPTUREDELVINEFLAG:
-		m_bIsElvineFlagStatus = false;
-		SetTopMsg("Aresden Captured Elvine Flag!", 10);
-		break;
-	case DEF_NOTIFY_ELVINECAPTUREDARESDENFLAG:
-		m_bIsAresdenFlagStatus = false;
-		SetTopMsg("Elvine Captured Aresden Flag!", 10);
-		break;
-	case DEF_NOTIFY_ELVINEFLAGBACKTOCH:
-		m_bIsElvineFlagStatus = true;
-		SetTopMsg("Elvine Flag Back to Base!", 10);
-		break;
-	case DEF_NOTIFY_ARESDENFLAGBACKTOCH:
-		m_bIsAresdenFlagStatus = true;
-		SetTopMsg("Aresden Flag Back to Base!", 10);
-		break;
-	case DEF_NOTIFY_ELVINEWINSROUND:
-		m_sElvineFlagCount++;
-		m_bIsAresdenFlagStatus = true;
-		SetTopMsg("Elvine wins this Round!", 10);
-		break;
-	case DEF_NOTIFY_ARESDENWINSROUND:
-		m_sAresdenFlagCount++;
-		m_bIsElvineFlagStatus = true;
-		SetTopMsg("Aresden wins this Round!", 10);
-		break;
-	case DEF_NOTIFY_ELVINEWINCTF:
-		m_bIsCTFMode = false;
-		m_sElvineFlagCount = 0;
-		m_sAresdenFlagCount = 0;
-		m_bIsElvineFlagStatus = true;
-		m_bIsAresdenFlagStatus = true;
-		SetTopMsg("Elvine wins Capture The Flag Event!", 10);
-		break;
-	case DEF_NOTIFY_ARESDENWINCTF:
-		m_bIsCTFMode = false;
-		m_sElvineFlagCount = 0;
-		m_sAresdenFlagCount = 0;
-		m_bIsElvineFlagStatus = true;
-		m_bIsAresdenFlagStatus = true;
-		SetTopMsg("Aresden wins Capture The Flag Event!", 10);
-		break;
-	case DEF_NOTIFY_TIECTF:
-		m_bIsCTFMode = false;
-		m_sElvineFlagCount = 0;
-		m_sAresdenFlagCount = 0;
-		m_bIsElvineFlagStatus = true;
-		m_bIsAresdenFlagStatus = true;
-		SetTopMsg("Capture The Flag Event ended in a tie.", 10);
-		break;
-
 	case DEF_NOTIFY_ABADDONKILLED: // Snoopy ;  Case BD6 of switch 00454077
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		ZeroMemory(cTxt, sizeof(cTxt));
@@ -25171,7 +25126,6 @@ void CGame::NotifyMsgHandler(char * pData)
 		strcpy(cTemp, cp);
 		PlaySound('E', 25, 0, 0);
 		SetTopMsg(cTemp, 5);
-		_team_arena = !_team_arena;
 		break;
 
 
@@ -25184,6 +25138,21 @@ void CGame::NotifyMsgHandler(char * pData)
 		ItemEquipHandler(t1);
 		break;
 	
+	case MINIMAPBLUE_CLEAR:
+		minimapblue_clear(pData + 6);
+		break;
+
+	case MINIMAPBLUE_UPDATE:
+		minimapblue_update(pData + 6);
+		break;
+
+	case MINIMAPRED_CLEAR:
+		minimapred_clear(pData + 6);
+		break;
+
+	case MINIMAPRED_UPDATE:
+		minimapred_update(pData + 6);
+		break;
 
 	case DEF_NOTIFY_TEAMARENA: // Case BEC of switch 00454077
 		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -27375,9 +27344,18 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 
 	for (i = 0; i < DEF_MAXITEMS; i++) {
 		if ((m_pItemList[i] != NULL) && (m_bIsItemEquipped[i] == TRUE))	cEquipPoiStatus[ m_pItemList[i]->m_cEquipPos ] = i;
+		
+		if (strcmp(m_cMapName, "team") == 0)
+		{
+			if ((m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_BACK) || (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_BOOTS))
+			{
+				return;
+			}
+		}
 	}
 	if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
 	{
+
 		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
 			sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
 			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
@@ -27624,7 +27602,8 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 	GetPlayerTurn();
 
 	//Magn0S:: Add to double click in map and Auto-TP
-	if ((strcmp(m_cPlayerName, "Magn0S[GM]") == 0) || (strcmp(m_cPlayerName, "Centuu[GM]") == 0) || (strcmp(m_cPlayerName, "[GM1]") == 0)) {
+	//if ((strcmp(m_cPlayerName, "Magn0S[GM]") == 0) || (strcmp(m_cPlayerName, "Centuu[GM]") == 0) || (strcmp(m_cPlayerName, "[GM1]") == 0)) {
+	if (m_iAdminUserLevel > 0) {
 		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 29, shX, shY, m_cMapName);
 	}
 }
@@ -28781,7 +28760,13 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 	}else if (strcmp(pMapName, "arebrk11") == 0)
 	{	strcpy(pName, "Barracks");	// Aresden Barrack 1
 		return -1;
-	}else if (strcmp(pMapName, "arebrk12") == 0)
+	}
+	else if (strcmp(pMapName, "team") == 0)
+	{
+		strcpy(pName, "Team Arena");
+		return -1;
+	}
+	else if (strcmp(pMapName, "arebrk12") == 0)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME5);	// Aresden Barrack 1
 		return -1;
 	}else if (strcmp(pMapName, "arebrk21") == 0)
@@ -31557,26 +31542,6 @@ void CGame::UpdateScreen_OnGame()
 		PutString(10, 240, G_cTxt, RGB(255, 255, 255));
 	}
 
-	//50Cent - Capture The Flag
-	if (iUpdateRet != 0 && m_bIsCTFMode)
-	{
-		wsprintf(G_cTxt, "Elvine flags: %d", m_sElvineFlagCount);
-		PutString(10, 140, G_cTxt, RGB(255, 255, 255));
-		if (m_bIsElvineFlagStatus) PutString(10, 160, "Elvine flag protected", RGB(0, 255, 0));
-		else PutString(10, 160, "Elvine flag captured!", RGB(255, 0, 0));
-
-		wsprintf(G_cTxt, "Aresden flags: %d", m_sAresdenFlagCount);
-		PutString(10, 180, G_cTxt, RGB(255, 255, 255));
-		if (m_bIsAresdenFlagStatus) PutString(10, 200, "Aresden flag protected", RGB(0, 255, 0));
-		else PutString(10, 200, "Aresden flag captured!", RGB(255, 0, 0));
-
-		if (m_bIsElvineFlagStatus) if (memcmp(m_cCurLocation, "elvine", 6) == 0) m_pSprite[DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT + 2]->PutSpriteFast(151 * 32 - m_sViewPointX - 96, 132 * 32 - m_sViewPointY - 69, 5, dwTime); //elvine flag
-		else if (memcmp(m_cCurLocation, "elvine", 6) == 0) m_pSprite[DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT + 2]->PutTransSprite2(151 * 32 - m_sViewPointX - 96, 132 * 32 - m_sViewPointY - 69, 5, dwTime); //elvine flag
-
-		if (m_bIsAresdenFlagStatus) if (memcmp(m_cCurLocation, "aresden", 7) == 0) m_pSprite[DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT + 2]->PutSpriteFast(151 * 32 - m_sViewPointX - 96, 132 * 32 - m_sViewPointY - 69, 1, dwTime); //aresden flag
-		else if (memcmp(m_cCurLocation, "aresden", 7) == 0) m_pSprite[DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT + 2]->PutTransSprite2(151 * 32 - m_sViewPointX - 96, 132 * 32 - m_sViewPointY - 69, 1, dwTime); //aresden flag
-	}
-
 	DrawTopMsg();
 
 #ifdef _DEBUG
@@ -31687,101 +31652,101 @@ void CGame::UpdateScreen_OnGame()
 		if (bDeathmatch)
 		{
 			wsprintf(G_cTxt, "Name");
-			PutAlignedString(500, 535, 104 + resi, G_cTxt, 255, 120, 120);
+			PutAlignedString(10, 45, 104 + resi, G_cTxt, 255, 120, 120); // 10 , 45
 			wsprintf(G_cTxt, "Kills");
-			PutAlignedString(565, 575, 104 + resi, G_cTxt, 255, 120, 120);
+			PutAlignedString(75, 85, 104 + resi, G_cTxt, 255, 120, 120); // 75 , 85
 			wsprintf(G_cTxt, "Deaths");
-			PutAlignedString(600, 610, 104 + resi, G_cTxt, 255, 120, 120);
+			PutAlignedString(110, 120, 104 + resi, G_cTxt, 255, 120, 120); // 110 , 120
 			if (iDGKill1 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName1);
-				PutAlignedString(500, 535, 104 + 14 + resi, G_cTxt, 255, 255, 0);
+				PutAlignedString(10, 45, 104 + 14 + resi, G_cTxt, 255, 255, 0);
 				wsprintf(G_cTxt, "%d", iDGKill1);
-				PutAlignedString(565, 575, 104 + 14 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 104 + 14 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath1);
-				PutAlignedString(600, 610, 104 + 14 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 104 + 14 + resi, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill2 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName2);
-				PutAlignedString(500, 535, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill2);
-				PutAlignedString(565, 575, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath2);
-				PutAlignedString(600, 610, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill3 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName3);
-				PutAlignedString(500, 535, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill3);
-				PutAlignedString(565, 575, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath3);
-				PutAlignedString(600, 610, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill4 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName4);
-				PutAlignedString(500, 535, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill4);
-				PutAlignedString(565, 575, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath4);
-				PutAlignedString(600, 610, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill5 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName5);
-				PutAlignedString(500, 535, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill5);
-				PutAlignedString(565, 575, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath5);
-				PutAlignedString(600, 610, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
 			}
 
 			if (m_bCtrlPressed)
 			{
 				if (iDGKill6 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName6);
-					PutAlignedString(500, 535, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill6);
-					PutAlignedString(565, 575, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath6);
-					PutAlignedString(600, 610, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill7 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName7);
-					PutAlignedString(500, 535, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill7);
-					PutAlignedString(565, 575, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath7);
-					PutAlignedString(600, 610, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill8 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName8);
-					PutAlignedString(500, 535, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill8);
-					PutAlignedString(565, 575, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath8);
-					PutAlignedString(600, 610, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill9 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName9);
-					PutAlignedString(500, 535, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill9);
-					PutAlignedString(565, 575, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath9);
-					PutAlignedString(600, 610, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill10 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName10);
-					PutAlignedString(500, 535, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill10);
-					PutAlignedString(565, 575, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath10);
-					PutAlignedString(600, 610, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
 				}
 			}
 		}
@@ -31797,13 +31762,13 @@ void CGame::UpdateScreen_OnGame()
 	}
 
 	// centu - al estar sobrecargado no puede correr !
-	if ((_iCalcTotalWeight() / 100) == (((m_iStr + m_iAngelicStr) * 5) + (m_iLevel) * 5)) {
+	/*if ((_iCalcTotalWeight() / 100) == (((m_iStr + m_iAngelicStr) * 5) + (m_iLevel) * 5)) {
 		if (m_bRunningMode) {
 			m_bRunningMode = FALSE;
 			AddEventList(NOTIFY_MSG_CONVERT_WALKING_MODE, 10);
 			AddEventList("You're carrying too much to run!", 10);
 		}
-	}
+	}*/
 
 	if (iUpdateRet == 0) m_sFrameCount++;
 	else m_sFrameCount += 256;
@@ -31863,31 +31828,32 @@ void CGame::UpdateScreen_OnGame()
 		}
 
 		if (strcmp(m_cMapName, "team") == 0) {
+			if (m_bIsDialogEnabled[9]) m_bIsDialogEnabled[9] = FALSE;
 			wsprintf(G_cTxt, "Team");
-			PutString(480, 165, G_cTxt, RGB(220, 200, 200));
+			PutString(10, 165, G_cTxt, RGB(220, 200, 200));
 			wsprintf(G_cTxt, "Red");
-			PutString(480, 180, G_cTxt, RGB(255, 0, 9));
+			PutString(10, 180, G_cTxt, RGB(255, 0, 9));
 			wsprintf(G_cTxt, "Blue");
-			PutString(480, 195, G_cTxt, RGB(61, 100, 255));
+			PutString(10, 195, G_cTxt, RGB(61, 100, 255));
 			wsprintf(G_cTxt, "Green");
-			PutString(480, 210, G_cTxt, RGB(51, 204, 0));
+			PutString(10, 210, G_cTxt, RGB(51, 204, 0));
 			wsprintf(G_cTxt, "Yellow");
-			PutString(480, 225, G_cTxt, RGB(255, 255, 0));
+			PutString(10, 225, G_cTxt, RGB(255, 255, 0));
 
 			wsprintf(G_cTxt, "Kills");
-			PutString(540, 165, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 165, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", redkills);
-			PutString(540, 180, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 180, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", bluekills);
-			PutString(540, 195, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 195, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", greenkills);
-			PutString(540, 210, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 210, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", yellowkills);
-			PutString(540, 225, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 225, G_cTxt, RGB(220, 200, 200));
 		}
 
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();

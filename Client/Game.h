@@ -22,6 +22,12 @@
 #include <process.h>
 #include <direct.h>
 #include <tlhelp32.h>
+#include <fstream>
+#include <iostream>
+#include <iosfwd>
+#include <vector>
+#include <sstream>
+using namespace std;
 
 #include "GlobalDef.h"
 #include "DXC_ddraw.h"
@@ -146,6 +152,8 @@
 class CGame
 {
 public:
+
+	int m_iAdminUserLevel = 0;
 
 	void NotifyEvents(char* pData);
 	bool _candy_boost, _revelation, _city_teleport, _drop_inhib, _team_arena = false;
@@ -641,10 +649,63 @@ public:
 
 	//50Cent - Capture The Flag
 	BOOL m_bIsCTFMode;
-	short m_sElvineFlagCount;
-	short m_sAresdenFlagCount;
-	BOOL m_bIsElvineFlagStatus;
-	BOOL m_bIsAresdenFlagStatus;
+
+	bool bShinning;
+	void minimapblue_update(char* cp);
+	void minimapblue_clear(char* cp);
+	void minimapred_update(char* cp);
+	void minimapred_clear(char* cp);
+
+	class Minimap {
+	public:
+		Minimap() {}
+		~Minimap() {}
+
+		struct Unit {
+			Unit() {}
+			short x, y;
+			int id;
+			DWORD time;
+		};
+
+		std::vector<Unit> list;
+		void Clear();
+		void Remove(int handle);
+	} m_minimap;
+
+	class MinimapBlue {
+	public:
+		MinimapBlue() {}
+		~MinimapBlue() {}
+
+		struct Unit {
+			Unit() {}
+			short x, y;
+			int id;
+			DWORD time;
+		};
+
+		std::vector<Unit> list;
+		void Clear();
+		void Remove(int handle);
+	} m_minimapblue;
+
+	class MinimapRed {
+	public:
+		MinimapRed() {}
+		~MinimapRed() {}
+
+		struct Unit {
+			Unit() {}
+			short x, y;
+			int id;
+			DWORD time;
+		};
+
+		std::vector<Unit> list;
+		void Clear();
+		void Remove(int handle);
+	} m_minimapred;
 
 	char m_cFriends[13][10];
 	int m_iTotalFriends;

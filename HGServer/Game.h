@@ -102,7 +102,6 @@ public:
 
 	void SendAlertMsg(int client, char* pMsg);
 
-	void RemoveFile(char* name);
 	void SendLoginData(int client);
 
 	void NotifyEvents();
@@ -113,8 +112,6 @@ public:
 	void AdminOrder_SetObserverMode(int iClientH);
 
 	void CalcExpStock(int iClientH);
-
-	void CheckDenialServiceAttack(int iClientH, DWORD dwClientTime);
 
 	//50Cent - Repair All
 	void RequestRepairAllItemsHandler(int iClientH);
@@ -1015,6 +1012,11 @@ public:
 	BOOL m_bEnemyKillMode;
 	int m_iEnemyKillAdjust, m_iRatingAdjust;
 	BOOL m_bAdminSecurity;
+
+	bool bShinning = false;
+	void ManageShinning();
+	void minimap_clear(int client);
+	void minimap_update(int client);
 	
 	// Configurable Raid Time 
 	short m_sRaidTimeMonday; 
