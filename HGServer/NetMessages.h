@@ -19,6 +19,12 @@
 
 #define MSGID_REQUEST_SETTRAP		0x0BFB
 
+#define NOTIFYMSG										    0x0C56
+
+#define MSGID_EVENTS			0x002071
+
+#define DEF_NOTIFY_TEAMARENA			0x0BEE
+
 //News Addons - ZeroEoyPnk
 #define DEF_SEND_PARTYCOORDS				0x1F07
 #define DEF_SEND_PARTYHP					0x1F08
@@ -68,7 +74,7 @@
 #define	DEF_NOTIFY_HELDENIANCOUNT			0x0BEC
 #define DEF_NOTIFY_HELDENIANEND				0x0BE7
 
-
+#define NOTIFY_EQUIPITEM2								0x0B99D 
 
 // NetMessages.h
 

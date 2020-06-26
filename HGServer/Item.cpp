@@ -57,6 +57,9 @@ CItem::CItem()
 	m_sIDnum    = 0;
 
 	m_bIsForSale = FALSE;
+
+	teamcape = false;
+	teamboots = false;
 }
 
 CItem::~CItem()
@@ -3538,6 +3541,17 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 
+	if (m_pClientList[iClientH]->IsInsideTeam())
+	{
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Cape") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Cape+1") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Shoes") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "LongBoots") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "AresdenHeroCape") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "ElvineHeroCape") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "AresdenHeroCape+1") return;
+		if (string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "ElvineHeroCape+1") return;
+	}
 
 	if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE) ||
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_EAT)) {
@@ -8405,6 +8419,10 @@ void CGame::_PenaltyItemDrop(int iClientH, int iTotal, BOOL bIsSAattacked)
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+
+	// kazin
+	if (_drop_inhib)
+		return;
 
 	// SNOOPY: Lucky effect will prevent drops,  even of a ZEM.
 	if ((m_pClientList[iClientH]->m_bIsLuckyEffect > 0) && ((iDice(1, 100) <= m_pClientList[iClientH]->m_bIsLuckyEffect)))

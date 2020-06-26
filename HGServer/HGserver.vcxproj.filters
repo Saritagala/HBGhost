@@ -132,6 +132,7 @@
     <ClInclude Include="CaptureTheFlag.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="Team.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuildItem.cpp">
@@ -233,6 +234,7 @@
     <ClCompile Include="Game2.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="Team.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="Winmm.lib" />

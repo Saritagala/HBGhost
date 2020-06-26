@@ -17,10 +17,35 @@
 #include "GuildsMan.h"
 #include "Magic.h"
 #include "GlobalDef.h"
+#include <string>
+using namespace std;
 
 class CClient  
 {
 public:
+
+	int GetItemCount()
+	{
+		int t = 0;
+		for (int i = 0; i < DEF_MAXITEMS; i++)
+		{
+			if (m_pItemList[i])
+				t++;
+		}
+
+		return t;
+	}
+
+	bool IsInMap(char* mapname);
+	bool IsLocation(char* location);
+	bool IsInsideTeam();
+	bool IsTeamPlayer();
+
+	int iteam, stoptime;
+
+	void Send(int h, WORD msg, DWORD sV1 = 0, DWORD sV2 = 0, DWORD sV3 = 0,
+		char* pString = 0, DWORD sV4 = 0, DWORD sV5 = 0,
+		DWORD sV6 = 0, DWORD sV7 = 0, DWORD sV8 = 0, DWORD sV9 = 0, char* pString2 = 0);
 	
 	int  m_iAngelicStr; // By Snoopy81
 	int  m_iAngelicInt; // By Snoopy81

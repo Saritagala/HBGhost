@@ -60,6 +60,13 @@ warning C4700: local variable 'i' used without having been initialized
 #include "Apocalypse.h"
 #include "Crusade.h"
 
+// Time
+#define _ms					_s / 1000
+#define _s					* CLOCKS_PER_SEC
+#define _m					_s * 60
+#define _h					_m * 60
+#define _d					_h * 24
+
 class CGame
 {
 
@@ -91,7 +98,15 @@ public:
 
 	class CMap* m_pMapList[DEF_MAXMAPS];
 
-private:
+//private:
+
+	void SendAlertMsg(int client, char* pMsg);
+
+	void RemoveFile(char* name);
+	void SendLoginData(int client);
+
+	void NotifyEvents();
+	bool _candy_boost = false, _revelation = false, _city_teleport = false, _drop_inhib = false;
 
 	void RequestSetTrapHandler(int iClientH, char* pData);
 
@@ -533,7 +548,7 @@ private:
 	BOOL _bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize);
 	void ReleaseFollowMode(short sOwnerH);
 	BOOL bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerType);
-	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1);
+	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1, bool deleteteam = false);
 	void PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect = FALSE, int iV1 = NULL, BOOL bIgnoreOwnerLimits = FALSE);
 	int  iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cDir);
 	void SendMsgToGateServer(DWORD dwMsg, int iClientH, char* pData = NULL);

@@ -29,6 +29,7 @@ account-Answer   = Perro
 account-created-by = 
 
 [CHARACTERS]
+account-character  = bauti
 account-character  = Testin
 account-character  = Centuu
 

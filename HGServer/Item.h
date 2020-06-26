@@ -70,7 +70,7 @@ public:
 										// e: 특수 아이템 추가 성질 Flag
 										// f: 특수 아이템 추가 성질 정도 
 										 
-
+	bool teamcape, teamboots;
 };
 
 /*

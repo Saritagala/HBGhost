@@ -2504,6 +2504,11 @@ void CGame::GameRecvMsgHandler(DWORD dwMsgSize, char * pData)
 	dwpMsgID = (DWORD *)(pData + DEF_INDEX4_MSGID);
 	switch (*dwpMsgID) {
 
+	// kazin
+	case MSGID_EVENTS:
+		NotifyEvents(pData);
+		break;
+
 	case MSGID_RESPONSE_PING:
 		cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
         dwp = (DWORD *)cp;
@@ -5450,6 +5455,7 @@ void CGame::InitPlayerCharacteristics(char * pData)
 {int  * ip;
  char * cp;
  WORD * wp;
+ bool* bp;
  unsigned long long* lp;
 	// Snoopy: Angels
 	m_iAngelicStr = 0;
@@ -5555,11 +5561,26 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	ip   = (int *)cp;
 	m_iGuildRank = *ip;
 	cp += 4;
-	m_iSuperAttackLeft = (int)*cp;
-	cp++;
 	ip   = (int *)cp;
-	m_iFightzoneNumber = *ip;
+	m_iSuperAttackLeft = *ip;
 	cp += 4;
+
+	// kazin
+	bp = (bool*)cp;
+	_candy_boost = *bp;
+	cp ++;
+
+	bp = (bool*)cp;
+	_revelation = *bp;
+	cp ++;
+
+	bp = (bool*)cp;
+	_city_teleport = *bp;
+	cp ++;
+
+	bp = (bool*)cp;
+	_drop_inhib = *bp;
+	cp ++;
 }
 
 
@@ -8543,6 +8564,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInvy = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInvy = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInvy = TRUE;
+		else if (_revelation) bInvy = TRUE;
 		else return FALSE;
 	}
 	switch (_tmp_sOwnerType) {
@@ -9059,6 +9081,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
  		else return FALSE;
 	}
 
@@ -9806,6 +9829,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
 		else return FALSE;
 	}
 
@@ -10043,6 +10067,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
 		else return FALSE;
 	}
 	cFrame = _tmp_cFrame;
@@ -11455,6 +11480,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
 		else return FALSE;
 	}
 
@@ -12104,6 +12130,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
 		else return FALSE;
 	}
 	cDir = _tmp_cDir;
@@ -12880,6 +12907,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; // beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
 		else return FALSE;
 	}
 
@@ -23648,6 +23676,20 @@ void CGame::OnKeyUp(WPARAM wParam)
 			return;
 		}
 
+		// kazin
+		if (_candy_boost)
+		{
+			for (i = 0; i < DEF_MAXITEMS; i++)
+				if ((m_pItemList[i] != NULL) && (m_bIsItemDisabled[i] != TRUE) &&
+					(std::string(m_pItemList[i]->m_cName) == "RedCandy"))
+				{
+					bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USEITEM, NULL, i, NULL, NULL, NULL);
+					m_bIsItemDisabled[i] = TRUE;
+					m_bItemUsingStatus = TRUE;
+					return;
+				}
+		}
+
 		for (i = 0; i < DEF_MAXITEMS; i++)
 		if ( (m_pItemList[i] != NULL) && (m_bIsItemDisabled[i] != TRUE) &&
 			 (m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 1 || m_pItemList[i]->m_sSpriteFrame == 2 ))
@@ -23671,6 +23713,20 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if (m_bIsDialogEnabled[27] == TRUE)
 		{	AddEventList(USED_POTION, 10);
 			return;
+		}
+
+		// kazin
+		if (_candy_boost)
+		{
+			for (i = 0; i < DEF_MAXITEMS; i++)
+				if ((m_pItemList[i] != NULL) && (m_bIsItemDisabled[i] != TRUE) &&
+					(std::string(m_pItemList[i]->m_cName) == "BlueCandy"))
+				{
+					bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USEITEM, NULL, i, NULL, NULL, NULL);
+					m_bIsItemDisabled[i] = TRUE;
+					m_bItemUsingStatus = TRUE;
+					return;
+				}
 		}
 
 		for (i = 0; i < DEF_MAXITEMS; i++)
@@ -25106,6 +25162,47 @@ void CGame::NotifyMsgHandler(char * pData)
 		ip  = (int *)cp;
 		m_iHeldenianElvineDead = *ip;
 		cp+=4;
+
+		break;
+
+	case NOTIFYMSG:
+		ZeroMemory(cTemp, sizeof(cTemp));
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		strcpy(cTemp, cp);
+		PlaySound('E', 25, 0, 0);
+		SetTopMsg(cTemp, 5);
+		_team_arena = !_team_arena;
+		break;
+
+
+	case NOTIFY_EQUIPITEM2:
+		char* t, t1;
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		t = (char*)cp;
+		t1 = *t;
+		cp += 1;
+		ItemEquipHandler(t1);
+		break;
+	
+
+	case DEF_NOTIFY_TEAMARENA: // Case BEC of switch 00454077
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+		sp = (short*)cp;
+		redkills = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		bluekills = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		greenkills = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		yellowkills = *sp;
+		cp += 2;
 
 		break;
 
@@ -28216,21 +28313,43 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	ZeroMemory(cTxt, sizeof(cTxt));
 	ZeroMemory(cTxt2, sizeof(cTxt2));
 
-	if (m_iIlusionOwnerH == NULL)
-	{	if (m_bIsCrusadeMode == FALSE) wsprintf(cTxt, "%s", pName);
-		else
-		{	if (_tmp_wObjectID >= 10000) strcpy(cTxt, NPC_NAME_MERCENARY); //"Mercenary"
+	if (strcmp(m_cMapName, "team") != 0) {
+		if (m_iIlusionOwnerH == NULL)
+		{
+			if (m_bIsCrusadeMode == FALSE) wsprintf(cTxt, "%s", pName);
 			else
-			{	if( iFOE == -1 ) wsprintf(cTxt, "%d", _tmp_wObjectID);
-				else strcpy(cTxt, pName);
-		}	}
-		if (m_iPartyStatus != NULL)
-		{	for (i = 0; i < DEF_MAXPARTYMEMBERS; i++)
-			{	if (strcmp(m_stPartyMemberNameList[i].cName, pName) == 0)
-				{	strcat(cTxt, " (Party Member)"); // ", Party Member"
-					break;
-		}	}	}
-	}else strcpy(cTxt, "?????");
+			{
+				if (_tmp_wObjectID >= 10000) strcpy(cTxt, NPC_NAME_MERCENARY); //"Mercenary"
+				else
+				{
+					if (iFOE == -1) wsprintf(cTxt, "%d", _tmp_wObjectID);
+					else strcpy(cTxt, pName);
+				}
+			}
+			if (m_iPartyStatus != NULL)
+			{
+				for (i = 0; i < DEF_MAXPARTYMEMBERS; i++)
+				{
+					if (strcmp(m_stPartyMemberNameList[i].cName, pName) == 0)
+					{
+						strcat(cTxt, " (Party Member)"); // ", Party Member"
+						break;
+					}
+				}
+			}
+		}
+		else strcpy(cTxt, "?????");
+	}
+
+	if (strcmp(m_cMapName, "team") == 0) {
+		strcpy(cTxt, "?????");
+		PutString2(sX, sY, cTxt, 255, 255, 255);
+		ZeroMemory(cTxt, sizeof(cTxt));
+		strcpy(cTxt, "(Enemy)");
+		PutString2(sX, sY + 14 + iAddY, cTxt, 255, 0, 9);
+		ZeroMemory(cTxt, sizeof(cTxt));
+		return;
+	}
 
 	if ((iStatus & 0x20) != 0) strcat(cTxt, " (Berserked)");//" Berserk"
 	if ((iStatus & 0x40) != 0) strcat(cTxt, " (Frozen)");//" Frozen"
@@ -31742,6 +31861,35 @@ void CGame::UpdateScreen_OnGame()
 			PutString(10, 567, G_cTxt, RGB(255, 255, 255));
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		}
+
+		if (strcmp(m_cMapName, "team") == 0) {
+			wsprintf(G_cTxt, "Team");
+			PutString(480, 165, G_cTxt, RGB(220, 200, 200));
+			wsprintf(G_cTxt, "Red");
+			PutString(480, 180, G_cTxt, RGB(255, 0, 9));
+			wsprintf(G_cTxt, "Blue");
+			PutString(480, 195, G_cTxt, RGB(61, 100, 255));
+			wsprintf(G_cTxt, "Green");
+			PutString(480, 210, G_cTxt, RGB(51, 204, 0));
+			wsprintf(G_cTxt, "Yellow");
+			PutString(480, 225, G_cTxt, RGB(255, 255, 0));
+
+			wsprintf(G_cTxt, "Kills");
+			PutString(540, 165, G_cTxt, RGB(220, 200, 200));
+
+			wsprintf(G_cTxt, "%d/200", redkills);
+			PutString(540, 180, G_cTxt, RGB(220, 200, 200));
+
+			wsprintf(G_cTxt, "%d/200", bluekills);
+			PutString(540, 195, G_cTxt, RGB(220, 200, 200));
+
+			wsprintf(G_cTxt, "%d/200", greenkills);
+			PutString(540, 210, G_cTxt, RGB(220, 200, 200));
+
+			wsprintf(G_cTxt, "%d/200", yellowkills);
+			PutString(540, 225, G_cTxt, RGB(220, 200, 200));
+		}
+
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
 	}
 

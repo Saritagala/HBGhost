@@ -3033,6 +3033,10 @@ void CGame::UseMagic(int iMagicNo)
 	if (iMagicNo < 0 || iMagicNo >= 100) return;
 	if ((m_cMagicMastery[iMagicNo] == NULL) || (m_pMagicCfgList[iMagicNo] == NULL)) return;
 
+	if (strcmp(m_cMapName, "team") == 0) {
+		if (iMagicNo == 12) return;
+	}
+
 	// Casting
 	if (m_iHP <= 0) return;
 	if (m_bIsGetPointingMode == TRUE) return;
@@ -4989,6 +4993,35 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 
+		// kazin
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/candyboost");
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/revelation");
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/cityteleport");
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/dropinhib");
+			PlaySound('E', 14, 5);
+		}
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/team");
+			PlaySound('E', 14, 5);
+		}
+
 		//Back
 		if ((msX > sX + 220) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
 			m_stDialogBoxInfo[56].cMode = 0; // Return to Game Adm
@@ -5866,7 +5899,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY)
 
 		PutString_SprFont3(sX + 65, sY + 50, "Event Manager", 200, 250, 2);
 		iNext += 2;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "Gladiator Arena:", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Gladiator Arena", 255, 255, 255);
 		if (!bDeathmatch) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -5900,6 +5933,52 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + 15, sY + iNext * 17 + 45, "Capture the Flag", 255, 255, 255);
 		if (!m_bIsCTFMode) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		// kazin
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Candy Boost", 255, 255, 255);
+		if (!_candy_boost) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Revelation", 255, 255, 255);
+		if (!_revelation) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "City Teleport", 255, 255, 255);
+		if (!_city_teleport) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Drop Inhibition", 255, 255, 255);
+		if (!_drop_inhib) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Team Arena", 255, 255, 255);
+		if (!_team_arena) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
 		else {
@@ -19599,4 +19678,75 @@ void CGame::DrawDialogBox_SetTrap(short msX, short msY)
 	if ((msX >= sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2) && (msX <= sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2 + DEF_BTNSZX) && (msY >= sY + szy - 25 - DEF_BTNSZY) && (msY <= sY + szy - 25 - DEF_BTNSZY + DEF_BTNSZY))
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2, sY + szy - 25 - DEF_BTNSZY, 17);
 	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + (szx / 2 - DEF_BTNSZX) / 2 + szx / 2, sY + szy - 25 - DEF_BTNSZY, 16);
+}
+
+// kazin
+void CGame::NotifyEvents(char* pData)
+{
+	char* cp;
+	bool* bp;
+
+	bool candy = _candy_boost;
+	bool rev = _revelation;
+	bool tp = _city_teleport;
+	bool drop = _drop_inhib;
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	bp = (bool*)cp;
+	_candy_boost = *bp;
+	cp ++;
+
+	bp = (bool*)cp;
+	_revelation = *bp;
+	cp ++;
+
+	bp = (bool*)cp;
+	_city_teleport = *bp;
+	cp ++;
+
+	bp = (bool*)cp;
+	_drop_inhib = *bp;
+	cp ++;
+
+	// ON
+	if (_candy_boost && !candy)
+	{
+		SetTopMsg("Candy Boost event started", 10);
+	}
+
+	if (_revelation && !rev)
+	{
+		SetTopMsg("Revelation event started", 10);
+	}
+
+	if (_city_teleport && !tp)
+	{
+		SetTopMsg("City Teleport event started", 10);
+	}
+
+	if (_drop_inhib && !drop)
+	{
+		SetTopMsg("Drop Inhibition event started", 10);
+	}
+
+	// OFF
+	if (!_candy_boost && candy)
+	{
+		SetTopMsg("Candy Boost event finished", 10);
+	}
+
+	if (!_revelation && rev)
+	{
+		SetTopMsg("Revelation event finished", 10);
+	}
+
+	if (!_city_teleport && tp)
+	{
+		SetTopMsg("City Teleport event finished", 10);
+	}
+
+	if (!_drop_inhib && drop)
+	{
+		SetTopMsg("Drop Inhibition event finished", 10);
+	}
 }

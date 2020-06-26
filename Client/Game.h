@@ -147,6 +147,11 @@ class CGame
 {
 public:
 
+	void NotifyEvents(char* pData);
+	bool _candy_boost, _revelation, _city_teleport, _drop_inhib, _team_arena = false;
+
+	short redkills, bluekills, greenkills, yellowkills;
+
 	void DlgBoxClick_SetTrap(short msX, short msY);
 	void DrawDialogBox_SetTrap(short msX, short msY);
 

@@ -17,7 +17,7 @@ Team::Team()
 	for (int i = 0; i < 4; i++)
 	{
 		team[i].kills = 0;
-		team[i].maxkills = 100;
+		//team[i].maxkills = 100;
 	}
 }
 
@@ -68,7 +68,7 @@ void Team::Join(int client)
 	if (!p->IsTeamPlayer())
 	{
 		std::ofstream outfile;
-		outfile.open("Csv\\team.csv", std::ios_base::app);
+		outfile.open("GameConfigs\\team.csv", std::ios_base::app);
 		outfile << p->m_cCharName;
 		outfile << ",";
 		outfile.close();
@@ -105,7 +105,7 @@ bool Team::MakeItems(int client, short steam)
 
 	if (p->GetItemCount() > 48)
 	{
-		g->ShowClientMsg(client, "You need 2 space in bag for enter event.");
+		g->ShowClientMsg(client, "You need 2 free space in bag for this event.");
 		return FALSE;
 	}
 
@@ -135,10 +135,11 @@ void Team::Kill(int iattacker, int itarget)
 	att->Send(iattacker, DEF_NOTIFY_ENEMYKILLREWARD, itarget);
 	team[att->iteam].kills++;
 	NotifyPoints();
-	RequestRevive(itarget);
+	//RequestRevive(itarget);
 	End(att->iteam);
 }
 
+/*
 void Team::RequestRevive(int client)
 {
 	auto g = G_pGame;
@@ -197,7 +198,7 @@ void Team::DontRevive(int client)
 	else
 		g->RequestTeleportHandler(client, "2", "aresden", -1, -1, true);
 }
-
+*/
 
 void Team::NotPoints(int client)
 {
@@ -205,11 +206,14 @@ void Team::NotPoints(int client)
 	auto p = g->m_pClientList[client];
 	if (!p) return;
 
-	for (int i = 0; i < 4; i++)
-	{
-		c_cmd->SendCommand(client, "/teamkills", i, team[i].kills, 0, 0);
-		c_cmd->SendCommand(client, "/teammaxkills", team[i].maxkills, 0, 0, 0);
-	}
+	//for (int i = 0; i < 4; i++)
+	//{
+		//c_cmd->SendCommand(client, "/teamkills", i, team[i].kills, 0, 0);
+		//c_cmd->SendCommand(client, "/teammaxkills", team[i].maxkills, 0, 0, 0);
+		G_pGame->SendNotifyMsg(NULL, client, DEF_NOTIFY_TEAMARENA, team[0].kills
+			, team[1].kills, team[2].kills, NULL, team[3].kills
+			, NULL, NULL);
+	//}
 
 }
 
@@ -220,10 +224,13 @@ void Team::NotifyPoints()
 	{
 		auto pi = g->m_pClientList[i];
 		if (!pi) continue;
-		c_cmd->SendCommand(i, "/teamkills", 0, team[0].kills, 0, 0);
+		/*c_cmd->SendCommand(i, "/teamkills", 0, team[0].kills, 0, 0);
 		c_cmd->SendCommand(i, "/teamkills", 1, team[1].kills, 0, 0);
 		c_cmd->SendCommand(i, "/teamkills", 2, team[2].kills, 0, 0);
-		c_cmd->SendCommand(i, "/teamkills", 3, team[3].kills, 0, 0);
+		c_cmd->SendCommand(i, "/teamkills", 3, team[3].kills, 0, 0);*/
+		G_pGame->SendNotifyMsg(NULL, i, DEF_NOTIFY_TEAMARENA, team[0].kills
+			, team[1].kills, team[2].kills, NULL, team[3].kills
+			, NULL, NULL);
 	}
 }
 
@@ -239,10 +246,10 @@ void Team::End(int iteam)
 
 			switch (iteam)
 			{
-			case 0: wsprintf(G_cTxt, "El equipo rojo gano el evento!"); Reward(iteam); break;
-			case 1: wsprintf(G_cTxt, "El equipo azul gano el evento!"); Reward(iteam); break;
-			case 2: wsprintf(G_cTxt, "El equipo verde gano el evento!"); Reward(iteam); break;
-			case 3: wsprintf(G_cTxt, "El equipo amarillo gano el evento!"); Reward(iteam); break;
+			case 0: wsprintf(G_cTxt, "Red Team Wins!"); Reward(iteam); break;
+			case 1: wsprintf(G_cTxt, "Blue Team Wins!"); Reward(iteam); break;
+			case 2: wsprintf(G_cTxt, "Green Team Wins!"); Reward(iteam); break;
+			case 3: wsprintf(G_cTxt, "Yellow Team Wins!"); Reward(iteam); break;
 			}
 
 			g->SendAlertMsg(i, G_cTxt);
@@ -290,7 +297,7 @@ void Team::EnableEvent()
 	for (int i = 0; i < 4; i++)
 	{
 		team[i].kills = 0;
-		team[i].maxkills = 200;
+		//team[i].maxkills = 200;
 	}
 
 	g->RemoveFile("GameConfigs\\team.csv");
@@ -649,7 +656,7 @@ void Team::DeleteCape(int iClientH) {
 		if (!it->teamcape)
 			continue;
 
-		G_pGame->ItemDepleteHandler(iClientH, i, FALSE);
+		G_pGame->ItemDepleteHandler(iClientH, i, FALSE, TRUE);
 	}
 }
 
@@ -666,6 +673,6 @@ void Team::DeleteBoots(int iClientH) {
 		if (!it->teamboots)
 			continue;
 
-		G_pGame->ItemDepleteHandler(iClientH, i, FALSE);
+		G_pGame->ItemDepleteHandler(iClientH, i, FALSE, TRUE);
 	}
 }

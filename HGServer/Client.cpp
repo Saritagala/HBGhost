@@ -3,6 +3,10 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "Client.h"
+#include <string>
+#include "team.h"
+using namespace std;
+extern class Team* c_team;
 
 #pragma warning (disable : 4996 4244)
 
@@ -30,7 +34,7 @@ CClient::CClient(HWND hWnd)
 	m_iGuildGUID = -1;
 	m_bIsInitComplete = FALSE;
 	m_iLU_Pool = 0; // removed
-	
+	iteam = stoptime = 0;
 	m_cWarType = 0;
 	m_iEnemyKillCount = 0;
 	m_iMaxEK = 0;
@@ -344,4 +348,37 @@ int CClient::bCreateNewParty()
 		ZeroMemory(m_stPartyMemberName[i].cName, sizeof(m_stPartyMemberName[i].cName));
 	}
 	return 1;
+}
+
+
+bool CClient::IsInMap(char* mapname)
+{
+	return string(m_cMapName) == mapname;
+}
+
+
+
+bool CClient::IsLocation(char* location)
+{
+	return string(m_cLocation) == location;
+}
+
+bool CClient::IsInsideTeam()
+{
+	return string(m_cMapName) == "team" && c_team->bteam;
+}
+
+bool CClient::IsTeamPlayer()
+{
+	return std::find(c_team->m_team.begin(), c_team->m_team.end(), m_cCharName) != c_team->m_team.end();
+}
+
+
+void CClient::Send(int h, WORD msg, DWORD sV1, DWORD sV2, DWORD sV3,
+	char* pString, DWORD sV4, DWORD sV5,
+	DWORD sV6, DWORD sV7, DWORD sV8, DWORD sV9, char* pString2)
+{
+
+	G_pGame->SendNotifyMsg(NULL, h, msg, sV1, sV2, sV3, pString,
+		sV4, sV5, sV6, sV7, sV8, sV9, pString2);
 }

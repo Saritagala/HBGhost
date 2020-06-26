@@ -3,9 +3,11 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "Game.h"
+#include "Team.h"
 
 class CDebugWindow *DbgWnd;
 class Crusade* CSade;
+class Team* c_team;
 
 extern void PutLogList(char * cMsg);
 extern char G_cTxt[512];
@@ -135,6 +137,7 @@ int ITEMSPREAD_FIEXD_COORD[25][2] =
 CGame::CGame(HWND hWnd)
 {
 	int i, x;
+	c_team = new Team;
 	m_bIsGameServerRegistered = FALSE;
 	ReceivedAllConfig		= FALSE;
 	m_bIsGameStarted = FALSE;
@@ -717,7 +720,17 @@ BOOL CGame::bInit()
 
 	m_dwCleanTime = dwTime;
 
+	RemoveFile("GameConfigs\\team.csv");
+	ofstream outputFile("GameConfigs\\team.csv");
+	outputFile.close();
+	c_team->UpdateTeamFile();
+
 	return TRUE;
+}
+
+void CGame::RemoveFile(char* name)
+{
+	const int result1 = remove(name);
 }
 
 /*********************************************************************************************************************
@@ -1240,6 +1253,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 		return 0;
 	}
 	RefreshPartyCoords(iClientH);
+	m_pClientList[iClientH]->stoptime = 0;
 	return 1;
 }
 
@@ -1373,6 +1387,7 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
  BOOL bIsItemListNull;
  POINT TempItemPosList[DEF_MAXITEMS];
  unsigned long long * lp;
+ bool* bp;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	pBuffer = new char [DEF_MSGBUFFERSIZE+1];
@@ -1510,7 +1525,25 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	*ip  = m_pClientList[iClientH]->m_iSuperAttackLeft;
 	cp  += 4;
 //120
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 120);
+
+	// kazin
+	bp = (bool*)cp;
+	*bp = _candy_boost;
+	cp ++;
+
+	bp = (bool*)cp;
+	*bp = _revelation;
+	cp ++;
+
+	bp = (bool*)cp;
+	*bp = _city_teleport;
+	cp ++;
+
+	bp = (bool*)cp;
+	*bp = _drop_inhib;
+	cp ++;
+
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 124);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -1900,6 +1933,16 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) != 0) && (bDeathmatch))
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_DEATHMATCHSTART, NULL, NULL, NULL, NULL);
+
+	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 10) != 0) && (c_team->bteam))
+		SendAlertMsg(iClientH, "Event Team Arena Enabled");
+
+	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 10) == 0) && (c_team->bteam)) {
+		if (m_pClientList[iClientH]->IsLocation("elvine"))
+			RequestTeleportHandler(iClientH, "2", "elvine", -1, -1, true);
+		else
+			RequestTeleportHandler(iClientH, "2", "aresden", -1, -1, true);
+	}
 
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) && (bDeathmatch))
 	{
@@ -2321,6 +2364,7 @@ void CGame::OnTimer(char cType)
  int i;
 	NpcProcess();
 	MsgProcess();
+	c_team->TeamTimer();
 	if ((dwTime - m_dwGameTime2) > 3000) {
 		CheckClientResponseTime();
 		SendMsgToGateServer(MSGID_GAMESERVERALIVE, NULL, NULL);
@@ -2499,6 +2543,15 @@ void CGame::CheckClientResponseTime()
 				}
 			}
 			else if (m_pClientList[i]->m_bIsInitComplete == TRUE) {
+
+				if (string(m_pClientList[i]->m_cMapName) == "team" && !c_team->bteam)
+				{
+					if (m_pClientList[i]->IsLocation("elvine"))
+						RequestTeleportHandler(i, "2", "elvine", -1, -1, true);
+					else
+						RequestTeleportHandler(i, "2", "aresden", -1, -1, true);
+				}
+
 				m_pClientList[i]->m_iTimeLeft_ShutUp--;
 				if (m_pClientList[i]->m_iTimeLeft_ShutUp < 0) m_pClientList[i]->m_iTimeLeft_ShutUp = 0;
 				m_pClientList[i]->m_iTimeLeft_Rating--;
@@ -5556,6 +5609,18 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				cReadModeA = 0;
 				break;
 
+			case 92:
+				if (_bGetIsStringIsNumber(token) == FALSE) {
+					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
+					PutLogList(cTxt);
+					delete pContents;
+					delete pStrTok;
+					return FALSE;
+				}
+
+				m_pClientList[iClientH]->iteam = atoi(token);
+				cReadModeA = 0;
+				break;
 			}
 		}
 		else {
@@ -5698,6 +5763,8 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 			if (memcmp(token, "character-TotalDGKills", 22) == 0)    cReadModeA = 89;
 			if (memcmp(token, "character-wanted-level", 22) == 0)    cReadModeA = 90; // // Wanted System
 			if (memcmp(token, "coin-points", 11) == 0)    cReadModeA = 91; // // Coins
+
+			if (memcmp(token, "character-team", 14) == 0)    cReadModeA = 92;
 
 			if (memcmp(token, "[EOF]", 5) == 0) goto DPDC_STOP_DECODING;
 		}
@@ -6209,6 +6276,9 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	strcat(pData, cTxt);
 	strcat(pData, "\n");
 
+	wsprintf(cTxt, "character-team = %d", m_pClientList[iClientH]->iteam);
+	strcat(pData, cTxt);
+	strcat(pData, "\n");
 
 	strcat(pData,"\n\n");
 
@@ -6248,10 +6318,13 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	// Â°Â¢Â°Â¢Ã€Ã‡ Â¾Ã†Ã€ÃŒÃ…Ã›Ã€Â» Ã€ÃºÃ€Ã¥Ã‡Ã‘Â´Ã™.
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
+		
+		if (m_pClientList[iClientH]->m_pItemList[i]->teamcape) continue;
+		if (m_pClientList[iClientH]->m_pItemList[i]->teamboots) continue;
+		
 		// v1.4 Â¾Ã†Ã€ÃŒÃ…Ã› Â¼Ã¸Â¼Â­Â¸Â¦ Ã€Ã§Â¹Ã¨Ã„Â¡Ã‡Ã‘Â´Ã™. 
 		TempItemPosList[i].x = m_pClientList[iClientH]->m_ItemPosList[i].x;
 		TempItemPosList[i].y = m_pClientList[iClientH]->m_ItemPosList[i].y;
-		
 		
 		strcat(pData, "character-item = ");
 		memset(cTmp, ' ', 21);
@@ -6873,7 +6946,26 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
+		if (strcmp(cp, "/team") == 0)
+		{
+			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
+			if (c_team->bteam) c_team->bteam = false; 
+			else c_team->bteam = true;
+
+			if (c_team->bteam) c_team->EnableEvent();
+			else c_team->DisableEvent();
+			
+		}
+
+		if (strcmp(cp, "/tpteam") == 0)
+		{
+			RequestDismissPartyHandler(iClientH);
+			c_team->Join(iClientH);
+			
+		}
+
 		else if (memcmp(cp, "/createparty", 12) == 0) {
+			if (m_pClientList[iClientH]->IsInMap("team")) return;
 			RequestCreatePartyHandler(iClientH);
 			
 		}
@@ -6973,6 +7065,90 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (memcmp(cp, "/setobservermode ", 17) == 0) {
 			if (m_pClientList[iClientH]->m_iAdminUserLevel >= m_iAdminLevelObserver)
 				AdminOrder_SetObserverMode(iClientH);
+		}
+
+		// kazin
+		else if (memcmp(cp, "/candyboost", 11) == 0) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			{
+				_candy_boost = !_candy_boost;
+				NotifyEvents();
+			}
+		}
+		else if (memcmp(cp, "/revelation", 11) == 0) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			{
+				_revelation = !_revelation;
+				NotifyEvents();
+			}
+		}
+		else if (memcmp(cp, "/cityteleport", 13) == 0) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			{
+				_city_teleport = !_city_teleport;
+				NotifyEvents();
+
+				CMap* ares = nullptr;
+				CMap* elv = nullptr;
+
+				for (int i = 0; i < DEF_MAXMAPS; i++)
+				{
+					if (!m_pMapList[i])
+						continue;
+
+					if (std::string(m_pMapList[i]->m_cName) == "elvine")
+						elv = m_pMapList[i];
+					else if (std::string(m_pMapList[i]->m_cName) == "aresden")
+						ares = m_pMapList[i];
+				}
+
+				for (int i = 0; i < DEF_MAXTELEPORTLOC; i++)
+				{
+					if (_city_teleport)
+					{
+						if (elv->m_pTeleportLoc[i] &&
+							(std::string(elv->m_pTeleportLoc[i]->m_cDestMapName) == "middled1n"))
+						{
+							strcpy(elv->m_pTeleportLoc[i]->m_cDestMapName, "aresden");
+							elv->m_pTeleportLoc[i]->m_sDestX = 77;
+							elv->m_pTeleportLoc[i]->m_sDestY = 208;
+						}
+
+						if (ares->m_pTeleportLoc[i] &&
+							(std::string(ares->m_pTeleportLoc[i]->m_cDestMapName) == "middled1n"))
+						{
+							strcpy(ares->m_pTeleportLoc[i]->m_cDestMapName, "elvine");
+							ares->m_pTeleportLoc[i]->m_sDestX = 257;
+							ares->m_pTeleportLoc[i]->m_sDestY = 80;
+						}
+					}
+					else
+					{
+						if (elv->m_pTeleportLoc[i] &&
+							(std::string(elv->m_pTeleportLoc[i]->m_cDestMapName) == "aresden"))
+						{
+							strcpy(elv->m_pTeleportLoc[i]->m_cDestMapName, "middled1n");
+							elv->m_pTeleportLoc[i]->m_sDestX = 34;
+							elv->m_pTeleportLoc[i]->m_sDestY = 36;
+						}
+
+						if (ares->m_pTeleportLoc[i] &&
+							(std::string(ares->m_pTeleportLoc[i]->m_cDestMapName) == "elvine"))
+						{
+							strcpy(ares->m_pTeleportLoc[i]->m_cDestMapName, "middled1n");
+							ares->m_pTeleportLoc[i]->m_sDestX = 181;
+							ares->m_pTeleportLoc[i]->m_sDestY = 124;
+						}
+					}
+				}
+			}
+		}
+		else if (memcmp(cp, "/dropinhib", 10) == 0) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			{
+				_drop_inhib = !_drop_inhib;
+				NotifyEvents();
+			}
 		}
 
 		else if (memcmp(cp, "/who", 4) == 0) 
@@ -8830,6 +9006,19 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 		
 		if (iAttackerH == iClientH) return; // ÀÚÆøÀÌ´Ù.
 		// ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌ¾î¸¦ Á×¿´´Ù¸é PKÀÎÁö ÀüÅõÁß ½Â¸®ÀÎÁö¸¦ ÆÇº°ÇÏ¿© °æÇèÄ¡¸¦ ¿Ã¸°´Ù. 
+
+		if (cAttackerType == DEF_OWNERTYPE_PLAYER)
+		{
+			if (m_pClientList[iAttackerH] != NULL && m_pClientList[iClientH] != NULL)
+			{
+				if (m_pClientList[iAttackerH]->IsInMap("team") && m_pClientList[iClientH]->IsInMap("team"))
+				{
+					c_team->Kill(iAttackerH, iClientH);
+					return;
+				}
+			}
+		}
+
 		if (memcmp(m_pClientList[iAttackerH]->m_cMapName, "fightzone1", 10) == 0) 
 		{ 	
 			char cScanMessage[50];
@@ -9040,7 +9229,8 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 			else {
 				iDGtop1 = iAttackerH;
 			}
-			RefreshDeathmatch(0);				
+			RefreshDeathmatch(0);
+			return;
 		}
 		else 
 		{
@@ -10787,6 +10977,19 @@ void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTarg
 	iDamage = (iDice(sV1, sV2) + sV3);
 	if (iDamage <= 0) iDamage = 0;
 
+	switch (cAttackerType)
+	{
+	case DEF_OWNERTYPE_PLAYER:
+		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
+		{
+			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
+			{
+				if (m_pClientList[sAttackerH]->IsInsideTeam()) return;
+			}
+		}
+		break;
+	}
+
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:	
 		//LifeX Fix Admin Hit NPC
@@ -11731,6 +11934,19 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 	if (iDamage <= 0) iDamage = 0;
 
 	iPartyID = 0;
+
+	switch (cAttackerType)
+	{
+	case DEF_OWNERTYPE_PLAYER:
+		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
+		{
+			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
+			{
+				if (m_pClientList[sAttackerH]->IsInsideTeam()) return;
+			}
+		}
+		break;
+	}
 
 	// °ø°ÝÀÚ°¡ ÇÃ·¹ÀÌ¾î¶ó¸é Mag¿¡ µû¸¥ º¸³Ê½º ´ë¹ÌÁö¸¦ °¡»ê 
 	switch (cAttackerType) {
@@ -14203,6 +14419,7 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, DWORD dwMsgSize)
 	if (strcmp("middled1x", cMapName) == 0) bFlag = TRUE;
 	if (strcmp("middleland", cMapName) == 0) bFlag = TRUE;
 	if (strcmp("procella", cMapName) == 0) bFlag = TRUE;
+	if (string(cMapName) == "team") bFlag = TRUE;
 
 	if (bFlag == TRUE)
 		RequestTeleportHandler(iClientH, "2   ", cMapName, dX, dY);
@@ -18549,6 +18766,19 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = NULL;
 	wWeaponType      = NULL;
 
+	switch (cAttackerType)
+	{
+	case DEF_OWNERTYPE_PLAYER:
+		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
+		{
+			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
+			{
+				if (m_pClientList[sAttackerH]->IsInsideTeam()) return 0;
+			}
+		}
+		break;
+	}
+
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
 
@@ -20893,6 +21123,40 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30);
 		break;
 
+	case DEF_NOTIFY_TEAMARENA:
+		sp = (short*)cp;
+		*sp = (short)sV1;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = (short)sV2;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = (short)sV3;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = (short)sV4;
+		cp += 2;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
+		break;
+
+	case NOTIFYMSG:
+		strcpy(cp, pString);
+		cp += strlen(pString);
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 6 + strlen(pString) + 1);
+		break;
+
+	case NOTIFY_EQUIPITEM2:
+		*cp = char(sV1);
+		cp++;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 7);
+		break;
+
 		// New 07/05/2004
 		// Party Notify Msg's
 	case DEF_NOTIFY_PARTY:
@@ -22273,7 +22537,7 @@ void CGame::bCheckLevelUp(int iClientH)
 	}
 }
 
-void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, int dX, int dY)
+void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, int dX, int dY, bool deleteteam)
 {
  char  * pBuffer, cTempMapName[21];
  DWORD * dwp;
@@ -22309,6 +22573,12 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 				return;
 		}
 	}*/
+
+	if (deleteteam)
+	{
+		c_team->DeleteCape(iClientH);
+		c_team->DeleteBoots(iClientH);
+	}
 
 	bIsLockedMapNotify = FALSE;
 	// Prevent recalls spells/scrolls, and any recall type magic if forbidden on the map
@@ -22836,7 +23106,7 @@ void CGame::RequestRestartHandler(int iClientH)
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == TRUE)
 	{
-		if (memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0 && bDeathmatch)
+		if (memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0 || memcmp(m_pClientList[iClientH]->m_cMapName, "team", 4) == 0)
 		{
 			// MORLA2.2 - Revive en Deathmach Map
 			m_pClientList[iClientH]->m_bIsKilled = FALSE;
@@ -22848,9 +23118,9 @@ void CGame::RequestRestartHandler(int iClientH)
 			m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SP, NULL, NULL, NULL, NULL); 
 			// centu - added majestic level to calculate criticals
-			m_pClientList[iClientH]->m_iSuperAttackLeft = (m_pClientList[iClientH]->m_iLevel) / 10;
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
-			RequestTeleportHandler(iClientH, "2   ", "fightzone1", 51, 56);
+			//m_pClientList[iClientH]->m_iSuperAttackLeft = (m_pClientList[iClientH]->m_iLevel) / 10;
+			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
+			RequestTeleportHandler(iClientH, "2   ", m_pClientList[iClientH]->m_cMapName, 51, 56);
 		}
 		else {
 			strcpy(cTmpMap,m_pClientList[iClientH]->m_cMapName) ;
@@ -23089,6 +23359,17 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 				}
 				break;
 		}
+	}
+	SendLoginData(iClientH);
+}
+
+void CGame::SendLoginData(int client)
+{
+	if (!m_pClientList[client]) return;
+
+	if (m_pClientList[client]->IsInsideTeam())
+	{
+		c_team->NotPoints(client);
 	}
 }
 
@@ -26701,4 +26982,72 @@ void CGame::RequestSetTrapHandler(int iClientH, char* pData)
 		m_pClientList[iClientH]->m_pItemList[iItemID]->m_dwCount--;
 		if (m_pClientList[iClientH]->m_pItemList[iItemID]->m_dwCount <= 0) ItemDepleteHandler(iClientH, iItemID, FALSE, FALSE);
 	}
+}
+
+void CGame::NotifyEvents()
+{
+	short* sps;
+	DWORD* dwp;
+	WORD* wp;
+	char* cp;
+	int* ip;
+	bool* bp;
+
+	auto pBuffer = new char[DEF_MSGBUFFERSIZE + 1];
+	ZeroMemory(pBuffer, DEF_MSGBUFFERSIZE + 1);
+
+	dwp = (DWORD*)(pBuffer + DEF_INDEX4_MSGID);
+	*dwp = MSGID_EVENTS;
+	wp = (WORD*)(pBuffer + DEF_INDEX2_MSGTYPE);
+	*wp = DEF_MSGTYPE_CONFIRM;
+
+	cp = (char*)(pBuffer + DEF_INDEX2_MSGTYPE + 2);
+
+	bp = (bool*)cp;
+	*bp = _candy_boost;
+	cp ++;
+
+	bp = (bool*)cp;
+	*bp = _revelation;
+	cp ++;
+
+	bp = (bool*)cp;
+	*bp = _city_teleport;
+	cp ++;
+
+	bp = (bool*)cp;
+	*bp = _drop_inhib;
+	cp ++;
+
+	for (int iClientH = 0; iClientH < DEF_MAXCLIENTS; iClientH++)
+	{
+		if (!m_pClientList[iClientH])
+			continue;
+
+		auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 10);
+		switch (iRet) {
+		case DEF_XSOCKEVENT_QUENEFULL:
+		case DEF_XSOCKEVENT_SOCKETERROR:
+		case DEF_XSOCKEVENT_CRITICALERROR:
+		case DEF_XSOCKEVENT_SOCKETCLOSED:
+			DeleteClient(iClientH, TRUE, TRUE, TRUE, FALSE); // added TRUE (4)
+			PutLogList("HERE 1");
+			if (pBuffer != NULL) delete[] pBuffer;
+			return;
+		}
+	}
+
+
+	if (pBuffer != NULL) delete[] pBuffer;
+}
+
+void CGame::SendAlertMsg(int client, char* pMsg)
+{
+	auto p = m_pClientList[client];
+	if (!p) return;
+	auto cl = client;
+	char message[200];
+	ZeroMemory(message, sizeof(message));
+	strcpy(message, pMsg);
+	SendNotifyMsg(NULL, client, NOTIFYMSG, NULL, NULL, NULL, message);
 }
