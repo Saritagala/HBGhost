@@ -22279,7 +22279,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
  DWORD * dwp;
  WORD  * wp;
  char  * cp, cDestMapName[11], cDir, cMapIndex, cPoints;
- short * sp, sX, sY, sSummonPoints, sV1;
+ short * sp, sX, sY, sSummonPoints, sV1, aX, aY;
  int   * ip, i, iRet, iSize, iDestX, iDestY, iExH, iMapSide, iTemp, iTemp2, iMapside, iMapside2, iQuestNumber, iQuestType, j;
  BOOL    bRet, bIsLockedMapNotify;
  SYSTEMTIME SysTime;
@@ -22402,7 +22402,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			}
 			for (i = 0; i < DEF_MAXMAPS; i++) {
 				if ((m_pMapList[i] != NULL) && (memcmp(m_pMapList[i]->m_cName, cTempMapName, 10) == 0)) {
-					
+					/*
 					short playerCoordX = m_pClientList[iClientH]->m_sX;
 					short playerCoordY = m_pClientList[iClientH]->m_sY;
 
@@ -22418,6 +22418,20 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 					ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
 					memcpy(m_pClientList[iClientH]->m_cMapName, m_pMapList[i]->m_cName, 10);
 					goto RTH_NEXTSTEP;
+					*/
+
+					// centu - recall fix
+					GetMapInitialPoint(i, &aX, &aY, m_pClientList[iClientH]->m_cLocation);
+					if ((m_pClientList[iClientH]->m_sX == aX) && (m_pClientList[iClientH]->m_sY == aY))
+					{
+						GetMapInitialPoint(i, &aX, &aY, m_pClientList[iClientH]->m_cLocation);
+						if ((m_pClientList[iClientH]->m_sX == aX) && (m_pClientList[iClientH]->m_sY == aY))
+						{
+							GetMapInitialPoint(i, &aX, &aY, m_pClientList[iClientH]->m_cLocation);
+						}
+					}
+					m_pClientList[iClientH]->m_sX = aX;
+					m_pClientList[iClientH]->m_sY = aY;
 				}
 			}
 			m_pClientList[iClientH]->m_sX   = -1;
