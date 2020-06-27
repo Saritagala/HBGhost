@@ -120,13 +120,13 @@ spot-mob-generator	=	10	1	268	301	292	323	22	5
 spot-mob-generator	=	11	1	214	182	230	196	22	5
 spot-mob-generator	=	12	1	213	181	229	195	22	5
 //	Skeleton								
-spot-mob-generator	=	13	1	169	373	203	393	11	20
-spot-mob-generator	=	14	1	49	159	87	178	11	20
+spot-mob-generator	=	13	1	169	373	203	393	11	10
+spot-mob-generator	=	14	1	49	159	87	178	11	10
 //	orc-Mage								
-spot-mob-generator	=	15	1	205	93	249	127	14	10
-spot-mob-generator	=	16	1	287	286	322	303	14	10
-spot-mob-generator	=	17	1	437	374	463	393	14	10
-spot-mob-generator	=	18	1	424	152	445	166	14	10
+spot-mob-generator	=	15	1	205	93	249	127	14	1
+spot-mob-generator	=	16	1	287	286	322	303	14	1
+spot-mob-generator	=	17	1	437	374	463	393	14	1
+spot-mob-generator	=	18	1	424	152	445	166	14	1
 //	Giant-Ant								
 spot-mob-generator	=	19	1	284	216	300	228	16	20
 spot-mob-generator	=	20	1	181	266	199	274	16	20
@@ -150,6 +150,30 @@ spot-mob-generator	=	31	1	1	1	500	500	52	1
 //      Demon
 spot-mob-generator      =       32      1       420     293     435     320     31      3
 spot-mob-generator      =       33      1       143     208     225     248     59      6
+
+//PITS
+
+/Werewolf
+spot-mob-generator      =       34      1       227     419     311     434     33      30
+//Unicorn
+spot-mob-generator      =       35      1       251     274     286     288     32      30
+spot-mob-generator      =       36      1       240     197     277     209     32      30
+/WereWolf
+spot-mob-generator      =       37      1       187     93      236     103     33      30
+//Ettin
+spot-mob-generator      =       38      1       435     378     467     394     59      20
+spot-mob-generator      =       39      1       420     150     448     157     59      20
+/Demmons
+spot-mob-generator      =       40      1       466     314     433     306     31      7
+spot-mob-generator      =       41      1       254     220     263     232     31      7
+
+
+
+
+
+
+
+
 
 //strategic-point-Num-Side-Value--X----Y
 strategic-point = 1   0    2     176  224
