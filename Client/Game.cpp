@@ -2439,6 +2439,15 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 			case 88: // Barbarian
 			case 89: // AGC
 			case 91: // Gate
+			//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: //Ghost Abaadon
 				break;
 
 			default: // 10..27
@@ -2507,6 +2516,11 @@ void CGame::GameRecvMsgHandler(DWORD dwMsgSize, char * pData)
 	// kazin
 	case MSGID_EVENTS:
 		NotifyEvents(pData);
+		break;
+
+	//Magn0S::
+	case MSGID_MAP_RESTRI:
+		NotifyMapRestrictions(pData);
 		break;
 
 	case MSGID_RESPONSE_PING:
@@ -2853,6 +2867,88 @@ void CGame::MakeEffectSpr( char* FileName, short sStart, short sCount, bool bAlp
 	}
 	CloseHandle(m_hPakFile);
 }
+
+void CGame::MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect)
+{
+	int iTotalimage;
+	DWORD nCount;
+	char PathName[50];
+	std::vector<int> framePositions;
+
+	wsprintf(PathName, "sprites\\%s.fun", FileName);
+	HANDLE m_hPakFile = CreateFile(PathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	if (m_hPakFile == INVALID_HANDLE_VALUE) return;
+	//ReadFramePositions(m_hPakFile, framePositions, sCount);
+	SetFilePointer(m_hPakFile, 20, NULL, FILE_BEGIN);
+	ReadFile(m_hPakFile, (char*)&iTotalimage, 4, &nCount, NULL);
+	iTotalimage ^= 951635;
+	for (short i = 0; i < sCount && i < iTotalimage; i++) {
+		//m_pSprite[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
+		m_pEffectSpr[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect);
+	}
+	CloseHandle(m_hPakFile);
+}
+
+/*void CGame::MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect)
+{
+	int iTotalimage;
+	DWORD nCount;
+	char PathName[50];
+	std::vector<int> framePositions;
+
+	wsprintf(PathName, "sprites\\%s.fun", FileName);
+	HANDLE m_hPakFile = CreateFile(PathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	if (m_hPakFile == INVALID_HANDLE_VALUE) return;
+	ReadFramePositions(m_hPakFile, framePositions, sCount);
+	SetFilePointer(m_hPakFile, 20, NULL, FILE_BEGIN);
+	ReadFile(m_hPakFile, (char*)&iTotalimage, 4, &nCount, NULL);
+	iTotalimage ^= 951635;
+	for (short i = 0; i < sCount && i < iTotalimage; i++) {
+		m_pSprite[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
+	}
+	CloseHandle(m_hPakFile);
+}
+
+void CGame::MakeFunTileSpr(char* FileName, short sStart, short sCount, bool bAlphaEffect)
+{
+	int iTotalimage;
+	DWORD nCount;
+	char PathName[28];
+	std::vector<int> framePositions;
+
+	wsprintf(PathName, "sprites\\%s.fun", FileName);
+	HANDLE m_hPakFile = CreateFile(PathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	if (m_hPakFile == INVALID_HANDLE_VALUE) return;
+	ReadFramePositions(m_hPakFile, framePositions, sCount);
+	SetFilePointer(m_hPakFile, 20, NULL, FILE_BEGIN);
+	ReadFile(m_hPakFile, (char*)&iTotalimage, 4, &nCount, NULL);
+	iTotalimage ^= 951635;
+	for (short i = 0; i < sCount && i < iTotalimage; i++) {
+		m_pTileSpr[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
+	}
+	CloseHandle(m_hPakFile);
+}
+
+void CGame::MakeEffectFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect)
+{
+	int iTotalimage;
+	DWORD nCount;
+	char PathName[50];
+	std::vector<int> framePositions;
+
+	wsprintf(PathName, "sprites\\%s.fun", FileName);
+	HANDLE m_hPakFile = CreateFile(PathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	if (m_hPakFile == INVALID_HANDLE_VALUE) return;
+	ReadFramePositions(m_hPakFile, framePositions, sCount);
+	SetFilePointer(m_hPakFile, 20, NULL, FILE_BEGIN);
+	ReadFile(m_hPakFile, (char*)&iTotalimage, 4, &nCount, NULL);
+	iTotalimage ^= 951635;
+
+	for (short i = 0; i < sCount && i < iTotalimage; i++) {
+		m_pEffectSpr[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
+	}
+	CloseHandle(m_hPakFile);
+}*/
 
 void CGame::UpdateScreen_OnLoading(bool bActive)
 {
@@ -3219,6 +3315,17 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 	case 48:
 		{	MakeSprite( "Gail",			  DEF_SPRID_MOB   + 7*8*80, 8, TRUE); // Gail (Type: 90)
 			MakeSprite( "Gate",			  DEF_SPRID_MOB   + 7*8*81, 24, TRUE);// Heldenian Gate (Type: 91)/**/
+			//Magn0S:: Add new monsters.
+			/*MakeFunSprite("EDragon",	DEF_SPRID_MOB + 7 * 8 * 82, 32, TRUE);// Eternal Dragon (Type: 92)
+			MakeFunSprite("BlackDemon", DEF_SPRID_MOB + 7 * 8 * 83, 40, TRUE);// Black Demon (Type: 93)
+			MakeFunSprite("DWyv",		DEF_SPRID_MOB + 7 * 8 * 84, 24, TRUE);// Black Wyvern (Type: 94)
+			MakeFunSprite("AirWyvern",	DEF_SPRID_MOB + 7 * 8 * 85, 24, TRUE);// Air Demon (Type: 95)
+			MakeFunSprite("PWyv",		DEF_SPRID_MOB + 7 * 8 * 86, 24, TRUE);// Poison Wyv (Type: 96)
+			MakeFunSprite("HWyv",		DEF_SPRID_MOB + 7 * 8 * 87, 24, TRUE);// Heaven Wyv  (Type: 97)
+			MakeFunSprite("IWyv",		DEF_SPRID_MOB + 7 * 8 * 88, 24, TRUE);// Illusion Wyv  (Type: 98)*/
+			//MakeFunSprite("GhostAbby",	DEF_SPRID_MOB + 7 * 8 * 89, 48, TRUE);// Black Demon (Type: 99)
+			//MakeSprite("GhostAbby", DEF_SPRID_MOB + 7 * 8 * 89, 48, TRUE);// Black Demon (Type: 99)
+
 			m_hPakFile = CreateFile("sprites\\Mpt.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 			if( m_hPakFile != INVALID_HANDLE_VALUE )
 			{	for (i = 0; i < 12; i++) m_pSprite[DEF_SPRID_UNDIES_M + i + 15*0] = new class CSprite(m_hPakFile, &m_DDraw, "Mpt", i + 12*0, TRUE);
@@ -8723,6 +8830,11 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 		else if (_tmp_sOwnerType == 86) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (1 * 8);
 		else if (_tmp_sOwnerType == 87) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (1 * 8);
 		else if (_tmp_sOwnerType == 89) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (1 * 8);
+		else if (_tmp_sOwnerType == 94) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//BlackWyv
+		else if (_tmp_sOwnerType == 95) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//AirWyv
+		else if (_tmp_sOwnerType == 96) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//PoisonWyv
+		else if (_tmp_sOwnerType == 97) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//HeavenWyv
+		else if (_tmp_sOwnerType == 98) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//IllusionWyv
 		else iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 		iUndiesIndex    = -1;
 		iHairIndex      = -1;
@@ -8767,6 +8879,14 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			
 			case 81: // Abaddon
 			case 91: // Gate
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -8872,6 +8992,14 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			
 			case 81: // Abaddon
 			case 91: // Gate
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -9341,6 +9469,15 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 			
 			case 81: // Abaddon
 			case 91: // Gate
+			//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -9711,6 +9848,15 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 		
 		case 81: // Abaddon
 		case 91: // Gate
+			//Magn0S:: New Mobs.
+		case 92: // Eternal Dragon
+		case 93: // BlackDemon
+		case 94: // BlackWyv
+		case 95: // LighWyvern
+		case 96: // PoisonWyvern
+		case 97: // HeavenWyvern
+		case 98: // IllusionWyvern
+		case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0) {
@@ -9928,6 +10074,15 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 		
 		case 81: // Abaddon
 		case 91: // Gate
+			//Magn0S:: New Mobs.
+		case 92: // Eternal Dragon
+		case 93: // BlackDemon
+		case 94: // BlackWyv
+		case 95: // LighWyvern
+		case 96: // PoisonWyvern
+		case 97: // HeavenWyvern
+		case 98: // IllusionWyvern
+		case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -10242,6 +10397,12 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 			else if (_tmp_sOwnerType == 87) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 			else if (_tmp_sOwnerType == 89) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 			else if (_tmp_sOwnerType == 91) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (0 * 8);
+			else if (_tmp_sOwnerType == 92) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //Eternal-dragon
+			else if (_tmp_sOwnerType == 94) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Black-Wyvern
+			else if (_tmp_sOwnerType == 95) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Air-Wyvern
+			else if (_tmp_sOwnerType == 96) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Poison-Wyvern
+			else if (_tmp_sOwnerType == 97) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Heaven-Wyvern
+			else if (_tmp_sOwnerType == 98) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Illusion-Wyvern
 			else iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (0 * 8);
 		}else
 		{	cFrame -= 4;
@@ -10259,6 +10420,12 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 			else if (_tmp_sOwnerType == 87) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 			else if (_tmp_sOwnerType == 89) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 			else if (_tmp_sOwnerType == 91) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (1 * 8);
+			else if (_tmp_sOwnerType == 92) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //Eternal-dragon
+			else if (_tmp_sOwnerType == 94) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Black-Wyvern
+			else if (_tmp_sOwnerType == 95) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Air-Wyvern
+			else if (_tmp_sOwnerType == 96) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Poison-Wyvern
+			else if (_tmp_sOwnerType == 97) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Heaven-Wyvern
+			else if (_tmp_sOwnerType == 98) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8); //Illusion-Wyvern
 			else iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 		}
 		iUndiesIndex    = -1;
@@ -10303,6 +10470,15 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				
 				case 81: // Abaddon
 				case 91: // Gate
+					//Magn0S:: New Mobs.
+				case 92: // Eternal Dragon
+				case 93: // BlackDemon
+				case 94: // BlackWyv
+				case 95: // LighWyvern
+				case 96: // PoisonWyvern
+				case 97: // HeavenWyvern
+				case 98: // IllusionWyvern
+				case 99: // Ghost-Abaddon
 					break;
 				default:
 					if (m_cDetailLevel != 0) {
@@ -10405,6 +10581,15 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				
 				case 81: // Abaddon
 				case 91: // Gate
+					//Magn0S:: New Mobs.
+				case 92: // Eternal Dragon
+				case 93: // BlackDemon
+				case 94: // BlackWyv
+				case 95: // LighWyvern
+				case 96: // PoisonWyvern
+				case 97: // HeavenWyvern
+				case 98: // IllusionWyvern
+				case 99: // Ghost-Abaddon
 					break;
 				default:
 					if (m_cDetailLevel != 0) {
@@ -10643,6 +10828,15 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				
 				case 81: // Abaddon
 				case 91: // Gate
+					//Magn0S:: New Mobs.
+				case 92: // Eternal Dragon
+				case 93: // BlackDemon
+				case 94: // BlackWyv
+				case 95: // LighWyvern
+				case 96: // PoisonWyvern
+				case 97: // HeavenWyvern
+				case 98: // IllusionWyvern
+				case 99: // Ghost-Abaddon
 					break;
 				default:
 					if (m_cDetailLevel != 0) {
@@ -10981,6 +11175,13 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 			else if (_tmp_sOwnerType == 87) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 			else if (_tmp_sOwnerType == 89) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 			else if (_tmp_sOwnerType == 91) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
+			else if (_tmp_sOwnerType == 92) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (3 * 8); //Eternal
+			else if (_tmp_sOwnerType == 94) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //BlackWyv
+			else if (_tmp_sOwnerType == 95) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //AirWyv
+			else if (_tmp_sOwnerType == 96) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //PoisonWyv
+			else if (_tmp_sOwnerType == 97) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //HeavenWyv
+			else if (_tmp_sOwnerType == 98) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8); //IllusionWyv
+
 			else iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (0 * 8);
 			iUndiesIndex = -1;
 			iHairIndex   = -1;
@@ -11018,6 +11219,12 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 			else if (_tmp_sOwnerType == 87) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 			else if (_tmp_sOwnerType == 89) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 			else if (_tmp_sOwnerType == 91) iBodyIndex =  DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
+			else if (_tmp_sOwnerType == 92) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (3 * 8);//Eternal
+			else if (_tmp_sOwnerType == 94) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8);//Black
+			else if (_tmp_sOwnerType == 95) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8);//Air
+			else if (_tmp_sOwnerType == 96) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8);//Poison
+			else if (_tmp_sOwnerType == 97) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8);//Heaven
+			else if (_tmp_sOwnerType == 98) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (2 * 8);//Illusion
 			else iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (4 * 8);
 			iUndiesIndex = -1;
 			iHairIndex   = -1;
@@ -11047,6 +11254,15 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 		case 73: // Fire Wyvern
 		case 81: // Abaddon
 		case 91: // Gate
+			//Magn0S:: New Mobs.
+		case 92: // Eternal Dragon
+		case 93: // BlackDemon
+		case 94: // BlackWyv
+		case 95: // LighWyvern
+		case 96: // PoisonWyvern
+		case 97: // HeavenWyvern
+		case 98: // IllusionWyvern
+		case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -11266,6 +11482,7 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
 		case 30: // Liche
 		case 31: // DD		// les 2 dernieres sont pas bonnes pour un mort !
 		case 63: // Frost	// les 2 dernieres sont pas bonnes pour un mort !
+		case 93: // Black-Demon
 			iFrame = 5;
 			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (4 * 8);
 			break;
@@ -11307,6 +11524,7 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
 		case 84: // MasterElf
 		case 85: // DSK
 		case 88: // Barbarian
+		case 99: // Ghost-Abaddon
 			iFrame = 7;
 			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (4 * 8);
 			break;
@@ -11325,12 +11543,18 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
 			break;
 
 		case 73: // FireWyvern
+		case 94: // BlackWyv
+		case 95: // LighWyvern
+		case 96: // PoisonWyvern
+		case 97: // HeavenWyvern
+		case 98: // IllusionWyvern
 			iFrame = 7;
 			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 			bTrans = TRUE; // Prevents showing hugly corpse
 			break;
 
 		case 81: // Abaddon
+		case 92: // Eternal Dragon
 			iFrame = 0;
 			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 			bTrans = TRUE; // Prevents showing hugly corpse
@@ -11720,6 +11944,15 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 	case 88: // Barbarian
 	case 89: // AGC
 	case 90: // Gail
+		//Magn0S:: New Mobs.
+	case 92: // Eternal Dragon
+	case 93: // BlackDemon
+	case 94: // BlackWyv
+	case 95: // LighWyvern
+	case 96: // PoisonWyvern
+	case 97: // HeavenWyvern
+	case 98: // IllusionWyvern
+	case 99: // Ghost-Abaddon
 		break;
 
 	default:
@@ -11764,6 +11997,15 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 						default:
 				if (m_cDetailLevel != 0) {
@@ -11891,6 +12133,14 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			
 			case 81: // Abaddon
 			case 91: // Gate
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -12228,6 +12478,11 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 	default:
 		if (_tmp_sOwnerType == 66)      iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (0 * 8);
 		else if (_tmp_sOwnerType == 73) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (0 * 8);
+		else if (_tmp_sOwnerType == 94) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//balcwyb
+		else if (_tmp_sOwnerType == 95) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//airwyv
+		else if (_tmp_sOwnerType == 96) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//poison
+		else if (_tmp_sOwnerType == 97) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//heaven
+		else if (_tmp_sOwnerType == 98) iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (0 * 8);//illsuionwyv
 		else if (_tmp_sOwnerType == 86) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
 		else if (_tmp_sOwnerType == 87) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);// Ne devrait pas arriver!
 		else if (_tmp_sOwnerType == 89) iBodyIndex = DEF_SPRID_MOB +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);// Ne devrait pas arriver!
@@ -12284,6 +12539,15 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -12388,6 +12652,15 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -12709,6 +12982,15 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		
 		case 81: // Abaddon
 		case 91: // Gate
+			//Magn0S:: New Mobs.
+		case 92: // Eternal Dragon
+		case 93: // BlackDemon
+		case 94: // BlackWyv
+		case 95: // LighWyvern
+		case 96: // PoisonWyvern
+		case 97: // HeavenWyvern
+		case 98: // IllusionWyvern
+		case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -12790,6 +13072,15 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		
 		case 81: // Abaddon
 		case 91: // Gate
+			//Magn0S:: New Mobs.
+		case 92: // Eternal Dragon
+		case 93: // BlackDemon
+		case 94: // BlackWyv
+		case 95: // LighWyvern
+		case 96: // PoisonWyvern
+		case 97: // HeavenWyvern
+		case 98: // IllusionWyvern
+		case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -13131,6 +13422,15 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -13259,6 +13559,15 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -14753,6 +15062,15 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -14911,6 +15229,15 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 
 			case 81: // Abaddon
 			case 91: // Gate
+				//Magn0S:: New Mobs.
+			case 92: // Eternal Dragon
+			case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -23448,6 +23775,11 @@ void CGame::OnKeyUp(WPARAM wParam)
 		
 		break;
 
+	case 71: //Magn0S:: Player Panel 'G'
+		if (m_bCtrlPressed == TRUE && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus))
+			EnableDialogBox(53, 0, NULL, NULL);
+		break;
+
 	case 81://'Q'
 		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) && (m_iAdminUserLevel > 0))
 		{
@@ -23936,8 +24268,12 @@ void CGame::OnKeyUp(WPARAM wParam)
 	case 33:
 		if (m_cGameMode != DEF_GAMEMODE_ONMAINGAME) return;
 		if (m_bInputStatus) return;
-		if (m_bIsSpecialAbilityEnabled == TRUE)
-		{	if (m_iSpecialAbilityType != 0) {
+		if (m_bIsSpecialAbilityEnabled == TRUE) 
+		{	if (!bMapActivate) {
+				AddEventList("Itens Activation were disabled in this map.", 10);
+				return;
+			}
+			if (m_iSpecialAbilityType != 0) {
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQUEST_ACTIVATESPECABLTY, NULL, NULL, NULL, NULL, NULL);
 				m_bIsSpecialAbilityEnabled = FALSE;
 			}
@@ -28330,6 +28666,16 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		return;
 	}
 
+	if (bMapHideEnemy) {
+		strcpy(cTxt, "?????");
+		PutString2(sX, sY, cTxt, 255, 255, 255);
+		ZeroMemory(cTxt, sizeof(cTxt));
+		strcpy(cTxt, "(Enemy)");
+		PutString2(sX, sY + 14 + iAddY, cTxt, 255, 0, 9);
+		ZeroMemory(cTxt, sizeof(cTxt));
+		return;
+	}
+
 	if ((iStatus & 0x20) != 0) strcat(cTxt, " (Berserked)");//" Berserk"
 	if ((iStatus & 0x40) != 0) strcat(cTxt, " (Frozen)");//" Frozen"
 
@@ -29113,6 +29459,16 @@ void CGame::GetNpcName(short sType, char *pName)
 	case 89: strcpy(pName, NPC_NAME_AGC); break;
 	case 90: strcpy(pName, NPC_NAME_GAIL); break;
 	case 91: strcpy(pName, NPC_NAME_GATE); break;
+
+	//Magn0S:: New Mobs.
+	case 92: strcpy(pName, "Eternal Dragon"); break;// BlackTW
+	case 93: strcpy(pName, "Black Demon"); break;// BlackHC
+	case 94: strcpy(pName, "Black Wyvern"); break;// BlackWyv
+	case 95: strcpy(pName, "Light Wyvern"); break;// BlackDemon
+	case 96: strcpy(pName, "Poison Wyvern"); break;// BlackDemon
+	case 97: strcpy(pName, "Heaven Wyvern"); break;// BlackDemon
+	case 98: strcpy(pName, "Illusion Wyvern"); break;// BlackDemon
+	case 99:  strcpy(pName, "Ghost Abaddon"); break;// Ghost-Abaddon
 	}
 }
 
@@ -29488,7 +29844,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						m_sCommY = m_sMCY;
 					}
 					else if ((absX <= 2) && (absY <= 2) // strike on Big mobs & gate from a range
-						&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91)))
+						&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91) || (sObjectType == 92) || (sObjectType == 93) || (sObjectType == 94) || (sObjectType == 95) || (sObjectType == 96) || (sObjectType == 97) || (sObjectType == 98) || (sObjectType == 99)))
 					{
 						wType = _iGetAttackType();
 						m_cCommand = DEF_OBJECTATTACK;
@@ -30020,7 +30376,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								m_sCommY = m_sMCY;
 							}
 							else if ((absX <= 2) && (absY <= 2) // strike on Big mobs & gate from a range
-								&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91)))
+								&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91) || (sObjectType == 92) || (sObjectType == 93) || (sObjectType == 94) || (sObjectType == 95) || (sObjectType == 96) || (sObjectType == 97) || (sObjectType == 98) || (sObjectType == 99)))
 							{
 								wType = _iGetAttackType();
 								m_cCommand = DEF_OBJECTATTACK;
@@ -30227,7 +30583,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 					m_sCommY = m_sMCY;
 				}
 				else if ((absX <= 2) && (absY <= 2) // strike on Big mobs & gate from a range
-					&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91)))
+					&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91) || (sObjectType == 92) || (sObjectType == 93) || (sObjectType == 94) || (sObjectType == 95) || (sObjectType == 96) || (sObjectType == 97) || (sObjectType == 98) || (sObjectType == 99)))
 				{
 					wType = _iGetAttackType();
 					m_cCommand = DEF_OBJECTATTACK;
@@ -30338,7 +30694,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							m_sCommY = m_sMCY;
 						}
 						else if ((absX <= 2) && (absY <= 2) // strike on Big mobs & gate from a range
-							&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91)))
+							&& ((sObjectType == 66) || (sObjectType == 73) || (sObjectType == 81) || (sObjectType == 91) || (sObjectType == 92) || (sObjectType == 93) || (sObjectType == 94) || (sObjectType == 95) || (sObjectType == 96) || (sObjectType == 97) || (sObjectType == 98) || (sObjectType == 99)))
 						{
 							wType = _iGetAttackType();
 							m_cCommand = DEF_OBJECTATTACK;

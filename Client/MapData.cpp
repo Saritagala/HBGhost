@@ -783,7 +783,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[77][DEF_OBJECTDYING].m_sFrameTime = 150;
 	m_stFrame[77][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 78 Minos
 	m_stFrame[78][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[78][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[78][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -794,7 +793,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[78][DEF_OBJECTDYING].m_sFrameTime = 150;
 	m_stFrame[78][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	//79 Nizie
 	m_stFrame[79][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[79][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[79][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -805,7 +803,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[79][DEF_OBJECTDYING].m_sFrameTime = 150;
 	m_stFrame[79][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	//80 Tentocle
 	m_stFrame[80][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[80][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[80][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -816,7 +813,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[80][DEF_OBJECTDYING].m_sFrameTime = 150;
 	m_stFrame[80][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	//81 Abaddon
 	m_stFrame[81][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[81][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[81][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -827,7 +823,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[81][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME; // Centu - Tiempo reducido
 	m_stFrame[81][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
 
-	//82  Sorceress
 	m_stFrame[82][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[82][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[82][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -838,7 +833,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[82][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[82][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 83 DSK
 	m_stFrame[83][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[83][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[83][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -849,7 +843,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[83][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[83][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 84 MasterElf
 	m_stFrame[84][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[84][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[84][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -860,7 +853,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[84][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[84][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 85 DSK
 	m_stFrame[85][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[85][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[85][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -871,7 +863,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[85][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[85][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	//86 HBT
 	m_stFrame[86][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[86][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[86][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -882,7 +873,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[86][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[86][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 87 Crossbow turret
 	m_stFrame[87][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[87][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[87][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -893,7 +883,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[87][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[87][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 88 Barbarian
 	m_stFrame[88][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[88][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[88][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -904,7 +893,6 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[88][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[88][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 89 Ancient Great Cannon
 	m_stFrame[89][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[89][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[89][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -915,17 +903,95 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[89][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[89][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
-	// 90 Gail
 	m_stFrame[90][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[90][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 
-	// 91 Gate
 	m_stFrame[91][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[91][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[91][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[91][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
 	m_stFrame[91][DEF_OBJECTDYING].m_sFrameTime = 180;
 	m_stFrame[91][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+
+	m_stFrame[92][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[92][DEF_OBJECTSTOP].m_sMaxFrame = 7;
+	m_stFrame[92][DEF_OBJECTMOVE].m_sFrameTime = 90;
+	m_stFrame[92][DEF_OBJECTATTACK].m_sFrameTime = 100;
+	m_stFrame[92][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[92][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
+	m_stFrame[92][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+	m_stFrame[92][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[92][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
+
+	m_stFrame[93][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[93][DEF_OBJECTSTOP].m_sMaxFrame = 3;
+	m_stFrame[93][DEF_OBJECTMOVE].m_sFrameTime = 100;
+	m_stFrame[93][DEF_OBJECTATTACK].m_sFrameTime = 120;
+	m_stFrame[93][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[93][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
+	m_stFrame[93][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
+	m_stFrame[93][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[93][DEF_OBJECTDYING].m_sMaxFrame = 9;
+
+	m_stFrame[94][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[94][DEF_OBJECTSTOP].m_sMaxFrame = 7;
+	m_stFrame[94][DEF_OBJECTMOVE].m_sFrameTime = 90;
+	m_stFrame[94][DEF_OBJECTATTACK].m_sFrameTime = 100;
+	m_stFrame[94][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[94][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
+	m_stFrame[94][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+	m_stFrame[94][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[94][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+
+	m_stFrame[95][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[95][DEF_OBJECTSTOP].m_sMaxFrame = 7;
+	m_stFrame[95][DEF_OBJECTMOVE].m_sFrameTime = 90;
+	m_stFrame[95][DEF_OBJECTATTACK].m_sFrameTime = 100;
+	m_stFrame[95][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[95][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
+	m_stFrame[95][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+	m_stFrame[95][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[95][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+
+	m_stFrame[96][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[96][DEF_OBJECTSTOP].m_sMaxFrame = 7;
+	m_stFrame[96][DEF_OBJECTMOVE].m_sFrameTime = 90;
+	m_stFrame[96][DEF_OBJECTATTACK].m_sFrameTime = 100;
+	m_stFrame[96][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[96][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
+	m_stFrame[96][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+	m_stFrame[96][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[96][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+
+	m_stFrame[97][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[97][DEF_OBJECTSTOP].m_sMaxFrame = 7;
+	m_stFrame[97][DEF_OBJECTMOVE].m_sFrameTime = 90;
+	m_stFrame[97][DEF_OBJECTATTACK].m_sFrameTime = 100;
+	m_stFrame[97][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[97][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
+	m_stFrame[97][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+	m_stFrame[97][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[97][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+
+	m_stFrame[98][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[98][DEF_OBJECTSTOP].m_sMaxFrame = 7;
+	m_stFrame[98][DEF_OBJECTMOVE].m_sFrameTime = 90;
+	m_stFrame[98][DEF_OBJECTATTACK].m_sFrameTime = 100;
+	m_stFrame[98][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[98][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
+	m_stFrame[98][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+	m_stFrame[98][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[98][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+
+	m_stFrame[99][DEF_OBJECTSTOP].m_sFrameTime = 250;
+	m_stFrame[99][DEF_OBJECTSTOP].m_sMaxFrame = 3;
+	m_stFrame[99][DEF_OBJECTMOVE].m_sFrameTime = 100;
+	m_stFrame[99][DEF_OBJECTATTACK].m_sFrameTime = 120;
+	m_stFrame[99][DEF_OBJECTATTACK].m_sMaxFrame = 7;
+	m_stFrame[99][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
+	m_stFrame[99][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
+	m_stFrame[99][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[99][DEF_OBJECTDYING].m_sMaxFrame = 9;
 }
 
 void CMapData::Init()
@@ -2273,6 +2339,9 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						break;
 
 					case 31: // DD
+					//Magn0S:: New mobs
+					case 93: // BlackDemon
+					case 99: // Ghost Abaadon
 						if ( (m_pData[dX][dY].m_cOwnerFrame == 1) )
 							m_pGame->PlaySound('M', 59, sDist, lPan);
 						break;
@@ -2345,6 +2414,11 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					
 
 					case 73: // Snoopy: Fite-Wyvern
+					case 94: // BlackWyv
+					case 95: // LighWyvern
+					case 96: // PoisonWyvern
+					case 97: // HeavenWyvern
+					case 98: // IllusionWyvern
 						if ( (m_pData[dX][dY].m_cOwnerFrame == 1) )
 							m_pGame->PlaySound('M', 106, sDist, lPan);
 						break;
@@ -2385,6 +2459,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						break;
 
 					case 81: // Abaddon
+					case 92: // Eternal Dragon
 						if ( (m_pData[dX][dY].m_cOwnerFrame == 1) )
 							m_pGame->PlaySound('M', 136, sDist, lPan);
 						break;
@@ -2776,6 +2851,8 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						break;
 
 					case 31: // DD
+					case 93: // BlackDemon
+					case 99: // Ghost Abaadon
 						if (m_pData[dX][dY].m_cOwnerFrame == 1)
 							m_pGame->PlaySound('M', 60, sDist, lPan);
 						break;
@@ -2847,6 +2924,11 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						break;
 
 					case 73: // Snoopy: Fire Wyvern
+					case 94: // BlackWyv
+					case 95: // LighWyvern
+					case 96: // PoisonWyvern
+					case 97: // HeavenWyvern
+					case 98: // IllusionWyvern
 						if ( (m_pData[dX][dY].m_cOwnerFrame == 1) )
 							m_pGame->PlaySound('M', 107, sDist, lPan);
 						break;
@@ -2857,6 +2939,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						break;
 
 					case 81: // Snoopy: Abaddon
+					case 92: // Eternal Dragon
 						if ( (m_pData[dX][dY].m_cOwnerFrame == 1) )
 							m_pGame->PlaySound('M', 137, sDist, lPan);
 						break;
@@ -3074,6 +3157,8 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							break;
 
 						case 31: // DD
+						case 93: //Black Demon
+						case 99: //Ghost Abaadon
 							if (m_pData[dX][dY].m_cOwnerFrame == 5) m_pGame->PlaySound('M', 61, sDist, lPan);
 							break;
 
@@ -3137,6 +3222,10 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 
 						case 81: // Snoopy: Abaddon
 							if ( (m_pData[dX][dY].m_cOwnerFrame == 1) ) m_pGame->PlaySound('M', 138, sDist, lPan);
+							break;
+
+						case 92: // VAMP - eternal dragon
+							if ((m_pData[dX][dY].m_cOwnerFrame == 1)) m_pGame->PlaySound('M', 138, sDist, lPan);
 							break;
 
 						case 72: // Snoopy: ClawTurtle
@@ -3323,6 +3412,8 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							break;
 
 						case 31: // DD
+						case 93: //Black Demon
+						case 99: //Ghost Abaadon
 							if (m_pData[dX][dY].m_cOwnerFrame == 2)
 								m_pGame->PlaySound('M', 61, sDist, lPan);
 							break;
@@ -3637,6 +3728,8 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							break;
 
 						case 31: // DD
+						case 93: // BlackDemon
+						case 99: //Ghost Abaadon
 							if (m_pData[dX][dY].m_cOwnerFrame == 5)
 								m_pGame->PlaySound('M', 62, sDist, lPan);
 							break;
@@ -3804,6 +3897,11 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							break;
 
 						case 73: // Snoopy: FireWyvern
+						case 94: // BlackWyv
+						case 95: // LighWyvern
+						case 96: // PoisonWyvern
+						case 97: // HeavenWyvern
+						case 98: // IllusionWyvern
 							if ( (m_pData[dX][dY].m_cOwnerFrame == 1) )
 								m_pGame->PlaySound('M', 105, sDist, lPan);
 							break;

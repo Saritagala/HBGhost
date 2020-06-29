@@ -40,6 +40,10 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
+	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
+		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		return;
+	}
 
 	switch (iV1) {
 	case 0: // ÆÄÆ¼ Å»Åð ½ÅÃ»
@@ -137,6 +141,11 @@ void CGame::RequestCreatePartyHandler(int iClientH)
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+
+	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		return;
+	}
 
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_NULL) {
 		// ÆÄÆ¼ »óÅÂ°¡ ÀÌ¹Ì Á¸ÀçÇÏ¸é ÆÄÆ¼¸¦ ¸¸µé ¼ö ¾ø´Ù.
@@ -322,6 +331,11 @@ void CGame::PartyOperationResult_Create(int iClientH, char* pName, int iResult, 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (strcmp(m_pClientList[iClientH]->m_cCharName, pName) != 0) return;
 
+	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
+		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		return;
+	}
+
 	// Prevent creation of a n� 0 party
 	if ((iPartyID == 0) && (iResult != 0)) return;
 
@@ -395,6 +409,11 @@ void CGame::PartyOperationResult_Join(int iClientH, char* pName, int iResult, in
 	int i;
 
 	if (m_pClientList[iClientH] == NULL) return;
+
+	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
+		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		return;
+	}
 
 	// Prevent creation of a n� 0 party
 	if ((iPartyID == 0) && (iResult != 0)) return;
@@ -569,6 +588,11 @@ void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_NULL) return;
 	if ((dwMsgSize) <= 0) return;
 	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
+
+	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
+		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		return;
+	}
 
 	if (m_pClientList[iClientH]->IsInMap("team")) return;
 	ZeroMemory(cBuff, sizeof(cBuff));
@@ -908,6 +932,12 @@ void CGame::RefreshPartyCoords(int iClientH)
 	x = 0;
 
 	if (m_pClientList[iClientH] == NULL) return;
+
+	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
+		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		RequestDeletePartyHandler(iClientH);
+		return;
+	}
 
 	if ((m_pClientList[iClientH]->m_iPartyID != NULL) && (m_pClientList[iClientH]->m_iPartyStatus == DEF_PARTYSTATUS_CONFIRM))
 	{

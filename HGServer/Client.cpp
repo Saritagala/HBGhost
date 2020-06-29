@@ -314,7 +314,9 @@ CClient::CClient(HWND hWnd)
     for(i = 0; i < DEF_MAXITEMS; i++)
         m_stRepairAll[i].index = m_stRepairAll[i].price = 0;
 
+	//Magn0S:: New Variables
 	m_iCoinPoints = 0;
+	bShowDmg = false;
 	///////////////////////////////////////////////////////////////////////////////////////
 }
 

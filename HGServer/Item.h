@@ -71,6 +71,10 @@ public:
 										// f: 특수 아이템 추가 성질 정도 
 										 
 	bool teamcape, teamboots;
+
+	//Magn0S::
+	bool bEkSale, bContrbSale, bCoinSale;
+	DWORD m_wContribPrice, m_wEkPrice, m_wCoinPrice;
 };
 
 /*

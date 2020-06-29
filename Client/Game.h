@@ -219,12 +219,7 @@ public:
 
 	
 	void DlgBoxClick_GMPanel(short msX, short msY);
-	void DrawDialogBox_GMPanel(short msX, short msY);
-	void DlgBoxClick_GMPanel_Teleport(short msX, short msY);
-	void DrawDialogBox_GMPanel_Teleport(short msX, short msY);
-	void DlgBoxClick_GMPanel_Summon(short msX, short msY);
-	void DrawDialogBox_GMPanel_Summon(short msX, short msY);
-
+	void DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB);
 
 	int m_iAgreeView;
 	void _LoadAgreementTextContents(char cType);
@@ -1180,9 +1175,8 @@ public:
 	void ResponseOnlines(char * pData);
 	char m_cTakeHeroItemName[100]; //Drajwer - hero item str
 
-        //Aryes - DNS
-        char m_cLogServerAddrBuffer[100];
-
+    //Aryes - DNS
+    char m_cLogServerAddrBuffer[100];
 
 	BOOL bReadLoginConfigFile(char * cFn);
 	int m_iGameServerMode;
@@ -1246,8 +1240,17 @@ public:
 
 	//Magn0S:: New varaibles
 	int iNewShop, m_iCoinPoints;
-	bool m_bApocalypse, m_bAttackMode, m_bTeleportUp, m_bMapAMP, m_bMapInvi, m_bMapActives, m_bMapIllusion, m_bMapParty;
-	
+	bool m_bApocalypse, m_bAttackMode;
+	char cCharSelection[21];
+	bool bListSelected = false;
+
+	void NotifyMapRestrictions(char* pData);
+	bool bMapTP = true, bMapParty = true, bMapIllusion = false, bMapActivate = true, bMapInvi = true, bMapAMP = true;
+	bool bMapRegens = true, bMapHideEnemy = false, bMapBonusDmg = false, bMapEquip = true;
+
+	void MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect);
+	void MakeFunTileSpr(char* FileName, short sStart, short sCount, bool bAlphaEffect);
+	void MakeEffectFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect);
 };
 
 #endif // !defined(AFX_GAME_H__0089D9E3_74E6_11D2_A8E6_00001C7030A6__INCLUDED_)

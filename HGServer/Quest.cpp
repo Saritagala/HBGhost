@@ -822,8 +822,8 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 				(m_pQuestConfigList[index]->m_cSide == m_pClientList[iClientH]->m_cSide) &&
 				//for (i = 0; i < DEF_MAXQUEST; i++) {
 				(m_pQuestConfigList[index]->m_iQuestID != m_pClientList[iClientH]->m_iQuest[index]) &&
-				//(m_pQuestConfigList[index]->m_iReqContribution <= m_pClientList[iClientH]->m_iContribution) &&
-				//(m_pQuestConfigList[index]->m_iContributionLimit >= m_pClientList[iClientH]->m_iContribution) &&
+				(m_pQuestConfigList[index]->m_iReqContribution <= m_pClientList[iClientH]->m_iContribution) &&
+				(m_pQuestConfigList[index]->m_iContributionLimit >= m_pClientList[iClientH]->m_iContribution) &&
 				(m_bIsCrusadeMode == FALSE))
 			{
 				ip = (int*)cp;

@@ -337,7 +337,7 @@ public:
 
 	void ReqCreateCraftingHandler(int iClientH, char* pData);
 
-	void RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum);
+	void RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum, int iOption);
 
 	void PlayerOrder_ChangeCity(int iClientH, BOOL bChange);
 	void RequestRango(int iClientH, int iObjectID);
@@ -1138,6 +1138,7 @@ public:
 
 	//Magn0S:: Multi Quest
 	void RequestQuestPrize(int iClientH, int iQuest);
+	void NotifyMapRestrictions(int iClientH, bool bNotify);
 };
 
 #endif // !defined(AFX_GAME_H__C3D29FC5_755B_11D2_A8E6_00001C7030A6__INCLUDED_)

@@ -421,6 +421,7 @@ public:
 
 	//Magn0S:: Coins
 	int m_iCoinPoints;
+	bool bShowDmg;
 };
 
 #endif // !defined(AFX_CLIENT_H__39CC7700_789F_11D2_A8E6_00001C7030A6__INCLUDED_)

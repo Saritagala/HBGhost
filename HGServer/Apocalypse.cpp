@@ -544,6 +544,15 @@ BOOL CGame::MobBossGenerator(int iMapIndex)
 		case 76:  strcpy(cNpcName, "Giant-Plant");		iProbSA = 20; iKindSA = 1;  break;
 		case 77:  strcpy(cNpcName, "MasterMage-Orc");	iProbSA = 20; iKindSA = 1;  break;
 		case 79:  strcpy(cNpcName, "Nizie");				iProbSA = 20; iKindSA = 1;  break;
+		//Magn0S:: New Npc's
+		case 92:  strcpy(cNpcName, "Eternal-Dragon");			iProbSA = 20; iKindSA = 9;  break;
+		case 93:  strcpy(cNpcName, "Black-Demon");			iProbSA = 20; iKindSA = 9;  break;
+		case 94:  strcpy(cNpcName, "Black-Wyvern");			iProbSA = 20; iKindSA = 9;  break;
+		case 95:  strcpy(cNpcName, "Light-Wyvern");			iProbSA = 20; iKindSA = 9;  break;
+		case 96:  strcpy(cNpcName, "Poison-Wyvern");			iProbSA = 20; iKindSA = 9;  break;
+		case 97:  strcpy(cNpcName, "Heaven-Wyvern");			iProbSA = 20; iKindSA = 9;  break;
+		case 98:  strcpy(cNpcName, "Illusion-Wyvern");			iProbSA = 20; iKindSA = 9;  break;
+		case 99:  strcpy(cNpcName, "Ghost-Abaddon");			iProbSA = 20; iKindSA = 9;  break;
 		default:  strcpy(cNpcName, "Orc");				iProbSA = 15; iKindSA = 1; 	break;
 		}
 		cSA = _cGetSpecialAbility(iKindSA);

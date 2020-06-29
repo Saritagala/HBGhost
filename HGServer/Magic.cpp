@@ -402,6 +402,16 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	if ((sType < 0) || (sType >= 100))     return;
 	if (m_pMagicConfigList[sType] == NULL) return;
 
+	//Magn0S:: Set Map Restrictions
+	if ((sType == 32) && (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapInvi == false) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Invisibility Effect is disabled in this map.");
+		return;
+	}
+	if ((sType == 65) && (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapAMP == false) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "AMP Effect is disabled in this map.");
+		return;
+	}
+
 	if ((bItemEffect == FALSE) && (m_pClientList[iClientH]->m_cMagicMastery[sType] != 1)) return;
 
 	if ((m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsAttackEnabled == FALSE) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) return;

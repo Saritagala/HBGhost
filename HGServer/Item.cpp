@@ -62,6 +62,10 @@ CItem::CItem()
 
 	m_bIsForSale = FALSE;
 
+	bEkSale = false;
+	bContrbSale = false;
+	bCoinSale = false;
+
 	teamcape = false;
 	teamboots = false;
 }
@@ -3249,83 +3253,23 @@ void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 	}
 }
 
-
-// MORLA 2.4 - Trade Items
-void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum)
+// MORLA 2.4 - Trade Items / Changed by Magn0S
+void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum, int iPurchase)
 {
 	class CItem* pItem;
 	char* cp, cItemName[21], cData[100];
 	short* sp;
 	DWORD* dwp, dwItemCount;
 	WORD* wp, wTempPrice;
-	int   i, iRet, iEraseReq;
-	int iEKCost = 0, iDPCost = 0;
+	int   i, iRet, iEraseReq, iCost;
+
+	iCost = 0;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 
-
-
 	ZeroMemory(cData, sizeof(cData));
 	ZeroMemory(cItemName, sizeof(cItemName));
-	// MORLA 2.5 - Trade items x EKs
-	if (memcmp(pItemName, "XelimaBlade", 11) == 0) { iDPCost = 0; iEKCost = 3500; }
-	if (memcmp(pItemName, "XelimaAxe", 9) == 0) { iDPCost = 0; iEKCost = 4500; }
-	if (memcmp(pItemName, "XelimaRapier", 12) == 0) { iDPCost = 0; iEKCost = 2000; }
-	if (memcmp(pItemName, "KlonessBlade", 12) == 0) { iDPCost = 0; iEKCost = 3500; }
-	if (memcmp(pItemName, "KlonessAxe", 10) == 0) { iDPCost = 0; iEKCost = 3500; }
-	if (memcmp(pItemName, "KlonessEsterk", 13) == 0) { iDPCost = 0; iEKCost = 3000; }
-	if (memcmp(pItemName, "BerserkWand(MS.20)", 18) == 0) { iDPCost = 0; iEKCost = 4500; }
-	if (memcmp(pItemName, "KlonessWand(MS.20)", 18) == 0) { iDPCost = 0; iEKCost = 2000; }
-	if (memcmp(pItemName, "ResurWand(MS.20)", 16) == 0) { iDPCost = 0; iEKCost = 2000; }
-	if (memcmp(pItemName, "I.M.CManual", 11) == 0) { iDPCost = 0; iEKCost = 3000; }
-	if (memcmp(pItemName, "MerienShield", 12) == 0) { iDPCost = 0; iEKCost = 6000; }
-	if (memcmp(pItemName, "MerienPlateMailM", 16) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "MerienPlateMailW", 16) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "SwordofMedusa", 13) == 0) { iDPCost = 0; iEKCost = 5000; }
-	if (memcmp(pItemName, "DemonSlayer", 11) == 0) { iDPCost = 0; iEKCost = 1000; }
-	if (memcmp(pItemName, "DarkElfBow", 10) == 0) { iDPCost = 0; iEKCost = 500; }
-	if (memcmp(pItemName, "GiantBattleHammer", 17) == 0) { iDPCost = 0; iEKCost = 6000; }
-	if (memcmp(pItemName, "StormBringer", 12) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "DarkExecutor", 12) == 0) { iDPCost = 0; iEKCost = 4500; }
-	if (memcmp(pItemName, "LightingBlade", 13) == 0) { iDPCost = 0; iEKCost = 4500; }
-	if (memcmp(pItemName, "RingoftheAbaddon", 16) == 0) { iDPCost = 0; iEKCost = 2500; }
-	if (memcmp(pItemName, "RingofArcmage", 13) == 0) { iDPCost = 0; iEKCost = 2500; }
-	if (memcmp(pItemName, "NecklaceOfMerien", 16) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "NecklaceOfXelima", 16) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "KnecklaceOfMedusa", 17) == 0) { iDPCost = 0; iEKCost = 5000; }
-	if (memcmp(pItemName, "KnecklaceOfIceEle", 17) == 0) { iDPCost = 0; iEKCost = 2000; }
-	if (memcmp(pItemName, "HeroNeckMage(MD+35)", 19) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "HeroNeckWar(DM+35)", 18) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "RingofHeroMage", 14) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "RingOfHeroWar", 13) == 0) { iDPCost = 0; iEKCost = 4000; }
-	if (memcmp(pItemName, "HeroWand", 8) == 0) { iDPCost = 0; iEKCost = 4000; }
-
-	// MORLA 2.5 - Trade items x DeathMach Points
-	if (memcmp(pItemName, "ZemstoneofSacrifice", 19) == 0) { iDPCost = 3; iEKCost = 0; }
-	if (memcmp(pItemName, "StoneOfXelima", 13) == 0) { iDPCost = 4; iEKCost = 0; }
-	if (memcmp(pItemName, "StoneOfMerien", 13) == 0) { iDPCost = 4; iEKCost = 0; }
-	if (memcmp(pItemName, "RingofDemonpower", 16) == 0) { iDPCost = 10; iEKCost = 0; }
-	if (memcmp(pItemName, "RingofGrandMage", 15) == 0) { iDPCost = 10; iEKCost = 0; }
-	if (memcmp(pItemName, "MagicWand(MS30-LLF)", 18) == 0) { iDPCost = 12; iEKCost = 0; }
-	if (memcmp(pItemName, "HuntSword", 9) == 0) { iDPCost = 100; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorHauberk", 16) == 0) { iDPCost = 50; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorBerkW", 14) == 0) { iDPCost = 50; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorHelmM", 14) == 0) { iDPCost = 60; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorHelmW", 14) == 0) { iDPCost = 60; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorHatM", 13) == 0) { iDPCost = 30; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorHatW", 13) == 0) { iDPCost = 30; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorLeggs", 14) == 0) { iDPCost = 60; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorLeggsW", 15) == 0) { iDPCost = 60; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorMailM", 14) == 0) { iDPCost = 70; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorMailW", 14) == 0) { iDPCost = 70; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorAxe", 12) == 0) { iDPCost = 80; iEKCost = 0; }
-	if (memcmp(pItemName, "GladeitorWandMS70", 17) == 0) { iDPCost = 40; iEKCost = 0; }
-
-	if ((m_pClientList[iClientH]->m_iEnemyKillCount < iEKCost)
-		|| (m_pClientList[iClientH]->m_iDGPoints < iDPCost)) return;
-
-	if ((iDPCost == 0) && (iEKCost == 0)) return;
 
 	memcpy(cItemName, pItemName, 20);
 	dwItemCount = 1;
@@ -3337,6 +3281,51 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum)
 			delete pItem;
 		}
 		else {
+
+			switch (iPurchase) {
+			case 1:
+				if (pItem->bEkSale == false) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This item is not for sale for Ek's. Update your CONTENTS.");
+					delete pItem;
+					return;
+				}
+
+				if (m_pClientList[iClientH]->m_iEnemyKillCount < pItem->m_wEkPrice) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Enemy Kill Points to purchase this item.");
+					return;
+				}
+				iCost = (int)((float)(pItem->m_wEkPrice));
+				break;
+			case 2:
+				if (pItem->bContrbSale == false) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This item is not for sale for Contributions. Update your CONTENTS.");
+					delete pItem;
+					return;
+				}
+
+				if (m_pClientList[iClientH]->m_iContribution < pItem->m_wContribPrice) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Contribution Points to purchase this item.");
+					return;
+				}
+				iCost = (int)((float)(pItem->m_wContribPrice));
+				break;
+			case 3:
+				if (pItem->bCoinSale == false) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This item is not for sale for Coin Points. Update your CONTENTS.");
+					delete pItem;
+					return;
+				}
+
+				if (m_pClientList[iClientH]->m_iCoinPoints < pItem->m_wCoinPrice) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Coins to purchase this item.");
+					return;
+				}
+				iCost = (int)((float)(pItem->m_wCoinPrice));
+				break;
+			default:
+				return;
+				break;
+			}
 
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE) {
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
@@ -3393,17 +3382,29 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum)
 				cp++;
 
 				wp = (WORD*)cp;
-				*wp = iEKCost;
-				wTempPrice = iEKCost;
+				*wp = iCost;
+				wTempPrice = iCost;
 				cp += 2;
 
 				if (iEraseReq == 1) delete pItem;
 
-
-				m_pClientList[iClientH]->m_iEnemyKillCount -= iEKCost;
-				m_pClientList[iClientH]->m_iDGPoints -= iDPCost;
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[iClientH]->m_iDGPoints, m_pClientList[iClientH]->m_iTotalDGKills, m_pClientList[iClientH]->m_iRating, NULL);
+				switch (iPurchase) {
+				case 1:
+					m_pClientList[iClientH]->m_iEnemyKillCount -= pItem->m_wEkPrice;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+					break;
+				case 2:
+					m_pClientList[iClientH]->m_iContribution -= pItem->m_wContribPrice;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
+					break;
+				case 3:
+					m_pClientList[iClientH]->m_iCoinPoints -= pItem->m_wCoinPrice;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_COINPOINTS, m_pClientList[iClientH]->m_iCoinPoints, NULL, NULL, NULL);
+					break;
+				default:
+					return;
+					break;
+				}
 
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 48);
 
@@ -6772,6 +6773,56 @@ BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 						return FALSE;
 					}
 					m_pItemConfigList[iItemConfigListIndex]->m_cItemColor = atoi(token);
+					//cReadModeA = 0;
+					cReadModeB = 27;
+					break;
+					//Magn0S:: New variables for trades
+				case 27:
+					// m_wContribPrice
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Contrib Cost");
+						delete[] pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->bContrbSale = false;
+					else m_pItemConfigList[iItemConfigListIndex]->bContrbSale = true;
+
+					m_pItemConfigList[iItemConfigListIndex]->m_wContribPrice = abs(iTemp);
+					cReadModeB = 28;
+					break;
+				case 28:
+					// m_wEkPrice
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Ek Cost");
+						delete[] pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->bEkSale = false;
+					else m_pItemConfigList[iItemConfigListIndex]->bEkSale = true;
+
+					m_pItemConfigList[iItemConfigListIndex]->m_wEkPrice = abs(iTemp);
+					cReadModeB = 29;
+					break;
+				case 29:
+					// m_wCoinPrice
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Coin Cost");
+						delete[] pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->bCoinSale = false;
+					else m_pItemConfigList[iItemConfigListIndex]->bCoinSale = true;
+
+					m_pItemConfigList[iItemConfigListIndex]->m_wCoinPrice = abs(iTemp);
 					cReadModeA = 0;
 					cReadModeB = 0;
 					break;
@@ -6856,6 +6907,12 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
 				pItem->m_sIDnum = m_pItemConfigList[i]->m_sIDnum;
 				pItem->m_bIsForSale = m_pItemConfigList[i]->m_bIsForSale;
 				pItem->m_cItemColor = m_pItemConfigList[i]->m_cItemColor;
+				pItem->m_wContribPrice = m_pItemConfigList[i]->m_wContribPrice;
+				pItem->m_wEkPrice = m_pItemConfigList[i]->m_wEkPrice;
+				pItem->m_wCoinPrice = m_pItemConfigList[i]->m_wCoinPrice;
+				pItem->bEkSale = m_pItemConfigList[i]->bEkSale;
+				pItem->bContrbSale = m_pItemConfigList[i]->bContrbSale;
+				pItem->bCoinSale = m_pItemConfigList[i]->bCoinSale;
 				return TRUE;
 			}
 		}
@@ -6906,6 +6963,12 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, int iItemID)
 				pItem->m_sIDnum = m_pItemConfigList[i]->m_sIDnum;
 				pItem->m_bIsForSale = m_pItemConfigList[i]->m_bIsForSale;
 				pItem->m_cItemColor = m_pItemConfigList[i]->m_cItemColor;
+				pItem->m_wContribPrice = m_pItemConfigList[i]->m_wContribPrice;
+				pItem->m_wEkPrice = m_pItemConfigList[i]->m_wEkPrice;
+				pItem->m_wCoinPrice = m_pItemConfigList[i]->m_wCoinPrice;
+				pItem->bEkSale = m_pItemConfigList[i]->bEkSale;
+				pItem->bContrbSale = m_pItemConfigList[i]->bContrbSale;
+				pItem->bCoinSale = m_pItemConfigList[i]->bCoinSale;
 				return TRUE;
 			}
 		}
@@ -7546,6 +7609,11 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType != DEF_ITEMTYPE_EQUIP) return FALSE;
 
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_wCurLifeSpan <= 0) return FALSE;
+
+	if ((m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapEquip == false) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Equip Itens is not allowed in this Map.");
+		return FALSE;
+	}
 
 	if (((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000001) == NULL) &&
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sLevelLimit > m_pClientList[iClientH]->m_iLevel)) return FALSE;
@@ -9715,6 +9783,14 @@ BOOL CGame::bCopyItemContents(CItem* pCopy, CItem* pOriginal)
 	pCopy->m_sItemSpecEffectValue3 = pOriginal->m_sItemSpecEffectValue3;
 	pCopy->m_wCurLifeSpan = pOriginal->m_wCurLifeSpan;
 	pCopy->m_dwAttribute = pOriginal->m_dwAttribute;
+
+	pCopy->m_wContribPrice = pOriginal->m_wContribPrice;
+	pCopy->m_wEkPrice = pOriginal->m_wEkPrice;
+	pCopy->m_wCoinPrice = pOriginal->m_wCoinPrice;
+
+	pCopy->bEkSale = pOriginal->bEkSale;
+	pCopy->bContrbSale = pOriginal->bContrbSale;
+	pCopy->bCoinSale = pOriginal->bCoinSale;
 
 	return TRUE;
 }

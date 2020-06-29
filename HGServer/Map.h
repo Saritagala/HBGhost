@@ -160,6 +160,10 @@ public:
 	class CStrategicPoint * m_pStrategicPointList[DEF_MAXSTRATEGICPOINTS];
 	BOOL  m_bIsAttackEnabled;
 
+	//Magn0S:: Maps Restrictions
+	bool bMapTP = true, bMapParty = true, bMapIllusion = false, bMapActivate = true, bMapInvi = true, bMapAMP = true;
+	bool bMapRegens = true, bMapHideEnemy = false, bMapBonusDmg = false, bMapEquip = true;
+
 	BOOL  m_bIsFightZone;
 
 	struct {
