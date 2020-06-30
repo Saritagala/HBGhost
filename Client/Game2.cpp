@@ -6687,7 +6687,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		}
 
 		iNext += 1;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "Drop Inhibition", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Bag Protection", 255, 255, 255);
 		if (!_drop_inhib) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -20724,7 +20724,7 @@ void CGame::NotifyEvents(char* pData)
 
 	if (_drop_inhib && !drop)
 	{
-		SetTopMsg("Drop Inhibition event started", 10);
+		SetTopMsg("Bag Protection started", 10);
 	}
 
 	// OFF
@@ -20745,7 +20745,7 @@ void CGame::NotifyEvents(char* pData)
 
 	if (!_drop_inhib && drop)
 	{
-		SetTopMsg("Drop Inhibition event finished", 10);
+		SetTopMsg("Bag Protection event finished", 10);
 	}
 }
 
