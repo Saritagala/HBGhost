@@ -6660,7 +6660,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 		// kazin
 		iNext += 1;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "Candy Boost", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Candy Fury", 255, 255, 255);
 		if (!_candy_boost) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -6669,7 +6669,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		}
 
 		iNext += 1;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "Revelation", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Beholder Event", 255, 255, 255);
 		if (!_revelation) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -6678,7 +6678,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		}
 
 		iNext += 1;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "City Teleport", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Invasion Time", 255, 255, 255);
 		if (!_city_teleport) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -20709,17 +20709,17 @@ void CGame::NotifyEvents(char* pData)
 	// ON
 	if (_candy_boost && !candy)
 	{
-		SetTopMsg("Candy Boost event started", 10);
+		SetTopMsg("Candy Fury started", 10);
 	}
 
 	if (_revelation && !rev)
 	{
-		SetTopMsg("Revelation event started", 10);
+		SetTopMsg("Beholder Event started", 10);
 	}
 
 	if (_city_teleport && !tp)
 	{
-		SetTopMsg("City Teleport event started", 10);
+		SetTopMsg("Invasion Time started", 10);
 	}
 
 	if (_drop_inhib && !drop)
@@ -20730,17 +20730,17 @@ void CGame::NotifyEvents(char* pData)
 	// OFF
 	if (!_candy_boost && candy)
 	{
-		SetTopMsg("Candy Boost event finished", 10);
+		SetTopMsg("Candy Fury finished", 10);
 	}
 
 	if (!_revelation && rev)
 	{
-		SetTopMsg("Revelation event finished", 10);
+		SetTopMsg("Beholder Event finished", 10);
 	}
 
 	if (!_city_teleport && tp)
 	{
-		SetTopMsg("City Teleport event finished", 10);
+		SetTopMsg("Invasion Time finished", 10);
 	}
 
 	if (!_drop_inhib && drop)
