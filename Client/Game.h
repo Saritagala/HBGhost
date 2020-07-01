@@ -154,6 +154,8 @@ class CGame
 public:
 
 	int m_iAdminUserLevel = 0;
+	char m_cCFTEventCount[2];
+	void NotifyMsg_EventInfo(char* pData);
 
 	void NotifyEvents(char* pData);
 	bool _candy_boost, _revelation, _city_teleport, _drop_inhib, _team_arena = false;
@@ -173,6 +175,7 @@ public:
 	char m_cRango[10];
 
 	void DrawWanted(short sX, short sY, DWORD dwTime);
+	void DrawFlagHolder(short sX, short sY, DWORD dwTime);
 
 	//MORLA2.2 - Deathmach Game
 	int iDGKill1 = 0, iDGKill2 = 0, iDGKill3 = 0, iDGKill4 = 0, iDGKill5 = 0, iDGKill6 = 0, iDGKill7 = 0, iDGKill8 = 0, iDGKill9 = 0,
@@ -198,8 +201,6 @@ public:
 	short sFocusX, sFocusY, sFocusOwnerType, sFocusAppr1, sFocusAppr2, sFocusAppr3, sFocusAppr4;
 	int iFocuiStatus;
 	int   iFocusApprColor;
-
-	void DrawGM(short sX, short sY, DWORD dwTime);
 
 	void reiniciarCastBar();
 	void UseShortCutPanel( int num, bool save );

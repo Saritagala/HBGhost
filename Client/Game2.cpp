@@ -5321,7 +5321,8 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			}
 			iNext += 1; // CTF
 			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
-				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 54, NULL, NULL, NULL);
+				//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 54, NULL, NULL, NULL);
+				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/ctf");
 				PlaySound('E', 14, 5);
 			}
 
@@ -20990,4 +20991,22 @@ void CGame::NotifyMapRestrictions(char* pData)
 		{	AddEventList("Equipe Itens in this map has been disabled!", 10);
 		}
 	}
+}
+
+void CGame::NotifyMsg_EventInfo(char* pData)
+{
+	char* cp, cTotal, i;
+	short* sp;
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	m_bIsCTFMode = *cp;
+	cp++;
+
+	m_cCFTEventCount[0] = *cp;
+	cp++;
+
+	m_cCFTEventCount[1] = *cp;
+	cp++;
+	
 }

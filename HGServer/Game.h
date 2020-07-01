@@ -100,6 +100,11 @@ public:
 
 //private:
 
+	int m_iCTFEventFlagHolder[2], m_iCTFEventFlag[2];
+	char m_cCFTEventCount[2];
+	void UpdateEventStatus();
+	void AdminOrder_SetEvent(int iClientH);
+
 	void SendAlertMsg(int client, char* pMsg);
 
 	void SendLoginData(int client);

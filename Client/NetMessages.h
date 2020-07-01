@@ -10,6 +10,9 @@
 
 #define DEF_NOTIFY_TOP15HB                                                     0x0F26
 
+#define DEF_NOTIFY_EVENT				0x0BFC
+#define DEF_NOTIFY_EVENT_INFO			0x0BFD
+
 #define DEF_NOTIFY_CHANGECITY 0x0CA1
 #define DEF_REQUEST_CHANGECITY_YES 0x0FC9422E
 

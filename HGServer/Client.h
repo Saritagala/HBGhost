@@ -343,6 +343,8 @@ public:
 	DWORD m_dwInitCCTimeRcv;
 	DWORD m_dwInitCCTime;
 
+	DWORD m_dwCTFHolderTime;
+
 	char  m_cLockedMapName[12];					// 갖힌 맵 이름
 	int   m_iLockedMapTime;						// 이 값이 0 이상이면 어디로 텔레포트 해도 위의 맵으로 간다.
 

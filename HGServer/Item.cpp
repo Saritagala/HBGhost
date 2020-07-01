@@ -144,8 +144,8 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	if (m_pClientList[iClientH]->m_iWantedLevel > 0) 
 		SetWantedFlag(iClientH, DEF_OWNERTYPE_PLAYER, 1); // Wanted System
 
-	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
-		m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00080000;
+	//if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
+	//	m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00080000;
 	
 	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = 0;
 	m_pClientList[iClientH]->m_cAttackDiceRange_SM = 0;
@@ -4024,17 +4024,28 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_INVISIBILITY] = NULL;
 			}
 
-
 			switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1) {
 			case 1:
 				// Recall
 				// testcode
-				RequestTeleportHandler(iClientH, "1  ");
+				//50Cent - Capture The Flag
+				if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
+				{
+					ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
+					//goto MAGIC_NOEFFECT;
+				}
+				else RequestTeleportHandler(iClientH, "1  ");
 				break;
 
 			case 2:
 				// Åõ¸í ¸¶¹ýÈ¿°ú°¡ ÀÖ´Â ¾ÆÀÌÅÛ. 
-				PlayerMagicHandler(iClientH, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, 32, TRUE);
+				//50Cent - Capture The Flag
+				if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
+				{
+					ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
+					//goto MAGIC_NOEFFECT;
+				}
+				else PlayerMagicHandler(iClientH, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, 32, TRUE);
 				break;
 
 			case 3:
@@ -4047,14 +4058,20 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				// fixed location teleportation: ÀÔÀå±Ç µîµî
 				switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) {
 				case 1:
-					
+					//50Cent - Capture The Flag
+					if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
+					{
+						ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
+						//goto MAGIC_NOEFFECT;
+					}
+					else {
 						// ºí¸®µù ¾ÆÀÏ·Î °£´Ù 
 						if (memcmp(m_pClientList[iClientH]->m_cMapName, "bisle", 5) != 0) {
 							//v1.42
 							ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
 							RequestTeleportHandler(iClientH, "2   ", "bisle", -1, -1);
 						}
-					
+					}
 					break;
 
 				//LifeX Added Reset Stat Scroll
@@ -4096,24 +4113,32 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				case 17:
 				case 18:
 				case 19:
-					// °áÅõÀåÀ¸·Î °£´Ù. 
-					SYSTEMTIME SysTime;
+					//50Cent - Capture The Flag
+					if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
+					{
+						ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
+						//goto MAGIC_NOEFFECT;
+					}
+					else {
+						// °áÅõÀåÀ¸·Î °£´Ù. 
+						SYSTEMTIME SysTime;
 
-					GetLocalTime(&SysTime);
-					// v1.4311-3 º¯°æ ÀÔÀå±Ç Ã¼Å© ´Þ/³¯Â¥/½Ã°£À¸·Î Ã¼Å©ÇÑ´Ù. 
-					// ÀÔÀå °¡´ÉÇÑ ½Ã°£º¸´Ù ÀÛ°Å³ª °°À¸¸é ÀÔÀå±ÇÀÌ »ç¶óÁø´Ù.
-					if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sTouchEffectValue1 == SysTime.wMonth) ||
-						(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sTouchEffectValue2 == SysTime.wDay) ||
-						(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sTouchEffectValue3 > SysTime.wHour)) {
-						// ³¯Â¥°¡ Á¤È®ÇÏÁö ¾Ê´Ù. ¾Æ¹«·± È¿°ú°¡ ¾ø°í ÀÔÀå±ÇÀº »ç¶óÁø´Ù.
+						GetLocalTime(&SysTime);
+						// v1.4311-3 º¯°æ ÀÔÀå±Ç Ã¼Å© ´Þ/³¯Â¥/½Ã°£À¸·Î Ã¼Å©ÇÑ´Ù. 
+						// ÀÔÀå °¡´ÉÇÑ ½Ã°£º¸´Ù ÀÛ°Å³ª °°À¸¸é ÀÔÀå±ÇÀÌ »ç¶óÁø´Ù.
+						if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sTouchEffectValue1 == SysTime.wMonth) ||
+							(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sTouchEffectValue2 == SysTime.wDay) ||
+							(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sTouchEffectValue3 > SysTime.wHour)) {
+							// ³¯Â¥°¡ Á¤È®ÇÏÁö ¾Ê´Ù. ¾Æ¹«·± È¿°ú°¡ ¾ø°í ÀÔÀå±ÇÀº »ç¶óÁø´Ù.
 
-						char cDestMapName[11];
-						ZeroMemory(cDestMapName, sizeof(cDestMapName));
-						wsprintf(cDestMapName, "fightzone%d", m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 - 10);
-						if (memcmp(m_pClientList[iClientH]->m_cMapName, cDestMapName, 10) != 0) {
-							//v1.42
-							ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
-							RequestTeleportHandler(iClientH, "2   ", cDestMapName, -1, -1);
+							char cDestMapName[11];
+							ZeroMemory(cDestMapName, sizeof(cDestMapName));
+							wsprintf(cDestMapName, "fightzone%d", m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 - 10);
+							if (memcmp(m_pClientList[iClientH]->m_cMapName, cDestMapName, 10) != 0) {
+								//v1.42
+								ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
+								RequestTeleportHandler(iClientH, "2   ", cDestMapName, -1, -1);
+							}
 						}
 					}
 					break;

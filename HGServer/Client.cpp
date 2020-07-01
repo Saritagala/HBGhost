@@ -238,7 +238,7 @@ CClient::CClient(HWND hWnd)
 	m_iRunMsgRecvCount = 0;
 	m_iSkillMsgRecvCount = 0;
 	m_bIsAdminCreateItemEnabled = FALSE; // new
-	m_bIsAdminCommandEnabled = TRUE;
+	m_bIsAdminCommandEnabled = FALSE;
 	m_iAutoExpAmount = 0;
 	m_iWarContribution = 0;
 	m_dwMoveLAT = m_dwRunLAT = m_dwAttackLAT = 0;

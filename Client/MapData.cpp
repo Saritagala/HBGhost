@@ -2029,12 +2029,14 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					break;
 
 				case DEF_DYNAMICOBJECT_ARESDENFLAG1:
+				case DEF_DYNAMICOBJECT_ARESDENFLAG2:
 					if (m_pData[dX][dY].m_cDynamicObjectFrame >= 4)
 					{	m_pData[dX][dY].m_cDynamicObjectFrame  = 0;
 					}
 					break;
 
 				case DEF_DYNAMICOBJECT_ELVINEFLAG1:
+				case DEF_DYNAMICOBJECT_ELVINEFLAG2:
 					if (m_pData[dX][dY].m_cDynamicObjectFrame >= 8)
 					{	m_pData[dX][dY].m_cDynamicObjectFrame  = 4;
 					}
@@ -4217,10 +4219,12 @@ BOOL CMapData::bSetDynamicObject(short sX, short sY, WORD wID, short sType, BOOL
 		break;
 
 	case DEF_DYNAMICOBJECT_ARESDENFLAG1:
+	case DEF_DYNAMICOBJECT_ARESDENFLAG2:
 		m_pData[dX][dY].m_cDynamicObjectFrame = (rand() % 4);
 		break;
 
 	case DEF_DYNAMICOBJECT_ELVINEFLAG1:
+	case DEF_DYNAMICOBJECT_ELVINEFLAG2:
 		m_pData[dX][dY].m_cDynamicObjectFrame = 4+ (rand() % 4);
 		break;
 	}

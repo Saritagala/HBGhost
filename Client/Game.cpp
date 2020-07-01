@@ -2346,6 +2346,8 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 
 				case DEF_DYNAMICOBJECT_ARESDENFLAG1:  // 6
 				case DEF_DYNAMICOBJECT_ELVINEFLAG1: // 7
+				case DEF_DYNAMICOBJECT_ARESDENFLAG2:  // 6
+				case DEF_DYNAMICOBJECT_ELVINEFLAG2: // 7
 					m_pSprite[DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT+2]->PutSpriteFast(ix, iy, sDynamicObjectFrame, dwTime);
 					break;
 			}	}
@@ -4991,10 +4993,7 @@ void CGame::bItemDrop_ExternalScreen(char cItemID, short msX, short msY)
 	{
 		ZeroMemory(cName, sizeof(cName));
 		m_pMapData->bGetOwner(m_sMCX, m_sMCY, cName, &sType, &iStatus, &m_wCommObjectID);
-		if (memcmp(m_cPlayerName, cName, 10) == 0)
-		{
-		}
-		else
+		if (memcmp(m_cPlayerName, cName, 10) != 0)
 		{
 			if (((m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_CONSUME) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW))
 				&& (m_pItemList[cItemID]->m_dwCount > 1))
@@ -9118,7 +9117,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX, sY, dwTime); // Wanted System
 		
-		DrawGM(sX, sY, dwTime);
+		DrawFlagHolder(sX, sY, dwTime);
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
@@ -9694,7 +9693,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 		CheckActiveAura2(sX+dx, sY+dy, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
 		
-		DrawGM(sX + dx, sY + dy, dwTime);
+		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
 		if (bDashDraw == TRUE) {
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSpriteRGB(sX+dsx, sY+dsy, _tmp_cFrame, m_wR[10] -(m_wR[0]/3), m_wG[10] -(m_wG[0]/3), m_wB[10] -(m_wB[0]/3), dwTime);
@@ -9932,7 +9931,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX, sY, dwTime); // Wanted System
 		
-		DrawGM(sX, sY, dwTime);
+		DrawFlagHolder(sX, sY, dwTime);
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
@@ -10175,7 +10174,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX, sY, dwTime); // Wanted System
 		
-		DrawGM(sX, sY, dwTime);
+		DrawFlagHolder(sX, sY, dwTime);
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
@@ -10704,7 +10703,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 			CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
 			DrawWanted(sX, sY, dwTime); // Wanted System
 			
-			DrawGM(sX, sY, dwTime);
+			DrawFlagHolder(sX, sY, dwTime);
 
 		}else // DrawMode != 1
 		{	if (_cDrawingOrder[_tmp_cDir] == 1)
@@ -10952,7 +10951,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 			CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
 			DrawWanted(sX, sY, dwTime); // Wanted System
 			
-			DrawGM(sX, sY, dwTime);
+			DrawFlagHolder(sX, sY, dwTime);
 		}
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
@@ -12284,7 +12283,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 		CheckActiveAura2(sX+dx, sY+dy, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
 		
-		DrawGM(sX + dx, sY + dy, dwTime);
+		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX + dx, sY + dy, _tmp_cName, _tmp_iStatus);
@@ -12776,7 +12775,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 		CheckActiveAura2(sX+dx, sY+dy, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
 		
-		DrawGM(sX + dx, sY + dy, dwTime);
+		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX + dx, sY + dy, _tmp_cName, _tmp_iStatus);
@@ -13720,7 +13719,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
 		DrawWanted(sX, sY, dwTime); // Wanted System
 		
-		DrawGM(sX, sY, dwTime);
+		DrawFlagHolder(sX, sY, dwTime);
 
 	}else if( strlen(_tmp_cName) > 0 )
 	{	if( (_tmp_sOwnerType>=1) && (_tmp_sOwnerType<=6) ) DrawObjectName(sX, sY, _tmp_cName, _tmp_iStatus);
@@ -15415,7 +15414,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 		CheckActiveAura2(sX + dx, sY + dy, dwTime, _tmp_sOwnerType);
 		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
 		
-		DrawGM(sX + dx, sY + dy, dwTime);
+		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
 	}
 	else if (strlen(_tmp_cName) > 0)
@@ -24952,6 +24951,39 @@ void CGame::NotifyMsgHandler(char * pData)
 		cp += 4;
 		break;
 
+	case DEF_NOTIFY_EVENT_INFO:
+		NotifyMsg_EventInfo(pData);
+		break;
+
+	case DEF_NOTIFY_EVENT: // kamal
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		if (*cp) {
+			SetTopMsg("Capture the Flag Event Activated!", 10); break;
+			m_bIsCTFMode = *cp;
+		}
+		else {
+			cp++;
+			switch (*cp) {
+			case 3: SetTopMsg("Capture the Flag Event has ended!", 10); break;
+			case 4: SetTopMsg("Aresden has taken the enemy flag!", 10); break;
+			case 5: SetTopMsg("Elvine has taken the enemy flag!", 10); break;
+			case 6: SetTopMsg("Aresden captured the enemy flag!", 10); break;
+			case 7: SetTopMsg("Elvine captured the enemy flag!", 10); break;
+			case 8: SetTopMsg("Aresden dropped the enemy flag! The flag was returned to Elvine.", 10); break;
+			case 9: SetTopMsg("Elvine dropped the enemy flag! The flag was returned to Aresden.", 10); break;
+			case 10: AddEventList("You cannot enter this area while holding the flag!", 10); break;
+			}
+			if (*cp == 3) {
+				if (m_bIsCTFMode && m_bCitizen) {
+					if (m_cCFTEventCount[0] > m_cCFTEventCount[1]) SetTopMsg("Aresden won Capture the Flag!", 10);
+					else if (m_cCFTEventCount[0] < m_cCFTEventCount[1]) SetTopMsg("Elvine won Capture the Flag!", 10);
+					else SetTopMsg("Capture the Flag resulted in a draw!", 10);
+				}
+				m_bIsCTFMode = FALSE;
+			}
+		}
+		break;
+
 	//MORLA 2.3 - Deathmatch Activado
     case DEF_NOTIFY_DEATHMATCHSTART: 
 		bDeathmatch = TRUE;
@@ -29472,22 +29504,29 @@ void CGame::GetNpcName(short sType, char *pName)
 	}
 }
 
-void CGame::DrawGM(short sX, short sY, DWORD dwTime)
+void CGame::DrawFlagHolder(short sX, short sY, DWORD dwTime)
 {
-	if ((_tmp_iStatus & 0x80000) != 0) {
-		//if (!m_bAresden) m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(sX, sY - 80, 57, dwTime); //elvine flag
-		//else  m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(sX, sY - 80, 56, dwTime); //aresden flag
-		m_pEffectSpr[45]->PutTransSprite(sX - 13, sY - 34, 0, dwTime);
+	// kamal
+	if ((_tmp_iStatus & 0x80000) != 0) { // CTF flag holder indicator
+		if ((_tmp_iStatus & 0x10) != 0) {
+			if (m_bAresden) m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutTransSprite(sX, sY - 80, 57, dwTime); // aresden citizen holding elvine flag
+			else m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutTransSprite(sX, sY - 80, 56, dwTime); // elvine citizen holding aresden flag
+		}
+		else {
+			if (m_bAresden) m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(sX, sY - 80, 57, dwTime); // aresden citizen holding elvine flag
+			else m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(sX, sY - 80, 56, dwTime); // elvine citizen holding aresden flag
+		}
 	}
 }
 
 void CGame::DrawWanted(short sX, short sY, DWORD dwTime)
 {
-	if ((_tmp_iStatus & 0x40000) != 0)
+	if ((_tmp_iStatus & 0x40000) != 0) {
 		if ((_tmp_iStatus & 0x10) != 0)
 			m_pEffectSpr[105]->PutTransSprite(sX, sY - 80, 5, dwTime); // Wanted Skull
 		else
 			m_pEffectSpr[105]->PutSpriteFast(sX, sY - 80, 5, dwTime); // Wanted Skull
+	}
 }
 
 void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, char cLB, char cRB)
@@ -31881,6 +31920,15 @@ void CGame::UpdateScreen_OnGame()
 #endif
 	}
 
+	if (m_bIsCTFMode && iUpdateRet != 0) {
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 140, 56, dwTime);
+		wsprintf(G_cTxt, "%d", m_cCFTEventCount[0]);
+		PutString(10 + 10, 140 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 140 + 45, 57, dwTime);
+		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
+		PutString(10 + 10, 140 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+	}
+
 	//Snoopy adding Heldenian turret count:
 	if ((iUpdateRet != 0) && (m_bIsHeldenian) && (memcmp(m_cCurLocation, "BtField", 7) == 0))
 	{
@@ -31892,9 +31940,9 @@ void CGame::UpdateScreen_OnGame()
 		PutString(10, 180, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine death toll : %d", m_iHeldenianElvineDead);
 		PutString(10, 200, G_cTxt, RGB(255, 255, 255));
-		wsprintf(G_cTxt, "Aresden's rest building number : %d", m_iHeldenianAresdenLeftTower);
+		wsprintf(G_cTxt, "Aresden rest building number : %d", m_iHeldenianAresdenLeftTower);
 		PutString(10, 220, G_cTxt, RGB(255, 255, 255));
-		wsprintf(G_cTxt, "Elvine's rest building number : %d", m_iHeldenianElvineLeftTower);
+		wsprintf(G_cTxt, "Elvine rest building number : %d", m_iHeldenianElvineLeftTower);
 		PutString(10, 240, G_cTxt, RGB(255, 255, 255));
 	}
 

@@ -2088,12 +2088,18 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 
 		case DEF_MAGICTYPE_TELEPORT:
 			// Ã…ÃšÂ·Â¹Ã†Ã·Ã†Â® Â¸Â¶Â¹Ã½. sValue 4Â¿Â¡ ÂµÃ»Â¶Ã³Â¼Â­ Ã…ÃšÂ·Â¹Ã†Ã·Ã†Â® Â¸Ã±Ã€Ã»ÃÃ¶Â°Â¡ Â°Ã¡ÃÂ¤ÂµÃˆÂ´Ã™.
-			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
+			
+			//50Cent - Capture The Flag
+			if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
+			{
+				ShowClientMsg(iClientH, "You can not use that magic being a flag carrier.");
+				goto MAGIC_NOEFFECT;
+			}
 
+			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
 
 			switch (m_pMagicConfigList[sType]->m_sValue4) {
 			case 1:
-
 				// Centuu : Aresden cant recall in elvine & Elvine cant recall in aresden - Fixed
 				if (m_pClientList[iClientH]->m_cSide == 2 && strcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "aresden") == 0) goto MAGIC_NOEFFECT;
 				if (m_pClientList[iClientH]->m_cSide == 1 && strcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "elvine") == 0) goto MAGIC_NOEFFECT;
@@ -2434,6 +2440,12 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 			break;
 
 		case DEF_MAGICTYPE_INVISIBILITY:
+			//50Cent - Capture The Flag
+			if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
+			{
+				ShowClientMsg(iClientH, "You can not use that magic being a flag carrier.");
+				goto MAGIC_NOEFFECT;
+			}
 			switch (m_pMagicConfigList[sType]->m_sValue4) {
 			case 1:
 				m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
