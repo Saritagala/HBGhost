@@ -79,20 +79,22 @@ teleport-loc     =     264    20      middleland          353    500   1
 teleport-loc     =     265    20      middleland          353    500   1
 teleport-loc     =     266    20      middleland          353    500   1
 
-teleport-loc     =     26     279     huntzone2           68     23    5
-teleport-loc     =     27     279     huntzone2           68     23    5
-teleport-loc     =     28     279     huntzone2           68     23    5
-teleport-loc     =     29     279     huntzone2           68     23    5
-teleport-loc     =     30     279     huntzone2           68     23    5
-teleport-loc     =     31     279     huntzone2           68     23    5
-teleport-loc     =     32     279     huntzone2           68     23    5
-teleport-loc     =     33     279     huntzone2           68     23    5
-teleport-loc     =     34     279     huntzone2           68     23    5
-teleport-loc     =     35     279     huntzone2           68     23    5
-teleport-loc     =     36     279     huntzone2           68     23    5
-teleport-loc     =     37     279     huntzone2           68     23    5
-teleport-loc     =     38     279     huntzone2           68     23    5
-teleport-loc     =     39     279     huntzone2           68     23    5
+teleport-loc     =     26     279     icebound            264     260    5
+teleport-loc     =     27     279     icebound            264     260    5
+teleport-loc     =     28     279     icebound            264     260    5
+teleport-loc     =     29     279     icebound            264     260    5
+teleport-loc     =     30     279     icebound            264     260    5
+teleport-loc     =     31     279     icebound            264     260    5
+teleport-loc     =     32     279     icebound            264     260    5
+teleport-loc     =     33     279     icebound            264     260    5
+teleport-loc     =     34     279     icebound            264     260    5
+teleport-loc     =     35     279     icebound            264     260    5
+teleport-loc     =     36     279     icebound            264     260    5
+teleport-loc     =     37     279     icebound            264     260    5
+teleport-loc     =     38     279     icebound            264     260    5
+teleport-loc     =     39     279     icebound            264     260    5
+
+264 260
 
 teleport-loc     =     78     210     middled1n           181     124    5
 teleport-loc     =     78     211     middled1n           181     124    5

@@ -1,0 +1,6 @@
+2020:06:30:23:56:25	Loc(cityhall_2) IP(192.168.0.12) GM(GM1):"/who"
+2020:07:01:00:14:18	Loc(icebound) IP(192.168.0.12) GM(GM1):"/tp elvine"
+2020:07:01:00:14:38	Loc(cityhall_2) IP(192.168.0.12) GM(GM1):"/tp elvine 220 19"
+2020:07:01:00:15:07	Loc(icebound) IP(192.168.0.12) GM(GM1):"/who"
+2020:07:01:00:53:18	Loc(middleland) IP(192.168.0.12) GM(GM1):"/tp icebound"
+2020:07:01:00:53:30	Loc(middleland) IP(192.168.0.12) GM(GM1):"/tp aresden"
