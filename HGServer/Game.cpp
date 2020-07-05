@@ -3474,7 +3474,7 @@ void CGame::ResponsePlayerDataHandler(char * pData, DWORD dwSize)
  WORD  * wp;
  
 	// centu - fix for wl src
-	if (dwSize >= DEF_MSGBUFFERSIZE+1) return;
+	if (dwSize > DEF_MSGBUFFERSIZE) return;
 
 	ZeroMemory(cCharName, sizeof(cCharName));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -3492,12 +3492,12 @@ void CGame::ResponsePlayerDataHandler(char * pData, DWORD dwSize)
 			case DEF_LOGRESMSGTYPE_REJECT:
 				// new
 				
-					ZeroMemory(cData, sizeof(cData));
-					dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
-					*dwp = MSGID_RESPONSE_INITPLAYER;
-					wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
-					*wp  = DEF_MSGTYPE_CONFIRM;
-					m_pClientList[i]->m_pXSock->iSendMsg(cData, 6);
+				ZeroMemory(cData, sizeof(cData));
+				dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+				*dwp = MSGID_RESPONSE_INITPLAYER;
+				wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+				*wp  = DEF_MSGTYPE_CONFIRM;
+				m_pClientList[i]->m_pXSock->iSendMsg(cData, 6);
 				
 				// end
 				wsprintf(G_cTxt, "(HACK?) Not existing character(%s) data request! Rejected!", m_pClientList[i]->m_cCharName);
@@ -22907,9 +22907,9 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 	} 
 
 	//Magn0S:: Add to avoid crash on hg.
-	if ((strcmp(m_pClientList[iClientH]->m_cLockedMapName, "bisle") == 0) && (m_pClientList[iClientH]->m_iLockedMapTime > 0)) {
+	/*if ((strcmp(m_pClientList[iClientH]->m_cLockedMapName, "bisle") == 0) && (m_pClientList[iClientH]->m_iLockedMapTime > 0)) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_LOCKEDMAP, m_pClientList[iClientH]->m_iLockedMapTime, NULL, NULL, m_pClientList[iClientH]->m_cLockedMapName); return;
-	}
+	}*/
 
 	//Magn0S:: Add to prevent players to teleport to an Offline Map
 	/*if (cMapName != NULL) {
@@ -23010,7 +23010,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[ DEF_MAGICTYPE_CONFUSE ], NULL, NULL);
 		SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 		bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-		//m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
+		m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
 		m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 		return;
 	}
@@ -23077,7 +23077,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 			SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);	
 			bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE, FALSE);
-			//m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
+			m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
 			m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 			return;
 
@@ -23104,7 +23104,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 				SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 				bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-				//m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
+				m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
 				m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 				return;
 			}
@@ -23138,7 +23138,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 				SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 				bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-				//m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
+				m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
 				m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 				return;
 			}		
@@ -26724,10 +26724,17 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 					}
 					wsprintf(G_cTxt, "Admin Order(%s): Block char in Bisle - Char Name: (%s)", m_pClientList[iClientH]->m_cCharName, m_pClientList[i]->m_cCharName);
 					PutLogList(G_cTxt);
-					DeleteClient(i, TRUE, TRUE);
+					
+					// centu - block in bi
+					ZeroMemory(m_pClientList[i]->m_cLockedMapName, sizeof(m_pClientList[i]->m_cLockedMapName));
+					strcpy(m_pClientList[i]->m_cLockedMapName, "bisle");
+					m_pClientList[i]->m_iLockedMapTime = 10 * 60;
+					RequestTeleportHandler(i, "2   ", "bisle", -1, -1);
+
+					//DeleteClient(i, TRUE, TRUE);
 					return;
 				}
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cName);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cName);
 		}
 		break;
 
@@ -26764,17 +26771,16 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are not allowed to do it with another GM.");
 						return;
 					}
-					ZeroMemory(m_pClientList[i]->m_cMapName, sizeof(m_pClientList[i]->m_cMapName));
-					memcpy(m_pClientList[i]->m_cMapName, "bisle", 5);
-					m_pClientList[i]->m_sX = -1;
-					m_pClientList[i]->m_sY = -1;
-
-					ZeroMemory(m_pClientList[i]->m_cLockedMapName, sizeof(m_pClientList[iClientH]->m_cLockedMapName));
+					
+					// centu - block in bi
+					ZeroMemory(m_pClientList[i]->m_cLockedMapName, sizeof(m_pClientList[i]->m_cLockedMapName));
 					strcpy(m_pClientList[i]->m_cLockedMapName, "bisle");
 					m_pClientList[i]->m_iLockedMapTime = 24 * 60 * iOption2;
+					RequestTeleportHandler(i, "2   ", "bisle", -1, -1);
+
 					wsprintf(G_cTxt, "Admin Order(%s): Block char in Bisle - Char Name: (%s)", m_pClientList[iClientH]->m_cCharName, m_pClientList[i]->m_cCharName);
 					PutLogList(G_cTxt);
-					DeleteClient(i, TRUE, TRUE);
+					//DeleteClient(i, TRUE, TRUE);
 					return;
 				}
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cName);
@@ -26810,12 +26816,18 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 						}
 					}
 
-					wsprintf(cMsg, "Char %s were blocked for 1 month in BI.", m_pClientList[iClientH]->m_cCharName);
+					// centu - block in bi
+					ZeroMemory(m_pClientList[i]->m_cLockedMapName, sizeof(m_pClientList[i]->m_cLockedMapName));
+					strcpy(m_pClientList[i]->m_cLockedMapName, "bisle");
+					m_pClientList[i]->m_iLockedMapTime = (24 * 60 * iOption2) * 2;
+					RequestTeleportHandler(i, "2   ", "bisle", -1, -1);
+
+					wsprintf(cMsg, "Char %s were blocked for 1 month in BI.", m_pClientList[i]->m_cCharName);
 					ShowClientMsg(iClientH, cMsg);
 
 					PutLogList(G_cTxt);
 					PutLogFileList(G_cTxt);
-					DeleteClient(i, TRUE, TRUE);
+					//DeleteClient(i, TRUE, TRUE);
 					return;
 				}
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cName);
@@ -26839,7 +26851,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 					pFile = fopen("GameConfigs\\BannedList.cfg", "a");
 					wsprintf(cMsg, "You're Banned From This Server!");
 					ShowClientMsg(i, cMsg);
-					wsprintf(cMsg, "The Ip Address: %s is Banned From Server.", m_pClientList[iClientH]->m_cCharName);
+					wsprintf(cMsg, "The Ip Address: %s is Banned From Server.", m_pClientList[i]->m_cCharName);
 					ShowClientMsg(iClientH, cMsg);
 					wsprintf(G_cTxt, "<%d> Client IP Banned: (%s)", i, cIPtoBan);
 					PutLogList(G_cTxt);
@@ -26981,11 +26993,11 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	case 54: // CTF Command
-		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		/*if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 			return;
 		}
-		ShowClientMsg(iClientH, "This event (CTF) is under development.");
+		ShowClientMsg(iClientH, "This event (CTF) is under development.");*/
 		break;
 		//---------------------------- PLAYERS COMMANDS---------------------------------------------------
 	case 60: //who
@@ -27006,7 +27018,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 	default:
-		return;
+		//return;
 		break;
 	}
 
