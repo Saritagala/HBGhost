@@ -5241,6 +5241,14 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		iNext += 2;//create item
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
+			strcpy(m_cChatMsg, "/enableadmincommand 2257516364627831 ");
+			//StartInputString(10, FixChat, sizeof(m_cChatMsg), m_cChatMsg);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, m_cChatMsg); // centu
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;//create item
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
 			strcpy(m_cChatMsg, "/createitem ");
 			StartInputString(10, FixChat, sizeof(m_cChatMsg), m_cChatMsg);
 			PlaySound('E', 14, 5);
@@ -6596,6 +6604,11 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		//PutString_SprFont3(sX + 70, sY + 50, "Admin Commands", 200, 250, 2);
 		PutString_SprFont3(sX + 120 - ((strlen("Admin Commands") * 7) / 2), sY + 50, "Admin Commands", 200, 250, 2);
 		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Enable Commands", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Enable Commands", 255, 255, 100);
+		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Create Item", 255, 255, 255);
 		}

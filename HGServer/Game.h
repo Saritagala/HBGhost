@@ -1054,7 +1054,7 @@ public:
 	BOOL m_bAllow100AllSkill;
 	short m_sCharSkillLimit;
 	char m_cRepDropModifier;
-	char  m_cSecurityNumber[11];
+	char  m_cSecurityNumber[16];
 	short m_sMaxPlayerLevel;
 	
 	BOOL var_89C, var_8A0;

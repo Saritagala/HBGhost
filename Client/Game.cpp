@@ -22606,10 +22606,7 @@ void CGame::CreateScreenShot()
 	PutAlignedString(500, 650, 15, SStime, 255, 255, 255); //ScreenShot time
 	for (i = 0; i < 1000; i++)
 	{	ZeroMemory(cFn, sizeof(cFn));
-		wsprintf(cFn, "SAVE\\HelShot%04d%02d%02d_%02d%02d%02d_%s%03d.jpg"
-			, SysTime.wYear, SysTime.wMonth, SysTime.wDay
-			, SysTime.wHour, SysTime.wMinute, SysTime.wSecond
-			, LongMapName
+		wsprintf(cFn, "SAVE\\Helbreath Ghost %d.jpg"
 			,i);
 		_mkdir("SAVE");
 		pFile = fopen(cFn, "rb");
