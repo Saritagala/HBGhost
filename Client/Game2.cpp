@@ -689,6 +689,7 @@ void CGame::NotifyMsg_ServerChange(char * pData)
 	m_pLSock->bInitBufferSize(30000);
 
 	m_bIsPoisoned = FALSE;
+	ResetValues();
 
 	ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
 	m_dwConnectMode = MSGID_REQUEST_ENTERGAME;
@@ -1068,6 +1069,12 @@ void CGame::ShowEventList(DWORD dwTime)
 			case 10:
 				PutString(10, 10 + i * 15, m_stEventHistory[i].cTxt, RGB(180, 255, 180), FALSE, 1, TRUE);
 				break;
+			case CHAT_GM:
+				PutString(10, 10 + i * 15, m_stEventHistory[i].cTxt, RGB(255, 184, 0), FALSE, 1, TRUE);
+				break;
+			case CHAT_MARKET:
+				PutString(10, 10 + i * 15, m_stEventHistory[i].cTxt, RGB(50, 255, 255), FALSE, 1, TRUE);
+				break;
 			case 20:
 				PutString(10, 10 + i * 15, m_stEventHistory[i].cTxt, RGB(150, 150, 170), FALSE, 1, TRUE);
 				break;
@@ -1095,6 +1102,12 @@ void CGame::ShowEventList(DWORD dwTime)
 				break;
 			case 10:
 				PutString(10, 322 + resi + i * 15, m_stEventHistory2[i].cTxt, RGB(180, 255, 180), FALSE, 1, TRUE);
+				break;
+			case CHAT_GM:
+				PutString(10, 322 + i * 15, m_stEventHistory2[i].cTxt, RGB(255, 184, 0), FALSE, 1, TRUE);
+				break;
+			case CHAT_MARKET:
+				PutString(10, 322 + resi + i * 15, m_stEventHistory2[i].cTxt, RGB(50, 255, 255), FALSE, 1, TRUE);
 				break;
 			case 20:
 				PutString(10, 322 + resi + i * 15, m_stEventHistory2[i].cTxt, RGB(150, 150, 170), FALSE, 1, TRUE);
@@ -3666,7 +3679,43 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 **  int CGame::bHasHeroSet( short m_sAppr3, short m_sAppr3, char OwnerType)		( Snoopy )							**
 **  description			:: check weather the object (is character) is using a hero set (1:war, 2:mage)				**
 **********************************************************************************************************************/
+//Magn0S> Fixed Ultiamte hero set.
 int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
+{
+	char cArmor, cLeg, cBerk, cHat;
+	cArmor = (Appr3 & 0xF000) >> 12;
+	cLeg = (Appr3 & 0x0F00) >> 8;
+	cHat = (Appr3 & 0x00F0) >> 4;
+	cBerk = Appr3 & 0x000F;
+	switch (OwnerType) {
+	case 1:
+	case 2:
+	case 3:
+		if ((cArmor == 8) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Warr elv M
+		if ((cArmor == 9) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Warr ares M
+		if ((cArmor == 14) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Archer Elvine M
+		if ((cArmor == 15) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Archer Aresden M
+		if ((cArmor == 13) && (cLeg == 7) && (cHat == 14) && (cBerk == 5)) return (1); // Warr God M
+		if ((cArmor == 10) && (cLeg == 5) && (cHat == 11) && (cBerk == 3)) return (2); // Mage elv M
+		if ((cArmor == 11) && (cLeg == 6) && (cHat == 12) && (cBerk == 4)) return (2); // Mage ares M
+		if ((cArmor == 12) && (cLeg == 7) && (cHat == 13) && (cBerk == 5)) return (2); // Mage God M
+		break;
+	case 4:
+	case 5:
+	case 6: // fixed
+		if ((cArmor == 9) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //War Elvine W
+		if ((cArmor == 15) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //Archer Elvine W
+		if ((cArmor == 10) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //War Aresden W
+		if ((cArmor == 13) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //Archer Aresden W
+		if ((cArmor == 14) && (cLeg == 8) && (cHat == 14) && (cBerk == 6)) return (1); //War Ultimate W
+		if ((cArmor == 11) && (cLeg == 6) && (cHat == 11) && (cBerk == 4)) return (2); //Mage Elvine W
+		if ((cArmor == 12) && (cLeg == 7) && (cHat == 12) && (cBerk == 5)) return (2); //Mage Aresden W
+		if ((cArmor == 13) && (cLeg == 8) && (cHat == 13) && (cBerk == 6)) return (2); //Mage Ultimate W
+		break;
+	}
+	return 0;
+}
+/*int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 {
 	char cArmor, cLeg, cBerk, cHat;
 	cArmor = (Appr3 & 0xF000) >> 12;
@@ -3692,7 +3741,7 @@ int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 		break;
 	}
 	return 0;
-}
+}*/
 /*********************************************************************************************************************
 **  void ShowHeldenianVictory( short sSide)				( Snoopy )													**
 **  description			: Shows the Heldenian's End window															**
@@ -5039,14 +5088,14 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			if ((bListSelected) && strlen(cCharSelection) > 2 && m_stDialogBoxInfo[56].sV3 > 0) {
 				ZeroMemory(cTemp, sizeof(cTemp));
-				wsprintf(cTemp, "/setcont %s %d", cCharSelection, m_stDialogBoxInfo[56].sV3);
+				wsprintf(cTemp, "/setcontrib %s %d", cCharSelection, m_stDialogBoxInfo[56].sV3);
 				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
 				m_stDialogBoxInfo[56].sV3 = 0;
 				PlaySound('E', 14, 5);
 			}
 			else {
 				ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
-				strcpy(m_cChatMsg, "/setcont ");
+				strcpy(m_cChatMsg, "/setcontrib ");
 				StartInputString(10, FixChat, sizeof(m_cChatMsg), m_cChatMsg);
 				PlaySound('E', 14, 5);
 			}
@@ -5196,6 +5245,13 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			StartInputString(10, FixChat, sizeof(m_cChatMsg), m_cChatMsg);
 			PlaySound('E', 14, 5);
 		}
+		iNext += 1;//create item
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
+			strcpy(m_cChatMsg, "/fragile itemname type day month year ");
+			StartInputString(10, FixChat, sizeof(m_cChatMsg), m_cChatMsg);
+			PlaySound('E', 14, 5);
+		}
 		iNext += 1; //Teleport
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			m_stDialogBoxInfo[56].cMode = 25; // Return to Game Adm
@@ -5248,11 +5304,9 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		}
 		iNext += 1; //Clear Map
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
-			ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
-			strcpy(m_cChatMsg, "/clearmap ");
-			strcpy(m_cChatMsg, m_cCurLocation);
-			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, m_cChatMsg);
-			//StartInputString(10, FixChat, sizeof(m_cChatMsg), m_cChatMsg);
+			ZeroMemory(cTemp, sizeof(cTemp));
+			wsprintf(cTemp, "/clearmap %s", m_cCurLocation);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
 			PlaySound('E', 14, 5);
 		}
 		iNext += 1; //Clear NPC
@@ -6092,7 +6146,8 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 	switch (m_stDialogBoxInfo[56].cMode) {
 	case 0:
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
@@ -6134,17 +6189,23 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Manipulate Online Player", 255, 255, 255);
 		}
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Manipulate Online Player", 255, 255, 100);
-		//}
 
+		/*iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 60) && (msY <= sY + iNext * 17 + 84))
+		{	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX+20, sY + iNext * 17 + 60, 0);
+		}	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX+20, sY + iNext * 17 + 60, 1);*/
+		
 		break;
 
 	case 2: // Game Administration
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 
-		PutString_SprFont3(sX + 35, sY + 50, "GameServer Administration", 200, 250, 2);
+		//PutString_SprFont3(sX + 35, sY + 50, "GameServer Administration", 200, 250, 2);
+		PutString_SprFont3(sX + 115 - ((strlen("GameServer Administration") * 7) / 2), sY + 50, "GameServer Administration", 200, 250, 2);
 		iNext += 2;
 		if (m_iAdminUserLevel > 2) {
 			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
@@ -6170,7 +6231,8 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		break;
 
 	case 10: // Lock Player in BI
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
@@ -6286,12 +6348,14 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 
 	case 19: // Set Player Statistics
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 
-		PutString_SprFont3(sX + 65, sY + 50, "Set Player Statistics", 200, 250, 2);
+		//PutString_SprFont3(sX + 65, sY + 50, "Set Player Statistics", 200, 250, 2);
+		PutString_SprFont3(sX + 125 - ((strlen("Set Player Statistics") * 7) / 2), sY + 50, "Set Player Statistics", 200, 250, 2);
 
 		iNext += 2;
 		PutString2(sX + 25, sY + iNext * 17 + 45, "Player Name:", 255, 255, 255);
@@ -6420,12 +6484,14 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		break;
 
 	case 20: // Map Restrictions
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 
-		PutString_SprFont3(sX + 65, sY + 50, "Map Restrictions", 200, 250, 2);
+		//PutString_SprFont3(sX + 65, sY + 50, "Map Restrictions", 200, 250, 2);
+		PutString_SprFont3(sX + 125 - ((strlen("Map Restrictions") * 7) / 2), sY + 10, "Map Restrictions", 200, 250, 2);
 		iNext += 2;
 		PutString2(sX + 15, sY + iNext * 17 + 45, "Attack Map Restriction:", 255, 255, 255);
 		if (m_bAttackMode) {
@@ -6521,17 +6587,24 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		break;
 
 	case 21: // GM Commands
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 
-		PutString_SprFont3(sX + 70, sY + 50, "Admin Commands", 200, 250, 2);
+		//PutString_SprFont3(sX + 70, sY + 50, "Admin Commands", 200, 250, 2);
+		PutString_SprFont3(sX + 120 - ((strlen("Admin Commands") * 7) / 2), sY + 50, "Admin Commands", 200, 250, 2);
 		iNext += 2;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Create Item", 255, 255, 255);
 		}
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Create Item", 255, 255, 100);
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Create Fragile Item", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Create Fragile Item", 255, 255, 100);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
@@ -6540,11 +6613,10 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Teleport", 255, 255, 100);
 
 		iNext += 1;
-		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 		if (m_iAdminUserLevel > 3) {
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Add Game Master", 255, 255, 255);
-			}
-			else PutString2(sX + 25, sY + iNext * 17 + 45, "Add Game Master", 255, 255, 100);
+			}	else PutString2(sX + 25, sY + iNext * 17 + 45, "Add Game Master", 255, 255, 100);
 		} else { PutString2(sX + 25, sY + iNext * 17 + 45, "Add Game Master", 188, 188, 188); }
 
 		iNext += 1;
@@ -6584,11 +6656,10 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Clear Npc", 255, 255, 100);
 
 		iNext += 1;
-		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 		if (m_iAdminUserLevel > 3) {
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Disconnect All", 255, 255, 255);
-			}
-			else PutString2(sX + 25, sY + iNext * 17 + 45, "Disconnect All", 255, 255, 100);
+			}	else PutString2(sX + 25, sY + iNext * 17 + 45, "Disconnect All", 255, 255, 100);
 		} else { PutString2(sX + 25, sY + iNext * 17 + 45, "Disconnect All", 188, 188, 188); }
 
 		iNext += 1;
@@ -6612,7 +6683,8 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		break;
 
 	case 22: // Event Manager
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
@@ -6721,12 +6793,14 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		break;
 
 	case 23: // Player Manipulation
-		PutString_SprFont3(sX + 51, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 51, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		/*wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);*/
 
-		PutString_SprFont3(sX + 56, sY + 30, "Player Manipulation", 200, 250, 2);
+		//PutString_SprFont3(sX + 56, sY + 30, "Player Manipulation", 200, 250, 2);
+		PutString_SprFont3(sX + 125 - ((strlen("Player Manipulation") * 7) / 2), sY + 30, "Player Manipulation", 200, 250, 2);
 
 		wsprintf(G_cTxt, "Player to Manipulate: %s", cCharSelection);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 55, G_cTxt, 255, 255, 255);
@@ -6807,7 +6881,8 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		break;
 
 	case 25: // GM Teleport List
-		PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Administration Panel") * 7) / 2), sY + 10, "Administration Panel", 2, 150, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
@@ -8735,6 +8810,15 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 		}
 	}
 
+	//Magn0S:: Added for fragiles
+	if (pItem->m_sNewEffect1 == 10) {
+		m_bIsFragile = TRUE;
+		strcpy(cTxt, "Fragile ");
+		strcat(cTxt, pStr1);
+		ZeroMemory(pStr1, sizeof(pStr1));
+		strcpy(pStr1, cTxt);
+	}
+
 	dwValue3 = (pItem->m_dwAttribute & 0xF0000000) >> 28;
 	if (dwValue3 > 0)
 	{
@@ -8757,7 +8841,8 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 	}
 }
 
-void CGame::GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *pStr2, char *pStr3)
+//Magn0S:: Changed
+void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1, short sEffect2, short sEffect3, short sEffect4)
 {
 	int i;
 	char cTxt[256], cTxt2[256], cName[51];
@@ -8767,6 +8852,7 @@ void CGame::GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *
 
 	m_bIsSpecial = FALSE;
 	m_bIsRare = false;
+	m_bIsFragile = false;
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(pStr1, sizeof(pStr1));
 	ZeroMemory(pStr2, sizeof(pStr2));
@@ -12134,6 +12220,32 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 		PutString(sX + 33, sY + 23, "Heldenian staff officer", RGB(45, 25, 25));
 		PutString(sX + 33 - 1, sY + 23 - 1, "Heldenian staff officer", RGB(255, 255, 255));
 		break;
+
+	//Magn0S:: Add Learn All Magics
+	case 7: // Learn all magics
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 5);
+		if ((msX > sX + 25) && (msX < sX + 100) && (msY > sY + 25) && (msY < sY + 40))
+		{
+			PutString(sX + 28, sY + 25, "Learn All Magics", RGB(255, 255, 255));
+			PutString(sX + 29, sY + 25, "Learn All Magics", RGB(255, 255, 255));
+		}
+		else
+		{
+			PutString(sX + 28, sY + 25, "Learn All Magics", RGB(4, 0, 50));
+			PutString(sX + 29, sY + 25, "Learn All Magics", RGB(4, 0, 50));
+		}
+
+		if ((msX > sX + 25) && (msX < sX + 100) && (msY > sY + 55) && (msY < sY + 70))
+		{
+			PutString(sX + 28, sY + 55, "Buy Magic", RGB(255, 255, 255));//"Talk"
+			PutString(sX + 29, sY + 55, "Buy Magic", RGB(255, 255, 255));
+		}
+		else
+		{
+			PutString(sX + 28, sY + 55, "Buy Magic", RGB(4, 0, 50));
+			PutString(sX + 29, sY + 55, "Buy Magic", RGB(4, 0, 50));
+		}
+		break;
 	}
 }
 
@@ -15252,6 +15364,21 @@ void CGame::DlgBoxClick_NpcActionQuery(short msX, short msY)
 			DisableDialogBox(20);
 		}
 		break;
+
+	//Magn0S:: Add Learn All Magic button
+	case 7:
+		if ((msX > sX + 25) && (msX < sX + 100) && (msY > sY + 25) && (msY < sY + 40))
+		{
+			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 1, NULL, NULL, NULL);
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX > sX + 25) && (msX < sX + 100) && (msY > sY + 55) && (msY < sY + 70))
+		{
+			EnableDialogBox(16, 0, NULL, NULL);
+			PlaySound('E', 14, 5);
+		}
+		break;
 	}
 }
 
@@ -15676,7 +15803,9 @@ void CGame::NotifyMsg_DropItemFin_CountChanged(char *pData)
 	cp += 4;
 
 	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[wItemIndex]->m_cName, m_pItemList[wItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3);
+	//GetItemName(m_pItemList[wItemIndex]->m_cName, m_pItemList[wItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3);
+	GetItemName(m_pItemList[wItemIndex]->m_cName, m_pItemList[wItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3, m_pItemList[wItemIndex]->m_sNewEffect1);
+
 	wsprintf(cTxt, NOTIFYMSG_THROW_ITEM1, iAmount, cStr1);
 
 	AddEventList(cTxt, 10);
@@ -15914,7 +16043,8 @@ void CGame::NotifyMsg_GiveItemFin_CountChanged(char *pData)
 	cp += 20;
 
 	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[wItemIndex]->m_cName, m_pItemList[wItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3);
+	//GetItemName(m_pItemList[wItemIndex]->m_cName, m_pItemList[wItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3);
+	GetItemName(m_pItemList[wItemIndex]->m_cName, m_pItemList[wItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3, m_pItemList[wItemIndex]->m_sNewEffect1);
 	if (iAmount < 2) wsprintf(cTxt, NOTIFYMSG_GIVEITEMFIN_COUNTCHANGED1, cStr1, cName);
 	else wsprintf(cTxt, NOTIFYMSG_GIVEITEMFIN_COUNTCHANGED2, iAmount, cStr1, cName); // centu - fix
 	AddEventList(cTxt, 10);
@@ -15944,7 +16074,8 @@ void CGame::NotifyMsg_GiveItemFin_EraseItem(char *pData)
 	cp += 20;
 
 	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[sItemIndex]->m_cName, m_pItemList[sItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3);
+	//GetItemName(m_pItemList[sItemIndex]->m_cName, m_pItemList[sItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3);
+	GetItemName(m_pItemList[sItemIndex]->m_cName, m_pItemList[sItemIndex]->m_dwAttribute, cStr1, cStr2, cStr3, m_pItemList[sItemIndex]->m_sNewEffect1);
 
 	if (m_bIsItemEquipped[sItemIndex] == TRUE) {
 		wsprintf(cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);
@@ -16190,6 +16321,9 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	short sSprite, sSpriteFrame, sLevelLimit, sSpecialEV2;
 	char  cTxt[120], cGenderLimit, cItemColor;
 	WORD  * wp, wWeight, wCurLifeSpan;
+	//Magn0S::
+	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
+	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -16245,9 +16379,50 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	dwAttribute = *dwp;
 	cp += 4;
 
+	sp = (short*)cp;
+	sNewAtt1 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt2 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt3 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt4 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue1 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue2 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue3 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue4 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue5 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue6 = *sp;
+	cp += 2;
+
 
 	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
+	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
+	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 	if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMOBTAINED2, cStr1);
@@ -16309,6 +16484,18 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 			m_pItemList[i]->m_sItemSpecEffectValue2 = sSpecialEV2; // v1.41
 			m_pItemList[i]->m_dwAttribute = dwAttribute;
 
+			m_pItemList[i]->m_sNewEffect1 = sNewAtt1;
+			m_pItemList[i]->m_sNewEffect2 = sNewAtt2;
+			m_pItemList[i]->m_sNewEffect3 = sNewAtt3;
+			m_pItemList[i]->m_sNewEffect4 = sNewAtt4;
+
+			m_pItemList[i]->m_sItemEffectValue1 = sItemEffectValue1;
+			m_pItemList[i]->m_sItemEffectValue2 = sItemEffectValue2;
+			m_pItemList[i]->m_sItemEffectValue3 = sItemEffectValue3;
+			m_pItemList[i]->m_sItemEffectValue4 = sItemEffectValue4;
+			m_pItemList[i]->m_sItemEffectValue5 = sItemEffectValue5;
+			m_pItemList[i]->m_sItemEffectValue6 = sItemEffectValue6;
+
 			_bCheckBuildItemStatus();
 
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -16334,6 +16521,9 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	short sSprite, sSpriteFrame, sLevelLimit;
 	WORD  wCost, wWeight, wCurLifeSpan;
 	char  cTxt[120], cItemColor;
+	//Magn0S:: Add
+	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
+	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -16384,6 +16574,47 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 
 	wp = (WORD *)cp;
 	wCost = *wp;
+
+	sp = (short*)cp;
+	sNewAtt1 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt2 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt3 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt4 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue1 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue2 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue3 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue4 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue5 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue6 = *sp;
+	cp += 2;
+
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
 	GetItemName(cName, NULL, cStr1, cStr2, cStr3);
@@ -16436,6 +16667,18 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 			m_pItemList[i]->m_sSprite = sSprite;
 			m_pItemList[i]->m_sSpriteFrame = sSpriteFrame;
 			m_pItemList[i]->m_cItemColor = cItemColor;    // v1.4
+
+			m_pItemList[i]->m_sNewEffect1 = sNewAtt1;
+			m_pItemList[i]->m_sNewEffect2 = sNewAtt2;
+			m_pItemList[i]->m_sNewEffect3 = sNewAtt3;
+			m_pItemList[i]->m_sNewEffect4 = sNewAtt4;
+
+			m_pItemList[i]->m_sItemEffectValue1 = sItemEffectValue1;
+			m_pItemList[i]->m_sItemEffectValue2 = sItemEffectValue2;
+			m_pItemList[i]->m_sItemEffectValue3 = sItemEffectValue3;
+			m_pItemList[i]->m_sItemEffectValue4 = sItemEffectValue4;
+			m_pItemList[i]->m_sItemEffectValue5 = sItemEffectValue5;
+			m_pItemList[i]->m_sItemEffectValue6 = sItemEffectValue6;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -16507,11 +16750,15 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	DWORD * dwp, dwCount, dwAttribute;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit, cItemColor;
 	BOOL  bIsEquipped;
-	short * sp, sSprite, sSpriteFrame, sLevelLimit, sItemEffectValue2, sItemSpecEffectValue2;
+	short * sp, sSprite, sSpriteFrame, sLevelLimit, sItemSpecEffectValue2;
 	WORD  * wp, wWeight, wCurLifeSpan;
 	char  cTxt[120];
+	//Magn0S::
+	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
+	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1;
 
-	cp = (pData + DEF_INDEX2_MSGTYPE + 2);
+	//cp = (pData + DEF_INDEX2_MSGTYPE + 2);
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	cIndex = *cp;
 	cp++;
@@ -16569,12 +16816,55 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	dwp = (DWORD *)cp;
 	dwAttribute = *dwp;
 	cp += 4;
+
+	sp = (short*)cp;
 	sItemSpecEffectValue2 = (short)*cp;
-	cp++;
+	//cp++;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt1 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt2 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt3 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sNewAtt4 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue1 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue2 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue3 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue4 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue5 = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemEffectValue6 = *sp;
+	cp += 2;
 
 	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
-
+	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
+	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
 
 	if (m_pBankList[cIndex] == NULL) {
 		m_pBankList[cIndex] = new class CItem;
@@ -16595,6 +16885,18 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 		m_pBankList[cIndex]->m_sItemEffectValue2 = sItemEffectValue2;
 		m_pBankList[cIndex]->m_dwAttribute = dwAttribute;
 		m_pBankList[cIndex]->m_sItemSpecEffectValue2 = sItemSpecEffectValue2;
+
+		m_pBankList[cIndex]->m_sNewEffect1 = sNewAtt1;
+		m_pBankList[cIndex]->m_sNewEffect2 = sNewAtt2;
+		m_pBankList[cIndex]->m_sNewEffect3 = sNewAtt3;
+		m_pBankList[cIndex]->m_sNewEffect4 = sNewAtt4;
+
+		m_pBankList[cIndex]->m_sItemEffectValue1 = sItemEffectValue1;
+		m_pBankList[cIndex]->m_sItemEffectValue2 = sItemEffectValue2;
+		m_pBankList[cIndex]->m_sItemEffectValue3 = sItemEffectValue3;
+		m_pBankList[cIndex]->m_sItemEffectValue4 = sItemEffectValue4;
+		m_pBankList[cIndex]->m_sItemEffectValue5 = sItemEffectValue5;
+		m_pBankList[cIndex]->m_sItemEffectValue6 = sItemEffectValue6;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -18150,247 +18452,251 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		};
 	
 
-	if (m_bZoomMap)
-	{
-		shX = m_sPlayerX - 64;
-		shY = m_sPlayerY - 64;
-		if (shX < 0) shX = 0;
-		if (shY < 0) shY = 0;
-		if (shX > m_pMapData->m_sMapSizeX - 128) shX = m_pMapData->m_sMapSizeX - 128;
-		if (shY > m_pMapData->m_sMapSizeY - 128) shY = m_pMapData->m_sMapSizeY - 128;
-		if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
-		else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
-
-		if (m_iPartyStatus != NULL)
+		if (m_bZoomMap)
 		{
-			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+			shX = m_sPlayerX - 64;
+			shY = m_sPlayerY - 64;
+			if (shX < 0) shX = 0;
+			if (shY < 0) shY = 0;
+			if (shX > m_pMapData->m_sMapSizeX - 128) shX = m_pMapData->m_sMapSizeX - 128;
+			if (shY > m_pMapData->m_sMapSizeY - 128) shY = m_pMapData->m_sMapSizeY - 128;
+			if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
+			else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
+
+			if (m_iPartyStatus != NULL)
 			{
-				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
-					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
-						if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
-							m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
-						else
-							if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
-								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
+				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+				{
+					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
+						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
+								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
+							else
+								if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
+									m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
+				}
 			}
-		}
-		else
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
+			else
+				m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
 
-		if (bShinning)
-		{
-			for (auto& u : m_minimapblue.list)
+			if (bShinning)
 			{
-				auto* p = &u;
-				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
-					continue;
+				for (auto& u : m_minimapblue.list)
+				{
+					auto* p = &u;
+					if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+						continue;
 
-				if (m_dwTime - p->time > 25000)
-					continue;
+					if (m_dwTime - p->time > 25000)
+						continue;
 
-				int r = 255, g = 255, b = 255;
-				pixblue(sX + p->x - shX, sY + p->y - shY, 0, 0, 255);
+					int r = 255, g = 255, b = 255;
+					pixblue(sX + p->x - shX, sY + p->y - shY, 0, 0, 255);
+				}
+
+				for (auto& u : m_minimapred.list)
+				{
+					auto* p = &u;
+					if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+						continue;
+
+					if (m_dwTime - p->time > 25000)
+						continue;
+
+					int r = 255, g = 255, b = 255;
+					pixred(sX + p->x - shX, sY + p->y - shY, 255, 0, 0);
+				}
 			}
 
-			for (auto& u : m_minimapred.list)
+			if ((m_dwCurTime - m_dwMonsterEventTime) < 30000)
 			{
-				auto* p = &u;
-				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
-					continue;
-
-				if (m_dwTime - p->time > 25000)
-					continue;
-
-				int r = 255, g = 255, b = 255;
-				pixred(sX + p->x - shX, sY + p->y - shY, 255, 0, 0);
+				if ((m_dwCurTime % 500) < 370)
+				{
+					if (m_sEventX >= shX && m_sEventX <= shX + 128 && m_sEventY >= shY && m_sEventY <= shY + 128)
+						m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + m_sEventX - shX, sY + m_sEventY - shY, m_sMonsterID, m_dwCurTime);
+				}
 			}
-		}
-
-		if ((m_dwCurTime - m_dwMonsterEventTime) < 30000)
-		{
-			if ((m_dwCurTime % 500)< 370)
+			else
 			{
-				if (m_sEventX >= shX && m_sEventX <= shX + 128 && m_sEventY >= shY && m_sEventY <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + m_sEventX - shX, sY + m_sEventY - shY, m_sMonsterID, m_dwCurTime);
+				m_dwMonsterEventTime = 0;
+				m_sMonsterID = 0;
 			}
-		}
-		else
-		{
-			m_dwMonsterEventTime = 0;
-			m_sMonsterID = 0;
-		}
 
-		// centuu - mostrar pits en mapa CHICO
-		// Nixu - acomodado de Pits
-		if (m_cMapIndex == 11) { // Aresden
-			// Ogre Abajo Medio Derecha
-			if (141 >= shX && 141 <= shX + 128 && 240 >= shY && 240 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 29, m_dwCurTime);
-			// Esqueleton Abajo Derecha
-			if (253 >= shX && 253 <= shX + 128 && 203 >= shY && 203 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 11, m_dwCurTime);
-			//Stone Golem Izquierda
-			if (43 >= shX && 43 <= shX + 128 && 182 >= shY && 182 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 182 - shY, 12, m_dwCurTime);
-			//Zombies
-			if (122 >= shX && 122 <= shX + 128 && 50 >= shY && 50 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 50 - shY, 18, m_dwCurTime);
-			// Dark Elf Abajo Medio
-			if (203 >= shX && 203 <= shX + 128 && 236 >= shY && 236 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 54, m_dwCurTime);
-			// Werewolf Arriba
-			if (102 >= shX && 102 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 102 - shX, sY + 36 - shY, 33, m_dwCurTime);
+		if (bNpcMap) {
+			// centuu - mostrar pits en mapa CHICO
+			// Nixu - acomodado de Pits
+			if (m_cMapIndex == 11) { // Aresden
+				// Ogre Abajo Medio Derecha
+				if (141 >= shX && 141 <= shX + 128 && 240 >= shY && 240 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 29, m_dwCurTime);
+				// Esqueleton Abajo Derecha
+				if (253 >= shX && 253 <= shX + 128 && 203 >= shY && 203 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 11, m_dwCurTime);
+				//Stone Golem Izquierda
+				if (43 >= shX && 43 <= shX + 128 && 182 >= shY && 182 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 182 - shY, 12, m_dwCurTime);
+				//Zombies
+				if (122 >= shX && 122 <= shX + 128 && 50 >= shY && 50 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 50 - shY, 18, m_dwCurTime);
+				// Dark Elf Abajo Medio
+				if (203 >= shX && 203 <= shX + 128 && 236 >= shY && 236 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 54, m_dwCurTime);
+				// Werewolf Arriba
+				if (102 >= shX && 102 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 102 - shX, sY + 36 - shY, 33, m_dwCurTime);
 
-		}
-		else if (m_cMapIndex == 3) { // Elvine
+			}
+			else if (m_cMapIndex == 3) { // Elvine
 
-			// Werewolf Arriba
-			if (154 >= shX && 154 <= shX + 128 && 38 >= shY && 38 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 154 - shX, sY + 38 - shY, 33, m_dwCurTime);
-			// Skeleton Arriba
-			if (127 >= shX && 127 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 127 - shX, sY + 36 - shY, 11, m_dwCurTime);
-			//Zombies Izquierda Arriba
-			if (54 >= shX && 54 <= shX + 128 && 65 >= shY && 65 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 54 - shX, sY + 65 - shY, 18, m_dwCurTime);
-			//Ogre Abajo
-			if (135 >= shX && 135 <= shX + 128 && 248 >= shY && 248 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 29, m_dwCurTime);
-			// Dark Elf Derecha Inferior
-			if (240 >= shX && 240 <= shX + 128 && 214 >= shY && 214 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 54, m_dwCurTime);
+				// Werewolf Arriba
+				if (154 >= shX && 154 <= shX + 128 && 38 >= shY && 38 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 154 - shX, sY + 38 - shY, 33, m_dwCurTime);
+				// Skeleton Arriba
+				if (127 >= shX && 127 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 127 - shX, sY + 36 - shY, 11, m_dwCurTime);
+				//Zombies Izquierda Arriba
+				if (54 >= shX && 54 <= shX + 128 && 65 >= shY && 65 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 54 - shX, sY + 65 - shY, 18, m_dwCurTime);
+				//Ogre Abajo
+				if (135 >= shX && 135 <= shX + 128 && 248 >= shY && 248 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 29, m_dwCurTime);
+				// Dark Elf Derecha Inferior
+				if (240 >= shX && 240 <= shX + 128 && 214 >= shY && 214 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 54, m_dwCurTime);
 
-			// Snake
-			if (48 >= shX && 48 <= shX + 128 && 202 >= shY && 202 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 12, m_dwCurTime);
+				// Snake
+				if (48 >= shX && 48 <= shX + 128 && 202 >= shY && 202 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 12, m_dwCurTime);
 
+			}
 		}
 
 	}
-	else // Sans zoom
-	{
-		if (m_bDialogTrans) m_pSprite[m_iMinMapIndex]->PutTransSprite2(sX, sY, m_iMinMapSquare, m_dwCurTime);
-		else m_pSprite[m_iMinMapIndex]->PutSpriteFastNoColorKey(sX, sY, m_iMinMapSquare, m_dwCurTime);
-		shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
-		shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
-
-		if (m_iPartyStatus != NULL)
+		else // Sans zoom
 		{
-			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+			if (m_bDialogTrans) m_pSprite[m_iMinMapIndex]->PutTransSprite2(sX, sY, m_iMinMapSquare, m_dwCurTime);
+			else m_pSprite[m_iMinMapIndex]->PutSpriteFastNoColorKey(sX, sY, m_iMinMapSquare, m_dwCurTime);
+			shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
+			shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
+
+			if (m_iPartyStatus != NULL)
 			{
-				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
+				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
 				{
-					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
 					{
-						if (i > 1)
-							m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
-						else
+						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
 						{
-							shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
-							shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
-							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
+							if (i > 1)
 								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 							else
-								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
+							{
+								shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
+								shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
+								if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
+									m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+								else
+									m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
+							}
 						}
 					}
 				}
 			}
-		}
-		else
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+			else
+				m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 
-		if (bShinning)
-		{
-			for (auto& u : m_minimapblue.list) {
-				auto* p = &u;
-				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
-				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
-
-				if (m_dwCurTime - p->time > 25000)
-					continue;
-
-				int r = 255, g = 255, b = 255;
-
-				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX, sY + shY, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 0, 0, 255);
-				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 0, 0, 255);
-			}
-
-			for (auto& u : m_minimapred.list) {
-				auto* p = &u;
-				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
-				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
-
-				if (m_dwCurTime - p->time > 25000)
-					continue;
-
-				int r = 255, g = 255, b = 255;
-
-				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX, sY + shY, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 0, 0);
-				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 0, 0);
-			}
-		}
-
-		if ((G_dwGlobalTime - m_dwMonsterEventTime) < 30000)
-		{
-			if ((m_dwCurTime % 500)< 370)
+			if (bShinning)
 			{
-				shX = (m_sEventX * 128) / (m_pMapData->m_sMapSizeX);
-				shY = (m_sEventY * 128) / (m_pMapData->m_sMapSizeX);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + shX, sY + shY, m_sMonsterID, m_dwCurTime);
+				for (auto& u : m_minimapblue.list) {
+					auto* p = &u;
+					shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+					shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+
+					if (m_dwCurTime - p->time > 25000)
+						continue;
+
+					int r = 255, g = 255, b = 255;
+
+					m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX - 2, sY + shY, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX, sY + shY, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX + 1, sY + shY, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX, sY + shY + 1, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX + 2, sY + shY, 0, 0, 255);
+					m_DDraw.PutPixel(sX + shX, sY + shY + 2, 0, 0, 255);
+				}
+
+				for (auto& u : m_minimapred.list) {
+					auto* p = &u;
+					shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+					shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+
+					if (m_dwCurTime - p->time > 25000)
+						continue;
+
+					int r = 255, g = 255, b = 255;
+
+					m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX - 2, sY + shY, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX, sY + shY, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX + 1, sY + shY, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 0, 0);
+					m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 0, 0);
+				}
 			}
-		}
-		else
-		{
-			m_dwMonsterEventTime = 0;
-			m_sMonsterID = 0;
-		}
 
-		// centuu - mostrar pits en mapa GRANDE
-		//Nixu - Acomodado de Pits
-		if (m_cMapIndex == 11) { // Aresden
-			// Ogre Abajo Medio 
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
-			//Esqueleton Abajo Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
-			//Stone Golem Izquierda
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((182 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
-			// Zombies Arriba Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((50 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
-			// Dark elf Abajo Medio Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
-			// Werewolf Arriba Izquierda
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((102 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-		}
-		else if (m_cMapIndex == 3) { // Elvine
-			// Wereolf Arriba Derecha
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-			//Skeleton Arriba Izquierda
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((127 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
-			// Zombies Arriba Izquierda
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((54 * 128) / m_pMapData->m_sMapSizeX), sY + ((65 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
-			// Ogre Abajo Medio
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
-			// Dark Elf Abajo Derecho
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
-			// Stone Golem Abajo Izquierda
-			m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
+			if ((G_dwGlobalTime - m_dwMonsterEventTime) < 30000)
+			{
+				if ((m_dwCurTime % 500) < 370)
+				{
+					shX = (m_sEventX * 128) / (m_pMapData->m_sMapSizeX);
+					shY = (m_sEventY * 128) / (m_pMapData->m_sMapSizeX);
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + shX, sY + shY, m_sMonsterID, m_dwCurTime);
+				}
+			}
+			else
+			{
+				m_dwMonsterEventTime = 0;
+				m_sMonsterID = 0;
+			}
 
+		if (bNpcMap) {
+			// centuu - mostrar pits en mapa GRANDE
+			//Nixu - Acomodado de Pits
+			if (m_cMapIndex == 11) { // Aresden
+				// Ogre Abajo Medio 
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
+				//Esqueleton Abajo Derecha
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
+				//Stone Golem Izquierda
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((182 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
+				// Zombies Arriba Derecha
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((50 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
+				// Dark elf Abajo Medio Derecha
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
+				// Werewolf Arriba Izquierda
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((102 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
+			}
+			else if (m_cMapIndex == 3) { // Elvine
+				// Wereolf Arriba Derecha
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
+				//Skeleton Arriba Izquierda
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((127 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
+				// Zombies Arriba Izquierda
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((54 * 128) / m_pMapData->m_sMapSizeX), sY + ((65 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
+				// Ogre Abajo Medio
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
+				// Dark Elf Abajo Derecho
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
+				// Stone Golem Abajo Izquierda
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
+
+			}
 		}
 	}
 	if (cLB != 0) return;
@@ -19120,6 +19426,46 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i]->m_dwAttribute = *dwp;
 		cp += 4;
 
+		sp = (short*)cp;
+		m_pItemList[i]->m_sNewEffect1 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sNewEffect2 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sNewEffect3 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sNewEffect4 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectValue1 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectValue2 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectValue3 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectValue4 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectValue5 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectValue6 = *sp;
+		cp += 2;
+
 		m_cItemOrder[i] = i;
 		// Snoopy: Add Angelic Stats
 		if ((m_pItemList[i]->m_cItemType == 1)
@@ -19210,6 +19556,46 @@ void CGame::InitItemList(char * pData)
 		dwp = (DWORD *)cp;
 		m_pBankList[i]->m_dwAttribute = *dwp;
 		cp += 4;
+		//Magn0S::
+		sp = (short*)cp;
+		m_pBankList[i]->m_sNewEffect1 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sNewEffect2 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sNewEffect3 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sNewEffect4 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectValue1 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectValue2 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectValue3 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectValue4 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectValue5 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectValue6 = *sp;
+		cp += 2;
 
 	}
 
@@ -19524,6 +19910,14 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 	short sX, sY;
 
 	switch (iBoxID) {
+	case 10: // Magn0S:: Update chat mode
+		if (m_bIsDialogEnabled[10] == FALSE) {
+			m_stDialogBoxInfo[10].cMode = cType;
+			m_stDialogBoxInfo[10].sV1 = sV1;
+			m_stDialogBoxInfo[10].sV2 = sV2;
+		}
+		break;
+
 	case 11:
 		if (m_bIsDialogEnabled[11] == FALSE)
 		{
@@ -20307,7 +20701,7 @@ void CGame::DlgBoxClick_IconPannel(short msX, short msY)
 	if ((556 + resx <= msX) && (587 + resx >= msX) && (434 + resi < msY) && (475 + resi > msY)) {
 		if (m_bIsDialogEnabled[10] == TRUE)
 			DisableDialogBox(10);
-		else EnableDialogBox(10, NULL, NULL, NULL);
+		else EnableDialogBox(10, 0, NULL, NULL);
 		PlaySound('E', 14, 5);
 	}
 
@@ -20353,6 +20747,55 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 			m_stDialogBoxInfo[53].cMode = 2; // Event Schedule
 			PlaySound('E', 14, 5);
 		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			m_stDialogBoxInfo[53].cMode = 3; // Game Config
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			//m_stDialogBoxInfo[53].cMode = 4; // Online Users
+			EnableDialogBox(60, NULL, NULL, NULL);
+			bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			m_stDialogBoxInfo[53].cMode = 5; // Server News
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			//Friend List
+			if (m_bIsDialogEnabled[43] == FALSE)
+			{
+				EnableDialogBox(43, NULL, NULL, NULL);
+				char buf[1024]; int konieclinii; unsigned long linie = 0;
+				FILE* f = fopen("contents\\FriendList.txt", "rt");
+				if (f == NULL) break; // Centuu: si el archivo no existe, crash
+				else
+				{
+					m_iTotalFriends = 0;
+					while (fgets(buf, 1024, f)) {
+						konieclinii = 0;
+						int i = strlen(buf);
+						if (i > 0 && buf[--i] == '\n') {
+							buf[i] = 0; // kasujemy znak konca linii
+							konieclinii = 1;
+							linie++;
+						}
+						if (linie - 1 < 13) {
+							strcpy(m_cFriends[linie - 1], buf);
+							m_iTotalFriends++;
+						}
+					}
+					if (m_iTotalFriends > 12) m_iTotalFriends = 12;
+					fclose(f);
+				}
+			}
+			else DisableDialogBox(43);
+			PlaySound('E', 14, 5);
+		}
 		break;
 
 	case 1:
@@ -20369,6 +20812,38 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 			m_stDialogBoxInfo[53].cMode = 0; // Return
 			PlaySound('E', 14, 5);
 		}
+		break;
+
+	case 3:
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (m_bShowParty) m_bShowParty = FALSE; else m_bShowParty = TRUE;
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (bShowEventInfo) bShowEventInfo = FALSE; else bShowEventInfo = TRUE;
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (bNpcMap) bNpcMap = false; else bNpcMap = true;
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (m_bShowEmblems) m_bShowEmblems = FALSE; else m_bShowEmblems = TRUE;
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (m_bShowTrees) m_bShowTrees = false; else m_bShowTrees = true;
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (m_bGrid) m_bGrid = FALSE; else m_bGrid = TRUE;
+
+		if ((msX > sX + 160) && (msX < sX + 220) && (msY > sY + 315) && (msY < sY + 335)) {
+			m_stDialogBoxInfo[53].cMode = 0; // Return
+			PlaySound('E', 14, 5);
+		}
+
 		break;
 	}
 }
@@ -20488,6 +20963,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 255, 255, 100);
 
 		break;
+
 	case 1:
 		PutString_SprFont3(sX + 70, sY + 10, "Server Top Ek", 2, 150, 0);
 		for (int i = 1; i <= 15; i++)
@@ -20575,6 +21051,83 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))
 			PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 2);
 		else PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 200);
+
+		break;
+
+	case 3:
+		PutString_SprFont3(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 15, "Graphic's Options", 200, 250, 2);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Party Info", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Party Info", 19, 104, 169);
+
+		if (m_bShowParty) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Events Info", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Events Info", 19, 104, 169);
+
+		if (bShowEventInfo) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 19, 104, 169);
+
+		if (bNpcMap) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Emblems", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Emblems", 19, 104, 169);
+
+		if (m_bShowEmblems) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Trees", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Trees", 19, 104, 169);
+
+		if (m_bShowTrees) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 19, 104, 169);
+
+		if (m_bGrid) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+
+		if ((msX >= sX + 160) && (msX <= sX + 250) && (msY >= sY + 300) && (msY <= sY + 320))
+		{	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX+160, sY + 300, 0);
+			//PutString2(sX + 210, sY + 320, "Back", 255, 200, 0);
+			PutAlignedString2(sX + 160, sX + 250, sY + 300, "Back", 255, 255, 100);
+		}
+		else {
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 160, sY + 300, 1);
+			//PutString2(sX + 210, sY + 320, "Back", 255, 255, 200);
+			PutAlignedString2(sX + 160, sX + 250, sY + 300, "Back", 180, 188, 180);
+		}
 
 		break;
 	}
@@ -21009,4 +21562,14 @@ void CGame::NotifyMsg_EventInfo(char* pData)
 	m_cCFTEventCount[1] = *cp;
 	cp++;
 	
+}
+
+// if you log out or get DC, we run this to reset any timers etc. it also saves the game preferences
+void CGame::ResetValues()
+{
+	if (m_bFinishInit)
+		SaveGameConfigFile();
+
+
+	bReadGameConfigFile("GameConfig.cfg");
 }

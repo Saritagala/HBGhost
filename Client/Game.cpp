@@ -27,7 +27,7 @@ CGame::CGame()
 	int i;
 	srand( (unsigned)time( NULL ) );
 	ReadSettings();
-
+	ResetValues();
 
 	m_bToggleScreen = FALSE;
 
@@ -56,6 +56,7 @@ CGame::CGame()
 	m_iItemDropCnt = 0;
 	m_bItemDrop = FALSE;
 	m_bIsSpecial = FALSE;
+	m_bIsFragile = false;
 	m_cGameMode = DEF_GAMEMODE_ONLOADING;
 	m_cWhisperIndex = DEF_MAXWHISPERMSG;
 	m_cGameModeCount = 0;
@@ -188,11 +189,14 @@ CGame::CGame()
 	m_stDialogBoxInfo[9].sSizeX = 128;
 	m_stDialogBoxInfo[9].sSizeY = 128;
 
-	//Chatting History Dialog(F9)
+	//Chatting History Dialog(F9) 
+	//Magn0S:: Changed
 	m_stDialogBoxInfo[10].sX = 135 + SCREENX;
 	m_stDialogBoxInfo[10].sY = 273 + SCREENY + SCREENY;
-	m_stDialogBoxInfo[10].sSizeX = 364;
-	m_stDialogBoxInfo[10].sSizeY = 162;
+	m_stDialogBoxInfo[10].sSizeX = 405;
+	m_stDialogBoxInfo[10].sSizeY = 180;
+	//m_stDialogBoxInfo[10].sSizeX = 364;
+	//m_stDialogBoxInfo[10].sSizeY = 162;
 
 	//Sale Menu Dialog
 	m_stDialogBoxInfo[11].sX = 70 + SCREENX;
@@ -703,6 +707,253 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 	_LoadGameMsgTextContents();
 	ZeroMemory(m_cWorldServerName, sizeof(m_cWorldServerName));
 
+	m_bFinishInit = TRUE;
+
+	bReadGameConfigFile("GameConfig.cfg");
+	SaveGameConfigFile();
+
+	return TRUE;
+}
+
+void CGame::SaveGameConfigFile()
+{
+	FILE* pFile;
+	HANDLE hFile;
+	DWORD  dwFileSize;
+	char cFn[120];
+	char cBuffer[10];
+	char cFn2[1200];
+	char cTxt[120];
+
+	strcpy(cFn, "GameConfig");
+	strcat(cFn, ".cfg");
+
+	hFile = CreateFile(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	dwFileSize = GetFileSize(hFile, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
+
+	pFile = fopen(cFn, "wt");
+	if (pFile == NULL) {
+		return;
+	}
+
+	strcpy(cFn2, "[CONFIG]");
+	strcat(cFn2, "\n");
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "music-mode = ");
+	wsprintf(cBuffer, "%d", (int)m_bMusicStat);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "music-volume = ");
+	wsprintf(cBuffer, "%d", (int)m_cMusicVolume);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "sound-mode = ");
+	wsprintf(cBuffer, "%d", (int)m_bSoundStat);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "sound-volume = ");
+	wsprintf(cBuffer, "%d", (int)m_cSoundVolume);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-emblems = ");
+	wsprintf(cBuffer, "%d", (int)m_bShowEmblems);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-frames = ");
+	wsprintf(cBuffer, "%d", (int)m_bShowFPS);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-trees = ");
+	wsprintf(cBuffer, "%d", (int)m_bShowTrees);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-party-info = ");
+	wsprintf(cBuffer, "%d", (int)m_bShowParty);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-events = ");
+	wsprintf(cBuffer, "%d", (int)bShowEventInfo);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-ncp-map = ");
+	wsprintf(cBuffer, "%d", (int)bNpcMap);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "detail-mode = ");
+	wsprintf(cBuffer, "%d", (int)m_cDetailLevel);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "guide-map = ");
+	wsprintf(cBuffer, "%d", (int)m_bIsDialogEnabled[9]);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "dialog-transparency = ");
+	wsprintf(cBuffer, "%d", (int)m_bDialogTrans);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "shout-mode = ");
+	wsprintf(cBuffer, "%d", (int)m_bShout);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "whisper-mode = ");
+	wsprintf(cBuffer, "%d", (int)m_bWhisper);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-grid = ");
+	wsprintf(cBuffer, "%d", (int)m_bGrid);
+	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	fwrite(cFn2, 1, strlen(cFn2), pFile);
+
+	fclose(pFile);
+}
+
+BOOL CGame::bReadGameConfigFile(char* cFn)
+{
+	FILE* pFile;
+	HANDLE hFile;
+	DWORD  dwFileSize;
+	char* cp, * token, cReadMode, cTotalList;
+	char seps[] = "= \t\n";
+	class CStrTok* pStrTok;
+
+	pFile = NULL;
+	cTotalList = 0;
+	cReadMode = 0;
+	hFile = CreateFileA(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	dwFileSize = GetFileSize(hFile, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
+	pFile = fopen(cFn, "rt");
+	if (pFile == NULL) {
+		return FALSE;
+	}
+	else {
+		cp = new char[dwFileSize + 1];
+		ZeroMemory(cp, dwFileSize + 1);
+		fread(cp, dwFileSize, 1, pFile);
+		pStrTok = new class CStrTok(cp, seps);
+		token = pStrTok->pGet();
+		while (token != NULL) {
+			if (cReadMode != 0) {
+				switch (cReadMode) {
+
+				case 1:
+					m_bMusicStat = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+
+				case 2:
+					m_cMusicVolume = (char)atoi(token);
+					cReadMode = 0;
+					break;
+
+				case 3:
+					m_bSoundStat = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+
+				case 4:
+					m_cSoundVolume = (char)atoi(token);
+					cReadMode = 0;
+					break;
+				case 5:
+					m_bShowEmblems = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 6:
+					cReadMode = 0;
+					break;
+				case 7:
+					m_bShowFPS = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 8:
+					m_cDetailLevel = (char)atoi(token);
+					cReadMode = 0;
+					break;
+				case 9:
+					m_bIsDialogEnabled[9] = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 10:
+					m_bDialogTrans = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 11:
+					m_bShout = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 12:
+					m_bWhisper = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 13:
+					m_bShowTrees = (bool)atoi(token);
+					cReadMode = 0;
+					break;
+				case 14:
+					m_bShowParty = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+				case 15:
+					bShowEventInfo = (bool)atoi(token);
+					cReadMode = 0;
+					break;
+				case 16:
+					bNpcMap = (bool)atoi(token);
+					cReadMode = 0;
+					break;
+				case 17:
+					m_bGrid = (BOOL)atoi(token);
+					cReadMode = 0;
+					break;
+
+
+				}
+			}
+			else {
+				if (memcmp(token, "music-mode", 10) == 0)			cReadMode = 1;
+				if (memcmp(token, "music-volume", 12) == 0)			cReadMode = 2;
+				if (memcmp(token, "sound-mode", 10) == 0)			cReadMode = 3;
+				if (memcmp(token, "sound-volume", 12) == 0)			cReadMode = 4;
+				if (memcmp(token, "show-emblems", 12) == 0)			cReadMode = 5;
+				if (memcmp(token, "show-damage", 11) == 0)			cReadMode = 6;
+				if (memcmp(token, "show-frames", 11) == 0)			cReadMode = 7;
+				if (memcmp(token, "detail-mode", 11) == 0)			cReadMode = 8;
+				if (memcmp(token, "guide-map", 9) == 0)				cReadMode = 9;
+				if (memcmp(token, "dialog-transparency", 19) == 0)	cReadMode = 10;
+				if (memcmp(token, "shout-mode", 10) == 0)			cReadMode = 11;
+				if (memcmp(token, "whisper-mode", 12) == 0)			cReadMode = 12;
+				if (memcmp(token, "show-trees", 10) == 0)			cReadMode = 13;
+				if (memcmp(token, "show-party", 10) == 0)			cReadMode = 14;
+				if (memcmp(token, "show-events", 12) == 0)			cReadMode = 15;
+				if (memcmp(token, "show-npc-map", 8) == 0)			cReadMode = 16;
+				if (memcmp(token, "show-grid", 9) == 0)			cReadMode = 17;
+			}
+			token = pStrTok->pGet();
+		}
+		delete pStrTok;
+		delete cp;
+	}
+	if (pFile != NULL) fclose(pFile);
 	return TRUE;
 }
 
@@ -938,12 +1189,14 @@ void CGame::OnGameSocketEvent(WPARAM wParam, LPARAM lParam)
 		break;
 
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
+		ResetValues();
 		ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
 		delete m_pGSock;
 		m_pGSock = NULL;
 		break;
 
 	case DEF_XSOCKEVENT_SOCKETERROR:
+		ResetValues();
 		ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
 		delete m_pGSock;
 		m_pGSock = NULL;
@@ -1858,6 +2111,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
 	case DEF_XSOCKEVENT_SOCKETERROR:
 	case DEF_XSOCKEVENT_QUENEFULL:
+		ResetValues();
 		ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
 		delete m_pGSock;
 		m_pGSock = NULL;
@@ -2226,7 +2480,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					}
 				}else // sprites 100..199: Trees and tree shadows
 				{	m_pTileSpr[sObjSpr]->_GetSpriteRect(ix - 16, iy - 16, sObjSprFrame);
-					if (m_cDetailLevel==0)
+					if (m_bShowTrees == FALSE || m_cDetailLevel == 0)
 					{	if( sObjSpr < 100 + 11 ) m_pTileSpr[100 + 4]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						else if( sObjSpr < 100 + 23 ) m_pTileSpr[100 + 9]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						else if( sObjSpr < 100 + 32 ) m_pTileSpr[100 + 23]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
@@ -3039,6 +3293,12 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				CloseHandle(m_hPakFile);
 			}
 
+			m_hPakFile = CreateFile("sprites\\button.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+			if (m_hPakFile != INVALID_HANDLE_VALUE) {
+				m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTONS] = new class CSprite(m_hPakFile, &m_DDraw, "button", 0, FALSE);
+				CloseHandle(m_hPakFile);
+			}
+
 			m_hPakFile = CreateFile("sprites\\DialogText.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 			if( m_hPakFile != INVALID_HANDLE_VALUE ) {
 				m_pSprite[DEF_SPRID_INTERFACE_ND_TEXT] = new class CSprite(m_hPakFile, &m_DDraw, "DialogText", 0, FALSE);
@@ -3366,12 +3626,15 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "MSanta",	DEF_SPRID_BODYARMOR_M + 15*7, 12, TRUE);
 			MakeSprite( "MHRobe1",	DEF_SPRID_BODYARMOR_M + 15*10, 12, TRUE); //hero
 			MakeSprite( "MHRobe2",	DEF_SPRID_BODYARMOR_M + 15*11, 12, TRUE); //hero
+			MakeSprite("GodRobe", DEF_SPRID_BODYARMOR_M + 15 * 12, 12, TRUE); //hero
 			MakeSprite( "MHPMail1",	DEF_SPRID_BODYARMOR_M + 15*8, 12, TRUE); //hero
 			MakeSprite( "MHPMail2",	DEF_SPRID_BODYARMOR_M + 15*9, 12, TRUE); //hero
+			MakeSprite("GodPMail", DEF_SPRID_BODYARMOR_M + 15 * 13, 12, TRUE); //hero
 			MakeSprite( "MShirt",	  DEF_SPRID_BERK_M + 15*1, 12, TRUE);
 			MakeSprite( "MHauberk",	  DEF_SPRID_BERK_M + 15*2, 12, TRUE);
 			MakeSprite( "MHHauberk1", DEF_SPRID_BERK_M + 15*3, 12, TRUE);
 			MakeSprite( "MHHauberk2", DEF_SPRID_BERK_M + 15*4, 12, TRUE);
+			MakeSprite("GodHauberk", DEF_SPRID_BERK_M + 15 * 5, 12, TRUE);
 			m_cLoading = 56;
 		}
 		break;
@@ -3382,6 +3645,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "MLeggings",DEF_SPRID_LEGG_M + 15*4, 12, TRUE);
 			MakeSprite( "MHLeggings1",	DEF_SPRID_LEGG_M + 15*5, 12, TRUE); // hero
 			MakeSprite( "MHLeggings2",DEF_SPRID_LEGG_M + 15*6, 12, TRUE); // hero
+			MakeSprite("GodLeggings", DEF_SPRID_LEGG_M + 15 * 7, 12, TRUE); // hero
 			MakeSprite( "MShoes",	DEF_SPRID_BOOT_M + 15*1, 12, TRUE);
 			MakeSprite( "MLBoots",	DEF_SPRID_BOOT_M + 15*2, 12, TRUE);
 			m_hPakFile = CreateFile("sprites\\Msw.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
@@ -3471,14 +3735,17 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "Mmantle04", DEF_SPRID_MANTLE_M + 15*4, 12, TRUE);
 			MakeSprite( "Mmantle05", DEF_SPRID_MANTLE_M + 15*5, 12, TRUE);
 			MakeSprite( "Mmantle06", DEF_SPRID_MANTLE_M + 15*6, 12, TRUE);
+			MakeSprite("GodCapeE", DEF_SPRID_MANTLE_M + 15 * 7, 12, TRUE);
 			MakeSprite( "MHelm1", DEF_SPRID_HEAD_M + 15*1, 12, TRUE);
 			MakeSprite( "MHelm2", DEF_SPRID_HEAD_M + 15*2, 12, TRUE);
 			MakeSprite( "MHelm3", DEF_SPRID_HEAD_M + 15*3, 12, TRUE);
 			MakeSprite( "MHelm4", DEF_SPRID_HEAD_M + 15*4, 12, TRUE);
 			MakeSprite( "MHCap1", DEF_SPRID_HEAD_M + 15*11, 12, TRUE);
 			MakeSprite( "MHCap2", DEF_SPRID_HEAD_M + 15*12, 12, TRUE);
+			MakeSprite("GodCap", DEF_SPRID_HEAD_M + 15 * 13, 12, TRUE);
 			MakeSprite( "MHHelm1", DEF_SPRID_HEAD_M + 15*9, 12, TRUE);
 			MakeSprite( "MHHelm2", DEF_SPRID_HEAD_M + 15*10, 12, TRUE);
+			MakeSprite("GodHelm", DEF_SPRID_HEAD_M + 15 * 14, 12, TRUE);
 			MakeSprite( "NMHelm1", DEF_SPRID_HEAD_M + 15*5, 12, TRUE);
 			MakeSprite( "NMHelm2", DEF_SPRID_HEAD_M + 15*6, 12, TRUE);
 			MakeSprite( "NMHelm3", DEF_SPRID_HEAD_M + 15*7, 12, TRUE);
@@ -3527,18 +3794,22 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "WSanta",	DEF_SPRID_BODYARMOR_W + 15*8, 12, TRUE);
 			MakeSprite( "WHRobe1",	DEF_SPRID_BODYARMOR_W + 15*11, 12, TRUE); // hero
 			MakeSprite( "WHRobe2",	DEF_SPRID_BODYARMOR_W + 15*12, 12, TRUE); // hero
+			MakeSprite("GodRobeW", DEF_SPRID_BODYARMOR_W + 15 * 13, 12, TRUE); // hero
 			MakeSprite( "WHPMail1",	DEF_SPRID_BODYARMOR_W + 15*9, 12, TRUE); //hero
 			MakeSprite( "WHPMail2",	DEF_SPRID_BODYARMOR_W + 15*10, 12, TRUE); //hero
+			MakeSprite("GodPMailW", DEF_SPRID_BODYARMOR_W + 15 * 14, 13, TRUE); //hero
 			MakeSprite( "WChemiss",  DEF_SPRID_BERK_W + 15*1, 12, TRUE);
 			MakeSprite( "WShirt",	 DEF_SPRID_BERK_W + 15*2, 12, TRUE);
 			MakeSprite( "WHauberk",	 DEF_SPRID_BERK_W + 15*3, 12, TRUE);
 			MakeSprite( "WHHauberk1",DEF_SPRID_BERK_W + 15*4, 12, TRUE);
 			MakeSprite( "WHHauberk2",DEF_SPRID_BERK_W + 15*5, 12, TRUE);
+			MakeSprite("GodHauberkW", DEF_SPRID_BERK_W + 15 * 6, 12, TRUE);
 			MakeSprite( "WSkirt",		DEF_SPRID_LEGG_W + 15*1, 12, TRUE);
 			MakeSprite( "WTrouser",		DEF_SPRID_LEGG_W + 15*2, 12, TRUE);
 			MakeSprite( "WHTrouser",	DEF_SPRID_LEGG_W + 15*3, 12, TRUE);
 			MakeSprite( "WHLeggings1",	DEF_SPRID_LEGG_W + 15*6, 12, TRUE);
 			MakeSprite( "WHLeggings2",	DEF_SPRID_LEGG_W + 15*7, 12, TRUE);
+			MakeSprite("GodLeggingsW", DEF_SPRID_LEGG_W + 15 * 8, 12, TRUE);
 			MakeSprite( "WCHoses",		DEF_SPRID_LEGG_W + 15*4, 12, TRUE);
 			MakeSprite( "WLeggings",	DEF_SPRID_LEGG_W + 15*5, 12, TRUE);
 			MakeSprite( "WShoes",	DEF_SPRID_BOOT_W + 15*1, 12, TRUE);
@@ -3607,12 +3878,15 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "Wmantle04", DEF_SPRID_MANTLE_W + 15*4, 12, TRUE);
 			MakeSprite( "Wmantle05", DEF_SPRID_MANTLE_W + 15*5, 12, TRUE);
 			MakeSprite( "Wmantle06", DEF_SPRID_MANTLE_W + 15*6, 12, TRUE);
+			MakeSprite("GodCapeAW", DEF_SPRID_MANTLE_W + 15 * 7, 12, TRUE);
 			MakeSprite( "WHelm1",	 DEF_SPRID_HEAD_W + 15*1, 12, TRUE);
 			MakeSprite( "WHelm4",	 DEF_SPRID_HEAD_W + 15*4, 12, TRUE);
 			MakeSprite( "WHHelm1",	 DEF_SPRID_HEAD_W + 15*9, 12, TRUE);
 			MakeSprite( "WHHelm2",	 DEF_SPRID_HEAD_W + 15*10, 12, TRUE);
+			MakeSprite("GodHelmW", DEF_SPRID_HEAD_W + 15 * 14, 12, TRUE);
 			MakeSprite( "WHCap1",	 DEF_SPRID_HEAD_W + 15*11, 12, TRUE);
 			MakeSprite( "WHCap2",	 DEF_SPRID_HEAD_W + 15*12, 12, TRUE);
+			MakeSprite("GodCapW", DEF_SPRID_HEAD_W + 15 * 13, 12, TRUE);
 			MakeSprite( "NWHelm1",	 DEF_SPRID_HEAD_W + 15*5, 12, TRUE);
 			MakeSprite( "NWHelm2",	 DEF_SPRID_HEAD_W + 15*6, 12, TRUE);
 			MakeSprite( "NWHelm3",	 DEF_SPRID_HEAD_W + 15*7, 12, TRUE);
@@ -3739,7 +4013,9 @@ void CGame::OnTimer()
 			if (m_cCommandCount >= 6)
 			{	m_iNetLagCount++;
 				if (m_iNetLagCount >= 7)
-				{	ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
+				{
+					ResetValues(); 
+					ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
 					delete m_pGSock;
 					m_pGSock = NULL;
 					return;
@@ -3817,6 +4093,9 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
 				DlgBoxClick_GuildOp(msX, msY);
 				break;
 			case 9:
+				break;
+			case 10:
+				DlgBoxClick_Chat(msX, msY);
 				break;
 			case 11:
 				DlgBoxClick_Shop(msX, msY);
@@ -5482,6 +5761,7 @@ void CGame::RequestFullObjectData(WORD wObjectID)
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
 	case DEF_XSOCKEVENT_SOCKETERROR:
 	case DEF_XSOCKEVENT_QUENEFULL:
+		ResetValues();
 		ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
 		delete m_pGSock;
 		m_pGSock = NULL;
@@ -5864,7 +6144,7 @@ void CGame::SetItemCount(char * pItemName, DWORD dwCount)
 void CGame::AddEventList(char * pTxt, char cColor, BOOL bDupAllow)
 {int i;
 	if ((bDupAllow == FALSE) && (strcmp(m_stEventHistory[5].cTxt, pTxt) == 0)) return;
-	if (cColor == 10)
+	if ((cColor == 10) || (cColor == 11) || (cColor == 12) || (cColor == 13) || (cColor == 14) /*|| (cColor == 15)*/)
 	{	for (i = 1; i < 6; i++)
 		{	strcpy(m_stEventHistory2[i-1].cTxt, m_stEventHistory2[i].cTxt);
 			m_stEventHistory2[i-1].cColor = m_stEventHistory2[i].cColor;
@@ -8642,6 +8922,26 @@ void CGame::PutAlignedString(int iX1, int iX2, int iY, char * pString, short sR,
 	m_DDraw._GetBackBufferDC();
 	SetRect(&rt, iX1, iY, iX2, iY+15);
 	m_DDraw.DrawText(&rt, pString, RGB(sR, sG, sB));
+	m_DDraw._ReleaseBackBufferDC();
+}
+
+void CGame::PutAlignedString2(int iX1, int iX2, int iY, char* pString, short sR, short sG, short sB)
+{
+	RECT rt;
+	m_DDraw._GetBackBufferDC();
+
+	SetRect(&rt, iX1 + 1, iY, iX2 + 1, iY + 15);
+	m_DDraw.DrawText(&rt, pString, RGB(0, 0, 0));
+
+	SetRect(&rt, iX1, iY + 1, iX2, iY + 16);
+	m_DDraw.DrawText(&rt, pString, RGB(0, 0, 0));
+
+	SetRect(&rt, iX1 + 1, iY + 1, iX2 + 1, iY + 16);
+	m_DDraw.DrawText(&rt, pString, RGB(0, 0, 0));
+
+	SetRect(&rt, iX1, iY, iX2, iY + 15);
+	m_DDraw.DrawText(&rt, pString, RGB(sR, sG, sB));
+
 	m_DDraw._ReleaseBackBufferDC();
 }
 
@@ -14032,6 +14332,7 @@ void CGame::OnLogSocketEvent(WPARAM wParam, LPARAM lParam)
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
 	case DEF_XSOCKEVENT_SOCKETERROR:
 	case DEF_XSOCKEVENT_CRITICALERROR:
+		ResetValues();
 		ChangeGameMode(DEF_GAMEMODE_ONCONNECTIONLOST);
 		delete m_pLSock;
 		m_pLSock = NULL;
@@ -17135,7 +17436,10 @@ void CGame::DrawDialogBox_ItemDrop(short msX, short msY)
 
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME1, sX, sY, 2);
 
-	GetItemName(m_pItemList[m_stDialogBoxInfo[4].sView]->m_cName, m_pItemList[m_stDialogBoxInfo[4].sView]->m_dwAttribute, cStr1, cStr2, cStr3 );
+	//GetItemName(m_pItemList[m_stDialogBoxInfo[4].sView]->m_cName, m_pItemList[m_stDialogBoxInfo[4].sView]->m_dwAttribute, cStr1, cStr2, cStr3 );
+	//Magn0S:: Changed
+
+	GetItemName(m_pItemList[m_stDialogBoxInfo[4].sView]->m_cName, m_pItemList[m_stDialogBoxInfo[4].sView]->m_dwAttribute, cStr1, cStr2, cStr3, m_pItemList[m_stDialogBoxInfo[4].sView]->m_sNewEffect1, m_pItemList[m_stDialogBoxInfo[4].sView]->m_sNewEffect2, m_pItemList[m_stDialogBoxInfo[4].sView]->m_sNewEffect3, m_pItemList[m_stDialogBoxInfo[4].sView]->m_sNewEffect4);
 
 	if (strlen(m_stDialogBoxInfo[4].cStr) == 0)  wsprintf(cTxt, "%s", cStr1);
 
@@ -17384,50 +17688,300 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
  double d1, d2, d3;
 	sX = m_stDialogBoxInfo[10].sX;
 	sY = m_stDialogBoxInfo[10].sY;
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, FALSE, m_bDialogTrans);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, FALSE, m_bDialogTrans);
+	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, FALSE, m_bDialogTrans);
+	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, FALSE, m_bDialogTrans);
 
-	if ( msZ != 0 && (iGetTopDialogBoxIndex() == 10)) {
-		m_stDialogBoxInfo[10].sView = m_stDialogBoxInfo[10].sView + msZ/30;
-		m_DInput.m_sZ = 0;
+	//Magn0S:: Updated Chat Box
+	short toX, toY, limitX, limitY;
+	toX = sX;
+	toY = sY;
+	limitX = sX + 405;
+	limitY = sY + 180;
+	int iminus = 0;
+
+	if (toX <= 0) {
+		toX = 0;
 	}
-	if( m_stDialogBoxInfo[10].sView < 0 ) m_stDialogBoxInfo[10].sView = 0;
-	if( m_stDialogBoxInfo[10].sView > DEF_MAXCHATSCROLLMSGS-8 ) m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS-8; 
+	if (toY <= 1) {
+		toY = 1;
+	}
 
-	d1 = (double)m_stDialogBoxInfo[10].sView;
-	d2 = (double)(105.0f);
-	d3 = (d1*d2)/(DEF_MAXCHATSCROLLMSGS-8); 
-	iPointerLoc = (int)d3;
-	iPointerLoc = 105 - iPointerLoc; 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 346, sY + 33 + iPointerLoc, 7); // , 
+#ifdef RES_HIGH
+	if (limitX >= 800) {
+		limitX = limitX - (limitX - 800);
+	}
+	if (limitY >= 580) {
+		limitY = limitY - (limitY - 580);
+	}
+#else
+	if (limitX >= 639) {
+		limitX = limitX - (limitX - 639);
+	}
+	if (limitY >= 451) {
+		limitY = limitY - (limitY - 451);
+	}
+#endif
 
-	for (i = 0; i < 8; i++) 
-	if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
-		switch ( m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime ) {
-		case 0:  PutString2(sX + 25, sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 230); break;
-		case 1:  PutString2(sX + 25 , sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
-		case 2:  PutString2(sX + 25 , sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 130, 130); break;
-		case 3:  PutString2(sX + 25 , sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 130, 255); break;
-		case 4:  PutString2(sX + 25 , sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
-		case 10: PutString2(sX + 25 , sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 180, 255, 180); break;
-		case 20: PutString2(sX + 25 , sY + 127  - i*13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 150, 150, 170); break;
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
+
+	int R, G, B;
+	R = 30;
+	G = 100;
+	B = 100;
+
+	DrawLine2(toX, toY, limitX - 1, toY, R, G, B); // 1ª Reta
+	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
+	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
+	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita
+
+	m_DDraw.DrawShadowBox(toX + 2, toY + 2, limitX - 2, toY + 25);
+	m_DDraw.DrawShadowBox(toX + 2, toY + 2, limitX - 2, toY + 25);
+	PutString_SprFont(sX + 180, sY + 5, "Chat Log", 240, 240, 240);
+
+	if (((msX >= sX + 10) && (msX <= sX + 50) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GLOBAL)
+		PutString2(sX + 20, sY + 25, "Global", 255, 255, 255);
+	else PutString2(sX + 20, sY + 25, "Global", 0, 255, 0);
+
+	if (((msX >= sX + 55) && (msX <= sX + 90) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_CITY)
+		PutString2(sX + 60, sY + 25, "Town", 255, 255, 255);
+	else PutString2(sX + 60, sY + 25, "Town", 0, 255, 0);
+
+	if (((msX >= sX + 95) && (msX <= sX + 140) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_NORMAL)
+		PutString2(sX + 100, sY + 25, "Nearby", 255, 255, 255);
+	else PutString2(sX + 100, sY + 25, "Nearby", 0, 255, 0);
+
+	if (((msX >= sX + 145) && (msX <= sX + 180) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GUILD)
+		PutString2(sX + 150, sY + 25, "Guild", 255, 255, 255);
+	else PutString2(sX + 150, sY + 25, "Guild", 0, 255, 0);
+
+	if (((msX >= sX + 185) && (msX <= sX + 220) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_PARTY)
+		PutString2(sX + 190, sY + 25, "Party", 255, 255, 255);
+	else PutString2(sX + 190, sY + 25, "Party", 0, 255, 0);
+
+	if (((msX >= sX + 225) && (msX <= sX + 280) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_WHISP)
+		PutString2(sX + 230, sY + 25, "Whisper", 255, 255, 255);
+	else PutString2(sX + 230, sY + 25, "Whisper", 0, 255, 0);
+
+	if (((msX >= sX + 285) && (msX <= sX + 330) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_MARKET)
+		PutString2(sX + 290, sY + 25, "Market", 255, 255, 255);
+	else PutString2(sX + 290, sY + 25, "Market", 0, 255, 0);
+
+	if (((msX >= sX + 335) && (msX <= sX + 360) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GM)
+		PutString2(sX + 340, sY + 25, "GM", 255, 255, 255);
+	else PutString2(sX + 340, sY + 25, "GM", 0, 255, 0);
+
+	if (((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == 99)
+		PutString2(sX + 370, sY + 25, "All", 255, 255, 255);
+	else PutString2(sX + 370, sY + 25, "All", 0, 255, 0);
+
+	switch (m_stDialogBoxInfo[10].cMode) {
+	case 0:
+		if (msZ != 0 && (iGetTopDialogBoxIndex() == 10)) {
+			m_stDialogBoxInfo[10].sView = m_stDialogBoxInfo[10].sView + msZ / 30;
+			m_DInput.m_sZ = 0;
+		}
+		if (m_stDialogBoxInfo[10].sView < 0) m_stDialogBoxInfo[10].sView = 0;
+		if (m_stDialogBoxInfo[10].sView > DEF_MAXCHATSCROLLMSGS - 8) m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
+
+		d1 = (double)m_stDialogBoxInfo[10].sView;
+		d2 = (double)(105.0f);
+		d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
+		iPointerLoc = (int)d3;
+		iPointerLoc = 105 - iPointerLoc;
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 390, sY + 60 + iPointerLoc, 7); // , 
+
+		for (i = 0; i < 8; i++)
+			if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
+				switch (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime) {
+				case 0:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 230); break;
+				case 1:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
+				case 2:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 130, 130); break;
+				case 3:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 130, 255); break;
+				case 4:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
+				case 10: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 180, 255, 180); break;
+				case CHAT_GM: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 184, 0); break;
+				case CHAT_MARKET: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 50, 255, 255); break;
+				case 20: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 150, 150, 170); break;
+				}
+			}
+
+		if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
+		{
+			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY >= sY + 48) && (msY <= sY + 160)) { //,,  
+				d1 = (double)(msY - (sY + 28));
+				d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
+				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
+			}
+
+			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 38) && (msY < sY + 48)) //,
+				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
+
+			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 160) && (msY < sY + 181)) //,,,
+				m_stDialogBoxInfo[10].sView = 0;
+		}
+		else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
+		break;
+
+	case 1: // Magn0S:: Chat by selection
+		if (msZ != 0 && (iGetTopDialogBoxIndex() == 10)) {
+				m_stDialogBoxInfo[10].sView = m_stDialogBoxInfo[10].sView + msZ / 30;
+				m_DInput.m_sZ = 0;
+			}
+
+		if (m_stDialogBoxInfo[10].sView < 0) m_stDialogBoxInfo[10].sView = 0;
+		if (m_stDialogBoxInfo[10].sView > DEF_MAXCHATSCROLLMSGS - 8) m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
+
+		d1 = (double)m_stDialogBoxInfo[10].sView;
+		d2 = (double)(105.0f);
+		d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
+		iPointerLoc = (int)d3;
+		iPointerLoc = 105 - iPointerLoc;
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 390, sY + 60 + iPointerLoc, 7); // , 
+
+		int cordx;
+		int cordy;
+		char msgview[100];
+		int msgtype;
+
+		//Magn0S:: This part of code, thanks to moonlight src.
+		for (i = 0; i < MAXCHATLINES; i++)
+		if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
+		
+		cordy = sY + 157 - (i-iminus)*13;
+		cordx = sX + 25;
+
+		ZeroMemory(msgview, sizeof(msgview));
+		strcpy(msgview, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg); //mensaje
+		msgtype = m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime;
+
+		switch ( msgtype ) {
+		case CHAT_NORMAL:	if(chatmode == 0)	PutString2(cordx, cordy, msgview, 230, 230, 230);
+							else iminus++;
+			break;
+		case CHAT_GUILD:	if(chatmode == CHAT_GUILD)		PutString2(cordx, cordy, msgview, 130, 200, 130);
+							else iminus++;
+			break;
+		case CHAT_GLOBAL:	if(chatmode == CHAT_GLOBAL)	PutString2(cordx, cordy, msgview, 255, 130, 130);
+							else iminus++;			
+			break;
+		case CHAT_CITY:		if(chatmode == CHAT_CITY)		PutString2(cordx, cordy, msgview, 130, 130, 255);
+							else iminus++;			
+			break;
+		case CHAT_PARTY:	if (chatmode == CHAT_PARTY)	PutString2(cordx, cordy, msgview, 230, 230, 130);
+							else iminus++;			
+			break;
+		case CHAT_SERVERMSG:				PutString2(cordx, cordy, msgview, 180, 255, 180); 		
+			break;
+		case CHAT_GM:		if(chatmode == CHAT_GM)		PutString2(cordx, cordy, msgview, 255, 184, 0);
+							else iminus++;		
+			break;
+		case CHAT_MARKET:	if(chatmode == CHAT_MARKET)	PutString2(cordx, cordy, msgview, 50, 255, 255);
+							else iminus++;	
+			break;
+		case CHAT_WHISP:	if(chatmode == CHAT_WHISP)	PutString2(cordx, cordy, msgview, 150, 150, 170);
+							else iminus++;		
+			break;
 		}
 	}
 
-	if ( (cLB != 0) && (iGetTopDialogBoxIndex()==10) )
-	{ 	if ((msX >= sX + 336) && (msX <= sX + 361) && (msY >= sY + 28) && (msY <= sY + 140)) { //,,  
-			d1 = (double)(msY - (sY + 28));
-			d2 = ((DEF_MAXCHATSCROLLMSGS-8)*d1)/105.0f; 
-			m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2; 
+		
+		/*		switch (chatmode) {
+				case 1:
+					switch (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime) {
+					case 1:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
+					}
+					break;
+				case 4:
+					switch (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime) {
+					case 4:  
+						for (i = 0; i < 8; i++)
+							if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
+								PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
+							}
+					}
+					break;
+					break;
+			}*/
+
+		if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
+		{
+			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY >= sY + 48) && (msY <= sY + 160)) { //,,  
+				d1 = (double)(msY - (sY + 28));
+				d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
+				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
+			}
+
+			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 38) && (msY < sY + 48)) //,
+				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
+
+			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 160) && (msY < sY + 181)) //,,,
+				m_stDialogBoxInfo[10].sView = 0;
 		}
-
-		if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 18) && (msY < sY + 28)) //,
-			m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8; 
-
-		if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 140) && (msY < sY + 163)) //,,,
-			m_stDialogBoxInfo[10].sView = 0;
+		else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
+		break;
 	}
-	else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
+}
+
+void CGame::DlgBoxClick_Chat(short msX, short msY)
+{
+	short sX, sY;
+	sX = m_stDialogBoxInfo[10].sX;
+	sY = m_stDialogBoxInfo[10].sY;
+
+	if ((msX >= sX + 10) && (msX <= sX + 50) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1;
+		chatmode = CHAT_GLOBAL;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 55) && (msX <= sX + 90) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //Town
+		chatmode = CHAT_CITY;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 95) && (msX <= sX + 140) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //Nearby
+		chatmode = CHAT_NORMAL;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 145) && (msX <= sX + 180) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //Guild
+		chatmode = CHAT_GUILD;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 185) && (msX <= sX + 220) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //Party
+		chatmode = CHAT_PARTY;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 225) && (msX <= sX + 280) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //Whisper
+		chatmode = CHAT_WHISP;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 285) && (msX <= sX + 330) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //Market
+		chatmode = CHAT_MARKET;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 335) && (msX <= sX + 380) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 1; //GM
+		chatmode = CHAT_GM;
+		PlaySound('E', 14, 5);
+	}
+
+	if ((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 0; //All
+		chatmode = 99;
+		PlaySound('E', 14, 5);
+	}
 }
 
 
@@ -24128,7 +24682,9 @@ void CGame::OnKeyUp(WPARAM wParam)
 
 	case VK_F9:
 		if (m_bIsDialogEnabled[10] == FALSE)
-			EnableDialogBox(10, NULL, NULL, NULL);
+			if (chatmode == 99)
+			EnableDialogBox(10, 0, NULL, NULL);
+			else EnableDialogBox(10, 1, NULL, NULL);
 		else DisableDialogBox(10);
 		break;
 
@@ -30202,8 +30758,8 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							break;
 
 						case 19: // Gandlf
-
-							EnableDialogBox(20, 0, 16, NULL);
+							EnableDialogBox(20, 7, 16, 1);
+							//EnableDialogBox(20, 0, 16, NULL);
 							tX = msX - 117;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
@@ -31578,6 +32134,22 @@ void CGame::UpdateScreen_OnGame()
 			}
 			iLoc += 15;
 		}
+
+		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect1 == 10) {
+		//	PutAlignedString(fromX, toX, msY + 25 + iLoc, "Fragile Item", 142, 151, 134);
+			//iLoc += 15;
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 == 0) {
+				//PutAlignedString(fromX, toX, msY + 25 + iLoc, "Breakly easily - No reparable", 142, 151, 134);
+				PutString(msX, msY + 25 + iLoc, "Breakly easily - No reparable", RGB(150, 150, 150), FALSE, 1);
+				iLoc += 15;
+			}
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
+				wsprintf(G_cTxt, "Item will be destroyed on %d/%d/%d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1);
+				iLoc += 15;
+			}
+		}
+
 		if (strlen(cStr2) != 0)
 		{
 			if (m_cDetailLevel != 2)
@@ -31990,6 +32562,7 @@ void CGame::UpdateScreen_OnGame()
 			ChangeGameMode(DEF_GAMEMODE_ONQUIT);
 		else ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 		iDGKill1 = iDGKill2 = iDGKill3 = iDGKill4 = iDGKill5 = iDGKill6 = iDGKill7 = iDGKill8 = iDGKill9 = iDGKill10 = 0;
+		ResetValues();
 		return;
 	}
 

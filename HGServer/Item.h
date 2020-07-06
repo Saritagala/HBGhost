@@ -72,9 +72,12 @@ public:
 										 
 	bool teamcape, teamboots;
 
-	//Magn0S::
+	//Magn0S:: New Variables
 	bool bEkSale, bContrbSale, bCoinSale;
 	DWORD m_wContribPrice, m_wEkPrice, m_wCoinPrice;
+
+	short m_sNewEffect1, m_sNewEffect2, m_sNewEffect3, m_sNewEffect4;
+
 };
 
 /*

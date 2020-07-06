@@ -17,7 +17,7 @@
 #define DEF_CLIENTTIMEOUT			10000
 #define DEF_SPUPTIME				7000 //10000 //LifeX Regen Time to 10 sec 01/01
 #define DEF_POISONTIME				12000
-#define DEF_HPUPTIME				10000 //LifeX Regen Time to 10 sec 01/01
+#define DEF_HPUPTIME				12000 //LifeX Regen Time to 10 sec 01/01
 #define DEF_MPUPTIME				10000 //LifeX Regen Time to 10 sec 01/01
 #define DEF_HUNGERTIME				60000
 #define DEF_NOTICETIME				80000
@@ -236,14 +236,18 @@
 #define DEF_ITEMEFFECTTYPE_PANDORA			34
 #define DEF_ITEMEFFECTTYPE_WEAPONDYE		41 // WeaponDye
 
-//Magn0S:: Added
+//Magn0S:: Added---------------------------------------------------------------
 #define DEF_ITEMEFFECTTYPE_REP				35
 #define DEF_ITEMEFFECTTYPE_COINS			36
+#define DEF_ITEMEFFECTTYPE_REPAIR			37
 
+#define DEF_CHECKFRAGILETIME	30
+//-----------------------------------------------------------------------------
 
 #define DEF_ITET_UNIQUE_OWNER				1
 #define DEF_ITET_ID							2
 #define DEF_ITET_DATE						3
+#define DEF_FRAGILEITEM						10
 
 #define DEF_MAGICTYPE_DAMAGE_SPOT				1
 #define DEF_MAGICTYPE_HPUP_SPOT					2

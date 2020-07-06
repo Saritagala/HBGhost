@@ -470,7 +470,9 @@ public:
 	void _SetIlusionEffect(int iOwnerH);
 	int _iGetFOE(int iStatus);
 	void NoticementHandler(char * pData);
-	void GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *pStr2, char *pStr3);
+	//void GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *pStr2, char *pStr3);
+	//Magn0S:: Changed
+	void GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1 = NULL, short sEffect2 = NULL, short sEffect3 = NULL, short sEffect4 = NULL);
 	void GetItemName(class CItem * pItem, char * pStr1, char * pStr2, char * pStr3);
 	void _InitOnCreateNewCharacter();
 	void _LoadGameMsgTextContents();
@@ -1248,10 +1250,21 @@ public:
 	void NotifyMapRestrictions(char* pData);
 	bool bMapTP = true, bMapParty = true, bMapIllusion = false, bMapActivate = true, bMapInvi = true, bMapAMP = true;
 	bool bMapRegens = true, bMapHideEnemy = false, bMapBonusDmg = false, bMapEquip = true;
+	bool bNpcMap = true, m_bShowTrees = true, bShowEventInfo = true;
 
 	void MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect);
 	void MakeFunTileSpr(char* FileName, short sStart, short sCount, bool bAlphaEffect);
 	void MakeEffectFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect);
+
+	BOOL bReadGameConfigFile(char* cFn);
+	void SaveGameConfigFile();
+	void PutAlignedString2(int iX1, int iX2, int iY, char* pString, short sR, short sG, short sB);
+	BOOL m_bFinishInit;
+	bool m_bIsFragile;
+
+	void DlgBoxClick_Chat(short msX, short msY);
+	short chatmode = 99;
+	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 
 #endif // !defined(AFX_GAME_H__0089D9E3_74E6_11D2_A8E6_00001C7030A6__INCLUDED_)

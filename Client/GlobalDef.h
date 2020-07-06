@@ -24,7 +24,7 @@
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"192.168.0.28"
+#define DEF_SERVER_IP			"10.0.0.105"
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port
@@ -44,6 +44,17 @@
 #define DEF_ANTI_HACK			// Snoopy: Mes antiHacks personels!
 								// changes CCM routine to send "real checked time" instead of "sending time". 
 								// CCM is reduced to 6150
+
+#define CHAT_GLOBAL		2
+#define CHAT_PARTY		4
+#define CHAT_CITY		3
+#define CHAT_GUILD		1
+#define CHAT_GM			14
+#define CHAT_MARKET		15
+#define CHAT_NORMAL		0
+#define CHAT_WHISP		20
+#define CHAT_SERVERMSG	10	
+#define MAXCHATLINES    7
 
 #ifdef DEF_ANTI_HACK
 	#define DEF_HIDDEN_LOWERVERSION		95

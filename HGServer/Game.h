@@ -574,7 +574,8 @@ public:
 	void DismissGuildApproveHandler(int iClientH, char* pName);
 	void JoinGuildRejectHandler(int iClientH, char* pName);
 	void JoinGuildApproveHandler(int iClientH, char* pName);
-	void SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD sV2, DWORD sV3, char* pString, DWORD sV4 = NULL, DWORD sV5 = NULL, DWORD sV6 = NULL, DWORD sV7 = NULL, DWORD sV8 = NULL, DWORD sV9 = NULL, char* pString2 = NULL, DWORD sV10 = NULL);
+	//void SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD sV2, DWORD sV3, char* pString, DWORD sV4 = NULL, DWORD sV5 = NULL, DWORD sV6 = NULL, DWORD sV7 = NULL, DWORD sV8 = NULL, DWORD sV9 = NULL, char* pString2 = NULL, DWORD sV10 = NULL);
+	void SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD sV2, DWORD sV3, char* pString, DWORD sV4 = NULL, DWORD sV5 = NULL, DWORD sV6 = NULL, DWORD sV7 = NULL, DWORD sV8 = NULL, DWORD sV9 = NULL, char* pString2 = NULL, DWORD sV10 = NULL, DWORD sV11 = NULL, DWORD sV12 = NULL, DWORD sV13 = NULL, DWORD sV14 = NULL);
 	void GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, WORD wObjectID, char* pItemName);
 	void RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum);
 	void ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize);
@@ -1144,6 +1145,12 @@ public:
 	//Magn0S:: Multi Quest
 	void RequestQuestPrize(int iClientH, int iQuest);
 	void NotifyMapRestrictions(int iClientH, bool bNotify);
+
+	//Magn0S:: Fragiles
+	void CheckDestroyFragileItem(int iClientH);
+	void AdminOrder_CreateFragileItem(int iClientH, char* pData, DWORD dwMsgSize);
+
+	void LearnAllMagics(int iClientH);
 };
 
 #endif // !defined(AFX_GAME_H__C3D29FC5_755B_11D2_A8E6_00001C7030A6__INCLUDED_)
