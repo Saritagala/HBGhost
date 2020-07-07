@@ -18582,6 +18582,56 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 12, m_dwCurTime);
 
 			}
+
+			else if (m_cMapIndex == 4) { // Middleland
+
+				// Werewolf 
+				if (227 >= shX && 227 <= shX + 128 && 419 >= shY && 419 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 227 - shX, sY + 419 - shY, 33, m_dwCurTime);
+				// Ogre
+				if (251 >= shX && 251 <= shX + 128 && 274 >= shY && 274 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 251 - shX, sY + 274 - shY, 29, m_dwCurTime);
+				//Ogre
+				if (240 >= shX && 240 <= shX + 128 && 197 >= shY && 197 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 197 - shY, 29, m_dwCurTime);
+				//Ettin
+				if (435 >= shX && 435 <= shX + 128 && 378 >= shY && 378 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 435 - shX, sY + 378 - shY, 59, m_dwCurTime);
+				// Ettin
+				if (420 >= shX && 420 <= shX + 128 && 150 >= shY && 150 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 420 - shX, sY + 150 - shY, 59, m_dwCurTime);
+				// Demons
+				if (466 >= shX && 466 <= shX + 128 && 314 >= shY && 314 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 466 - shX, sY + 314 - shY, 31, m_dwCurTime);
+				//Demons
+				if (56 >= shX && 56 <= shX + 128 && 215 >= shY && 215 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 56 - shX, sY + 215 - shY, 31, m_dwCurTime);
+
+			}
+			else if (m_cMapIndex == 24) { // Icebound
+
+				// Ice Golem
+				if (190 >= shX && 190 <= shX + 128 && 224 >= shY && 224 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 190 - shX, sY + 224 - shY, 65, m_dwCurTime);
+				// Ice Golem
+				//if (220 >= shX && 220 <= shX + 128 && 251 >= shY && 251 <= shY + 128)
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 220 - shX, sY + 251 - shY, 65, m_dwCurTime);
+				//Frost
+				if (199 >= shX && 199 <= shX + 128 && 37 >= shY && 37 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 199 - shX, sY + 37 - shY, 63, m_dwCurTime);
+				//Nizzie
+				if (137 >= shX && 137 <= shX + 128 && 57 >= shY && 57 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 137 - shX, sY + 57 - shY, 79, m_dwCurTime);
+				// Wyvern
+				if (43 >= shX && 43 <= shX + 128 && 35 >= shY && 35 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 35 - shY, 66, m_dwCurTime);
+				//Ice Golem
+				if (222 >= shX && 222 <= shX + 128 && 139 >= shY && 139 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 222 - shX, sY + 139 - shY, 65, m_dwCurTime);
+
+			}
+
+
 		}
 
 	}
@@ -18708,6 +18758,40 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
 				// Stone Golem Abajo Izquierda
 				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
+
+			}
+			else if (m_cMapIndex == 4) { // Middleland
+				// Wereolf
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((227 * 128) / m_pMapData->m_sMapSizeX), sY + ((419 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
+				//Ogre
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((251 * 128) / m_pMapData->m_sMapSizeX), sY + ((274 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
+				//Ogre
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((197 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
+				//Werewolf
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((187 * 128) / m_pMapData->m_sMapSizeX), sY + ((93 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
+				// Ettin
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((435 * 128) / m_pMapData->m_sMapSizeX), sY + ((378 * 128) / m_pMapData->m_sMapSizeX), 59, m_dwCurTime);
+				// Ettin
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((420 * 128) / m_pMapData->m_sMapSizeX), sY + ((150 * 128) / m_pMapData->m_sMapSizeX), 59, m_dwCurTime);
+				//Demons
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((466 * 128) / m_pMapData->m_sMapSizeX), sY + ((314 * 128) / m_pMapData->m_sMapSizeX), 31, m_dwCurTime);
+				//Demons
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((56 * 128) / m_pMapData->m_sMapSizeX), sY + ((215 * 128) / m_pMapData->m_sMapSizeX), 31, m_dwCurTime);
+
+			}
+
+			else if (m_cMapIndex == 24) { // Icebound
+				// Ice Golem
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((190 * 128) / m_pMapData->m_sMapSizeX), sY + ((224 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
+				// Frost
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((199 * 128) / m_pMapData->m_sMapSizeX), sY + ((37 * 128) / m_pMapData->m_sMapSizeX), 63, m_dwCurTime);
+				// Nizzie
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((137 * 128) / m_pMapData->m_sMapSizeX), sY + ((57 * 128) / m_pMapData->m_sMapSizeX), 79, m_dwCurTime);
+				// Wyvern
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((35 * 128) / m_pMapData->m_sMapSizeX), 66, m_dwCurTime);
+				//Ice Golem
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((222 * 128) / m_pMapData->m_sMapSizeX), sY + ((139 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
+
 
 			}
 		}

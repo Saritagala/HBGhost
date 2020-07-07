@@ -149,9 +149,9 @@ spot-mob-generator      =       33      1       143     208     225     248     
 
 /Werewolf
 spot-mob-generator      =       34      1       227     419     311     434     33      30
-//Unicorn
-spot-mob-generator      =       35      1       251     274     286     288     32      30
-spot-mob-generator      =       36      1       240     197     277     209     32      30
+//Ogre
+spot-mob-generator      =       35      1       251     274     286     288     29      30
+spot-mob-generator      =       36      1       240     197     277     209     29      30
 /WereWolf
 spot-mob-generator      =       37      1       187     93      236     103     33      30
 //Ettin
@@ -159,7 +159,7 @@ spot-mob-generator      =       38      1       435     378     467     394     
 spot-mob-generator      =       39      1       420     150     448     157     59      20
 /Demmons
 spot-mob-generator      =       40      1       466     314     433     306     31      7
-spot-mob-generator      =       41      1       254     220     263     232     31      7
+spot-mob-generator      =       41      1       50      213     72      225     31      7
 
 
 
