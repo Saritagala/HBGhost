@@ -101,7 +101,7 @@ void CGame::bReadApocalypseGUIDFile(char* cFn)
 			}
 			else
 			{
-				if (memcmp(token, "Apocalypse GUID", 14) == 0) cReadMode = 1;
+				if (memcmp(token, "ApocalypseGUID", 14) == 0) cReadMode = 1;
 			}
 			token = pStrTok->pGet();
 		}
@@ -173,7 +173,7 @@ void CGame::LocalStartApocalypse(DWORD dwApocalypseGUID)
 		m_dwApocalypseGUID = dwApocalypseGUID;
 		_CreateApocalypseGUID(dwApocalypseGUID);
 		m_dwApocalypseGateOpenTime = dwApocalypseGUID;
-		m_dwApocalypseGateCloseTime = dwApocalypseGUID + 20 * 60 * 1000; // will close in 20 minutes
+		m_dwApocalypseGateCloseTime = dwApocalypseGUID + 180 * 60 * 1000; // will close in 3hs - centu
 	}
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
 	{
@@ -595,8 +595,11 @@ void CGame::OpenCloseApocalypseGate()
 	}
 	else
 	{
+		// centu - automated end in 3hs
 		m_bIsApocalypseGateOpen = FALSE;
+		GlobalEndApocalypseMode(0);
 	}
+
 	// If nothing has changed return...
 	if (bIsOpen == m_bIsApocalypseGateOpen) return;
 
@@ -720,28 +723,24 @@ void CGame::Use_ApocalypseGate(int iClientH)
 		if (m_bIsApocalypseGateOpen == FALSE)	return;
 		break;
 	case 2: // Apocalypse gate opened when map empty
-		if (m_bIsApocalypseMode == FALSE)		return;
-		if (m_pMapList[iMapIndex]->m_iTotalActiveObject != 0) return;
-		break;
 	case 3: // Apocalypse gate still closed
+		if (m_bIsApocalypseMode == FALSE)		return;
+		if (m_pMapList[iMapIndex]->m_iTotalActiveObject != 0) return; // centu - tp when procella/abaddon is empty
 		break;
 	case 4: // Apocalypse gate opened when Abaddon spawned.
+	case 5: // Admin created gate
 		if (m_bIsApocalypseMode == FALSE)		return;
 		break;
-	case 5: // Admin created gate
-		break;
 	}
-	if (m_bIsApocalypseMode) {
-		if ((m_pClientList[iClientH]->m_sX >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX1)
-			&& (m_pClientList[iClientH]->m_sX <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX2)
-			&& (m_pClientList[iClientH]->m_sY >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY1)
-			&& (m_pClientList[iClientH]->m_sY <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY2))
-		{
-			RequestTeleportHandler(iClientH, "2   "
-				, m_pMapList[iMapIndex]->m_cDynamicGateCoordDestMap
-				, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtX
-				, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtY);
-		}
+	if ((m_pClientList[iClientH]->m_sX >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX1)
+		&& (m_pClientList[iClientH]->m_sX <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX2)
+		&& (m_pClientList[iClientH]->m_sY >= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY1)
+		&& (m_pClientList[iClientH]->m_sY <= m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY2))
+	{
+		RequestTeleportHandler(iClientH, "2   "
+			, m_pMapList[iMapIndex]->m_cDynamicGateCoordDestMap
+			, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtX
+			, m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtY);
 	}
 }
 
@@ -790,6 +789,7 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 		case 66: strcpy(cNpcName, "Wyvern");break;
 		case 73: strcpy(cNpcName, "Fire-Wyvern");break;
 		case 81: strcpy(cNpcName, "Abaddon");break;
+		case 99: strcpy(cNpcName, "Ghost-Abaddon");break;
 		default: strcpy(cNpcName, "Demon");break;
 		}
 		ZeroMemory(cName, sizeof(cName));
@@ -819,35 +819,36 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 			}
 		}
 		// Show Spawns on minimap, and tell everybody on Apocalypse server.					
-		DWORD wX = m_pNpcList[i5]->m_sX;
-		DWORD wY = m_pNpcList[i5]->m_sX;
+		//DWORD wX = m_pNpcList[i5]->m_sX;
+		//DWORD wY = m_pNpcList[i5]->m_sX;
 		for (x = 1; x < DEF_MAXCLIENTS; x++)
 			if ((m_pClientList[x] != NULL)
 				&& (m_pClientList[x]->m_bIsInitComplete == TRUE))
 			{
-				if (memcmp(m_pMapList[MapIndex]->m_cName, m_pMapList[m_pClientList[x]->m_cMapIndex]->m_cName, strlen(m_pMapList[MapIndex]->m_cName)) == 0)
+				/*if (memcmp(m_pMapList[MapIndex]->m_cName, m_pMapList[m_pClientList[x]->m_cMapIndex]->m_cName, strlen(m_pMapList[MapIndex]->m_cName)) == 0)
 				{
 					SendNotifyMsg(NULL, x, DEF_NOTIFY_SPAWNEVENT, wX, wY, m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID, NULL, NULL, NULL);
-				}
+				}*/
 				// Tell everybody on this server if Abaddon has appeared
-				if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 81)
+				if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
 				{
-					SendNotifyMsg(NULL, x, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Abbadon has appeared ...");
+					SendNotifyMsg(NULL, x, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Ghost Abbadon has appeared...");
 				}
 			}
 
 		// Prepare Abaddon's death, and Apocalypse end.
-		if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 81)
-		{	// Abaddon should die by himself		
-			DWORD dwTime = timeGetTime();
-			dwTime += 1000 * 60 * 5; // 5 minute
-			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_KILL_ABADDON, 0, dwTime, i5
-				, DEF_OWNERTYPE_NPC, MapIndex, 0, 0, 0, 0, 0);
-			dwTime = timeGetTime();
-			dwTime += 1000 * 60 * 15; // 15 minutes
-			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
-				, 0, MapIndex, 0, 0, 0, 0, 0);
-		}
+		//if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
+		//{	// Abaddon should die by himself		
+		//	DWORD dwTime = timeGetTime();
+		//	dwTime += 1000 * 60 * 1; // 1 minute
+		//	bRegisterDelayEvent(DEF_DELAYEVENTTYPE_KILL_ABADDON, 0, dwTime, i5
+		//		, DEF_OWNERTYPE_NPC, MapIndex, 0, 0, 0, 0, 0);
+		//	dwTime = timeGetTime();
+		//	dwTime += 1000 * 60 * 5; // 5 minutes
+		//	bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
+		//		, 0, MapIndex, 0, 0, 0, 0, 0);
+		//}
+
 		// Finally open the Exit Gate if type 3 & not 2
 		// NB: if m_iApocalypseMobGenType 2 with GateType 2, need to Kill the boss to open the gate.
 		if (m_pMapList[MapIndex]->m_cDynamicGateType == 3)

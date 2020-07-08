@@ -1,6 +1,6 @@
 [MAP-INFO]
 map-location  		= abaddon
-initial-point 		= 1  168 170
+initial-point 		= 1  168 168
 fixed-dayornight-mode	= 1
 CitizenLimit		= 1
 pk-mode 			= 0
@@ -14,10 +14,10 @@ RecallImpossible        = 1
 not-permanent-map		= 1
 
 //------------------------NpcID---RECT----------------------
-ApocalypseBossMob       = 81      79 76 136 107
+ApocalypseBossMob       = 99      79 76 136 107
 
 //------------------------RECT-----------------TargetMap---TargetCoord
-DynamicGateCoord		= 167 169 168 170        procella	   -1  -1
+DynamicGateCoord		= 167 169 168 170        procella	   59 195
 DynamicGateType		= 3
 // Will spawn Abaddon and open Gate when all monsters dead
 
@@ -34,6 +34,8 @@ spot-mob-generator	= 5   1    71 64 143 112          78  20
 spot-mob-generator	= 6   1    71 64 143 112          78  20 
 spot-mob-generator	= 7   1    71 64 143 112          78  20 
 spot-mob-generator	= 8   1    71 64 143 112          78  20 
+
+spot-mob-generator	= 9   1    79 76 136 107          81  1 
 
 maximum-object		= 150
 

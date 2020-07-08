@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <vector>
 
 #include "DXC_ddraw.h"
 #include "Mydib.h"
@@ -29,6 +30,8 @@ typedef struct stBrushtag
 	short pvy;
 } stBrush;
 
+void ReadFramePositions(HANDLE hPakFile, std::vector<int>& framePositions, int frames);
+
 class CSprite  
 {
 public:
@@ -40,7 +43,7 @@ public:
 	{	HeapFree(GetProcessHeap(), HEAP_NO_SERIALIZE, mem);
 	};
 
-	CSprite(HANDLE hPakFile, class DXC_ddraw * pDDraw, char * cPakFileName, short sNthFile, bool bAlphaEffect = TRUE);
+	CSprite(HANDLE hPakFile, class DXC_ddraw * pDDraw, char * cPakFileName, short sNthFile, bool bAlphaEffect = TRUE, std::vector<int>* framePositions = NULL);
 	virtual ~CSprite();
 
 	void PutSpriteRGB(int sX, int sY, int sFrame, int sRed, int sGreen, int sBlue, DWORD dwTime);

@@ -6,7 +6,7 @@ fixed-dayornight-mode 	= 0
 pk-mode			= 0	
 
 //------------------------RECT---------TargetMap------TargetCoord
-DynamicGateCoord	= 89 31 90 32        druncncity	   -1  -1
+DynamicGateCoord	= 89 31 90 32        procella	   -1  -1
 DynamicGateType	= 1
 
 

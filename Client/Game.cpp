@@ -2156,13 +2156,13 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 
 	indexY = sDivY + sPivotY - 7;
 #ifdef RES_HIGH
-	for (iy = -sModY - 224; iy <= 547 + 352; iy += 32)
+	for (iy = -sModY - 224; iy <= 600 + 352; iy += 32)
 	{
 		indexX = sDivX + sPivotX - 4;
 		for (ix = -sModX - 128; ix <= 800 + 128; ix += 32)
 		{	sDynamicObject = NULL;
 			bRet = FALSE;
-			if ((ix >= -sModX) && (ix <= 800 + 16) && (iy >= -sModY) && (iy <= 547 + 32 + 16))
+			if ((ix >= -sModX) && (ix <= 800 + 16) && (iy >= -sModY) && (iy <= 600 + 32 + 16))
 #else
 	for (iy = -sModY-224; iy <= 427+352; iy += 32)
 	{	indexX = sDivX + sPivotX-4;
@@ -3129,9 +3129,9 @@ void CGame::MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlph
 	int iTotalimage;
 	DWORD nCount;
 	char PathName[50];
-	std::vector<int> framePositions;
+	//std::vector<int> framePositions;
 
-	wsprintf(PathName, "sprites\\%s.fun", FileName);
+	wsprintf(PathName, "sprites\\%s.pak", FileName);
 	HANDLE m_hPakFile = CreateFile(PathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 	if (m_hPakFile == INVALID_HANDLE_VALUE) return;
 	//ReadFramePositions(m_hPakFile, framePositions, sCount);
@@ -3139,28 +3139,8 @@ void CGame::MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlph
 	ReadFile(m_hPakFile, (char*)&iTotalimage, 4, &nCount, NULL);
 	iTotalimage ^= 951635;
 	for (short i = 0; i < sCount && i < iTotalimage; i++) {
-		//m_pSprite[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
-		m_pEffectSpr[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect);
-	}
-	CloseHandle(m_hPakFile);
-}
-
-/*void CGame::MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect)
-{
-	int iTotalimage;
-	DWORD nCount;
-	char PathName[50];
-	std::vector<int> framePositions;
-
-	wsprintf(PathName, "sprites\\%s.fun", FileName);
-	HANDLE m_hPakFile = CreateFile(PathName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	if (m_hPakFile == INVALID_HANDLE_VALUE) return;
-	ReadFramePositions(m_hPakFile, framePositions, sCount);
-	SetFilePointer(m_hPakFile, 20, NULL, FILE_BEGIN);
-	ReadFile(m_hPakFile, (char*)&iTotalimage, 4, &nCount, NULL);
-	iTotalimage ^= 951635;
-	for (short i = 0; i < sCount && i < iTotalimage; i++) {
-		m_pSprite[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
+		m_pSprite[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect);
+		//m_pEffectSpr[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
 	}
 	CloseHandle(m_hPakFile);
 }
@@ -3204,7 +3184,7 @@ void CGame::MakeEffectFunSprite(char* FileName, short sStart, short sCount, bool
 		m_pEffectSpr[i + sStart] = new class CSprite(m_hPakFile, &m_DDraw, FileName, i, bAlphaEffect, &framePositions);
 	}
 	CloseHandle(m_hPakFile);
-}*/
+}
 
 void CGame::UpdateScreen_OnLoading(bool bActive)
 {
@@ -3577,17 +3557,19 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 	case 48:
 		{	MakeSprite( "Gail",			  DEF_SPRID_MOB   + 7*8*80, 8, TRUE); // Gail (Type: 90)
 			MakeSprite( "Gate",			  DEF_SPRID_MOB   + 7*8*81, 24, TRUE);// Heldenian Gate (Type: 91)/**/
+			
 			//Magn0S:: Add new monsters.
-			/*MakeFunSprite("EDragon",	DEF_SPRID_MOB + 7 * 8 * 82, 32, TRUE);// Eternal Dragon (Type: 92)
+			
+			MakeFunSprite("EDragon",	DEF_SPRID_MOB + 7 * 8 * 82, 32, TRUE);// Eternal Dragon (Type: 92)
 			MakeFunSprite("BlackDemon", DEF_SPRID_MOB + 7 * 8 * 83, 40, TRUE);// Black Demon (Type: 93)
 			MakeFunSprite("DWyv",		DEF_SPRID_MOB + 7 * 8 * 84, 24, TRUE);// Black Wyvern (Type: 94)
 			MakeFunSprite("AirWyvern",	DEF_SPRID_MOB + 7 * 8 * 85, 24, TRUE);// Air Demon (Type: 95)
 			MakeFunSprite("PWyv",		DEF_SPRID_MOB + 7 * 8 * 86, 24, TRUE);// Poison Wyv (Type: 96)
 			MakeFunSprite("HWyv",		DEF_SPRID_MOB + 7 * 8 * 87, 24, TRUE);// Heaven Wyv  (Type: 97)
-			MakeFunSprite("IWyv",		DEF_SPRID_MOB + 7 * 8 * 88, 24, TRUE);// Illusion Wyv  (Type: 98)*/
-			//MakeFunSprite("GhostAbby",	DEF_SPRID_MOB + 7 * 8 * 89, 48, TRUE);// Black Demon (Type: 99)
-			//MakeSprite("GhostAbby", DEF_SPRID_MOB + 7 * 8 * 89, 48, TRUE);// Black Demon (Type: 99)
-
+			MakeFunSprite("IWyv",		DEF_SPRID_MOB + 7 * 8 * 88, 24, TRUE);// Illusion Wyv  (Type: 98)
+			
+			MakeFunSprite("GhostAbby",	DEF_SPRID_MOB + 7 * 8 * 89, 48, TRUE);// Black Demon (Type: 99)
+			
 			m_hPakFile = CreateFile("sprites\\Mpt.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 			if( m_hPakFile != INVALID_HANDLE_VALUE )
 			{	for (i = 0; i < 12; i++) m_pSprite[DEF_SPRID_UNDIES_M + i + 15*0] = new class CSprite(m_hPakFile, &m_DDraw, "Mpt", i + 12*0, TRUE);
@@ -9185,7 +9167,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -9298,7 +9280,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -9776,7 +9758,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -10155,7 +10137,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 		case 96: // PoisonWyvern
 		case 97: // HeavenWyvern
 		case 98: // IllusionWyvern
-		case 99: // Ghost-Abaddon
+		//case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0) {
@@ -10381,7 +10363,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 		case 96: // PoisonWyvern
 		case 97: // HeavenWyvern
 		case 98: // IllusionWyvern
-		case 99: // Ghost-Abaddon
+		//case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -10777,7 +10759,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 96: // PoisonWyvern
 				case 97: // HeavenWyvern
 				case 98: // IllusionWyvern
-				case 99: // Ghost-Abaddon
+				//case 99: // Ghost-Abaddon
 					break;
 				default:
 					if (m_cDetailLevel != 0) {
@@ -10888,7 +10870,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 96: // PoisonWyvern
 				case 97: // HeavenWyvern
 				case 98: // IllusionWyvern
-				case 99: // Ghost-Abaddon
+				//case 99: // Ghost-Abaddon
 					break;
 				default:
 					if (m_cDetailLevel != 0) {
@@ -11135,7 +11117,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 96: // PoisonWyvern
 				case 97: // HeavenWyvern
 				case 98: // IllusionWyvern
-				case 99: // Ghost-Abaddon
+				//case 99: // Ghost-Abaddon
 					break;
 				default:
 					if (m_cDetailLevel != 0) {
@@ -11561,7 +11543,7 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 		case 96: // PoisonWyvern
 		case 97: // HeavenWyvern
 		case 98: // IllusionWyvern
-		case 99: // Ghost-Abaddon
+		//case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -12304,9 +12286,9 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
-						default:
+			default:
 				if (m_cDetailLevel != 0) {
 					if (sX < 50)
 						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX+dx, sY+dy, _tmp_cFrame, dwTime);
@@ -12439,7 +12421,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -12846,7 +12828,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -12959,7 +12941,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -13289,7 +13271,7 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		case 96: // PoisonWyvern
 		case 97: // HeavenWyvern
 		case 98: // IllusionWyvern
-		case 99: // Ghost-Abaddon
+		//case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -13379,7 +13361,7 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		case 96: // PoisonWyvern
 		case 97: // HeavenWyvern
 		case 98: // IllusionWyvern
-		case 99: // Ghost-Abaddon
+		//case 99: // Ghost-Abaddon
 			break;
 		default:
 			if (m_cDetailLevel != 0)
@@ -13729,7 +13711,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -13866,7 +13848,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -15124,7 +15106,7 @@ void CGame::DrawBackground(short sDivX, short sModX, short sDivY, short sModY)
 		m_iPDBGSdivY = sDivY;
 		SetRect(&m_DDraw.m_rcClipArea, 0,0, 800+32, 600+32);
 		indexY = sDivY+m_pMapData->m_sPivotY;
-		for (iy = -sModY; iy < 547 + 48; iy += 32) // centu : 600 -> 547
+		for (iy = -sModY; iy < 600 + 48; iy += 32) 
 		{
 			indexX = sDivX+m_pMapData->m_sPivotX;
 			for (ix = -sModX; ix < 800+48 ; ix += 32)
@@ -15370,7 +15352,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -15537,7 +15519,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			case 96: // PoisonWyvern
 			case 97: // HeavenWyvern
 			case 98: // IllusionWyvern
-			case 99: // Ghost-Abaddon
+			//case 99: // Ghost-Abaddon
 				break;
 			default:
 				if (m_cDetailLevel != 0)
@@ -22604,9 +22586,10 @@ void CGame::CreateScreenShot()
 		, SysTime.wDay, SysTime.wMonth, SysTime.wYear
 		, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	PutAlignedString(500, 650, 15, SStime, 255, 255, 255); //ScreenShot time
+	PutString_SprFont3(500+SCREENX, 390+SCREENY + SCREENY, "Helbreath Ghost", 20, 20, 0, TRUE, 2);
 	for (i = 0; i < 1000; i++)
 	{	ZeroMemory(cFn, sizeof(cFn));
-		wsprintf(cFn, "SAVE\\Helbreath Ghost %d.jpg"
+		wsprintf(cFn, "SAVE\\Helbreath Ghost #%d.jpg"
 			,i);
 		_mkdir("SAVE");
 		pFile = fopen(cFn, "rb");
@@ -24822,7 +24805,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if (m_bInputStatus) return;
 		if (m_bIsSpecialAbilityEnabled == TRUE) 
 		{	if (!bMapActivate) {
-				AddEventList("Itens Activation were disabled in this map.", 10);
+				AddEventList("Items Activation were disabled in this map.", 10);
 				return;
 			}
 			if (m_iSpecialAbilityType != 0) {
@@ -25968,7 +25951,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		ZeroMemory(cTxt, sizeof(cTxt));
 		memcpy(cTxt, cp, 10);
 		cp += 10;
-		wsprintf(G_cTxt, "Abaddon is destroyed by %s", cTxt);
+		wsprintf(G_cTxt, "Ghost Abaddon was killed by %s", cTxt);
 		AddEventList(G_cTxt, 10);
 		break;
 

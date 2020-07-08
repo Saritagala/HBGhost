@@ -422,12 +422,19 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 			iExp += (int)dTmp3;
 		}
 
-		if (m_pNpcList[iNpcH]->m_sType == 81) {
-			for (i = 1; i < DEF_MAXCLIENTS; i++) {
+		if (m_pNpcList[iNpcH]->m_sType == 99) {
+			
+			// Centu - end apocalypse
+			DWORD dwTime = timeGetTime();
+			dwTime += 1000 * 60 * 1; // 5 minutes
+			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
+				, 0, iMapIndex, 0, 0, 0, 0, 0);
+
+			/*for (i = 1; i < DEF_MAXCLIENTS; i++) {
 				if (m_pClientList[i] != NULL) {
 					SendNotifyMsg(sAttackerH, i, DEF_NOTIFY_ABADDONKILLED, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 				}
-			}
+			}*/
 		}
 
 		if (m_bIsCrusadeMode == TRUE || m_bIsHeldenianMode == TRUE) {

@@ -19,7 +19,7 @@ extern long    G_lTransG2[64][64], G_lTransRB2[64][64];
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-CSprite::CSprite(HANDLE hPakFile, DXC_ddraw *pDDraw, char *cPakFileName, short sNthFile, bool bAlphaEffect)
+CSprite::CSprite(HANDLE hPakFile, DXC_ddraw *pDDraw, char *cPakFileName, short sNthFile, bool bAlphaEffect, std::vector<int>* framePositions)
 {
 	DWORD  nCount;
 	int iASDstart;
@@ -33,8 +33,16 @@ CSprite::CSprite(HANDLE hPakFile, DXC_ddraw *pDDraw, char *cPakFileName, short s
 	m_bOnCriticalSection = FALSE;
 	m_iTotalFrame = 0;
 	m_pDDraw = pDDraw;
-	SetFilePointer(hPakFile, 24 + sNthFile*8, NULL, FILE_BEGIN);
-	ReadFile(hPakFile, &iASDstart,  4, &nCount, NULL); 
+	
+	// centu - fun spites
+	if (framePositions) {
+		iASDstart = (*framePositions)[sNthFile];
+	}
+	else {
+		SetFilePointer(hPakFile, 24 + sNthFile * 8, NULL, FILE_BEGIN);
+		ReadFile(hPakFile, &iASDstart, 4, &nCount, NULL);
+	}
+	
 	//i+100       Sprite Confirm
 	SetFilePointer(hPakFile, iASDstart+100, NULL, FILE_BEGIN); 
 	ReadFile(hPakFile, &m_iTotalFrame,  4, &nCount, NULL);
@@ -673,7 +681,7 @@ void CSprite::PutShadowSprite(int sX, int sY, int sFrame, DWORD dwTime)
 				if (pSrc[ix] != m_wColorKey)
 				{
 #ifdef RES_HIGH
-					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 547 ) // centu : 600 -> 547
+					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 600 ) 
 #else
 					if( iSangX >= 0 && iSangX < 640 && iSangY >= 0 && iSangY < 427 )
 #endif
@@ -695,7 +703,7 @@ void CSprite::PutShadowSprite(int sX, int sY, int sFrame, DWORD dwTime)
 				if (pSrc[ix] != m_wColorKey)
 				{
 #ifdef RES_HIGH
-					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 547 ) // centu : 600 -> 547
+					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 600 ) 
 #else
 					if( iSangX >= 0 && iSangX < 640 && iSangY >= 0 && iSangY < 427 )
 #endif
@@ -3131,3 +3139,16 @@ void CSprite::PutRevTransSprite(int sX, int sY, int sFrame, DWORD dwTime, int al
 	m_bOnCriticalSection = FALSE;
 }
 
+void ReadFramePositions(HANDLE hPakFile, std::vector<int>& framePositions, int frames)
+{
+	DWORD* dwp, count;
+	char* fileHeader = new char[frames * 8 + 8];
+	SetFilePointer(hPakFile, 24, NULL, FILE_BEGIN);
+	ReadFile(hPakFile, fileHeader, frames * 8, &count, NULL);
+	dwp = (DWORD*)fileHeader;
+	for (int i = 0; i < frames; i++, dwp += 2)
+	{
+		framePositions.push_back(*dwp);
+	}
+	delete[] fileHeader;
+}

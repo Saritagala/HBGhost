@@ -3046,10 +3046,6 @@ void CGame::UseMagic(int iMagicNo)
 	if (iMagicNo < 0 || iMagicNo >= 100) return;
 	if ((m_cMagicMastery[iMagicNo] == NULL) || (m_pMagicCfgList[iMagicNo] == NULL)) return;
 
-	if (strcmp(m_cMapName, "team") == 0) {
-		if (iMagicNo == 12) return;
-	}
-
 	// Casting
 	if (m_iHP <= 0) return;
 	if (m_bIsGetPointingMode == TRUE) return;
@@ -3120,7 +3116,7 @@ void CGame::ItemEquipHandler(char cItemID)
 
 	//Magn0S::
 	if (!bMapEquip) {
-		AddEventList("Equip Itens in this map as been disabled.", 10);
+		AddEventList("Equip Items in this map as been disabled.", 10);
 		return;
 	}
 
@@ -6582,7 +6578,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else { PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0); }
 
 		iNext += 1;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "Equipe Itens", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Equip Items", 255, 255, 255);
 		if (!bMapEquip) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -6685,9 +6681,9 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
-			PutString2(sX + 25, sY + iNext * 17 + 45, "Destroy all GM Itens", 255, 255, 255);
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Destroy all GM Items", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Destroy all GM Itens", 255, 255, 100);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Destroy all GM Items", 255, 255, 100);
 
 		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))
 			PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 2);
@@ -18423,117 +18419,117 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 	if (sX > 640 - 128 - 20) sX = 640 - 128;
 	if (sY > 427 - 128 - 20) sY = 427 - 128;
 #endif
-	for (shX = -2; shX<130; shX++)
+	for (shX = -2; shX < 130; shX++)
 	{
 		m_DDraw.PutPixel(sX + shX, sY - 2, 50, 50, 50);
 		m_DDraw.PutPixel(sX + shX, sY - 1, 50, 50, 50);
 		m_DDraw.PutPixel(sX + shX, sY + 128, 50, 50, 50);
 		m_DDraw.PutPixel(sX + shX, sY + 129, 50, 50, 50);
 	}
-	for (shY = -2; shY<130; shY++)
+	for (shY = -2; shY < 130; shY++)
 	{
 		m_DDraw.PutPixel(sX - 2, sY + shY, 50, 50, 50);
 		m_DDraw.PutPixel(sX - 1, sY + shY, 50, 50, 50);
 		m_DDraw.PutPixel(sX + 128, sY + shY, 50, 50, 50);
 		m_DDraw.PutPixel(sX + 129, sY + shY, 50, 50, 50);
 	}
-	
-		auto pixblue = [&](int x, int y, int r, int g, int b)
+
+	auto pixblue = [&](int x, int y, int r, int g, int b)
+	{
+		m_DDraw.PutPixel(x - 1, y, 0, 0, 255);
+		m_DDraw.PutPixel(x, y - 1, 0, 0, 255);
+		m_DDraw.PutPixel(x - 2, y, 0, 0, 255);
+		m_DDraw.PutPixel(x, y - 2, 0, 0, 255);
+		m_DDraw.PutPixel(x, y, 0, 0, 255);
+		m_DDraw.PutPixel(x, y + 1, 0, 0, 255);
+		m_DDraw.PutPixel(x + 1, y, 0, 0, 255);
+		m_DDraw.PutPixel(x, y + 2, 0, 0, 255);
+		m_DDraw.PutPixel(x + 2, y, 0, 0, 255);
+	};
+
+	auto pixred = [&](int x, int y, int r, int g, int b)
+	{
+		m_DDraw.PutPixel(x - 1, y, 255, 0, 0);
+		m_DDraw.PutPixel(x, y - 1, 255, 0, 0);
+		m_DDraw.PutPixel(x - 2, y, 255, 0, 0);
+		m_DDraw.PutPixel(x, y - 2, 255, 0, 0);
+		m_DDraw.PutPixel(x, y, 255, 0, 0);
+		m_DDraw.PutPixel(x, y + 1, 255, 0, 0);
+		m_DDraw.PutPixel(x + 1, y, 255, 0, 0);
+		m_DDraw.PutPixel(x, y + 2, 255, 0, 0);
+		m_DDraw.PutPixel(x + 2, y, 255, 0, 0);
+	};
+
+
+	if (m_bZoomMap)
+	{
+		shX = m_sPlayerX - 64;
+		shY = m_sPlayerY - 64;
+		if (shX < 0) shX = 0;
+		if (shY < 0) shY = 0;
+		if (shX > m_pMapData->m_sMapSizeX - 128) shX = m_pMapData->m_sMapSizeX - 128;
+		if (shY > m_pMapData->m_sMapSizeY - 128) shY = m_pMapData->m_sMapSizeY - 128;
+		if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
+		else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
+
+		if (m_iPartyStatus != NULL)
 		{
-			m_DDraw.PutPixel(x - 1, y, 0, 0, 255);
-			m_DDraw.PutPixel(x, y - 1, 0, 0, 255);
-			m_DDraw.PutPixel(x - 2, y, 0, 0, 255);
-			m_DDraw.PutPixel(x, y - 2, 0, 0, 255);
-			m_DDraw.PutPixel(x, y, 0, 0, 255);
-			m_DDraw.PutPixel(x, y + 1, 0, 0, 255);
-			m_DDraw.PutPixel(x + 1, y, 0, 0, 255);
-			m_DDraw.PutPixel(x, y + 2, 0, 0, 255);
-			m_DDraw.PutPixel(x + 2, y, 0, 0, 255);
-		};
+			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+			{
+				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
+					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+						if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
+							m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
+						else
+							if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
+								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
+			}
+		}
+		else
+			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
 
-		auto pixred = [&](int x, int y, int r, int g, int b)
+		if (bShinning)
 		{
-			m_DDraw.PutPixel(x - 1, y, 255, 0, 0);
-			m_DDraw.PutPixel(x, y - 1, 255, 0, 0);
-			m_DDraw.PutPixel(x - 2, y, 255, 0, 0);
-			m_DDraw.PutPixel(x, y - 2, 255, 0, 0);
-			m_DDraw.PutPixel(x, y, 255, 0, 0);
-			m_DDraw.PutPixel(x, y + 1, 255, 0, 0);
-			m_DDraw.PutPixel(x + 1, y, 255, 0, 0);
-			m_DDraw.PutPixel(x, y + 2, 255, 0, 0);
-			m_DDraw.PutPixel(x + 2, y, 255, 0, 0);
-		};
-	
+			for (auto& u : m_minimapblue.list)
+			{
+				auto* p = &u;
+				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+					continue;
 
-		if (m_bZoomMap)
+				if (m_dwTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+				pixblue(sX + p->x - shX, sY + p->y - shY, 0, 0, 255);
+			}
+
+			for (auto& u : m_minimapred.list)
+			{
+				auto* p = &u;
+				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+					continue;
+
+				if (m_dwTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+				pixred(sX + p->x - shX, sY + p->y - shY, 255, 0, 0);
+			}
+		}
+
+		if ((m_dwCurTime - m_dwMonsterEventTime) < 30000)
 		{
-			shX = m_sPlayerX - 64;
-			shY = m_sPlayerY - 64;
-			if (shX < 0) shX = 0;
-			if (shY < 0) shY = 0;
-			if (shX > m_pMapData->m_sMapSizeX - 128) shX = m_pMapData->m_sMapSizeX - 128;
-			if (shY > m_pMapData->m_sMapSizeY - 128) shY = m_pMapData->m_sMapSizeY - 128;
-			if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
-			else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
-
-			if (m_iPartyStatus != NULL)
+			if ((m_dwCurTime % 500) < 370)
 			{
-				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
-				{
-					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
-						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
-							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
-								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
-							else
-								if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
-									m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
-				}
+				if (m_sEventX >= shX && m_sEventX <= shX + 128 && m_sEventY >= shY && m_sEventY <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + m_sEventX - shX, sY + m_sEventY - shY, m_sMonsterID, m_dwCurTime);
 			}
-			else
-				m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
-
-			if (bShinning)
-			{
-				for (auto& u : m_minimapblue.list)
-				{
-					auto* p = &u;
-					if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
-						continue;
-
-					if (m_dwTime - p->time > 25000)
-						continue;
-
-					int r = 255, g = 255, b = 255;
-					pixblue(sX + p->x - shX, sY + p->y - shY, 0, 0, 255);
-				}
-
-				for (auto& u : m_minimapred.list)
-				{
-					auto* p = &u;
-					if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
-						continue;
-
-					if (m_dwTime - p->time > 25000)
-						continue;
-
-					int r = 255, g = 255, b = 255;
-					pixred(sX + p->x - shX, sY + p->y - shY, 255, 0, 0);
-				}
-			}
-
-			if ((m_dwCurTime - m_dwMonsterEventTime) < 30000)
-			{
-				if ((m_dwCurTime % 500) < 370)
-				{
-					if (m_sEventX >= shX && m_sEventX <= shX + 128 && m_sEventY >= shY && m_sEventY <= shY + 128)
-						m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + m_sEventX - shX, sY + m_sEventY - shY, m_sMonsterID, m_dwCurTime);
-				}
-			}
-			else
-			{
-				m_dwMonsterEventTime = 0;
-				m_sMonsterID = 0;
-			}
+		}
+		else
+		{
+			m_dwMonsterEventTime = 0;
+			m_sMonsterID = 0;
+		}
 
 		if (bNpcMap) {
 			// centuu - mostrar pits en mapa CHICO
@@ -18635,98 +18631,98 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 
 	}
-		else // Sans zoom
-		{
-			if (m_bDialogTrans) m_pSprite[m_iMinMapIndex]->PutTransSprite2(sX, sY, m_iMinMapSquare, m_dwCurTime);
-			else m_pSprite[m_iMinMapIndex]->PutSpriteFastNoColorKey(sX, sY, m_iMinMapSquare, m_dwCurTime);
-			shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
-			shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
+	else // Sans zoom
+	{
+		if (m_bDialogTrans) m_pSprite[m_iMinMapIndex]->PutTransSprite2(sX, sY, m_iMinMapSquare, m_dwCurTime);
+		else m_pSprite[m_iMinMapIndex]->PutSpriteFastNoColorKey(sX, sY, m_iMinMapSquare, m_dwCurTime);
+		shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
+		shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
 
-			if (m_iPartyStatus != NULL)
+		if (m_iPartyStatus != NULL)
+		{
+			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
 			{
-				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
 				{
-					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
+					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
 					{
-						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+						if (i > 1)
+							m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+						else
 						{
-							if (i > 1)
+							shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
+							shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
+							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
 								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 							else
-							{
-								shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
-								shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
-								if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
-									m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
-								else
-									m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
-							}
+								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
 						}
 					}
 				}
 			}
-			else
-				m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+		}
+		else
+			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 
-			if (bShinning)
-			{
-				for (auto& u : m_minimapblue.list) {
-					auto* p = &u;
-					shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
-					shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+		if (bShinning)
+		{
+			for (auto& u : m_minimapblue.list) {
+				auto* p = &u;
+				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
 
-					if (m_dwCurTime - p->time > 25000)
-						continue;
+				if (m_dwCurTime - p->time > 25000)
+					continue;
 
-					int r = 255, g = 255, b = 255;
+				int r = 255, g = 255, b = 255;
 
-					m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX - 2, sY + shY, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX, sY + shY, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX + 1, sY + shY, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX, sY + shY + 1, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX + 2, sY + shY, 0, 0, 255);
-					m_DDraw.PutPixel(sX + shX, sY + shY + 2, 0, 0, 255);
-				}
-
-				for (auto& u : m_minimapred.list) {
-					auto* p = &u;
-					shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
-					shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
-
-					if (m_dwCurTime - p->time > 25000)
-						continue;
-
-					int r = 255, g = 255, b = 255;
-
-					m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX - 2, sY + shY, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX, sY + shY, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX + 1, sY + shY, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 0, 0);
-					m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 0, 0);
-				}
+				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 0, 0, 255);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 0, 0, 255);
 			}
 
-			if ((G_dwGlobalTime - m_dwMonsterEventTime) < 30000)
-			{
-				if ((m_dwCurTime % 500) < 370)
-				{
-					shX = (m_sEventX * 128) / (m_pMapData->m_sMapSizeX);
-					shY = (m_sEventY * 128) / (m_pMapData->m_sMapSizeX);
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + shX, sY + shY, m_sMonsterID, m_dwCurTime);
-				}
+			for (auto& u : m_minimapred.list) {
+				auto* p = &u;
+				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+
+				if (m_dwCurTime - p->time > 25000)
+					continue;
+
+				int r = 255, g = 255, b = 255;
+
+				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 0, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 0, 0);
 			}
-			else
+		}
+
+		if ((G_dwGlobalTime - m_dwMonsterEventTime) < 30000)
+		{
+			if ((m_dwCurTime % 500) < 370)
 			{
-				m_dwMonsterEventTime = 0;
-				m_sMonsterID = 0;
+				shX = (m_sEventX * 128) / (m_pMapData->m_sMapSizeX);
+				shY = (m_sEventY * 128) / (m_pMapData->m_sMapSizeX);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + shX, sY + shY, m_sMonsterID, m_dwCurTime);
 			}
+		}
+		else
+		{
+			m_dwMonsterEventTime = 0;
+			m_sMonsterID = 0;
+		}
 
 		if (bNpcMap) {
 			// centuu - mostrar pits en mapa GRANDE
@@ -18821,13 +18817,13 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else
 		{
-			shX = (msX - sX)*m_pMapData->m_sMapSizeX / 128;
-			shY = (msY - sY)*m_pMapData->m_sMapSizeX / 128;
+			shX = (msX - sX) * m_pMapData->m_sMapSizeX / 128;
+			shY = (msY - sY) * m_pMapData->m_sMapSizeX / 128;
 		}
 		wsprintf(G_cTxt, "%d, %d", shX, shY);
 		if (m_cMapIndex == 11) // Aresden: Fixed by Snoopy for v3.51 maps
 		{
-			if (shX >  46 && shX <  66 && shY > 107 && shY < 127) strcpy(G_cTxt, DEF_MSG_MAPNAME_MAGICTOWER);
+			if (shX > 46 && shX < 66 && shY > 107 && shY < 127) strcpy(G_cTxt, DEF_MSG_MAPNAME_MAGICTOWER);
 			else if (shX > 103 && shX < 123 && shY > 86 && shY < 116)  strcpy(G_cTxt, DEF_MSG_MAPNAME_GUILDHALL);
 			else if (shX > 176 && shX < 196 && shY >  62 && shY < 82)  strcpy(G_cTxt, DEF_MSG_MAPNAME_CATH);
 			else if (shX > 135 && shX < 155 && shY > 113 && shY < 133) strcpy(G_cTxt, DEF_MSG_MAPNAME_CITYHALL);
@@ -18844,8 +18840,8 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else if (m_cMapIndex == 3) // Elvine: Fixed by Snoopy for v3.51 maps
 		{
-			if (shX >  170 && shX < 190 && shY >  65 && shY < 85)      strcpy(G_cTxt, DEF_MSG_MAPNAME_MAGICTOWER);
-			else if (shX >  67 && shX < 87 && shY > 130 && shY < 150)  strcpy(G_cTxt, DEF_MSG_MAPNAME_GUILDHALL);
+			if (shX > 170 && shX < 190 && shY >  65 && shY < 85)      strcpy(G_cTxt, DEF_MSG_MAPNAME_MAGICTOWER);
+			else if (shX > 67 && shX < 87 && shY > 130 && shY < 150)  strcpy(G_cTxt, DEF_MSG_MAPNAME_GUILDHALL);
 			else if (shX > 121 && shX < 141 && shY >  66 && shY < 86)  strcpy(G_cTxt, DEF_MSG_MAPNAME_CATH);
 			else if (shX > 135 && shX < 155 && shY > 117 && shY < 137) strcpy(G_cTxt, DEF_MSG_MAPNAME_CITYHALL);
 			else if (shX > 190 && shX < 213 && shY > 118 && shY < 138) strcpy(G_cTxt, DEF_MSG_MAPNAME_WAREHOUSE);
@@ -18861,7 +18857,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else if (m_cMapIndex == 5) // Elvine Farm: Fixed by Snoopy for v3.51 maps
 		{
-			if (shX >  62 && shX < 82 && shY >  187 && shY < 207) strcpy(G_cTxt, DEF_MSG_MAPNAME_WAREHOUSE);
+			if (shX > 62 && shX < 82 && shY >  187 && shY < 207) strcpy(G_cTxt, DEF_MSG_MAPNAME_WAREHOUSE);
 			else if (shX > 81 && shX < 101 && shY > 169 && shY < 189) strcpy(G_cTxt, DEF_MSG_MAPNAME_SHOP);
 			else if (shX > 101 && shX < 131 && shY > 180 && shY < 200) strcpy(G_cTxt, DEF_MSG_MAPNAME_BLACKSMITH);
 			else if (shX > 130 && shX < 150 && shY > 195 && shY < 215) strcpy(G_cTxt, DEF_MSG_MAPNAME_DUNGEON);
@@ -18869,7 +18865,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else if (m_cMapIndex == 6) // Areden's Farm: Fixed by Snoopy for v3.51 maps
 		{
-			if (shX >  30 && shX < 50 && shY >  80 && shY < 100) strcpy(G_cTxt, DEF_MSG_MAPNAME_WAREHOUSE);
+			if (shX > 30 && shX < 50 && shY >  80 && shY < 100) strcpy(G_cTxt, DEF_MSG_MAPNAME_WAREHOUSE);
 			else if (shX > 55 && shX < 85 && shY > 80 && shY < 100)  strcpy(G_cTxt, DEF_MSG_MAPNAME_BLACKSMITH);
 			else if (shX > 52 && shX < 72 && shY > 80 && shY < 100)  strcpy(G_cTxt, DEF_MSG_MAPNAME_SHOP);
 			else if (shX > 70 && shX < 90 && shY > 60 && shY < 80)   strcpy(G_cTxt, DEF_MSG_MAPNAME_DUNGEON);
@@ -18882,7 +18878,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			{
 				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
 					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
-						if (shX >  iParty_sX[i] - 5 && shX < iParty_sX[i] + 5 && shY >  iParty_sY[i] - 5 && shY < iParty_sY[i] + 5)
+						if (shX > iParty_sX[i] - 5 && shX < iParty_sX[i] + 5 && shY >  iParty_sY[i] - 5 && shY < iParty_sY[i] + 5)
 							strcpy(G_cTxt, m_stPartyMemberNameList[i].cName);
 
 			}
@@ -21602,7 +21598,7 @@ void CGame::NotifyMapRestrictions(char* pData)
 		{	AddEventList("Bonus Damage (50%) in this map has been enabled!", 10);
 		}
 		if (bMapEquip && !equip)
-		{	AddEventList("Equipe Itens in this map has been enabled!", 10);
+		{	AddEventList("Equip Items in this map has been enabled!", 10);
 		}
 
 	// OFF
@@ -21638,7 +21634,7 @@ void CGame::NotifyMapRestrictions(char* pData)
 		{	AddEventList("Bonus Damage (50%) in this map has been disabled!", 10);
 		}
 		if (!bMapEquip && equip)
-		{	AddEventList("Equipe Itens in this map has been disabled!", 10);
+		{	AddEventList("Equip Items in this map has been disabled!", 10);
 		}
 	}
 }

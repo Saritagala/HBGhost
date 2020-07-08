@@ -230,7 +230,7 @@ CGame::CGame(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	m_dwHeldenianWarTime	= 5*60*1000;  // 5 minutes before effective War start
-	m_dwHeldenianEndTime	= 105*60*1000; // 90 minutes effective battle
+	m_dwHeldenianEndTime	= 90*60*1000; // 90 minutes effective battle
 	m_bNpcItemConfig = TRUE;
 	m_iNotifyCleanMap = TRUE;
 
@@ -2140,9 +2140,10 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) && (bDeathmatch))
 	{
-		m_pClientList[iClientH]->m_iDGKills = 0; 
-		m_pClientList[iClientH]->m_iDGDeaths = 0;
-		RefreshDeathmatch(iClientH); // Morla 2.3 - actualiza el deathmach
+		if (m_pClientList[iClientH]->IsLocation("elvine"))
+			RequestTeleportHandler(iClientH, "2", "elvine", -1, -1);
+		else
+			RequestTeleportHandler(iClientH, "2", "aresden", -1, -1);
 	}
 
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SAFEATTACKMODE, NULL, NULL, NULL, NULL);
@@ -2232,10 +2233,10 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 		m_pClientList[iClientH]->m_iConstructionPoint = 0;
 	}
 	// new fightzone changed to fight
-	if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
+	/*if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
 		wsprintf(G_cTxt, "Char(%s)-Enter(%s) Observer(%d)", m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_cMapName, m_pClientList[iClientH]->m_bIsObserverMode);
 		PutLogEventFileList(G_cTxt);
-	}
+	}*/
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[iClientH]->m_iConstructionPoint, m_pClientList[iClientH]->m_iWarContribution, 1, NULL);
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
 	
@@ -2280,6 +2281,13 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == TRUE) {
 
+		// centu - refresh when player gets dc/cl
+		if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) && (bDeathmatch)) {
+			m_pClientList[iClientH]->m_iDGKills = 0;
+			m_pClientList[iClientH]->m_iDGDeaths = 0;
+			RefreshDeathmatch(iClientH); // Morla 2.3 - actualiza el deathmach
+		}
+
 		// Capture the Flag
 		if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0) {
 			switch (m_pClientList[iClientH]->m_cSide) {
@@ -2297,10 +2305,10 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 				if (i != iClientH && m_pClientList[i] != NULL && m_pClientList[i]->m_cSide != 0) SendNotifyMsg(NULL, i, DEF_NOTIFY_EVENT, 0, 8 + m_pClientList[iClientH]->m_cSide - 1, NULL, NULL);
 		}
 
-		if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
+		/*if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
 			wsprintf(G_cTxt, "Char(%s)-Exit(%s)", m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_cMapName);
 			PutLogEventFileList(G_cTxt);
-		}
+		}*/
 
 		if (m_pClientList[iClientH]->m_cExchangeMode != 0) {
 			iExH = m_pClientList[iClientH]->m_iExchangeH;
@@ -2423,7 +2431,7 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 			m_pClientList[iClientH]->m_sY = -1;
 		}
 
-		if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
+		/*if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
 			ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
 			if (m_pClientList[iClientH]->m_cSide == 0) {
 				switch (iDice(1,2)) {
@@ -2440,7 +2448,7 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 			}
 			m_pClientList[iClientH]->m_sX = -1;
 			m_pClientList[iClientH]->m_sY = -1;
-		}
+		}*/
 
 		if (m_pClientList[iClientH]->m_bIsInitComplete == TRUE) {
 
@@ -2552,10 +2560,6 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 		}
 	}
 
-	// centu - refresh when player gets dc/cl
-	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) && (bDeathmatch))
-		RefreshDeathmatch(iClientH); // Morla 2.3 - actualiza el deathmach
-
 	m_iTotalClients--;
 
 	delete m_pClientList[iClientH];
@@ -2653,6 +2657,13 @@ void CGame::OnTimer(char cType)
 	
 	if ((dwTime - m_dwCleanTime) > m_iClearMapTime*1000) // 2700*1000 = 45 min 1800*1000 = 30 min 3600*1000 = 1h	
 	{	ClearMap();
+		for (i = 1; i < DEF_MAXCLIENTS; i++)
+		{
+			if (m_pClientList[i] != NULL)
+			{
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Maps cleaned!");
+			}
+		}
 		m_dwCleanTime = dwTime;
 	}
 
@@ -2666,13 +2677,13 @@ void CGame::OnTimer(char cType)
 		srand((unsigned)time(NULL));   
 	}
 	if ((dwTime - m_dwFishTime) > 4000) {
-		FishProcessor();
-		FishGenerator();
+		//FishProcessor();
+		//FishGenerator();
 		SendCollectedMana();
 		if ((m_bIsCrusadeMode == FALSE) && (m_bIsCrusadeWarStarter == TRUE)) CrusadeWarStarter();
 		if ((m_bIsApocalypseStarter == TRUE) && (m_bIsApocalypseMode == FALSE)) ApocalypseStarter();
 		if ((m_bIsHeldenianReady == TRUE) && (m_bIsHeldenianMode == FALSE)) HeldenianWarStarter();
-		if (m_bIsApocalypseMode == TRUE) DoAbaddonThunderDamageHandler(-1); // -1 only affects Abaddon map
+		//if (m_bIsApocalypseMode == TRUE) DoAbaddonThunderDamageHandler(-1); // -1 only affects Abaddon map
 		//SNOOPY: check if Heldenian war must be started or finished.
 		if (m_bIsHeldenianMode == TRUE)		  
 		{	HeldenianStartWarNow();
@@ -2693,12 +2704,14 @@ void CGame::OnTimer(char cType)
 	}
 
 	//Mang0S:: Update to check fragile time items;
-	if (dwTime - m_dwNoticeTime > DEF_CHECKFRAGILETIME * 1000 * 60)
+	if ((dwTime - m_dwNoticeTime) > DEF_CHECKFRAGILETIME * 1000 * 60)
 	{
 		for (int i = 0; i < DEF_MAXCLIENTS; i++)
 			if (this->m_pClientList[i] != NULL) {
 				CheckDestroyFragileItem(i);
 			}
+
+		m_dwNoticeTime = dwTime;
 	}
 
 	if ((m_bIsServerShutdowned == FALSE) && (m_bOnExitProcess == TRUE) && ((dwTime - m_dwExitProcessTime) > 1000*2)) {
@@ -7199,10 +7212,10 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-		else if (memcmp(cp, "/reservefightzone", 17) == 0) {
+		/*else if (memcmp(cp, "/reservefightzone", 17) == 0) {
 			AdminOrder_ReserveFightzone(iClientH, cp, dwMsgSize - 21);
 			
-		}
+		}*/
 
 		else if (memcmp(cp, "/attack ", 8) == 0) {
 			AdminOrder_CallGuard(iClientH, cp, dwMsgSize - 21);
@@ -7297,7 +7310,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 		else if (memcmp(cp, "/enableadmincommand ", 20) == 0) {
 			AdminOrder_EnableAdminCommand(iClientH, cp, dwMsgSize - 21);
-			
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Admin commands ENABLED!");
 		}
 
 		else if (memcmp(cp, "/monstercount", 13) == 0) {
@@ -7386,10 +7399,10 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-		else if ((memcmp(cp, "/getticket", 10) == 0) && (m_pClientList[iClientH]->m_iAdminUserLevel >= 2)) {
+		/*else if ((memcmp(cp, "/getticket", 10) == 0) && (m_pClientList[iClientH]->m_iAdminUserLevel >= 2)) {
 			AdminOrder_GetFightzoneTicket(iClientH);
 			
-		}
+		}*/
 
 		else if (memcmp(cp, "/beginapocalypse", 16) == 0) // SNOOPY reactivated these function
 		{	if (   (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
@@ -8743,7 +8756,7 @@ DWORD * dwp, dwTimeRcv;
 				break;
 
 			case MSGID_REQUEST_FIGHTZONE_RESERVE:
-				FightzoneReserveHandler(iClientH, pData, dwMsgSize);
+				//FightzoneReserveHandler(iClientH, pData, dwMsgSize);
 				break;
 
 			case MSGID_LEVELUPSETTINGS:
@@ -17641,26 +17654,32 @@ void CGame::AdminOrder_ClearNpc(int iClientH)
 		return;
 	}
 
-	for(int i = 1; i < DEF_MAXNPCS; i++){
-		if (m_pNpcList[i] != NULL && m_pNpcList[i]->m_bIsSummoned == FALSE) {
-			switch(m_pNpcList[i]->m_sType) {
-			case 15:
-			case 19:
-			case 20:
-			case 24:
-			case 25:
-			case 26:
-			case 67:
-			case 68:
-			case 69:
-			case 90:
-			case 91:
-				break;
+	for (int m = 0; m < DEF_MAXMAPS; m++) { //Enum all maps
+		if (m_pMapList[m] != NULL) {	//Is allocated map
+			if (memcmp(m_pMapList[m]->m_cName, m_pClientList[iClientH]->m_cMapName, 11) == 0) {	//is map same name
+				for (int i = 1; i < DEF_MAXNPCS; i++) {
+					if (m_pNpcList[i] != NULL && m_pNpcList[i]->m_bIsSummoned == FALSE) {
+						switch (m_pNpcList[i]->m_sType) {
+						case 15:
+						case 19:
+						case 20:
+						case 24:
+						case 25:
+						case 26:
+						case 67:
+						case 68:
+						case 69:
+						case 90:
+						case 91:
+							break;
 
-			default:
-				m_pNpcList[i]->m_bIsUnsummoned = TRUE;
-				NpcKilledHandler(iClientH, DEF_OWNERTYPE_PLAYER, i, 0);
-				break;
+						default:
+							m_pNpcList[i]->m_bIsUnsummoned = TRUE;
+							NpcKilledHandler(iClientH, DEF_OWNERTYPE_PLAYER, i, 0);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}
@@ -21199,55 +21218,55 @@ BOOL CGame::_bCheckCharacterData(int iClientH)
 	return TRUE;
 }
 
-void CGame::AdminOrder_GetFightzoneTicket(int iClientH)
-{
- int iReserveTime, iFightzoneTN, iFightzoneN;
- char cTemp[21];
- SYSTEMTIME SysTime;
-
-	if (m_pClientList[iClientH] == NULL) return;
-	if (memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "fightzone", 9) == 0) {
-		
-		iReserveTime = m_pClientList[iClientH]->m_iReserveTime;
-		GetLocalTime(&SysTime);
-		m_pClientList[iClientH]->m_iReserveTime = SysTime.wMonth*10000 + SysTime.wDay*100 + (SysTime.wHour +3);  
-		
-		ZeroMemory(cTemp, sizeof(cTemp));
-		strcpy(cTemp, (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName +9));
-		iFightzoneN  = m_pClientList[iClientH]->m_iFightzoneNumber;
-		iFightzoneTN = m_pClientList[iClientH]->m_iFightZoneTicketNumber;
-		m_pClientList[iClientH]->m_iFightZoneTicketNumber = 10;
-		m_pClientList[iClientH]->m_iFightzoneNumber = atoi(cTemp);
-		
-		GetFightzoneTicketHandler(iClientH);
-		GetFightzoneTicketHandler(iClientH);
-		GetFightzoneTicketHandler(iClientH);
-		
-		m_pClientList[iClientH]->m_iFightzoneNumber = iFightzoneN;
-		m_pClientList[iClientH]->m_iFightZoneTicketNumber = iFightzoneTN;
-		m_pClientList[iClientH]->m_iReserveTime = iReserveTime;
-	}
-	else {
-		iReserveTime = m_pClientList[iClientH]->m_iReserveTime;
-		GetLocalTime(&SysTime);
-		m_pClientList[iClientH]->m_iReserveTime = SysTime.wMonth*10000 + SysTime.wDay*100 + (SysTime.wHour +2);  
-		
-		ZeroMemory(cTemp, sizeof(cTemp));
-		strcpy(cTemp, (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName +9));
-		iFightzoneN  = m_pClientList[iClientH]->m_iFightzoneNumber;
-		iFightzoneTN = m_pClientList[iClientH]->m_iFightZoneTicketNumber;
-		m_pClientList[iClientH]->m_iFightZoneTicketNumber = 10;
-		m_pClientList[iClientH]->m_iFightzoneNumber = 1;
-		
-		GetFightzoneTicketHandler(iClientH);
-		GetFightzoneTicketHandler(iClientH);
-		GetFightzoneTicketHandler(iClientH);
-
-		m_pClientList[iClientH]->m_iFightzoneNumber = iFightzoneN;
-		m_pClientList[iClientH]->m_iFightZoneTicketNumber = iFightzoneTN;
-		m_pClientList[iClientH]->m_iReserveTime = iReserveTime;
-	}
-}
+//void CGame::AdminOrder_GetFightzoneTicket(int iClientH)
+//{
+// int iReserveTime, iFightzoneTN, iFightzoneN;
+// char cTemp[21];
+// SYSTEMTIME SysTime;
+//
+//	if (m_pClientList[iClientH] == NULL) return;
+//	if (memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "fightzone", 9) == 0) {
+//		
+//		iReserveTime = m_pClientList[iClientH]->m_iReserveTime;
+//		GetLocalTime(&SysTime);
+//		m_pClientList[iClientH]->m_iReserveTime = SysTime.wMonth*10000 + SysTime.wDay*100 + (SysTime.wHour +3);  
+//		
+//		ZeroMemory(cTemp, sizeof(cTemp));
+//		strcpy(cTemp, (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName +9));
+//		iFightzoneN  = m_pClientList[iClientH]->m_iFightzoneNumber;
+//		iFightzoneTN = m_pClientList[iClientH]->m_iFightZoneTicketNumber;
+//		m_pClientList[iClientH]->m_iFightZoneTicketNumber = 10;
+//		m_pClientList[iClientH]->m_iFightzoneNumber = atoi(cTemp);
+//		
+//		GetFightzoneTicketHandler(iClientH);
+//		GetFightzoneTicketHandler(iClientH);
+//		GetFightzoneTicketHandler(iClientH);
+//		
+//		m_pClientList[iClientH]->m_iFightzoneNumber = iFightzoneN;
+//		m_pClientList[iClientH]->m_iFightZoneTicketNumber = iFightzoneTN;
+//		m_pClientList[iClientH]->m_iReserveTime = iReserveTime;
+//	}
+//	else {
+//		iReserveTime = m_pClientList[iClientH]->m_iReserveTime;
+//		GetLocalTime(&SysTime);
+//		m_pClientList[iClientH]->m_iReserveTime = SysTime.wMonth*10000 + SysTime.wDay*100 + (SysTime.wHour +2);  
+//		
+//		ZeroMemory(cTemp, sizeof(cTemp));
+//		strcpy(cTemp, (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName +9));
+//		iFightzoneN  = m_pClientList[iClientH]->m_iFightzoneNumber;
+//		iFightzoneTN = m_pClientList[iClientH]->m_iFightZoneTicketNumber;
+//		m_pClientList[iClientH]->m_iFightZoneTicketNumber = 10;
+//		m_pClientList[iClientH]->m_iFightzoneNumber = 1;
+//		
+//		GetFightzoneTicketHandler(iClientH);
+//		GetFightzoneTicketHandler(iClientH);
+//		GetFightzoneTicketHandler(iClientH);
+//
+//		m_pClientList[iClientH]->m_iFightzoneNumber = iFightzoneN;
+//		m_pClientList[iClientH]->m_iFightZoneTicketNumber = iFightzoneTN;
+//		m_pClientList[iClientH]->m_iReserveTime = iReserveTime;
+//	}
+//}
 
 /*********************************************************************************************************************
 **  int iGetPlayerStatus(int iClientH, short sOwnerH)																**
