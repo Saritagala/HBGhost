@@ -1,4 +1,4 @@
-// Game.cpp: implementation of the CGame class.
+ï»¿// Game.cpp: implementation of the CGame class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -664,7 +664,7 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 	m_cPlayerTurn = 0;
 // Snoopy: fixed here
 	m_cDialogBoxOrder[60] = 29;
-	m_cDialogBoxOrder[59] = 30; // 29¹ø GaugePannel
+	m_cDialogBoxOrder[59] = 30; // 29Â¹Ã¸ GaugePannel
 
 	m_cMenuDir    = 4;
 	m_cMenuDirCnt = 0;
@@ -3294,7 +3294,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 		break;
 	case 4:
 		{	MakeTileSpr( "maptiles1", 0, 32, TRUE);
-			m_hPakFile = CreateFile("sprites\\structures1.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL); //¾È¾²´Â Å¸ÀÏ ·Îµù ¾ÈÇÑ´Ù.2002.09.06»óÇÏ
+			m_hPakFile = CreateFile("sprites\\structures1.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL); //Â¾ÃˆÂ¾Â²Â´Ã‚ Ã…Â¸Ã€Ã Â·ÃÂµÃ¹ Â¾ÃˆÃ‡Ã‘Â´Ã™.2002.09.06Â»Ã³Ã‡Ã
 			if( m_hPakFile != INVALID_HANDLE_VALUE ) {
 				m_pTileSpr[1 + 50] = new class CSprite(m_hPakFile, &m_DDraw, "structures1",  1, TRUE);
 				m_pTileSpr[5 + 50] = new class CSprite(m_hPakFile, &m_DDraw, "structures1",  5, TRUE);
@@ -3452,8 +3452,8 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "Ant",		  DEF_SPRID_MOB   + 7*8*6, 40, TRUE);//  Giant-Ant (Type: 16)
 			MakeSprite( "Scp",		  DEF_SPRID_MOB   + 7*8*7, 40, TRUE);//  Scorpion (Type: 17)
 			MakeSprite( "Zom",		  DEF_SPRID_MOB   + 7*8*8, 40, TRUE);//  Zombie (Type: 18)
-			MakeSprite( "Gandlf",	  DEF_SPRID_MOB   + 7*8*9,  8, TRUE);// Gandalf ¸ (Type: 19)
-			MakeSprite( "Howard",	  DEF_SPRID_MOB   + 7*8*10, 8, TRUE);// Howard º¸°ü¼Ò ÁÖÀÎ (Type: 20)
+			MakeSprite( "Gandlf",	  DEF_SPRID_MOB   + 7*8*9,  8, TRUE);// Gandalf Â¸ (Type: 19)
+			MakeSprite( "Howard",	  DEF_SPRID_MOB   + 7*8*10, 8, TRUE);// Howard ÂºÂ¸Â°Ã¼Â¼Ã’ ÃÃ–Ã€Ã (Type: 20)
 			MakeSprite( "Guard",	  DEF_SPRID_MOB   + 7*8*11, 40, TRUE);// Guard (Type: 21)
 			MakeSprite( "Amp",		  DEF_SPRID_MOB   + 7*8*12, 40, TRUE);// Amphis (Type: 22)
 			MakeSprite( "Cla",		  DEF_SPRID_MOB   + 7*8*13, 40, TRUE);// Clay-Golem (Type: 23)
@@ -3906,7 +3906,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeEffectSpr( "effect4", 19, 5, FALSE);
 			m_hPakFile = CreateFile("sprites\\effect5.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 			if( m_hPakFile != INVALID_HANDLE_VALUE )
-			{	for (i = 0; i <= 6; i++) // Because effectn°0 is EnergySphere
+			{	for (i = 0; i <= 6; i++) // Because effectnÂ°0 is EnergySphere
 					m_pEffectSpr[i+ 24] = new class CSprite(m_hPakFile, &m_DDraw, "effect5", i+1, FALSE);
 				CloseHandle(m_hPakFile);
 			}
@@ -3938,7 +3938,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				{	wsprintf(G_cTxt, "sounds\\M%d.wav", i);
 					m_pMSound[i] = new class CSoundBuffer(m_DSound.m_lpDS, m_DSound.m_DSCaps, G_cTxt);
 				}
-				for (i = 1; i <= 59; i++) // MORLA 2.3 - Agregado más sonidos
+				for (i = 1; i <= 59; i++) // MORLA 2.3 - Agregado mÃ¡s sonidos
 				{	wsprintf(G_cTxt, "sounds\\E%d.wav", i);
 					m_pESound[i] = new class CSoundBuffer(m_DSound.m_lpDS, m_DSound.m_DSCaps, G_cTxt);
 			}	}
@@ -4161,7 +4161,7 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
 			case 40:
 				DlgBoxClick_Slates(msX, msY);
 				break;
-// Snoopy: Boite de dialogue de confirmation d'échange
+// Snoopy: Boite de dialogue de confirmation d'Ã©change
 			case 41:
 				DlgBoxClick_ConfirmExchange(msX, msY);
 				break;
@@ -5842,10 +5842,10 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	m_iSP = *ip;
 	cp += 4;
 	ip   = (int *)cp;
-	m_iAC = *ip;		//â m_iDefenseRatio
+	m_iAC = *ip;		//Ã¢ m_iDefenseRatio
 	cp += 4;
 	ip   = (int *)cp;
-	m_iTHAC0 = *ip;    //» m_iHitRatio
+	m_iTHAC0 = *ip;    //Â» m_iHitRatio
 	cp += 4;
 	ip   = (int *)cp;
 	m_iLevel = *ip;
@@ -6296,7 +6296,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			m_pEffectList[i]->m_dwFrameTime = 10;
 			break;
 
-		case 2:	// Flêche qui vole
+		case 2:	// FlÃªche qui vole
 			m_pEffectList[i]->m_mX     = sX*32;
 			m_pEffectList[i]->m_mY     = sY*32 - _iAttackerHeight[iV1];
 			m_pEffectList[i]->m_iErr   = 0;
@@ -7038,7 +7038,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			m_pEffectList[i]->m_dwFrameTime = 40;
 			break;
 
-		case 80: // Snoopy: rajoué, implémenté en dernier ds la v351
+		case 80: // Snoopy: rajouÃ©, implÃ©mentÃ© en dernier ds la v351
 			m_pEffectList[i]->m_mX     = sX;
 			m_pEffectList[i]->m_mY     = sY;
 			m_pEffectList[i]->m_iV1    = 20;
@@ -7374,7 +7374,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			PlaySound('E', 1, sDist, lPan);
 			break;
 
-		case 244: // Snoopy: déplacé pour nvx sorts: Aura du casteur de Mass MagicMissile
+		case 244: // Snoopy: dÃ©placÃ© pour nvx sorts: Aura du casteur de Mass MagicMissile
 		
 			m_pEffectList[i]->m_cMaxFrame   = 29;
 			m_pEffectList[i]->m_dwFrameTime = 80;
@@ -8027,7 +8027,7 @@ void CGame::DrawEffects()
 			if (cTempFrame < 0) break;
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
-			m_pEffectSpr[91]->PutSpriteFast(dX, dY, cTempFrame, dwTime); //Nbe d'arguments modifiés ds la 351....
+			m_pEffectSpr[91]->PutSpriteFast(dX, dY, cTempFrame, dwTime); //Nbe d'arguments modifiÃ©s ds la 351....
 			m_pEffectSpr[92]->PutTransSprite(dX, dY, cTempFrame, dwTime);
 			break;
 
@@ -8266,7 +8266,7 @@ void CGame::DrawEffects()
 			else m_pEffectSpr[94]->PutTransSpriteRGB(dX, dY + 40, m_pEffectList[i]->m_cFrame, iDvalue, iDvalue, iDvalue, dwTime);
 			break;
 
-		case 244: // Snoopy: déplacé pour nvx sorts: Aura du casteur de Mass MagicMissile
+		case 244: // Snoopy: dÃ©placÃ© pour nvx sorts: Aura du casteur de Mass MagicMissile
 		
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			if (cTempFrame < 0) break;
@@ -8625,6 +8625,7 @@ BOOL CGame::__bDecodeContentsAndBuildItemForSaleList(char * pBuffer)
 					cReadModeB = 4;
 					break;
 				case 4: // m_sItemEffectType
+					m_pItemForSaleList[iItemForSaleListIndex]->m_sItemEffectType = atoi(token);
 					cReadModeB = 5;
 					break;
 				case 5:	// m_sItemEffectValue1
@@ -17712,8 +17713,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 	G = 100;
 	B = 100;
 
-	DrawLine2(toX, toY, limitX - 1, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
+	DrawLine2(toX, toY, limitX - 1, toY, R, G, B); // 1Âª Reta
+	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2Âª Reta
 	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
 	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita
 
@@ -18061,7 +18062,7 @@ void CGame::DlgBoxClick_SellList(short msX, short msY)
 
 			PlaySound('E', 14, 5);
 
-			// ÀçÁ¤·Ä
+			// Ã€Ã§ÃÂ¤Â·Ã„
 			for (x = 0; x < DEF_MAXSELLLIST-1; x++)
 			if (m_stSellItemList[x].iIndex == -1) {
 				m_stSellItemList[x].iIndex  = m_stSellItemList[x+1].iIndex;
@@ -18701,7 +18702,7 @@ void CGame::DrawChatMsgBox(short sX, short sY, int iChatIndex, BOOL bIsPreDC)
 		break;
 	case 20:
 		rgb = RGB(255,255,20);
-		// ¸Ş½ÃÁö Ç¥½Ã¿¡ µô·¹ÀÌ°¡ °É¸°´Ù.
+		// Â¸ÃÂ½ÃƒÃÃ¶ Ã‡Â¥Â½ÃƒÂ¿Â¡ ÂµÃ´Â·Â¹Ã€ÃŒÂ°Â¡ Â°Ã‰Â¸Â°Â´Ã™.
 		if ((m_dwCurTime - dwTime) < 650) return;
 		else dwTime += 650;
 		break;
@@ -19530,7 +19531,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 		break;
 
 	case 3:	//
-	case 4:	// OK°
+	case 4:	// OKÂ°
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
 			// No Click
 			m_stDialogBoxInfo[13].cMode = 0;
@@ -20079,7 +20080,7 @@ void CGame::DlgBoxClick_15AgeMsg(short msX, short msY)
 }
 
 
-void CGame::DlgBoxClick_WarningMsg(short msX, short msY)// Á¤Áø±¤.
+void CGame::DlgBoxClick_WarningMsg(short msX, short msY)// ÃÂ¤ÃÃ¸Â±Â¤.
 {	short sX, sY;
 	sX = m_stDialogBoxInfo[6].sX;
 	sY = m_stDialogBoxInfo[6].sY;
@@ -20919,7 +20920,7 @@ void CGame::bItemDrop_ExchangeDialog(short msX, short msY)
 		EnableDialogBox(17, cItemID, m_pItemList[cItemID]->m_dwCount, NULL);
 		
 	}
-	else // hum? déjà on affiche? , bon je désactive, ca devrait plutôt s'afficher lors du retour du serveur.
+	else // hum? dÃ©jÃ  on affiche? , bon je dÃ©sactive, ca devrait plutÃ´t s'afficher lors du retour du serveur.
 	{	
 		if (m_stDialogBoxExchangeInfo[0].sV1 == -1)			m_stDialogBoxExchangeInfo[0].sItemID = cItemID;
 		else if (m_stDialogBoxExchangeInfo[1].sV1 == -1)	m_stDialogBoxExchangeInfo[1].sItemID = cItemID;
@@ -20958,7 +20959,7 @@ void CGame::bItemDrop_ExchangeDialog(short msX, short msY)
 		ZeroMemory(m_stDialogBoxInfo[17].cStr, sizeof(m_stDialogBoxInfo[17].cStr));
 		EnableDialogBox(17, cItemID, m_pItemList[cItemID]->m_dwCount, NULL);
 		return;
-	}else // hum? déjà on affiche? , bon je désactive, ca devrait plutôt s'afficher lors du retour du serveur.
+	}else // hum? dÃ©jÃ  on affiche? , bon je dÃ©sactive, ca devrait plutÃ´t s'afficher lors du retour du serveur.
 	{	
 		if (m_stDialogBoxExchangeInfo[0].sV1 == -1)			m_stDialogBoxExchangeInfo[0].sItemID = cItemID;
 		else if (m_stDialogBoxExchangeInfo[1].sV1 == -1)	m_stDialogBoxExchangeInfo[1].sItemID = cItemID;
@@ -21062,8 +21063,8 @@ void CGame::DlgBoxClick_ConfirmExchange(short msX, short msY)
 			if ((m_stDialogBoxExchangeInfo[0].sV1 != -1) && (m_stDialogBoxExchangeInfo[8].sV1 != -1))//50Cent - MultiTrade
 			{
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CONFIRMEXCHANGEITEM, NULL
-					, m_stDialogBoxExchangeInfo[0].sV1 // ItemID; inutilisé par serveur
-					, m_stDialogBoxExchangeInfo[0].sV3 // Amount; inutilisé par serveur
+					, m_stDialogBoxExchangeInfo[0].sV1 // ItemID; inutilisÃ© par serveur
+					, m_stDialogBoxExchangeInfo[0].sV3 // Amount; inutilisÃ© par serveur
 					, NULL, NULL);
 				PlaySound('E', 14, 5);
 				m_stDialogBoxInfo[27].cMode = 2;
@@ -21096,8 +21097,8 @@ void CGame::DlgBoxClick_ConfirmExchange(short msX, short msY)
 		if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
 		{	if ( (m_stDialogBoxExchangeInfo[0].sV1 != -1) && (m_stDialogBoxExchangeInfo[4].sV1 != -1))
 			{	bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CONFIRMEXCHANGEITEM, NULL
-					, m_stDialogBoxExchangeInfo[0].sV1 // inutilisé par serveur
-					, m_stDialogBoxExchangeInfo[0].sV3 // inutilisé par serveur
+					, m_stDialogBoxExchangeInfo[0].sV1 // inutilisÃ© par serveur
+					, m_stDialogBoxExchangeInfo[0].sV3 // inutilisÃ© par serveur
 					, NULL, NULL);
 				PlaySound('E', 14, 5);
 				m_stDialogBoxInfo[27].cMode = 2;
@@ -21332,7 +21333,7 @@ CBIS_STEP3:;
 			}	}	}
 
 CBIS_STEP4:;
-		    // Element4 °Ë»ç
+		    // Element4 Â°Ã‹Â»Ã§
 			ZeroMemory(cTempName, sizeof(cTempName));
 			memcpy(cTempName, m_pBuildItemList[i]->m_cElementName4, 20);
 			iCount = m_pBuildItemList[i]->m_iElementCount[4];
@@ -21899,7 +21900,7 @@ void CGame::DrawDialogBox_Map()
 			szY = 200;
 			break;
 
-		case 4: // aresden ¸
+		case 4: // aresden Â¸
 			if (m_bDialogTrans)
 				 m_pSprite[DEF_SPRID_INTERFACE_NEWMAPS3]->PutTransSprite2(sX, sY, 0, dwTime);
 			else m_pSprite[DEF_SPRID_INTERFACE_NEWMAPS3]->PutSpriteFast(sX, sY, 0, dwTime);
@@ -21909,7 +21910,7 @@ void CGame::DrawDialogBox_Map()
 			szY = 220;
 			break;
 
-		case 5: // elvine ¸
+		case 5: // elvine Â¸
 			if (m_bDialogTrans)
 				 m_pSprite[DEF_SPRID_INTERFACE_NEWMAPS3]->PutTransSprite2(sX, sY, 1, dwTime);
 			else m_pSprite[DEF_SPRID_INTERFACE_NEWMAPS3]->PutSpriteFast(sX, sY, 1, dwTime);
@@ -23673,21 +23674,21 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	// Centuu - Reintroducidos mensajes de CreateAccount del cliente original.
 	switch (m_cCurFocus) {
 	case 1:
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 330 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT1);//"»ç¿ëÀÚÀÇ °èÁ¤ ÀÌ¸§À» ÀÔ·ÂÇÕ´Ï´Ù."
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT2);//"°èÁ¤ÀÌ¸§Àº Æ¯¼ö¹®ÀÚ¸¦ Á¦¿ÜÇÑ ¿µ¹®,¼ıÀÚ,"
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 360 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT3);//"ÇÑ±ÛÀÇ Á¶ÇÕÀ¸·Î ÀÌ·ç¾îÁ®¾ß ÇÕ´Ï´Ù.
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 330 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT1);//"Â»Ã§Â¿Ã«Ã€ÃšÃ€Ã‡ Â°Ã¨ÃÂ¤ Ã€ÃŒÂ¸Â§Ã€Â» Ã€Ã”Â·Ã‚Ã‡Ã•Â´ÃÂ´Ã™."
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT2);//"Â°Ã¨ÃÂ¤Ã€ÃŒÂ¸Â§Ã€Âº Ã†Â¯Â¼Ã¶Â¹Â®Ã€ÃšÂ¸Â¦ ÃÂ¦Â¿ÃœÃ‡Ã‘ Â¿ÂµÂ¹Â®,Â¼Ã½Ã€Ãš,"
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 360 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT3);//"Ã‡Ã‘Â±Ã›Ã€Ã‡ ÃÂ¶Ã‡Ã•Ã€Â¸Â·Ã Ã€ÃŒÂ·Ã§Â¾Ã®ÃÂ®Â¾ÃŸ Ã‡Ã•Â´ÃÂ´Ã™.
 		break;
 
 	case 2:
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 330 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT4);//"°èÁ¤ÀÇ ÆĞ½º¿öµå¸¦ ÀÔ·ÂÇÕ´Ï´Ù." 
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT5);//"ÆĞ½º¿öµå´Â Æ¯¼ö¹®ÀÚ¸¦ Á¦¿ÜÇÑ ¿µ¹®,¼ıÀÚ,"
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 360 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT6);//"ÇÑ±ÛÀÇ Á¶ÇÕÀ¸·Î ÃÖ¼Ò 8¹®ÀÚ ÀÌ»ó ÀÔ·Â"
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 330 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT4);//"Â°Ã¨ÃÂ¤Ã€Ã‡ Ã†ÃÂ½ÂºÂ¿Ã¶ÂµÃ¥Â¸Â¦ Ã€Ã”Â·Ã‚Ã‡Ã•Â´ÃÂ´Ã™." 
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT5);//"Ã†ÃÂ½ÂºÂ¿Ã¶ÂµÃ¥Â´Ã‚ Ã†Â¯Â¼Ã¶Â¹Â®Ã€ÃšÂ¸Â¦ ÃÂ¦Â¿ÃœÃ‡Ã‘ Â¿ÂµÂ¹Â®,Â¼Ã½Ã€Ãš,"
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 360 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT6);//"Ã‡Ã‘Â±Ã›Ã€Ã‡ ÃÂ¶Ã‡Ã•Ã€Â¸Â·Ã ÃƒÃ–Â¼Ã’ 8Â¹Â®Ã€Ãš Ã€ÃŒÂ»Ã³ Ã€Ã”Â·Ã‚"
 		break;
 
 	case 3:
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 330 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT8);//"ÆĞ½º¿öµå¸¦ ÇÑ¹ø ´õ ÀÔ·ÂÇÕ´Ï´Ù."
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT9);//"Àü¿¡ ÀÔ·ÂÇÑ ÆĞ½º¿öµå¿Í Á¤È®ÇÏ°Ô ÀÏÄ¡ÇØ¾ß"
-		PutAlignedString(290 + SCREENX, 575 + SCREENX, 360 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT10);//"ÇÕ´Ï´Ù."
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 330 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT8);//"Ã†ÃÂ½ÂºÂ¿Ã¶ÂµÃ¥Â¸Â¦ Ã‡Ã‘Â¹Ã¸ Â´Ãµ Ã€Ã”Â·Ã‚Ã‡Ã•Â´ÃÂ´Ã™."
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT9);//"Ã€Ã¼Â¿Â¡ Ã€Ã”Â·Ã‚Ã‡Ã‘ Ã†ÃÂ½ÂºÂ¿Ã¶ÂµÃ¥Â¿Ã ÃÂ¤ÃˆÂ®Ã‡ÃÂ°Ã” Ã€ÃÃ„Â¡Ã‡Ã˜Â¾ÃŸ"
+		PutAlignedString(290 + SCREENX, 575 + SCREENX, 360 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT10);//"Ã‡Ã•Â´ÃÂ´Ã™."
 		break;
 
 	case 4:
@@ -25228,7 +25229,7 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 		else if (cTotalChar < 4)
 		{
 			PutAlignedString(98 + SCREENX, 357 + SCREENX, 275 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER19);//"
-			PutAlignedString(98 + SCREENX, 357 + SCREENX, 290 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER20);//"Play¹
+			PutAlignedString(98 + SCREENX, 357 + SCREENX, 290 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER20);//"PlayÂ¹
 			PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER21);//"
 			PutAlignedString(98 + SCREENX, 357 + SCREENX, 320 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER22);//"
 			PutAlignedString(98 + SCREENX, 357 + SCREENX, 335 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER23);//"Delete Character
@@ -26103,7 +26104,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		m_bUsingSlate = FALSE;
 		break;
 
-	// MJ Stats Change - Diuuude: Erreur, ici il s'agit de sorts et skills, le serveur comme la v351 sont aussi bugués !
+	// MJ Stats Change - Diuuude: Erreur, ici il s'agit de sorts et skills, le serveur comme la v351 sont aussi buguÃ©s !
 	case DEF_NOTIFY_STATECHANGE_SUCCESS:	// 0x0BB5
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		for (i = 0; i < DEF_MAXMAGICTYPE; i++)
@@ -28035,7 +28036,7 @@ void CGame::UpdateScreen_OnLogResMsg()
 
 	case 'I': //
 		PutString_SprFont(172 + 68 + SCREENX, 165 + SCREENY, "Not Enough Point!", 7,0,0);
-		PutAlignedString(198 + SCREENX, 453 + SCREENX, 210 + SCREENY,  "ÂI¼Æ¨Ï¥Î´Á­­¤wµ²§ô, ½Ğ¦ÜGD2S.gamania.com©µªø¨Ï¥Î´Á­­");
+		PutAlignedString(198 + SCREENX, 453 + SCREENX, 210 + SCREENY,  "Ã‚IÂ¼Ã†Â¨ÃÂ¥ÃÂ´ÃÂ­Â­Â¤wÂµÂ²Â§Ã´, Â½ÃÂ¦ÃœGD2S.gamania.comÂ©ÂµÂªÃ¸Â¨ÃÂ¥ÃÂ´ÃÂ­Â­");
 
 		break;
 
@@ -28148,8 +28149,8 @@ void CGame::RetrieveItemHandler(char *pData)
 
 		if (m_pBankList[cBankItemIndex] != NULL) {
 			// v1.42
-			char cStr1[64], cStr2[64], cStr3[64];
-			GetItemName(m_pBankList[cBankItemIndex], cStr1, cStr2, cStr3);
+			char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+			GetItemName(m_pBankList[cBankItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 			ZeroMemory(cTxt, sizeof(cTxt));
 			wsprintf(cTxt, RETIEVE_ITEM_HANDLER4, cStr1);//""You took out %s."
@@ -28201,13 +28202,16 @@ RIH_STEP2:;
 
 void CGame::EraseItem(char cItemID)
 {int i;
- char cStr1[64], cStr2[64], cStr3[64];
+ char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	ZeroMemory(cStr1, sizeof(cStr1));
 	ZeroMemory(cStr2, sizeof(cStr2));
 	ZeroMemory(cStr3, sizeof(cStr3));
+	ZeroMemory(cStr4, sizeof(cStr4));
+	ZeroMemory(cStr5, sizeof(cStr5));
+	ZeroMemory(cStr6, sizeof(cStr6));
 	for( i=0 ; i<6 ; i++ )
 	{	if (m_sShortCut[i] == cItemID)
-		{	GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3);
+		{	GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			if( i < 3 ) wsprintf(G_cTxt, ERASE_ITEM, cStr1, cStr2, cStr3, i+1);
 			else wsprintf(G_cTxt, ERASE_ITEM, cStr1, cStr2, cStr3, i+7);
 			AddEventList(G_cTxt, 10);
@@ -28432,8 +28436,8 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, NULL, cItemID, m_stDialogBoxInfo[39].sV3, NULL, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
 	else {
 		if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == TRUE)
-		{	char cStr1[64], cStr2[64], cStr3[64];
-			GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3);
+		{	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+			GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			ZeroMemory(G_cTxt, sizeof(G_cTxt) );
 			wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);//"
 			AddEventList(G_cTxt, 10);
@@ -28517,7 +28521,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
  int i;
  char  cItemID, cTxt[120];
  short sX, sY, x1, x2, y1, y2;
- char cStr1[64], cStr2[64], cStr3[64];
+ char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	if (m_bItemUsingStatus == TRUE)
 	{	
 		AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY1, 10);
@@ -28540,7 +28544,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 		if ((m_bIsItemDisabled[cItemID] == FALSE) && (m_bIsItemEquipped[cItemID] == FALSE) && (msX > x1) && (msX < x2) && (msY > y1) && (msY < y2))
 		{	// Order
 			_SetItemOrder(0, cItemID);
-			GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3);
+			GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 			if ( m_bIsDialogEnabled[11] && (m_bIsDialogEnabled[23] == FALSE) && (m_bIsDialogEnabled[23] == FALSE) && (m_stDialogBoxInfo[39].sV3 == 24) )
 			{	if (m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
@@ -30426,7 +30430,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						m_sCommX = m_sMCX;
 						m_sCommY = m_sMCY;
 					}
-					else // Pas au corp à corp
+					else // Pas au corp Ã  corp
 					{
 						switch (_iGetWeaponSkillType()) {
 						case 6: // Bow
@@ -30716,7 +30720,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 					if (sObjectType >= 10 || ((sObjectType >= 1) && (sObjectType <= 6)))
 					{
 						switch (sObjectType) { 	// CLEROTH - NPC TALK
-						case 15: // ShopKeeper-W°
+						case 15: // ShopKeeper-WÂ°
 
 							EnableDialogBox(20, 5, 11, 1);
 							tX = msX - 117;
@@ -31436,12 +31440,12 @@ MOTION_COMMAND_PROCESS:;
 				if (m_pChatMsgList[i] == NULL)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, "-%dHP!", m_sDamageMoveAmount);
+					wsprintf(cTxt, "-%dPts!", m_sDamageMoveAmount);
 
 					int iFontType;
-					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 12))        iFontType = 21;
-					else if ((m_sDamageMoveAmount >= 12) && (m_sDamageMoveAmount < 40)) iFontType = 22;
-					else if ((m_sDamageMoveAmount >= 40) || (m_sDamageMoveAmount < 0))    iFontType = 23;
+					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 120))        iFontType = 21;
+					else if ((m_sDamageMoveAmount >= 120) && (m_sDamageMoveAmount < 600)) iFontType = 22;
+					else if ((m_sDamageMoveAmount >= 600) || (m_sDamageMoveAmount < 0))    iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
@@ -31869,7 +31873,7 @@ void CGame::UpdateScreen_OnGame()
 								break;
 
 							case 1000: // Trade stackable items
-								// hum, déjà affiché? , j'attends le retour et je désactive!
+								// hum, dÃ©jÃ  affichÃ©? , j'attends le retour et je dÃ©sactive!
 
 
 								if (m_stDialogBoxExchangeInfo[0].sV1 == -1)			m_stDialogBoxExchangeInfo[0].sItemID = m_stDialogBoxInfo[17].sV4;
@@ -32087,380 +32091,148 @@ void CGame::UpdateScreen_OnGame()
 		else m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteFast(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
 			m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame, dwTime);
 
+		char cStr1[128], cStr2[128], cStr3[128], cStr4[128], cStr5[128], cStr6[128];
+		int iLoc;
+		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+		//Magn0S:: Reformulate Shadow box on item viewer
+		int iEntry = 0;
+		if (strlen(cStr1) != 0) iEntry++;
+		if (strlen(cStr2) != 0) iEntry++;
+		if (strlen(cStr3) != 0) iEntry++;
+		if (strlen(cStr4) != 0) iEntry++;
+		if (strlen(cStr5) != 0) iEntry++;
+		if (strlen(cStr6) != 0) iEntry++;
 
+		int iLenSize = (int)strlen(cStr1);
+		if (iLenSize < (int)strlen(cStr2)) iLenSize = (int)strlen(cStr2);
+		if (iLenSize < (int)strlen(cStr3)) iLenSize = (int)strlen(cStr3);
+		if (iLenSize < (int)strlen(cStr4)) iLenSize = (int)strlen(cStr4);
+		if (iLenSize < (int)strlen(cStr5)) iLenSize = (int)strlen(cStr5);
+		if (iLenSize < (int)strlen(cStr6)) iLenSize = (int)strlen(cStr6);
 
-		//ZeroEoyPnk - Recuadros negros para descripcion de items
-		char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64], cItemsTotal[64];
-		int  iLoc, iLocStr2 = 0, iLocStr3 = 0, iLocStr4 = 0, iLocStr5 = 0, iLocStr6 = 0, ItemsTotal = 0;
-		int  iStrLen1 = 0, iStrLen2 = 0, iStrLen3 = 0, iStrLen4 = 0, iStrLen5 = 0, iStrLen6 = 0;
-		short msY1 = 0, msX1 = 0, msK = 0;
-		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3);
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 
+		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
+		{	wsprintf(G_cTxt, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"ë ˆë²¨ ì œí•œ: %d"
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1100) )
+		{	int	_wWeight = 0;
+			if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight%100) _wWeight = 1;
+			wsprintf( G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight/100 + _wWeight);
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
+		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		if (iEntry == 1)
+		{
+			iEntry = 0;
+			for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++) {
+				if (m_pItemList[iTmp] != NULL) {
+					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry++;
+			}	}
+			if (iEntry > 1) {
+				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
+		}	}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		//m_DDraw.DrawShadowBox(msX, msY + 25, msX + (iLenSize * 8), msY + (iEntry * 15)+25);
+		
+	/*	wsprintf(G_cTxt, "len: %d", iLenSize);
+		PutString(msX+5, msY - 70, G_cTxt, RGB(255, 255, 255), FALSE, 1);
+		wsprintf(G_cTxt, "type: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectType);
+		PutString(msX + 5, msY - 50, G_cTxt, RGB(255, 255, 255), FALSE, 1);
+		wsprintf(G_cTxt, "effect1: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1);
+		PutString(msX + 5, msY - 30, G_cTxt, RGB(255, 255, 255), FALSE, 1);
+		wsprintf(G_cTxt, "effect2: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
+		PutString(msX + 5, msY - 10, G_cTxt, RGB(255, 255, 255), FALSE, 1);*/
+
+		if (iLenSize <= 15)
+			iLenSize = iLenSize * 7.0;
+		else if (iLenSize <= 28)
+			iLenSize = iLenSize * 5.5;
+		else iLenSize = iLenSize * 6.2;
+
+		if (iEntry > 1) {	
+			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry);
+		} else m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry);
+		//-----------------------------------------------------------------------------------------------------------------------------------
+		
 		iLoc = 0;
 		if (strlen(cStr1) != 0)
-		{
-			if (m_bIsSpecial)
-			{
-				// VAMP - gold items
-				if (m_bIsRare)
-					PutString(msX, msY + 25, cStr1, RGB(255, 208, 60), FALSE, 1);
-				else
-					if (m_cDetailLevel != 2)
-						PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), FALSE, 1);
-			}
-			else {
-				if (m_cDetailLevel != 2)
-					PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), FALSE, 1);
-			}
+		{	
+			if (m_bIsRare)
+				PutString(msX, msY + 25, cStr1, RGB(255, 232, 0), FALSE, 1);
+			//else if (m_bIsBallTradeItem)
+			//	PutAlignedString(fromX, toX, msY + 25, cStr1, 0, 201, 255);
+			else if (m_bIsFragile)
+				PutString(msX, msY + 25, cStr1, RGB(50, 255, 255), FALSE, 1);
+			else if (m_bIsSpecial)
+				PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), FALSE, 1);
+			else
+				PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), FALSE, 1);
+
+
 			iLoc += 15;
 		}
-
-		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect1 == 10) {
-		//	PutAlignedString(fromX, toX, msY + 25 + iLoc, "Fragile Item", 142, 151, 134);
-			//iLoc += 15;
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 == 0) {
-				//PutAlignedString(fromX, toX, msY + 25 + iLoc, "Breakly easily - No reparable", 142, 151, 134);
-				PutString(msX, msY + 25 + iLoc, "Breakly easily - No reparable", RGB(150, 150, 150), FALSE, 1);
-				iLoc += 15;
-			}
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
-				wsprintf(G_cTxt, "Item will be destroyed on %d/%d/%d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
-				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1);
-				iLoc += 15;
-			}
+		//Magn0S:: Itens extra description
+		if (strlen(cStr4) != 0)
+		{	PutString(msX, msY +25 +iLoc, cStr4, RGB(150,150,150), FALSE, 1);
+			iLoc += 15;
+		}
+		if (strlen(cStr5) != 0)
+		{	PutString(msX, msY +25 +iLoc, cStr5, RGB(150,150,150), FALSE, 1);
+			iLoc += 15;
+		}
+		if (strlen(cStr6) != 0)
+		{	PutString(msX, msY +25 +iLoc, cStr6, RGB(150,150,150), FALSE, 1);
+			iLoc += 15;
 		}
 
 		if (strlen(cStr2) != 0)
-		{
-			if (m_cDetailLevel != 2)
-				PutString(msX, msY + 25 + iLoc, cStr2, RGB(150, 150, 150), FALSE, 1);
+		{	PutString(msX, msY +25 +iLoc, cStr2, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
-			iLocStr2 += 15;
 		}
 		if (strlen(cStr3) != 0)
-		{
-			if (m_cDetailLevel != 2)
-				PutString(msX, msY + 25 + iLoc, cStr3, RGB(150, 150, 150), FALSE, 1);
+		{	PutString(msX, msY +25 +iLoc, cStr3, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
-			iLocStr3 += 15;
 		}
-		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0))
-		{
-			wsprintf(cStr4, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"·¹º§ Á¦ÇÑ: %d"
-			if (m_cDetailLevel != 2)
-				PutString(msX, msY + 25 + iLoc, cStr4, RGB(150, 150, 150), FALSE, 1);
+		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
+		{	wsprintf(G_cTxt, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"ë ˆë²¨ ì œí•œ: %d"
+			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
-			iLocStr4 += 15;
 		}
-		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight >= 1100))
-		{
-			int	_wWeight = 0;
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
-			wsprintf(cStr5, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
-			if (m_cDetailLevel != 2)
-				PutString(msX, msY + 25 + iLoc, cStr5, RGB(150, 150, 150), FALSE, 1);
+		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1100) )
+		{	int	_wWeight = 0;
+			if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight%100) _wWeight = 1;
+			wsprintf( G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight/100 + _wWeight);
+			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
-			iLocStr5 += 15;
 		}
-		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE || !strcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "ZemstoneofSacrifice"))
-		{
-			wsprintf(cStr6, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
-			if (m_cDetailLevel != 2)
-				PutString(msX, msY + 25 + iLoc, cStr6, RGB(150, 150, 150), FALSE, 1);
+		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
+		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
+			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
-			iLocStr6 += 15;
 		}
-
-		if (iLoc == 15)
-		{
-			iLoc = 0;
-			for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++)
-			{
-				if (m_pItemList[iTmp] != NULL)
-				{
-					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iLoc++;
-					ItemsTotal = 1;
+		if ( iLoc == 15 )
+		{	iLoc = 0;
+			for ( int iTmp = 0 ; iTmp < DEF_MAXITEMS ; iTmp++ )
+			{	if( m_pItemList[iTmp] != NULL )
+				{	if( strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName ) == 0 ) iLoc++;
 				}
 			}
-			if (iLoc > 1)
-			{
-				wsprintf(cItemsTotal, DEF_MSG_TOTAL_NUMBER, iLoc);
-				ItemsTotal += iLoc;
-				if (m_cDetailLevel != 2)
-					PutString(msX, msY + 40, cItemsTotal, RGB(150, 150, 150), FALSE, 1);
-			}
-		}
-		//Coloco el recuadro - ZeroEoyPnk
-		if (m_cDetailLevel == 2)
-		{
-			iStrLen1 = strlen(cStr1);
-			iStrLen2 = strlen(cStr2);
-			iStrLen3 = strlen(cStr3);
-			iStrLen4 = strlen(cStr4);
-			iStrLen5 = strlen(cStr5);
-			iStrLen6 = strlen(cStr6);
-
-			if (ItemsTotal > 1)
-				iLoc = 30;
-			else if (ItemsTotal == 1)
-				iLoc = 13;
-
-			if ((msY + iLoc + 28) > 600)
-				msY1 = 600;
-			else msY1 = msY + iLoc + 28;
-
-			if ((iStrLen1 > 0) && (iStrLen1 >= iStrLen2) && (iStrLen1 >= iStrLen3) && (iStrLen1 >= iStrLen4)
-				&& (iStrLen1 >= iStrLen5) && (iStrLen1 >= iStrLen6))
-			{
-				if (iStrLen1 < 20)
-					msK = iStrLen1 * 5 + 40;
-				else
-					msK = iStrLen1 * 5 + 20;
-			}
-			else if ((iStrLen2 > 0) && (iStrLen2 >= iStrLen3) && (iStrLen2 >= iStrLen4)
-				&& (iStrLen2 >= iStrLen5) && (iStrLen2 >= iStrLen6))
-				msK = iStrLen2 * 5 + 20;
-			else if ((iStrLen3 > 0) && (iStrLen3 >= iStrLen4)
-				&& (iStrLen3 >= iStrLen5) && (iStrLen3 >= iStrLen6))
-				msK = iStrLen3 * 5 + 20;
-			else if ((iStrLen4 > 0) && (iStrLen4 >= iStrLen5) && (iStrLen4 >= iStrLen6))
-				msK = iStrLen4 * 5 + 20;
-			else if ((iStrLen5 > 0) && (iStrLen5 >= iStrLen6))
-				msK = iStrLen5 * 5 + 20;
-			else if (iStrLen6 > 0)
-				msK = iStrLen5 * 5 + 70;
-
-
-			msX1 = msX + msK;
-			if (msX1 > 800)
-				msX1 = 800;
-
-			m_DDraw.DrawShadowBox(msX, msY + 25, msX1, msY1);
-			PutAlignedString(msX, msX + msK, msY + 25, cStr1, 234, 176, 51);
-
-			if (ItemsTotal > 1)
-				PutAlignedString(msX, msX + msK, msY + 25 + 15, cItemsTotal, 255, 255, 255);
-
-			if (iLocStr2 > 0)
-			{	//Purity
-				if (memcmp(GET_ITEM_NAME1, cStr2, 6) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 255, 255, 255); // Blanco
-				//Completion
-				else if (memcmp(GET_ITEM_NAME2, cStr2, 10) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 255, 255, 255); // Blanco
-				//Critical
-				else if (memcmp(GET_ITEM_NAME3, cStr2, 8) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 221, 203, 49); // Amarillo
-				// Poisoning
-				else if (memcmp(GET_ITEM_NAME4, cStr2, 9) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 145, 209, 61); // Verde
-				// Righteous
-				else if (memcmp(GET_ITEM_NAME5, cStr2, 9) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 119, 119, 119); // 
-				// Agile
-				else if (memcmp(GET_ITEM_NAME6, cStr2, 5) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 137, 185, 195); // 
-				// Light
-				else if (memcmp(GET_ITEM_NAME7, cStr2, 5) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 255, 235, 104); // 
-				// Sharp
-				else if (memcmp(GET_ITEM_NAME8, cStr2, 5) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 41, 70, 218); // 
-				// Strong
-				else if (memcmp(GET_ITEM_NAME9, cStr2, 6) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 113, 113, 113); //
-				// Ancient
-				else if (memcmp(GET_ITEM_NAME10, cStr2, 7) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 195, 77, 147); //
-				// Special
-				else if (memcmp(GET_ITEM_NAME11, cStr2, 7) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 223, 148, 3); //
-				// Mana Converting
-				else if (memcmp(GET_ITEM_NAME12, cStr2, 15) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 113, 169, 226); //
-				// Critical
-				else if (memcmp(GET_ITEM_NAME13, cStr2, 8) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 221, 203, 49); //
-				// Critical Hit Damage
-				else if (memcmp(GET_ITEM_NAME14, cStr2, 19) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 221, 203, 49); //
-				// Poison Damage
-				else if (memcmp(GET_ITEM_NAME15, cStr2, 13) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 145, 209, 61); // Verde
-				// Attack Speed -1
-				else if (memcmp(GET_ITEM_NAME16, cStr2, 15) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 137, 185, 195); //
-				// light
-				else if (memcmp(GET_ITEM_NAME17, cStr2, 5) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 255, 235, 104); //
-				// Damage added
-				else if (memcmp(GET_ITEM_NAME18, cStr2, 12) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 206, 18, 115); //
-				// Endurance
-				else if (memcmp(GET_ITEM_NAME19, cStr2, 9) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 139, 139, 139); //
-				// Extra Damage added
-				else if (memcmp(GET_ITEM_NAME20, cStr2, 18) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 228, 184, 67); //
-				// Magic Casting Probability
-				else if (memcmp(GET_ITEM_NAME21, cStr2, 25) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 214, 72, 72); //
-				// Replace %d%% damage to mana
-				else if (memcmp(GET_ITEM_NAME22, cStr2, 7) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 113, 169, 226); //
-				// Crit Increase Chance
-				else if (memcmp(GET_ITEM_NAME23, cStr2, 20) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 221, 203, 49); //
-				// Poison Resistance
-				else if (memcmp(GET_ITEM_NAME24, cStr2, 17) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 145, 209, 61); // Verde
-				// Hitting Probability
-				else if (memcmp(GET_ITEM_NAME25, cStr2, 19) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 200, 165, 3); //
-				// Defense Ratio
-				else if (memcmp(GET_ITEM_NAME26, cStr2, 13) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 170, 127, 174); //
-				// HP recovery
-				else if (memcmp(GET_ITEM_NAME27, cStr2, 11) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 216, 38, 38); // Rojo
-				// SP recovery
-				else if (memcmp(GET_ITEM_NAME28, cStr2, 11) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 145, 209, 61); // Verde
-				// MP recovery
-				else if (memcmp(GET_ITEM_NAME29, cStr2, 11) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 113, 169, 226); // Azul
-				// Magic Resistance
-				else if (memcmp(GET_ITEM_NAME30, cStr2, 16) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 145, 187, 87); // 
-				// Physical Absorption
-				else if (memcmp(GET_ITEM_NAME31, cStr2, 19) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 38, 122, 118); // 
-				// Magic Absorption
-				else if (memcmp(GET_ITEM_NAME32, cStr2, 16) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 175, 26, 100); //
-				// Consecutive Attack Damage
-				else if (memcmp(GET_ITEM_NAME33, cStr2, 25) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 228, 184, 67); //
-				// Experience
-				else if (memcmp(GET_ITEM_NAME34, cStr2, 10) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 168, 74, 140); //
-				// Gold
-				else if (memcmp(GET_ITEM_NAME35, cStr2, 4) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 223, 148, 3); //
-				else
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr2, cStr2, 255, 255, 255);
-
-				if (iLocStr3 > 0)
-					iLocStr3 += iLocStr2;
-				else if (iLocStr4 > 0)
-					iLocStr4 += iLocStr2;
-				else if (iLocStr5 > 0)
-					iLocStr5 += iLocStr2;
-				else if (iLocStr6 > 0)
-					iLocStr6 += iLocStr2;
-			}
-			if (iLocStr3 > 0)
-			{
-				//Purity
-				if (memcmp(GET_ITEM_NAME1, cStr3, 6) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 255, 255, 255); // Blanco
-				//Completion
-				else if (memcmp(GET_ITEM_NAME2, cStr3, 10) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 255, 255, 255); // Blanco
-				// Critical Hit Damage
-				else if (memcmp(GET_ITEM_NAME14, cStr3, 19) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 221, 203, 49); //
-				// Poison Damage
-				else if (memcmp(GET_ITEM_NAME15, cStr3, 13) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 145, 209, 61); // Verde
-				// Attack Speed -1
-				else if (memcmp(GET_ITEM_NAME16, cStr3, 15) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 137, 185, 195); //
-				// light
-				else if (memcmp(GET_ITEM_NAME17, cStr3, 5) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 255, 235, 104); //
-				// Damage added
-				else if (memcmp(GET_ITEM_NAME18, cStr3, 12) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 206, 18, 115); //
-				// Endurance
-				else if (memcmp(GET_ITEM_NAME19, cStr3, 9) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 139, 139, 139); //
-				// Extra Damage added
-				else if (memcmp(GET_ITEM_NAME20, cStr3, 18) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 228, 184, 67); //
-				// Magic Casting Probability
-				else if (memcmp(GET_ITEM_NAME21, cStr3, 25) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 214, 72, 72); //
-				// Replace %d%% damage to mana
-				else if (memcmp(GET_ITEM_NAME22, cStr3, 7) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 113, 169, 226); //
-				// Crit Increase Chance
-				else if (memcmp(GET_ITEM_NAME23, cStr3, 20) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 221, 203, 49); //
-				// Poison Resistance
-				else if (memcmp(GET_ITEM_NAME24, cStr3, 17) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 145, 209, 61); // Verde
-				// Hitting Probability
-				else if (memcmp(GET_ITEM_NAME25, cStr3, 19) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 200, 165, 3); //
-				// Defense Ratio
-				else if (memcmp(GET_ITEM_NAME26, cStr3, 13) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 170, 127, 174); //
-				// HP recovery
-				else if (memcmp(GET_ITEM_NAME27, cStr3, 11) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 216, 38, 38); // Rojo
-				// SP recovery
-				else if (memcmp(GET_ITEM_NAME28, cStr3, 11) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 145, 209, 61); // Verde
-				// MP recovery
-				else if (memcmp(GET_ITEM_NAME29, cStr3, 11) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 113, 169, 226); // Azul
-				// Magic Resistance
-				else if (memcmp(GET_ITEM_NAME30, cStr3, 16) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 145, 187, 87); // 
-				// Physical Absorption
-				else if (memcmp(GET_ITEM_NAME31, cStr3, 19) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 38, 122, 118); // 
-				// Magic Absorption
-				else if (memcmp(GET_ITEM_NAME32, cStr3, 16) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 175, 26, 100); //
-				// Consecutive Attack Damage
-				else if (memcmp(GET_ITEM_NAME33, cStr3, 25) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 228, 184, 67); //
-				// Experience
-				else if (memcmp(GET_ITEM_NAME34, cStr3, 10) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 168, 74, 140); //
-				// Gold
-				else if (memcmp(GET_ITEM_NAME35, cStr3, 4) == 0)
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 223, 148, 3); //
-				else
-					PutAlignedString(msX, msX + msK, msY + 25 + iLocStr3, cStr3, 250, 250, 250);
-				if (iLocStr4 > 0)
-					iLocStr4 += iLocStr3;
-				else if (iLocStr5 > 0)
-					iLocStr5 += iLocStr3;
-				else if (iLocStr6 > 0)
-					iLocStr6 += iLocStr3;
-			}
-			if (iLocStr4 > 0)
-			{
-				PutAlignedString(msX, msX + msK, msY + 25 + iLocStr4, cStr4, 255, 255, 255);
-				if (iLocStr5 > 0)
-					iLocStr5 += iLocStr4;
-				else if (iLocStr6 > 0)
-					iLocStr6 += iLocStr4;
-			}
-			if (iLocStr5 > 0)
-			{
-				PutAlignedString(msX, msX + msK, msY + 25 + iLocStr5, cStr5, 255, 255, 255);
-				if (iLocStr6 > 0)
-					iLocStr6 += iLocStr5;
-			}
-			if (iLocStr6 > 0)
-				PutAlignedString(msX, msX + msK, msY + 25 + iLocStr6, cStr6, 255, 255, 255);
-		}
-	}
-	// ZeroEoyPnk - Recuadros negros para descripcion de items
+			if( iLoc > 1 )
+			{	wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
+				PutString(msX, msY + 40, G_cTxt, RGB(150,150,150), FALSE, 1);
+	}	}	}
 
 	//Snoopy: Add Apocalypse map effect (druncncity bubbles)
 	if (m_cMapIndex == 25)
@@ -32984,8 +32756,8 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY)
 
 	//DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
 
-	DrawLine2(toX, toY, limitX, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
+	DrawLine2(toX, toY, limitX, toY, R, G, B); // 1Âª Reta
+	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2Âª Reta
 	DrawLine2(toX, toY, toX, limitY, R, G, B);  //Linha Esquerda
 	//DrawLine2(toX+1, toY, toX+1, limitY, R, G, B);  //Linha Esquerda
 	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita

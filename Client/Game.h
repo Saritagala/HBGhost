@@ -473,7 +473,8 @@ public:
 	//void GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *pStr2, char *pStr3);
 	//Magn0S:: Changed
 	void GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1 = NULL, short sEffect2 = NULL, short sEffect3 = NULL, short sEffect4 = NULL);
-	void GetItemName(class CItem * pItem, char * pStr1, char * pStr2, char * pStr3);
+	//void GetItemName(class CItem * pItem, char * pStr1, char * pStr2, char * pStr3);
+	void GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, char* pStr4, char* pStr5, char* pStr6);
 	void _InitOnCreateNewCharacter();
 	void _LoadGameMsgTextContents();
 	BOOL _bCheckCurrentBuildItemStatus();

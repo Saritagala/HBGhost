@@ -1340,11 +1340,11 @@ void CGame::MotionEventHandler(char* pData)
 			{	/* Showing real damage done to NPCs instead of Critical!
 				Credit goes to: 50Cent, SleeQ, Matt */
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "-%dHP!", iDamage);
+				wsprintf(cTxt, "-%dPts!", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 12))        iFontType = 21;
-				else if ((iDamage >= 12) && (iDamage < 40)) iFontType = 22;
-				else if ((iDamage >= 40) || (iDamage < 0))    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
+				else if ((iDamage >= 120) && (iDamage < 600)) iFontType = 22;
+				else if ((iDamage >= 600) || (iDamage < 0))    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1373,11 +1373,11 @@ void CGame::MotionEventHandler(char* pData)
 			{	/* Showing real damage done to NPCs instead of Critical!
 				Credit goes to: 50Cent, SleeQ, Matt */
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "-%dHP!", iDamage);
+				wsprintf(cTxt, "-%dPts!", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 12))        iFontType = 21;
-				else if ((iDamage >= 12) && (iDamage < 40)) iFontType = 22;
-				else if ((iDamage >= 40) || (iDamage < 0))    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
+				else if ((iDamage >= 120) && (iDamage < 600)) iFontType = 22;
+				else if ((iDamage >= 600) || (iDamage < 0))    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -2581,7 +2581,7 @@ void CGame::DrawDialogBox_Help(int msX, int msY)
 void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 {
 	int i, sX, sY, iValue;
-	char cItemColor, cStr1[120], cStr2[120], cStr3[120];
+	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
 	DWORD dwTime = timeGetTime();
 
 	sX = m_stDialogBoxInfo[34].sX;
@@ -2645,7 +2645,10 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
-			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3);
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
@@ -2689,7 +2692,10 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
-			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3);
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
@@ -2724,7 +2730,10 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
-			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3);
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
@@ -2763,7 +2772,10 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
-			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3);
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
@@ -2854,7 +2866,10 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
-			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3);
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[34].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
@@ -2946,12 +2961,15 @@ void CGame::UseShortCut(int num)
 					m_sRecentShortCut = -1;
 					return;
 				}
-				char cStr1[64], cStr2[64], cStr3[64];
+				char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 				ZeroMemory(cStr1, sizeof(cStr1));
 				ZeroMemory(cStr2, sizeof(cStr2));
 				ZeroMemory(cStr3, sizeof(cStr3));
+				ZeroMemory(cStr3, sizeof(cStr4));
+				ZeroMemory(cStr3, sizeof(cStr5));
+				ZeroMemory(cStr3, sizeof(cStr6));
 
-				GetItemName(m_pItemList[m_sShortCut[num]], cStr1, cStr2, cStr3);
+				GetItemName(m_pItemList[m_sShortCut[num]], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 				wsprintf(G_cTxt, MSG_SHORTCUT4, cStr1, cStr2, cStr3, index);// (%s %s %s) [F%d]
 				AddEventList(G_cTxt, 10);
 			}
@@ -3072,7 +3090,7 @@ void CGame::UseMagic(int iMagicNo)
 
 void CGame::ReleaseEquipHandler(char cEquipPos)
 {
-	char cStr1[64], cStr2[64], cStr3[64];
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	if (m_sItemEquipmentStatus[cEquipPos] < 0) return;
 	// Remove Angelic Stats
 	if ((cEquipPos >= 11)
@@ -3097,7 +3115,7 @@ void CGame::ReleaseEquipHandler(char cEquipPos)
 		}
 	}
 
-	GetItemName(m_pItemList[m_sItemEquipmentStatus[cEquipPos]], cStr1, cStr2, cStr3);
+	GetItemName(m_pItemList[m_sItemEquipmentStatus[cEquipPos]], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);
 	AddEventList(G_cTxt, 10);
 	m_bIsItemEquipped[m_sItemEquipmentStatus[cEquipPos]] = FALSE;
@@ -3232,8 +3250,8 @@ void CGame::ItemEquipHandler(char cItemID)
 		}
 	}
 
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	wsprintf(G_cTxt, BITEMDROP_CHARACTER9, cStr1);
 	AddEventList(G_cTxt, 10);
 	if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 52, 0);
@@ -7491,7 +7509,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 	short sX, sY;
 	DWORD dwTime = m_dwCurTime;
 	int  i, iTemp;
-	char cTemp[255], cStr2[255], cStr3[255], cStr4[250];
+	char cTemp[255], cStr2[255], cStr3[255], cTxt[250], cStr4[250], cStr5[250], cStr6[250];
 
 	int  iCost, iDiscountCost, iDiscountRatio;
 
@@ -7551,16 +7569,16 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		//Magn0S:: Add to show ammount of points in each market list
 		switch (iNewShop) {
 		case 1: //Trade Ek
-			wsprintf(cStr4, "Total Eks: %d", m_iEnemyKillCount);
-			PutAlignedString(sX + 10, sX + 150, sY + 30, cStr4, 255, 255, 255);
+			wsprintf(cTxt, "Total Eks: %d", m_iEnemyKillCount);
+			PutAlignedString(sX + 10, sX + 150, sY + 30, cTxt, 255, 255, 255);
 			break;
 		case 2: //Trade Ek
-			wsprintf(cStr4, "Contrib. Points: %d", m_iContribution);
-			PutAlignedString(sX + 10, sX + 150, sY + 30, cStr4, 255, 255, 255);
+			wsprintf(cTxt, "Contrib. Points: %d", m_iContribution);
+			PutAlignedString(sX + 10, sX + 150, sY + 30, cTxt, 255, 255, 255);
 			break;
 		case 3: //Trade Ek
-			wsprintf(cStr4, "Coin Points: %d", m_iCoinPoints);
-			PutAlignedString(sX + 10, sX + 150, sY + 30, cStr4, 255, 255, 255);
+			wsprintf(cTxt, "Coin Points: %d", m_iCoinPoints);
+			PutAlignedString(sX + 10, sX + 150, sY + 30, cTxt, 255, 255, 255);
 			break;
 		default: 
 			PutAlignedString(sX + 10, sX + 150, sY + 30, "Empty", 255, 255, 255); 
@@ -7592,7 +7610,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 				if (((i + m_stDialogBoxInfo[57].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView] != NULL))
 				{
 					ZeroMemory(cTemp, sizeof(cTemp));
-					GetItemName(m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView], cTemp, cStr2, cStr3);
+					GetItemName(m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView], cTemp, cStr2, cStr3, cStr4, cStr5, cStr6);
 					m_Misc.ReplaceString(cTemp, '-', ' ');
 					if (iCost == 0) {
 						PutAlignedString(sX + 10, sX + 260, sY + i * 18 + 65, cTemp, 250, 240, 200);
@@ -7618,7 +7636,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_sSpriteFrame, dwTime);
 
 		ZeroMemory(cTemp, sizeof(cTemp));
-		GetItemName(m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1], cTemp, cStr2, cStr3);
+		GetItemName(m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1], cTemp, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 		PutAlignedString(sX + 25, sX + 240, sY + 50, cTemp, 255, 255, 255);
 		PutAlignedString(sX + 26, sX + 241, sY + 50, cTemp, 255, 255, 255);
@@ -8613,13 +8631,14 @@ void CGame::NpcTalkHandler(char *pData)
 	}
 }
 
-void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
+//
+//void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3)
+void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, char* pStr4, char* pStr5, char* pStr6)
 {
 	int i;
 	char cTxt[256], cTxt2[256], cName[51];
 	DWORD dwType1, dwType2, dwValue1, dwValue2, dwValue3;
-	//50Cent Item Description
-	char cStr5[256];
+	char cDescri1[256], cDescri2[256], cDescri3[256];
 
 	m_bIsSpecial = FALSE;
 	m_bIsRare = false;
@@ -8627,8 +8646,13 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 	ZeroMemory(pStr1, sizeof(pStr1));
 	ZeroMemory(pStr2, sizeof(pStr2));
 	ZeroMemory(pStr3, sizeof(pStr3));
+	ZeroMemory(pStr4, sizeof(pStr4));
+	ZeroMemory(pStr5, sizeof(pStr5));
+	ZeroMemory(pStr6, sizeof(pStr6));
 
-	ZeroMemory(cStr5, sizeof(cStr5));
+	ZeroMemory(cDescri1, sizeof(cDescri1));
+	ZeroMemory(cDescri2, sizeof(cDescri2));
+	ZeroMemory(cDescri3, sizeof(cDescri3));
 
 	strcpy(cName, pItem->m_cName);
 	for (i = 0; i < DEF_MAXITEMNAMES; i++)
@@ -8643,7 +8667,7 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 	else if (0 == memcmp(pItem->m_cName, "NecklaceOf", 10)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "DarkElfBow", 10)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "DarkExecutor", 12)) m_bIsSpecial = TRUE;
-	else if (0 == memcmp(pItem->m_cName, "The_Devastator", 14)) m_bIsSpecial = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "The_Devastator", 14)) m_bIsRare = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "DemonSlayer", 10)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "LightingBlade", 12)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "5thAnniversary", 13)) m_bIsSpecial = TRUE;
@@ -8654,21 +8678,24 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 	else if (0 == memcmp(pItem->m_cName, "MagicWand(M.Shield)", 19)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "MagicWand(MS30-LLF)", 19)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Merien", 6)) m_bIsSpecial = TRUE;
-	else if (0 == memcmp(pItem->m_cName, "BerserkWand", 11)) m_bIsSpecial = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "BerserkWand", 11)) m_bIsRare = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "ResurWand", 9)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Blood", 5)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Swordof", 7)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "StoneOf", 7)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "ZemstoneofSacrifice", 19)) m_bIsSpecial = TRUE;
-	else if (0 == memcmp(pItem->m_cName, "StormBringer", 12)) m_bIsSpecial = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "StormBringer", 12)) m_bIsRare = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Aresden", 7)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Elvine", 6)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "EmeraldRing", 11)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Excaliber", 9)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Xelima", 6)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(pItem->m_cName, "Kloness", 7)) m_bIsSpecial = TRUE;
-	else if (0 == memcmp(pItem->m_cName, "aHeroOf", 7)) m_bIsSpecial = TRUE;
-	else if (0 == memcmp(pItem->m_cName, "eHeroOf", 7)) m_bIsSpecial = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "aHeroOf", 7)) m_bIsRare = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "eHeroOf", 7)) m_bIsRare = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "Kloness", 7)) m_bIsRare = TRUE;
+	else if (0 == memcmp(pItem->m_cName, "DKloness", 8)) m_bIsRare = TRUE;
+
 	if ((pItem->m_dwAttribute & 0x00000001) != 0)
 	{
 		m_bIsSpecial = TRUE;
@@ -8741,7 +8768,7 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 			case 12: wsprintf(cTxt, GET_ITEM_NAME23, dwValue1); break;
 
 			case 15:
-				switch (dwValue1){
+				switch (dwValue1) {
 				case 1:
 					wsprintf(cTxt, GET_ITEM_NAME51, dwValue2 * 7); break;
 					break;
@@ -8828,12 +8855,44 @@ void CGame::GetItemName(CItem *pItem, char *pStr1, char *pStr2, char *pStr3)
 		strcpy(pStr1, cTxt);
 	}
 
+	//Magn0S:: Add item descriptions
+	switch(pItem->m_sItemEffectType) {
+		case DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE:
+			wsprintf(cDescri1, GET_ITEM_NAME44, pItem->m_sItemEffectValue4);	break;
+
+		case DEF_ITEMEFFECTTYPE_ADDEFFECT:
+			switch (pItem->m_sItemEffectValue1) {
+			ZeroMemory(cDescri1, sizeof(cDescri1));
+			case 1:	wsprintf(cDescri1, GET_ITEM_NAME30, pItem->m_sItemEffectValue2); break;
+			case 2:	wsprintf(cDescri1, GET_ITEM_NAME44, pItem->m_sItemEffectValue2); break;
+			case 3:	wsprintf(cDescri1, GET_ITEM_NAME45, pItem->m_sItemEffectValue2); break;
+			case 4:	wsprintf(cDescri1, GET_ITEM_NAME80, pItem->m_sItemEffectValue2); break;
+			case 5:	wsprintf(cDescri1, "Luck Effect +%d", pItem->m_sItemEffectValue2); break;
+			case 6:	wsprintf(cDescri1, GET_ITEM_NAME46, pItem->m_sItemEffectValue2); break;
+			case 7: wsprintf(cDescri1, GET_ITEM_NAME49, pItem->m_sItemEffectValue2); break;
+			case 8: wsprintf(cDescri1, GET_ITEM_NAME48, pItem->m_sItemEffectValue2); break;
+			case 9: wsprintf(cDescri1, GET_ITEM_NAME70, pItem->m_sItemEffectValue2); break;
+			case 10: wsprintf(cDescri1, GET_ITEM_NAME71, pItem->m_sItemEffectValue2); break;
+			case 11: wsprintf(cDescri1, GET_ITEM_NAME24, pItem->m_sItemEffectValue2); break;
+			case 12: wsprintf(cDescri1, GET_ITEM_NAME25, pItem->m_sItemEffectValue2); break;
+			case 13: wsprintf(cDescri1, GET_ITEM_NAME27, pItem->m_sItemEffectValue2); break;
+			case 14: wsprintf(cDescri1, GET_ITEM_NAME25, pItem->m_sItemEffectValue2); break;
+			case 15: wsprintf(cDescri1, GET_ITEM_NAME46, pItem->m_sItemEffectValue2); break;
+			}
+
+		//default:
+		//	break;
+
+			strcat(pStr4, cDescri1);
+		}
+	//--------------------------------------------------------------------------------------------------
+
 	dwValue3 = (pItem->m_dwAttribute & 0xF0000000) >> 28;
 	if (dwValue3 > 0)
 	{
 		if (pStr1[strlen(pStr1) - 2] == '+')
 		{
-			dwValue3 = atoi((char *)(pStr1 + strlen(pStr1) - 1)) + dwValue3;
+			dwValue3 = atoi((char*)(pStr1 + strlen(pStr1) - 1)) + dwValue3;
 			ZeroMemory(cTxt, sizeof(cTxt));
 			memcpy(cTxt, pStr1, strlen(pStr1) - 2);
 			ZeroMemory(cTxt2, sizeof(cTxt2));
@@ -9221,7 +9280,7 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY, szX;
 	int  iMaxPage, j, i, iLoc;
-	char cTotalItems, cItemColor, cStr1[64], cStr2[64], cStr3[64];
+	char cTotalItems, cItemColor, cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	BOOL bFlag;
 	DWORD dwTime = timeGetTime();
 	sX = m_stDialogBoxInfo[14].sX;
@@ -9266,6 +9325,9 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 	ZeroMemory(cStr1, sizeof(cStr1));
 	ZeroMemory(cStr2, sizeof(cStr2));
 	ZeroMemory(cStr3, sizeof(cStr3));
+	ZeroMemory(cStr4, sizeof(cStr4));
+	ZeroMemory(cStr5, sizeof(cStr5));
+	ZeroMemory(cStr6, sizeof(cStr6));
 	iLoc = 45;
 	j = 0;
 	switch (m_stDialogBoxInfo[14].cMode)
@@ -9280,7 +9342,7 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 		{
 			if ((m_pBankList[i] != NULL) && (i < DEF_MAXBANKITEMS))
 			{
-				GetItemName(m_pBankList[i], cStr1, cStr2, cStr3);
+				GetItemName(m_pBankList[i], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 				if ((msX > sX + 30) && (msX < sX + 210) && (msY >= sY + 110 + j * 15) && (msY <= sY + 124 + j * 15))
 				{
 					bFlag = TRUE;
@@ -9361,7 +9423,7 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 	short sX, sY, szX;
 	int  i, iTotalLines, iPointerLoc, iLoc;
 	double d1, d2, d3;
-	char cItemColor, cStr1[64], cStr2[64], cStr3[64];
+	char cItemColor, cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	BOOL bFlag = FALSE;
 
 	sX = m_stDialogBoxInfo[58].sX;
@@ -9373,6 +9435,9 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 	ZeroMemory(cStr1, sizeof(cStr1));
 	ZeroMemory(cStr2, sizeof(cStr2));
 	ZeroMemory(cStr3, sizeof(cStr3));
+	ZeroMemory(cStr4, sizeof(cStr4));
+	ZeroMemory(cStr5, sizeof(cStr5));
+	ZeroMemory(cStr6, sizeof(cStr6));
 	iLoc = 45;
 
 	switch (m_stDialogBoxInfo[58].cMode) {
@@ -9384,7 +9449,7 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 	case 0:
 		for (i = 0; i < m_stDialogBoxInfo[58].sV1; i++)
 			if ((m_pBankList[i + m_stDialogBoxInfo[58].sView] != NULL) && ((i + m_stDialogBoxInfo[58].sView) < DEF_MAXBANKITEMS)) {
-				GetItemName(m_pBankList[i + m_stDialogBoxInfo[58].sView], cStr1, cStr2, cStr3);
+				GetItemName(m_pBankList[i + m_stDialogBoxInfo[58].sView], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 				if ((msX > sX + 30) && (msX < sX + 210) && (msY >= sY + 110 + i * 15) && (msY <= sY + 124 + i * 15))
 				{
 					bFlag = TRUE;
@@ -13008,7 +13073,7 @@ void CGame::DrawDialogBox_SellorRepairItem(short msX, short msY)
 {
 	short sX, sY;
 	DWORD dwTime = m_dwCurTime;
-	char cItemID, cItemColor, cTxt[120], cTemp[120], cStr2[120], cStr3[120];
+	char cItemID, cItemColor, cTxt[120], cTemp[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
 
 	sX = m_stDialogBoxInfo[23].sX;
 	sY = m_stDialogBoxInfo[23].sY;
@@ -13042,7 +13107,7 @@ void CGame::DrawDialogBox_SellorRepairItem(short msX, short msY)
 		ZeroMemory(cTemp, sizeof(cTemp));
 		ZeroMemory(cStr2, sizeof(cStr2));
 		ZeroMemory(cStr3, sizeof(cStr3));
-
+		
 		GetItemName(m_pItemList[cItemID]->m_cName, m_pItemList[cItemID]->m_dwAttribute, cTemp, cStr2, cStr3);
 		if (m_stDialogBoxInfo[23].sV4 == 1) strcpy(cTxt, cTemp);
 		else wsprintf(cTxt, DRAW_DIALOGBOX_SELLOR_REPAIR_ITEM1, m_stDialogBoxInfo[23].sV4, cTemp);
@@ -13100,7 +13165,10 @@ void CGame::DrawDialogBox_SellorRepairItem(short msX, short msY)
 		ZeroMemory(cTemp, sizeof(cTemp));
 		ZeroMemory(cStr2, sizeof(cStr2));
 		ZeroMemory(cStr3, sizeof(cStr3));
-		GetItemName(m_pItemList[cItemID], cTemp, cStr2, cStr3);
+		ZeroMemory(cStr4, sizeof(cStr4));
+		ZeroMemory(cStr5, sizeof(cStr5));
+		ZeroMemory(cStr6, sizeof(cStr6));
+		GetItemName(m_pItemList[cItemID], cTemp, cStr2, cStr3, cStr4, cStr5, cStr6);
 		wsprintf(cTxt, "%s", cTemp);
 		if (m_bIsSpecial)
 		{
@@ -13152,7 +13220,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 	short sX, sY;
 	DWORD dwTime = m_dwCurTime;
 	int  i, iTemp;
-	char cTemp[255], cStr2[255], cStr3[255];
+	char cTemp[255], cStr2[255], cStr3[255], cStr4[255], cStr5[255], cStr6[255];
 
 	int  iCost, iDiscountCost, iDiscountRatio;
 
@@ -13213,7 +13281,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			if (((i + m_stDialogBoxInfo[11].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
-				GetItemName(m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView], cTemp, cStr2, cStr3);
+				GetItemName(m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView], cTemp, cStr2, cStr3, cStr4, cStr5, cStr6);
 				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
 				{
 					PutAlignedString(sX + 10, sX + 190, sY + i * 18 + 65, cTemp, 255, 255, 255);
@@ -13248,7 +13316,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_sSpriteFrame, dwTime);
 
 		ZeroMemory(cTemp, sizeof(cTemp));
-		GetItemName(m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1], cTemp, cStr2, cStr3);
+		GetItemName(m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1], cTemp, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 		PutAlignedString(sX + 25, sX + 240, sY + 50, cTemp, 255, 255, 255);
 		PutAlignedString(sX + 26, sX + 241, sY + 50, cTemp, 255, 255, 255);
@@ -14504,8 +14572,8 @@ void CGame::bItemDrop_Inventory(short msX, short msY)
 
 	if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == TRUE)
 	{
-		char cStr1[64], cStr2[64], cStr3[64];
-		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3);
+		char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 		wsprintf(cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);
 		AddEventList(cTxt, 10);
 		if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 53, 0);
@@ -14564,8 +14632,8 @@ void CGame::bItemDrop_SellList(short msX, short msY)
 	if (m_pItemList[cItemID]->m_wCurLifeSpan == 0)
 	{
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		char cStr1[64], cStr2[64], cStr3[64];
-		GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3);
+		char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+		GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 		wsprintf(G_cTxt, NOTIFYMSG_CANNOT_SELL_ITEM2, cStr1);
 		AddEventList(G_cTxt, 10);
 		return;
@@ -15787,8 +15855,8 @@ void CGame::NotifyMsg_CannotGiveItem(char *pData)
 	memcpy(cName, cp, 20);
 	cp += 20;
 
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[wItemIndex], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[wItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	if (iAmount == 1) wsprintf(cTxt, NOTIFYMSG_CANNOT_GIVE_ITEM2, cStr1, cName);
 	else wsprintf(cTxt, NOTIFYMSG_CANNOT_GIVE_ITEM1, iAmount, cStr1, cName);
 
@@ -15866,7 +15934,7 @@ void CGame::NotifyMsg_CannotRating(char * pData)
 
 void CGame::NotifyMsg_CannotRepairItem(char * pData)
 {
-	char * cp, cTxt[120], cStr1[64], cStr2[64], cStr3[64];
+	char * cp, cTxt[120], cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	WORD * wp, wV1, wV2;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -15879,7 +15947,10 @@ void CGame::NotifyMsg_CannotRepairItem(char * pData)
 	ZeroMemory(cStr1, sizeof(cStr1));
 	ZeroMemory(cStr2, sizeof(cStr2));
 	ZeroMemory(cStr3, sizeof(cStr3));
-	GetItemName(m_pItemList[wV1], cStr1, cStr2, cStr3);
+	ZeroMemory(cStr4, sizeof(cStr4));
+	ZeroMemory(cStr5, sizeof(cStr5));
+	ZeroMemory(cStr6, sizeof(cStr6));
+	GetItemName(m_pItemList[wV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 	switch (wV2) {
 	case 1:
@@ -15896,7 +15967,7 @@ void CGame::NotifyMsg_CannotRepairItem(char * pData)
 
 void CGame::NotifyMsg_CannotSellItem(char * pData)
 {
-	char * cp, cTxt[120], cStr1[64], cStr2[64], cStr3[64];
+	char * cp, cTxt[120], cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	WORD * wp, wV1, wV2;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -15912,7 +15983,10 @@ void CGame::NotifyMsg_CannotSellItem(char * pData)
 	ZeroMemory(cStr1, sizeof(cStr1));
 	ZeroMemory(cStr2, sizeof(cStr2));
 	ZeroMemory(cStr3, sizeof(cStr3));
-	GetItemName(m_pItemList[wV1], cStr1, cStr2, cStr3);
+	ZeroMemory(cStr4, sizeof(cStr4));
+	ZeroMemory(cStr5, sizeof(cStr5));
+	ZeroMemory(cStr6, sizeof(cStr6));
+	GetItemName(m_pItemList[wV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 	switch (wV2) {
 	case 1:
@@ -15959,8 +16033,8 @@ void CGame::NotifyMsg_DropItemFin_EraseItem(char *pData)
 	iAmount = *ip;
 	cp += 4;
 
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 	if (m_bIsItemEquipped[sItemIndex] == TRUE)
@@ -16181,8 +16255,8 @@ void CGame::NotifyMsg_ItemColorChange(char *pData)
 	cp += 2;
 
 	if (m_pItemList[sItemIndex] != NULL) {
-		char cStr1[64], cStr2[64], cStr3[64];
-		GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3);
+		char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+		GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 		if (sItemColor != -1) {
 			m_pItemList[sItemIndex]->m_cItemColor = (char)sItemColor;
 			wsprintf(cTxt, NOTIFYMSG_ITEMCOLOR_CHANGE1, cStr1);
@@ -16214,8 +16288,8 @@ void CGame::NotifyMsg_ItemDepleted_EraseItem(char * pData)
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 	if (m_bIsItemEquipped[sItemIndex] == TRUE) 
 	{
@@ -16290,8 +16364,8 @@ void CGame::NotifyMsg_ItemLifeSpanEnd(char * pData)
 	sItemIndex = *sp;
 	cp += 2;
 
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	wsprintf(cTxt, NOTIFYMSG_ITEMLIFE_SPANEND1, cStr1);
 	AddEventList(cTxt, 10);
 	m_sItemEquipmentStatus[m_pItemList[sItemIndex]->m_cEquipPos] = -1;
@@ -16329,10 +16403,10 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	BOOL  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit, sSpecialEV2;
 	char  cTxt[120], cGenderLimit, cItemColor;
-	WORD  * wp, wWeight, wCurLifeSpan;
+	WORD  * wp, wWeight, wCurLifeSpan, wMaxLifeSpan;
 	//Magn0S::
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
-	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1;
+	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -16428,6 +16502,13 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	sItemEffectValue6 = *sp;
 	cp += 2;
 
+	sp = (short*)cp;
+	sItemEffectType = *sp;
+	cp += 2;
+	
+	wp = (WORD*)cp;
+	wMaxLifeSpan = *wp;
+	cp += 2;
 
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
@@ -16493,6 +16574,7 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 			m_pItemList[i]->m_sItemSpecEffectValue2 = sSpecialEV2; // v1.41
 			m_pItemList[i]->m_dwAttribute = dwAttribute;
 
+			//Magn0S:: Add new variabled received from HG
 			m_pItemList[i]->m_sNewEffect1 = sNewAtt1;
 			m_pItemList[i]->m_sNewEffect2 = sNewAtt2;
 			m_pItemList[i]->m_sNewEffect3 = sNewAtt3;
@@ -16504,6 +16586,9 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 			m_pItemList[i]->m_sItemEffectValue4 = sItemEffectValue4;
 			m_pItemList[i]->m_sItemEffectValue5 = sItemEffectValue5;
 			m_pItemList[i]->m_sItemEffectValue6 = sItemEffectValue6;
+
+			m_pItemList[i]->m_sItemEffectType = sItemEffectType;
+			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 			_bCheckBuildItemStatus();
 
@@ -16528,11 +16613,11 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	BOOL  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
-	WORD  wCost, wWeight, wCurLifeSpan;
+	WORD  wCost, wWeight, wCurLifeSpan, wMaxLifeSpan;
 	char  cTxt[120], cItemColor;
 	//Magn0S:: Add
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
-	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1;
+	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -16624,6 +16709,14 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	sItemEffectValue6 = *sp;
 	cp += 2;
 
+	sp = (short*)cp;
+	sItemEffectType = *sp;
+	cp += 2;
+
+	wp = (WORD*)cp;
+	wMaxLifeSpan = *wp;
+	cp += 2;
+
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
 	GetItemName(cName, NULL, cStr1, cStr2, cStr3);
@@ -16689,6 +16782,9 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 			m_pItemList[i]->m_sItemEffectValue5 = sItemEffectValue5;
 			m_pItemList[i]->m_sItemEffectValue6 = sItemEffectValue6;
 
+			m_pItemList[i]->m_sItemEffectType = sItemEffectType;
+			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
+
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
 				if (m_cItemOrder[j] == -1) {
@@ -16714,8 +16810,8 @@ void CGame::NotifyMsg_ItemReleased(char * pData)
 	sItemIndex = *sp;
 	cp += 2;
 
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	wsprintf(cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);
 	AddEventList(cTxt, 10);
 	m_bIsItemEquipped[sItemIndex] = FALSE;
@@ -16745,8 +16841,8 @@ void CGame::NotifyMsg_ItemRepaired(char * pData)
 
 	m_pItemList[dwItemID]->m_wCurLifeSpan = (WORD)dwLife;
 	m_bIsItemDisabled[dwItemID] = FALSE;
-	char cStr1[64], cStr2[64], cStr3[64];
-	GetItemName(m_pItemList[dwItemID], cStr1, cStr2, cStr3);
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	GetItemName(m_pItemList[dwItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
 	wsprintf(cTxt, NOTIFYMSG_ITEMREPAIRED1, cStr1);
 
@@ -16760,11 +16856,11 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	char  cName[21], cItemType, cEquipPos, cGenderLimit, cItemColor;
 	BOOL  bIsEquipped;
 	short * sp, sSprite, sSpriteFrame, sLevelLimit, sItemSpecEffectValue2;
-	WORD  * wp, wWeight, wCurLifeSpan;
+	WORD* wp, wWeight, wCurLifeSpan, wMaxLifeSpan;
 	char  cTxt[120];
 	//Magn0S::
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
-	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1;
+	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
 
 	//cp = (pData + DEF_INDEX2_MSGTYPE + 2);
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -16871,6 +16967,14 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	sItemEffectValue6 = *sp;
 	cp += 2;
 
+	sp = (short*)cp;
+	sItemEffectType = *sp;
+	cp += 2;
+
+	wp = (WORD*)cp;
+	wMaxLifeSpan = *wp;
+	cp += 2;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -16906,6 +17010,9 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 		m_pBankList[cIndex]->m_sItemEffectValue4 = sItemEffectValue4;
 		m_pBankList[cIndex]->m_sItemEffectValue5 = sItemEffectValue5;
 		m_pBankList[cIndex]->m_sItemEffectValue6 = sItemEffectValue6;
+
+		m_pItemList[cIndex]->m_sItemEffectType = sItemEffectType;
+		m_pItemList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -19559,6 +19666,14 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i]->m_sItemEffectValue6 = *sp;
 		cp += 2;
 
+		sp = (short*)cp;
+		m_pItemList[i]->m_sItemEffectType = *sp;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		m_pItemList[i]->m_wMaxLifeSpan = *wp;
+		cp += 2;
+
 		m_cItemOrder[i] = i;
 		// Snoopy: Add Angelic Stats
 		if ((m_pItemList[i]->m_cItemType == 1)
@@ -19688,6 +19803,14 @@ void CGame::InitItemList(char * pData)
 
 		sp = (short*)cp;
 		m_pBankList[i]->m_sItemEffectValue6 = *sp;
+		cp += 2;
+
+		sp = (short*)cp;
+		m_pBankList[i]->m_sItemEffectType = *sp;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		m_pBankList[i]->m_wMaxLifeSpan = *wp;
 		cp += 2;
 
 	}

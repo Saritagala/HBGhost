@@ -789,7 +789,7 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
 	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == TRUE) return;
 
-	char* cp, cData[512];
+	char* cp, cData[5000];
 	int  iRet, i;
 	DWORD* dwp;
 	WORD* wp;

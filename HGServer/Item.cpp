@@ -4399,7 +4399,15 @@ BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			*sp = pItem->m_sItemEffectValue6;
 			cp += 2;
 
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 20);
+			sp = (short*)cp;
+			*sp = pItem->m_sItemEffectType;
+			cp += 2;
+
+			wp = (WORD*)cp;
+			*wp = pItem->m_wMaxLifeSpan;
+			cp += 2;
+
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 24);
 			switch (iRet) {
 			case DEF_XSOCKEVENT_QUENEFULL:
 			case DEF_XSOCKEVENT_SOCKETERROR:
@@ -4541,7 +4549,15 @@ BOOL CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			*sp = pItem->m_sItemEffectValue6;
 			cp += 2;
 
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 20);
+			sp = (short*)cp;
+			*sp = pItem->m_sItemEffectType;
+			cp += 2;
+
+			wp = (WORD*)cp;
+			*wp = pItem->m_wMaxLifeSpan;
+			cp += 2;
+
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 24);
 			switch (iRet) {
 			case DEF_XSOCKEVENT_QUENEFULL:
 			case DEF_XSOCKEVENT_SOCKETERROR:
@@ -6714,12 +6730,20 @@ BOOL CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		*sp = pItem->m_sItemEffectValue6;
 		cp += 2;
 
+		sp = (short*)cp;
+		*sp = pItem->m_sItemEffectType;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		*wp = pItem->m_wMaxLifeSpan;
+		cp += 2;
+
 		if (iEraseReq == 1) {
 			delete pItem;
 			pItem = NULL;
 		}
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 73); //Original = 53
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 77); //Original = 53
 
 		return TRUE;
 	}
@@ -6856,7 +6880,15 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*sp = pItem->m_sItemEffectValue6;
 		cp += 2;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 73); // 53
+		sp = (short*)cp;
+		*sp = pItem->m_sItemEffectType;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		*wp = pItem->m_wMaxLifeSpan;
+		cp += 2;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 77); // 53
 		break;
 
 	case DEF_NOTIFY_ITEMPURCHASED:
@@ -6950,7 +6982,15 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*sp = pItem->m_sItemEffectValue6;
 		cp += 2;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 68); // 48
+		sp = (short*)cp;
+		*sp = pItem->m_sItemEffectType;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		*wp = pItem->m_wMaxLifeSpan;
+		cp += 2;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 72); // 48
 		break;
 
 	case DEF_NOTIFY_CANNOTCARRYMOREITEM:
@@ -6969,7 +7009,6 @@ BOOL CGame::_bCheckItemReceiveCondition(int iClientH, CItem* pItem)
 	if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, pItem->m_dwCount) > (DWORD)_iCalcMaxLoad(iClientH))
 		return FALSE;
 
-	// ¾ÆÀÌÅÛÀ» ¹ÞÀ» ¿©À¯°ø°£ À¯¹« ÆÇ´Ü.
 	for (i = 0; i < DEF_MAXITEMS; i++)
 		if (m_pClientList[iClientH]->m_pItemList[i] == NULL) return TRUE;
 

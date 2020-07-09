@@ -1790,6 +1790,14 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 		sp = (short*)cp;
 		*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemEffectValue6;
 		cp += 2;
+
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemEffectType;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		*wp = m_pClientList[iClientH]->m_pItemList[i]->m_wMaxLifeSpan;
+		cp += 2;
 	}
 	iTotalItemB = 0;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++)
@@ -1894,6 +1902,14 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 		sp = (short*)cp;
 		*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemEffectValue6;
 		cp += 2;
+
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemEffectType;
+		cp += 2;
+
+		wp = (WORD*)cp;
+		*wp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_wMaxLifeSpan;
+		cp += 2;
 	}
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
@@ -1908,7 +1924,7 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 
 	//iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA*44 + iTotalItemB*43 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	//Magn0S:: Added new variables
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA*64 + iTotalItemB*63 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA*68 + iTotalItemB*67 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -20569,6 +20585,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				//		}
 				//	}
 				//}
+
 				if (m_pClientList[sTargetH]->m_iHP <= 0) {
 					if (cAttackerType == DEF_OWNERTYPE_PLAYER)
 						bAnalyzeCriminalAction(sAttackerH, m_pClientList[sTargetH]->m_sX, m_pClientList[sTargetH]->m_sY);

@@ -551,6 +551,46 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType)
 
 	pDst = (WORD *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 
+//Magn0S:: Added to fix drawshadow bug (remove from legion)
+#ifdef RES_HIGH
+	if (dX >= 800)
+		dX = 800 - 1;
+
+	if (dY >= 600)
+		dY = 600 - 1;
+
+	if (sX >= 800)
+		return;
+
+	if (sY >= 600)
+		return;
+#else
+	if (dX >= 640) 
+		dX = 640 - 1;
+	
+	if (sX >= 640)
+		return;
+
+	if (dY >= 480)
+		dY = 480 - 1;
+
+	if (sY >= 480)
+		return;
+
+#endif
+
+	if (dX < 0)
+		return;
+
+	if (sX < 0)
+		sX = 0;
+
+	if (dY < 0)
+		return;
+
+	if (sY < 0)
+		sY = 0;
+
 	if (iType == 0) {
 		switch (m_cPixelFormat) {
 		case 1:
@@ -570,6 +610,7 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType)
 				pDst += m_sBackB4Pitch;
 			}
 			break;
+
 		}
 	}
 	else 
