@@ -27479,7 +27479,7 @@ void CGame::AdminOrder_SetEk(int iClientH, char* pData, DWORD dwMsgSize)
 			char cTxt[250];
 			wsprintf(cTxt, "Congratulations, you have received %d Ek Points. (New Total: %d)", atoi(cPK), m_pClientList[i]->m_iEnemyKillCount);
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, cTxt);
-
+			calcularTop15HB(i); // centu - ordenar top ek
 			wsprintf(notice, "%d Ek Points has been charged for player %s from %d to %d.", atoi(cPK), m_pClientList[i]->m_cCharName, oldpk, m_pClientList[i]->m_iEnemyKillCount);
 			PutLogList(notice);
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, notice);
