@@ -17682,45 +17682,12 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 	limitY = sY + 180;
 	int iminus = 0;
 
-	if (toX <= 0) {
-		toX = 0;
-	}
-	if (toY <= 1) {
-		toY = 1;
-	}
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
-#ifdef RES_HIGH
-	if (limitX >= 800) {
-		limitX = limitX - (limitX - 800);
-	}
-	if (limitY >= 580) {
-		limitY = limitY - (limitY - 580);
-	}
-#else
-	if (limitX >= 639) {
-		limitX = limitX - (limitX - 639);
-	}
-	if (limitY >= 451) {
-		limitY = limitY - (limitY - 451);
-	}
-#endif
-
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-
-	int R, G, B;
-	R = 30;
-	G = 100;
-	B = 100;
-
-	DrawLine2(toX, toY, limitX - 1, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
-	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
-	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita
-
-	m_DDraw.DrawShadowBox(toX + 2, toY + 2, limitX - 2, toY + 25);
-	m_DDraw.DrawShadowBox(toX + 2, toY + 2, limitX - 2, toY + 25);
-	PutString_SprFont(sX + 180, sY + 5, "Chat Log", 240, 240, 240);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
+	PutString_SprFont2(sX + 180, sY + 5, "Chat Log", 240, 240, 240);
 
 	if (((msX >= sX + 10) && (msX <= sX + 50) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GLOBAL)
 		PutString2(sX + 20, sY + 25, "Global", 255, 255, 255);
@@ -20577,6 +20544,90 @@ void CGame::DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 					dstR = (int)m_DDraw.m_lTransRB50[(pDst[0]&0x7C00)>>10][iR];
 					dstG = (int)m_DDraw.m_lTransG50[(pDst[0]&0x3E0)>>5][iG];
 					dstB = (int)m_DDraw.m_lTransRB50[(pDst[0]&0x1F)][iB];
+					*pDst = (WORD)((dstR<<10) | (dstG<<5) | dstB);
+					break;
+	}	}	}	}
+}
+
+//Magn0S:: Added to exclusive draw border of shadowbox
+void CGame::DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
+{int dx, dy, x_inc, y_inc, error, index, dstR, dstG, dstB;
+ int iResultX, iResultY;
+ WORD * pDst;
+	if ((x0 == x1) && (y0 == y1)) return;
+
+	error = 0;
+	iResultX = x0;
+	iResultY = y0;
+	dx = x1-x0;
+	dy = y1-y0;
+	if(dx>=0)
+	{	x_inc = 1;
+	}else
+	{	x_inc = -1;
+		dx = -dx;
+	}
+	if(dy>=0)
+	{	y_inc = 1;
+	}else
+	{	y_inc = -1;
+		dy = -dy;
+	}
+	if(dx>dy)
+	{	for(index = 0; index <= dx; index++)
+		{	error += dy;
+			if(error > dx)
+			{	error -= dx;
+				iResultY += y_inc;
+			}
+			iResultX += x_inc;
+#ifdef RES_HIGH
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+#else
+			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
+#endif
+				pDst = (WORD *)m_DDraw.m_pBackB4Addr + iResultX + ((iResultY)*m_DDraw.m_sBackB4Pitch);
+				switch (m_DDraw.m_cPixelFormat) {
+				case 1:
+					dstR = (int)m_DDraw.m_lTransRB100[(pDst[0]&0xF800)>>11][iR];
+					dstG = (int)m_DDraw.m_lTransG100[(pDst[0]&0x7E0)>>5][iG];
+					dstB = (int)m_DDraw.m_lTransRB100[(pDst[0]&0x1F)][iB];
+					*pDst = (WORD)((dstR<<11) | (dstG<<5) | dstB);
+					break;
+
+				case 2:
+					dstR = (int)m_DDraw.m_lTransRB100[(pDst[0]&0x7C00)>>10][iR];
+					dstG = (int)m_DDraw.m_lTransG100[(pDst[0]&0x3E0)>>5][iG];
+					dstB = (int)m_DDraw.m_lTransRB100[(pDst[0]&0x1F)][iB];
+					*pDst = (WORD)((dstR<<10) | (dstG<<5) | dstB);
+					break;
+		}	}	}
+	}else
+	{	for(index = 0; index <= dy; index++)
+		{	error += dx;
+			if(error > dy)
+			{	error -= dy;
+				iResultX += x_inc;
+			}
+			iResultY += y_inc;
+#ifdef RES_HIGH
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+#else
+			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
+#endif
+				pDst = (WORD *)m_DDraw.m_pBackB4Addr + iResultX + ((iResultY)*m_DDraw.m_sBackB4Pitch);
+				switch (m_DDraw.m_cPixelFormat) {
+				case 1:
+					dstR = (int)m_DDraw.m_lTransRB100[(pDst[0]&0xF800)>>11][iR];
+					dstG = (int)m_DDraw.m_lTransG100[(pDst[0]&0x7E0)>>5][iG];
+					dstB = (int)m_DDraw.m_lTransRB100[(pDst[0]&0x1F)][iB];
+					*pDst = (WORD)((dstR<<11) | (dstG<<5) | dstB);
+					break;
+
+				case 2:
+					dstR = (int)m_DDraw.m_lTransRB100[(pDst[0]&0x7C00)>>10][iR];
+					dstG = (int)m_DDraw.m_lTransG100[(pDst[0]&0x3E0)>>5][iG];
+					dstB = (int)m_DDraw.m_lTransRB100[(pDst[0]&0x1F)][iB];
 					*pDst = (WORD)((dstR<<10) | (dstG<<5) | dstB);
 					break;
 	}	}	}	}
@@ -28529,6 +28580,33 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 	}
 	sX = m_stDialogBoxInfo[2].sX;
 	sY = m_stDialogBoxInfo[2].sY;
+
+	//Magn0S:: Add to Equip Full set with Ctrl Pressed.
+	if (m_bCtrlPressed == TRUE) {
+		for (i = 0; i < DEF_MAXITEMS; i++) {
+			cItemID = m_cItemOrder[DEF_MAXITEMS - 1 - i];
+			if (m_pItemList[cItemID] == NULL) continue;
+
+			m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[cItemID]->m_sSprite]->_GetSpriteRect(sX + 32 + m_pItemList[cItemID]->m_sX, sY + 44 + m_pItemList[cItemID]->m_sY, m_pItemList[cItemID]->m_sSpriteFrame);
+			x1 = (short)m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[cItemID]->m_sSprite]->m_rcBound.left;
+			y1 = (short)m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[cItemID]->m_sSprite]->m_rcBound.top;
+			x2 = (short)m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[cItemID]->m_sSprite]->m_rcBound.right;
+			y2 = (short)m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[cItemID]->m_sSprite]->m_rcBound.bottom;
+
+			if ((m_bIsItemDisabled[cItemID] == FALSE) && (m_bIsItemEquipped[cItemID] == FALSE) && (msX > x1) && (msX < x2) && (msY > y1) && (msY < y2)) {
+
+				if (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EQUIP) {
+					m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
+					m_stMCursor.sSelectedObjectID = (short)cItemID;
+					bItemDrop_Character();
+					m_stMCursor.cSelectedObjectType = NULL;
+					m_stMCursor.sSelectedObjectID = NULL;
+				}
+			}
+		}
+		return;
+	}
+
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{	if (m_cItemOrder[DEF_MAXITEMS - 1 - i] == -1) continue;
 		cItemID = m_cItemOrder[DEF_MAXITEMS - 1 - i];
@@ -32162,8 +32240,8 @@ void CGame::UpdateScreen_OnGame()
 		else iLenSize = iLenSize * 6.2;
 
 		if (iEntry > 1) {	
-			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry);
-		} else m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry);
+			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
+		} else m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
 		//-----------------------------------------------------------------------------------------------------------------------------------
 		
 		iLoc = 0;
@@ -32723,48 +32801,13 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY)
 	int iEntry = 0;
 	int iEntry2 = 0;
 
-	if (toX <= 0) {
-		toX = 0;
-	}
-	if (toY <= 0) {
-		toY = 0;
-	}
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
-#ifdef RES_HIGH
-	if (limitX >= 800) {
-		limitX = limitX - (limitX - 800);
-	}
-	if (limitY >= 600) {
-		limitY = limitY - (limitY - 600);
-	}
-#else
-	if (limitX >= 639) {
-		limitX = limitX - (limitX - 639);
-	}
-	if (limitY >= 451) {
-		limitY = limitY - (limitY - 451);
-	}
-#endif
 
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-
-	int R, G, B;
-	R = 112;
-	G = 70;
-	B = 1;
-
-	//DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
-
-	DrawLine2(toX, toY, limitX, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
-	DrawLine2(toX, toY, toX, limitY, R, G, B);  //Linha Esquerda
-	//DrawLine2(toX+1, toY, toX+1, limitY, R, G, B);  //Linha Esquerda
-	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita
-
-	m_DDraw.DrawShadowBox(toX + 2, toY + 2, limitX - 2, toY + 25);
-	m_DDraw.DrawShadowBox(toX + 2, toY + 2, limitX - 2, toY + 25);
-	PutString_SprFont(sX + 150, sY + 5, "Quest List", 240, 240, 240);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
+	PutString_SprFont2(sX + 150, sY + 5, "Quest List", 240, 240, 240);
 
 	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
 	//PutString_SprFont(sX + 90, sY + 35, "Quest List", 1, 1, 8);

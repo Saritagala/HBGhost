@@ -5,9 +5,12 @@
 #include <string.h>
 #include <objbase.h>
 #include "DXC_ddraw.h"
+#include "Game.h"
 
 extern HWND G_hEditWnd;
 extern HWND G_hWnd;
+
+extern CGame* G_pGame;
 
 extern long    G_lTransG100[64][64], G_lTransRB100[64][64];
 extern long    G_lTransG70[64][64], G_lTransRB70[64][64];
@@ -544,7 +547,8 @@ void DXC_ddraw::ClearBackB4()
 	m_lpBackB4->Unlock(NULL);
 }
 
-void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType)
+//Magn0S:: Updated.
+void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType, bool border)
 {
 	WORD * pDst, wValue;
 	int ix, iy;
@@ -590,6 +594,24 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType)
 
 	if (sY < 0)
 		sY = 0;
+
+
+	if (border) {
+		int R, G, B;
+		R = 180;
+		G = 180;
+		B = 180;
+
+		G_pGame->DrawBorder(sX -1, sY, dX - 1, sY, R, G, B); // 1ª Reta
+		G_pGame->DrawBorder(dX, sY, dX, dY - 1, R, G, B);  //Linha direita
+		
+
+		G_pGame->DrawBorder(sX, dY, dX - 1, dY, R, G, B);  // 2ª Reta
+		G_pGame->DrawBorder(sX, sY, sX, dY - 1, R, G, B);  //Linha Esquerda
+
+	//	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
+		//m_lTransRB2
+	}
 
 	if (iType == 0) {
 		switch (m_cPixelFormat) {

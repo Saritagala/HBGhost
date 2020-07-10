@@ -17,6 +17,7 @@
 #include "ddraw.h"
 #include "Misc.h"
 #include "GlobalDef.h"
+//#include "Game.h"
 
 class DXC_ddraw  
 {
@@ -47,12 +48,14 @@ public:
 	long _CalcMaxValue(int iS, int iD, char cMode, char cMethod, double dAlpha);
 	HRESULT iSetColorKey(IDirectDrawSurface7 * pdds4, WORD wColorKey);
 	void PutPixel(short sX, short sY, WORD wR, WORD wG, WORD wB);
-	void DrawShadowBox(short sX, short sY, short dX, short dY, int iType = 0);
+	void DrawShadowBox(short sX, short sY, short dX, short dY, int iType = 0, bool border = false);
 	void ClearBackB4();
 	IDirectDrawSurface7 * pCreateOffScreenSurface(WORD iSzX, WORD iSzY);
 	HRESULT iSetColorKey(IDirectDrawSurface7 * pdds4, COLORREF rgb);
 	HRESULT iFlip();
 	bool Screenshot(LPCTSTR FileName, LPDIRECTDRAWSURFACE7 lpDDS);
+
+	//class CGame* m_pGame;
 	
 	long    m_lTransG100[64][64], m_lTransRB100[64][64];
 	long    m_lTransG70[64][64], m_lTransRB70[64][64];

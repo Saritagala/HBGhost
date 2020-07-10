@@ -1265,6 +1265,7 @@ public:
 
 	void DlgBoxClick_Chat(short msX, short msY);
 	short chatmode = 99;
+	void DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 

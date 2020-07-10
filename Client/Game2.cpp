@@ -6127,44 +6127,9 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 	int iNextB = 0;
 	int iNextC = 0;
 	int iEntry = 0;
-
-	if (toX <= 0) {
-		toX = 0;
-	}
-	if (toY <= 0) {
-		toY = 0;
-	}
-
-#ifdef RES_HIGH
-	if (limitX >= 800) {
-		limitX = limitX - (limitX - 800);
-}
-	if (limitY >= 600) {
-		limitY = limitY - (limitY - 600);
-	}
-#else
-	if (limitX >= 639) {
-		limitX = limitX - (limitX - 639);
-	}
-	if (limitY >= 451) {
-		limitY = limitY - (limitY - 451);
-	}
-#endif
 	
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-
-	int R, G, B;
-	R = 30;
-	G = 100;
-	B = 100;
-
-	//DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
-
-	DrawLine2(toX, toY, limitX - 1, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
-	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
-	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
 	switch (m_stDialogBoxInfo[56].cMode) {
 	case 0:
@@ -12612,53 +12577,17 @@ void CGame::DrawDialogBox_Quest(int msX, int msY)
 	int iEntry = 0;
 	int iEntry2 = 0;
 
-	if (toX <= 0) {
-		toX = 0;
-	}
-	if (toY <= 0) {
-		toY = 0;
-	}
-
-#ifdef RES_HIGH
-	if (limitX >= 800) {
-		limitX = limitX - (limitX - 800);
-	}
-	if (limitY >= 600) {
-		limitY = limitY - (limitY - 600);
-	}
-#else
-	if (limitX >= 639) {
-		limitX = limitX - (limitX - 639);
-	}
-	if (limitY >= 451) {
-		limitY = limitY - (limitY - 451);
-	}
-#endif
-
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-
-	int R, G, B;
-	R = 112;
-	G = 70;
-	B = 1;
-
-	//DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
-
-	DrawLine2(toX, toY, limitX, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
-	DrawLine2(toX, toY, toX, limitY, R, G, B);  //Linha Esquerda
-	//DrawLine2(toX+1, toY, toX+1, limitY, R, G, B);  //Linha Esquerda
-	DrawLine2(limitX, toY, limitX, limitY, R, G, B);  //Linha direita
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
 	iNext = 45;
 
 	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
 	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 4);
 
-	m_DDraw.DrawShadowBox(toX+2, toY+2, limitX-2, toY+25);
-	m_DDraw.DrawShadowBox(toX+2, toY+2, limitX-2, toY+25);
-	PutString_SprFont(sX + 105, sY + 5, "Quest", 240, 240, 240);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, toY+25, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, toY+25, 0, true);
+	PutString_SprFont2(sX + 105, sY + 5, "Quest", 240, 240, 240);
 
 	switch (m_stDialogBoxInfo[28].cMode) {
 	case 0:	//Magn0S:: Multi Quest
@@ -17011,8 +16940,8 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 		m_pBankList[cIndex]->m_sItemEffectValue5 = sItemEffectValue5;
 		m_pBankList[cIndex]->m_sItemEffectValue6 = sItemEffectValue6;
 
-		m_pItemList[cIndex]->m_sItemEffectType = sItemEffectType;
-		m_pItemList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
+		m_pBankList[cIndex]->m_sItemEffectType = sItemEffectType;
+		m_pBankList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -21088,43 +21017,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 	int iNext = 0;
 	int iEntry = 0;
 
-	if (toX <= 0) {
-		toX = 0;
-	}
-	if (toY <= 0) {
-		toY = 0;
-	}
-
-#ifdef RES_HIGH
-	if (limitX >= 800) {
-		limitX = limitX - (limitX - 800);
-	}
-	if (limitY >= 600) {
-		limitY = limitY - (limitY - 600);
-	}
-#else
-	if (limitX >= 639) {
-		limitX = limitX - (limitX - 639);
-	}
-	if (limitY >= 451) {
-		limitY = limitY - (limitY - 451);
-	}
-#endif
-
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY);
-
-	int R, G, B;
-	R = 30;
-	G = 100;
-	B = 100;
-
-	//DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
-
-	DrawLine2(toX, toY, limitX, toY, R, G, B); // 1ª Reta
-	DrawLine2(toX, limitY, limitX, limitY, R, G, B);  // 2ª Reta
-	DrawLine2(toX, toY, toX, limitY + 1, R, G, B);  //Linha Esquerda
-	DrawLine2(limitX, toY, limitX, limitY + 1, R, G, B);  //Linha direita
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
 	switch (m_stDialogBoxInfo[53].cMode) {
 	case 0:
