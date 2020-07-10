@@ -27927,13 +27927,28 @@ void CGame::minimap_clear(int client)
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 
-			if (p->IsLocation("elvine"))
+			// centu - flag holder on minimap
+			if (m_bIsCTFEvent)
 			{
-				*wp = MINIMAPBLUE_CLEAR;
+				if (p->IsLocation("aresden"))
+				{
+					*wp = MINIMAPBLUE_CLEAR;
+				}
+				else
+				{
+					*wp = MINIMAPRED_CLEAR;
+				}
 			}
 			else
 			{
-				*wp = MINIMAPRED_CLEAR;
+				if (p->IsLocation("elvine"))
+				{
+					*wp = MINIMAPBLUE_CLEAR;
+				}
+				else
+				{
+					*wp = MINIMAPRED_CLEAR;
+				}
 			}
 
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -27982,13 +27997,28 @@ void CGame::minimap_update(int client)
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 
-			if (p->IsLocation("elvine"))
+			// centu - flag holder on minimap
+			if (m_bIsCTFEvent)
 			{
-				*wp = MINIMAPBLUE_UPDATE;
+				if (p->IsLocation("aresden"))
+				{
+					*wp = MINIMAPBLUE_UPDATE;
+				}
+				else
+				{
+					*wp = MINIMAPRED_UPDATE;
+				}
 			}
 			else
 			{
-				*wp = MINIMAPRED_UPDATE;
+				if (p->IsLocation("elvine"))
+				{
+					*wp = MINIMAPBLUE_UPDATE;
+				}
+				else
+				{
+					*wp = MINIMAPRED_UPDATE;
+				}
 			}
 
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
