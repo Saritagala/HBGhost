@@ -603,7 +603,7 @@ void CGame::OpenCloseApocalypseGate()
 	// If nothing has changed return...
 	if (bIsOpen == m_bIsApocalypseGateOpen) return;
 
-	if (m_bIsApocalypseGateOpen == TRUE)
+	/*if (m_bIsApocalypseGateOpen == TRUE)
 	{
 		wsprintf(G_cTxt, "(!)Apocalypse Gate opened.");
 	}
@@ -612,7 +612,7 @@ void CGame::OpenCloseApocalypseGate()
 		wsprintf(G_cTxt, "(!)Apocalypse Gate closed.");
 	}
 	PutLogList(G_cTxt);
-	PutLogEventFileList(G_cTxt);
+	PutLogEventFileList(G_cTxt);*/
 	// Then notify all clients of change,
 	int i;
 	for (i = 1; i < DEF_MAXCLIENTS; i++)

@@ -1166,7 +1166,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 			// Capture the Flag
 		case DEF_DYNAMICOBJECT_ARESDENFLAG2:
 		case DEF_DYNAMICOBJECT_ELVINEFLAG2:
-			if (m_bIsCTFEvent && ((m_pClientList[iClientH]->m_cSide == 1 && sDOtype == DEF_DYNAMICOBJECT_ELVINEFLAG2) || (m_pClientList[iClientH]->m_cSide == 2 && sDOtype == DEF_DYNAMICOBJECT_ARESDENFLAG2))) {
+			if (m_bIsCTFEvent && ((m_pClientList[iClientH]->m_cSide == 1 && sDOtype == DEF_DYNAMICOBJECT_ELVINEFLAG2 && m_iCTFEventFlagHolder[1] == -1) || (m_pClientList[iClientH]->m_cSide == 2 && sDOtype == DEF_DYNAMICOBJECT_ARESDENFLAG2 && m_iCTFEventFlagHolder[0] == -1))) {
 				iTemp = pTile->m_wDynamicObjectID;
 
 				SendEventToNearClient_TypeC(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iTemp]->m_cMapIndex, m_pDynamicObjectList[iTemp]->m_sX, m_pDynamicObjectList[iTemp]->m_sY, m_pDynamicObjectList[iTemp]->m_sType, iTemp, NULL);
@@ -7319,14 +7319,13 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		}
 
 		//Magn0S:: Added fragile itens
-		if (memcmp(cp, "/fragile ", 8) == 0) {
+		else if (memcmp(cp, "/fragile ", 8) == 0) {
 			AdminOrder_CreateFragileItem(iClientH, cp, dwMsgSize - 21);
-			return;
+			
 		}
 
 		else if (memcmp(cp, "/enableadmincommand ", 20) == 0) {
 			AdminOrder_EnableAdminCommand(iClientH, cp, dwMsgSize - 21);
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Admin commands ENABLED!");
 		}
 
 		else if (memcmp(cp, "/monstercount", 13) == 0) {
@@ -16279,10 +16278,12 @@ void CGame::AdminOrder_EnableAdminCommand(int iClientH, char *pData, DWORD dwMsg
 	token = pStrTok->pGet();
 
 	if (token != NULL) {
-		len = strlen(token);
-		if(len > 10) len = 10;
-		if (memcmp(token, m_cSecurityNumber, len) == 0) {
+		//len = strlen(token);
+		//if(len > 10) len = 10;
+		//if (memcmp(token, m_cSecurityNumber, len) == 0) {
+		if (strcmp(token, m_cSecurityNumber) == 0) {
 			m_pClientList[iClientH]->m_bIsAdminCommandEnabled = TRUE;
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Admin commands ENABLED!");
 		}
 		else {
 			wsprintf(G_cTxt, "(%s) Player(%s) attempts to access /enableadmincommand with %s", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, token);
@@ -27907,7 +27908,7 @@ void CGame::minimap_clear(int client)
 	auto p = m_pClientList[client];
 	if (!p) return;
 
-	if (bShinning)
+	if (bShinning || (p->m_iStatus & 0x80000) != 0)
 	{
 		if (p->IsInMap("elvine") ||
 			p->IsInMap("aresden") ||
@@ -27961,7 +27962,7 @@ void CGame::minimap_update(int client)
 	auto p = m_pClientList[client];
 	if (!p) return;
 
-	if (bShinning)
+	if (bShinning || (p->m_iStatus & 0x80000) != 0)
 	{
 		if (p->IsInMap("elvine") ||
 			p->IsInMap("aresden") ||

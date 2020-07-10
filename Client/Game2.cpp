@@ -18524,7 +18524,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		else
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
 
-		if (bShinning)
+		if (bShinning || m_bIsCTFMode)
 		{
 			for (auto& u : m_minimapblue.list)
 			{
@@ -18700,7 +18700,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		else
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 
-		if (bShinning)
+		if (bShinning || m_bIsCTFMode)
 		{
 			for (auto& u : m_minimapblue.list) {
 				auto* p = &u;

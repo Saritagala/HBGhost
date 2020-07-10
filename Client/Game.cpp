@@ -30139,6 +30139,8 @@ void CGame::DrawFlagHolder(short sX, short sY, DWORD dwTime)
 
 void CGame::DrawWanted(short sX, short sY, DWORD dwTime)
 {
+	if ((_tmp_iStatus & 0x80000) != 0) return;
+	
 	if ((_tmp_iStatus & 0x40000) != 0) {
 		if ((_tmp_iStatus & 0x10) != 0)
 			m_pEffectSpr[105]->PutTransSprite(sX, sY - 80, 5, dwTime); // Wanted Skull
@@ -31766,7 +31768,10 @@ void CGame::CheckActiveAura(short sX, short sY, DWORD dwTime, short sOwnerType)
 }
 
 void CGame::CheckActiveAura2(short sX, short sY, DWORD dwTime, short sOwnerType)
-{	// Poison
+{	
+	if ((_tmp_iStatus & 0x80000) != 0) return;
+
+	// Poison
 	if ((_tmp_iStatus & 0x80) != 0)
 		m_pEffectSpr[81]->PutTransSprite70(sX + 115, sY + 120 - _iAttackerHeight[sOwnerType], _tmp_iEffectFrame % 21, dwTime);
 
