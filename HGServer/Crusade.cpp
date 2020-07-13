@@ -184,6 +184,8 @@ void CGame::LocalStartCrusadeMode(DWORD dwCrusadeGUID)
 							m_pMapList[z]->SetNamingValueEmpty(iNamingValue);
 						}
 						else {
+							// Centu - can't stay behind crusade shields and manastone
+							m_pMapList[m_pNpcList[m_stCrusadeStructures[i].cType]->m_cMapIndex]->SetStayAllowedFlag(tX, tY - 1, FALSE);
 							wsprintf(G_cTxt, "(!) Creating Crusade Structure(%s) at %s(%d, %d)", cNpcName, m_stCrusadeStructures[i].cMapName, tX, tY);
 							PutLogList(G_cTxt);
 						}

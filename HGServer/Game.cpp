@@ -2885,7 +2885,7 @@ void CGame::CheckClientResponseTime()
 				if (   (m_bIsCrusadeMode == TRUE)
 					&& (m_pClientList[i]->m_iAdminUserLevel == 0)
 					&& (m_pMapList[m_pClientList[i]->m_cMapIndex]->bGetIsStayAllowedTile(m_pClientList[i]->m_sX, m_pClientList[i]->m_sY) == FALSE))
-				{	char iDir = (char)iDice(1,7);
+				{	char iDir = (char)iDice(1,8);
 					if (iDir >= 5) iDir++;
 					int iDamage = m_pClientList[i]->m_iHP/8 + iDice(1,20);					
 					if (iDamage < 40) iDamage = 30 + iDice(1,20);
@@ -2894,6 +2894,24 @@ void CGame::CheckClientResponseTime()
 					m_pClientList[i]->m_iLastDamage = iDamage;		
 					m_pClientList[i]->m_dwRecentAttackTime = dwTime;
 					SendNotifyMsg(NULL, i, DEF_NOTIFY_DAMAGEMOVE, iDir, iDamage, 0, NULL);
+				}
+				// Centu - can't stay in flag position
+				if ((m_bIsCTFEvent)
+					&& (m_pClientList[i]->m_iAdminUserLevel == 0)
+					&& (m_pMapList[m_pClientList[i]->m_cMapIndex]->bGetIsStayAllowedTile(m_pClientList[i]->m_sX, m_pClientList[i]->m_sY) == FALSE))
+				{
+					if (m_pClientList[i]->m_cMapIndex == m_iAresdenMapIndex && m_pClientList[i]->m_cSide == 1 ||
+						m_pClientList[i]->m_cMapIndex == m_iElvineMapIndex && m_pClientList[i]->m_cSide == 2) {
+						char iDir = (char)iDice(1, 8);
+						//if (iDir >= 5) iDir++;
+						int iDamage = m_pClientList[i]->m_iHP / 8 + iDice(1, 20);
+						if (iDamage < 40) iDamage = 30 + iDice(1, 20);
+						if (iDamage > m_pClientList[i]->m_iHP) iDamage = m_pClientList[i]->m_iHP - 1;
+						m_pClientList[i]->m_iHP -= iDamage;
+						m_pClientList[i]->m_iLastDamage = iDamage;
+						m_pClientList[i]->m_dwRecentAttackTime = dwTime;
+						SendNotifyMsg(NULL, i, DEF_NOTIFY_DAMAGEMOVE, iDir, iDamage, 0, NULL);
+					}
 				}
 				if ((m_pClientList[i]->m_iHungerStatus <= 40) && (m_pClientList[i]->m_iHungerStatus >= 0)) 
 					iPlusTime = (40 - m_pClientList[i]->m_iHungerStatus)*1000;
@@ -28516,6 +28534,10 @@ void CGame::AdminOrder_SetEvent(int iClientH)
 
 		m_iCTFEventFlag[0] = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ARESDENFLAG2, m_iAresdenMapIndex, 151, 128, NULL, NULL);
 		m_iCTFEventFlag[1] = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ELVINEFLAG2, m_iElvineMapIndex, 151, 132, NULL, NULL);
+		
+		// Centu - can't stay in flag position
+		m_pMapList[m_iAresdenMapIndex]->SetStayAllowedFlag(151, 128, FALSE);
+		m_pMapList[m_iElvineMapIndex]->SetStayAllowedFlag(151, 132, FALSE);
 	}
 	else {
 		for (i = 0; i < 2; i++) {

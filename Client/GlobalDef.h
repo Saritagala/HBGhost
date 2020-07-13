@@ -24,7 +24,7 @@
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"10.0.0.104"
+#define DEF_SERVER_IP			"192.168.0.28"
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port
@@ -59,7 +59,7 @@
 #ifdef DEF_ANTI_HACK
 	#define DEF_HIDDEN_LOWERVERSION		95
 	//that can be whatever number you wish, 1 byte-sized numbers will work fine
-	#define DEF_VERSIONPLUSMODIFIER     2+(DEF_HIDDEN_LOWERVERSION % 9) 
+	#define DEF_VERSIONPLUSMODIFIER     3+(DEF_HIDDEN_LOWERVERSION % 9) 
 #else
 	#define DEF_VERSIONPLUSMODIFIER     0 
 #endif

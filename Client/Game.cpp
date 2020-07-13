@@ -22063,6 +22063,7 @@ BOOL CGame::bReadItemNameConfigFile()
 						iIndex++;
 						break;
 					}
+					break;
 				}
 			}
 			else {

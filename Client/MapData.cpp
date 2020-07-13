@@ -23,36 +23,45 @@ CMapData::CMapData(class CGame * pGame)
 	for (i = 1; i <= 6; i++)
 	{
 		m_stFrame[i][DEF_OBJECTSTOP].m_sMaxFrame = 14;
-		m_stFrame[i][DEF_OBJECTSTOP].m_sFrameTime = 60;
+		m_stFrame[i][DEF_OBJECTSTOP].m_sFrameTime = 60 - 3;
+
 		m_stFrame[i][DEF_OBJECTMOVE].m_sMaxFrame = 7;
-		m_stFrame[i][DEF_OBJECTMOVE].m_sFrameTime = 70;
+		m_stFrame[i][DEF_OBJECTMOVE].m_sFrameTime = 70 - 3;
+
 		m_stFrame[i][DEF_OBJECTDAMAGEMOVE].m_sMaxFrame = 3;
-		m_stFrame[i][DEF_OBJECTDAMAGEMOVE].m_sFrameTime = 50;
+		m_stFrame[i][DEF_OBJECTDAMAGEMOVE].m_sFrameTime = 50 - 3;
+
 		m_stFrame[i][DEF_OBJECTRUN].m_sMaxFrame = 7;
-		m_stFrame[i][DEF_OBJECTRUN].m_sFrameTime = 42;
+		m_stFrame[i][DEF_OBJECTRUN].m_sFrameTime = 42 - 3;
+
 		m_stFrame[i][DEF_OBJECTATTACK].m_sMaxFrame = 7;
-		m_stFrame[i][DEF_OBJECTATTACK].m_sFrameTime = 78;
+		m_stFrame[i][DEF_OBJECTATTACK].m_sFrameTime = 78 - 3;
+
 		m_stFrame[i][DEF_OBJECTATTACKMOVE].m_sMaxFrame = 12;
-		m_stFrame[i][DEF_OBJECTATTACKMOVE].m_sFrameTime = 78;
+		m_stFrame[i][DEF_OBJECTATTACKMOVE].m_sFrameTime = 78 - 3;
+
 		m_stFrame[i][DEF_OBJECTMAGIC].m_sMaxFrame = 15;
-		m_stFrame[i][DEF_OBJECTMAGIC].m_sFrameTime = 88 / 1.2;
+		m_stFrame[i][DEF_OBJECTMAGIC].m_sFrameTime = 88 - 3;
+
 		m_stFrame[i][DEF_OBJECTGETITEM].m_sMaxFrame = 3;
-		m_stFrame[i][DEF_OBJECTGETITEM].m_sFrameTime = 150;
-		m_stFrame[i][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-		m_stFrame[i][DEF_OBJECTDAMAGE].m_sFrameTime = 70;
+		m_stFrame[i][DEF_OBJECTGETITEM].m_sFrameTime = 150 - 3;
+
+		m_stFrame[i][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
+		m_stFrame[i][DEF_OBJECTDAMAGE].m_sFrameTime = 70 - 3;
+
 		m_stFrame[i][DEF_OBJECTDYING].m_sMaxFrame = 12;
-		m_stFrame[i][DEF_OBJECTDYING].m_sFrameTime = 80;
+		m_stFrame[i][DEF_OBJECTDYING].m_sFrameTime = 80 - 3;
 	}
 
 	// Slime
 	m_stFrame[10][DEF_OBJECTSTOP].m_sFrameTime = 240;
 	m_stFrame[10][DEF_OBJECTSTOP].m_sMaxFrame = 3;
-	m_stFrame[10][DEF_OBJECTMOVE].m_sFrameTime = 120;//240;
+	m_stFrame[10][DEF_OBJECTMOVE].m_sFrameTime = 120;
 	m_stFrame[10][DEF_OBJECTATTACK].m_sFrameTime = 90;
 	m_stFrame[10][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[10][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[10][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[10][DEF_OBJECTDYING].m_sFrameTime = 240;
+	m_stFrame[10][DEF_OBJECTDYING].m_sFrameTime = 240 - DEF_NPC_DEAD_TIME;
 	m_stFrame[10][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Skeleton
@@ -63,7 +72,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[11][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[11][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[11][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[11][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[11][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[11][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Stone-Golem
@@ -74,7 +83,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[12][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[12][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[12][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[12][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[12][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[12][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Cyclops
@@ -85,7 +94,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[13][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[13][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[13][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[13][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[13][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[13][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Orc
@@ -96,7 +105,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[14][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[14][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[14][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[14][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[14][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[14][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// ShopKeeper-W
@@ -107,7 +116,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[15][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[15][DEF_OBJECTDAMAGE].m_sFrameTime = 180;
 	m_stFrame[15][DEF_OBJECTDAMAGE].m_sMaxFrame = 3;
-	m_stFrame[15][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[15][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[15][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Giant Ant
@@ -118,7 +127,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[16][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[16][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[16][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[16][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[16][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[16][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Scorpion
@@ -129,7 +138,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[17][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[17][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[17][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[17][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[17][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[17][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Zombie
@@ -140,7 +149,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[18][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[18][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[18][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[18][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[18][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[18][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Gandlf
@@ -151,7 +160,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[19][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[19][DEF_OBJECTDAMAGE].m_sFrameTime = 180;
 	m_stFrame[19][DEF_OBJECTDAMAGE].m_sMaxFrame = 3;
-	m_stFrame[19][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[19][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[19][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Howard
@@ -162,7 +171,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[20][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[20][DEF_OBJECTDAMAGE].m_sFrameTime = 180;
 	m_stFrame[20][DEF_OBJECTDAMAGE].m_sMaxFrame = 3;
-	m_stFrame[20][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[20][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[20][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Guard
@@ -173,7 +182,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[21][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[21][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[21][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[21][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[21][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[21][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Amphisbena
@@ -184,7 +193,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[22][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[22][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[22][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[22][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[22][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[22][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Clay-Golem
@@ -195,7 +204,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[23][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[23][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[23][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[23][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[23][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[23][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Tom 
@@ -218,7 +227,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[27][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[27][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[27][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[27][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[27][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[27][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Troll
@@ -229,7 +238,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[28][DEF_OBJECTATTACK].m_sMaxFrame = 5;
 	m_stFrame[28][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[28][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[28][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[28][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[28][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Orge
@@ -240,7 +249,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[29][DEF_OBJECTATTACK].m_sMaxFrame = 5;
 	m_stFrame[29][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[29][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[29][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[29][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[29][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Liche
@@ -251,7 +260,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[30][DEF_OBJECTATTACK].m_sMaxFrame = 5;
 	m_stFrame[30][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[30][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[30][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[30][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[30][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Demon
@@ -262,7 +271,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[31][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[31][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[31][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[31][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[31][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[31][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Unicorn
@@ -273,7 +282,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[32][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[32][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[32][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[32][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[32][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[32][DEF_OBJECTDYING].m_sMaxFrame = 11;
 
 	// WereWolf
@@ -284,7 +293,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[33][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[33][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[33][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[33][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[33][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[33][DEF_OBJECTDYING].m_sMaxFrame = 11;
 
 	// Dummy
@@ -295,7 +304,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[34][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[34][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[34][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[34][DEF_OBJECTDYING].m_sFrameTime = 240;
+	m_stFrame[34][DEF_OBJECTDYING].m_sFrameTime = 240 - DEF_NPC_DEAD_TIME;
 	m_stFrame[34][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Energy-Ball
@@ -307,7 +316,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[35][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[35][DEF_OBJECTDAMAGE].m_sFrameTime = 80;
 	m_stFrame[35][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[35][DEF_OBJECTDYING].m_sFrameTime = 80;
+	m_stFrame[35][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[35][DEF_OBJECTDYING].m_sMaxFrame = 7;
 
 	// Crossbow Guard Tower
@@ -319,7 +328,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[36][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[36][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[36][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[36][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[36][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[36][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Cannon Guard Tower
@@ -331,7 +340,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[37][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[37][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[37][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[37][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[37][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[37][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Mana Collector
@@ -343,7 +352,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[38][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[38][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[38][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[38][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[38][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[38][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Detector
@@ -355,7 +364,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[39][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[39][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[39][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[39][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[39][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[39][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Energy Shield Generator
@@ -367,7 +376,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[40][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[40][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[40][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[40][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[40][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[40][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Grand Magic Generator
@@ -379,7 +388,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[41][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[41][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[41][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[41][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[41][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[41][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Mana Stone
@@ -391,7 +400,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[42][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[42][DEF_OBJECTDAMAGE].m_sFrameTime = 150;
 	m_stFrame[42][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[42][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[42][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[42][DEF_OBJECTDYING].m_sMaxFrame = 0;
 
 	// Light War Beetle
@@ -402,7 +411,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[43][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[43][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[43][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[43][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[43][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[43][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// God's Hand Knight
@@ -413,7 +422,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[44][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[44][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[44][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[44][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[44][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[44][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// God's Hand Knight with Armored Battle Steed
@@ -424,7 +433,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[45][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[45][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[45][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[45][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[45][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[45][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Temple Knight
@@ -435,7 +444,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[46][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[46][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[46][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[46][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[46][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[46][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Battle Golem
@@ -446,7 +455,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[47][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[47][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[47][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[47][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[47][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[47][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Stalker
@@ -457,7 +466,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[48][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[48][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[48][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[48][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[48][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[48][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Hellclaw
@@ -468,7 +477,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[49][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[49][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[49][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[49][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[49][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[49][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Tigerworm
@@ -479,7 +488,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[50][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[50][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[50][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 7;
-	m_stFrame[50][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[50][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[50][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	// Catapult
@@ -490,7 +499,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[51][DEF_OBJECTATTACK].m_sMaxFrame = 4;
 	m_stFrame[51][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[51][DEF_OBJECTDAMAGE].m_sMaxFrame = 0;
-	m_stFrame[51][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[51][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[51][DEF_OBJECTDYING].m_sMaxFrame = 6;
 
 	// Gargoyle
@@ -501,7 +510,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[52][DEF_OBJECTATTACK].m_sMaxFrame = 9;
 	m_stFrame[52][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[52][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[52][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[52][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[52][DEF_OBJECTDYING].m_sMaxFrame = 11 + 3;
 
 	// Beholder
@@ -512,7 +521,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[53][DEF_OBJECTATTACK].m_sMaxFrame = 12;
 	m_stFrame[53][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[53][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[53][DEF_OBJECTDYING].m_sFrameTime = 70;
+	m_stFrame[53][DEF_OBJECTDYING].m_sFrameTime = 70 - DEF_NPC_DEAD_TIME / 3;
 	m_stFrame[53][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// DarkElf
@@ -523,7 +532,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[54][DEF_OBJECTATTACK].m_sMaxFrame = 9;
 	m_stFrame[54][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[54][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[54][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[54][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[54][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Bunny
@@ -534,7 +543,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[55][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[55][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[55][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[55][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[55][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[55][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Cat
@@ -545,7 +554,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[56][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[56][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[56][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[56][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[56][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[56][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Giant-Frog
@@ -556,7 +565,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[57][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[57][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[57][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[57][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[57][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[57][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Mountain Giant
@@ -567,7 +576,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[58][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[58][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[58][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[58][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[58][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[58][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Ettin
@@ -578,7 +587,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[59][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[59][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[59][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[59][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[59][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[59][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Cannibal-Plant
@@ -589,7 +598,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[60][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[60][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[60][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[60][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[60][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[60][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Rudolph
@@ -600,7 +609,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[61][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[61][DEF_OBJECTDAMAGE].m_sFrameTime = 60;
 	m_stFrame[61][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[61][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[61][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[61][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// DireBoar
@@ -611,7 +620,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[62][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[62][DEF_OBJECTDAMAGE].m_sFrameTime = 60;
 	m_stFrame[62][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[62][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[62][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[62][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Frost
@@ -622,7 +631,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[63][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[63][DEF_OBJECTDAMAGE].m_sFrameTime = 60;
 	m_stFrame[63][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[63][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[63][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[63][DEF_OBJECTDYING].m_sMaxFrame = 5 + 3;//7 +3;
 
 	// Crops
@@ -633,7 +642,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[64][DEF_OBJECTATTACK].m_sMaxFrame = 3;
 	m_stFrame[64][DEF_OBJECTDAMAGE].m_sFrameTime = 200;
 	m_stFrame[64][DEF_OBJECTDAMAGE].m_sMaxFrame = 3;
-	m_stFrame[64][DEF_OBJECTDYING].m_sFrameTime = 200;
+	m_stFrame[64][DEF_OBJECTDYING].m_sFrameTime = 200 - DEF_NPC_DEAD_TIME;
 	m_stFrame[64][DEF_OBJECTDYING].m_sMaxFrame = 3;
 
 	// IceGolem
@@ -644,7 +653,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[65][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[65][DEF_OBJECTDAMAGE].m_sFrameTime = 60;
 	m_stFrame[65][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[65][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[65][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[65][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Wyvern
@@ -655,8 +664,9 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[66][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[66][DEF_OBJECTDAMAGE].m_sFrameTime = 60;
 	m_stFrame[66][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[66][DEF_OBJECTDYING].m_sFrameTime = 65;
+	m_stFrame[66][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[66][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
+
 
 	// McGaffin
 	m_stFrame[67][DEF_OBJECTSTOP].m_sFrameTime = 200;
@@ -703,7 +713,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[70][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[70][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[70][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[70][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[70][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[70][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// Centaur
@@ -714,7 +724,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[71][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[71][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[71][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[71][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[71][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[71][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// ClawTurtle
@@ -725,7 +735,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[72][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[72][DEF_OBJECTDAMAGE].m_sFrameTime = 60;
 	m_stFrame[72][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[72][DEF_OBJECTDYING].m_sFrameTime = 65;
+	m_stFrame[72][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[72][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// 73 FireWyvern
@@ -736,8 +746,8 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[73][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[73][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[73][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[73][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME; // Centu - Tiempo reducido
-	m_stFrame[73][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
+	m_stFrame[73][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
+	m_stFrame[73][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
 
 	// GiantCrayFish
 	m_stFrame[74][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -747,7 +757,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[74][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[74][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[74][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[74][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[74][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[74][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// 75 Gi Lizard
@@ -758,7 +768,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[75][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[75][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[75][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[75][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[75][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[75][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// 76 Gi Tree
@@ -769,7 +779,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[76][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[76][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[76][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[76][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[76][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[76][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	// 77 Master Orc
@@ -780,9 +790,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[77][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[77][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[77][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[77][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[77][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[77][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 78 Minos
 	m_stFrame[78][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[78][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[78][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -790,9 +801,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[78][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[78][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[78][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[78][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[78][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[78][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	//79 Nizie
 	m_stFrame[79][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[79][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[79][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -800,9 +812,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[79][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[79][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[79][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[79][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[79][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[79][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	//80 Tentocle
 	m_stFrame[80][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[80][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[80][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -810,9 +823,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[80][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[80][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[80][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[80][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[80][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME;
 	m_stFrame[80][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	//81 Abaddon
 	m_stFrame[81][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[81][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[81][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -820,9 +834,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[81][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[81][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[81][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[81][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME; // Centu - Tiempo reducido
+	m_stFrame[81][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[81][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
 
+	//82  Sorceress
 	m_stFrame[82][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[82][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[82][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -830,9 +845,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[82][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[82][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[82][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[82][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[82][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[82][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 83 DSK
 	m_stFrame[83][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[83][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[83][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -840,9 +856,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[83][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[83][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[83][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[83][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[83][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[83][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 84 MasterElf
 	m_stFrame[84][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[84][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[84][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -850,9 +867,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[84][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[84][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[84][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[84][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[84][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[84][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 85 DSK
 	m_stFrame[85][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[85][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[85][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -860,9 +878,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[85][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[85][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[85][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[85][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[85][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[85][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	//86 HBT
 	m_stFrame[86][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[86][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[86][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -870,9 +889,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[86][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[86][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[86][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[86][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[86][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[86][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 87 Crossbow turret
 	m_stFrame[87][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[87][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[87][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -880,9 +900,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[87][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[87][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[87][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[87][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[87][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[87][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 88 Barbarian
 	m_stFrame[88][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[88][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[88][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -890,9 +911,10 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[88][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[88][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[88][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[88][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[88][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[88][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 89 Ancient Great Cannon
 	m_stFrame[89][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[89][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[89][DEF_OBJECTMOVE].m_sFrameTime = 90;
@@ -900,17 +922,19 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[89][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[89][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[89][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[89][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[89][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[89][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
+	// 90 Gail
 	m_stFrame[90][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[90][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 
+	// 91 Gate
 	m_stFrame[91][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[91][DEF_OBJECTSTOP].m_sMaxFrame = 7;
 	m_stFrame[91][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[91][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[91][DEF_OBJECTDYING].m_sFrameTime = 180;
+	m_stFrame[91][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
 	m_stFrame[91][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	m_stFrame[92][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -920,8 +944,8 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[92][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[92][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[92][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[92][DEF_OBJECTDYING].m_sFrameTime = 180;
-	m_stFrame[92][DEF_OBJECTDYING].m_sMaxFrame = 15 + 3;
+	m_stFrame[92][DEF_OBJECTDYING].m_sFrameTime = 180 - DEF_NPC_DEAD_TIME;
+	m_stFrame[92][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3; // 15
 
 	m_stFrame[93][DEF_OBJECTSTOP].m_sFrameTime = 250;
 	m_stFrame[93][DEF_OBJECTSTOP].m_sMaxFrame = 3;
@@ -930,7 +954,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[93][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[93][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[93][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[93][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[93][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[93][DEF_OBJECTDYING].m_sMaxFrame = 9;
 
 	m_stFrame[94][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -940,7 +964,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[94][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[94][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[94][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[94][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[94][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME - 2;
 	m_stFrame[94][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	m_stFrame[95][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -950,7 +974,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[95][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[95][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[95][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[95][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[95][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[95][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	m_stFrame[96][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -960,7 +984,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[96][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[96][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[96][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[96][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[96][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[96][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	m_stFrame[97][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -970,7 +994,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[97][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[97][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[97][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[97][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[97][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[97][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	m_stFrame[98][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -980,7 +1004,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[98][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[98][DEF_OBJECTDAMAGE].m_sFrameTime = 100;
 	m_stFrame[98][DEF_OBJECTDAMAGE].m_sMaxFrame = 7;
-	m_stFrame[98][DEF_OBJECTDYING].m_sFrameTime = 150;
+	m_stFrame[98][DEF_OBJECTDYING].m_sFrameTime = 150 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[98][DEF_OBJECTDYING].m_sMaxFrame = 7 + 3;
 
 	m_stFrame[99][DEF_OBJECTSTOP].m_sFrameTime = 250;
@@ -990,7 +1014,7 @@ CMapData::CMapData(class CGame * pGame)
 	m_stFrame[99][DEF_OBJECTATTACK].m_sMaxFrame = 7;
 	m_stFrame[99][DEF_OBJECTDAMAGE].m_sFrameTime = 120;
 	m_stFrame[99][DEF_OBJECTDAMAGE].m_sMaxFrame = 3 + 4;
-	m_stFrame[99][DEF_OBJECTDYING].m_sFrameTime = 100;
+	m_stFrame[99][DEF_OBJECTDYING].m_sFrameTime = 100 - DEF_NPC_DEAD_TIME / 2;
 	m_stFrame[99][DEF_OBJECTDYING].m_sMaxFrame = 9;
 }
 
