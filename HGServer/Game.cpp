@@ -7525,6 +7525,10 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			}
 		}
 
+		else if (memcmp(cp, "/criticals", 10) == 0) {
+			PlayerOrder_Criticals(iClientH);
+		}
+
 		else if (memcmp(cp, "/beginheldenian ", 16) == 0)	//m_iAdminLevelSpecialEvents
 		{	
 			if ((m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
@@ -24494,6 +24498,23 @@ void CGame::AdminOrder_BanPj(int iClientH, char* pData, DWORD dwMsgSize) // MORL
 		}
 	}
 	delete pStrTok;
+}
+
+void CGame::PlayerOrder_Criticals(int iClientH)
+{
+	if (m_pClientList[iClientH] == NULL) return;
+	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");
+	if (m_pClientList[iClientH]->m_iSuperAttackLeft < 1000 && m_pClientList[iClientH]->m_iGizonItemUpgradeLeft >= 10 && dwGoldCount >= 40000)
+	{
+		m_pClientList[iClientH]->m_iSuperAttackLeft += 500;
+		if (m_pClientList[iClientH]->m_iSuperAttackLeft > 1000) m_pClientList[iClientH]->m_iSuperAttackLeft = 1000;
+		SetItemCount(iClientH, "Gold", dwGoldCount - 40000);
+		m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 10;
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
+		ShowClientMsg(iClientH, "You've received 500 Criticals!");
+	}
+	else ShowClientMsg(iClientH, "Max Crits 1000 - Req 10 Majestics & 40k Gold");
 }
 
 void CGame::PlayerOrder_ChangeCity(int iClientH, BOOL bChange) 

@@ -6505,7 +6505,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = -(((m_sViewPointX / 32) + 12) - sX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 6:	 // Energy Bolt
@@ -6530,7 +6530,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 2, sDist, lPan);
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 7: // Magic Missile Explosion
@@ -6651,7 +6651,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 20:
@@ -6691,7 +6691,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist*2);
+			//SetCameraShakingEffect(sDist*2);
 			break;
 
 		case 31: // Mass-Fire-Strike (called 3 times)
@@ -6716,7 +6716,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 32: //
@@ -6750,7 +6750,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 35: // Snoopy: rajout (pour Mass Magic-Missile)
@@ -6774,7 +6774,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist*2);
+			//SetCameraShakingEffect(sDist*2);
 			break;
 
 		case 36: // Snoopy: Rajout (pour Mass Magic-Missile)
@@ -6798,7 +6798,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 40: //
@@ -6899,7 +6899,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = ((sX - m_sViewPointX)-320)*30;
 #endif
-			if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
+			//if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
 			PlaySound('E', 47, sDist, lPan);
 			break;
 
@@ -7018,7 +7018,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = -(((m_sViewPointX / 32) + 12) - sX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist, 2);
+			//SetCameraShakingEffect(sDist, 2);
 			break;
 
 		case 62: //
@@ -7066,7 +7066,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = -(((m_sViewPointX / 32) + 12) - sX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist, 2);
+			//SetCameraShakingEffect(sDist, 2);
 			break;
 
 		case 67: // Crusade's MS fire + smoke ?
@@ -7150,7 +7150,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 72: // Blizzard
@@ -7173,7 +7173,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = ((sX - m_sViewPointX)-320)*30;
 #endif
-			if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
+			//if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
 			PlaySound('E', 47, sDist, lPan);
 			break;
 
@@ -7194,12 +7194,12 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 		case 75: //ice golem
 		case 76: //ice golem
 		case 77: //ice golem
-			m_pEffectList[i]->m_mX     = sX;
+			/*m_pEffectList[i]->m_mX     = sX;
 			m_pEffectList[i]->m_mY     = sY;
 			m_pEffectList[i]->m_dX = dX;
 			m_pEffectList[i]->m_dY = dY;
 			m_pEffectList[i]->m_cMaxFrame   = 16;
-			m_pEffectList[i]->m_dwFrameTime = 40;
+			m_pEffectList[i]->m_dwFrameTime = 40;*/
 			break;
 
 		case 80: // Snoopy: rajoué, implémenté en dernier ds la v351
@@ -7218,7 +7218,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 
 		case 81: //  Snoopy: Rajout (StormBlade)
@@ -7364,9 +7364,9 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 		case 138: // Tremor.
 			lPan = -(((m_sViewPointX / 32) + 12) - dX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			SetCameraShakingEffect(sDist, 2);
+			//SetCameraShakingEffect(sDist, 2);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
+			/*bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
@@ -7379,7 +7379,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
+			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);*/
 			m_pEffectList[i]->m_cMaxFrame   = 2;
 			m_pEffectList[i]->m_dwFrameTime = 10;
 			break;
@@ -7466,7 +7466,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(((m_sViewPointX / 32) + 12) - dX)*1000;
 			PlaySound('E', 4, sDist, lPan);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
+			/*bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
@@ -7479,7 +7479,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
+			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);*/
 			m_pEffectList[i]->m_cMaxFrame   = 1;
 			m_pEffectList[i]->m_dwFrameTime = 10;
 			break;
@@ -7620,7 +7620,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			SetCameraShakingEffect(sDist);
+			//SetCameraShakingEffect(sDist);
 			break;
 		case 200: //
 		case 201: //
@@ -24653,6 +24653,12 @@ void CGame::OnKeyUp(WPARAM wParam)
 		
 		break;
 
+	case 67: // 'C'
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus))
+		{	bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/criticals"); // centu
+		}
+		break;
+
 	case 88: // 'X' // Snoopy: mimics VK_F12 Logout Window
 		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{	if (m_bIsDialogEnabled[19] == FALSE)
@@ -31722,12 +31728,12 @@ MOTION_COMMAND_PROCESS:;
 				if (m_pChatMsgList[i] == NULL)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, "-%dPts!", m_sDamageMoveAmount);
+					wsprintf(cTxt, "-%dHp!", m_sDamageMoveAmount);
 
 					int iFontType;
 					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 120))        iFontType = 21;
-					else if ((m_sDamageMoveAmount >= 120) && (m_sDamageMoveAmount < 600)) iFontType = 22;
-					else if ((m_sDamageMoveAmount >= 600) || (m_sDamageMoveAmount < 0))    iFontType = 23;
+					else if ((m_sDamageMoveAmount >= 120) && (m_sDamageMoveAmount < 300)) iFontType = 22;
+					else if (m_sDamageMoveAmount >= 300) iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
@@ -32277,13 +32283,13 @@ void CGame::UpdateScreen_OnGame()
 	sVPXsave = m_sViewPointX;
 	sVPYsave = m_sViewPointY;
 
-	if ((m_iCameraShakingDegree > 0) && (iUpdateRet != 0))
+	/*if ((m_iCameraShakingDegree > 0) && (iUpdateRet != 0))
 	{
 		m_sViewPointX += m_iCameraShakingDegree - (rand() % m_iCameraShakingDegree * 2);
 		m_sViewPointY += m_iCameraShakingDegree - (rand() % m_iCameraShakingDegree * 2);
 		m_iCameraShakingDegree--;
 		if (m_iCameraShakingDegree <= 0) m_iCameraShakingDegree = 0;
-	}
+	}*/
 
 	sPivotX = m_pMapData->m_sPivotX;
 	sPivotY = m_pMapData->m_sPivotY;

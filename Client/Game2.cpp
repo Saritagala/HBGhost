@@ -1340,11 +1340,11 @@ void CGame::MotionEventHandler(char* pData)
 			{	/* Showing real damage done to NPCs instead of Critical!
 				Credit goes to: 50Cent, SleeQ, Matt */
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "-%dPts!", iDamage);
+				wsprintf(cTxt, "-%dHp!", iDamage);
 				int iFontType;
 				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
-				else if ((iDamage >= 120) && (iDamage < 600)) iFontType = 22;
-				else if ((iDamage >= 600) || (iDamage < 0))    iFontType = 23;
+				else if ((iDamage >= 120) && (iDamage < 300)) iFontType = 22;
+				else if (iDamage >= 300)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1373,11 +1373,11 @@ void CGame::MotionEventHandler(char* pData)
 			{	/* Showing real damage done to NPCs instead of Critical!
 				Credit goes to: 50Cent, SleeQ, Matt */
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "-%dPts!", iDamage);
+				wsprintf(cTxt, "-%dHp!", iDamage);
 				int iFontType;
 				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
-				else if ((iDamage >= 120) && (iDamage < 600)) iFontType = 22;
-				else if ((iDamage >= 600) || (iDamage < 0))    iFontType = 23;
+				else if ((iDamage >= 120) && (iDamage < 300)) iFontType = 22;
+				else if (iDamage >= 300)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -17799,10 +17799,10 @@ BOOL CGame::bEffectFrameCounter()
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
 					}
-					else if (m_pEffectList[i]->m_cFrame == 11)
+					/*else if (m_pEffectList[i]->m_cFrame == 11)
 					{
 						SetCameraShakingEffect(m_pEffectList[i]->m_iV1, 2);
-					}
+					}*/
 					break;
 
 				case 71:

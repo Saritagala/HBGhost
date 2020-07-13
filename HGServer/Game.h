@@ -100,6 +100,8 @@ public:
 
 //private:
 
+	void PlayerOrder_Criticals(int iClientH);
+
 	int m_iCTFEventFlagHolder[2], m_iCTFEventFlag[2];
 	char m_cCFTEventCount[2];
 	void UpdateEventStatus();
