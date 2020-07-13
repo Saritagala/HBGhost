@@ -1266,6 +1266,11 @@ public:
 	void DlgBoxClick_Chat(short msX, short msY);
 	short chatmode = 99;
 	void DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB);
+
+	void NotifyPlayerAttributes(char* pData);
+	int m_iTotalDR, m_iHitRatio, m_iTotalMR, m_iAddHP, m_iAddMP, m_iManaSaveRatio, m_iAddAbsPD, m_iAddAbsMD, m_iAddAbsAir, m_iAddAbsEarth, m_iAddAbsFire;
+	int	m_iAddAbsWater, m_iAddPhysicalDamage, m_iAddMagicalDamage, m_iMinAP_SM, m_iMinAP_L, m_iMaxAP_SM, m_iMaxAP_L, m_iArmorPA, m_iLeggsPA;
+	int	m_iBerkPA, m_iHelmPA, m_iCapePA, m_iShieldPA;
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 

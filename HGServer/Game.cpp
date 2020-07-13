@@ -567,7 +567,53 @@ BOOL CGame::bInit()
 		m_stHeldenianSchedule[i].StartiMinute = -1;
 	}
 
-	
+	//Magn0S:: New events schedules
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stGladArenaSchedule[i].iDay = -1;
+		m_stGladArenaSchedule[i].iHour = -1;
+		m_stGladArenaSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stCTFSchedule[i].iDay = -1;
+		m_stCTFSchedule[i].iHour = -1;
+		m_stCTFSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stInvasionSchedule[i].iDay = -1;
+		m_stInvasionSchedule[i].iHour = -1;
+		m_stInvasionSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stCandyFurySchedule[i].iDay = -1;
+		m_stCandyFurySchedule[i].iHour = -1;
+		m_stCandyFurySchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stBeholderSchedule[i].iDay = -1;
+		m_stBeholderSchedule[i].iHour = -1;
+		m_stBeholderSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stBagProtectSchedule[i].iDay = -1;
+		m_stBagProtectSchedule[i].iHour = -1;
+		m_stBagProtectSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stTeamArenaSchedule[i].iDay = -1;
+		m_stTeamArenaSchedule[i].iHour = -1;
+		m_stTeamArenaSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stShinningSchedule[i].iDay = -1;
+		m_stShinningSchedule[i].iHour = -1;
+		m_stShinningSchedule[i].iMinute = -1;
+	}
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		m_stTPDungeonSchedule[i].iDay = -1;
+		m_stTPDungeonSchedule[i].iHour = -1;
+		m_stTPDungeonSchedule[i].iMinute = -1;
+	}
+
 	for (i = 0; i < DEF_MAXADMINS; i++) {
 		ZeroMemory(m_stAdminList[i].m_cGMName, sizeof(m_stAdminList[i].m_cGMName));
 	}
@@ -7321,7 +7367,9 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		//Magn0S:: Added fragile itens
 		else if (memcmp(cp, "/fragile ", 8) == 0) {
 			AdminOrder_CreateFragileItem(iClientH, cp, dwMsgSize - 21);
-			
+		}
+		else if (memcmp(cp, "/check", 6) == 0) {
+			NotifyPlayerAttributes(iClientH);
 		}
 
 		else if (memcmp(cp, "/enableadmincommand ", 20) == 0) {
@@ -7330,7 +7378,6 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 		else if (memcmp(cp, "/monstercount", 13) == 0) {
 			AdminOrder_MonsterCount(iClientH,cp,dwMsgSize - 21);
-			
 		}
 
 
@@ -18155,10 +18202,208 @@ void CGame::bReadScheduleConfigFile(char *pFn)
 					break;
 
 				case 8:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Gladiator Arena schedule!");
+							return;
+						}
+						m_stGladArenaSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stGladArenaSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stGladArenaSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
 					cReadModeA = 0;
 					break;
 
 				case 9:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many CTF schedule!");
+							return;
+						}
+						m_stCTFSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stCTFSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stCTFSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 10:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Invasion schedule!");
+							return;
+						}
+						m_stInvasionSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stInvasionSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stInvasionSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 11:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Candu Fury schedule!");
+							return;
+						}
+						m_stCandyFurySchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stCandyFurySchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stCandyFurySchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 12:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Beholder schedule!");
+							return;
+						}
+						m_stBeholderSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stBeholderSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stBeholderSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 13:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Bag Protect schedule!");
+							return;
+						}
+						m_stBagProtectSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stBagProtectSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stBagProtectSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 14:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Team Arena schedule!");
+							return;
+						}
+						m_stTeamArenaSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stTeamArenaSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stTeamArenaSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 15:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many Shinning schedule!");
+							return;
+						}
+						m_stShinningSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stShinningSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stShinningSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
+					iIndex++;
+					cReadModeA = 0;
+					break;
+
+				case 16:
+					switch (cReadModeB) {
+					case 1:
+						if (iIndex >= DEF_MAXSCHEDULE) {
+							PutLogList("(!) WARNING! Too many TP Dungeon schedule!");
+							return;
+						}
+						m_stTPDungeonSchedule[iIndex].iDay = atoi(token);
+						cReadModeB = 2;
+						break;
+					case 2:
+						m_stTPDungeonSchedule[iIndex].iHour = atoi(token);
+						cReadModeB = 3;
+						break;
+					case 3:
+						m_stTPDungeonSchedule[iIndex].iMinute = atoi(token);
+						cReadModeB = 0;
+						break;
+					}
 					iIndex++;
 					cReadModeA = 0;
 					break;
@@ -18187,6 +18432,42 @@ void CGame::bReadScheduleConfigFile(char *pFn)
 				}
 				if (memcmp(token, "heldenian-server-name", 21) == 0) {
 					cReadModeA = 7;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "glad-arena", 10) == 0) {
+					cReadModeA = 8;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "ctf-event", 9) == 0) {
+					cReadModeA = 9;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "invasion-schedule", 17) == 0) {
+					cReadModeA = 10;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "candy-schedule", 14) == 0) {
+					cReadModeA = 11;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "beholder-schedule", 17) == 0) {
+					cReadModeA = 12;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "bag-protection", 14) == 0) {
+					cReadModeA = 13;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "team-arena", 10) == 0) {
+					cReadModeA = 14;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "shinning-schedule", 17) == 0) {
+					cReadModeA = 15;
+					cReadModeB = 1;
+				}
+				if (memcmp(token, "tpdungeon-schedule", 18) == 0) {
+					cReadModeA = 16;
 					cReadModeB = 1;
 				}
 			}
@@ -27222,6 +27503,10 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		}
 		break;
 
+	case 27:
+		NotifyPlayerAttributes(iClientH);
+		break;
+
 	case 28: // Teleport Request
 		if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
@@ -27248,7 +27533,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		break;
 
 
-		//----------Admin Commands--------------------------------------------------------------------------------
+	//----------Admin Commands--------------------------------------------------------------------------------
 	case 30: // Active GM Comnmand
 		if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
@@ -28302,4 +28587,144 @@ void CGame::LearnAllMagics(int iClientH)
 		}
 	}
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS, NULL, NULL, NULL, NULL);
+}
+
+//Magn0S:: Set Map Restriction notification
+void CGame::NotifyPlayerAttributes(int iClientH)
+{
+	short* sps;
+	DWORD* dwp;
+	WORD* wp;
+	char* cp;
+	int* ip;
+	bool* bp;
+
+	auto player = m_pClientList[iClientH];
+
+	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+
+	auto pBuffer = new char[DEF_MSGBUFFERSIZE + 1];
+	ZeroMemory(pBuffer, DEF_MSGBUFFERSIZE + 1);
+
+	dwp = (DWORD*)(pBuffer + DEF_INDEX4_MSGID);
+	*dwp = MSGID_PLAYER_ATTR;
+	wp = (WORD*)(pBuffer + DEF_INDEX2_MSGTYPE);
+	*wp = DEF_MSGTYPE_CONFIRM;
+
+	cp = (char*)(pBuffer + DEF_INDEX2_MSGTYPE + 2);
+
+	/*int  m_iHitRatio_ItemEffect_SM; // SNOOPY Added this again
+	int  m_iHitRatio_ItemEffect_L;*/
+
+	ip = (int*)cp;
+	*ip = player->m_iDefenseRatio + player->m_iAddDR;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = player->m_iHitRatio + player->m_iAddAR + player->m_iMagicHitRatio_ItemEffect;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddResistMagic + player->m_iAddMR;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddHP;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddMP;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iManaSaveRatio;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	*ip = player->m_iAddAbsPD;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddAbsMD;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddAbsAir;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddAbsEarth;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddAbsFire;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddAbsWater;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	*ip = player->m_iAddPhysicalDamage;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iAddMagicalDamage;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	*ip = player->m_iMinAP_SM;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iMinAP_L;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iMaxAP_SM;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iMaxAP_L;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY];
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] + player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS];
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS];
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD];
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK];
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = player->m_iDamageAbsorption_Shield;
+	cp += 2;
+	//-------------------------------------------
+
+	auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 60);
+	switch (iRet) {
+	case DEF_XSOCKEVENT_QUENEFULL:
+	case DEF_XSOCKEVENT_SOCKETERROR:
+	case DEF_XSOCKEVENT_CRITICALERROR:
+	case DEF_XSOCKEVENT_SOCKETCLOSED:
+		DeleteClient(iClientH, TRUE, TRUE, TRUE, FALSE); // added TRUE (4)
+		PutLogList("HERE 4A");
+		if (pBuffer != NULL) delete[] pBuffer;
+		return;
+	}
+
+	if (pBuffer != NULL) delete[] pBuffer;
 }

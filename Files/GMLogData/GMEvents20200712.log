@@ -1,0 +1,20 @@
+2020:07:12:16:09:26	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:12:16:09:32	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/createitem KlonessHammer"
+2020:07:12:16:09:32	(10.0.0.104) GM Order(Magn0S[GM]): Create ItemName(KlonessHammer)
+2020:07:12:16:09:55	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/createitem UltimateAresCape"
+2020:07:12:16:09:55	(10.0.0.104) GM Order(Magn0S[GM]): Create ItemName(UltimateAresCape)
+2020:07:12:16:09:58	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/createitem UltimateElvCape"
+2020:07:12:16:09:58	(10.0.0.104) GM Order(Magn0S[GM]): Create ItemName(UltimateElvCape)
+2020:07:12:21:46:41	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/check"
+2020:07:12:21:46:57	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/check "
+2020:07:12:21:51:23	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/check"
+2020:07:12:21:51:32	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/check"
+2020:07:12:22:49:07	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):""
+2020:07:12:22:49:10	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:12:22:49:17	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/createitem NecklaceOfXelima"
+2020:07:12:22:49:17	(10.0.0.104) GM Order(Magn0S[GM]): Create ItemName(NecklaceOfXelima)
+2020:07:12:22:50:42	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/setcoins Magn0S[GM] 200"
+2020:07:12:22:50:49	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/setcoins Magn0S[GM] 200"
+2020:07:12:22:51:03	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/setcoin Magn0S[GM] 210"
+2020:07:12:23:13:25	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/checkrep"
+2020:07:12:23:13:31	Loc(cityhall_1) IP(10.0.0.104) GM(Magn0S[GM]):"/checkrep Magn0S[GM]"

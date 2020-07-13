@@ -21683,3 +21683,110 @@ void CGame::ResetValues()
 
 	bReadGameConfigFile("GameConfig.cfg");
 }
+
+// Magn0S
+void CGame::NotifyPlayerAttributes(char* pData)
+{
+	char* cp;
+	int  * ip;
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	ip = (int*)cp;
+	m_iTotalDR = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	m_iHitRatio = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	m_iTotalMR = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	m_iAddHP = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddMP = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iManaSaveRatio = *ip;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	m_iAddAbsPD = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddAbsMD = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddAbsAir = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddAbsEarth = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddAbsFire = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddAbsWater = *ip;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	m_iAddPhysicalDamage = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iAddMagicalDamage = *ip;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	m_iMinAP_SM = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iMinAP_L = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iMaxAP_SM = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iMaxAP_L = *ip;
+	cp += 2;
+	//-------------------------------------------
+	ip = (int*)cp;
+	m_iArmorPA = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iLeggsPA = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iBerkPA = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iHelmPA = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iCapePA = *ip;
+	cp += 2;
+
+	ip = (int*)cp;
+	m_iShieldPA = *ip;
+	cp += 2;
+	//-------------------------------------------
+
+}

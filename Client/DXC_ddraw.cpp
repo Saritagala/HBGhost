@@ -553,69 +553,24 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 	WORD * pDst, wValue;
 	int ix, iy;
 
-	pDst = (WORD *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
-
-//Magn0S:: Added to fix drawshadow bug (remove from legion)
-#ifdef RES_HIGH
-	if (dX >= 800)
-		dX = 800 - 1;
-
-	if (dY >= 600)
-		dY = 600 - 1;
-
-	if (sX >= 800)
-		return;
-
-	if (sY >= 600)
-		return;
-#else
-	if (dX >= 640) 
-		dX = 640 - 1;
-	
-	if (sX >= 640)
-		return;
-
-	if (dY >= 480)
-		dY = 480 - 1;
-
-	if (sY >= 480)
-		return;
-
-#endif
-
-	if (dX < 0)
-		return;
+	//pDst = (WORD *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 
 	if (sX < 0)
 		sX = 0;
 
-	if (dY < 0)
-		return;
-
-	if (sY < 0)
+	if (sY <= 0) 
 		sY = 0;
 
+	if (dX >= 800)
+		dX = dX - (dX - 800);
 
-	if (border) {
-		int R, G, B;
-		R = 180;
-		G = 180;
-		B = 180;
-
-		G_pGame->DrawBorder(sX -1, sY, dX - 1, sY, R, G, B); // 1ª Reta
-		G_pGame->DrawBorder(dX, sY, dX, dY - 1, R, G, B);  //Linha direita
-		
-
-		G_pGame->DrawBorder(sX, dY, dX - 1, dY, R, G, B);  // 2ª Reta
-		G_pGame->DrawBorder(sX, sY, sX, dY - 1, R, G, B);  //Linha Esquerda
-
-	//	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
-		//m_lTransRB2
-	}
+	if (dY >= 600)
+		dY = dY - (dY - 600);
 
 	if (iType == 0) {
 		switch (m_cPixelFormat) {
 		case 1:
+			pDst = (WORD*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 			for (iy = 0; iy <= (dY - sY); iy++) {
 				for (ix = 0; ix <= (dX - sX); ix++) 
 					pDst[ix] = (pDst[ix] & 0xf7de) >> 1; 	
@@ -625,6 +580,7 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 			break;
 
 		case 2:
+			pDst = (WORD*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 			for (iy = 0; iy <= (dY - sY); iy++) {
 				for (ix = 0; ix <= (dX - sX); ix++) 
 					pDst[ix] = (pDst[ix] & 0x7bde) >> 1;
@@ -651,12 +607,30 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 			break;
 		}
 		
+		pDst = (WORD*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 		for (iy = 0; iy <= (dY - sY); iy++) {
-			for (ix = 0; ix <= (dX - sX); ix++) 
-				pDst[ix] = wValue; 	
-				
+			for (ix = 0; ix <= (dX - sX); ix++)
+				pDst[ix] = wValue;
+
 			pDst += m_sBackB4Pitch;
 		}
+	}
+
+	if (border) {
+		int R, G, B;
+		R = 5;
+		G = 5;
+		B = 5;
+
+		G_pGame->DrawBorder(sX - 1, sY, dX - 1, sY, R, G, B); // 1ª Reta
+		G_pGame->DrawBorder(dX, sY, dX, dY - 1, R, G, B);  //Linha direita
+
+
+		G_pGame->DrawBorder(sX, dY, dX - 1, dY, R, G, B);  // 2ª Reta
+		G_pGame->DrawBorder(sX, sY, sX, dY - 1, R, G, B);  //Linha Esquerda
+
+	//	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
+		//m_lTransRB2
 	}
 }
 

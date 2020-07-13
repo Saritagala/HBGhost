@@ -938,7 +938,60 @@ public:
 		int StartiMinute;
 	} m_stHeldenianSchedule[DEF_MAXHELDENIAN];
 
-	
+	//Magn0S:: Added Schedules for events
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stGladArenaSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stCTFSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stInvasionSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stCandyFurySchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stBeholderSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stBagProtectSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stTeamArenaSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stShinningSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stTPDungeonSchedule[DEF_MAXSCHEDULE];
 
 	int m_iTotalMiddleCrusadeStructures;
 
@@ -1151,6 +1204,8 @@ public:
 	void AdminOrder_CreateFragileItem(int iClientH, char* pData, DWORD dwMsgSize);
 
 	void LearnAllMagics(int iClientH);
+
+	void NotifyPlayerAttributes(int iClientH);
 };
 
 #endif // !defined(AFX_GAME_H__C3D29FC5_755B_11D2_A8E6_00001C7030A6__INCLUDED_)

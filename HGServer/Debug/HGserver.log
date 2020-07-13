@@ -1,0 +1,109 @@
+﻿  Apocalypse.cpp
+  BuildItem.cpp
+  CaptureTheFlag.cpp
+  Client.cpp
+  Crusade.cpp
+  DebugDialog.cpp
+  DelayEvent.cpp
+  DynamicObject.cpp
+  Fish.cpp
+  Game.cpp
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(1481,16): warning C4101: 'iMapSide2': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(3119,15): warning C4101: 'pItem': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(3118,7): warning C4101: 'bIsLevelUp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(8339,9): warning C4101: 'dwp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(8339,14): warning C4101: 'dwTimeRcv': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(8341,6): warning C4101: 'iRet': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9355,27): warning C4101: 'KilledMessage2': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9355,87): warning C4101: 'KilledMessage5': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9355,107): warning C4101: 'KilledMessage6': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9355,7): warning C4101: 'KilledMessage1': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9356,15): warning C4101: 'KMRand': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9355,67): warning C4101: 'KilledMessage4': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(9355,47): warning C4101: 'KilledMessage3': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(11432,38): warning C4101: 'cDamageMod': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(11969,54): warning C4101: 'cDamageMod': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(12447,38): warning C4101: 'cDamageMod': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16268,30): warning C4101: 'len': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16305,10): warning C4101: 'dwp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16299,11): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16306,10): warning C4101: 'wp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16304,9): warning C4101: 'iRet': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16303,11): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(16457,43): warning C4101: 'cTemp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(18905,44): warning C4101: 'cName': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(19340,106): warning C4101: 'cDamageMod': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(23245,87): warning C4101: 'iMapside2': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(24412,18): warning C4101: 'cName': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(26255,18): warning C4101: 'i': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(26323,8): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(26322,8): warning C4101: 'wp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(26324,7): warning C4101: 'cBuff': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(27815,7): warning C4101: 'ip': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(27811,9): warning C4101: 'sps': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(28060,7): warning C4101: 'ip': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(28056,9): warning C4101: 'sps': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(28172,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(28170,38): warning C4101: 'pTotal': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(28316,8): warning C4101: 'bp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Game.cpp(28311,9): warning C4101: 'sps': variável local não referenciada
+  Game2.cpp
+  GuildsMan.cpp
+  Heldenian.cpp
+  Item.cpp
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1321,9): warning C4101: 'dwp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1319,8): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1319,12): warning C4101: 'cData': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1323,8): warning C4101: 'wp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1318,17): warning C4101: 'iRet': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1322,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(1556,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(4766,8): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(4770,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(5232,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(5367,8): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(5366,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(5832,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(7159,8): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(7160,9): warning C4101: 'sp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(8232,9): warning C4101: 'dwp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(8234,8): warning C4101: 'cp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(8234,12): warning C4101: 'cData': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(8233,8): warning C4101: 'wp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(8231,6): warning C4101: 'iRet': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Item.cpp(8236,9): warning C4101: 'sp': variável local não referenciada
+  Magic.cpp
+  Map.cpp
+  Mineral.cpp
+  Misc.cpp
+  Msg.cpp
+  Npc.cpp
+  Gerando Código...
+  Compilando...
+  OccupyFlag.cpp
+  Party.cpp
+  Potion.cpp
+  Quest.cpp
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(609,19): warning C4101: 'i': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(660,14): warning C4101: 'iEraseReq': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(662,21): warning C4101: 'iExp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(660,25): warning C4101: 'i': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(661,15): warning C4101: 'pItem': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(799,6): warning C4101: 'iEraseReq': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(799,17): warning C4101: 'iExp': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(793,13): warning C4101: 'i': variável local não referenciada
+C:\Users\Junior\Desktop\HBGhost\HGServer\Quest.cpp(800,15): warning C4101: 'pItem': variável local não referenciada
+  Skill.cpp
+  StrategicPoint.cpp
+  StrTok.cpp
+  Team.cpp
+C:\Users\Junior\Desktop\HBGhost\HGServer\Team.cpp(331,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\Junior\Desktop\HBGhost\HGServer\Team.cpp(446,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  Teleport.cpp
+  TeleportLoc.cpp
+  TempNpcItem.cpp
+  Tile.cpp
+  wmain.cpp
+  XSocket.cpp
+  Gerando Código...
+  HGserver.vcxproj -> C:\Users\Junior\Desktop\HBGhost\HGServer\.\Debug\HGserver.exe
