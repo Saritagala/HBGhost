@@ -1,0 +1,13 @@
+[MAP-INFO]
+
+map-location  = team
+
+initial-point = 1  36 33
+initial-point = 2  76 31
+initial-point = 3  36 70
+initial-point = 4  62 70
+
+
+maximum-object = 0
+
+[END-MAP-INFO]

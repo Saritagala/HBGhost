@@ -18662,7 +18662,35 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 222 - shX, sY + 139 - shY, 65, m_dwCurTime);
 
 			}
+			/*else if (m_cMapIndex == 29) { // Procella
 
+				// Barlog
+				if (38 >= shX && 38 <= shX + 128 && 63 >= shY && 63 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 38 - shX, sY + 63 - shY, 70, m_dwCurTime);
+				// Unirocn
+				if (147 >= shX && 147 <= shX + 128 && 125>= shY && 125 <= shY + 128)
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 147 - shX, sY + 125 - shY, 32, m_dwCurTime);
+				//Plant
+				if (44 >= shX && 44 <= shX + 128 && 82 >= shY && 82 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 44 - shX, sY + 82 - shY, 60, m_dwCurTime);
+				//Master Mage Orc
+				if (37 >= shX && 37 <= shX + 128 && 176 >= shY && 176 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 37 - shX, sY + 176 - shY, 77, m_dwCurTime);
+				// Unicornios
+				if (190 >= shX && 190 <= shX + 128 && 99 >= shY && 99 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 190 - shX, sY + 99 - shY, 32, m_dwCurTime);
+				//Direboard
+				if (185 >= shX && 185 <= shX + 128 && 40 >= shY && 40 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 185 - shX, sY + 40 - shY, 62, m_dwCurTime);
+				//Beholder
+				if (131 >= shX && 131 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 131 - shX, sY + 36 - shY, 53, m_dwCurTime);
+				//Liche
+				if (90 >= shX && 90<= shX + 128 && 134 >= shY && 134 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 90 - shX, sY + 134 - shY, 30, m_dwCurTime);
+
+			}
+			*/
 
 		}
 
@@ -18826,6 +18854,29 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 
 
 			}
+			/*else if (m_cMapIndex == 29) { // Procella
+				// Barlog
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((38 * 128) / m_pMapData->m_sMapSizeX), sY + ((63 * 128) / m_pMapData->m_sMapSizeX), 70, m_dwCurTime);
+				// Unicorn
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((147 * 128) / m_pMapData->m_sMapSizeX), sY + ((184 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
+				// Plant
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((44 * 128) / m_pMapData->m_sMapSizeX), sY + ((82 * 128) / m_pMapData->m_sMapSizeX), 60, m_dwCurTime);
+				// Master Mage Orc
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((37 * 128) / m_pMapData->m_sMapSizeX), sY + ((176 * 128) / m_pMapData->m_sMapSizeX), 77, m_dwCurTime);
+				//Unicornios
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((199 * 128) / m_pMapData->m_sMapSizeX), sY + ((99 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
+				//Direboard
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((185 * 128) / m_pMapData->m_sMapSizeX), sY + ((40 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
+				//Beholder
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((131 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
+				//Liche
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((90 * 128) / m_pMapData->m_sMapSizeX), sY + ((134 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
+				
+
+
+			}
+			*/
+
 		}
 	}
 	if (cLB != 0) return;
