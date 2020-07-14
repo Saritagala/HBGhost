@@ -3064,6 +3064,16 @@ void CGame::UseMagic(int iMagicNo)
 	if (iMagicNo < 0 || iMagicNo >= 100) return;
 	if ((m_cMagicMastery[iMagicNo] == NULL) || (m_pMagicCfgList[iMagicNo] == NULL)) return;
 
+	// Centu - can't use Inv or AMP in Arena
+	if (strcmp(m_cMapName, "team") == 0 || strcmp(m_cMapName, "fightzone1") == 0)
+	{
+		if (iMagicNo == 32 || iMagicNo == 65)
+		{
+			AddEventList("You can't use this magic in this map.", 10);
+			return;
+		}
+	}
+
 	// Casting
 	if (m_iHP <= 0) return;
 	if (m_bIsGetPointingMode == TRUE) return;
@@ -4223,7 +4233,7 @@ void CGame::DKGlare(int iWeaponColor, int iWeaponIndex, int *iWeaponGlare)
 		*iWeaponGlare = 2;
 	}
 	else if (((iWeaponIndex >= DEF_SPRID_WEAPON_M + 64 * 32) && (iWeaponIndex < DEF_SPRID_WEAPON_M + 64 * 32 + 56)) //BBH
-		|| ((iWeaponIndex >= DEF_SPRID_WEAPON_M + 64 * 32) && (iWeaponIndex < DEF_SPRID_WEAPON_W + 64 * 32 + 56)))//BBH
+		|| ((iWeaponIndex >= DEF_SPRID_WEAPON_W + 64 * 32) && (iWeaponIndex < DEF_SPRID_WEAPON_W + 64 * 32 + 56)))//BBH
 	{
 		*iWeaponGlare = 1;
 	} // MORLA 2.6 - Agregado el efecto al Dark Knight Barbarian Hammer +15
@@ -8328,45 +8338,6 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	}
 }
 
-
-void CGame::NotifyMsg_UserJoin(char * pData)
-{
-
-	char  * cp, cCharName[21], cGuildName[22];
-	int   i, j;
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-
-	ZeroMemory(cCharName, sizeof(cCharName));
-	memcpy(cCharName, cp, 21);
-	cp += 21;
-
-	ZeroMemory(cGuildName, sizeof(cGuildName));
-	memcpy(cGuildName, cp, 22);
-	cp += 22;
-
-	// check for existing player
-	for (i = 0; i < DEF_MAXMENUITEMS; i++)
-	{
-		if (m_pOnlineUsersList[i] != NULL)
-		{
-			if (memcmp(m_pOnlineUsersList[i]->m_cName, cCharName, 21) == 0) return;
-		}
-	}
-
-
-	for (j = 0; j < DEF_MAXMENUITEMS; j++)
-	{
-		if (m_pOnlineUsersList[j] == NULL)
-		{
-			m_pOnlineUsersList[j] = new class OnlineUser;
-			break;
-		}
-	}
-
-	memcpy(m_pOnlineUsersList[j]->m_cName, cCharName, sizeof(cCharName));
-	memcpy(m_pOnlineUsersList[j]->m_cGuildName, cGuildName, sizeof(cGuildName));
-}
-
 // thx to kazin
 void CGame::ResponseOnlines(char * pData)
 {
@@ -12147,7 +12118,7 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 		break;
 
 	case 4: // talk to npc or unicorn
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 5);
+		/*DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 5);
 		switch (m_stDialogBoxInfo[20].sV3) {
 		case 21:
 			PutString(sX + 35, sY + 25, NPC_NAME_GUARD, RGB(45, 25, 25));//
@@ -12181,7 +12152,7 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 				PutString(sX + 125, sY + 55, DRAW_DIALOGBOX_NPCACTION_QUERY25, RGB(4, 0, 50));
 				PutString(sX + 126, sY + 55, DRAW_DIALOGBOX_NPCACTION_QUERY25, RGB(4, 0, 50));
 			}
-		}
+		}*/
 		break;
 
 	case 5: // Shop / BS
@@ -15274,7 +15245,7 @@ void CGame::DlgBoxClick_NpcActionQuery(short msX, short msY)
 		break;
 
 	case 4: // talk to npc or Unicorn
-		if ((m_bIsDialogEnabled[21] == FALSE) && (msX > sX + 125) && (msX < sX + 180) && (msY > sY + 55) && (msY < sY + 70))
+		/*if ((m_bIsDialogEnabled[21] == FALSE) && (msX > sX + 125) && (msX < sX + 180) && (msY > sY + 55) && (msY < sY + 70))
 		{
 			switch (m_stDialogBoxInfo[20].sV3) {
 			case 21: // Guard
@@ -15300,7 +15271,7 @@ void CGame::DlgBoxClick_NpcActionQuery(short msX, short msY)
 				break;
 			}
 		}
-		DisableDialogBox(20);
+		DisableDialogBox(20);*/
 		break;
 
 
@@ -18252,8 +18223,8 @@ BOOL CGame::bEffectFrameCounter()
 						bAddNewEffect(205, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 75, NULL, NULL, 0, 0);
 						bAddNewEffect(206, m_pEffectList[i]->m_sX - 7, m_pEffectList[i]->m_sY + 27, NULL, NULL, 0, 0);
 
-						bAddNewEffect(201, (rand() % 160) + 320, (rand() % 120) + 240, NULL, NULL, 0, 1);
-						bAddNewEffect(202, (rand() % 160) + 320, (rand() % 120) + 240, NULL, NULL, 0, 1);
+						bAddNewEffect(201, (rand() % 160) + 400, (rand() % 120) + 300, NULL, NULL, 0, 1);
+						bAddNewEffect(202, (rand() % 160) + 400, (rand() % 120) + 300, NULL, NULL, 0, 1);
 
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
@@ -18272,7 +18243,7 @@ BOOL CGame::bEffectFrameCounter()
 						bAddNewEffect(204, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 70, NULL, NULL, 0, 0);
 						bAddNewEffect(205, m_pEffectList[i]->m_sX - 10, m_pEffectList[i]->m_sY + 75, NULL, NULL, 0, 0);
 
-						bAddNewEffect(202, (rand() % 160) + 320, (rand() % 120) + 240, NULL, NULL, 0, 1);
+						bAddNewEffect(202, (rand() % 160) + 400, (rand() % 120) + 300, NULL, NULL, 0, 1);
 
 						delete m_pEffectList[i];
 						m_pEffectList[i] = NULL;
@@ -18662,35 +18633,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 222 - shX, sY + 139 - shY, 65, m_dwCurTime);
 
 			}
-			/*else if (m_cMapIndex == 29) { // Procella
 
-				// Barlog
-				if (38 >= shX && 38 <= shX + 128 && 63 >= shY && 63 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 38 - shX, sY + 63 - shY, 70, m_dwCurTime);
-				// Unirocn
-				if (147 >= shX && 147 <= shX + 128 && 125>= shY && 125 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 147 - shX, sY + 125 - shY, 32, m_dwCurTime);
-				//Plant
-				if (44 >= shX && 44 <= shX + 128 && 82 >= shY && 82 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 44 - shX, sY + 82 - shY, 60, m_dwCurTime);
-				//Master Mage Orc
-				if (37 >= shX && 37 <= shX + 128 && 176 >= shY && 176 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 37 - shX, sY + 176 - shY, 77, m_dwCurTime);
-				// Unicornios
-				if (190 >= shX && 190 <= shX + 128 && 99 >= shY && 99 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 190 - shX, sY + 99 - shY, 32, m_dwCurTime);
-				//Direboard
-				if (185 >= shX && 185 <= shX + 128 && 40 >= shY && 40 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 185 - shX, sY + 40 - shY, 62, m_dwCurTime);
-				//Beholder
-				if (131 >= shX && 131 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 131 - shX, sY + 36 - shY, 53, m_dwCurTime);
-				//Liche
-				if (90 >= shX && 90<= shX + 128 && 134 >= shY && 134 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 90 - shX, sY + 134 - shY, 30, m_dwCurTime);
-
-			}
-			*/
 
 		}
 
@@ -18854,29 +18797,6 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 
 
 			}
-			/*else if (m_cMapIndex == 29) { // Procella
-				// Barlog
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((38 * 128) / m_pMapData->m_sMapSizeX), sY + ((63 * 128) / m_pMapData->m_sMapSizeX), 70, m_dwCurTime);
-				// Unicorn
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((147 * 128) / m_pMapData->m_sMapSizeX), sY + ((184 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
-				// Plant
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((44 * 128) / m_pMapData->m_sMapSizeX), sY + ((82 * 128) / m_pMapData->m_sMapSizeX), 60, m_dwCurTime);
-				// Master Mage Orc
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((37 * 128) / m_pMapData->m_sMapSizeX), sY + ((176 * 128) / m_pMapData->m_sMapSizeX), 77, m_dwCurTime);
-				//Unicornios
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((199 * 128) / m_pMapData->m_sMapSizeX), sY + ((99 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
-				//Direboard
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((185 * 128) / m_pMapData->m_sMapSizeX), sY + ((40 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
-				//Beholder
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((131 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
-				//Liche
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((90 * 128) / m_pMapData->m_sMapSizeX), sY + ((134 * 128) / m_pMapData->m_sMapSizeX), 32, m_dwCurTime);
-				
-
-
-			}
-			*/
-
 		}
 	}
 	if (cLB != 0) return;
@@ -20980,8 +20900,8 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 							konieclinii = 1;
 							linie++;
 						}
-						if (linie - 1 < 13) {
-							strcpy(m_cFriends[linie - 1], buf);
+						if (linie - konieclinii < 13) {
+							strcpy(m_cFriends[linie - konieclinii], buf);
 							m_iTotalFriends++;
 						}
 					}

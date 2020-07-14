@@ -105,7 +105,7 @@ public:
 	int m_iCTFEventFlagHolder[2], m_iCTFEventFlag[2];
 	char m_cCFTEventCount[2];
 	void UpdateEventStatus();
-	void AdminOrder_SetEvent(int iClientH);
+	void AdminOrder_SetEvent();
 
 	void SendAlertMsg(int client, char* pMsg);
 
@@ -159,8 +159,6 @@ public:
 	void LocalStartApocalypse(DWORD dwApocalypseGUID);
 	void GlobalEndApocalypseMode(int iClientH);
 	void GlobalStartApocalypseMode(int iClientH, int iMode); // Changed by SNOOPY
-
-
 
 	// SNOOPY: Added Apocalypse functions
 	void GenerateApocalypseBoss(int MapIndex);
@@ -1140,6 +1138,13 @@ public:
 	int m_iHeldenianAresdenFlags, m_iHeldenianElvineFlags;
 	int m_iHeldenianAresdenLeftTower, m_iHeldenianElvineLeftTower;
 
+	DWORD dwCrusadeFinishTime;
+	void CrusadeEnd();
+
+	DWORD dwEventFinishTime;
+	void EventEnd();
+
+	void CityTeleport();
 
 	DWORD m_dwHeldenianWarTime;
 	DWORD m_dwHeldenianEndTime;
@@ -1170,7 +1175,7 @@ public:
 	//LifeX Fix Revive 14/10/2019
 	void AdminOrder_Revive(int iClientH, char * pData, DWORD dwMsgSize);
 
-	//Top server
+	//Top ek
 	int  aHBTopKills[16];
 	char  aHBTopClientH[16][11];
 	BOOL bReadTopPlayersFile(char* cFn);

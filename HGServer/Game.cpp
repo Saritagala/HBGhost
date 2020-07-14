@@ -764,6 +764,9 @@ BOOL CGame::bInit()
 	ZeroMemory(m_cHeldenianMapName, sizeof(m_cHeldenianMapName)); // new
 	m_bF10pressed = FALSE; // new
 
+	dwCrusadeFinishTime = 0;
+	dwEventFinishTime = 0;
+
 	m_dwCleanTime = dwTime;
 
 	return TRUE;
@@ -1144,9 +1147,14 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 					m_cCFTEventCount[0]++;
 					UpdateEventStatus();
 
-					m_pClientList[iClientH]->m_iEnemyKillCount += 100;
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
-
+					m_pClientList[iClientH]->m_iEnemyKillCount += 200;
+					if (m_pClientList[iClientH]->m_iEnemyKillCount > m_pClientList[iClientH]->m_iMaxEK)
+					{
+						m_pClientList[iClientH]->m_iMaxEK = m_pClientList[iClientH]->m_iEnemyKillCount;
+					}
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, m_pClientList[iClientH]->m_iMaxEK, NULL, NULL);
+					ShowClientMsg(iClientH, "You've received 200 EKs for holding the enemy flag!");
+					calcularTop15HB(iClientH);
 					m_iCTFEventFlagHolder[0] = -1;
 					SetIceFlag(iClientH, DEF_OWNERTYPE_PLAYER, FALSE);
 
@@ -1155,7 +1163,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 					
 					if (m_cCFTEventCount[0] == 10)
 					{
-						AdminOrder_SetEvent(iClientH);
+						AdminOrder_SetEvent();
 					}
 				}
 				break;
@@ -1168,9 +1176,14 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 					m_cCFTEventCount[1]++;
 					UpdateEventStatus();
 
-					m_pClientList[iClientH]->m_iEnemyKillCount += 100;
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
-
+					m_pClientList[iClientH]->m_iEnemyKillCount += 200;
+					if (m_pClientList[iClientH]->m_iEnemyKillCount > m_pClientList[iClientH]->m_iMaxEK)
+					{
+						m_pClientList[iClientH]->m_iMaxEK = m_pClientList[iClientH]->m_iEnemyKillCount;
+					}
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, m_pClientList[iClientH]->m_iMaxEK, NULL, NULL);
+					ShowClientMsg(iClientH, "You've received 200 EKs for holding the enemy flag!");
+					calcularTop15HB(iClientH);
 					m_iCTFEventFlagHolder[1] = -1;
 					SetIceFlag(iClientH, DEF_OWNERTYPE_PLAYER, FALSE);
 
@@ -1179,7 +1192,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 					
 					if (m_cCFTEventCount[1] == 10)
 					{
-						AdminOrder_SetEvent(iClientH);
+						AdminOrder_SetEvent();
 					}
 				}
 				break;
@@ -2698,6 +2711,12 @@ void CGame::OnTimer(char cType)
 		NoticeHandler();
 		SpecialEventHandler();
 		
+		if (m_bIsCTFEvent || bDeathmatch || c_team->bteam || bShinning || _drop_inhib || _candy_boost ||
+			_revelation || _city_teleport)
+		{
+			EventEnd();
+		}
+
 		//SNOOPY:Check if Apocalypse Gate nedd to be closed
 		OpenCloseApocalypseGate();
 		m_dwGameTime3 = dwTime;
@@ -2742,6 +2761,7 @@ void CGame::OnTimer(char cType)
 		//FishProcessor();
 		//FishGenerator();
 		SendCollectedMana();
+		if (m_bIsCrusadeMode) CrusadeEnd();
 		if ((m_bIsCrusadeMode == FALSE) && (m_bIsCrusadeWarStarter == TRUE)) CrusadeWarStarter();
 		if ((m_bIsApocalypseStarter == TRUE) && (m_bIsApocalypseMode == FALSE)) ApocalypseStarter();
 		if ((m_bIsHeldenianReady == TRUE) && (m_bIsHeldenianMode == FALSE)) HeldenianWarStarter();
@@ -2804,14 +2824,53 @@ void CGame::OnTimer(char cType)
 	}
 }
 
-void CGame::SendThunders()
+// Centu - Crusade end in 1h30
+void CGame::CrusadeEnd()
 {
-
-	for (int i = 0; i < DEF_MAXMAPS; i++)
-		if (m_pMapList[i] != NULL)
-			if (m_pMapList[i]->m_cWhetherStatus == 2 || m_pMapList[i]->m_cWhetherStatus == 3)
-				DoAbaddonThunderDamageHandler(i);
+	DWORD dwTime = timeGetTime();
+	if (dwTime < dwCrusadeFinishTime) return;
+	ManualEndCrusadeMode(0);
 }
+
+void CGame::EventEnd()
+{
+	DWORD dwTime = timeGetTime();
+	if (dwTime < dwEventFinishTime) return;
+
+	if (m_bIsCTFEvent)	AdminOrder_SetEvent();
+	if (bDeathmatch)	DeathmatchGame();
+	
+	if (c_team->bteam) 
+	{
+		c_team->bteam = false;
+		dwEventFinishTime = 0;
+		c_team->DisableEvent();
+		NotifyEvents();
+	}
+	
+	if (bShinning)		ManageShinning();
+	if (_city_teleport) CityTeleport();
+
+	if (_revelation)
+	{
+		dwEventFinishTime = 0;
+		_revelation = false;
+		NotifyEvents();
+	}
+	if (_candy_boost)
+	{
+		dwEventFinishTime = 0;
+		_candy_boost = false;
+		NotifyEvents();
+	}
+	if (_drop_inhib)
+	{
+		dwEventFinishTime = 0;
+		_drop_inhib = false;
+		NotifyEvents();
+	}
+}
+
 
 /*********************************************************************************************************************
 **  void CGame::OnTimer(char cType)																					**
@@ -7431,9 +7490,16 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			if (c_team->bteam) c_team->bteam = false; 
 			else c_team->bteam = true;
 
-			if (c_team->bteam) c_team->EnableEvent();
-			else c_team->DisableEvent();
-
+			if (c_team->bteam) {
+				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+				c_team->EnableEvent();
+			}
+			else
+			{
+				dwEventFinishTime = 0;
+				c_team->DisableEvent();
+			}
+			
 			NotifyEvents();
 		}
 
@@ -7517,11 +7583,12 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			}
 		}	
 
-		else if (memcmp(cp, "/ctf", 4) == 0) {
+		else if (memcmp(cp, "/ctf", 4) == 0) 
+		{
 			if ((m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 				&& (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == TRUE))
 			{
-				AdminOrder_SetEvent(iClientH);
+				AdminOrder_SetEvent();
 			}
 		}
 
@@ -7569,83 +7636,31 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 		// kazin
 		else if (memcmp(cp, "/candyboost", 11) == 0) {
-			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
+				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
 				_candy_boost = !_candy_boost;
 				NotifyEvents();
 			}
 		}
 		else if (memcmp(cp, "/revelation", 11) == 0) {
-			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
+				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
 				_revelation = !_revelation;
 				NotifyEvents();
 			}
 		}
 		else if (memcmp(cp, "/cityteleport", 13) == 0) {
-			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
-				_city_teleport = !_city_teleport;
-				NotifyEvents();
-
-				CMap* ares = nullptr;
-				CMap* elv = nullptr;
-
-				for (int i = 0; i < DEF_MAXMAPS; i++)
-				{
-					if (!m_pMapList[i])
-						continue;
-
-					if (std::string(m_pMapList[i]->m_cName) == "elvine")
-						elv = m_pMapList[i];
-					else if (std::string(m_pMapList[i]->m_cName) == "aresden")
-						ares = m_pMapList[i];
-				}
-
-				for (int i = 0; i < DEF_MAXTELEPORTLOC; i++)
-				{
-					if (_city_teleport)
-					{
-						if (elv->m_pTeleportLoc[i] &&
-							(std::string(elv->m_pTeleportLoc[i]->m_cDestMapName) == "middled1n"))
-						{
-							strcpy(elv->m_pTeleportLoc[i]->m_cDestMapName, "aresden");
-							elv->m_pTeleportLoc[i]->m_sDestX = 77;
-							elv->m_pTeleportLoc[i]->m_sDestY = 208;
-						}
-
-						if (ares->m_pTeleportLoc[i] &&
-							(std::string(ares->m_pTeleportLoc[i]->m_cDestMapName) == "middled1n"))
-						{
-							strcpy(ares->m_pTeleportLoc[i]->m_cDestMapName, "elvine");
-							ares->m_pTeleportLoc[i]->m_sDestX = 257;
-							ares->m_pTeleportLoc[i]->m_sDestY = 80;
-						}
-					}
-					else
-					{
-						if (elv->m_pTeleportLoc[i] &&
-							(std::string(elv->m_pTeleportLoc[i]->m_cDestMapName) == "aresden"))
-						{
-							strcpy(elv->m_pTeleportLoc[i]->m_cDestMapName, "middled1n");
-							elv->m_pTeleportLoc[i]->m_sDestX = 34;
-							elv->m_pTeleportLoc[i]->m_sDestY = 36;
-						}
-
-						if (ares->m_pTeleportLoc[i] &&
-							(std::string(ares->m_pTeleportLoc[i]->m_cDestMapName) == "elvine"))
-						{
-							strcpy(ares->m_pTeleportLoc[i]->m_cDestMapName, "middled1n");
-							ares->m_pTeleportLoc[i]->m_sDestX = 181;
-							ares->m_pTeleportLoc[i]->m_sDestY = 124;
-						}
-					}
-				}
+				CityTeleport();
 			}
 		}
 		else if (memcmp(cp, "/dropinhib", 10) == 0) {
-			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 4)
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
+				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
 				_drop_inhib = !_drop_inhib;
 				NotifyEvents();
 			}
@@ -7654,8 +7669,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (strcmp(cp, "/shinning") == 0)
 		{
 			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
-			if (bShinning) bShinning = false; 
-			else bShinning = true;
+			
 			ManageShinning();
 			NotifyEvents();
 		}
@@ -7679,7 +7693,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			}
 			ZeroMemory(cMsg, sizeof(cMsg));
 			wsprintf(cMsg, "Ares: %d | Elv: %d | Trav: %d | GM: %d", iAres, iElv, iTrav, iGM);
-			SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cMsg);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cMsg);
 			
 		}
 		
@@ -7691,7 +7705,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			AdminOrder_SetEk(iClientH, cp, dwMsgSize - 21);
 		}
 		else if (memcmp(cp, "/setcoin ", 9) == 0) {
-		AdminOrder_SetCoin(iClientH, cp, dwMsgSize - 21);
+			AdminOrder_SetCoin(iClientH, cp, dwMsgSize - 21);
 		}
 		else if (memcmp(cp, "/setmp ", 7) == 0) {
 			AdminOrder_SetMAJ(iClientH, cp, dwMsgSize - 21);
@@ -7703,7 +7717,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			AdminOrder_SetContrib(iClientH, cp, dwMsgSize - 21);
 		}
 		else if (memcmp(cp, "/gmlevel ", 9) == 0) {
-		AdminOrder_SetAdminLvl(iClientH, cp, dwMsgSize - 21);
+			AdminOrder_SetAdminLvl(iClientH, cp, dwMsgSize - 21);
 		}
 		/*else if (memcmp(cp, "/showdmg", 8) == 0) {
 			if (m_pClientList[iClientH]->bShowDmg == true) {
@@ -7772,7 +7786,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 		//Magn0S:: Add GM List
 		else if (memcmp(cp, "/addgm ", 7) == 0) {
-		AdminOrder_AddGM(iClientH, cp, dwMsgSize - 21);
+			AdminOrder_AddGM(iClientH, cp, dwMsgSize - 21);
 
 		}
 
@@ -7832,7 +7846,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 				case 2:	
 				case 3:	
 				case 4:	
-				case 5:	break;
+				case 5:	
 				case 6:	memcpy(cp, "a ", 2); break;
 				case 7:	
 				case 8:	memcpy(cp, "e ", 2); break;
@@ -7847,7 +7861,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 				case 2:	
 				case 3:	
 				case 4:	
-				case 5:	break;
+				case 5:	
 				case 6:	memcpy(cp, " c", 2); break;
 				case 7:	
 				case 8:	memcpy(cp, " s", 2); break;
@@ -9522,8 +9536,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 		if (iAttackerH == iClientH) return; // ÀÚÆøÀÌ´Ù.
 		// ÇÃ·¹ÀÌ¾î°¡ ÇÃ·¹ÀÌ¾î¸¦ Á×¿´´Ù¸é PKÀÎÁö ÀüÅõÁß ½Â¸®ÀÎÁö¸¦ ÆÇº°ÇÏ¿© °æÇèÄ¡¸¦ ¿Ã¸°´Ù. 
 
-		if (cAttackerType == DEF_OWNERTYPE_PLAYER)
-		{
+		
 			if (m_pClientList[iAttackerH] != NULL && m_pClientList[iClientH] != NULL)
 			{
 				if (m_pClientList[iAttackerH]->IsInMap("team") && m_pClientList[iClientH]->IsInMap("team"))
@@ -9532,7 +9545,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 					return;
 				}
 			}
-		}
+		
 
 		// Capture the Flag
 		if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0) {
@@ -9563,8 +9576,13 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 			m_pClientList[iAttackerH]->m_iDGKills++;
 			m_pClientList[iClientH]->m_iDGDeaths++;
 			
-			m_pClientList[iAttackerH]->m_iTotalDGKills++;
-			m_pClientList[iClientH]->m_iTotalDGDeaths++;									
+			m_pClientList[iAttackerH]->m_iEnemyKillCount += 5;
+			if (m_pClientList[iAttackerH]->m_iEnemyKillCount > m_pClientList[iAttackerH]->m_iMaxEK)
+			{
+				m_pClientList[iAttackerH]->m_iMaxEK = m_pClientList[iAttackerH]->m_iEnemyKillCount;
+			}
+			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iAttackerH]->m_iEnemyKillCount, m_pClientList[iAttackerH]->m_iMaxEK, NULL, NULL);
+			calcularTop15HB(iAttackerH);
 
 			DWORD dwTimeThisKill = timeGetTime();
 			if (iLastKill == iAttackerH)
@@ -9599,7 +9617,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 				iLastKill = iAttackerH;
 				dwTimeLastKill = (timeGetTime()+ 30*1000);
 			}
-			for (i = 25; i < 5000; i += 25) 
+			/*for (i = 25; i < 5000; i += 25) 
 			{
 				if (m_pClientList[iAttackerH]->m_iDGKills == i) 
 				{
@@ -9610,7 +9628,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 					SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[iAttackerH]->m_iDGPoints, m_pClientList[iAttackerH]->m_iTotalDGKills, m_pClientList[iAttackerH]->m_iRating, NULL);
 					bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iAttackerH);
 				}
-			}
+			}*/
 			if (m_pClientList[iDGtop1] != NULL) 
 			{	
 				if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop1]->m_iDGKills)
@@ -10855,7 +10873,7 @@ void CGame::ApplyPKpenalty(short sAttackerH, short sVictumH)
 	//m_pClientList[sAttackerH]->m_iRating -= 10;
 	
 	// MORLA 2.4 - Actualizo la REP
-	SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[sAttackerH]->m_iDGPoints, m_pClientList[sAttackerH]->m_iTotalDGKills, m_pClientList[sAttackerH]->m_iRating, NULL);
+	SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[sAttackerH]->m_iDeaths, m_pClientList[sAttackerH]->m_iRating, NULL);
 
 	if (strcmp(m_pClientList[sAttackerH]->m_cLocation, "aresden") == 0) {
 		if ((strcmp(m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cName, "aresden") == 0)) {
@@ -10999,16 +11017,16 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 		// ÃˆÃ±Â»Ã½Ã€ÃšÃ€Ã‡ Â·Â¹ÂºÂ§Ã€ÃŒ 80Ã€ÃŒÂ»Ã³Ã€ÃŒÂ°Ã­
 		if (memcmp(m_pClientList[iClientH]->m_cLocation, m_pClientList[iClientH]->m_cMapName, 10) != 0) {
 			// ÃˆÃ±Â»Ã½Ã€ÃšÂ°Â¡ ÃÃ—Ã€Âº Â°Ã·Ã€ÃŒ Ã€ÃšÂ½Ã…Ã€Ã‡ Â¸Â¶Ã€Â»Ã€ÃŒ Â¾Ã†Â´ÃÂ¶Ã³Â¸Ã© EKÂ·ÃŽ Ã€ÃŽÃÂ¤ 
-			m_pClientList[iAttackerH]->m_iEnemyKillCount += m_iEnemyKillAdjust * iRangoAttacker;
+			m_pClientList[iAttackerH]->m_iEnemyKillCount += m_iEnemyKillAdjust;
 			if (m_pClientList[iAttackerH]->m_iEnemyKillCount > m_pClientList[iAttackerH]->m_iMaxEK)
 			{
 				m_pClientList[iAttackerH]->m_iMaxEK = m_pClientList[iAttackerH]->m_iEnemyKillCount;
 			}
 			calcularTop15HB(iAttackerH);
 			
-			m_pClientList[iAttackerH]->m_iDeaths++; // MORLA 2.2 - Le suma una muerte al pj
+			m_pClientList[iClientH]->m_iDeaths++; // MORLA 2.2 - Le suma una muerte al pj
 			// Wanted System
-			switch (m_pClientList[iAttackerH]->m_iWantedLevel) {
+			/*switch (m_pClientList[iAttackerH]->m_iWantedLevel) {
 			case 0:
 				if (m_pClientList[iAttackerH]->m_iDeaths == 5) {
 					m_pClientList[iAttackerH]->m_iWantedLevel++;
@@ -11143,9 +11161,11 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 					}
 					else delete pItem;
 				}
-			}
-			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iAttackerH]->m_iEnemyKillCount, NULL, NULL, NULL);
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+			}*/
+			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iAttackerH]->m_iEnemyKillCount, m_pClientList[iAttackerH]->m_iMaxEK, NULL, NULL);
+			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[iClientH]->m_iDeaths, NULL, NULL);
+
 		}
 
 		// Ã†Ã·Â»Ã³Â±Ã Â´Â©Ã€Ã» 
@@ -11552,13 +11572,13 @@ void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTarg
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864) {
 					if (m_pClientList[sAttackerH]->m_iRating > 0) {
-						iRepDamage = m_pClientList[sAttackerH]->m_iRating/10;
+						iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
 						iDamage += iRepDamage;
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
 							if (m_pClientList[sTargetH]->m_iRating <= 0) {
-								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/10);
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 								iDamage += iRepDamage;
 							}
 						}
@@ -11570,7 +11590,7 @@ void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTarg
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 859) { // NecklaceOfKloness  
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
-							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/20);
+							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 							iDamage += iRepDamage;
 						}
 					}
@@ -12068,13 +12088,13 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864) {
 					if (m_pClientList[sAttackerH]->m_iRating > 0) {
-						iRepDamage = m_pClientList[sAttackerH]->m_iRating/10;
+						iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
 						iDamage += iRepDamage;
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
 							if (m_pClientList[sTargetH]->m_iRating <= 0) {
-								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/10);
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 								iDamage += iRepDamage;
 							}
 						}
@@ -12086,7 +12106,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 859) { // NecklaceOfKloness  
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
-							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/20);
+							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 							iDamage += iRepDamage;
 						}
 					}
@@ -14547,7 +14567,7 @@ void CGame::SetPlayerReputation(int iClientH, char * pMsg, char cValue, DWORD dw
 					SendNotifyMsg(NULL, i, DEF_NOTIFY_RATINGPLAYER, cValue, NULL, NULL, cName);
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_RATINGPLAYER, cValue, NULL, NULL, cName);
 
-					SendNotifyMsg(NULL, i, DEF_NOTIFY_REPDGDEATHS, m_pClientList[i]->m_iDGPoints, m_pClientList[i]->m_iTotalDGKills, m_pClientList[i]->m_iRating, NULL); // MORLA 2.4 - Actualiza la REP
+					SendNotifyMsg(NULL, i, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[i]->m_iDeaths, m_pClientList[i]->m_iRating, NULL); // MORLA 2.4 - Actualiza la REP
 					
 					delete pStrTok;
 					return;
@@ -19851,14 +19871,14 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863) || // KlonessWand(MS.20)
 				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864)) { // KlonessWand(MS.10) 
 				if (m_pClientList[sAttackerH]->m_iRating > 0) {
-					iRepDamage = m_pClientList[sAttackerH]->m_iRating/10;
+					iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
 					iAP_SM += iRepDamage;
 					iAP_L += iRepDamage;
 				}
 				if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 					if (m_pClientList[sTargetH] == NULL) return 0;
 					if (m_pClientList[sTargetH]->m_iRating <= 0) {
-						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/10);
+						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 						iAP_SM += iRepDamage;
 						iAP_L += iRepDamage;
 					}
@@ -19916,16 +19936,17 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 			//--------------------------------------------------------------------------------------------
 			if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 849) || // KlonessBlade 
-				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 850)) { // KlonessAxe
+				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 850) || // KlonessAxe
+				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 854)) { // KlonessHammer
 				if (m_pClientList[sAttackerH]->m_iRating > 0) {
-					iRepDamage = m_pClientList[sAttackerH]->m_iRating/10;
+					iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
 					iAP_SM += iRepDamage;
 					iAP_L += iRepDamage;
 				}
 				if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 					if (m_pClientList[sTargetH] == NULL) return 0;
 					if (m_pClientList[sTargetH]->m_iRating <= 0) {
-						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/10);
+						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 						iAP_SM += iRepDamage;
 						iAP_L += iRepDamage;
 					}
@@ -19938,7 +19959,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 859) { // NecklaceOfKloness  
 				if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 					if (m_pClientList[sTargetH] == NULL) return 0;
-						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/20);
+						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 						iAP_SM += iRepDamage;
 						iAP_L += iRepDamage;
 				}
@@ -20538,7 +20559,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				switch (cAttackerSA) {
 					case 62:
 						if (m_pClientList[sTargetH]->m_iRating < 0) {
-							iTemp = abs(m_pClientList[sTargetH]->m_iRating)/10;
+							iTemp = abs(m_pClientList[sTargetH]->m_iRating)/100;
 							if (iTemp > 10) iTemp = 10;
 							iAP_SM += iTemp;
 						}
@@ -23023,9 +23044,20 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 8);
 		break;
 
+	case DEF_NOTIFY_ENEMYKILLS:
+		ip = (int*)cp;
+		*ip = (int)sV1;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = (int)sV2;
+		cp += 4;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
+		break;
+
 	case DEF_MAX_STATS: //LifeX Fix Bytes Accuracy 01/01
 	case DEF_NOTIFY_HELPFAILED:
-	case DEF_NOTIFY_ENEMYKILLS:
 	case DEF_NOTIFY_CRAFTING_FAIL:	//reversed by Snoopy: 0x0BF1:
 	case DEF_NOTIFY_ANGEL_FAILED:
 	case DEF_NOTIFY_FIGHTZONERESERVE:
@@ -24236,7 +24268,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 	m_pClientList[iClientH]->m_cSide         = 0;
 
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HUNGER, m_pClientList[iClientH]->m_iHungerStatus, NULL, NULL, NULL); // MORLA2 - Muestra el hunger status
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[iClientH]->m_iDGPoints, m_pClientList[iClientH]->m_iTotalDGKills, m_pClientList[iClientH]->m_iRating, NULL);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[iClientH]->m_iDeaths, m_pClientList[iClientH]->m_iRating, NULL);
 
 	bRet = _bDecodePlayerDatafileContents(iClientH, cp, dwSize - 19);
 	if (bRet == FALSE) {
@@ -24702,6 +24734,17 @@ void CGame::DeathmatchGame()
 	int i;
 	if (bDeathmatch) {
 		bDeathmatch = FALSE;
+		if (m_pClientList[iDGtop1] != NULL) 
+		{
+			m_pClientList[iDGtop1]->m_iEnemyKillCount += 200;
+			if (m_pClientList[iDGtop1]->m_iEnemyKillCount > m_pClientList[iDGtop1]->m_iMaxEK)
+			{
+				m_pClientList[iDGtop1]->m_iMaxEK = m_pClientList[iDGtop1]->m_iEnemyKillCount;
+			}
+			SendNotifyMsg(NULL, iDGtop1, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iDGtop1]->m_iEnemyKillCount, m_pClientList[iDGtop1]->m_iMaxEK, NULL, NULL);
+			ShowClientMsg(iDGtop1, "You've received 200 EKs for been in 1st place!");
+			calcularTop15HB(iDGtop1);
+		}
 		for (i = 1; i < DEF_MAXCLIENTS; i++) // Check all clients
 		{
 			if ((m_pClientList[i] != NULL)) {
@@ -24710,6 +24753,7 @@ void CGame::DeathmatchGame()
 					RequestTeleportHandler(i, "1   ");
 			}
 		}
+		dwEventFinishTime = 0;
 		PutLogList("DEATHMATCH MODE OFF");
 	}
 	else {
@@ -24720,6 +24764,8 @@ void CGame::DeathmatchGame()
 				SendNotifyMsg(NULL, i, DEF_NOTIFY_DEATHMATCHSTART, NULL, NULL, NULL, NULL); 					
 			}
 		}
+		iDGtop1 = iDGtop2 = iDGtop3 = iDGtop4 = iDGtop5 = iDGtop6 = iDGtop7 = iDGtop8 = iDGtop9 = iDGtop10 = 0;
+		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
 		PutLogList("DEATHMATCH MODE ON");
 	}
 }
@@ -26407,7 +26453,7 @@ BOOL CGame::bReadTopPlayersFile(char* cFn) // MORLA 2.4 - Tops
 
 				// #9
 				case 17:
-					ZeroMemory(aHBTopClientH[9], sizeof(aHBTopClientH[1]));
+					ZeroMemory(aHBTopClientH[9], sizeof(aHBTopClientH[9]));
 					memcpy(aHBTopClientH[9], token, 10);
 					cReadMode = 0;
 					break;
@@ -26529,7 +26575,7 @@ BOOL CGame::bReadTopPlayersFile(char* cFn) // MORLA 2.4 - Tops
 
 void CGame::_CreateTopPlayers() // MORLA 2.4 - Guarda el archivo TopPlayers
 {
-	char* cp, cTxt[9024], cFn[256], cTemp[9024];
+	char* cp, cTxt[512], cFn[256], cTemp[512];
 	FILE* pFile;
 
 	ZeroMemory(cFn, sizeof(cFn));
@@ -26595,15 +26641,6 @@ void CGame::ordenarTop15HB(int iClientH) // MORLA 2.4 - Calcular si tiene mas De
 		}
 	}
 	_CreateTopPlayers();
-	/*for (i = 1; i < DEF_MAXCLIENTS; i++) // Check all clients
-	{
-		if (m_pClientList[i] != NULL) {
-			for (p = 1; p <= 15; p++)
-			{
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_TOP15HB, p, aHBTopKills[p], NULL, aHBTopClientH[p]);
-			}
-		}
-	}*/
 }
 
 void CGame::calcularTop15HB(int iClientH) // MORLA 2.4 - Calcular si tiene mas Deaths
@@ -27152,6 +27189,30 @@ void CGame::RequestChargedTeleportHandler(int iClientH, char* pData, DWORD dwMsg
 		wConfirm = DEF_MSGTYPE_REJECT;
 		sError = 7;
 	}
+
+	if (wConfirm == DEF_MSGTYPE_CONFIRM &&
+		(memcmp(m_pTeleportConfigList[index]->m_cTargetMap, "fightzone1", 10) == 0) &&
+		(bDeathmatch))
+	{
+		RequestDismissPartyHandler(iClientH);
+	}
+
+	if (wConfirm == DEF_MSGTYPE_CONFIRM &&
+		(memcmp(m_pTeleportConfigList[index]->m_cTargetMap, "team", 4) == 0) &&
+		(!c_team->bteam))
+	{
+		wConfirm = DEF_MSGTYPE_REJECT;
+		sError = 7;
+	}
+
+	if (wConfirm == DEF_MSGTYPE_CONFIRM &&
+		(memcmp(m_pTeleportConfigList[index]->m_cTargetMap, "team", 4) == 0) &&
+		(c_team->bteam))
+	{
+		RequestDismissPartyHandler(iClientH);
+		c_team->Join(iClientH);
+	}
+
 	// Cost    
 	if( wConfirm == DEF_MSGTYPE_CONFIRM )
 	{
@@ -27799,7 +27860,11 @@ void CGame::AdminOrder_SetEk(int iClientH, char* pData, DWORD dwMsgSize)
 		{
 			oldpk = m_pClientList[i]->m_iEnemyKillCount;
 			m_pClientList[i]->m_iEnemyKillCount += atoi(cPK);
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_ENEMYKILLS, m_pClientList[i]->m_iEnemyKillCount, NULL, NULL, NULL);
+			if (m_pClientList[i]->m_iEnemyKillCount > m_pClientList[i]->m_iMaxEK)
+			{
+				m_pClientList[i]->m_iMaxEK = m_pClientList[i]->m_iEnemyKillCount;
+			}
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_ENEMYKILLS, m_pClientList[i]->m_iEnemyKillCount, m_pClientList[i]->m_iMaxEK, NULL, NULL);
 			char cTxt[250];
 			wsprintf(cTxt, "Congratulations, you have received %d Ek Points. (New Total: %d)", atoi(cPK), m_pClientList[i]->m_iEnemyKillCount);
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, cTxt);
@@ -28029,7 +28094,7 @@ void CGame::AdminOrder_SetRep(int iClientH, char* pData, DWORD dwMsgSize)
 		{
 			oldpk = m_pClientList[i]->m_iRating;
 			m_pClientList[i]->m_iRating += atoi(cPK);
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_REPDGDEATHS, m_pClientList[i]->m_iDGPoints, m_pClientList[i]->m_iTotalDGKills, m_pClientList[i]->m_iRating, NULL);
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[i]->m_iDeaths, m_pClientList[i]->m_iRating, NULL);
 			char cTxt[250];
 			wsprintf(cTxt, "Congratulations, you have received %d Reputation Points. (New Total: %d)", atoi(cPK), m_pClientList[i]->m_iRating);
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, cTxt);
@@ -28207,6 +28272,9 @@ void CGame::SendAlertMsg(int client, char* pMsg)
 
 void CGame::ManageShinning()
 {
+	if (bShinning) bShinning = false;
+	else bShinning = true;
+
 	if (bShinning)
 	{
 		for (int i = 0; i < DEF_MAXCLIENTS; i++)
@@ -28215,6 +28283,7 @@ void CGame::ManageShinning()
 			if (!pi) continue;
 			SendAlertMsg(i, "Event Shinning Enabled");
 		}
+		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
 	}
 	else
 	{
@@ -28224,6 +28293,7 @@ void CGame::ManageShinning()
 			if (!pi) continue;
 			SendAlertMsg(i, "Event Shinning Disabled");
 		}
+		dwEventFinishTime = 0;
 	}
 }
 
@@ -28532,12 +28602,10 @@ void CGame::UpdateEventStatus()
 	}
 }
 
-void CGame::AdminOrder_SetEvent(int iClientH)
+void CGame::AdminOrder_SetEvent()
 {
 	int i;
 	DWORD dwTime = timeGetTime();
-
-	if (m_pClientList[iClientH] == NULL) return;
 
 	if (m_bIsCTFEvent)
 		m_bIsCTFEvent = FALSE;
@@ -28556,6 +28624,8 @@ void CGame::AdminOrder_SetEvent(int iClientH)
 		m_iCTFEventFlag[0] = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ARESDENFLAG2, m_iAresdenMapIndex, 151, 128, NULL, NULL);
 		m_iCTFEventFlag[1] = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ELVINEFLAG2, m_iElvineMapIndex, 151, 132, NULL, NULL);
 		
+		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+
 		// Centu - can't stay in flag position
 		m_pMapList[m_iAresdenMapIndex]->SetStayAllowedFlag(151, 128, FALSE);
 		m_pMapList[m_iElvineMapIndex]->SetStayAllowedFlag(151, 132, FALSE);
@@ -28572,6 +28642,8 @@ void CGame::AdminOrder_SetEvent(int iClientH)
 				m_iCTFEventFlag[i] = NULL;
 			}
 		}
+
+		dwEventFinishTime = 0;
 
 		for (i = 1; i < DEF_MAXCLIENTS; i++) {// Check all clients
 			if (m_pClientList[i] != NULL) {
@@ -28770,4 +28842,75 @@ void CGame::NotifyPlayerAttributes(int iClientH)
 	}
 
 	if (pBuffer != NULL) delete[] pBuffer;
+}
+
+void CGame::CityTeleport()
+{
+	_city_teleport = !_city_teleport;
+	NotifyEvents();
+
+	CMap* ares = nullptr;
+	CMap* elv = nullptr;
+
+	for (int i = 0; i < DEF_MAXMAPS; i++)
+	{
+		if (!m_pMapList[i])
+			continue;
+
+		if (std::string(m_pMapList[i]->m_cName) == "elvine")
+			elv = m_pMapList[i];
+		else if (std::string(m_pMapList[i]->m_cName) == "aresden")
+			ares = m_pMapList[i];
+	}
+
+	if (_city_teleport)
+	{
+		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+	}
+	else
+	{
+		dwEventFinishTime = 0;
+	}
+
+	for (int i = 0; i < DEF_MAXTELEPORTLOC; i++)
+	{
+		if (_city_teleport)
+		{
+			if (elv->m_pTeleportLoc[i] &&
+				(std::string(elv->m_pTeleportLoc[i]->m_cDestMapName) == "middled1n"))
+			{
+				strcpy(elv->m_pTeleportLoc[i]->m_cDestMapName, "aresden");
+				elv->m_pTeleportLoc[i]->m_sDestX = 77;
+				elv->m_pTeleportLoc[i]->m_sDestY = 208;
+			}
+
+			if (ares->m_pTeleportLoc[i] &&
+				(std::string(ares->m_pTeleportLoc[i]->m_cDestMapName) == "middled1n"))
+			{
+				strcpy(ares->m_pTeleportLoc[i]->m_cDestMapName, "elvine");
+				ares->m_pTeleportLoc[i]->m_sDestX = 257;
+				ares->m_pTeleportLoc[i]->m_sDestY = 80;
+			}
+			
+		}
+		else
+		{
+			if (elv->m_pTeleportLoc[i] &&
+				(std::string(elv->m_pTeleportLoc[i]->m_cDestMapName) == "aresden"))
+			{
+				strcpy(elv->m_pTeleportLoc[i]->m_cDestMapName, "middled1n");
+				elv->m_pTeleportLoc[i]->m_sDestX = 34;
+				elv->m_pTeleportLoc[i]->m_sDestY = 36;
+			}
+
+			if (ares->m_pTeleportLoc[i] &&
+				(std::string(ares->m_pTeleportLoc[i]->m_cDestMapName) == "elvine"))
+			{
+				strcpy(ares->m_pTeleportLoc[i]->m_cDestMapName, "middled1n");
+				ares->m_pTeleportLoc[i]->m_sDestX = 181;
+				ares->m_pTeleportLoc[i]->m_sDestY = 124;
+			}
+			
+		}
+	}
 }

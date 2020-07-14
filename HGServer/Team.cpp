@@ -43,8 +43,6 @@ void Team::TeamTimer()
 			{
 				DisableEvent();
 
-				bteam = false;
-				g->NotifyEvents();
 			}
 		}
 
@@ -115,7 +113,7 @@ bool Team::MakeItems(int client, short steam)
 	default: return FALSE; break;
 	}
 
-	CreateCape(client, "Cape", color);
+	CreateCape(client, "Cape+1", color);
 	CreateBoots(client, "LongBoots", color);
 	return TRUE;
 }
@@ -128,8 +126,14 @@ void Team::Kill(int iattacker, int itarget)
 	auto tar = g->m_pClientList[itarget];
 	if (!att || !tar) return;
 
-	att->m_iEnemyKillCount += ekxkill;
-	att->Send(iattacker, DEF_NOTIFY_ENEMYKILLREWARD, itarget);
+	att->m_iEnemyKillCount += 5;
+	if (att->m_iEnemyKillCount > att->m_iMaxEK)
+	{
+		att->m_iMaxEK = att->m_iEnemyKillCount;
+	}
+	//att->Send(iattacker, DEF_NOTIFY_ENEMYKILLREWARD, itarget);
+	g->SendNotifyMsg(NULL, iattacker, DEF_NOTIFY_ENEMYKILLS, att->m_iEnemyKillCount, att->m_iMaxEK, NULL, NULL);
+	g->calcularTop15HB(iattacker);
 	team[att->iteam].kills++;
 	NotifyPoints();
 	//RequestRevive(itarget);
@@ -243,14 +247,15 @@ void Team::End(int iteam)
 
 			switch (iteam)
 			{
-			case 0: wsprintf(G_cTxt, "Red Team Wins!"); Reward(iteam); break;
-			case 1: wsprintf(G_cTxt, "Blue Team Wins!"); Reward(iteam); break;
-			case 2: wsprintf(G_cTxt, "Green Team Wins!"); Reward(iteam); break;
-			case 3: wsprintf(G_cTxt, "Yellow Team Wins!"); Reward(iteam); break;
+			case 0: wsprintf(G_cTxt, "Red Team Wins!"); break;
+			case 1: wsprintf(G_cTxt, "Blue Team Wins!"); break;
+			case 2: wsprintf(G_cTxt, "Green Team Wins!"); break;
+			case 3: wsprintf(G_cTxt, "Yellow Team Wins!"); break;
 			}
 
 			g->SendAlertMsg(i, G_cTxt);
 		}
+		Reward(iteam);
 		bend = true;
 	}
 }
@@ -266,6 +271,15 @@ void Team::Reward(int iteam)
 		if (pi->iteam != iteam) continue;
 
 		//pi->m_iTokens += rew;
+
+		pi->m_iEnemyKillCount += 150;
+		if (pi->m_iEnemyKillCount > pi->m_iMaxEK)
+		{
+			pi->m_iMaxEK = pi->m_iEnemyKillCount;
+		}
+		g->SendNotifyMsg(NULL, i, DEF_NOTIFY_ENEMYKILLS, pi->m_iEnemyKillCount, pi->m_iMaxEK, NULL, NULL);
+		g->calcularTop15HB(i);
+		g->ShowClientMsg(i, "You've received 150 EKs for been in the winner team!");
 	}
 }
 
@@ -309,7 +323,6 @@ void Team::DisableEvent()
 		if (!pi) continue;
 		g->SendAlertMsg(i, "Event Team Arena Disabled");
 	}
-	
 }
 
 void Team::CreateCape(int client, char* itemname, char color)

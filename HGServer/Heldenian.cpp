@@ -1931,6 +1931,14 @@ void CGame::HeldenianEndWarNow()
 			{
 				m_cHeldenianWinner = 2;
 			}
+			else if (m_iHeldenianAresdenDead > m_iHeldenianElvineDead)
+			{
+				m_cHeldenianWinner = 2;
+			}
+			else if (m_iHeldenianAresdenDead < m_iHeldenianElvineDead)
+			{
+				m_cHeldenianWinner = 1;
+			}
 			else // 1st destroyed tower wins...
 			{
 				m_cHeldenianWinner = m_cHeldenianFirstDestroyedTowerWinner;

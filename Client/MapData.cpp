@@ -2600,16 +2600,16 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						}else if (m_pData[dX][dY].m_cOwnerFrame == 4) // vu comme case 4
 						{ 	if ((m_pGame->m_cWhetherEffectType >= 1) && (m_pGame->m_cWhetherEffectType <= 3))
 							{	m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
+								/*m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
 								m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
 								m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
-								m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
-								m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
+								m_pGame->bAddNewEffect(32, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);*/
 							}else
 							{	m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
+								/*m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
 								m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
 								m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
-								m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
-								m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);
+								m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +((rand() % 20)-10), (m_sPivotY+dY)*32 +((rand() % 20)-10), NULL, NULL, 0, 0);*/
 							}
 							m_pGame->PlaySound('C', 11, sDist, lPan);
 						}else if (m_pData[dX][dY].m_cOwnerFrame == 5) // vu comme case 5
@@ -3794,13 +3794,13 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							if (m_pData[dX][dY].m_cOwnerFrame == 3)
 							{	m_pGame->bAddNewEffect(66, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32, NULL, NULL, NULL, 0);
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));*/
 								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));*/
 							}
 							if (m_pData[dX][dY].m_cOwnerFrame == 1)
 								m_pGame->PlaySound('M', 154, sDist, lPan);
@@ -3810,13 +3810,13 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							if (m_pData[dX][dY].m_cOwnerFrame == 3)
 							{	m_pGame->bAddNewEffect(66, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32, NULL, NULL, NULL, 0);
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10), NULL, NULL, -1*(rand() % 2));*/
 								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60), NULL, NULL, -1*(rand() % 2));*/
 							}
 							if (m_pData[dX][dY].m_cOwnerFrame == 1)
 								m_pGame->PlaySound('M', 156, sDist, lPan);
@@ -3826,13 +3826,13 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							if (m_pData[dX][dY].m_cOwnerFrame == 1)
 							{	m_pGame->bAddNewEffect(66, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32 -30, NULL, NULL, NULL, 0);
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));*/
 								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));*/
 							}
 							break;
 
@@ -3843,14 +3843,14 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							if (m_pData[dX][dY].m_cOwnerFrame == 11)
 							{	m_pGame->bAddNewEffect(66, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32 -30, NULL, NULL, NULL, 0);
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
 								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(12, (m_sPivotX+dX)*32 + 5 - (rand() % 10), (m_sPivotY+dY)*32 + 5 - (rand() % 10) -30, NULL, NULL, -1*(rand() % 2));*/
 
 								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
-								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
+								/*m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));
+								m_pGame->bAddNewEffect(65, (m_sPivotX+dX)*32 + 30 - (rand() % 60), (m_sPivotY+dY)*32 + 30 - (rand() % 60) -30, NULL, NULL, -1*(rand() % 2));*/
 							}
 							break;
 
@@ -4029,10 +4029,8 @@ BOOL CMapData::bSetItem(short sX, short sY, short sItemSpr, short sItemSprFrame,
 	{	if (bDropEffect == TRUE) 
 		{	m_pGame->PlaySound('E', 11, sDist);
 			m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32, NULL, NULL, 0, 0);
-
 			m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), NULL, NULL, (rand() % 2), 0);
-			m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), NULL, NULL, (rand() % 2), 0);
-
+			//m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), NULL, NULL, (rand() % 2), 0);
 	}	}
 
 	return TRUE;

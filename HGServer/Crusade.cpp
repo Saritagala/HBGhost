@@ -192,7 +192,7 @@ void CGame::LocalStartCrusadeMode(DWORD dwCrusadeGUID)
 					}
 				}
 		}
-
+	dwCrusadeFinishTime = timeGetTime() + m_dwHeldenianEndTime;  // war will end   in 1h45
 	PutLogList("(!)Crusade Mode ON.");
 	_bCrusadeLog(DEF_CRUSADELOG_STARTCRUSADE, NULL, NULL, NULL);
 }
@@ -1267,6 +1267,7 @@ void CGame::LocalEndCrusadeMode(int iWinnerSide)
 
 	if (m_bIsCrusadeMode == FALSE) return;
 
+	dwCrusadeFinishTime = 0;
 	m_bIsCrusadeMode = FALSE;
 	PutLogList("(!)Crusade Mode OFF.");
 

@@ -3877,7 +3877,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			// bows 40 41 below
 			MakeSprite( "WDirectBow",	DEF_SPRID_WEAPON_W + 64*42, 56, TRUE);
 			MakeSprite( "WFireBow",		DEF_SPRID_WEAPON_W + 64*43, 56, TRUE);
-			MakeSprite("Hammer2W", DEF_SPRID_WEAPON_W + 64 * 59, 56, TRUE); //Kloness Hammer
+			MakeFunSprite("Hammer2W", DEF_SPRID_WEAPON_W + 64 * 59, 56, TRUE); //Kloness Hammer
 			m_cLoading = 92;
 		}
 		break;
@@ -24623,8 +24623,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 							konieclinii = 1;
 							linie++;
 						}
-						if (linie-1 < 13) {
-							strcpy(m_cFriends[linie-1], buf);
+						if (linie- konieclinii < 13) {
+							strcpy(m_cFriends[linie- konieclinii], buf);
 							m_iTotalFriends++;
 						}
 					}
@@ -25775,11 +25775,6 @@ void CGame::NotifyMsgHandler(char * pData)
         SetTopMsg("Deathmatch Game is Closed!", 10);
 		break;
 
-	// VAMP- online users list
-	case DEF_NOTIFY_USERJOIN:
-		NotifyMsg_UserJoin(pData);
-		break;
-
 		//News Addons - ZeroEoyPnk
 	case DEF_SEND_PARTYHP:
 		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -25827,17 +25822,6 @@ void CGame::NotifyMsgHandler(char * pData)
 		memcpy(PartyMapName[PartyId-1], cp, 12);
 		cp += 12;
 		break;
-
-	// Centuu : EVENT CODE
-    case DEF_NOTIFY_EVENTTPOFF: // 0x0AF3 by Centuu.-
-        SetTopMsg("TP to event deactivated.", 10);
-        break;
-    case DEF_NOTIFY_EVENTSTART: // 0x0AF6 by Centuu.-
-        SetTopMsg("A new event has begun! Use the /tpevent to participate", 10);
-        break;
-    case DEF_NOTIFY_EVENTEND: // 0x0AF9 by Centuu.-
-        SetTopMsg("The event has finished.", 10);
-        break;
 
 	case DEF_NOTIFY_ITEMTRADE: // MORLA 2.4 - cuando realiza el trade items por eks o dgs
 		NotifyMsg_ItemTrade(pData);
