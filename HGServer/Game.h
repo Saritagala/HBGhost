@@ -1144,6 +1144,10 @@ public:
 	DWORD dwEventFinishTime;
 	void EventEnd();
 
+	short m_sHeldenianFinish, m_sCrusadeFinish, m_sApocalypseFinish, m_sDeathmatchFinish, m_sCTF_Finish,
+		m_sDropFinish, m_sCityTeleportFinish, m_sShinningFinish, m_sCandyFinish, m_sTeamArenaFinish,
+		m_sRevelationFinish;
+
 	void CityTeleport();
 
 	DWORD m_dwHeldenianWarTime;

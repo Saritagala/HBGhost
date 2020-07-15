@@ -229,8 +229,6 @@ CGame::CGame(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	m_dwHeldenianWarTime	= 5*60*1000;  // 5 minutes before effective War start
-	m_dwHeldenianEndTime	= 90*60*1000; // 90 minutes effective battle
 	m_bNpcItemConfig = TRUE;
 	m_iNotifyCleanMap = TRUE;
 
@@ -240,6 +238,10 @@ CGame::CGame(HWND hWnd)
 	m_iGoldRate = 0;
 	m_iGuildCost = 0;
 	m_iDKCost = 0;
+
+	m_sHeldenianFinish = m_sCrusadeFinish = m_sApocalypseFinish = m_sDeathmatchFinish = m_sCTF_Finish =
+		m_sDropFinish = m_sCityTeleportFinish = m_sShinningFinish = m_sCandyFinish = m_sTeamArenaFinish =
+		m_sRevelationFinish = 0;
 
 	for (i = 1; i <= 15; i++)
 	{
@@ -7491,7 +7493,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			else c_team->bteam = true;
 
 			if (c_team->bteam) {
-				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+				dwEventFinishTime = timeGetTime() + m_sTeamArenaFinish * 60 * 1000;
 				c_team->EnableEvent();
 			}
 			else
@@ -7503,12 +7505,12 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			NotifyEvents();
 		}
 
-		else if (strcmp(cp, "/tpteam") == 0)
+		/*else if (strcmp(cp, "/tpteam") == 0)
 		{
 			RequestDismissPartyHandler(iClientH);
 			c_team->Join(iClientH);
 			
-		}
+		}*/
 
 		else if (memcmp(cp, "/createparty", 12) == 0) {
 			if (m_pClientList[iClientH]->IsInMap("team")) return;
@@ -7638,7 +7640,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (memcmp(cp, "/candyboost", 11) == 0) {
 			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
-				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+				dwEventFinishTime = timeGetTime() + m_sCandyFinish * 60 * 1000;
 				_candy_boost = !_candy_boost;
 				NotifyEvents();
 			}
@@ -7646,7 +7648,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (memcmp(cp, "/revelation", 11) == 0) {
 			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
-				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+				dwEventFinishTime = timeGetTime() + m_sRevelationFinish * 60 * 1000;
 				_revelation = !_revelation;
 				NotifyEvents();
 			}
@@ -7660,7 +7662,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (memcmp(cp, "/dropinhib", 10) == 0) {
 			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3)
 			{
-				dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+				dwEventFinishTime = timeGetTime() + m_sDropFinish * 60 * 1000;
 				_drop_inhib = !_drop_inhib;
 				NotifyEvents();
 			}
@@ -21981,7 +21983,50 @@ BOOL CGame::bReadSettingsConfigFile(char * cFn)
 				cReadMode = 0;
 				break;
 				
-			
+			case 29:
+				m_sHeldenianFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 30:
+				m_sCrusadeFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 31:
+				m_sApocalypseFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 32:
+				m_sDeathmatchFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 33:
+				m_sCTF_Finish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 34:
+				m_sDropFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 35:
+				m_sCityTeleportFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 36:
+				m_sShinningFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 37:
+				m_sCandyFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 38:
+				m_sTeamArenaFinish = atoi(token);
+				cReadMode = 0;
+				break;
+			case 39:
+				m_sRevelationFinish = atoi(token);
+				cReadMode = 0;
+				break;
 			}
          } 
          else { 
@@ -22005,7 +22050,7 @@ BOOL CGame::bReadSettingsConfigFile(char * cFn)
 			// 18
 			if (memcmp(token, "admin-security-code", 19) == 0)		 cReadMode = 19;
 			if (memcmp(token, "max-player-level", 16) == 0)			 cReadMode = 20;
-			if (memcmp(token, "build-date", 10) == 0)				 cReadMode = 21;
+			// 21
 			if (memcmp(token, "gold-drop-rate", 14) == 0)			 cReadMode = 22;
 			if (memcmp(token, "exp-rate", 8) == 0)					 cReadMode = 23;
 			if (memcmp(token, "guild-cost", 10) == 0)				 cReadMode = 24;
@@ -22013,6 +22058,18 @@ BOOL CGame::bReadSettingsConfigFile(char * cFn)
 			if (memcmp(token, "clear-map-time"      , 14) == 0)		 cReadMode = 26;
 			if (memcmp(token, "rating-adjust", 13) == 0)		     cReadMode = 27;
 			if (memcmp(token, "dk-set-cost", 11) == 0)				 cReadMode = 28;
+
+			if (strcmp(token, "heldenian-finish") == 0)				 cReadMode = 29;
+			if (strcmp(token, "crusade-finish") == 0)				 cReadMode = 30;
+			if (strcmp(token, "apocalypse-finish") == 0)			 cReadMode = 31;
+			if (strcmp(token, "deathmatch-finish") == 0)			 cReadMode = 32;
+			if (strcmp(token, "ctf-finish") == 0)					 cReadMode = 33;
+			if (strcmp(token, "bag-prot-finish") == 0)				 cReadMode = 34;
+			if (strcmp(token, "city-teleport-finish") == 0)			 cReadMode = 35;
+			if (strcmp(token, "shinning-finish") == 0)				 cReadMode = 36;
+			if (strcmp(token, "candy-finish") == 0)					 cReadMode = 37;
+			if (strcmp(token, "team-arena-finish") == 0)			 cReadMode = 38;
+			if (strcmp(token, "revelation-finish") == 0)			 cReadMode = 39;
 		 } 
 
          token = pStrTok->pGet(); 
@@ -24765,7 +24822,7 @@ void CGame::DeathmatchGame()
 			}
 		}
 		iDGtop1 = iDGtop2 = iDGtop3 = iDGtop4 = iDGtop5 = iDGtop6 = iDGtop7 = iDGtop8 = iDGtop9 = iDGtop10 = 0;
-		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+		dwEventFinishTime = timeGetTime() + m_sDeathmatchFinish * 60 * 1000;
 		PutLogList("DEATHMATCH MODE ON");
 	}
 }
@@ -28283,7 +28340,7 @@ void CGame::ManageShinning()
 			if (!pi) continue;
 			SendAlertMsg(i, "Event Shinning Enabled");
 		}
-		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+		dwEventFinishTime = timeGetTime() + m_sShinningFinish * 60 * 1000;
 	}
 	else
 	{
@@ -28624,7 +28681,7 @@ void CGame::AdminOrder_SetEvent()
 		m_iCTFEventFlag[0] = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ARESDENFLAG2, m_iAresdenMapIndex, 151, 128, NULL, NULL);
 		m_iCTFEventFlag[1] = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ELVINEFLAG2, m_iElvineMapIndex, 151, 132, NULL, NULL);
 		
-		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+		dwEventFinishTime = timeGetTime() + m_sCTF_Finish * 60 * 1000;
 
 		// Centu - can't stay in flag position
 		m_pMapList[m_iAresdenMapIndex]->SetStayAllowedFlag(151, 128, FALSE);
@@ -28865,7 +28922,7 @@ void CGame::CityTeleport()
 
 	if (_city_teleport)
 	{
-		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+		dwEventFinishTime = timeGetTime() + m_sCityTeleportFinish * 60 * 1000;
 	}
 	else
 	{

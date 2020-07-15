@@ -1433,9 +1433,9 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 		}
 	}
 	m_bIsHeldenianMode = TRUE;
-	m_dwHeldenianFinishTime = timeGetTime() + m_dwHeldenianEndTime;  // war will end   in 1h45 
+	m_dwHeldenianFinishTime = timeGetTime() + m_sHeldenianFinish * 60 * 1000;  // war will end   in 1h30 
 	// centu - changed from 15 to 5
-	m_dwHeldenianWarStartTime = timeGetTime() + m_dwHeldenianWarTime;  // war will start in 0h05
+	m_dwHeldenianWarStartTime = timeGetTime() + 5 * 60 * 1000;  // war will start in 0h05
 	wsprintf(G_cTxt, "(!) Heldenian mode ON. (type %d, last winner:%d)", m_cHeldenianType, m_sLastHeldenianWinner);
 	PutLogList(G_cTxt);
 	PutLogList(" ");

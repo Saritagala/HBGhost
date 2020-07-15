@@ -173,7 +173,7 @@ void CGame::LocalStartApocalypse(DWORD dwApocalypseGUID)
 		m_dwApocalypseGUID = dwApocalypseGUID;
 		_CreateApocalypseGUID(dwApocalypseGUID);
 		m_dwApocalypseGateOpenTime = dwApocalypseGUID;
-		m_dwApocalypseGateCloseTime = dwApocalypseGUID + 180 * 60 * 1000; // will close in 3hs - centu
+		m_dwApocalypseGateCloseTime = dwApocalypseGUID + m_sApocalypseFinish * 60 * 1000; // will close in 3hs - centu
 	}
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
 	{
