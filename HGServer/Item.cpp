@@ -8945,7 +8945,7 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 		// Èñ±Í ¾ÆÀÌÅÛ È¿°ú Á¾·ù: 
 		// 0-None 1-ÇÊ»ì±â´ë¹ÌÁöÃß°¡ 2-Áßµ¶È¿°ú 3-Á¤ÀÇÀÇ 
 		// 5-¹ÎÃ¸ÀÇ 6-°¡º­¿î 7-¿¹¸®ÇÑ 8-°­È­µÈ 9-°í´ë¹®¸íÀÇ
-		if (iDice(1, 100) < m_iRareDropRate / 100) { // Centuu : Agregado para controlar el drop rare.
+		//if (iDice(1, 10000) >= m_iRareDropRate) { // Centuu : Agregado para controlar el drop rare.
 			switch (dwSWEType) {
 			case 0:
 				break;
@@ -8972,7 +8972,7 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 				pItem->m_wMaxLifeSpan += (int)dV1;
 				break;
 			}
-		}
+		//}
 	}
 }
 

@@ -1746,10 +1746,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		else {
 			// 9000 default; the lower the greater the Weapon/Armor/Wand Drop
 			// 35% Drop 40% of that is an Item 
-			dTmp1 = m_pClientList[sAttackerH]->m_iRating * m_iRatingAdjust; // centu - rep affects drop rate
-
-			dTmp2 = (m_iSecondaryDropRate - (dTmp1));
-			if (iDice(1, 10000) <= dTmp2) {
+			if (iDice(1, 10000) <= m_iSecondaryDropRate) {
 				// 40% Drop 90% of that is a standard drop
 				// Standard Drop Calculation: (35/100) * (40/100) * (90/100) = 12.6%
 				iResult = iDice(1, 12000);
@@ -1907,7 +1904,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				// Weapon Drop: 
 				// 1.4% chance Valuable Drop 60% that it is a Weapon
 				if (iDice(1, 10000) <= m_iPrimaryDropRate) {
-					if (iDice(1, 10000) <= m_iSecondaryDropRate) {
+					if (iDice(1, 10000) >= m_iSecondaryDropRate) {
 						// 70% the Weapon is Melee
 						switch (iGenLevel) {
 
@@ -2018,6 +2015,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 						case 2:
 						case 3:
+						case 9:
+						case 10:
 							iItemID = 258; break; // MagicWand(MS0)
 						case 4:
 						case 5:
@@ -2026,9 +2025,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 7:
 						case 8:
 							iItemID = 256; break; // MagicWand(MS20)
-						case 9:
-						case 10:
-							break;
 						}
 					}
 				}
@@ -2305,7 +2301,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡°¡ ÀÔ·ÂµÉ È®·üÀº 40%
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 10000) >= m_iRareDropRate) {
 
 						// Èñ±Í ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ È¿°ú Á¾·ù: 
 						//Ãß°¡ µ¶¼ºÀúÇ×(1), Ãß°¡ ¸íÁß°ª(2), Ãß°¡ ¹æ¾î°ª(3), HP È¸º¹·® Ãß°¡(4), SP È¸º¹·® Ãß°¡(5)
@@ -2467,7 +2463,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡°¡ ÀÔ·ÂµÉ È®·üÀº 40%
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 10000) >= m_iRareDropRate) {
 
 						// Èñ±Í ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ È¿°ú Á¾·ù: 
 						//Ãß°¡ µ¶¼ºÀúÇ×(1), Ãß°¡ ¸íÁß°ª(2), Ãß°¡ ¹æ¾î°ª(3), HP È¸º¹·® Ãß°¡(4), SP È¸º¹·® Ãß°¡(5)
@@ -2585,7 +2581,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// ¹æ¾î±¸ Sub Æ¯¼ºÄ¡°¡ ÀÔ·ÂµÉ È®·üÀº 40%
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 10000) >= m_iRareDropRate) {
 
 						// Èñ±Í ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ È¿°ú Á¾·ù: 
 						//Ãß°¡ µ¶¼ºÀúÇ×(1), Ãß°¡ ¸íÁß°ª(2), Ãß°¡ ¹æ¾î°ª(3), HP È¸º¹·® Ãß°¡(4), SP È¸º¹·® Ãß°¡(5)
@@ -3074,8 +3070,8 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 						m_pNpcConfigList[iNpcConfigListIndex]->m_vNpcItem.push_back(*pTempNpcItem);
 
 						// 2002-09-17 #1 NPCITEM Type 2�� ���
-						if (m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax < pTempNpcItem->m_sSecondProbability)
-							m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax = pTempNpcItem->m_sSecondProbability;
+						/*if (m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax < pTempNpcItem->m_sSecondProbability)
+							m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax = pTempNpcItem->m_sSecondProbability;*/
 
 						break;
 
@@ -3139,8 +3135,8 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
 			// centu - fixed que lea probabilidades
-			if (iDice(1, CTempNpcItem.m_sFirstProbability) <= m_iPrimaryDropRate) bFirstDice = TRUE;
-			if (iDice(1, CTempNpcItem.m_sSecondProbability) <= m_iSecondaryDropRate) bSecondDice = TRUE;
+			if (iDice(1, 10000) == CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
+			if (iDice(1, 10000) == CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
 
 			if ((bFirstDice == TRUE) && (bSecondDice == TRUE)) {
 				iItemID = CTempNpcItem.m_sItemID;
@@ -3152,7 +3148,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			break;
 
 		case 2:
-			iNumNpcitem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size();
+			/*iNumNpcitem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size();
 			iDiceValue = iDice(1, m_pNpcConfigList[iNpcIndex]->m_iNpcItemMax);
 
 			for (iIndex = 0; iIndex < iNumNpcitem; iIndex++) {
@@ -3165,7 +3161,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 					PutLogList(G_cTxt);
 					break;
 				}
-			}
+			}*/
 			break;
 
 		} // switch

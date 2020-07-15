@@ -1,0 +1,8 @@
+2020:07:15:14:40:03	Loc(middleland) IP(192.168.0.28) GM(GM1):"/enableadmincommand 2257516364627831 "
+2020:07:15:14:40:08	Loc(middleland) IP(192.168.0.28) GM(GM1):"/summon Abaddon"
+2020:07:15:14:42:31	Loc(middleland) IP(192.168.0.28) GM(GM1):"/enableadmincommand 2257516364627831 "
+2020:07:15:14:42:36	Loc(middleland) IP(192.168.0.28) GM(GM1):"/tp elvine"
+2020:07:15:14:42:47	Loc(elvine) IP(192.168.0.28) GM(GM1):"/summon Abaddon"
+2020:07:15:14:45:07	Loc(middleland) IP(192.168.0.28) GM(GM1):"/tp elvine"
+2020:07:15:14:45:20	Loc(elvine) IP(192.168.0.28) GM(GM1):"/enableadmincommand 2257516364627831 "
+2020:07:15:14:45:23	Loc(elvine) IP(192.168.0.28) GM(GM1):"/summon Abaddon"

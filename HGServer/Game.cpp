@@ -25423,177 +25423,265 @@ NBA_CHASE:;
 
 BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability, int iMin, int iMax, short sBaseX, short sBaseY, int iItemSpreadType, int iSpreadRange, int* iItemIDs, POINT* BasePos, int* iNumItem)
 {
-	int		iProb = 100;
-	float	fProb, fProbA, fProbB, fProbC;
-	int		iItemID;
-	int		iNum = 0;
+	if (m_bNpcItemConfig == TRUE) {
 
-	for (int i = 0; i < iMax; i++)
-	{
-		if (i > iMin) iProb = iProbability;
+		class    CNpcItem	CTempNpcItem;
+		int    iResult;
+		int    iNpcIndex;
+		int    iNumNpcitem;
+		int    iIndex;
+		int    iDiceValue;
+		BOOL    bFirstDice = FALSE, bSecondDice = FALSE;
+		int		iItemID = 0;
+		int		iNum = 0;
 
-		fProb = (float)(100 - iProb) / 10.0f;	//WyvernÀÇ Æò±Õ 50
-		if (fProb < 1.0f) fProb = 1.0f;
-
-		fProbA = fProb * 8.0f;
-		fProbB = fProb * 4.0f;
-		fProbC = fProb;
-
-		iItemID = 0;
-
-		switch (sNpcType)
-		{
-		case 66: // Wyvern...stupid koreans - Centu: not 69 !
-			// ÃÖ»ó±Þ
-			switch (iDice(1, 4)) {
-			case 1: if (iDice(1, (6000 * fProbA)) == 3) iItemID = 845; break; // StormBringer
-			case 2: if (iDice(1, (5000 * fProbA)) == 3) iItemID = 848; break; // LightingBlade
-			case 3: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 614; break; // SwordofIceElemental
-			case 4: if (iDice(1, (4500 * fProbA)) == 3) iItemID = 380; break; // IceStormManual
+		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {
+			if (m_pNpcConfigList[iNpcIndex] != NULL) {
+				if (m_pNpcConfigList[iNpcIndex]->m_sType == sNpcType) break;
 			}
+		}
 
-			// »ó±Þ
-			if (iItemID == 0)
-			{
-				switch (iDice(1, 6)) {
-				case  1: if (iDice(1, (500 * fProbB)) == 2) iItemID = 642; break; // KnecklaceOfIcePro       
-				case  2: if (iDice(1, (2000 * fProbB)) == 2) iItemID = 643; break; // KnecklaceOfIceEle
-				case  3: if (iDice(1, (1000 * fProbB)) == 3) iItemID = 636; break; // RingofGrandMage         	
-				case  4: if (iDice(1, (1500 * fProbB)) == 3) iItemID = 734; break; // RingOfArcmage           
-				case  5: if (iDice(1, (500 * fProbB)) == 3) iItemID = 634; break; // RingofWizard            
-				case  6: if (iDice(1, (500 * fProbB)) == 2) iItemID = 290; break; // Flameberge+3(LLF)
+		if (iNpcIndex == DEF_MAXNPCTYPES) return FALSE;
+
+		if (m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size() <= 0)  return FALSE;
+
+		switch (m_pNpcConfigList[iNpcIndex]->m_iNpcItemType) {
+		case 1:
+			// ���� ������ ���� ���� ������ �� �ϳ��� ������.
+			/*iResult = iDice(1, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size()) - 1;
+
+			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
+
+			// centu - fixed que lea probabilidades
+			if (iDice(1, 10000) == CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
+			if (iDice(1, 10000) == CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
+
+			if ((bFirstDice == TRUE) && (bSecondDice == TRUE)) {
+				iItemID = CTempNpcItem.m_sItemID;
+
+				wsprintf(G_cTxt, "NpcType 1 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);
+				PutLogList(G_cTxt);
+
+			}*/
+			break;
+
+		case 2:
+			iNumNpcitem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size();
+			
+			for (iIndex = 0; iIndex < iNumNpcitem; iIndex++) {
+				CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iIndex);
+
+				// centu - fixed que lea probabilidades
+				if (iDice(1, 10000) >= CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
+				if (iDice(1, 10000) >= CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
+
+				if (bFirstDice && bSecondDice) {
+					iItemID = CTempNpcItem.m_sItemID;
+
+					wsprintf(G_cTxt, "NpcType 2 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);
+					PutLogList(G_cTxt);
+					//break;
 				}
+				
+				// item id
+				iItemIDs[iNum] = iItemID;
+
+				// item position
+				switch (iItemSpreadType)
+				{
+					case DEF_ITEMSPREAD_RANDOM:
+						BasePos[iNum].x = sBaseX + iSpreadRange - iDice(1, iSpreadRange * 2);
+						BasePos[iNum].y = sBaseY + iSpreadRange - iDice(1, iSpreadRange * 2);
+						break;
+
+					case DEF_ITEMSPREAD_FIXED:
+						BasePos[iNum].x = sBaseX + ITEMSPREAD_FIEXD_COORD[iNum][0];
+						BasePos[iNum].y = sBaseY + ITEMSPREAD_FIEXD_COORD[iNum][1];
+						break;
+				}
+				iNum++;
+				
 			}
 			break;
 
-		case 73: // Fire-Wyvern
-			// ÃÖ»ó±Þ
-			switch (iDice(1, 7)) {
-			case  1: if (iDice(1, (5000 * fProbA)) == 3) iItemID = 847; break; // DarkExecutor            
-			case  2: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 630; break; // RingoftheXelima
-			case  3: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 860; break; // NecklaceOfXelima        
-			case  4: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 735; break; // RingOfDragonpower       
-			case  5: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 20; break; // Excaliber
-			case  6: if (iDice(1, (3000 * fProbA)) == 3) iItemID = 382; break; // BloodyShockW.Manual
-			case  7: if (iDice(1, (3000 * fProbA)) == 3) iItemID = 381; break; // MassFireStrikeManual  			
-			}
-
-			// »ó±Þ
-			if (iItemID == 0)
-			{
-				switch (iDice(1, 9)) {
-				case  1: if (iDice(1, (1000 * fProbB)) == 2) iItemID = 645; break; // KnecklaceOfEfreet       	
-				case  2: if (iDice(1, (500 * fProbB)) == 2) iItemID = 638; break; // KnecklaceOfFirePro			
-				case  3: if (iDice(1, (1000 * fProbB)) == 3) iItemID = 636; break; // RingofGrandMage	
-				case  4: if (iDice(1, (800 * fProbB)) == 3) iItemID = 734; break; // RingOfArcmage           
-				case  5: if (iDice(1, (500 * fProbB)) == 3) iItemID = 634; break; // RingofWizard            
-				case  6: if (iDice(1, (500 * fProbB)) == 2) iItemID = 290; break; // Flameberge+3(LLF)
-				case  7: if (iDice(1, (500 * fProbB)) == 3) iItemID = 490; break; // BloodSword              
-				case  8: if (iDice(1, (500 * fProbB)) == 3) iItemID = 491; break; // BloodAxe              
-				case  9: if (iDice(1, (500 * fProbB)) == 3) iItemID = 492; break; // BloodRapier
-				}
-			}
-
-			break;
-
-		case 81: // Abaddon
-		case 99: // Ghost Abaddon
-
-			// ÃÖ»ó±Þ
-			switch (iDice(1, 6)) {
-			case 1: if (iDice(1, (100 * fProbA)) == 3) iItemID = 846; break; // The_Devastator
-			case 2: if (iDice(1, (100 * fProbA)) == 3) iItemID = 847; break; // DarkExecutor            
-			case 3: if (iDice(1, (100 * fProbA)) == 3) iItemID = 860; break; // NecklaceOfXelima
-			case 4: if (iDice(1, (100 * fProbA)) == 3) iItemID = 865; break; // ResurWand(MS.20)
-			case 5: if (iDice(1, (100 * fProbA)) == 2) iItemID = 631; break; // RingoftheAbaddon        	
-			case 6: if (iDice(1, (100 * fProbA)) == 2) iItemID = 866; break; // BerserkWand(MS.10)
-			}
-
-			// »ó±Þ
-			if (iItemID == 0)
-			{
-				switch (iDice(1, 15)) {
-				case  1: if (iDice(1, (4 * fProbB)) == 3) iItemID = 762; break; // GBattleHammer           
-				case  2: if (iDice(1, (4 * fProbB)) == 3) iItemID = 490; break; // BloodSword              
-				case  3: if (iDice(1, (4 * fProbB)) == 3) iItemID = 491; break; // BloodAxe                
-				case  4: if (iDice(1, (4 * fProbB)) == 3) iItemID = 492; break; // BloodRapier             
-				case  5: if (iDice(1, (4 * fProbB)) == 3) iItemID = 611; break; // XelimaAxe
-				case  6: if (iDice(1, (4 * fProbB)) == 3) iItemID = 610; break; // XelimaBlade
-				case  7: if (iDice(1, (4 * fProbB)) == 3) iItemID = 612; break; // XelimaRapier
-				case  8:
-				case  9:
-				case 10: if (iDice(1, (4 * fProbB)) == 3) iItemID = 645; break; // KnecklaceOfEfreet       	
-				case 11: if (iDice(1, (4 * fProbB)) == 3) iItemID = 638; break; // KnecklaceOfFirePro      			
-				case 12: if (iDice(1, (4 * fProbB)) == 3) iItemID = 382; break; // BloodyShockW.Manual
-				case 13: if (iDice(1, (4 * fProbB)) == 3) iItemID = 381; break; // MassFireStrikeManual  
-				case 14: if (iDice(1, (4 * fProbB)) == 3) iItemID = 259; break; // MagicWand(M.Shield)
-				case 15: if (iDice(1, (4 * fProbB)) == 3) iItemID = 291; break; // MagicWand(MS30-LLF)
-				}
-			}
-			break;
 		} // switch
 
-		// ÀÏ¹Ý ¾ÆÀÌÅÛ ....dumb korean idiots
-		if (iItemID == 0)
+		*iNumItem = iNum;
+
+		return TRUE;
+	}
+	else {
+		int		iProb = 100;
+		float	fProb, fProbA, fProbB, fProbC;
+		int		iItemID;
+		int		iNum = 0;
+
+		for (int i = 0; i < iMax; i++)
 		{
-			switch (iDice(1, 24)) {
-			case  1: if (iDice(1, (2 * fProbC)) == 2) iItemID = 740; break; // BagOfGold-medium
-			case  2: if (iDice(1, (2 * fProbC)) == 2) iItemID = 741; break; // BagOfGold-large
-			case  3: if (iDice(1, (2 * fProbC)) == 2) iItemID = 742; break; // BagOfGold-largest
-			case  4: if (iDice(1, (2 * fProbC)) == 2) iItemID = 868; break; // AcientTablet(LU)
-			case  5:
-			case  6:
-			case  7: if (iDice(1, (2 * fProbC)) == 2) iItemID = 650; break; // ZemstoneOfSacrifice
-			case  8:
-			case  9: if (iDice(1, (2 * fProbC)) == 2) iItemID = 656; break; // StoneOfXelima
-			case 10:
-			case 11:
-			case 12: if (iDice(1, (2 * fProbC)) == 2) iItemID = 657; break; // StoneOfMerien
-			case 13: if (iDice(1, (2 * fProbC)) == 2) iItemID = 333; break; // PlatinumRing          
-			case 14: if (iDice(1, (2 * fProbC)) == 2) iItemID = 334; break; // LuckyGoldRing         
-			case 15: if (iDice(1, (2 * fProbC)) == 2) iItemID = 335; break; // EmeraldRing           
-			case 16: if (iDice(1, (2 * fProbC)) == 2) iItemID = 336; break; // SapphireRing          
-			case 17: if (iDice(1, (2 * fProbC)) == 2) iItemID = 337; break; // RubyRing              
-			case 18: if (iDice(1, (2 * fProbC)) == 2) iItemID = 290; break; // Flameberge+3(LLF)
-			case 19: if (iDice(1, (2 * fProbC)) == 2) iItemID = 292; break; // GoldenAxe(LLF)
-			case 20: if (iDice(1, (2 * fProbC)) == 2) iItemID = 259; break; // MagicWand(M.Shield)
-			case 21: if (iDice(1, (2 * fProbC)) == 2) iItemID = 300; break; // MagicNecklace(RM10)
-			case 22: if (iDice(1, (2 * fProbC)) == 2) iItemID = 311; break; // MagicNecklace(DF+10)
-			case 23: if (iDice(1, (2 * fProbC)) == 2) iItemID = 305; break; // MagicNecklace(DM+1)
-			case 24: if (iDice(1, (2 * fProbC)) == 2) iItemID = 308; break; // MagicNecklace(MS10)
-			}
-		}
+			if (i > iMin) iProb = iProbability;
 
-		// È®·üÀÌ 100 ÀÎµ¥ ¾Æ¹« °Íµµ ³ª¿ÀÁö ¾Ê¾Ò´Ù.
-		// Gold ÁØ´Ù. retarded koreans -_-
-		if (iItemID == 0 && iProb == 100) iItemID = 90; // Gold
+			fProb = (float)(100 - iProb) / 10.0f;	//WyvernÀÇ Æò±Õ 50
+			if (fProb < 1.0f) fProb = 1.0f;
 
-		if (iItemID != 0)
-		{
-			// item id
-			iItemIDs[iNum] = iItemID;
+			fProbA = fProb * 8.0f;
+			fProbB = fProb * 4.0f;
+			fProbC = fProb;
 
-			// item position
-			switch (iItemSpreadType)
+			iItemID = 0;
+
+			switch (sNpcType)
 			{
-			case DEF_ITEMSPREAD_RANDOM:
-				BasePos[iNum].x = sBaseX + iSpreadRange - iDice(1, iSpreadRange * 2);
-				BasePos[iNum].y = sBaseY + iSpreadRange - iDice(1, iSpreadRange * 2);
+			case 66: // Wyvern...stupid koreans - Centu: not 69 !
+				// ÃÖ»ó±Þ
+				switch (iDice(1, 4)) {
+				case 1: if (iDice(1, (6000 * fProbA)) == 3) iItemID = 845; break; // StormBringer
+				case 2: if (iDice(1, (5000 * fProbA)) == 3) iItemID = 848; break; // LightingBlade
+				case 3: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 614; break; // SwordofIceElemental
+				case 4: if (iDice(1, (4500 * fProbA)) == 3) iItemID = 380; break; // IceStormManual
+				}
+
+				// »ó±Þ
+				if (iItemID == 0)
+				{
+					switch (iDice(1, 6)) {
+					case  1: if (iDice(1, (500 * fProbB)) == 2) iItemID = 642; break; // KnecklaceOfIcePro       
+					case  2: if (iDice(1, (2000 * fProbB)) == 2) iItemID = 643; break; // KnecklaceOfIceEle
+					case  3: if (iDice(1, (1000 * fProbB)) == 3) iItemID = 636; break; // RingofGrandMage         	
+					case  4: if (iDice(1, (1500 * fProbB)) == 3) iItemID = 734; break; // RingOfArcmage           
+					case  5: if (iDice(1, (500 * fProbB)) == 3) iItemID = 634; break; // RingofWizard            
+					case  6: if (iDice(1, (500 * fProbB)) == 2) iItemID = 290; break; // Flameberge+3(LLF)
+					}
+				}
 				break;
 
-			case DEF_ITEMSPREAD_FIXED:
-				BasePos[iNum].x = sBaseX + ITEMSPREAD_FIEXD_COORD[iNum][0];
-				BasePos[iNum].y = sBaseY + ITEMSPREAD_FIEXD_COORD[iNum][1];
+			case 73: // Fire-Wyvern
+				// ÃÖ»ó±Þ
+				switch (iDice(1, 7)) {
+				case  1: if (iDice(1, (5000 * fProbA)) == 3) iItemID = 847; break; // DarkExecutor            
+				case  2: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 630; break; // RingoftheXelima
+				case  3: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 860; break; // NecklaceOfXelima        
+				case  4: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 735; break; // RingOfDragonpower       
+				case  5: if (iDice(1, (3000 * fProbA)) == 2) iItemID = 20; break; // Excaliber
+				case  6: if (iDice(1, (3000 * fProbA)) == 3) iItemID = 382; break; // BloodyShockW.Manual
+				case  7: if (iDice(1, (3000 * fProbA)) == 3) iItemID = 381; break; // MassFireStrikeManual  			
+				}
+
+				// »ó±Þ
+				if (iItemID == 0)
+				{
+					switch (iDice(1, 9)) {
+					case  1: if (iDice(1, (1000 * fProbB)) == 2) iItemID = 645; break; // KnecklaceOfEfreet       	
+					case  2: if (iDice(1, (500 * fProbB)) == 2) iItemID = 638; break; // KnecklaceOfFirePro			
+					case  3: if (iDice(1, (1000 * fProbB)) == 3) iItemID = 636; break; // RingofGrandMage	
+					case  4: if (iDice(1, (800 * fProbB)) == 3) iItemID = 734; break; // RingOfArcmage           
+					case  5: if (iDice(1, (500 * fProbB)) == 3) iItemID = 634; break; // RingofWizard            
+					case  6: if (iDice(1, (500 * fProbB)) == 2) iItemID = 290; break; // Flameberge+3(LLF)
+					case  7: if (iDice(1, (500 * fProbB)) == 3) iItemID = 490; break; // BloodSword              
+					case  8: if (iDice(1, (500 * fProbB)) == 3) iItemID = 491; break; // BloodAxe              
+					case  9: if (iDice(1, (500 * fProbB)) == 3) iItemID = 492; break; // BloodRapier
+					}
+				}
+
 				break;
+
+			case 81: // Abaddon
+			case 99: // Ghost Abaddon
+
+				// ÃÖ»ó±Þ
+				switch (iDice(1, 6)) {
+				case 1: if (iDice(1, (100 * fProbA)) == 3) iItemID = 846; break; // The_Devastator
+				case 2: if (iDice(1, (100 * fProbA)) == 3) iItemID = 847; break; // DarkExecutor            
+				case 3: if (iDice(1, (100 * fProbA)) == 3) iItemID = 860; break; // NecklaceOfXelima
+				case 4: if (iDice(1, (100 * fProbA)) == 3) iItemID = 865; break; // ResurWand(MS.20)
+				case 5: if (iDice(1, (100 * fProbA)) == 2) iItemID = 631; break; // RingoftheAbaddon        	
+				case 6: if (iDice(1, (100 * fProbA)) == 2) iItemID = 866; break; // BerserkWand(MS.10)
+				}
+
+				// »ó±Þ
+				if (iItemID == 0)
+				{
+					switch (iDice(1, 15)) {
+					case  1: if (iDice(1, (4 * fProbB)) == 3) iItemID = 762; break; // GBattleHammer           
+					case  2: if (iDice(1, (4 * fProbB)) == 3) iItemID = 490; break; // BloodSword              
+					case  3: if (iDice(1, (4 * fProbB)) == 3) iItemID = 491; break; // BloodAxe                
+					case  4: if (iDice(1, (4 * fProbB)) == 3) iItemID = 492; break; // BloodRapier             
+					case  5: if (iDice(1, (4 * fProbB)) == 3) iItemID = 611; break; // XelimaAxe
+					case  6: if (iDice(1, (4 * fProbB)) == 3) iItemID = 610; break; // XelimaBlade
+					case  7: if (iDice(1, (4 * fProbB)) == 3) iItemID = 612; break; // XelimaRapier
+					case  8:
+					case  9:
+					case 10: if (iDice(1, (4 * fProbB)) == 3) iItemID = 645; break; // KnecklaceOfEfreet       	
+					case 11: if (iDice(1, (4 * fProbB)) == 3) iItemID = 638; break; // KnecklaceOfFirePro      			
+					case 12: if (iDice(1, (4 * fProbB)) == 3) iItemID = 382; break; // BloodyShockW.Manual
+					case 13: if (iDice(1, (4 * fProbB)) == 3) iItemID = 381; break; // MassFireStrikeManual  
+					case 14: if (iDice(1, (4 * fProbB)) == 3) iItemID = 259; break; // MagicWand(M.Shield)
+					case 15: if (iDice(1, (4 * fProbB)) == 3) iItemID = 291; break; // MagicWand(MS30-LLF)
+					}
+				}
+				break;
+			} // switch
+
+			// ÀÏ¹Ý ¾ÆÀÌÅÛ ....dumb korean idiots
+			if (iItemID == 0)
+			{
+				switch (iDice(1, 24)) {
+				case  1: if (iDice(1, (2 * fProbC)) == 2) iItemID = 740; break; // BagOfGold-medium
+				case  2: if (iDice(1, (2 * fProbC)) == 2) iItemID = 741; break; // BagOfGold-large
+				case  3: if (iDice(1, (2 * fProbC)) == 2) iItemID = 742; break; // BagOfGold-largest
+				case  4: if (iDice(1, (2 * fProbC)) == 2) iItemID = 868; break; // AcientTablet(LU)
+				case  5:
+				case  6:
+				case  7: if (iDice(1, (2 * fProbC)) == 2) iItemID = 650; break; // ZemstoneOfSacrifice
+				case  8:
+				case  9: if (iDice(1, (2 * fProbC)) == 2) iItemID = 656; break; // StoneOfXelima
+				case 10:
+				case 11:
+				case 12: if (iDice(1, (2 * fProbC)) == 2) iItemID = 657; break; // StoneOfMerien
+				case 13: if (iDice(1, (2 * fProbC)) == 2) iItemID = 333; break; // PlatinumRing
+				case 14: if (iDice(1, (2 * fProbC)) == 2) iItemID = 334; break; // LuckyGoldRing
+				case 15: if (iDice(1, (2 * fProbC)) == 2) iItemID = 335; break; // EmeraldRing
+				case 16: if (iDice(1, (2 * fProbC)) == 2) iItemID = 336; break; // SapphireRing
+				case 17: if (iDice(1, (2 * fProbC)) == 2) iItemID = 337; break; // RubyRing
+				case 18: if (iDice(1, (2 * fProbC)) == 2) iItemID = 290; break; // Flameberge+3(LLF)
+				case 19: if (iDice(1, (2 * fProbC)) == 2) iItemID = 292; break; // GoldenAxe(LLF)
+				case 20: if (iDice(1, (2 * fProbC)) == 2) iItemID = 259; break; // MagicWand(M.Shield)
+				case 21: if (iDice(1, (2 * fProbC)) == 2) iItemID = 300; break; // MagicNecklace(RM10)
+				case 22: if (iDice(1, (2 * fProbC)) == 2) iItemID = 311; break; // MagicNecklace(DF+10)
+				case 23: if (iDice(1, (2 * fProbC)) == 2) iItemID = 305; break; // MagicNecklace(DM+1)
+				case 24: if (iDice(1, (2 * fProbC)) == 2) iItemID = 308; break; // MagicNecklace(MS10)
+				}
 			}
-			iNum++;
-		}
 
-	} // for
+			// È®·üÀÌ 100 ÀÎµ¥ ¾Æ¹« °Íµµ ³ª¿ÀÁö ¾Ê¾Ò´Ù.
+			// Gold ÁØ´Ù. retarded koreans -_-
+			if (iItemID == 0 && iProb == 100) iItemID = 90; // Gold
 
-	*iNumItem = iNum;
+			if (iItemID != 0)
+			{
+				// item id
+				iItemIDs[iNum] = iItemID;
 
-	return TRUE;
+				// item position
+				switch (iItemSpreadType)
+				{
+				case DEF_ITEMSPREAD_RANDOM:
+					BasePos[iNum].x = sBaseX + iSpreadRange - iDice(1, iSpreadRange * 2);
+					BasePos[iNum].y = sBaseY + iSpreadRange - iDice(1, iSpreadRange * 2);
+					break;
+
+				case DEF_ITEMSPREAD_FIXED:
+					BasePos[iNum].x = sBaseX + ITEMSPREAD_FIEXD_COORD[iNum][0];
+					BasePos[iNum].y = sBaseY + ITEMSPREAD_FIEXD_COORD[iNum][1];
+					break;
+				}
+				iNum++;
+			}
+
+		} // for
+		*iNumItem = iNum;
+
+		return TRUE;
+	}
 }
 
 /*********************************************************************************************************************

@@ -787,7 +787,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 						// Â¹Ã¦Â¾Ã®Â±Â¸ Sub Ã†Â¯Â¼ÂºÃ„Â¡Â°Â¡ Ã€Ã”Â·Ã‚ÂµÃ‰ ÃˆÂ®Â·Ã¼Ã€Âº 40%
-						if (iDice(1, 10000) <= m_iRareDropRate) {
+						if (iDice(1, 10000) >= m_iRareDropRate) {
 
 							// ÃˆÃ±Â±Ã? Â¾Ã†Ã€ÃŒÃ…Ã› Sub Ã†Â¯Â¼ÂºÃ„Â¡ ÃˆÂ¿Â°Ãº Ã?Â¾Â·Ã¹:
 							//ÃƒÃŸÂ°Â¡ ÂµÂ¶Â¼ÂºÃ€ÃºÃ‡Ã—(1), ÃƒÃŸÂ°Â¡ Â¸Ã*Ã?ÃŸÂ°Âª(2), ÃƒÃŸÂ°Â¡ Â¹Ã¦Â¾Ã®Â°Âª(3), HP ÃˆÂ¸ÂºÂ¹Â·Â® ÃƒÃŸÂ°Â¡(4), SP ÃˆÂ¸ÂºÂ¹Â·Â® ÃƒÃŸÂ°Â¡(5)
