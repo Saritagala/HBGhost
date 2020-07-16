@@ -426,7 +426,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 			
 			// Centu - end apocalypse
 			DWORD dwTime = timeGetTime();
-			dwTime += 1000 * 60 * 1; // 5 minutes
+			dwTime += 1000 * 60 * 5; 
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
 				, 0, iMapIndex, 0, 0, 0, 0, 0);
 
@@ -526,8 +526,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 				if (m_pClientList[sAttackerH]->m_cSide != m_pNpcList[iNpcH]->m_cSide) {
 					m_pClientList[sAttackerH]->m_iConstructionPoint += iConstructionPoint;
 					m_pClientList[sAttackerH]->m_iWarContribution += iWarContribution;
-					wsprintf(G_cTxt, "Enemy Npc Killed by player! Construction: +%d WarContribution: +%d", iConstructionPoint, iWarContribution);
-					PutLogList(G_cTxt);
+					//wsprintf(G_cTxt, "Enemy Npc Killed by player! Construction: +%d WarContribution: +%d", iConstructionPoint, iWarContribution);
+					//PutLogList(G_cTxt);
 
 					SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, NULL, NULL);
 				}
@@ -535,8 +535,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 					m_pClientList[sAttackerH]->m_iWarContribution -= (iWarContribution * 2);
 					if (m_pClientList[sAttackerH]->m_iWarContribution < 0)
 						m_pClientList[sAttackerH]->m_iWarContribution = 0;
-					wsprintf(G_cTxt, "Friendly Npc Killed by player! WarContribution: -%d", iWarContribution);
-					PutLogList(G_cTxt);
+					//wsprintf(G_cTxt, "Friendly Npc Killed by player! WarContribution: -%d", iWarContribution);
+					//PutLogList(G_cTxt);
 
 					SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, NULL, NULL);
 				}
@@ -550,8 +550,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 								(m_pClientList[i]->m_iCrusadeDuty == 3)) {
 
 								m_pClientList[i]->m_iConstructionPoint += iConstructionPoint;
-								wsprintf(G_cTxt, "Enemy Npc Killed by Npc! Construct point +%d", iConstructionPoint);
-								PutLogList(G_cTxt);
+								//wsprintf(G_cTxt, "Enemy Npc Killed by Npc! Construct point +%d", iConstructionPoint);
+								//PutLogList(G_cTxt);
 								SendNotifyMsg(NULL, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, NULL, NULL);
 								goto NKH_GOTOPOINT1;
 							}
@@ -1746,7 +1746,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		else {
 			// 9000 default; the lower the greater the Weapon/Armor/Wand Drop
 			// 35% Drop 40% of that is an Item 
-			if (iDice(1, 10000) <= m_iSecondaryDropRate) {
+			if (iDice(1, 10000) >= m_iSecondaryDropRate) {
 				// 40% Drop 90% of that is a standard drop
 				// Standard Drop Calculation: (35/100) * (40/100) * (90/100) = 12.6%
 				iResult = iDice(1, 12000);
@@ -1910,100 +1910,100 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 						case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
 							switch (iDice(1, 3)) {
-							case 1: iItemID = 1;  break; // Dagger
-							case 2: iItemID = 8;  break; // ShortSword
-							case 3: iItemID = 59; break; // LightAxe
+								case 1: iItemID = 1;  break; // Dagger
+								case 2: iItemID = 8;  break; // ShortSword
+								case 3: iItemID = 59; break; // LightAxe
 							}
 							break;
 
 						case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
 							switch (iDice(1, 6)) {
-							case 1: iItemID = 12;  break; // MainGauche
-							case 2: iItemID = 15;  break; // Gradius
-							case 3: iItemID = 65;  break; // SexonAxe
-							case 4: iItemID = 62;  break; // Tomahoc
-							case 5: iItemID = 23;  break; // Sabre
-							case 6: iItemID = 31;  break; // Esterk
+								case 1: iItemID = 12;  break; // MainGauche
+								case 2: iItemID = 15;  break; // Gradius
+								case 3: iItemID = 65;  break; // SexonAxe
+								case 4: iItemID = 62;  break; // Tomahoc
+								case 5: iItemID = 23;  break; // Sabre
+								case 6: iItemID = 31;  break; // Esterk
 							}
 							break;
 
 						case 3: // Stone-Golem, Clay-Golem
 							switch (iDice(1, 4)) {
-							case 1: iItemID = 17;  break; // LongSword
-							case 2: iItemID = 68;  break; // DoubleAxe
-							case 3: iItemID = 23;  break; // Sabre
-							case 4: iItemID = 31;  break; // Esterk
+								case 1: iItemID = 17;  break; // LongSword
+								case 2: iItemID = 68;  break; // DoubleAxe
+								case 3: iItemID = 23;  break; // Sabre
+								case 4: iItemID = 31;  break; // Esterk
 							}
 							break;
 
 						case 4: // Hellbound, Rudolph
 							switch (iDice(1, 5)) {
-							case 1: iItemID = 23;  break; // Sabre
-							case 2: iItemID = 25;  break; // Scimitar
-							case 3: iItemID = 28;  break; // Falchion
-							case 4: iItemID = 31;  break; // Esterk
-							case 5: iItemID = 34;  break; // Rapier
+								case 1: iItemID = 23;  break; // Sabre
+								case 2: iItemID = 25;  break; // Scimitar
+								case 3: iItemID = 28;  break; // Falchion
+								case 4: iItemID = 31;  break; // Esterk
+								case 5: iItemID = 34;  break; // Rapier
 							}
 							break;
 
 						case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
 							switch (iDice(1, 3)) {
-							case 1: iItemID = 31;  break; // Esterk
-							case 2: iItemID = 34;  break; // Rapier
-							case 3: iItemID = 71;  break; // WarAxe
+								case 1: iItemID = 31;  break; // Esterk
+								case 2: iItemID = 34;  break; // Rapier
+								case 3: iItemID = 71;  break; // WarAxe
 							}
 							break;
 
 						case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
 							switch (iDice(1, 6)) {
-							case 1: iItemID = 50;  break; // GreatSword
-							case 2: iItemID = 54;  break; // Flameberge
-							case 3: iItemID = 46;  break; // Claymore
-							case 4: iItemID = 31;  break; // Esterk
-							case 5: iItemID = 34;  break; // Rapier
-							case 6: iItemID = 617; break; // CompositeBow
+								case 1: iItemID = 50;  break; // GreatSword
+								case 2: iItemID = 54;  break; // Flameberge
+								case 3: iItemID = 46;  break; // Claymore
+								case 4: iItemID = 31;  break; // Esterk
+								case 5: iItemID = 34;  break; // Rapier
+								case 6: iItemID = 617; break; // CompositeBow
 							}
 							break;
 
 						case 7: // Liche, Frost
 							switch (iDice(1, 4)) {
-							case 1: iItemID = 50;  break; // GreatSword
-							case 2: iItemID = 54;  break; // Flameberge
-							case 3: iItemID = 31;  break; // Esterk
-							case 4: iItemID = 34;  break; // Rapier
+								case 1: iItemID = 50;  break; // GreatSword
+								case 2: iItemID = 54;  break; // Flameberge
+								case 3: iItemID = 31;  break; // Esterk
+								case 4: iItemID = 34;  break; // Rapier
 							}
 							break;
 
 						case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
 							switch (iDice(1, 7)) {
-							case 1: iItemID = 50;  break; // GreatSword
-							case 2: iItemID = 54;  break; // Flameberge
-							case 3: iItemID = 560; break; // BattleAxe
-							case 4: iItemID = 31;  break; // Esterk
-							case 5: iItemID = 34;  break; // Rapier
-							case 6: iItemID = 55;  break; // Flameberge+1
-							case 7: iItemID = 615; break; // GiantSword
+								case 1: iItemID = 50;  break; // GreatSword
+								case 2: iItemID = 54;  break; // Flameberge
+								case 3: iItemID = 560; break; // BattleAxe
+								case 4: iItemID = 31;  break; // Esterk
+								case 5: iItemID = 34;  break; // Rapier
+								case 6: iItemID = 55;  break; // Flameberge+1
+								case 7: iItemID = 615; break; // GiantSword
 							}
 							break;
 
 						case 9: // MountainGiant
 							switch (iDice(1, 6)) {
-							case 1: iItemID = 23;  break; // Sabre
-							case 2: iItemID = 25;  break; // Scimitar
-							case 3: iItemID = 28;  break; // Falchion
-							case 4: iItemID = 31;  break; // Esterk
-							case 5: iItemID = 34;  break; // Rapier
-							case 6: iItemID = 760; break; // Hammer
+								case 1: iItemID = 23;  break; // Sabre
+								case 2: iItemID = 25;  break; // Scimitar
+								case 3: iItemID = 28;  break; // Falchion
+								case 4: iItemID = 31;  break; // Esterk
+								case 5: iItemID = 34;  break; // Rapier
+								case 6: iItemID = 760; break; // Hammer
 							}
 							break;
 
 						case 10: // Ettin
 							switch (iDice(1, 5)) {
-							case 1: iItemID = 46;  break; // Claymore
-							case 2: iItemID = 31;  break; // Esterk
-							case 3: iItemID = 34;  break; // Rapier
-							case 4: iItemID = 760; break; // Hammer
-							case 5: iItemID = 761; break; // GiantHammer
+								case 1: iItemID = 46;  break; // Claymore
+								case 2: iItemID = 31;  break; // Esterk
+								case 3: iItemID = 34;  break; // Rapier
+								case 4: iItemID = 760; break; // Hammer
+								case 5: iItemID = 761; break; // GiantHammer
 							}
 							break;
 
@@ -2017,14 +2017,17 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 3:
 						case 9:
 						case 10:
-							iItemID = 258; break; // MagicWand(MS0)
+							iItemID = 258; 
+							break; // MagicWand(MS0)
 						case 4:
 						case 5:
 						case 6:
-							iItemID = 257; break; // MagicWand(MS10)
+							iItemID = 257; 
+							break; // MagicWand(MS10)
 						case 7:
 						case 8:
-							iItemID = 256; break; // MagicWand(MS20)
+							iItemID = 256; 
+							break; // MagicWand(MS20)
 						}
 					}
 				}
@@ -2035,8 +2038,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
 					case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
 						switch (iDice(1, 2)) {
-						case 1: iItemID = 79;  break; // WoodShield
-						case 2: iItemID = 81;  break; // TargeShield
+							case 1: iItemID = 79;  break; // WoodShield
+							case 2: iItemID = 81;  break; // TargeShield
 						}
 						break;
 
@@ -2046,84 +2049,56 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 					case 4: // Hellbound, Rudolph
 						switch (iDice(1, 5)) {
-						case 1: iItemID = 454; break; // Hauberk(M)
-						case 2: iItemID = 472; break; // Hauberk(W)
-						case 3: iItemID = 461; break; // ChainHose(M)
-						case 4: iItemID = 482; break; // ChainHose(W)
-						case 5: iItemID = 83;  break; // BlondeShield
+							case 1: iItemID = 454; break; // Hauberk(M)
+							case 2: iItemID = 472; break; // Hauberk(W)
+							case 3: iItemID = 461; break; // ChainHose(M)
+							case 4: iItemID = 482; break; // ChainHose(W)
+							case 5: iItemID = 83;  break; // BlondeShield
 						}
 						break;
 
 					case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
 						switch (iDice(1, 3)) {
-						case 1: iItemID = 455; break; // LeatherArmor(M)
-						case 2: iItemID = 475; break; // LeatherArmor(W)
-						case 3: iItemID = 84;  break; // IronShield
+							case 1: iItemID = 455; break; // LeatherArmor(M)
+							case 2: iItemID = 475; break; // LeatherArmor(W)
+							case 3: iItemID = 84;  break; // IronShield
 						}
 						break;
 
 					case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-						switch (iDice(1, 6)) {
-						case 1: switch (iDice(1, 2)) {
-						case 1: iItemID = 456; break; // ChainMail(M)
-						case 2: iItemID = 476; break; // ChainMail(W)
-						}
-							  break;
-						case 2: switch (iDice(1, 2)) {
-						case 1: iItemID = 458; break; // PlateMail(M)
-						case 2: iItemID = 478; break; // PlateMail(W)
-						}
-							  break;
-						case 3: iItemID = 85; break; // LagiShield
-						case 4: switch (iDice(1, 8)) {
-						case 1: iItemID = 750; break; // Horned-Helm(M)
-						case 2: iItemID = 751; break; // Wings-Helm(M)
-						case 3: iItemID = 754; break; // Horned-Helm(W)
-						case 4: iItemID = 755; break; // Wings-Helm(W)
-						case 5: iItemID = 752; break; // Wizard-Cap(M) 
-						case 6: iItemID = 753; break; // Wizard-Hat(M)
-						case 7: iItemID = 756; break; // Wizard-Cap(W) 
-						case 8: iItemID = 757; break; // Wizard-Hat(W) 
-						}
-							  break;
-						case 5: switch (iDice(1, 2)) {
-						case 1: iItemID = 454; break; // Hauberk(M)
-						case 2: iItemID = 472; break; // Hauberk(W)
-						}
-							  break;
-						case 6: switch (iDice(1, 2)) {
-						case 1: iItemID = 461; break; // ChainHose(M)
-						case 2: iItemID = 482; break; // ChainHose(W)
-						}
-							  break;
+						switch (iDice(1, 17)) {
+							case 1: iItemID = 456; break; // ChainMail(M)
+							case 2: iItemID = 476; break; // ChainMail(W)
+							case 3: iItemID = 458; break; // PlateMail(M)
+							case 4: iItemID = 478; break; // PlateMail(W)
+							case 5: iItemID = 85; break; // LagiShield
+							case 6: iItemID = 750; break; // Horned-Helm(M)
+							case 7: iItemID = 751; break; // Wings-Helm(M)
+							case 8: iItemID = 754; break; // Horned-Helm(W)
+							case 9: iItemID = 755; break; // Wings-Helm(W)
+							case 10: iItemID = 752; break; // Wizard-Cap(M) 
+							case 11: iItemID = 753; break; // Wizard-Hat(M)
+							case 12: iItemID = 756; break; // Wizard-Cap(W) 
+							case 13: iItemID = 757; break; // Wizard-Hat(W) 
+							case 14: iItemID = 454; break; // Hauberk(M)
+							case 15: iItemID = 472; break; // Hauberk(W)
+							case 16: iItemID = 461; break; // ChainHose(M)
+							case 17: iItemID = 482; break; // ChainHose(W)
 						}
 						break;
 
-
 					case 7: // Liche, Frost
-						switch (iDice(1, 6)) {
-						case 1: switch (iDice(1, 2)) {
-						case 1: iItemID = 457; break; // ScaleMail(M)
-						case 2: iItemID = 477; break; // ScaleMail(W)
-						}
-							  break;
-						case 2: switch (iDice(1, 2)) {
-						case 1: iItemID = 458; break; // PlateMail(M)
-						case 2: iItemID = 478; break; // PlateMail(W)
-						}
-							  break;
-						case 3: iItemID = 86; break; // KnightShield
-						case 4: iItemID = 87; break; // TowerShield
-						case 5: switch (iDice(1, 2)) {
-						case 1: iItemID = 600; break; // Helm(M)
-						case 2: iItemID = 602; break; // Helm(M)
-						}
-							  break;
-						case 6: switch (iDice(1, 2)) {
-						case 1: iItemID = 601; break; // Full-Helm(M)
-						case 2: iItemID = 603; break; // Full-Helm(M)
-						}
-							  break;
+						switch (iDice(1, 10)) {
+							case 1: iItemID = 457; break; // ScaleMail(M)
+							case 2: iItemID = 477; break; // ScaleMail(W)
+							case 3: iItemID = 458; break; // PlateMail(M)
+							case 4: iItemID = 478; break; // PlateMail(W)
+							case 5: iItemID = 86; break; // KnightShield
+							case 6: iItemID = 87; break; // TowerShield
+							case 7: iItemID = 600; break; // Helm(M)
+							case 8: iItemID = 602; break; // Helm(W)
+							case 9: iItemID = 601; break; // Full-Helm(M)
+							case 10: iItemID = 603; break; // Full-Helm(W)
 						}
 						break;
 
@@ -2131,8 +2106,28 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						iItemID = 402; // Cape
 						break;
 
+					// Centu - Mountain-Giant, Ettin, MasterMage-Orc, Giant-Lizard
 					case 9:
 					case 10:
+						switch (iDice(1, 17)) {
+						case 1: iItemID = 456; break; // ChainMail(M)
+						case 2: iItemID = 476; break; // ChainMail(W)
+						case 3: iItemID = 458; break; // PlateMail(M)
+						case 4: iItemID = 478; break; // PlateMail(W)
+						case 5: iItemID = 85; break; // LagiShield
+						case 6: iItemID = 750; break; // Horned-Helm(M)
+						case 7: iItemID = 751; break; // Wings-Helm(M)
+						case 8: iItemID = 754; break; // Horned-Helm(W)
+						case 9: iItemID = 755; break; // Wings-Helm(W)
+						case 10: iItemID = 752; break; // Wizard-Cap(M) 
+						case 11: iItemID = 753; break; // Wizard-Hat(M)
+						case 12: iItemID = 756; break; // Wizard-Cap(W) 
+						case 13: iItemID = 757; break; // Wizard-Hat(W) 
+						case 14: iItemID = 454; break; // Hauberk(M)
+						case 15: iItemID = 472; break; // Hauberk(W)
+						case 16: iItemID = 461; break; // ChainHose(M)
+						case 17: iItemID = 482; break; // ChainHose(W)
+						}
 						break;
 					}
 				}
