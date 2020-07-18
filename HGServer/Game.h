@@ -1217,6 +1217,16 @@ public:
 	void LearnAllMagics(int iClientH);
 
 	void NotifyPlayerAttributes(int iClientH);
+
+	//Magn0S:: Drop Manager
+	bool bDecodeDropManagerFile(char* cFn);
+	int m_iMaxArmorDrop, m_iMaxWeaponDrop, m_iMaxAttrWeaponDrop, m_iMaxStatedArmor, m_iMaxStatedWeapon;
+	int m_iArmorDrop[13];
+	int m_iWeaponDrop[13];
+	int m_iAttrWeaponDrop[8];
+	int m_iStatedArmorDrop[7];
+	int m_iStatedWeaponDrop[3];
+	//Magn0S End--------------------------------------------------------------------------------------------------------
 };
 
 #endif // !defined(AFX_GAME_H__C3D29FC5_755B_11D2_A8E6_00001C7030A6__INCLUDED_)

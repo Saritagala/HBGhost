@@ -2131,66 +2131,57 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						break;
 					}
 				}
-				// 0-None 1-í•„ì‚´ê¸°ëŒ€ë¯¸ì§€ì¶”ê°€ 2-ì¤‘ë…íš¨ê³¼ 3-ì •ì˜ì˜  
-				// 5-ë¯¼ì²©ì˜ 6-ê°€ë²¼ìš´ 7-ì˜ˆë¦¬í•œ 8-ê°•í™”ëœ 9-ê³ ëŒ€ë¬¸ëª…ì˜ 10-ë§ˆë²• ì„±ê³µì˜
-				// ì•„ì´í…œì„ ë§Œë“¤ê³  
+				
 				pItem = new class CItem;
-				// ê¸°ë³¸ íŠ¹ì„±ìœ¼ë¡œ ì•„ì´í…œ ìƒì„± 
 				if (_bInitItemAttr(pItem, iItemID) == FALSE) {
 					delete pItem;
 					return;
 				}
 
+				//Magn0S:: Begin to update Drop Management from .cfg file
 				if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK) {
-					// °ø°Ý ¹«±â·ù¿¡ ºÙÀ» ¼ö ÀÖ´Â Á¢µÎ»ç¸¦ ¼±ÅÃ 
-					// °¡º­¿î(3%) °­È­µÈ(7%) ÇÊ»ìÀÇ(15%) ¹ÎÃ¸ÀÇ(20%) Á¤ÀÇÀÇ(20%) Áßµ¶ÀÇ(16%) ¿¹¸®ÇÑ(16%) °í´ë¹®¸íÀÇ(3%)
-					iResult = iDice(1, 11500);
-					if ((iResult >= 1) && (iResult <= 299)) {
-						dwType = 6;
+					iResult = iDice(1, m_iMaxAttrWeaponDrop); //11500
+					if ((iResult >= 1) && (iResult <= m_iAttrWeaponDrop[0])) {
+						dwType = ITEMSTAT_LIGHT;
 						cColor = 2;
 					}
-					else if ((iResult >= 300) && (iResult <= 999)) {
-						dwType = 8;
+					else if ((iResult > m_iAttrWeaponDrop[0]) && (iResult <= m_iAttrWeaponDrop[1])) {
+						dwType = ITEMSTAT_STRONG;
 						cColor = 3;
 					}
-					else if ((iResult >= 1000) && (iResult <= 2499)) {
-						dwType = 1;
+					else if ((iResult > m_iAttrWeaponDrop[1]) && (iResult <= m_iAttrWeaponDrop[2])) {
+						dwType = ITEMSTAT_CRITICAL;
 						cColor = 5;
 					}
-					else if ((iResult >= 2500) && (iResult <= 4499)) {
-						dwType = 5;
+					else if ((iResult > m_iAttrWeaponDrop[2]) && (iResult <= m_iAttrWeaponDrop[3])) {
+						dwType = ITEMSTAT_AGILE;
 						cColor = 1;
 					}
-					else if ((iResult >= 4500) && (iResult <= 6499)) {
-						dwType = 3;
+					else if ((iResult > m_iAttrWeaponDrop[3]) && (iResult <= m_iAttrWeaponDrop[4])) {
+						dwType = ITEMSTAT_RIGHTEOUS;
 						cColor = 7;
 					}
-					else if ((iResult >= 6500) && (iResult <= 8099)) {
-						dwType = 2;
+					else if ((iResult > m_iAttrWeaponDrop[4]) && (iResult <= m_iAttrWeaponDrop[5])) {
+						dwType = ITEMSTAT_POISONING;
 						cColor = 4;
 					}
-					else if ((iResult >= 8100) && (iResult <= 9699)) {
-						dwType = 7;
+					else if ((iResult > m_iAttrWeaponDrop[5]) && (iResult <= m_iAttrWeaponDrop[6])) {
+						dwType = ITEMSTAT_SHARP;
 						cColor = 6;
 					}
-					else if ((iResult >= 9700) && (iResult <= 9999)) {
-						dwType = 9;
+					else if ((iResult > m_iAttrWeaponDrop[6]) && (iResult <= m_iAttrWeaponDrop[7])) {
+						dwType = ITEMSTAT_ANCIENT;
 						cColor = 8;
 					}
 					// Magic Weapons - Drops Improvement
-					else if ((iResult >= 10000) && (iResult <= 11499)) {
-						dwType = 15; // Magic
+					else if ((iResult >= m_iAttrWeaponDrop[7]) && (iResult <= m_iAttrWeaponDrop[8])) {
+						dwType = ITEMSTAT_MAGIC; // Magic
 						cColor = 10; // Black Color
 					}
 					// End of Magic Weapons
 
-					// ¾ÆÀÌÅÛ »ö»ó ÀÔ·Â 
 					pItem->m_cItemColor = cColor;
 
-					// °¡º­¿î, °­È­µÈ, ÇÊ»ìÀÇ, ¹ÎÃ¸ÀÇ, Á¤ÀÇÀÇ, Áßµ¶ÀÇ, ¿¹¸®ÇÑ, °í´ë¹®¸íÀÇ
-					// ¾ÆÀÌÅÛ Main Æ¯¼ºÄ¡ Á¤µµ°ª ÀÔ·Â 
-
-					// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ Á¤µµ°ª ÀÔ·Â 
 					// Magic Weapons - Set the Spell Effect on Dropped Item
 					if (dwType == 15) {
 						iResult = iDice(1, 30060);
@@ -2214,41 +2205,40 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						sMagicLevel = 1;
 					}
 					else {
-						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+						iResult = iDice(1, m_iMaxWeaponDrop);
+						if ((iResult >= 1) && (iResult < m_iWeaponDrop[0]))           dwValue = 1;  // 10000/29348 = 34%
+						else if ((iResult >= m_iWeaponDrop[0]) && (iResult < m_iWeaponDrop[1]))  dwValue = 2;  // 6600/29348 = 22.4%
+						else if ((iResult >= m_iWeaponDrop[1]) && (iResult < m_iWeaponDrop[2]))  dwValue = 3;  // 4356/29348 = 14.8%
+						else if ((iResult >= m_iWeaponDrop[2]) && (iResult < m_iWeaponDrop[3]))  dwValue = 4;  // 2874/29348 = 9.7%
+						else if ((iResult >= m_iWeaponDrop[3]) && (iResult < m_iWeaponDrop[4]))  dwValue = 5;  // 1897/29348 = 6.4%
+						else if ((iResult >= m_iWeaponDrop[4]) && (iResult < m_iWeaponDrop[5]))  dwValue = 6;  // 1252/29348 = 4.2%
+						else if ((iResult >= m_iWeaponDrop[5]) && (iResult < m_iWeaponDrop[6]))  dwValue = 7;  // 826/29348 = 2.8%
+						else if ((iResult >= m_iWeaponDrop[6]) && (iResult < m_iWeaponDrop[7]))  dwValue = 8;  // 545/29348 = 1.85%
+						else if ((iResult >= m_iWeaponDrop[7]) && (iResult < m_iWeaponDrop[8]))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= m_iWeaponDrop[8]) && (iResult < m_iWeaponDrop[9]))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= m_iWeaponDrop[9]) && (iResult < m_iWeaponDrop[10]))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= m_iWeaponDrop[10]) && (iResult < m_iWeaponDrop[11]))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= m_iWeaponDrop[12]) && (iResult <= m_iWeaponDrop[12]))  dwValue = 13; // 68/29348 = 0.1%
 						else dwValue = 1; // v2.03 906
 						sMagicLevel = 0;
 					}
 					// End of Magic Weapons 
 
-					// ¹«±âÀÇ Main Æ¯¼ºÄ¡¿¡ µû¶ó ¼öÄ¡ º¸Á¤ 
 					switch (dwType) {
-					case 1: // ÇÊ»ì Å¸°Ý ÃÖÀú +5
+					case ITEMSTAT_CRITICAL: // 
 						if (dwValue <= 5) dwValue = 5;
 						break;
-					case 2: // Áßµ¶ Å¸°Ý ÃÖÀú +20
+					case ITEMSTAT_POISONING: // Min +20
 						if (dwValue <= 4) dwValue = 4;
 						break;
-					case 6: // °æ·®È­ ÃÖÀú  +16%
+					case ITEMSTAT_LIGHT: // Min +16%
 						if (dwValue <= 4) dwValue = 4;
 						break;
-					case 8: // ¼ö¸í ÃÖÀú +14%					
+					case ITEMSTAT_STRONG: // Min +14%					
 						if (dwValue <= 2) dwValue = 2;
 						break;
 						// Magic Weapons - Better Stats for Strong NPC killed
-					case 15:
+					case ITEMSTAT_MAGIC:
 						switch (iGenLevel) {
 						case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
 							if (dwValue > 4) dwValue = 4;
@@ -2286,31 +2276,24 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						break;
 						// End of Magic Weapons
 					}
-					// v2.03 912 ¾ÆÀÌÅÛ ¼öÁØÀÌ 2ÀÌÇÏÀÏ¶§ Æ¯¼ºÄ¡ ÃÖ´ë°ªÀº 7
+					// Max 7
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-					// ¾ÆÀÌÅÛ Main Æ¯¼ºÄ¡, °ª ÀÔ·Â
+					// Main
 					pItem->m_dwAttribute = NULL;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-					// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡°¡ ÀÔ·ÂµÉ È®·üÀº 40%
-					if (iDice(1, 10000) >= m_iRareDropRate) {
+					// Rare Drop 40%
+					if (iDice(1, 10000) <= m_iRareDropRate) {
+						//  Hit Prob(50%),  CAD(35%),  Gold(10%), Exp(5%)
+						iResult = iDice(1, m_iMaxStatedWeapon);
+						if (iResult <= m_iStatedWeaponDrop[0])       dwType = ITEMSTAT2_HITPROB;
+						else if (iResult <= m_iStatedWeaponDrop[1]) dwType = ITEMSTAT2_CAD;
+						else if (iResult <= m_iStatedWeaponDrop[2]) dwType = ITEMSTAT2_GOLD;
+						else if (iResult <= m_iStatedWeaponDrop[3]) dwType = ITEMSTAT2_EXP;
 
-						// Èñ±Í ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ È¿°ú Á¾·ù: 
-						//Ãß°¡ µ¶¼ºÀúÇ×(1), Ãß°¡ ¸íÁß°ª(2), Ãß°¡ ¹æ¾î°ª(3), HP È¸º¹·® Ãß°¡(4), SP È¸º¹·® Ãß°¡(5)
-						//MP È¸º¹·® Ãß°¡(6), Ãß°¡ ¸¶¹ýÀúÇ×(7), ¹°¸® ´ë¹ÌÁö Èí¼ö(8), ¸¶¹ý ´ë¹ÌÁö Èí¼ö(9)
-						//¿¬Å¸ ´ë¹ÌÁö Ãß°¡(10), ´õ ¸¹Àº °æÇèÄ¡(11), ´õ¸¹Àº Gold(12)
-
-						// ¹«±â·ùÀÌ±â ¶§¹®¿¡ °ø°Ý ¸íÁß Ãß°¡(50%), ¿¬Å¸ Å¸°ÝÄ¡ Áõ°¡(35%), ´õ ¸¹Àº Gold(10%), ´õ ¸¹Àº °æÇèÄ¡(5%)
-						iResult = iDice(1, 10000);
-						if ((iResult >= 1) && (iResult <= 4999))          dwType = 2;
-						else if ((iResult >= 5000) && (iResult <= 8499))  dwType = 10;
-						else if ((iResult >= 8500) && (iResult <= 9499))  dwType = 12;
-						else if ((iResult >= 9500) && (iResult <= 10000)) dwType = 11;
-
-						// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ Á¤µµ°ª ÀÔ·Â 
 						// Magic Weapons - Set the Spell Effect on Dropped Item
 						if (dwType == 15) {
 							iResult = iDice(1, 30060);
@@ -2334,37 +2317,36 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							sMagicLevel = 1;
 						}
 						else {
-							iResult = iDice(1, 30000);
-							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-							else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-							else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-							else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-							else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-							else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-							else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-							else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-							else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-							else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+							iResult = iDice(1, m_iMaxWeaponDrop);
+							if ((iResult >= 1) && (iResult < m_iWeaponDrop[0]))           dwValue = 1;  // 10000/29348 = 34%
+							else if ((iResult >= m_iWeaponDrop[0]) && (iResult < m_iWeaponDrop[1]))  dwValue = 2;  // 6600/29348 = 22.4%
+							else if ((iResult >= m_iWeaponDrop[1]) && (iResult < m_iWeaponDrop[2]))  dwValue = 3;  // 4356/29348 = 14.8%
+							else if ((iResult >= m_iWeaponDrop[2]) && (iResult < m_iWeaponDrop[3]))  dwValue = 4;  // 2874/29348 = 9.7%
+							else if ((iResult >= m_iWeaponDrop[3]) && (iResult < m_iWeaponDrop[4]))  dwValue = 5;  // 1897/29348 = 6.4%
+							else if ((iResult >= m_iWeaponDrop[4]) && (iResult < m_iWeaponDrop[5]))  dwValue = 6;  // 1252/29348 = 4.2%
+							else if ((iResult >= m_iWeaponDrop[5]) && (iResult < m_iWeaponDrop[6]))  dwValue = 7;  // 826/29348 = 2.8%
+							else if ((iResult >= m_iWeaponDrop[6]) && (iResult < m_iWeaponDrop[7]))  dwValue = 8;  // 545/29348 = 1.85%
+							else if ((iResult >= m_iWeaponDrop[7]) && (iResult < m_iWeaponDrop[8]))  dwValue = 9;  // 360/29348 = 1.2%
+							else if ((iResult >= m_iWeaponDrop[8]) && (iResult < m_iWeaponDrop[9]))  dwValue = 10; // 237/29348 = 0.8%
+							else if ((iResult >= m_iWeaponDrop[9]) && (iResult < m_iWeaponDrop[10]))  dwValue = 11; // 156/29348 = 0.5%
+							else if ((iResult >= m_iWeaponDrop[10]) && (iResult < m_iWeaponDrop[11]))  dwValue = 12; // 103/29348 = 0.3%
+							else if ((iResult >= m_iWeaponDrop[12]) && (iResult <= m_iWeaponDrop[12]))  dwValue = 13; // 68/29348 = 0.1%
 							else dwValue = 1; // v2.03 906
 							sMagicLevel = 0;
 						}
 						// End of Magic Weapons 
 
-						// ¹«±âÀÇ Sub Æ¯¼ºÄ¡¿¡ µû¶ó ¼öÄ¡ º¸Á¤ 
 						switch (dwType) {
-						case 2: // °ø°Ý¸íÁß ÃÖÀú +21%
+						case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
 							if (dwValue <= 3) dwValue = 3;
 							break;
-						case 10: // ¿¬¼Ó Å¸°Ý ÃÖÀú +1 ÃÖ´ë 7
+						case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
 							if (dwValue > 7) dwValue = 7;
 							break;
-						case 11: // Exp´Â ¹«Á¶°Ç +20%
+						case ITEMSTAT2_EXP: // Exp  +20%
 							dwValue = 2;
 							break;
-						case 12: // Gold´Â ¹«Á¶°Ç +50%
+						case ITEMSTAT2_GOLD: // Gold +50%
 							dwValue = 5;
 							break;
 						}
@@ -2408,245 +2390,195 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						}
 						// End of Magic Weapons
 
-						// v2.03 912 ¾ÆÀÌÅÛ ¼öÁØÀÌ 2ÀÌÇÏÀÏ¶§ Æ¯¼ºÄ¡ ÃÖ´ë°ªÀº 7
+						// Demais stats max � 7 (para mobs fracos iGenLevel)
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-						// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ ÀÔ·Â
 						dwType = dwType << 12;
 						dwValue = dwValue << 8;
 
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 					}
 				}
+				else if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE) {
 
-				else if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE) { 
-					// ¸¶¹ý °ø°Ý ¹«±â·ù¿¡ ºÙÀ» ¼ö ÀÖ´Â Á¢µÎ»ç¸¦ ¼±ÅÃ 10, 11
-					// ¸¶¹ý ¼º°øÀÇ(100%) <- ÇöÀç ¸¶¹ý ÁöÆÎÀÌ¿¡ ºÙÀ» ¼ö ÀÖ´Â ¿ä¼Ò°¡ ÀÌ°Å ¹Û¿¡ ¾ø´Ù.
-					dwType = 10;
+					dwType = ITEMSTAT_CASTPROB;
 					cColor = 5;
 
-					// ¾ÆÀÌÅÛ »ö»ó ÀÔ·Â 
 					pItem->m_cItemColor = cColor;
 
 					// Magic Weapons - Set the Spell Effect on Dropped Item
+					iResult = iDice(1, m_iMaxWeaponDrop);
+					if ((iResult >= 1) && (iResult < m_iWeaponDrop[0])) dwValue = 1;
+					else if ((iResult >= m_iWeaponDrop[0]) && (iResult < m_iWeaponDrop[1]))  dwValue = 2;
+					else if ((iResult >= m_iWeaponDrop[1]) && (iResult < m_iWeaponDrop[2]))  dwValue = 3;
+					else if ((iResult >= m_iWeaponDrop[2]) && (iResult < m_iWeaponDrop[3]))  dwValue = 4;
+					else if ((iResult >= m_iWeaponDrop[3]) && (iResult < m_iWeaponDrop[4]))  dwValue = 5;
+					else if ((iResult >= m_iWeaponDrop[4]) && (iResult < m_iWeaponDrop[5]))  dwValue = 6;
+					else if ((iResult >= m_iWeaponDrop[5]) && (iResult < m_iWeaponDrop[6]))  dwValue = 7; 
+					else if ((iResult >= m_iWeaponDrop[6]) && (iResult < m_iWeaponDrop[7]))  dwValue = 8;
+					else if ((iResult >= m_iWeaponDrop[7]) && (iResult < m_iWeaponDrop[8]))  dwValue = 9; 
+					else if ((iResult >= m_iWeaponDrop[8]) && (iResult < m_iWeaponDrop[9]))  dwValue = 10;
+					else if ((iResult >= m_iWeaponDrop[9]) && (iResult < m_iWeaponDrop[10]))  dwValue = 11;
+					else if ((iResult >= m_iWeaponDrop[10]) && (iResult < m_iWeaponDrop[11]))  dwValue = 12;
+					else if ((iResult >= m_iWeaponDrop[12]) && (iResult <= m_iWeaponDrop[12]))  dwValue = 13;
+					else dwValue = 1;
 
-					iResult = iDice(1, 30000);
-					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-					else dwValue = 1; // v2.03 906
-
-				// End of Magic Weapons 
-
-			// v2.03 912 ¾ÆÀÌÅÛ ¼öÁØÀÌ 2ÀÌÇÏÀÏ¶§ Æ¯¼ºÄ¡ ÃÖ´ë°ªÀº 7
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-					// ¹æ¾î±¸ Main Æ¯¼ºÄ¡, °ª ÀÔ·Â
 					pItem->m_dwAttribute = NULL;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-					// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡°¡ ÀÔ·ÂµÉ È®·üÀº 40%
-					if (iDice(1, 10000) >= m_iRareDropRate) {
+					if (iDice(1, 10000) <= m_iRareDropRate) {
+						iResult = iDice(1, m_iMaxStatedWeapon);
+						if (iResult <= m_iStatedWeaponDrop[0])      dwType = ITEMSTAT2_HITPROB;
+						else if (iResult <= m_iStatedWeaponDrop[1]) dwType = ITEMSTAT2_CAD;
+						else if (iResult <= m_iStatedWeaponDrop[2]) dwType = ITEMSTAT2_GOLD;
+						else if (iResult <= m_iStatedWeaponDrop[3]) dwType = ITEMSTAT2_EXP;
 
-						// Èñ±Í ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ È¿°ú Á¾·ù: 
-						//Ãß°¡ µ¶¼ºÀúÇ×(1), Ãß°¡ ¸íÁß°ª(2), Ãß°¡ ¹æ¾î°ª(3), HP È¸º¹·® Ãß°¡(4), SP È¸º¹·® Ãß°¡(5)
-						//MP È¸º¹·® Ãß°¡(6), Ãß°¡ ¸¶¹ýÀúÇ×(7), ¹°¸® ´ë¹ÌÁö Èí¼ö(8), ¸¶¹ý ´ë¹ÌÁö Èí¼ö(9)
-						//¿¬Å¸ ´ë¹ÌÁö Ãß°¡(10), ´õ ¸¹Àº °æÇèÄ¡(11), ´õ¸¹Àº Gold(12)
+						iResult = iDice(1, m_iMaxWeaponDrop);
+						if ((iResult >= 1) && (iResult < m_iWeaponDrop[0])) dwValue = 1;
+						else if ((iResult >= m_iWeaponDrop[0]) && (iResult < m_iWeaponDrop[1]))  dwValue = 2;
+						else if ((iResult >= m_iWeaponDrop[1]) && (iResult < m_iWeaponDrop[2]))  dwValue = 3;
+						else if ((iResult >= m_iWeaponDrop[2]) && (iResult < m_iWeaponDrop[3]))  dwValue = 4;
+						else if ((iResult >= m_iWeaponDrop[3]) && (iResult < m_iWeaponDrop[4]))  dwValue = 5;
+						else if ((iResult >= m_iWeaponDrop[4]) && (iResult < m_iWeaponDrop[5]))  dwValue = 6;
+						else if ((iResult >= m_iWeaponDrop[5]) && (iResult < m_iWeaponDrop[6]))  dwValue = 7;
+						else if ((iResult >= m_iWeaponDrop[6]) && (iResult < m_iWeaponDrop[7]))  dwValue = 8;
+						else if ((iResult >= m_iWeaponDrop[7]) && (iResult < m_iWeaponDrop[8]))  dwValue = 9;
+						else if ((iResult >= m_iWeaponDrop[8]) && (iResult < m_iWeaponDrop[9]))  dwValue = 10;
+						else if ((iResult >= m_iWeaponDrop[9]) && (iResult < m_iWeaponDrop[10]))  dwValue = 11;
+						else if ((iResult >= m_iWeaponDrop[10]) && (iResult < m_iWeaponDrop[11]))  dwValue = 12;
+						else if ((iResult >= m_iWeaponDrop[12]) && (iResult <= m_iWeaponDrop[12]))  dwValue = 13;
+						else dwValue = 1;
 
-						// ¹«±â·ùÀÌ±â ¶§¹®¿¡ °ø°Ý ¸íÁß Ãß°¡(50%), ¿¬Å¸ Å¸°ÝÄ¡ Áõ°¡(35%), ´õ ¸¹Àº Gold(10%), ´õ ¸¹Àº °æÇèÄ¡(5%)
-						iResult = iDice(1, 10000);
-						if ((iResult >= 1) && (iResult <= 4999))          dwType = 2;
-						else if ((iResult >= 5000) && (iResult <= 8499))  dwType = 10;
-						else if ((iResult >= 8500) && (iResult <= 9499))  dwType = 12;
-						else if ((iResult >= 9500) && (iResult <= 10000)) dwType = 11;
-
-						// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ Á¤µµ°ª ÀÔ·Â 
-						// Magic Weapons - Set the Spell Effect on Dropped Item
-
-						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-						else dwValue = 1; // v2.03 906
-
-					// End of Magic Weapons 
-
-					// v2.03 912 ¾ÆÀÌÅÛ ¼öÁØÀÌ 2ÀÌÇÏÀÏ¶§ Æ¯¼ºÄ¡ ÃÖ´ë°ªÀº 7
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-						// ¹«±âÀÇ Sub Æ¯¼ºÄ¡¿¡ µû¶ó ¼öÄ¡ º¸Á¤ 
 						switch (dwType) {
-						case 2: // °ø°Ý¸íÁß ÃÖÀú +21%
+						case ITEMSTAT2_HITPROB: // Hit Prob Min +21%
 							if (dwValue <= 3) dwValue = 3;
 							break;
-						case 10: // ¿¬¼Ó Å¸°Ý ÃÖÀú +1 ÃÖ´ë 7
+						case ITEMSTAT2_CAD: // Cad vai de +1 at� +7
 							if (dwValue > 7) dwValue = 7;
 							break;
-						case 11: // Exp´Â ¹«Á¶°Ç +20%
+						case ITEMSTAT2_EXP: // Exp set +20%
 							dwValue = 2;
 							break;
-						case 12: // Gold´Â ¹«Á¶°Ç +50%
+						case ITEMSTAT2_GOLD: // Gold Set +50%
 							dwValue = 5;
 							break;
 						}
 
-						// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ ÀÔ·Â
 						dwType = dwType << 12;
 						dwValue = dwValue << 8;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 					}
 				}
 				else if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_DEFENSE) {
-					// ¹æ¾î±¸¿¡ ¸Â´Â Á¢µÎ»ç¿Í Æ¯¼ºÄ¡¸¦ ¼±ÅÃ, ÇÒ´çÇÑ´Ù.
 
-					// °­È­µÈ(60%) °¡º­¿î (30%) ¸¶³ª º¯È¯ÀÇ(5%) ÇÊ»ì ÃæÀüÀÇ(5%)
+					//  Strong (60%), Light (30%), Mana Conv.(5%), Crit Increased(5%) (Drops prob.)
 					iResult = iDice(1, 10000);
-					if ((iResult >= 1) && (iResult <= 5999))          dwType = 8;
-					else if ((iResult >= 6000) && (iResult <= 8999))  dwType = 6;
-					else if ((iResult >= 9000) && (iResult <= 9554))  dwType = 11; //dwType = 11;
-					else if ((iResult >= 9555) && (iResult <= 10000)) dwType = 12; //dwType = 12;
+					if ((iResult >= 1) && (iResult <= 5999))          dwType = ITEMSTAT_STRONG;
+					else if ((iResult >= 6000) && (iResult <= 8999))  dwType = ITEMSTAT_LIGHT;
+					else if ((iResult >= 9000) && (iResult <= 9554))  dwType = ITEMSTAT_MANACONV; //dwType = 11;
+					else if ((iResult >= 9555) && (iResult <= 10000)) dwType = ITEMSTAT_CRITICAL2; //dwType = 12;
 
-					// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ Á¤µµ°ª ÀÔ·Â 
-					// Magic Weapons - Set the Spell Effect on Dropped Item
+					iResult = iDice(1, m_iMaxArmorDrop);
+					if ((iResult >= 1) && (iResult < m_iArmorDrop[0]))           dwValue = 1;
+					else if ((iResult >= m_iArmorDrop[0]) && (iResult < m_iArmorDrop[1]))  dwValue = 2; 
+					else if ((iResult >= m_iArmorDrop[1]) && (iResult < m_iArmorDrop[2]))  dwValue = 3; 
+					else if ((iResult >= m_iArmorDrop[2]) && (iResult < m_iArmorDrop[3]))  dwValue = 4;  
+					else if ((iResult >= m_iArmorDrop[3]) && (iResult < m_iArmorDrop[4]))  dwValue = 5;
+					else if ((iResult >= m_iArmorDrop[4]) && (iResult < m_iArmorDrop[5]))  dwValue = 6;  
+					else if ((iResult >= m_iArmorDrop[5]) && (iResult < m_iArmorDrop[6]))  dwValue = 7; 
+					else if ((iResult >= m_iArmorDrop[6]) && (iResult < m_iArmorDrop[7]))  dwValue = 8; 
+					else if ((iResult >= m_iArmorDrop[7]) && (iResult < m_iArmorDrop[8]))  dwValue = 9; 
+					else if ((iResult >= m_iArmorDrop[8]) && (iResult < m_iArmorDrop[9]))  dwValue = 10;
+					else if ((iResult >= m_iArmorDrop[9]) && (iResult < m_iArmorDrop[10]))  dwValue = 11;
+					else if ((iResult >= m_iArmorDrop[10]) && (iResult < m_iArmorDrop[11]))  dwValue = 12; 
+					else if ((iResult >= m_iArmorDrop[11]) && (iResult <= m_iArmorDrop[12]))  dwValue = 13; 
+					else dwValue = 1;
 
-					iResult = iDice(1, 30000);
-					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-					else dwValue = 1; // v2.03 906
-
-				// End of Magic Weapons 
-
-			// ¹æ¾î±¸ÀÇ Main Æ¯¼ºÄ¡¿¡ µû¶ó ¼öÄ¡ º¸Á¤ 
 					switch (dwType) {
-					case 6: // °æ·®È­ ÃÖÀú +16%
+					case ITEMSTAT_LIGHT: // Min +16%
 						if (dwValue <= 4) dwValue = 4;
 						break;
-					case 8: // ¼ö¸í ÃÖÀú +14%
+					case ITEMSTAT_STRONG: // Min +14%
 						if (dwValue <= 2) dwValue = 2;
 						break;
 
-					case 11:
-					case 12:
-						// v2.04
+					case ITEMSTAT_MANACONV:
+					case ITEMSTAT_CRITICAL2:
 						dwValue = (dwValue + 1) / 2;
 						if (dwValue < 1) dwValue = 1;
 						if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
 						break;
 					}
-					// v2.03 912 ¾ÆÀÌÅÛ ¼öÁØÀÌ 2ÀÌÇÏÀÏ¶§ Æ¯¼ºÄ¡ ÃÖ´ë°ªÀº 7
+					// Max = 7
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-					// ¹æ¾î±¸ Main Æ¯¼ºÄ¡, °ª ÀÔ·Â
 					pItem->m_dwAttribute = NULL;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-					// ¹æ¾î±¸ Sub Æ¯¼ºÄ¡°¡ ÀÔ·ÂµÉ È®·üÀº 40%
-					if (iDice(1, 10000) >= m_iRareDropRate) {
+					// 40%
+					if (iDice(1, 10000) <= m_iRareDropRate) {
 
-						// Èñ±Í ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ È¿°ú Á¾·ù: 
-						//Ãß°¡ µ¶¼ºÀúÇ×(1), Ãß°¡ ¸íÁß°ª(2), Ãß°¡ ¹æ¾î°ª(3), HP È¸º¹·® Ãß°¡(4), SP È¸º¹·® Ãß°¡(5)
-						//MP È¸º¹·® Ãß°¡(6), Ãß°¡ ¸¶¹ýÀúÇ×(7), ¹°¸® ´ë¹ÌÁö Èí¼ö(8), ¸¶¹ý ´ë¹ÌÁö Èí¼ö(9)
-						//¿¬Å¸ ´ë¹ÌÁö Ãß°¡(10), ´õ ¸¹Àº °æÇèÄ¡(11), ´õ¸¹Àº Gold(12)
+						// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
+						iResult = iDice(1, m_iMaxStatedArmor);
+						if (iResult <= m_iStatedArmorDrop[0])       dwType = ITEMSTAT2_PSNRES;	// 10
+						else if (iResult <= m_iStatedArmorDrop[1])  dwType = ITEMSTAT2_DEF;		// 12
+						else if (iResult <= m_iStatedArmorDrop[2])  dwType = ITEMSTAT2_SPREC;	// 16
+						else if (iResult <= m_iStatedArmorDrop[3])  dwType = ITEMSTAT2_HPREC;	// 23
+						else if (iResult <= m_iStatedArmorDrop[4])  dwType = ITEMSTAT2_MPREC;	// 23 
+						else if (iResult <= m_iStatedArmorDrop[5])  dwType = ITEMSTAT2_MR;		// 12
+						else if (iResult <= m_iStatedArmorDrop[6])  dwType = ITEMSTAT2_PA;		// 3
+						else if (iResult <= m_iStatedArmorDrop[7]) dwType = ITEMSTAT2_MA;		// 1
 
-						// ¹æ¾î±¸ ÀÌ±â ¶§¹®¿¡ 
-						// Ãß°¡¹æ¾î°ª(10%) Ãß°¡µ¶¼ºÀúÇ×(30%)    SPÈ¸º¹Ãß°¡(15%)  HPÈ¸º¹Ãß°¡(10%) 
-						// MPÈ¸º¹ Ãß°¡(10%) Ãß°¡¸¶¹ýÀúÇ×(15%) ¹°¸®´ë¹ÌÁöÈí¼ö(3%) ¸¶¹ý´ë¹ÌÁöÈí¼ö(3%)
-						iResult = iDice(1, 10000);
-						if ((iResult >= 1) && (iResult <= 999))           dwType = 3;
-						else if ((iResult >= 1000) && (iResult <= 3999))  dwType = 1;
-						else if ((iResult >= 4000) && (iResult <= 5499))  dwType = 5;
-						else if ((iResult >= 5500) && (iResult <= 6499))  dwType = 4;
-						else if ((iResult >= 6500) && (iResult <= 7499))  dwType = 6;
-						else if ((iResult >= 7500) && (iResult <= 9399))  dwType = 7;
-						else if ((iResult >= 9400) && (iResult <= 9799))  dwType = 8;
-						else if ((iResult >= 9800) && (iResult <= 10000)) dwType = 9;
+						iResult = iDice(1, m_iMaxArmorDrop);
+						if ((iResult >= 1) && (iResult < m_iArmorDrop[0]))           dwValue = 1;
+						else if ((iResult >= m_iArmorDrop[0]) && (iResult < m_iArmorDrop[1]))  dwValue = 2;
+						else if ((iResult >= m_iArmorDrop[1]) && (iResult < m_iArmorDrop[2]))  dwValue = 3;
+						else if ((iResult >= m_iArmorDrop[2]) && (iResult < m_iArmorDrop[3]))  dwValue = 4;
+						else if ((iResult >= m_iArmorDrop[3]) && (iResult < m_iArmorDrop[4]))  dwValue = 5;
+						else if ((iResult >= m_iArmorDrop[4]) && (iResult < m_iArmorDrop[5]))  dwValue = 6;
+						else if ((iResult >= m_iArmorDrop[5]) && (iResult < m_iArmorDrop[6]))  dwValue = 7;
+						else if ((iResult >= m_iArmorDrop[6]) && (iResult < m_iArmorDrop[7]))  dwValue = 8; 
+						else if ((iResult >= m_iArmorDrop[7]) && (iResult < m_iArmorDrop[8]))  dwValue = 9;
+						else if ((iResult >= m_iArmorDrop[8]) && (iResult < m_iArmorDrop[9]))  dwValue = 10;
+						else if ((iResult >= m_iArmorDrop[9]) && (iResult < m_iArmorDrop[10]))  dwValue = 11;
+						else if ((iResult >= m_iArmorDrop[10]) && (iResult < m_iArmorDrop[11]))  dwValue = 12;
+						else if ((iResult >= m_iArmorDrop[11]) && (iResult <= m_iArmorDrop[12]))  dwValue = 13;
+						else dwValue = 1;
 
-						// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ Á¤µµ°ª ÀÔ·Â 
-						// Magic Weapons - Set the Spell Effect on Dropped Item
-
-						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-						else dwValue = 1; // v2.03 906
-
-					// End of Magic Weapons 
-
-					// ¹æ¾î±¸ÀÇ Sub Æ¯¼ºÄ¡¿¡ µû¶ó ¼öÄ¡ º¸Á¤ 
 						switch (dwType) {
-						case 1: // µ¶¼ºÀúÇ× ÃÖÀú +21%
-						case 3: // ¹°¸®¹æ¾î ÃÖÀú +21%
-						case 7: // ¸¶¹ý ÀúÇ× ÃÖÀú +21%
-						case 8: // ¹°¸®Èí¼ö ÃÖÀú +9%
-						case 9: // ¸¶¹ýÈí¼ö ÃÖÀú +9%
+						case 1: // Poison min +21%
+						case 3: // DR Min +21%
+						case 7: // MR Min +21%
+						case 8: // PA Min +9%
+						case 9: // MA Min +9%
 							if (dwValue <= 3) dwValue = 3;
 							break;
 						}
-						// v2.03 912 ¾ÆÀÌÅÛ ¼öÁØÀÌ 2ÀÌÇÏÀÏ¶§ Æ¯¼ºÄ¡ ÃÖ´ë°ªÀº 7
+						// Max = 7
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-						// ¾ÆÀÌÅÛ Sub Æ¯¼ºÄ¡ ÀÔ·Â
 						dwType = dwType << 12;
 						dwValue = dwValue << 8;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 					}
 				}
 
-				// ë§ˆì§€ë§‰ìœ¼ë¡œ íŠ¹ì„±ì¹˜ë¥¼ íŠ¹ìˆ˜ ì•„ì´í…œì— ë§žê²Œë” ë³€ê²½ 
 				_AdjustRareItemValue(pItem);
 			}
 		}
 
-		// ì•„ì´í…œì— ê³ ìœ  ì½”ë“œ ìž…ë ¥ 
 		pItem->m_sTouchEffectType = DEF_ITET_ID;
 		pItem->m_sTouchEffectValue1 = iDice(1, 100000);
 		pItem->m_sTouchEffectValue2 = iDice(1, 100000);
-		// ë§ˆì§€ë§‰ ìˆ«ìžëŠ” ì•„ì´í…œ ìƒì„± ì›”, ì¼	
+
 		SYSTEMTIME SysTime;
 		char cTemp[256];
 		GetLocalTime(&SysTime);
@@ -2654,17 +2586,14 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
 		pItem->m_sTouchEffectValue3 = atoi(cTemp);
 
-		// ì•„ì´í…œì„ ì„œìžˆëŠ” ìœ„ì¹˜ì— ë–¨ì–´ëœ¨ë¦°ë‹¤. 
 		m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem(m_pNpcList[iNpcH]->m_sX,
 			m_pNpcList[iNpcH]->m_sY,
 			pItem);
 
-		// ë‹¤ë¥¸ í´ë¼ì´ì–¸íŠ¸ì—ê²Œ ì•„ì´í…œì´ ë–¨ì–´ì§„ ê²ƒì„ ì•Œë¦°ë‹¤. 
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 			m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
 			pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor); //v1.4 color
 
-		// ë¡œê·¸ ë‚¨ê¸´ë‹¤.
 		_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, NULL, pItem);
 	}
 }
@@ -5704,4 +5633,224 @@ char CGame::_cGetSpecialAbility(int iKindSA)
 	}
 
 	return cSA;
+}
+
+//Magn0S:: Coded Drop Manager from .cfg
+bool CGame::bDecodeDropManagerFile(char* pFn)
+{
+	FILE* pFile;
+	HANDLE hFile;
+	char* cp, * token, cReadModeA;
+	char seps[] = "= \t\n";
+	int i = 0, j = 0, k = 0, f = 0, o = 0;
+	char cTxt[250];
+
+	DWORD  dwFileSize;
+	class CStrTok* pStrTok;
+
+	cReadModeA = 0;
+
+	hFile = CreateFile(pFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	dwFileSize = GetFileSize(hFile, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
+
+	pFile = fopen(pFn, "rt");
+	if (pFile == NULL) {
+
+		PutLogList("(!) Cannot open Drop Manager file.");
+		return false;
+	}
+	else {
+		PutLogList("(!) Reading DropManager file...");
+		cp = new char[dwFileSize + 2];
+		ZeroMemory(cp, dwFileSize + 2);
+		fread(cp, dwFileSize, 1, pFile);
+
+		pStrTok = new class CStrTok(cp, seps);
+		token = pStrTok->pGet();
+
+		while (token) {
+			if (cReadModeA != 0) {
+				switch (cReadModeA) {
+				case 1:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR! Max Armor Drop Prob. config. file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+
+					m_iMaxArmorDrop = atoi(token);
+					wsprintf(cTxt, "(*) iMaxArmorProbability drop rate: (%d)", m_iMaxArmorDrop);
+					PutLogList(cTxt);
+					cReadModeA = 0;
+					break;
+
+				case 2:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR! ArmorDrop configuration file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+					if (i > 12) {
+						PutLogList("(!) WARNING (A)! Too many armor probability added!");
+						return true;
+					}
+					m_iArmorDrop[i] = atoi(token);
+					wsprintf(cTxt, "(*) iArmorProb[%d] drop rate: (%d)", i, m_iArmorDrop[i]);
+					PutLogList(cTxt);
+					i++;
+					cReadModeA = 0;
+					break;
+				//-------------------------------------------------------------------------------------------------------------
+				case 3:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (B)! Max Weapon Drop Prob. config. file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+					m_iMaxWeaponDrop = atoi(token);
+					wsprintf(cTxt, "(*) iMaxWeaponProbability drop rate: (%d)", m_iMaxWeaponDrop);
+					PutLogList(cTxt);
+					cReadModeA = 0;
+					break;
+
+				case 4:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (B)! WeaponDrop configuration file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+
+					if (j > 12) {
+						PutLogList("(!) WARNING (B)! Too many weapon probability added!");
+						return true;
+					}
+					m_iWeaponDrop[j] = atoi(token);
+					wsprintf(cTxt, "(*) iWeaponProb[%d] drop rate: (%d)", j, m_iWeaponDrop[j]);
+					PutLogList(cTxt);
+					j++;
+					cReadModeA = 0;
+					break;
+				//===========================================================================================================================
+				case 5:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (C)! Max Drop Stated Armor Prob. config. file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+					m_iMaxStatedArmor = atoi(token);
+					wsprintf(cTxt, "(*) m_iMaxStatedArmor drop rate: (%d)", m_iMaxStatedArmor);
+					PutLogList(cTxt);
+					cReadModeA = 0;
+					break;
+
+				case 6:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (C)! Armor Stated Drop configuration file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+
+					if (k > 8) {
+						PutLogList("(!) WARNING (C)! Too many stated armor probability added!");
+						return true;
+					}
+					m_iStatedArmorDrop[k] = atoi(token);
+					wsprintf(cTxt, "(*) iStatedArmor[%d] drop rate: (%d)", k, m_iStatedArmorDrop[k]);
+					PutLogList(cTxt);
+					k++;
+					cReadModeA = 0;
+					break;
+				//===========================================================================================================================
+				case 7:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (D)! Attr Weapon Drop Prob. config. file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+					m_iMaxAttrWeaponDrop = atoi(token);
+					wsprintf(cTxt, "(*) m_iMaxAttrWeaponDrop rate: (%d)", m_iMaxAttrWeaponDrop);
+					PutLogList(cTxt);
+					cReadModeA = 0;
+					break;
+
+				case 8:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (D)! Attr Weapon Drop configuration file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+
+					if (f > 9) {
+						PutLogList("(!) WARNING (D)! Too many attr weapon probability added!");
+						return true;
+					}
+					m_iAttrWeaponDrop[f] = atoi(token);
+					wsprintf(cTxt, "(*) iAttrWeaponDrop[%d] drop rate: (%d)", f, m_iAttrWeaponDrop[f]);
+					PutLogList(cTxt);
+					f++;
+					cReadModeA = 0;
+					break;
+				//===========================================================================================================================
+				case 9:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (E)! Max Drop Stated Weapon Prob. config. file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+					m_iMaxStatedWeapon = atoi(token);
+					wsprintf(cTxt, "(*) m_iMaxStatedWeapon rate: (%d)", m_iMaxStatedWeapon);
+					PutLogList(cTxt);
+					cReadModeA = 0;
+					break;
+
+				case 10:
+					if (_bGetIsStringIsNumber(token) == false)
+					{	PutLogList("(!!!) CRITICAL ERROR (E)! Armor Stated Drop configuration file error - Wrong Data format.");
+						delete[] cp; return false;
+					}
+
+					if (o > 3) {
+						PutLogList("(!) WARNING (E)! Too many stated weapon probability added!");
+						return true;
+					}
+					m_iStatedWeaponDrop[o] = atoi(token);
+					wsprintf(cTxt, "(*) iStatedWeaponDrop[%d] drop rate: (%d)", o, m_iStatedWeaponDrop[o]);
+					PutLogList(cTxt);
+					o++;
+					cReadModeA = 0;
+					break;
+				}
+			}
+			else {
+				if (memcmp(token, "max-armor-prob", 14) == 0) {
+					cReadModeA = 1;
+				}
+				if (memcmp(token, "p_armor", 7) == 0) {
+					cReadModeA = 2;
+				}
+				if (memcmp(token, "max-weapon-prob", 15) == 0) {
+					cReadModeA = 3;
+				}
+				if (memcmp(token, "p_weapon", 8) == 0) {
+					cReadModeA = 4;
+				}
+				if (memcmp(token, "max-stated-armor", 16) == 0) {
+					cReadModeA = 5;
+				}
+				if (memcmp(token, "stated-armor", 12) == 0) {
+					cReadModeA = 6;
+				}
+				if (memcmp(token, "max-attr-weapon", 15) == 0) {
+					cReadModeA = 7;
+				}
+				if (memcmp(token, "attr-weapon", 11) == 0) {
+					cReadModeA = 8;
+				}
+				if (memcmp(token, "max-stated-weapon", 17) == 0) {
+					cReadModeA = 9;
+				}
+				if (memcmp(token, "stated-weapon", 13) == 0) {
+					cReadModeA = 10;
+				}
+			}
+
+			token = pStrTok->pGet();
+		}
+		delete[] cp;
+	}
+	if (pFile) fclose(pFile);
+
+	return true;
 }

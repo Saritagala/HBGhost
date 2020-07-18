@@ -264,7 +264,6 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 			switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectType) {
 
 			case DEF_ITEMEFFECTTYPE_MAGICDAMAGESAVE:
-				// ���� ������ ���� ������. �ε����� �����Ѵ�.
 				m_pClientList[iClientH]->m_iMagicDamageSaveItemIndex = sItemIndex;
 				break;
 
@@ -336,10 +335,10 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					dwSWEType = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) >> 20;
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x000F0000) >> 16;
 					switch (dwSWEType) {
-					case 2:  // Poison			-> Increase effect of 1st item, or replace a different effect
+					case ITEMSTAT_POISONING:  // Poison			-> Increase effect of 1st item, or replace a different effect
 						break;
-					case 1:  // Crit +			-> Increase effect of 1st item, or replace a different effect
-					case 10: // CP (as wand)	-> Increase effect of 1st item, or replace a different effect
+					case ITEMSTAT_CRITICAL:  // Crit +			-> Increase effect of 1st item, or replace a different effect
+					case ITEMSTAT_CASTPROB: // CP (as wand)	-> Increase effect of 1st item, or replace a different effect
 						if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == dwSWEType)
 						{
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue += dwSWEValue;
@@ -350,19 +349,19 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = dwSWEValue;
 						}
 						break;
-					case 7:  // Sharp
+					case ITEMSTAT_SHARP:  // Sharp
 						m_pClientList[iClientH]->m_cAttackDiceRange_SM++;
 						m_pClientList[iClientH]->m_cAttackDiceRange_L++;
 						break;
-					case 9:  // Ancient
+					case ITEMSTAT_ANCIENT:  // Ancient
 						m_pClientList[iClientH]->m_cAttackDiceRange_SM += 2;
 						m_pClientList[iClientH]->m_cAttackDiceRange_L += 2;
 						break;
-					case 11: // ManaConv 
+					case ITEMSTAT_MANACONV: // ManaConv 
 						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
 						if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
 						break;
-					case 12: // Crit Increase 
+					case ITEMSTAT_CRITICAL2: // Crit Increase 
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
 						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
@@ -732,9 +731,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					dwSWEType = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) >> 20;
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x000F0000) >> 16;
 					switch (dwSWEType) {
-					case 1:  // Crit +			-> May increase effect of 1st item or give effect if no other effect present
-					case 2:  // Poison			-> May Increase effect of 1st item or give effect if no other effect present
-					case 10: // CP (as wand)	-> May Increase effect of 1st item or give effect if no other effect present				
+					case ITEMSTAT_CRITICAL:  // Crit +			-> May increase effect of 1st item or give effect if no other effect present
+					case ITEMSTAT_POISONING:  // Poison			-> May Increase effect of 1st item or give effect if no other effect present
+					case ITEMSTAT_CASTPROB: // CP (as wand)	-> May Increase effect of 1st item or give effect if no other effect present				
 						if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == dwSWEType)
 						{
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue += dwSWEValue;
@@ -746,21 +745,21 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 								m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = dwSWEValue;
 							}
 						break;
-					case 3: // Rite -> Give effect if no other effect present	
+					case ITEMSTAT_RIGHTEOUS: // Rite -> Give effect if no other effect present	
 						if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == 0)
 						{
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = dwSWEValue;
 						}
 						break;
-					case 7: // Sharp MG have effect in iCalculatteAttackEffect function
-					case 9: // Ancient MG have effect in iCalculatteAttackEffect function
+					case ITEMSTAT_SHARP: // Sharp MG have effect in iCalculatteAttackEffect function
+					case ITEMSTAT_ANCIENT: // Ancient MG have effect in iCalculatteAttackEffect function
 						break;
-					case 11: // ManaConv  Total max 20
+					case ITEMSTAT_MANACONV: // ManaConv  Total max 20
 						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
 						if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
 						break;
-					case 12: // Crit Increase Total max 20
+					case ITEMSTAT_CRITICAL2: // Crit Increase Total max 20
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
 						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
@@ -778,39 +777,39 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					// HP or Rep+ will have effect on Armor or MainGauche !
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)dwSWEValue * 7; break;
-					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // Armes Hit Proba
-					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
-					case 4:  // HPrec
+					case ITEMSTAT2_PSNRES:  m_pClientList[iClientH]->m_iAddPR += (int)dwSWEValue * 7; break;
+					case ITEMSTAT2_HITPROB:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // Armes Hit Proba
+					case ITEMSTAT2_DEF:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
+					case ITEMSTAT2_HPREC:  // HPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
 							iShieldHPrec += (int)dwSWEValue * 7;
 						else m_pClientList[iClientH]->m_iAddHP += (int)dwSWEValue * 7;
 						break;
-					case 5:  // SPrec
+					case ITEMSTAT2_SPREC:  // SPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
 							iShieldSPrec += (int)dwSWEValue * 7;
 						else m_pClientList[iClientH]->m_iAddSP += (int)dwSWEValue * 7;
 						break;
-					case 6:   // MPrec
+					case ITEMSTAT2_MPREC:   // MPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
 							iShieldMPrec += (int)dwSWEValue * 7;
 						else m_pClientList[iClientH]->m_iAddMP += (int)dwSWEValue * 7;
 						break;
-					case 7:
+					case ITEMSTAT2_MR:
 						m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7;
 						break;
-					case 8: // PA
+					case ITEMSTAT2_PA: // PA
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
 							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += (int)dwSWEValue * 3;
 						else m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
 						break;
-					case 9:
+					case ITEMSTAT2_MA:
 						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
-					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
-					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
+					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
+					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
+					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 
 				}
@@ -8942,20 +8941,17 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 	if ((pItem->m_dwAttribute & 0x00F00000) != NULL) {
 		dwSWEType = (pItem->m_dwAttribute & 0x00F00000) >> 20;
 		dwSWEValue = (pItem->m_dwAttribute & 0x000F0000) >> 16;
-		// Èñ±Í ¾ÆÀÌÅÛ È¿°ú Á¾·ù: 
-		// 0-None 1-ÇÊ»ì±â´ë¹ÌÁöÃß°¡ 2-Áßµ¶È¿°ú 3-Á¤ÀÇÀÇ 
-		// 5-¹ÎÃ¸ÀÇ 6-°¡º­¿î 7-¿¹¸®ÇÑ 8-°­È­µÈ 9-°í´ë¹®¸íÀÇ
 		//if (iDice(1, 10000) >= m_iRareDropRate) { // Centuu : Agregado para controlar el drop rare.
 			switch (dwSWEType) {
 			case 0:
 				break;
 
-			case 5: // ¹ÎÃ¸ÀÇ 
+			case ITEMSTAT_AGILE:
 				pItem->m_cSpeed--;
 				if (pItem->m_cSpeed < 0) pItem->m_cSpeed = 0;
 				break;
 
-			case 6: // °¡º­¿î 
+			case ITEMSTAT_LIGHT:
 				dV2 = (double)pItem->m_wWeight;
 				dV3 = (double)(dwSWEValue * 4);
 				dV1 = (dV3 / 100.0f) * dV2;
@@ -8964,8 +8960,8 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 				if (pItem->m_wWeight < 1) pItem->m_wWeight = 1;
 				break;
 
-			case 8: // °­È­µÈ 
-			case 9: // °í´ë¹®¸íÀÇ 
+			case ITEMSTAT_STRONG:
+			case ITEMSTAT_ANCIENT:
 				dV2 = (double)pItem->m_wMaxLifeSpan;
 				dV3 = (double)(dwSWEValue * 7);
 				dV1 = (dV3 / 100.0f) * dV2;

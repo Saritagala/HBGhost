@@ -242,6 +242,35 @@
 #define DEF_ITEMEFFECTTYPE_REPAIR			37
 
 #define DEF_CHECKFRAGILETIME	30
+
+#define ITEMSTAT_NONE		0
+#define ITEMSTAT_CRITICAL	1
+#define ITEMSTAT_POISONING	2
+#define ITEMSTAT_RIGHTEOUS	3
+#define ITEMSTAT_UNUSED		4	// UNUSED
+#define ITEMSTAT_AGILE		5
+#define ITEMSTAT_LIGHT		6
+#define ITEMSTAT_SHARP		7
+#define ITEMSTAT_STRONG		8
+#define ITEMSTAT_ANCIENT	9
+#define ITEMSTAT_CASTPROB	10
+#define ITEMSTAT_MANACONV	11
+#define ITEMSTAT_CRITICAL2	12
+#define ITEMSTAT_MAGIC		15
+
+#define ITEMSTAT2_NONE		0
+#define ITEMSTAT2_PSNRES	1
+#define ITEMSTAT2_HITPROB	2
+#define ITEMSTAT2_DEF		3
+#define ITEMSTAT2_HPREC		4
+#define ITEMSTAT2_SPREC		5
+#define ITEMSTAT2_MPREC		6
+#define ITEMSTAT2_MR		7
+#define ITEMSTAT2_PA		8
+#define ITEMSTAT2_MA		9
+#define ITEMSTAT2_CAD		10
+#define ITEMSTAT2_EXP		11
+#define ITEMSTAT2_GOLD		12
 //-----------------------------------------------------------------------------
 
 #define DEF_ITET_UNIQUE_OWNER				1

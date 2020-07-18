@@ -7731,6 +7731,13 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 				m_pClientList[iClientH]->bShowDmg = true;
 			}
 		}*/
+		else if (memcmp(cp, "/restartdrops", 13) == 0) {
+			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3) {
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Server are reseting Drop Management as .cfg file!.");
+				bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
+			}
+		}
+		
 		//End----------------------------------------------------------------------------
 
 		else if (memcmp(cp, "/deathmatch", 11) == 0) {
@@ -18532,6 +18539,7 @@ void CGame::OnStartGameSignal()
 	if (m_pMapList[i] != NULL) 
 		__bReadMapInfo(i);
 	
+	bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
 	bReadCrusadeStructureConfigFile("GameConfigs\\Crusade.cfg");
 	_LinkStrikePointMapIndex();
 	bReadScheduleConfigFile("GameConfigs\\Schedule.cfg");
@@ -20502,19 +20510,19 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 
 			switch (m_pClientList[sAttackerH]->m_iSpecialWeaponEffectType) {
 				case 0: break;
-				case 1:
+				case ITEMSTAT_CRITICAL:
 					if ((m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
 						iAP_SM += m_pClientList[sAttackerH]->m_iSpecialWeaponEffectValue;
 						iAP_L  += m_pClientList[sAttackerH]->m_iSpecialWeaponEffectValue;
 					}
 					break;
 
-				case 2:
+				case ITEMSTAT_POISONING:
 					cAttackerSA = 61;
 					iAttackerSAvalue = m_pClientList[sAttackerH]->m_iSpecialWeaponEffectValue*5; 
 					break;
 
-				case 3:
+				case ITEMSTAT_RIGHTEOUS:
 					cAttackerSA = 62;
 					break;
 			}
