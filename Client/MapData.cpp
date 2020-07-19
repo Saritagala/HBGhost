@@ -2618,9 +2618,9 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							{	m_pGame->PlaySound('C', 1, sDist, lPan);
 							}else if ((sWeaponType >= 3) && (sWeaponType <= 19))
 							{	m_pGame->PlaySound('C', 2, sDist, lPan);
-					   		}else if ((sWeaponType >= 20) && (sWeaponType <= 39))
+					   		}else if (((sWeaponType >= 20) && (sWeaponType <= 39)) || (sWeaponType >= 50))
 							{	m_pGame->PlaySound('C', 18, sDist, lPan);
-					   		}else if ((sWeaponType >= 40) && (sWeaponType <= 59))
+					   		}else if ((sWeaponType >= 40) && (sWeaponType < 50))
 							{	m_pGame->PlaySound('C', 3, sDist, lPan);
 						}	}
 						break; // fin du DEF_OBJECTATTACKMOVE
@@ -2744,7 +2744,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					case 4:
 					case 5:
 					case 6:
-						if ((m_pData[dX][dY].m_sAppr2 & 0xF000) != 0)
+					if ((m_pData[dX][dY].m_sAppr2 & 0xF000) != 0)
 						{	sWeaponType = ((m_pData[dX][dY].m_sAppr2 & 0x0FF0) >> 4);
 							if ((sWeaponType >= 1) && (sWeaponType <= 2))
 							{	if (m_pData[dX][dY].m_cOwnerFrame == 5)
@@ -2754,11 +2754,11 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							{	if (m_pData[dX][dY].m_cOwnerFrame == 5)
 								{	m_pGame->PlaySound('C', 2, sDist, lPan);
 					   			}
-							}else if ((sWeaponType >= 20) && (sWeaponType <= 39))
+							}else if (((sWeaponType >= 20) && (sWeaponType <= 39)) || (sWeaponType >= 50))
 							{	if (m_pData[dX][dY].m_cOwnerFrame == 2)
 								{	m_pGame->PlaySound('C', 18, sDist, lPan);
 					   			}
-							}else if ((sWeaponType >= 40) && (sWeaponType <= 59))
+							}else if ((sWeaponType >= 40) && (sWeaponType < 50))
 							{	if (m_pData[dX][dY].m_cOwnerFrame == 3)
 								{	m_pGame->PlaySound('C', 3, sDist, lPan);
 						}	}	}

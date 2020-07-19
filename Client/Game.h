@@ -1216,6 +1216,7 @@ public:
 	void DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB);
 	void NotifyMsg_UserJoin(char * pData); // VAMP - online users list
 
+	//Magn0S:: Start to code---------------------------------------------------------------------------------------------------------------------------------------------------
 	//Magn0S:: Qust List
 	struct {
 		int iQuestID;
@@ -1269,8 +1270,10 @@ public:
 
 	void NotifyPlayerAttributes(char* pData);
 	int m_iTotalDR, m_iHitRatio, m_iTotalMR, m_iAddHP, m_iAddMP, m_iManaSaveRatio, m_iAddAbsPD, m_iAddAbsMD, m_iAddAbsAir, m_iAddAbsEarth, m_iAddAbsFire;
-	int	m_iAddAbsWater, m_iAddPhysicalDamage, m_iAddMagicalDamage, m_iMinAP_SM, m_iMinAP_L, m_iMaxAP_SM, m_iMaxAP_L, m_iArmorPA, m_iLeggsPA;
+	int	m_iAddAbsWater, m_iAddPhysicalDamage, m_iAddMagicalDamage, m_iArmorPA, m_iLeggsPA;
 	int	m_iBerkPA, m_iHelmPA, m_iCapePA, m_iShieldPA;
+	short sServerTime = 0;
+	bool bServerTime = false;
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 

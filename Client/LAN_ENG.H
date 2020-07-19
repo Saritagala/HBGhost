@@ -1612,14 +1612,24 @@
 
 #define	NOTIFYMSG_MAGICSTUDY_SUCCESS1	"Magic(%s): learned!"
 
-#define	NOTIFYMSG_HP_UP	"HP+%d"
+/*#define	NOTIFYMSG_HP_UP	"HP+%d"
 #define	NOTIFYMSG_HP_DOWN	"HP-%d"
 #define	NOTIFYMSG_MP_UP	"MP+%d"
 #define	NOTIFYMSG_MP_DOWN	"MP-%d"
 #define	NOTIFYMSG_SP_UP	"SP+%d"
 #define	NOTIFYMSG_SP_DOWN	"SP-%d"
 #define	NOTIFYMSG_HP2	"Logout count cancels if HP decreases during the countdown."
-#define	NOTIFYMSG_HP3	"Warning! HP is very low."
+#define	NOTIFYMSG_HP3	"Warning! HP is very low."*/
+
+//Magn0S:: Back to old descriptions... look better
+#define	NOTIFYMSG_HP_UP	"HP has been increased by %dpoints."
+#define	NOTIFYMSG_HP_DOWN	"HP has been decreased by %dpoints."
+#define	NOTIFYMSG_MP_UP	"Your MP has been increased by %d points."
+#define	NOTIFYMSG_MP_DOWN	"Your MP has been decreased by %d points."
+#define	NOTIFYMSG_SP_UP	"SP has been increased by %d points."
+#define	NOTIFYMSG_SP_DOWN	"SP has been decreased by %d points."
+#define	NOTIFYMSG_HP2	"Logout count cancels if HP decreases during the countdown."
+#define	NOTIFYMSG_HP3	"Warning! HP is very low. Danger!!"
 
 #define	NOTIFYMSG_NEW_GUILDMAN1	"%s has joined your guild."
 

@@ -7447,9 +7447,6 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (memcmp(cp, "/fragile ", 8) == 0) {
 			AdminOrder_CreateFragileItem(iClientH, cp, dwMsgSize - 21);
 		}
-		else if (memcmp(cp, "/check", 6) == 0) {
-			NotifyPlayerAttributes(iClientH);
-		}
 
 		else if (memcmp(cp, "/enableadmincommand ", 20) == 0) {
 			AdminOrder_EnableAdminCommand(iClientH, cp, dwMsgSize - 21);
@@ -19809,7 +19806,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			m_pClientList[sAttackerH]->m_sUsingWeaponSkill = 5 ;
 
 		}
-		else if ((wWeaponType >= 1) && (wWeaponType < 40)) {
+		else if (((wWeaponType >= 1) && (wWeaponType < 40)) || ((wWeaponType >= 55) && (wWeaponType < 60))) {
 			iAP_SM = iDice(m_pClientList[sAttackerH]->m_cAttackDiceThrow_SM, m_pClientList[sAttackerH]->m_cAttackDiceRange_SM);
 			iAP_L  = iDice(m_pClientList[sAttackerH]->m_cAttackDiceThrow_L, m_pClientList[sAttackerH]->m_cAttackDiceRange_L);
 
@@ -19836,7 +19833,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 			iAP_L = (int)(dTmp3 +0.5f);
 		}
-		else if (wWeaponType >= 40) {
+		else if ((wWeaponType >= 40) && (wWeaponType < 55)) {
 			iAP_SM = iDice(m_pClientList[sAttackerH]->m_cAttackDiceThrow_SM, m_pClientList[sAttackerH]->m_cAttackDiceRange_SM);
 			iAP_L  = iDice(m_pClientList[sAttackerH]->m_cAttackDiceThrow_L, m_pClientList[sAttackerH]->m_cAttackDiceRange_L);
 
@@ -20310,7 +20307,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		}
 	}
 
-	if (wWeaponType >= 40) {
+	if ((wWeaponType >= 40) && (wWeaponType < 55)) {
 		switch (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cWhetherStatus) {
 		case 0:	break;
 		case 1:	iAttackerHitRatio -= (iAttackerHitRatio / 20); break;
@@ -21294,7 +21291,7 @@ CAE_SKIPCOUNTERATTACK:;
 					sAttackerWeapon = ((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4);
 				else sAttackerWeapon = 1;
 
-				if ((wWeaponType < 40) && (m_pNpcList[sTargetH]->m_cActionLimit == 4)) {
+				if (((wWeaponType < 40) || ((wWeaponType > 55) && (wWeaponType <= 60))) && (m_pNpcList[sTargetH]->m_cActionLimit == 4)) {
  					if (sTgtX == sAtkX) {
 						if (sTgtY == sAtkY)     goto CAE_SKIPDAMAGEMOVE2;
 						else if (sTgtY > sAtkY) cDamageMoveDir = 5;
@@ -21442,7 +21439,7 @@ CAE_SKIPDAMAGEMOVE2:;
 				if (   (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL) 
 					&& (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wMaxLifeSpan != 0) ) 
 				{	iWepLifeOff = 1;
-					if ((wWeaponType >= 1) && (wWeaponType < 40)) 
+					if (((wWeaponType >= 1) && (wWeaponType < 40)) || ((wWeaponType > 55) && (wWeaponType <= 60)))
 					{	switch (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cWhetherStatus) {
 						case 0:	break;
 						case 1:	if (iDice(1,3) == 1) iWepLifeOff++; break;
@@ -22193,6 +22190,14 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		cp += 4;
 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30);
+		break;
+
+	case DEF_NOTIFY_SERVERTIME:
+		sp = (short*)cp;
+		*sp = (short)sV1;
+		cp += 2;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
 		break;
 
 	case DEF_NOTIFY_TEAMARENA:
@@ -24314,6 +24319,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
  int iRet, iTemp, iTemp2, i, iQuestType, iQuestNumber, j;
  BOOL bRet;
  short sV1;
+ SYSTEMTIME SysTime;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == TRUE) return;
@@ -24334,6 +24340,9 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HUNGER, m_pClientList[iClientH]->m_iHungerStatus, NULL, NULL, NULL); // MORLA2 - Muestra el hunger status
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[iClientH]->m_iDeaths, m_pClientList[iClientH]->m_iRating, NULL);
+
+	GetLocalTime(&SysTime);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, SysTime.wHour, NULL, NULL, NULL);
 
 	bRet = _bDecodePlayerDatafileContents(iClientH, cp, dwSize - 19);
 	if (bRet == FALSE) {
@@ -26379,7 +26388,8 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 		switch (m_pClientList[sAttackerH]->m_sUsingWeaponSkill) {
 		case 14:
 			if ((((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 31) ||
-				(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 32)) {
+				(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 32) ||
+				(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 59)) {
 				iItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 				if ((iItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[iItemIndex] != NULL))
 				{
@@ -26434,7 +26444,8 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 			iHammerChance = iDice(4, (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wMaxLifeSpan - m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan));
 		}
 		if ((((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 31) ||
-			(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 32)) {
+			(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 32) ||
+			(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 59)) {
 			iItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 			if ((iItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[iItemIndex] != NULL)) {
 				if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 761) { // BattleHammer 
@@ -28864,8 +28875,9 @@ void CGame::NotifyPlayerAttributes(int iClientH)
 	DWORD* dwp;
 	WORD* wp;
 	char* cp;
-	int* ip;
+	int* ip, i;
 	bool* bp;
+	i = 0;
 
 	auto player = m_pClientList[iClientH];
 
@@ -28888,101 +28900,105 @@ void CGame::NotifyPlayerAttributes(int iClientH)
 	ip = (int*)cp;
 	*ip = player->m_iDefenseRatio + player->m_iAddDR;
 	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iHitRatio + player->m_iAddAR + player->m_iMagicHitRatio_ItemEffect;
 	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddResistMagic + player->m_iAddMR;
 	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddHP;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddMP;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iManaSaveRatio;
-	cp += 2;
+	cp += 4;
+	i += 4;
 	//-------------------------------------------
 	ip = (int*)cp;
 	*ip = player->m_iAddAbsPD;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddAbsMD;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddAbsAir;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddAbsEarth;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddAbsFire;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddAbsWater;
-	cp += 2;
+	cp += 4;
+	i += 4;
 	//-------------------------------------------
 	ip = (int*)cp;
 	*ip = player->m_iAddPhysicalDamage;
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iAddMagicalDamage;
-	cp += 2;
-	//-------------------------------------------
-	ip = (int*)cp;
-	*ip = player->m_iMinAP_SM;
-	cp += 2;
-
-	ip = (int*)cp;
-	*ip = player->m_iMinAP_L;
-	cp += 2;
-
-	ip = (int*)cp;
-	*ip = player->m_iMaxAP_SM;
-	cp += 2;
-
-	ip = (int*)cp;
-	*ip = player->m_iMaxAP_L;
-	cp += 2;
+	cp += 4;
+	i += 4;
 	//-------------------------------------------
 	ip = (int*)cp;
 	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY];
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] + player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS];
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS];
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD];
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK];
-	cp += 2;
+	cp += 4;
+	i += 4;
 
 	ip = (int*)cp;
 	*ip = player->m_iDamageAbsorption_Shield;
-	cp += 2;
+	cp += 4;
+	i += 4;
 	//-------------------------------------------
 
-	auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 60);
+	auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + i);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:

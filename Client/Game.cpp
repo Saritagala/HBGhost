@@ -4277,7 +4277,7 @@ BOOL CGame::_bCheckDlgBoxDoubleClick(short msX, short msY)
 void CGame::DrawDialogBox_Character(short msX, short msY)
 {
 	short sX, sY, sSprH, sFrame;
-	int i, iR, iG, iB, iEntry = 0, iSkirtDraw = 0;
+	int i, iR, iG, iB, iEntry = -1, iSkirtDraw = 0;
 	char cTxt2[120], cEquipPoiStatus[DEF_MAXITEMEQUIPPOS];
 	char  cItemColor, cCollison;
 
@@ -4327,7 +4327,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		ZeroMemory(cTxt2, sizeof(cTxt2));
 		wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER2, m_iContribution);
 		strcat(G_cTxt, cTxt2);
-		PutAlignedString(sX + 14, sX + 290, sY + 52, G_cTxt, 255, 255, 100);
+		PutAlignedString(sX + 14, sX + 290, sY + 32, G_cTxt, 255, 255, 100);
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 
 		if (m_bCitizen == FALSE)
@@ -4357,7 +4357,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 			}
 		}
 
-		PutAlignedString(sX, sX + 300, sY + 69, G_cTxt, 255, 255, 100);
+		PutAlignedString(sX, sX + 300, sY + 49, G_cTxt, 255, 255, 100);
 
 		int iTemp;
 		// Level
@@ -5244,10 +5244,10 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 		if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 345) && (msY <= sY + 365))
 		{	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 105, sY + 345, 0);
-			PutAlignedString2(sX + 105, sX + 195, sY + 347, "Title", 255, 255, 100);
+			PutAlignedString2(sX + 105, sX + 195, sY + 347, "Player Panel", 255, 255, 100);
 		}	else {
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 105, sY + 345, 1);
-			PutAlignedString2(sX + 105, sX + 195, sY + 347, "Title", 180, 188, 180);
+			PutAlignedString2(sX + 105, sX + 195, sY + 347, "Player Panel", 180, 188, 180);
 		}
 
 		if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 345) && (msY <= sY + 365))
@@ -5262,77 +5262,91 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 	case 1:
 		int iNext = 0;
+		int iFLine, iSLine, iFLine2, iSLine2;
+		iFLine = 10;
+		iFLine2 = 110;
+
+		iSLine = 150;
+		iSLine2 = 250;
+
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Phy. Hit. Ratio:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Phy. Hit. Ratio:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iHitRatio);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//--
-		PutString2(sX + 150, sY + iNext * 17 + 15, "HP Rec.:", 255, 255, 255);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//-----
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "HP Rec.:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddHP);
-		PutString2(sX + 210, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Physical Damage:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Physical Damage:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddPhysicalDamage);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + 150, sY + iNext * 17 + 15, "MP Rec.:", 255, 255, 255);
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "MP Rec.:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddMP);
-		PutString2(sX + 210, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Magical Damage:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magical Damage:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddMagicalDamage);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//--
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Phy. Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "+%d%%", m_iAddAbsPD);
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Defense Ratio:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Defense Ratio:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalDR);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//--
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "+%d%%", m_iAddAbsMD);
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Magic Resistense:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Resistense:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalMR);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Water Abs.:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Water Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsWater);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + 150, sY + iNext * 17 + 15, "Plate PA.:", 255, 255, 255);
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Plate PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iArmorPA);
-		PutString2(sX + 210, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//-------------------------
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Earth Abs.:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsEarth);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + 150, sY + iNext * 17 + 15, "Hauberk PA.:", 255, 255, 255);
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Hauberk PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iBerkPA);
-		PutString2(sX + 210, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
-
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Light Abs.:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Light Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsAir);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + 150, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iHelmPA);
-		PutString2(sX + 210, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-
-
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 		iNext += 1;
-		PutString2(sX + 10, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsFire);
-		PutString2(sX + 110, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + 150, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
+		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iLeggsPA);
-		PutString2(sX + 210, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//=====================================================================
 
 		break;
 	}
@@ -9139,8 +9153,8 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 		if ((_tmp_sAppr2 & 0xF000) != 0) {
 			iWeapon = ((_tmp_sAppr2 & 0x0FF0) >> 4);
 			if (iWeapon == 0) iAdd = 6;
-			if ((iWeapon >= 1)  && (iWeapon <= 39)) iAdd = 6;
-			if ((iWeapon >= 40) && (iWeapon <= 59)) iAdd = 7;
+			if ((iWeapon >= 1) && ((iWeapon <= 39)) || (iWeapon >= 50)) iAdd = 6;
+			if ((iWeapon >= 40) && (iWeapon < 50)) iAdd = 7;
 			iBodyIndex   = 500 + (_tmp_sOwnerType - 1 )*8*15 + (iAdd * 8);
 			iUndiesIndex = DEF_SPRID_UNDIES_M + (_tmp_sAppr1 & 0x000F)*15 + iAdd;
 			iHairIndex	 = DEF_SPRID_HAIR_M + ((_tmp_sAppr1 & 0x0F00) >> 8)*15 + iAdd;
@@ -9206,8 +9220,8 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 		if ((_tmp_sAppr2 & 0xF000) != 0)
 		{	iWeapon = ((_tmp_sAppr2 & 0x0FF0) >> 4);
 			if (iWeapon == 0) iAdd = 6;
-			if ((iWeapon >= 1)  && (iWeapon <= 39)) iAdd = 6;
-			if ((iWeapon >= 40) && (iWeapon <= 59)) iAdd = 7;
+			if ((iWeapon >= 1) && ((iWeapon <= 39)) || (iWeapon >= 50)) iAdd = 6;
+			if ((iWeapon >= 40) && (iWeapon < 50)) iAdd = 7;
 			iBodyIndex   = 500 + (_tmp_sOwnerType - 1 )*8*15 + (iAdd * 8);
 			iUndiesIndex = DEF_SPRID_UNDIES_W + (_tmp_sAppr1 & 0x000F)*15 + iAdd;
 			iHairIndex	 = DEF_SPRID_HAIR_W + ((_tmp_sAppr1 & 0x0F00) >> 8)*15 + iAdd;
@@ -9690,8 +9704,8 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 		if ((_tmp_sAppr2 & 0xF000) != 0) {
 			iWeapon = ((_tmp_sAppr2 & 0x0FF0) >> 4);
 			if (iWeapon == 0) iAdd = 6;
-			if ((iWeapon >= 1)  && (iWeapon <= 39)) iAdd = 6;
-			if ((iWeapon >= 40) && (iWeapon <= 59)) iAdd = 7;
+			if ((iWeapon >= 1) && ((iWeapon <= 39)) || (iWeapon >= 50)) iAdd = 6;
+			if ((iWeapon >= 40) && (iWeapon < 50)) iAdd = 7;
 			iBodyIndex   = 500 + (_tmp_sOwnerType - 1 )*8*15 + (iAdd * 8);
 			iUndiesIndex = DEF_SPRID_UNDIES_M + (_tmp_sAppr1 & 0x000F)*15 + iAdd;
 			iHairIndex	 = DEF_SPRID_HAIR_M + ((_tmp_sAppr1 & 0x0F00) >> 8)*15 + iAdd;
@@ -9757,8 +9771,8 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 		if ((_tmp_sAppr2 & 0xF000) != 0) {
 			iWeapon = ((_tmp_sAppr2 & 0x0FF0) >> 4);
 			if (iWeapon == 0) iAdd = 6;
-			if ((iWeapon >= 1)  && (iWeapon <= 39)) iAdd = 6;
-			if ((iWeapon >= 40) && (iWeapon <= 59)) iAdd = 7;
+			if ((iWeapon >= 1) && ((iWeapon <= 39)) || (iWeapon >= 50)) iAdd = 6;
+			if ((iWeapon >= 40) && (iWeapon < 50)) iAdd = 7;
 			iBodyIndex   = 500 + (_tmp_sOwnerType - 1 )*8*15 + (iAdd * 8);
 			iUndiesIndex = DEF_SPRID_UNDIES_W + (_tmp_sAppr1 & 0x000F)*15 + iAdd;
 			iHairIndex	 = DEF_SPRID_HAIR_W + ((_tmp_sAppr1 & 0x0F00) >> 8)*15 + iAdd;
@@ -19983,7 +19997,51 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 
 	switch (m_stDialogBoxInfo[1].cMode) {
 	case 0:
-		if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+		if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 320) && (msY <= sY + 340))
+		{	//Magn0S:: Mult Quest - Click selecioon on F5
+			for (i = 0; i < DEF_MAXQUEST; i++) {
+				if (m_stQuest[i].sQuestType != NULL)
+					EnableDialogBox(28, 0, NULL, NULL);
+				else EnableDialogBox(28, 3, NULL, NULL);
+			}
+			DisableDialogBox(1);
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 320) && (msY <= sY + 340))
+		{	//Party
+			EnableDialogBox(32, NULL, NULL, NULL);
+			DisableDialogBox(1);
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 320) && (msY <= sY + 340))
+		{	//Level Settings
+			EnableDialogBox(12, NULL, NULL, NULL);
+			DisableDialogBox(1);
+			PlaySound('E', 14, 5);
+		}
+		//Sec. Line-------------------------------------------------------------------------------------------------
+		if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
+		{	//Guild
+			//EnableDialogBox(XX, NULL, NULL, NULL);
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 345) && (msY <= sY + 365))
+		{	//Player Panel
+			EnableDialogBox(53, 0, NULL, NULL);
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 345) && (msY <= sY + 365))
+		{	//Upgrades
+			EnableDialogBox(34, 5, NULL, NULL);
+			PlaySound('E', 14, 5);
+		}
+
+
+		/*if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
 			//Magn0S:: Mult Quest - Click selecioon on F5
 			for (i = 0; i < DEF_MAXQUEST; i++) {
 				if (m_stQuest[i].sQuestType != NULL)
@@ -20002,7 +20060,7 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 			EnableDialogBox(12, NULL, NULL, NULL);
 			DisableDialogBox(1);
 			PlaySound('E', 14, 5);
-		}
+		}*/
 		break;
 
 	case 1:
@@ -20197,7 +20255,7 @@ BOOL CGame::_bIsItemOnHand() // Snoopy: Fixed to remove ShieldCast
 	{	if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
 		{	wWeaponType = ((m_sPlayerAppr2 & 0x0FF0) >> 4);
 			// Snoopy 34 for all wands.
-			if ((wWeaponType >= 34) && (wWeaponType < 40)) return FALSE;
+	if ((wWeaponType >= 34) && (wWeaponType < 40) || (wWeaponType >= 50) && (wWeaponType < 55)) return FALSE;
 			else return TRUE;
 	}	}
 	return FALSE;
@@ -21046,13 +21104,13 @@ int CGame::_iGetAttackType()
 	}else if ((wWeaponType >= 20) && (wWeaponType < 29))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[10] >= 100)) return 24;
 		else return 1;		// Haches
-	}else if ((wWeaponType >= 30) && (wWeaponType < 33))
+	}else if (((wWeaponType >= 30) && (wWeaponType < 33)) ||  ((wWeaponType >= 55) && (wWeaponType < 60)))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[14] >= 100)) return 26;
 		else return 1;		// Hammers
 	}else if ((wWeaponType >= 34) && (wWeaponType < 40))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[21] >= 100)) return 27;
 		else return 1;		// Wands
-	}else if (wWeaponType >= 40)
+	}else if ((wWeaponType >= 40) && (wWeaponType < 55))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[6] >= 100)) return 25;
 		else return 2;		// Bows
 	}else if ((wWeaponType == 29) || (wWeaponType == 33))
@@ -21075,11 +21133,11 @@ int CGame::_iGetWeaponSkillType()
 		else return 8; // LS
 	}else if ((wWeaponType >= 20) && (wWeaponType < 29))
 	{	return 10; // Axe (20..28)
-	}else if ((wWeaponType >= 30) && (wWeaponType < 33))
+	}else if (((wWeaponType >= 30) && (wWeaponType < 33)) || ((wWeaponType >= 55) && (wWeaponType < 60)))
 	{	return 14; // Hammer (30,31,32)
 	}else if ((wWeaponType >= 34) && (wWeaponType < 40))
 	{	return 21; // Wand
-	}else if (wWeaponType >= 40)
+	}else if ((wWeaponType >= 40) && (wWeaponType < 55))
 	{	return 6;  // Bow
 	}else if ((wWeaponType == 29) || (wWeaponType == 33))
 	{	return 8;  // LS LightingBlade || BlackShadow
@@ -26307,6 +26365,14 @@ void CGame::NotifyMsgHandler(char * pData)
 
 		break;
 
+	case DEF_NOTIFY_SERVERTIME:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+		sp = (short*)cp;
+		sServerTime = *sp;
+		cp += 2;
+		break;
+
 	// Slates - Diuuude
 	case DEF_NOTIFY_SLATE_CREATESUCCESS:	// 0x0BC1
 		AddEventList( DEF_MSG_NOTIFY_SLATE_CREATESUCCESS, 10 );
@@ -30013,7 +30079,14 @@ BOOL CGame::bCheckLocalChatCommand(char * pMsg)
 	{	m_bWhisper = TRUE;
 	    AddEventList(BCHECK_LOCAL_CHAT_COMMAND6, 10);// Enable to listen to whispers."
 		return TRUE;
-	}else if (memcmp(cBuff, "/quest", 6) == 0)
+	}
+	else if (memcmp(cBuff, "/showframes", 6) == 0)
+	{	if (m_bShowFPS)
+			m_bShowFPS = FALSE;
+		else m_bShowFPS = TRUE;
+		return TRUE;
+	}
+	else if (memcmp(cBuff, "/quest", 6) == 0)
 	{	if (m_bQuestHelper)
 			m_bQuestHelper = false;
 		else m_bQuestHelper = true;
@@ -32387,6 +32460,16 @@ void CGame::UpdateScreen_OnGame()
 
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 
+		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
+			&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
+				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
+				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
+				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
+			wsprintf(G_cTxt, "Bases DR: %d: - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
 		{	wsprintf(G_cTxt, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			iEntry++;
@@ -32478,6 +32561,15 @@ void CGame::UpdateScreen_OnGame()
 		}
 		if (strlen(cStr3) != 0)
 		{	PutString(msX, msY +25 +iLoc, cStr3, RGB(150,150,150), FALSE, 1);
+			iLoc += 15;
+		}
+		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
+			&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
+				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
+				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
+				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
+			wsprintf(G_cTxt, "Bases DR: %d: - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
+			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1); 
 			iLoc += 15;
 		}
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )

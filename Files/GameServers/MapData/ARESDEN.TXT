@@ -143,7 +143,7 @@ no-attack-area           = 8       253 115 259 120
 
 
 maximum-object		= 600
-random-mob-generator	= 1  1
+//random-mob-generator	= 1  1
 
 
 //Npc 积己 陛瘤备开
