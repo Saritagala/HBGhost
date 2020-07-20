@@ -4941,6 +4941,15 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			else { AddEventList("Admin User Level is too low for this action.", 10); }
 		}
 
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			if (m_iAdminUserLevel > 3) {
+				m_stDialogBoxInfo[56].cMode = 24; // Drops / Damage server manipulation
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
 		//Back
 		if ((msX > sX + 220) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
 			m_stDialogBoxInfo[56].cMode = 0; // Return to Game Adm
@@ -5590,6 +5599,131 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		}
 		break;
 
+	case 24:
+		iNext += 2; // Primary Drop
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 1, 0, NULL);
+				PlaySound('E', 14, 5);
+			}	else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 1, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		iNext += 3; // Secondary Drop
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 2, 0, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 2, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		iNext += 3; // Stated Drop
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 3, 0, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 3, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+		//-------------------------------
+		iNext += 3;
+		//Magic abs drops
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 4, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 4, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+		
+		iNext += 1;
+		//Physical abs drops
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 4, 2, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 4, 2, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		iNext += 2;
+		//Server Physical Damage
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 5, 0, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 5, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		iNext += 1;
+		//Server Magical Damage
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 6, 0, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34)) {
+			if (m_iAdminUserLevel > 3) {
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 24, 6, 1, NULL);
+				PlaySound('E', 14, 5);
+			}
+			else { AddEventList("Admin User Level is too low for this action.", 10); }
+		}
+
+		break;
+
 	case 25: //cMapTP
 		bFlag = true;
 		iNext += 2;
@@ -6081,7 +6215,7 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY, szX;
-	char cTxt[120], cTemp[255];
+	char cTxt[120], cTemp[255], cDrops[120];
 	int y, iaddx, iaddy;
 	int nickheight = 16;
 	short toX, toY, limitX, limitY;
@@ -6881,6 +7015,105 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))
 			PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 2);
 		else PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 200);
+
+		break;
+
+	case 24:
+		PutString_SprFont2(sX + 125 - ((strlen("Drop and Damage Management") * 7) / 2), sY + 10, "Drop and Damage Management", 240, 240, 240);
+
+		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
+		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
+		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
+
+		iNext += 2;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Primary Drop rate", 19, 104, 169);
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 17, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
+		
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "%d%%", iFirstDropProb/100);
+		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 18, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
+		
+		iNext += 1;
+		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, "Primary Drop manage will decide if a item will be droped, or not.", 210, 255, 0);
+
+		iNext += 2;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Secondary Drop rate", 19, 104, 169);
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 17, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
+
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "%d%%", iSecDropPro/100);
+		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 18, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
+		iNext += 1;
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "Chance to drop Pots, Zems, Stones: %d%%", iSecDropPro / 100);
+		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, cDrops, 210, 255, 0);
+		iNext += 1;
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "Chance to Armors & Weapons: %d%%", 100 - (iSecDropPro / 100));
+		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, cDrops, 210, 255, 0);
+
+		iNext += 1;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Stated Itens Drop rate", 19, 104, 169);
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 17, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
+
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "%d%%", 100 - (iStatedDropProb/100));
+		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
+
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 18, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
+		iNext += 1;
+		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, "Stated Drop manage the probability if the Armor/Weapon will have any special stats.", 210, 255, 0);
+
+		iNext += 2;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Magic Abs. Drop is", 19, 104, 169);
+		if (m_bNullDrop[DROP_MA])
+		PutString2(sX + 210, sY + iNext * 17 + 20, "ON", 0, 255, 0);
+		else PutString2(sX + 210, sY + iNext * 17 + 20, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Physical Abs. Drop is", 19, 104, 169);
+		if (m_bNullDrop[DROP_PA])
+			PutString2(sX + 210, sY + iNext * 17 + 20, "ON", 0, 255, 0);
+		else PutString2(sX + 210, sY + iNext * 17 + 20, "OFF", 255, 0, 0);
+
+		iNext += 2;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Server Physical Damage", 19, 104, 169);
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 17, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "%d%", iServerPDamage*5);
+		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 18, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
+		iNext += 1;
+		PutString2(sX + 25, sY + iNext * 17 + 20, "Server Magical Damage", 19, 104, 169);
+		if ((msX >= sX + 180) && (msX <= sX + 195) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 17, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
+		ZeroMemory(cDrops, sizeof(cDrops));
+		wsprintf(cDrops, "%d%", iServerMDamage*5);
+		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
+		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
+			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 18, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
 
 		break;
 
@@ -9902,6 +10135,8 @@ void CGame::InitGameSettings()
 		ZeroMemory(m_stQuest[i].cTargetName, sizeof(m_stQuest[i].cTargetName));
 		ZeroMemory(m_stQuest[i].cPrizeName, sizeof(m_stQuest[i].cPrizeName));
 	}
+
+	for (i = 0; i < 10; i++) m_bNullDrop[i] = true;
 }
 
 void CGame::_GetHairColorRGB(int iColorType, int * pR, int * pG, int * pB)

@@ -271,6 +271,9 @@
 #define ITEMSTAT2_CAD		10
 #define ITEMSTAT2_EXP		11
 #define ITEMSTAT2_GOLD		12
+
+#define DROP_MA				0
+#define DROP_PA				1
 //-----------------------------------------------------------------------------
 
 #define DEF_ITET_UNIQUE_OWNER				1

@@ -418,12 +418,9 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
  WORD * wp;
  int    i, iRet;
 
-	// 메시지 크기가 버퍼보다 크면 보낼 수 없다.
 	if (dwSize > m_dwBufferSize) return DEF_XSOCKEVENT_MSGSIZETOOLARGE;
 
-	// 리스닝 소켓 혹은 닫힌 소켓으로 메시지를 보낼 수는 없다.
 	if (m_cType != DEF_XSOCK_NORMALSOCK) return DEF_XSOCKEVENT_SOCKETMISMATCH;
-	// 초기화 되지 않아서 메시지를 보낼 수 없다.
 	if (m_cType == NULL) return DEF_XSOCKEVENT_NOTINITIALIZED;
 
 	// 키 입력 

@@ -24,7 +24,7 @@
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"10.0.0.104"
+#define DEF_SERVER_IP			"192.168.0.117"
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port
@@ -45,6 +45,7 @@
 								// changes CCM routine to send "real checked time" instead of "sending time". 
 								// CCM is reduced to 6150
 
+//Magn0S:: Added
 #define CHAT_GLOBAL		2
 #define CHAT_PARTY		4
 #define CHAT_CITY		3
@@ -55,6 +56,9 @@
 #define CHAT_WHISP		20
 #define CHAT_SERVERMSG	10	
 #define MAXCHATLINES    7
+
+#define DROP_MA				0
+#define DROP_PA				1
 
 #ifdef DEF_ANTI_HACK
 	#define DEF_HIDDEN_LOWERVERSION		95

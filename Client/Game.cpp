@@ -25774,6 +25774,7 @@ void CGame::NotifyMsgHandler(char * pData)
  char  * cp, cTemp[510], cTxt[120], cCharName[21], cGuildName[22], cItemName[21];
  short * sp, sX, sY, sV1, sV2, sV3, sV4, sV5, sV6, sV7, sV8, sV9;
  int   * ip, i, iV1, iV2, iV3, iV4, j;
+ bool* bp;
 
 	dwTime = timeGetTime();
 
@@ -26371,6 +26372,38 @@ void CGame::NotifyMsgHandler(char * pData)
 		sp = (short*)cp;
 		sServerTime = *sp;
 		cp += 2;
+
+		ip = (int*)cp;
+		iFirstDropProb = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iSecDropPro = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iStatedDropProb = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iServerPDamage = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iServerMDamage = *ip;
+		cp += 4;
+
+		bp = (bool*)cp;
+		m_bNullDrop[DROP_MA] = *bp;
+		cp++;
+
+		bp = (bool*)cp;
+		m_bNullDrop[DROP_PA] = *bp;
+		cp++;
+
+		/*ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		wsprintf(G_cTxt, "1 %d - 2 %d - r %d", iFirstDropProb, iSecDropPro, iStatedDropProb);
+		AddEventList(G_cTxt, 10);*/
 		break;
 
 	// Slates - Diuuude

@@ -1,0 +1,11 @@
+2020:07:20:09:36:48	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:20:12:06:26	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/check"
+2020:07:20:13:31:02	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"q"
+2020:07:20:17:45:18	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/summon ManaStone"
+2020:07:20:17:45:36	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/summon DT-Elvine"
+2020:07:20:17:45:51	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/summon DT-Elvine"
+2020:07:20:17:45:56	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/who"
+2020:07:20:19:42:41	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/summon DT-Elvine"
+2020:07:20:19:42:45	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:20:19:42:51	Loc(aresden) IP(192.168.0.117) GM(Magn0S[GM]):"/createitem Flameberge"
+2020:07:20:19:42:51	(192.168.0.117) GM Order(Magn0S[GM]): Create ItemName(Flameberge)

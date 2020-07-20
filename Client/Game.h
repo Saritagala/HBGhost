@@ -1274,6 +1274,9 @@ public:
 	int	m_iBerkPA, m_iHelmPA, m_iCapePA, m_iShieldPA;
 	short sServerTime = 0;
 	bool bServerTime = false;
+
+	int iFirstDropProb = 0, iSecDropPro = 0, iStatedDropProb = 0, iServerPDamage = 0, iServerMDamage = 0;
+	bool m_bNullDrop[10];
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 

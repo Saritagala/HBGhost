@@ -2537,6 +2537,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if (iResult <= m_iStatedArmorDrop[6])  dwType = ITEMSTAT2_PA;		// 3
 						else if (iResult <= m_iStatedArmorDrop[7]) dwType = ITEMSTAT2_MA;		// 1
 
+						//Magn0S:: Added to ability some stats drops
+						if ((m_bNullDrop[DROP_MA] == false) && (dwType == ITEMSTAT2_MA))
+							dwType = ITEMSTAT2_NONE;
+
+						if ((m_bNullDrop[DROP_PA] == false) && (dwType == ITEMSTAT2_PA))
+							dwType = ITEMSTAT2_NONE;
+
 						iResult = iDice(1, m_iMaxArmorDrop);
 						if ((iResult >= 1) && (iResult < m_iArmorDrop[0]))           dwValue = 1;
 						else if ((iResult >= m_iArmorDrop[0]) && (iResult < m_iArmorDrop[1]))  dwValue = 2;

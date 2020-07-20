@@ -771,6 +771,30 @@ BOOL CGame::bInit()
 
 	m_dwCleanTime = dwTime;
 
+	//Magn0S:: Start to add new Server variables
+	m_iMaxArmorDrop = 0;
+	m_iMaxWeaponDrop = 0;
+	m_iMaxAttrWeaponDrop = 0;
+	m_iMaxStatedArmor = 0;
+	m_iMaxStatedWeapon = 0;
+
+	for (i = 0; i < 13; i++)
+		m_iArmorDrop[i] = NULL;
+	for (i = 0; i < 13; i++)
+		m_iWeaponDrop[i] = NULL;
+	for (i = 0; i < 9; i++)
+		m_iAttrWeaponDrop[i] = NULL;
+	for (i = 0; i < 8; i++)
+		m_iStatedArmorDrop[i] = NULL;
+	for (i = 0; i < 4; i++)
+		m_iStatedWeaponDrop[i] = NULL;
+
+	for (i = 0; i < 10; i++)
+		m_bNullDrop[i] = true;
+
+	m_iServerPhyDmg = 0;
+	m_iServerMagDmg = 0;
+
 	return TRUE;
 }
 
@@ -7448,6 +7472,11 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			AdminOrder_CreateFragileItem(iClientH, cp, dwMsgSize - 21);
 		}
 
+		else if (memcmp(cp, "/check", 6) == 0) {
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+		}
+		
+
 		else if (memcmp(cp, "/enableadmincommand ", 20) == 0) {
 			AdminOrder_EnableAdminCommand(iClientH, cp, dwMsgSize - 21);
 		}
@@ -11522,7 +11551,7 @@ void CGame::RequestFullObjectData(int iClientH, char *pData)
 
 void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sV1, short sV2, short sV3, BOOL bExp, int iAttr)
 {
- int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack, iRepDamage;
+int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack, iRepDamage, iExtraDmg;
  char cAttackerSide, cDamageMoveDir, cDamageMod[256];
  DWORD dwTime;
  register double dTmp1, dTmp2, dTmp3;
@@ -11627,6 +11656,12 @@ void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTarg
 		//Magn0S:: Extra Dmg Map Restriction
 		if (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bMapBonusDmg == true) {
 			iDamage += iDamage / 2;
+		}
+
+		//Magn0S:: Extra Dmg Map Restriction
+		if (m_iServerMagDmg > 0) {
+			iExtraDmg = iDamage / 20;
+			iDamage += iExtraDmg * m_iServerMagDmg;
 		}
 
 		if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (m_bIsCrusadeMode == TRUE) && (m_pClientList[sAttackerH]->m_iCrusadeDuty == 1)) {
@@ -12059,7 +12094,7 @@ void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTarg
 
 void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, BOOL bExp, int iAttr)
 {
- int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack, iRepDamage;
+ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack, iExtraDmg, iRepDamage;
  char cAttackerSide, cDamageMoveDir, cDamageMinimum, cDamageMod[256];
  DWORD dwTime;
  register double dTmp1, dTmp2, dTmp3;
@@ -12143,6 +12178,12 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 		//Magn0S:: Extra Dmg Map Restriction
 		if (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bMapBonusDmg == true) {
 			iDamage += iDamage / 2;
+		}
+
+		//Magn0S:: Extra Dmg Map Restriction
+		if (m_iServerMagDmg > 0) {
+			iExtraDmg = iDamage / 20;
+			iDamage += iExtraDmg * m_iServerMagDmg;
 		}
 
 		if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (m_bIsCrusadeMode == TRUE) && (m_pClientList[sAttackerH]->m_iCrusadeDuty == 1)) {
@@ -12536,7 +12577,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 
 void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, BOOL bExp, int iAttr)
 {
- int iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack;
+ int iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iExtraDmg, iMaxSuperAttack;
  DWORD dwTime, wWeaponType;
  char cAttackerSide, cDamageMoveDir, cDamageMod[256];
  register double dTmp1, dTmp2, dTmp3;
@@ -12633,6 +12674,12 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 		//Magn0S:: Extra Dmg Map Restriction
 		if (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bMapBonusDmg == true) {
 			iDamage += iDamage / 2;
+		}
+
+		//Magn0S:: Extra Dmg Map Restriction
+		if (m_iServerMagDmg > 0) {
+			iExtraDmg = iDamage / 20;
+			iDamage += iExtraDmg * m_iServerMagDmg;
 		}
 
 		cAttackerSide = m_pClientList[sAttackerH]->m_cSide;
@@ -19665,7 +19712,7 @@ void CGame::TimeHitPointsUp(int iClientH)
 
 int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttackerH, char cAttackerType, int tdX, int tdY, int iAttackMode, BOOL bNearAttack, BOOL bIsDash, BOOL bArrowUse, BOOL bMainGaucheAttack)
 {
- int    iAP_SM, iAP_L, iAttackerHitRatio, iTargetDefenseRatio, iDestHitRatio, iResult, iAP_Abs_Armor, iAP_Abs_Shield, iAP_Abs_Cape;
+ int    iAP_SM, iAP_L, iAttackerHitRatio, iTargetDefenseRatio, iDestHitRatio, iResult, iAP_Abs_Armor, iAP_Abs_Shield, iAP_Abs_Cape, iExtraDmg;
  char   cAttackerName[21], cAttackerDir, cAttackerSide, cTargetDir, cProtect, cCropSkill, cFarmingSkill, cDamageMod[256];
  short  sWeaponIndex, sAttackerWeapon, dX, dY, sX, sY, sAtkX, sAtkY, sTgtX, sTgtY;
  DWORD  dwTime;
@@ -20538,6 +20585,13 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			if (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bMapBonusDmg == true) {
 				iAP_SM += iAP_SM / 2;
 				iAP_L += iAP_L / 2;
+			}
+
+			//Magn0S:: Extra Dmg Map Restriction
+			if (m_iServerPhyDmg > 0) {
+				iExtraDmg = iAP_L / 20;
+				iAP_SM += iExtraDmg * m_iServerPhyDmg;
+				iAP_L += iExtraDmg * m_iServerPhyDmg;
 			}
 
 			if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (m_bIsCrusadeMode == TRUE) && (m_pClientList[sAttackerH]->m_iCrusadeDuty == 1)) {
@@ -22098,6 +22152,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 	short* sp;
 	int* ip, iRet, i;
 	unsigned long long* lp;
+	bool* bp;
 
 	if (m_pClientList[iToH] == NULL) return;
 
@@ -22193,11 +22248,42 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	case DEF_NOTIFY_SERVERTIME:
+		SYSTEMTIME SysTime;
+		GetLocalTime(&SysTime);
+
 		sp = (short*)cp;
-		*sp = (short)sV1;
+		*sp = (short)SysTime.wHour;
 		cp += 2;
 
-		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
+		ip = (int*)cp;
+		*ip = (int)m_iPrimaryDropRate;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = (int)m_iSecondaryDropRate;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = (int)m_iRareDropRate;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = (int)m_iServerPhyDmg;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = (int)m_iServerMagDmg;
+		cp += 4;
+
+		bp = (bool*)cp;
+		*bp = m_bNullDrop[DROP_MA];
+		cp++;
+
+		bp = (bool*)cp;
+		*bp = m_bNullDrop[DROP_PA];
+		cp++;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30);
 		break;
 
 	case DEF_NOTIFY_TEAMARENA:
@@ -24319,7 +24405,6 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
  int iRet, iTemp, iTemp2, i, iQuestType, iQuestNumber, j;
  BOOL bRet;
  short sV1;
- SYSTEMTIME SysTime;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == TRUE) return;
@@ -24341,8 +24426,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HUNGER, m_pClientList[iClientH]->m_iHungerStatus, NULL, NULL, NULL); // MORLA2 - Muestra el hunger status
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[iClientH]->m_iDeaths, m_pClientList[iClientH]->m_iRating, NULL);
 
-	GetLocalTime(&SysTime);
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, SysTime.wHour, NULL, NULL, NULL);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
 
 	bRet = _bDecodePlayerDatafileContents(iClientH, cp, dwSize - 19);
 	if (bRet == FALSE) {
@@ -27767,6 +27851,122 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		}
 		break;
 
+	case 24:
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
+			return;
+		}
+
+		switch (iOption2) {
+		case 1: // Primary Drop Manager
+			if (iOption3 == 0)
+				m_iPrimaryDropRate += 500;
+			else m_iPrimaryDropRate -= 500;
+			
+			if (m_iPrimaryDropRate <= 0) m_iPrimaryDropRate = 0;
+			if (m_iPrimaryDropRate >= 10000) m_iPrimaryDropRate = 10000;
+
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have adjusted the Primary Drop Rate");
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+			return;
+			break;
+
+		case 2: // Secondary Drop Manager
+			if (iOption3 == 0)
+				m_iSecondaryDropRate += 500;
+			else m_iSecondaryDropRate -= 500;
+
+			if (m_iSecondaryDropRate <= 0) m_iSecondaryDropRate = 0;
+			if (m_iSecondaryDropRate >= 10000) m_iSecondaryDropRate = 10000;
+
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have adjusted the Secondary Drop Rate");
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+			return;
+			break;
+
+		case 3: // Stated Drop Manager
+			if (iOption3 == 0)
+				m_iRareDropRate += 500;
+			else m_iRareDropRate -= 500;
+
+			if (m_iRareDropRate <= 0) m_iRareDropRate = 0;
+			if (m_iRareDropRate >= 10000) m_iRareDropRate = 10000;
+
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have adjusted the Stated Drop Rate");
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+			return;
+			break;
+			
+		case 4: // Able / Unable stated drop by definition
+			switch (iOption3) {
+			case 1:
+				if (m_bNullDrop[DROP_MA]) {
+					m_bNullDrop[DROP_MA] = true;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have enabled MA Stats to drop.");
+				}
+				else {
+					m_bNullDrop[DROP_MA] = false;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have disabled MA Stats to drop.");
+				}
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+				return;
+				break;
+
+			case 2:
+				if (m_bNullDrop[DROP_PA]) {
+					m_bNullDrop[DROP_PA] = true;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have enabled PA Stats to drop.");
+				}
+				else {
+					m_bNullDrop[DROP_PA] = false;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have disabled PA Stats to drop.");
+				}
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+				return;
+				break;
+
+			default:
+				return;
+				break;
+			}
+
+			break;
+
+		case 5: // Server Physical Damage
+			if (iOption3 == 0)
+				m_iServerPhyDmg += 5;
+			else m_iServerPhyDmg -= 5;
+
+			if (m_iServerPhyDmg <= 0) m_iServerPhyDmg = 0;
+			if (m_iServerPhyDmg >= 100) m_iServerPhyDmg = 100;
+
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have adjusted the Server Physical Damage");
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+			return;
+			break;
+
+		case 6: // Server Magical Damage
+			if (iOption3 == 0)
+				m_iServerMagDmg += 5;
+			else m_iServerMagDmg -= 5;
+
+			if (m_iServerMagDmg <= 0) m_iServerMagDmg = 0;
+			if (m_iServerMagDmg >= 100) m_iServerMagDmg = 100;
+
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You have adjusted the Server Magical Damage");
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SERVERTIME, NULL, NULL, NULL, NULL);
+			return;
+			break;
+
+		default:
+			return;
+			break;
+
+			break;
+
+		}
+		break;
+
 	case 27:
 		NotifyPlayerAttributes(iClientH);
 		break;
@@ -27849,7 +28049,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		}
 		break;
 
-		//----------Event Manager----------------------------------------------------------------------------------
+	//----------Event Manager----------------------------------------------------------------------------------
 	case 50: // Glad Arena
 		if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);

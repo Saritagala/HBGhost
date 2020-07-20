@@ -1223,9 +1223,13 @@ public:
 	int m_iMaxArmorDrop, m_iMaxWeaponDrop, m_iMaxAttrWeaponDrop, m_iMaxStatedArmor, m_iMaxStatedWeapon;
 	int m_iArmorDrop[13];
 	int m_iWeaponDrop[13];
-	int m_iAttrWeaponDrop[8];
-	int m_iStatedArmorDrop[7];
-	int m_iStatedWeaponDrop[3];
+	int m_iAttrWeaponDrop[9];
+	int m_iStatedArmorDrop[8];
+	int m_iStatedWeaponDrop[4];
+
+	int m_iServerPhyDmg, m_iServerMagDmg;
+
+	bool m_bNullDrop[10];
 	//Magn0S End--------------------------------------------------------------------------------------------------------
 };
 
