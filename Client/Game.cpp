@@ -32645,29 +32645,29 @@ void CGame::UpdateScreen_OnGame()
 	}
 
 	if (m_bIsCTFMode && iUpdateRet != 0) {
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 140, 56, dwTime);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 160, 56, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[0]);
-		PutString(10 + 10, 140 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 140 + 45, 57, dwTime);
+		PutString(10 + 10, 160 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 160 + 45, 57, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
-		PutString(10 + 10, 140 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		PutString(10 + 10, 160 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
 	}
 
 	//Snoopy adding Heldenian turret count:
 	if ((iUpdateRet != 0) && (m_bIsHeldenian) && (memcmp(m_cCurLocation, "BtField", 7) == 0))
 	{
 		wsprintf(G_cTxt, "Aresden flags : %d", m_iHeldenianAresdenFlags);
-		PutString(10, 140, G_cTxt, RGB(255, 255, 255));
+		PutString(10, 140+20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine flags : %d", m_iHeldenianElvineFlags);
-		PutString(10, 160, G_cTxt, RGB(255, 255, 255));
+		PutString(10, 160 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Aresden death toll : %d", m_iHeldenianAresdenDead);
-		PutString(10, 180, G_cTxt, RGB(255, 255, 255));
+		PutString(10, 180 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine death toll : %d", m_iHeldenianElvineDead);
-		PutString(10, 200, G_cTxt, RGB(255, 255, 255));
+		PutString(10, 200 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Aresden rest building number : %d", m_iHeldenianAresdenLeftTower);
-		PutString(10, 220, G_cTxt, RGB(255, 255, 255));
+		PutString(10, 220 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine rest building number : %d", m_iHeldenianElvineLeftTower);
-		PutString(10, 240, G_cTxt, RGB(255, 255, 255));
+		PutString(10, 240 + 20, G_cTxt, RGB(255, 255, 255));
 	}
 
 	DrawTopMsg();
@@ -32780,102 +32780,102 @@ void CGame::UpdateScreen_OnGame()
 		//MORLA2.2 - Deathmach Game
 		if (bDeathmatch)
 		{
-			wsprintf(G_cTxt, "Name");
-			PutAlignedString(10, 45, 104 + resi, G_cTxt, 255, 120, 120); // 10 , 45
-			wsprintf(G_cTxt, "Kills");
-			PutAlignedString(75, 85, 104 + resi, G_cTxt, 255, 120, 120); // 75 , 85
-			wsprintf(G_cTxt, "Deaths");
-			PutAlignedString(110, 120, 104 + resi, G_cTxt, 255, 120, 120); // 110 , 120
+			wsprintf(G_cTxt, "NAME");
+			PutAlignedString(10, 45, 160, G_cTxt, 255, 120, 120); // 10 , 45
+			wsprintf(G_cTxt, "KILLS");
+			PutAlignedString(75, 85, 160, G_cTxt, 255, 120, 120); // 75 , 85
+			wsprintf(G_cTxt, "DEATHS");
+			PutAlignedString(110, 120, 160, G_cTxt, 255, 120, 120); // 110 , 120
 			if (iDGKill1 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName1);
-				PutAlignedString(10, 45, 104 + 14 + resi, G_cTxt, 255, 255, 0);
+				PutAlignedString(10, 45, 160 + 14, G_cTxt, 255, 255, 0);
 				wsprintf(G_cTxt, "%d", iDGKill1);
-				PutAlignedString(75, 85, 104 + 14 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 160 + 14, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath1);
-				PutAlignedString(110, 120, 104 + 14 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 160 + 14, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill2 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName2);
-				PutAlignedString(10, 45, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 160 + 14 * 2, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill2);
-				PutAlignedString(75, 85, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 160 + 14 * 2, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath2);
-				PutAlignedString(110, 120, 104 + 14 * 2 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 160 + 14 * 2, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill3 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName3);
-				PutAlignedString(10, 45, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 160 + 14 * 3, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill3);
-				PutAlignedString(75, 85, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 160 + 14 * 3, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath3);
-				PutAlignedString(110, 120, 104 + 14 * 3 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 160 + 14 * 3, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill4 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName4);
-				PutAlignedString(10, 45, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 160 + 14 * 4, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill4);
-				PutAlignedString(75, 85, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 160 + 14 * 4, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath4);
-				PutAlignedString(110, 120, 104 + 14 * 4 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 160 + 14 * 4, G_cTxt, 180, 180, 180);
 			}
 
 			if (iDGKill5 != 0) {
 				wsprintf(G_cTxt, "%s", cDGName5);
-				PutAlignedString(10, 45, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(10, 45, 160 + 14 * 5, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGKill5);
-				PutAlignedString(75, 85, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(75, 85, 160 + 14 * 5, G_cTxt, 180, 180, 180);
 				wsprintf(G_cTxt, "%d", iDGDeath5);
-				PutAlignedString(110, 120, 104 + 14 * 5 + resi, G_cTxt, 180, 180, 180);
+				PutAlignedString(110, 120, 160 + 14 * 5, G_cTxt, 180, 180, 180);
 			}
 
 			if (m_bCtrlPressed)
 			{
 				if (iDGKill6 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName6);
-					PutAlignedString(10, 45, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 160 + 14 * 6, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill6);
-					PutAlignedString(75, 85, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 160 + 14 * 6, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath6);
-					PutAlignedString(110, 120, 104 + 14 * 6 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 160 + 14 * 6, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill7 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName7);
-					PutAlignedString(10, 45, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 160 + 14 * 7, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill7);
-					PutAlignedString(75, 85, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 160 + 14 * 7, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath7);
-					PutAlignedString(110, 120, 104 + 14 * 7 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 160 + 14 * 7, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill8 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName8);
-					PutAlignedString(10, 45, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 160 + 14 * 8, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill8);
-					PutAlignedString(75, 85, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 160 + 14 * 8, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath8);
-					PutAlignedString(110, 120, 104 + 14 * 8 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 160 + 14 * 8, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill9 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName9);
-					PutAlignedString(10, 45, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 160 + 14 * 9, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill9);
-					PutAlignedString(75, 85, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 160 + 14 * 9, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath9);
-					PutAlignedString(110, 120, 104 + 14 * 9 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 160 + 14 * 9, G_cTxt, 180, 180, 180);
 				}
 
 				if (iDGKill10 != 0) {
 					wsprintf(G_cTxt, "%s", cDGName10);
-					PutAlignedString(10, 45, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(10, 45, 160 + 14 * 10, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGKill10);
-					PutAlignedString(75, 85, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(75, 85, 160 + 14 * 10, G_cTxt, 180, 180, 180);
 					wsprintf(G_cTxt, "%d", iDGDeath10);
-					PutAlignedString(110, 120, 104 + 14 * 10 + resi, G_cTxt, 180, 180, 180);
+					PutAlignedString(110, 120, 160 + 14 * 10, G_cTxt, 180, 180, 180);
 				}
 			}
 		}
@@ -32902,10 +32902,10 @@ void CGame::UpdateScreen_OnGame()
 	if (iUpdateRet == 0) m_sFrameCount++;
 	else m_sFrameCount += 256;
 
-	if (dwTime - m_dwFPStime > 500)
+	if (dwTime - m_dwFPStime > 1000) // 500
 	{
 		m_dwFPStime = dwTime;
-		m_sFPS = m_sFrameCount >> 7;
+		m_sFPS = m_sFrameCount; // >> 7
 		if (m_sFPS < 10) m_sFPS += 6;
 		m_sFrameCount = 0;
 	}
@@ -32951,38 +32951,38 @@ void CGame::UpdateScreen_OnGame()
 	{
 		if (m_bShowFPS)
 		{
-			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
-			PutString(10, 567, G_cTxt, RGB(255, 255, 255));
+			wsprintf(G_cTxt, "fps : %.3d", m_sFPS);
+			PutString(10, 140, G_cTxt, RGB(255, 255, 255));
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		}
 
 		if (strcmp(m_cMapName, "team") == 0) {
 			if (m_bIsDialogEnabled[9]) m_bIsDialogEnabled[9] = FALSE;
-			wsprintf(G_cTxt, "Team");
-			PutString(10, 165, G_cTxt, RGB(220, 200, 200));
+			wsprintf(G_cTxt, "TEAM");
+			PutString(10, 160, G_cTxt, RGB(220, 200, 200));
 			wsprintf(G_cTxt, "Red");
 			PutString(10, 180, G_cTxt, RGB(255, 0, 9));
 			wsprintf(G_cTxt, "Blue");
-			PutString(10, 195, G_cTxt, RGB(61, 100, 255));
+			PutString(10, 200, G_cTxt, RGB(61, 100, 255));
 			wsprintf(G_cTxt, "Green");
-			PutString(10, 210, G_cTxt, RGB(51, 204, 0));
+			PutString(10, 220, G_cTxt, RGB(51, 204, 0));
 			wsprintf(G_cTxt, "Yellow");
-			PutString(10, 225, G_cTxt, RGB(255, 255, 0));
+			PutString(10, 240, G_cTxt, RGB(255, 255, 0));
 
-			wsprintf(G_cTxt, "Kills");
-			PutString(70, 165, G_cTxt, RGB(220, 200, 200));
+			wsprintf(G_cTxt, "KILLS");
+			PutString(70, 160, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", redkills);
 			PutString(70, 180, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", bluekills);
-			PutString(70, 195, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 200, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", greenkills);
-			PutString(70, 210, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 220, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", yellowkills);
-			PutString(70, 225, G_cTxt, RGB(220, 200, 200));
+			PutString(70, 240, G_cTxt, RGB(220, 200, 200));
 		}
 
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
