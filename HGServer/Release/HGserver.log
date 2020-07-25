@@ -1,0 +1,115 @@
+﻿  Apocalypse.cpp
+  BuildItem.cpp
+  CaptureTheFlag.cpp
+  Client.cpp
+  Crusade.cpp
+  DebugDialog.cpp
+  DelayEvent.cpp
+  DynamicObject.cpp
+  Fish.cpp
+  Game.cpp
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(1566,16): warning C4101: 'iMapSide2': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(3268,15): warning C4101: 'pItem': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(3267,7): warning C4101: 'bIsLevelUp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(8456,9): warning C4101: 'dwp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(8456,14): warning C4101: 'dwTimeRcv': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(8458,6): warning C4101: 'iRet': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9472,27): warning C4101: 'KilledMessage2': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9472,87): warning C4101: 'KilledMessage5': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9472,107): warning C4101: 'KilledMessage6': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9472,7): warning C4101: 'KilledMessage1': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9473,15): warning C4101: 'KMRand': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9472,67): warning C4101: 'KilledMessage4': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9472,47): warning C4101: 'KilledMessage3': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(9608,9): warning C4101: 'cScanMessage': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(11555,38): warning C4101: 'cDamageMod': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(12098,54): warning C4101: 'cDamageMod': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(12582,38): warning C4101: 'cDamageMod': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16409,30): warning C4101: 'len': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16446,10): warning C4101: 'dwp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16440,11): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16447,10): warning C4101: 'wp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16445,9): warning C4101: 'iRet': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16444,11): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(16598,43): warning C4101: 'cTemp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(19281,44): warning C4101: 'cName': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(19716,106): warning C4101: 'cDamageMod': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(23735,87): warning C4101: 'iMapside2': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(24935,18): warning C4101: 'cName': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(25530,10): warning C4101: 'iResult': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(25534,10): warning C4101: 'iDiceValue': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(26868,18): warning C4101: 'i': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(26927,8): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(26926,8): warning C4101: 'wp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(26928,7): warning C4101: 'cBuff': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(28567,7): warning C4101: 'ip': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(28563,9): warning C4101: 'sps': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(28817,7): warning C4101: 'ip': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(28813,9): warning C4101: 'sps': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(28929,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(28927,38): warning C4101: 'pTotal': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(29079,8): warning C4101: 'bp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Game.cpp(29074,9): warning C4101: 'sps': variable local sin referencia
+  Game2.cpp
+  GuildsMan.cpp
+  Heldenian.cpp
+  Item.cpp
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1322,9): warning C4101: 'dwp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1320,8): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1320,12): warning C4101: 'cData': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1324,8): warning C4101: 'wp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1319,17): warning C4101: 'iRet': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1323,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(1557,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(4767,8): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(4771,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(5233,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(5368,8): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(5367,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(5833,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(7160,8): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(7161,9): warning C4101: 'sp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(8233,9): warning C4101: 'dwp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(8235,8): warning C4101: 'cp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(8235,12): warning C4101: 'cData': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(8234,8): warning C4101: 'wp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(8232,6): warning C4101: 'iRet': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Item.cpp(8237,9): warning C4101: 'sp': variable local sin referencia
+  Magic.cpp
+  Map.cpp
+  Mineral.cpp
+  Misc.cpp
+  Msg.cpp
+  Npc.cpp
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Npc.cpp(3048,10): warning C4101: 'iDiceValue': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Npc.cpp(3046,10): warning C4101: 'iNumNpcitem': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Npc.cpp(3047,10): warning C4101: 'iIndex': variable local sin referencia
+  Generando código...
+  Compilando...
+  OccupyFlag.cpp
+  Party.cpp
+  Potion.cpp
+  Quest.cpp
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(609,19): warning C4101: 'i': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(660,14): warning C4101: 'iEraseReq': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(662,21): warning C4101: 'iExp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(660,25): warning C4101: 'i': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(661,15): warning C4101: 'pItem': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(799,6): warning C4101: 'iEraseReq': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(799,17): warning C4101: 'iExp': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(793,13): warning C4101: 'i': variable local sin referencia
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Quest.cpp(800,15): warning C4101: 'pItem': variable local sin referencia
+  Skill.cpp
+  StrategicPoint.cpp
+  StrTok.cpp
+  Team.cpp
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Team.cpp(344,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\DJGASSS\Desktop\HBGhost\HGServer\Team.cpp(459,2): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  Teleport.cpp
+  TeleportLoc.cpp
+  TempNpcItem.cpp
+  Tile.cpp
+  wmain.cpp
+  XSocket.cpp
+  Generando código...
+  HGserver.vcxproj -> C:\Users\DJGASSS\Desktop\HBGhost\HGServer\.\Release\HGserver.exe
