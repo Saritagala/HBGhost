@@ -24,7 +24,7 @@
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"192.168.100.2"
+#define DEF_SERVER_IP			"170.81.42.173"
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port

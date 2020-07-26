@@ -24667,28 +24667,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{	if (m_bIsDialogEnabled[43] == FALSE)
 			{	EnableDialogBox(43, NULL, NULL, NULL);
-				char buf[1024]; int konieclinii; unsigned long linie = 0;
-				FILE * f = fopen("contents\\FriendList.txt", "rt");
-				if (f == NULL) break; // Centuu: si el archivo no existe, crash
-				else
-				{
-					m_iTotalFriends = 0;
-					while(fgets(buf, 1024, f)) {
-						konieclinii = 0;
-						int i = strlen(buf);
-						if (i > 0 && buf[--i] == '\n') {
-							buf[i] = 0; // kasujemy znak konca linii
-							konieclinii = 1;
-							linie++;
-						}
-						if (linie- konieclinii < 13) {
-							strcpy(m_cFriends[linie- konieclinii], buf);
-							m_iTotalFriends++;
-						}
-					}
-					if (m_iTotalFriends > 12) m_iTotalFriends = 12;
-					fclose(f);
-				}
+				LoadFriendList();
 			}else DisableDialogBox(43);
 		} 
 		break;
@@ -26618,7 +26597,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		break;
 
 	case DEF_NOTIFY_ITEMATTRIBUTECHANGE: // 0x0BA3
-	case 0x0BC0: // 0x0BC0 Unknown msg, but real in client v3.51
+	case DEF_NOTIFY_UPGRADEHEROCAPE: // 0x0BC0
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		sp  = (short *)cp;
 		sV1 = *sp;
@@ -32645,12 +32624,12 @@ void CGame::UpdateScreen_OnGame()
 	}
 
 	if (m_bIsCTFMode && iUpdateRet != 0) {
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 160, 56, dwTime);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180, 56, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[0]);
-		PutString(10 + 10, 160 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 160 + 45, 57, dwTime);
+		PutString(10 + 10, 180 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 45, 57, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
-		PutString(10 + 10, 160 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		PutString(10 + 10, 180 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
 	}
 
 	//Snoopy adding Heldenian turret count:
@@ -32905,7 +32884,7 @@ void CGame::UpdateScreen_OnGame()
 	if (dwTime - m_dwFPStime > 1000) // 500
 	{
 		m_dwFPStime = dwTime;
-		m_sFPS = m_sFrameCount; // >> 7
+		m_sFPS = m_sFrameCount >> 7;  
 		if (m_sFPS < 10) m_sFPS += 6;
 		m_sFrameCount = 0;
 	}

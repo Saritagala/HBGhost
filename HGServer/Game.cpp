@@ -856,6 +856,56 @@ void CGame::DisplayInfo(HDC hdc)
  
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+//  void CGame::CheckDenialServiceAttack(DWORD dwClientTime, char cKey)
+//  description			: checks if player send continuouslly same packet
+//  DS attack could be done using a packer sniffer to capture a client packet then send it continuouslly.
+/////////////////////////////////////////////////////////////////////////////////////
+void CGame::CheckDenialServiceAttack(int iClientH, DWORD dwClientTime)
+{
+	DWORD dwTime = timeGetTime();
+	if (m_pClientList[iClientH] == NULL) return;
+	//1st chek: find a Denial of service attack by packet sent time
+	if (m_pClientList[iClientH]->m_dwDSLAT == 0)
+	{	// Start with 1st msg
+		m_pClientList[iClientH]->m_dwDSLAT = dwClientTime;
+		m_pClientList[iClientH]->m_dwDSLATOld = dwClientTime;
+		m_pClientList[iClientH]->m_dwDSLATS = dwTime;
+		m_pClientList[iClientH]->m_iDSCount = 0;
+	}
+	else
+	{
+		if (dwClientTime >= m_pClientList[iClientH]->m_dwDSLAT)
+		{	// current message was sent later than previous (normal case)
+			m_pClientList[iClientH]->m_dwDSLAT = dwClientTime;
+		}
+		else
+		{	// current message was sent before previous
+			if (m_pClientList[iClientH]->m_dwDSLATOld == dwClientTime)
+			{	// If we receive more late msg with same time
+				m_pClientList[iClientH]->m_iDSCount++;
+				if (((dwTime - m_pClientList[iClientH]->m_dwDSLATS) > 10 * 1000)
+					&& (m_pClientList[iClientH]->m_iDSCount > 5))
+				{	// Receiving a "late" msg more than 10 sec after !
+					// This is an attack!
+					wsprintf(G_cTxt, "DS check:   PC(%s) - Denial of service attack! (Disc.) \tIP(%s)"
+						, m_pClientList[iClientH]->m_cCharName
+						, m_pClientList[iClientH]->m_cIPaddress);
+					PutHackLogFileList(G_cTxt);
+					PutLogList(G_cTxt);
+					DeleteClient(iClientH, TRUE, TRUE, TRUE, TRUE);
+				}
+			}
+			else
+			{	// else this message become late msg
+				m_pClientList[iClientH]->m_dwDSLATOld = dwClientTime;
+				m_pClientList[iClientH]->m_iDSCount = 1;
+				m_pClientList[iClientH]->m_dwDSLATS = dwTime;
+			}
+		}
+	}
+}
+
 /*********************************************************************************************************************
 **  void CGame::ClientMotionHandler																					**
 **  DESCRIPTION			:: controls most client actions																**
@@ -913,6 +963,8 @@ void CGame::ClientMotionHandler(int iClientH, char * pData)
 	dwp = (DWORD *)cp;
 	dwClientTime = *dwp;
 	cp += 4;
+
+	CheckDenialServiceAttack(iClientH, dwClientTime);
 
 	m_pClientList[iClientH]->m_dwLastActionTime = timeGetTime(); //m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 
@@ -11605,6 +11657,25 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 					damageTemp *= 1.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
+
+				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 865 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 866) {
+					float damageTemp = (float)iDamage;
+					damageTemp *= 0.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
+					iDamage = (int)damageTemp;
+				}
+
+				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 988) {
+					float damageTemp = (float)iDamage;
+					damageTemp *= 2.0f; // O el valor con punto flotante que ustedes dispongan... JustThink
+					iDamage = (int)damageTemp;
+				}
+
+				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1005) {
+					float damageTemp = (float)iDamage;
+					damageTemp *= 2.1f; // O el valor con punto flotante que ustedes dispongan... JustThink
+					iDamage = (int)damageTemp;
+				}
+
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864) {
 					if (m_pClientList[sAttackerH]->m_iRating > 0) {
 						iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
@@ -12125,6 +12196,23 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 861 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 862) {
 					float damageTemp = (float)iDamage;
 					damageTemp *= 1.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
+					iDamage = (int)damageTemp;
+				}
+				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 865 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 866) {
+					float damageTemp = (float)iDamage;
+					damageTemp *= 0.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
+					iDamage = (int)damageTemp;
+				}
+
+				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 988) {
+					float damageTemp = (float)iDamage;
+					damageTemp *= 2.0f; // O el valor con punto flotante que ustedes dispongan... JustThink
+					iDamage = (int)damageTemp;
+				}
+
+				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1005) {
+					float damageTemp = (float)iDamage;
+					damageTemp *= 2.1f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864) {
@@ -16737,6 +16825,8 @@ void CGame::CheckConnectionHandler(int iClientH, char *pData)
 	dwTimeRcv = *dwp;
 
 	if (m_pClientList[iClientH] == NULL) return;
+
+	CheckDenialServiceAttack(iClientH, dwTimeRcv);
 	
 	if (m_pClientList[iClientH]->m_dwInitCCTimeRcv == NULL) {
 		m_pClientList[iClientH]->m_dwInitCCTimeRcv = dwTimeRcv;
@@ -19940,10 +20030,35 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 			if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 861) || // BerserkWand(MS.20)
 				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 862)) { // BerserkWand(MS.10)
-				iAttackerHitRatio *= 1.5f;
+				float damageTemp = (float)iAttackerHitRatio;
+				damageTemp *= 1.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
+				iAttackerHitRatio = (int)damageTemp;
 				iAP_SM ++;
 				iAP_L ++;
 			}
+			if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || // BerserkWand(MS.20)
+				(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) { // BerserkWand(MS.10)
+				float damageTemp = (float)iAttackerHitRatio;
+				damageTemp *= 0.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
+				iAttackerHitRatio = (int)damageTemp;
+				iAP_SM++;
+				iAP_L++;
+			}
+			if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 988) { // BerserkWand(MS.10)
+				float damageTemp = (float)iAttackerHitRatio;
+				damageTemp *= 2.0f; // O el valor con punto flotante que ustedes dispongan... JustThink
+				iAttackerHitRatio = (int)damageTemp;
+				iAP_SM++;
+				iAP_L++;
+			}
+			if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1005) { // BerserkWand(MS.10)
+				float damageTemp = (float)iAttackerHitRatio;
+				damageTemp *= 2.1f; // O el valor con punto flotante que ustedes dispongan... JustThink
+				iAttackerHitRatio = (int)damageTemp;
+				iAP_SM++;
+				iAP_L++;
+			}
+
 		}
 
 		sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];

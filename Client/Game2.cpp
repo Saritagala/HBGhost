@@ -2836,6 +2836,11 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 		if (m_stDialogBoxInfo[34].sV3 == 0)
 		{
 			PutAlignedString(sX + 24, sX + 248, sY + 20 + 95, DRAW_DIALOGBOX_ITEMUPGRADE42, 195, 25, 25);//"You can upgrade only weapon."
+			/*if (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroSword", 9) == 0 ||
+				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroWand", 8) == 0)
+			{
+				PutAlignedString(sX + 24, sX + 248, sY + 20 + 95, "REQUIRE: 20.000 EKs", 195, 25, 25);
+			}*/
 		}
 		else
 		{
@@ -2873,6 +2878,13 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
+
+			if (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroSword", 9) == 0 ||
+				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroWand", 8) == 0)
+			{
+				PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, "Required: 20.000 EKs");
+			}
+
 			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 47);
 			else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
@@ -4428,7 +4440,28 @@ void CGame::SaveFriendList()
 	}
 	fclose(f);
 }
-
+void CGame::LoadFriendList()
+{
+	char buf[1024]; int konieclinii; unsigned long linie = 0;
+	FILE* f = fopen("contents\\FriendList.txt", "rt");
+	if (f == NULL) return; // Centuu: si el archivo no existe, crash
+	m_iTotalFriends = 0;
+	while (fgets(buf, 1024, f)) {
+		konieclinii = 0;
+		int i = strlen(buf);
+		if (i > 0 && buf[--i] == '\n') {
+			buf[i] = 0; // kasujemy znak konca linii
+			konieclinii = 1;
+			linie++;
+		}
+		if (linie - konieclinii < 13) {
+			strcpy(m_cFriends[linie - konieclinii], buf);
+			m_iTotalFriends++;
+		}
+	}
+	if (m_iTotalFriends > 12) m_iTotalFriends = 12;
+	fclose(f);
+}
 
 #ifdef DEF_ANTI_HACK
 /*********************************************************************************************************************
@@ -21123,28 +21156,7 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 			if (m_bIsDialogEnabled[43] == FALSE)
 			{
 				EnableDialogBox(43, NULL, NULL, NULL);
-				char buf[1024]; int konieclinii; unsigned long linie = 0;
-				FILE* f = fopen("contents\\FriendList.txt", "rt");
-				if (f == NULL) break; // Centuu: si el archivo no existe, crash
-				else
-				{
-					m_iTotalFriends = 0;
-					while (fgets(buf, 1024, f)) {
-						konieclinii = 0;
-						int i = strlen(buf);
-						if (i > 0 && buf[--i] == '\n') {
-							buf[i] = 0; // kasujemy znak konca linii
-							konieclinii = 1;
-							linie++;
-						}
-						if (linie - konieclinii < 13) {
-							strcpy(m_cFriends[linie - konieclinii], buf);
-							m_iTotalFriends++;
-						}
-					}
-					if (m_iTotalFriends > 12) m_iTotalFriends = 12;
-					fclose(f);
-				}
+				LoadFriendList();
 			}
 			else DisableDialogBox(43);
 			PlaySound('E', 14, 5);

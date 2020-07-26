@@ -100,6 +100,9 @@ public:
 
 //private:
 
+	void CheckDenialServiceAttack(int iClientH, DWORD dwClientTime);
+	BOOL iUpgradeHeroItemRequirements(int iClientH, int iItemIndex);
+
 	void PlayerOrder_Criticals(int iClientH);
 
 	int m_iCTFEventFlagHolder[2], m_iCTFEventFlag[2];

@@ -301,6 +301,7 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 				*dwp = pItem->m_dwAttribute;
 				cp += 4;
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+				calcularTop15HB(iClientH);
 				if (iEraseReq == 1) delete pItem;
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 53);
 				iCalcTotalWeight(iClientH);

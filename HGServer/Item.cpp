@@ -1465,6 +1465,7 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, NULL);
 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+				calcularTop15HB(iClientH);
 				// centu - manage contrib
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 
@@ -2123,6 +2124,49 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	if ((iItemIndex < 0) || (iItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[iItemIndex] == NULL) return;
 	
+	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 1003 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 988)
+	{
+		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex)) 
+		{
+			iItemX = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x;
+			iItemY = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y;
+			delete m_pClientList[iClientH]->m_pItemList[iItemIndex];
+			m_pClientList[iClientH]->m_pItemList[iItemIndex] = NULL;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex] = new class CItem;
+			m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x = iItemX;
+			m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y = iItemY;
+			if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 1004) == FALSE ||
+				_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 1005) == FALSE)
+			{
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+				return;
+			}
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
+			dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+			dwTemp = dwTemp & 0x0FFFFFFF;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
+			_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
+		}
+		else 
+		{
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, NULL, NULL, NULL);
+			_bItemLog(DEF_ITEMLOG_UPGRADEFAIL, iClientH, -1, m_pClientList[iClientH]->m_pItemList[iItemIndex], FALSE);
+		}
+		return;
+	}
+
 	if (HeroItemChecker(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum, 0, 0, 0) != 0) 
 	{
 		if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 != m_pClientList[iClientH]->m_sCharIDnum1) ||
@@ -3056,7 +3100,46 @@ BOOL CGame::iUpgradeHeroCapeRequirements(int iClientH, int iItemIndex)
 	if ((i == DEF_MAXITEMS) || (iStoneNumber == 0)) return FALSE;
 	if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], iAfterItemID) == FALSE) return FALSE;
 	m_pClientList[iClientH]->m_iEnemyKillCount -= iRequiredEnemyKills;
+	calcularTop15HB(iClientH);
 	m_pClientList[iClientH]->m_iContribution -= iRequiredContribution;
+	if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
+		ItemDepleteHandler(iClientH, i, FALSE, TRUE);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+BOOL CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
+{
+	int iAfterItemID, iRequiredEnemyKills, iStoneNumber, i;
+	int iBeforeItemID;
+
+	iAfterItemID = 0;
+	iRequiredEnemyKills = 20000;
+	iStoneNumber = 0;
+	i = 0;
+	iBeforeItemID = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum;
+	if (iBeforeItemID == 1003) {
+		_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)m_pClientList[iClientH]->m_pItemList[iItemIndex], FALSE);
+		iAfterItemID = 1004;
+		iStoneNumber = 656;
+	}
+	else if (iBeforeItemID == 988) {
+		_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)m_pClientList[iClientH]->m_pItemList[iItemIndex], FALSE);
+		iAfterItemID = 1005;
+		iStoneNumber = 656;
+	}
+	else {
+		return FALSE;
+	}
+	if (iRequiredEnemyKills > m_pClientList[iClientH]->m_iEnemyKillCount) return FALSE;
+	for (i = 0; i < DEF_MAXITEMS; i++)
+		if ((m_pClientList[iClientH]->m_pItemList[i] != NULL) && (m_pClientList[iClientH]->m_pItemList[i]->m_sIDnum == iStoneNumber)) break;
+
+	if ((i == DEF_MAXITEMS) || (iStoneNumber == 0)) return FALSE;
+	if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], iAfterItemID) == FALSE) return FALSE;
+	m_pClientList[iClientH]->m_iEnemyKillCount -= iRequiredEnemyKills;
+	calcularTop15HB(iClientH);
 	if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
 		ItemDepleteHandler(iClientH, i, FALSE, TRUE);
 		return TRUE;
@@ -3299,6 +3382,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 				case 1:
 					m_pClientList[iClientH]->m_iEnemyKillCount -= pItem->m_wEkPrice;
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+					calcularTop15HB(iClientH);
 					break;
 				case 2:
 					m_pClientList[iClientH]->m_iContribution -= pItem->m_wContribPrice;
