@@ -317,6 +317,8 @@ CClient::CClient(HWND hWnd)
 	//Magn0S:: New Variables
 	m_iCoinPoints = 0;
 	bShowDmg = false;
+
+	m_bIsOnApocMap = FALSE;
 	///////////////////////////////////////////////////////////////////////////////////////
 }
 

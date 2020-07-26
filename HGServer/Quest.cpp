@@ -858,7 +858,7 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 					cp += 21;
 				}
 				else {
-					memcpy(cp, "  ", 21);
+					memcpy(cp, "Exp Points", 21);
 					cp += 21;
 				}
 

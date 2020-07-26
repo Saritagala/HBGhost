@@ -833,6 +833,7 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 				if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
 				{
 					SendNotifyMsg(NULL, x, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Ghost Abbadon has appeared...");
+					SendNotifyMsg(NULL, x, DEF_NOTIFY_ABBYAPPEAR, NULL, NULL, NULL, NULL);
 				}
 			}
 

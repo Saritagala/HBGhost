@@ -646,6 +646,15 @@ NKH_GOTOPOINT1:;
 			}
 		}
 	}
+
+	if (m_bIsApocalypseMode) {
+		for (i = 0; i < DEF_MAXCLIENTS; i++)
+			if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsOnApocMap == TRUE) && (m_pClientList[i]->m_bIsInitComplete == TRUE)) {
+				int iMonsterCount;
+				iMonsterCount = m_pMapList[m_pClientList[i]->m_cMapIndex]->m_iTotalAliveObject;
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, NULL, NULL, NULL);
+			}
+	}
 }
 
 BOOL CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char cSA)

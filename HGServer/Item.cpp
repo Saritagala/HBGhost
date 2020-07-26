@@ -3243,7 +3243,7 @@ void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 	}
 }
 
-// MORLA 2.4 - Trade Items / Changed by Magn0S
+// Magn0S:: Revamped Trade Contrib, Coins and Eks
 void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum, int iPurchase)
 {
 	class CItem* pItem;
@@ -3320,61 +3320,9 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE) {
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
 
-				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
-				*dwp = MSGID_NOTIFY;
-				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_NOTIFY_ITEMTRADE;
-
-				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
-				*cp = 1;
-				cp++;
-
-				memcpy(cp, pItem->m_cName, 20);
-				cp += 20;
-
-				dwp = (DWORD*)cp;
-				*dwp = pItem->m_dwCount;
-				cp += 4;
-
-				*cp = pItem->m_cItemType;
-				cp++;
-
-				*cp = pItem->m_cEquipPos;
-				cp++;
-
-				*cp = (char)0;
-				cp++;
-
-				sp = (short*)cp;
-				*sp = pItem->m_sLevelLimit;
-				cp += 2;
-
-				*cp = pItem->m_cGenderLimit;
-				cp++;
-
-				wp = (WORD*)cp;
-				*wp = pItem->m_wCurLifeSpan;
-				cp += 2;
-
-				wp = (WORD*)cp;
-				*wp = pItem->m_wWeight;
-				cp += 2;
-
-				sp = (short*)cp;
-				*sp = pItem->m_sSprite;
-				cp += 2;
-
-				sp = (short*)cp;
-				*sp = pItem->m_sSpriteFrame;
-				cp += 2;
-
-				*cp = pItem->m_cItemColor;
-				cp++;
-
-				wp = (WORD*)cp;
-				*wp = iCost;
 				wTempPrice = iCost;
-				cp += 2;
+
+				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, wTempPrice);
 
 				if (iEraseReq == 1) delete pItem;
 
@@ -3397,23 +3345,11 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					break;
 				}
 
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 48);
-
 				iCalcTotalWeight(iClientH);
-
-				switch (iRet) {
-				case DEF_XSOCKEVENT_QUENEFULL:
-				case DEF_XSOCKEVENT_SOCKETERROR:
-				case DEF_XSOCKEVENT_CRITICALERROR:
-				case DEF_XSOCKEVENT_SOCKETCLOSED:
-					DeleteClient(iClientH, TRUE, TRUE);
-					break;
-				}
 			}
 			else
 			{
 				delete pItem;
-
 				iCalcTotalWeight(iClientH);
 
 				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
@@ -5315,8 +5251,8 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 	class CItem* pItem;
 	char* cp, cItemName[21], cData[100];
 	short* sp;
-	DWORD* dwp, dwGoldCount, dwItemCount;
-	WORD* wp, wTempPrice;
+	DWORD* dwp, dwGoldCount, dwItemCount, wTempPrice;
+	WORD* wp;
 	int   i, iRet, iEraseReq, iGoldWeight;
 	int   iCost, iCost2, iDiscountRatio, iDiscountCost;
 	double dTmp1, dTmp2, dTmp3;
@@ -5357,7 +5293,7 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 			pItem->m_dwCount = dwItemCount;
 
 			//Heldenian Price Fix Thing
-			if (m_pClientList[iClientH]->m_cSide == m_sLastHeldenianWinner) 
+			/*if (m_pClientList[iClientH]->m_cSide == m_sLastHeldenianWinner) 
 			{
 				iCost = (int)((float)(pItem->m_wPrice) * 0.9f + 0.5f);
 				iCost = iCost * pItem->m_dwCount;
@@ -5383,10 +5319,14 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 			if ((iCost - iDiscountCost) <= (int)(iCost2 / 2)) 
 			{
 				iDiscountCost = (int)(iCost - (iCost2 / 2) + 1);
-			}
+			}*/
 
+			dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
-			if (dwGoldCount < (DWORD)(iCost - iDiscountCost)) {
+			iCost = (pItem->m_wPrice * pItem->m_dwCount);
+
+			//if (dwGoldCount < (DWORD)(iCost - iDiscountCost)) {
+			if (dwGoldCount < (DWORD)(iCost)) {
 				delete pItem;
 
 				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
@@ -5412,7 +5352,8 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE) {
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
 
-				wTempPrice = (iCost - iDiscountCost);
+				//wTempPrice = (iCost - iDiscountCost);
+				wTempPrice = iCost;
 				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, wTempPrice);
 
 				if (iEraseReq == 1) delete pItem;
@@ -7022,9 +6963,9 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*cp = pItem->m_cItemColor;
 		cp++;
 
-		wp = (WORD*)cp;
-		*wp = iV1;
-		cp += 2;
+		dwp = (DWORD*)cp;
+		*dwp = iV1;
+		cp += 4;
 
 		//------------------------------------
 		sp = (short*)cp;
@@ -7075,7 +7016,7 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 72); // 48
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 74); // 48
 		break;
 
 	case DEF_NOTIFY_CANNOTCARRYMOREITEM:

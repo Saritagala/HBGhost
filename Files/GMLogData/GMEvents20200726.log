@@ -1,0 +1,71 @@
+2020:07:26:10:46:23	Loc(cityhall_1) IP(10.0.0.105) PC(magnos):"/getskills"
+2020:07:26:10:47:32	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/tp cityhall_1"
+2020:07:26:10:59:06	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:26:10:59:12	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:12	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:13	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:13	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:13	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:13	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:14	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:14	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:16	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:16	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:17	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:17	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:17	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:17	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:10:59:18	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:10:59:18	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:34	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:26:11:04:40	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:40	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:41	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:41	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:42	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:42	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:43	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:43	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:44	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:44	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:45	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:45	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:47	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:47	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:48	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:48	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:56	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:56	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:04:59	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:04:59	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:05:00	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:05:00	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:15:43	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:07:26:11:16:29	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem "
+2020:07:26:11:16:35	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:16:35	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:16:35	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:16:35	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:16:36	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:16:36	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:16:37	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:16:37	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:11:16:38	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem BigRedPotion"
+2020:07:26:11:16:38	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(BigRedPotion)
+2020:07:26:15:45:00	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/showdmg"
+2020:07:26:15:45:47	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Ares-Guard"
+2020:07:26:15:45:52	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden"
+2020:07:26:15:46:17	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden"
+2020:07:26:15:46:19	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden"
+2020:07:26:15:46:21	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden"
+2020:07:26:15:46:53	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden"
+2020:07:26:15:46:54	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden"
+2020:07:26:15:46:56	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden 5"
+2020:07:26:15:47:28	Loc(aresden) IP(10.0.0.105) GM(Magn0S[GM]):"/tp middleland"
+2020:07:26:15:47:34	Loc(middleland) IP(10.0.0.105) GM(Magn0S[GM]):"/tp procella"
+2020:07:26:15:48:36	Loc(procella) IP(10.0.0.105) GM(Magn0S[GM]):"/summon Guard-Aresden 5"
+2020:07:26:15:49:51	Loc(procella) IP(10.0.0.105) GM(Magn0S[GM]):"/tp elvine"
+2020:07:26:16:24:56	Loc(elvine) IP(10.0.0.105) GM(Magn0S[GM]):"/tp procella"
+2020:07:26:16:54:08	Loc(aresden) IP(10.0.0.105) PC(magnos):"/showdmg"
+2020:07:26:16:54:28	Loc(aresden) IP(10.0.0.105) PC(magnos):"/hold"
+2020:07:26:17:42:00	Loc(procella) IP(10.0.0.105) GM(Magn0S[GM]):"/tp cityhall_1"

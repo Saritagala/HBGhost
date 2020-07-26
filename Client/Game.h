@@ -784,9 +784,9 @@ public:
 		char  cStr[32], cStr2[32], cStr3[32], cStr4[32];
 		char  cMode;
 		BOOL  bIsScrollSelected;
-	} m_stDialogBoxInfo[61];	 // Snoopy passé à 61 (origine 41, Alastor 60), j'ai mis +20 car plus pratique.
-	char m_cDialogBoxOrder[61];
-	CInt m_bIsDialogEnabled[61];//was BOOL
+	} m_stDialogBoxInfo[MAXDIALOGBOX];	 // Snoopy passé à 61 (origine 41, Alastor 60), j'ai mis +20 car plus pratique. - Magn0S:: Increased max dialog box
+	char m_cDialogBoxOrder[MAXDIALOGBOX];
+	CInt m_bIsDialogEnabled[MAXDIALOGBOX];//was BOOL
 //Snoopy=>>>>>>>>>>>>>>>>>>>>>
 	struct {
 		int   sV1, sV2, sV3, sV4, sV5, sV6, sV7, sItemID;
@@ -1236,7 +1236,7 @@ public:
 		int iQuestID, iAmount, iRewardType;
 	} m_stQuest[DEF_MAXQUEST];
 
-	void DrawDialogBox_QuestList(short msX, short msY);
+	void DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB);
 	void DlgBoxClick_QuestList(short msX, short msY);
 	void ResponseQuestList(char* pData);
 
@@ -1277,6 +1277,9 @@ public:
 
 	int iFirstDropProb = 0, iSecDropPro = 0, iStatedDropProb = 0, iServerPDamage = 0, iServerMDamage = 0;
 	bool m_bNullDrop[10];
+
+	void StartBGMGhost();
+	int m_iTotalAliveObject = -1;
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 

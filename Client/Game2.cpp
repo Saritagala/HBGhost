@@ -9931,11 +9931,11 @@ void CGame::InitGameSettings()
 		ZeroMemory(m_stGuildName[i].cGuildName, sizeof(m_stGuildName[i].cGuildName));
 	}
 	//Snoopy: 61
-	for (i = 0; i < 61; i++)
+	for (i = 0; i < MAXDIALOGBOX; i++)
 		m_bIsDialogEnabled[i] = FALSE;
 
-	//Snoopy: 58 because 2 last ones alreaddy defined
-	for (i = 0; i < 58; i++)
+	//Snoopy: 58 because 2 last ones alreaddy defined / Magn0S Increased dialog boxes
+	for (i = 0; i < MAXDIALOGBOX - 2; i++)
 		m_cDialogBoxOrder[i] = NULL;
 
 	for (i = 0; i < DEF_MAXEFFECTS; i++) {
@@ -16779,11 +16779,11 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	WORD  * wp;
 	int i, j;
 
-	DWORD dwCount;
+	DWORD dwCount, wCost;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	BOOL  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
-	WORD  wCost, wWeight, wCurLifeSpan, wMaxLifeSpan;
+	WORD  wWeight, wCurLifeSpan, wMaxLifeSpan;
 	char  cTxt[120], cItemColor;
 	//Magn0S:: Add
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
@@ -16836,8 +16836,9 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	cItemColor = *cp; // v1.4
 	cp++;
 
-	wp = (WORD *)cp;
-	wCost = *wp;
+	dwp = (DWORD *)cp;
+	wCost = *dwp;
+	cp += 4;
 
 	sp = (short*)cp;
 	sNewAtt1 = *sp;
@@ -19171,7 +19172,7 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 	if (m_bIsObserverMode == TRUE) return;
 	m_DInput.m_sZ = 0;
 	//Snoopy: 41->61
-	for (i = 0; i < 61; i++)
+	for (i = 0; i < MAXDIALOGBOX; i++)
 		if (m_cDialogBoxOrder[i] != NULL)
 		{
 			switch (m_cDialogBoxOrder[i]) {
@@ -19328,7 +19329,7 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 				break;
 
 			case 59:
-				DrawDialogBox_QuestList(msX, msY);
+				DrawDialogBox_QuestList(msX, msY, msZ, cLB); //@@@
 				break;
 
 			case 60:
@@ -19450,11 +19451,11 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 	DWORD		  dwTime = m_dwCurTime;
 	if (cButtonSide == 1) {
 		// Snoopy: 41->61
-		for (i = 0; i < 61; i++)
+		for (i = 0; i < MAXDIALOGBOX; i++)
 			// Snoopy: 40->60
-			if (m_cDialogBoxOrder[60 - i] != NULL) 	// Snoopy: 40->60
+			if (m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i] != NULL) 	// Snoopy: 40->60
 			{
-				cDlgID = m_cDialogBoxOrder[60 - i];
+				cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i];
 				if ((m_stDialogBoxInfo[cDlgID].sX <= msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) >= msX) &&
 					(m_stDialogBoxInfo[cDlgID].sY <= msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) >= msY))
 				{
@@ -19663,7 +19664,6 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 						m_stMCursor.sSelectedObjectID = cDlgID;
 						break;
 
-					case 59:
 					case 56: //Magn0S:: Add focus on GM Panel
 					case 53: // General Panel
 						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
@@ -19684,6 +19684,21 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 						}
 						else return -1;
 						break;
+
+					case 59: // Magn0S - Quest List
+						sX = m_stDialogBoxInfo[59].sX;
+						sY = m_stDialogBoxInfo[59].sY;
+						if ((m_stDialogBoxInfo[59].cMode == 0) && (msX >= sX + 405) && (msX <= sX + 420) && (msY >= sY + 20) && (msY <= sY + 330)) {
+							m_stDialogBoxInfo[59].bIsScrollSelected = TRUE;
+							return -1;
+						}
+
+						if ((m_stDialogBoxInfo[59].bIsScrollSelected == FALSE)) {
+							m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
+							m_stMCursor.sSelectedObjectID = cDlgID;
+						}
+						else return -1;
+						break;
 					}
 					return 1;
 				}
@@ -19694,11 +19709,11 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 	{
 		if ((dwTime - m_dwDialogCloseTime) < 300) return 0;
 		// Snoopy: 40->60
-		for (i = 0; i < 61; i++)
+		for (i = 0; i < MAXDIALOGBOX; i++)
 			// Snoopy: 40->60
-			if (m_cDialogBoxOrder[60 - i] != NULL) {
+			if (m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i] != NULL) {
 				// Snoopy: 40->60
-				cDlgID = m_cDialogBoxOrder[60 - i];
+				cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i];
 				if ((m_stDialogBoxInfo[cDlgID].sX < msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX) &&
 					(m_stDialogBoxInfo[cDlgID].sY < msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY))
 				{
@@ -20072,6 +20087,42 @@ void CGame::StartBGM()
 	{
 		Mp3Stop();
 		Mp3Load(cWavFileName);
+
+		int iVolume = (m_cMusicVolume - 100) * 20;
+		if (iVolume > 0) iVolume = 0;
+		if (iVolume < -10000) iVolume = -10000; //iVolume = Volume
+		Mp3SetVolume(iVolume);
+		if (m_bIsProgramActive == TRUE)
+		{
+			Mp3Play();
+		}
+		else
+		{
+			Mp3Play();
+			PauseBGM();
+		}
+	}
+}
+
+//Magn0S:: Add to start Special Music on Ghost Abaddon fight
+void CGame::StartBGMGhost()
+{
+
+	char cWavFileName[32];
+	ZeroMemory(cWavFileName, sizeof(cWavFileName));
+
+	if ((m_cGameMode == DEF_GAMEMODE_ONMAINGAME) && (memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.wav");
+
+	StopBGM();
+	if (m_bSoundFlag == FALSE) m_bSoundFlag = TRUE;
+
+	//Snoopy: mp3 support
+	if (Mp3Playing(cWavFileName) == FALSE)
+	{
+		Mp3Stop();
+		Mp3Load(cWavFileName);
+
+		m_cMusicVolume = 100; //Magn0S:: Set max volume
 
 		int iVolume = (m_cMusicVolume - 100) * 20;
 		if (iVolume > 0) iVolume = 0;
@@ -20798,6 +20849,19 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 		}
 		break;
 
+	case 59: // Magn0S - Quest List
+		if (m_bIsDialogEnabled[59] == FALSE)
+		{
+			m_stDialogBoxInfo[59].sV1 = cType;
+			m_stDialogBoxInfo[59].cMode = 0;
+			m_stDialogBoxInfo[59].sView = 0;
+			m_stDialogBoxInfo[59].bFlag = TRUE;
+			m_stDialogBoxInfo[59].sV3 = 1;
+
+			break;
+		}
+		break;
+
 	case 67:
 		break;
 
@@ -20822,16 +20886,16 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 	m_bIsDialogEnabled[iBoxID] = TRUE;
 	if (pString != NULL) strcpy(m_stDialogBoxInfo[iBoxID].cStr, pString);
 	//Snoopy: 39->59
-	for (i = 0; i < 59; i++)
+	for (i = 0; i < MAXDIALOGBOX - 2; i++)
 		if (m_cDialogBoxOrder[i] == iBoxID) m_cDialogBoxOrder[i] = NULL;
 	//Snoopy: 39->59
-	for (i = 1; i < 59; i++)
+	for (i = 0; i < MAXDIALOGBOX - 2; i++)
 		if ((m_cDialogBoxOrder[i - 1] == NULL) && (m_cDialogBoxOrder[i] != NULL)) {
 			m_cDialogBoxOrder[i - 1] = m_cDialogBoxOrder[i];
 			m_cDialogBoxOrder[i] = NULL;
 		}
 	//Snoopy: 39->59
-	for (i = 0; i < 59; i++)
+	for (i = 0; i < MAXDIALOGBOX - 2; i++)
 		if (m_cDialogBoxOrder[i] == NULL) {
 			m_cDialogBoxOrder[i] = iBoxID;
 			return;
@@ -20985,12 +21049,12 @@ void CGame::DisableDialogBox(int iBoxID)
 
 	m_bIsDialogEnabled[iBoxID] = FALSE;
 	// Snoopy: 39->59
-	for (i = 0; i < 59; i++)
+	for (i = 0; i < MAXDIALOGBOX - 2; i++)
 		if (m_cDialogBoxOrder[i] == iBoxID)
 			m_cDialogBoxOrder[i] = NULL;
 
 	// Snoopy: 39->59
-	for (i = 1; i < 59; i++)
+	for (i = 1; i < MAXDIALOGBOX - 2; i++)
 		if ((m_cDialogBoxOrder[i - 1] == NULL) && (m_cDialogBoxOrder[i] != NULL))
 		{
 			m_cDialogBoxOrder[i - 1] = m_cDialogBoxOrder[i];
@@ -21002,7 +21066,7 @@ int CGame::iGetTopDialogBoxIndex()
 {
 	int i;
 	//Snoopy: 38->58
-	for (i = 58; i >= 0; i--)
+	for (i = MAXDIALOGBOX - 3; i >= 0; i--)
 		if (m_cDialogBoxOrder[i] != NULL)
 			return m_cDialogBoxOrder[i];
 

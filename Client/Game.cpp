@@ -92,7 +92,8 @@ CGame::CGame()
 
 	for (i = 0; i < 4; i++) m_pCharList[i] = NULL;
 	// Snoopy: Fixed here
-	for (i = 0; i < 61; i++) m_cDialogBoxOrder[i] = NULL;
+	//Magn0S:: Increased Max Dialogs
+	for (i = 0; i < MAXDIALOGBOX; i++) m_cDialogBoxOrder[i] = NULL;
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) m_pMagicCfgList[i] = NULL;
 
@@ -662,9 +663,9 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 
 	m_sPlayerType = 2;
 	m_cPlayerTurn = 0;
-// Snoopy: fixed here
-	m_cDialogBoxOrder[60] = 29;
-	m_cDialogBoxOrder[59] = 30; // 29¹ø GaugePannel
+	// Snoopy: fixed here / Magn0S:: Increased max dialog boxes.
+	m_cDialogBoxOrder[MAXDIALOGBOX - 1] = 29;
+	m_cDialogBoxOrder[MAXDIALOGBOX - 2] = 30;
 
 	m_cMenuDir    = 4;
 	m_cMenuDirCnt = 0;
@@ -4072,11 +4073,11 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
  char         cDlgID;
 	m_DInput.m_sZ = 0;
 	// Snoopy: 41->61
-	for (i = 0; i < 61; i++)
+	for (i = 0; i < MAXDIALOGBOX; i++)
 	// Snoopy: 40->60
-	if (m_cDialogBoxOrder[60 - i] != NULL) {
+	if (m_cDialogBoxOrder[MAXDIALOGBOX-1 - i] != NULL) {
 	// Snoopy: 40->60
-		cDlgID = m_cDialogBoxOrder[60 - i];
+		cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX-1 - i];
 		if ((m_stDialogBoxInfo[cDlgID].sX < msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX) &&
 			(m_stDialogBoxInfo[cDlgID].sY < msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY) )
 		{	switch (cDlgID) {
@@ -4249,11 +4250,11 @@ BOOL CGame::_bCheckDlgBoxDoubleClick(short msX, short msY)
 	int i;
 	char cDlgID;
 	//Snoopy: 41->61
-	for (i = 0; i < 61; i++)
+	for (i = 0; i < MAXDIALOGBOX; i++)
 	//Snoopy: 40->60
-	if (m_cDialogBoxOrder[60 - i] != NULL) {
+	if (m_cDialogBoxOrder[MAXDIALOGBOX-1 - i] != NULL) {
 	//Snoopy: 40->60
-		cDlgID = m_cDialogBoxOrder[60 - i];
+		cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX-1 - i];
 		if ((m_stDialogBoxInfo[cDlgID].sX < msX)	&& ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX) &&
 			(m_stDialogBoxInfo[cDlgID].sY < msY)	&& ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY) ) {
 			switch (cDlgID) {
@@ -4273,8 +4274,8 @@ BOOL CGame::_bCheckDlgBoxDoubleClick(short msX, short msY)
 	return FALSE;
 }
 
-//Magn0S:: Update F5
-void CGame::DrawDialogBox_Character(short msX, short msY)
+//Magn0S:: Update F5 (26/07/2020 - Canceled due to FPS Problem)
+/*void CGame::DrawDialogBox_Character(short msX, short msY)
 {
 	short sX, sY, sSprH, sFrame;
 	int i, iR, iG, iB, iEntry = -1, iSkirtDraw = 0;
@@ -5208,7 +5209,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 		if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 11, FALSE, m_bDialogTrans);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 10, FALSE, m_bDialogTrans);*/
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 10, FALSE, m_bDialogTrans); * /
 
 		if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 320) && (msY <= sY + 340))
 		{	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 5, sY + 320, 0);
@@ -5350,6 +5351,937 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 		break;
 	}
+}*/
+
+void CGame::DrawDialogBox_Character(short msX, short msY)
+{
+	short sX, sY, sSprH, sFrame;
+	int i, iR, iG, iB, iSkirtDraw = 0;
+	char cTxt2[120], cEquipPoiStatus[DEF_MAXITEMEQUIPPOS];
+	char  cItemColor, cCollison;
+
+	sX = m_stDialogBoxInfo[1].sX;
+	sY = m_stDialogBoxInfo[1].sY;
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 0, FALSE, m_bDialogTrans);
+
+	ZeroMemory(G_cTxt, sizeof(G_cTxt));
+	strcpy(G_cTxt, m_cPlayerName);
+	strcat(G_cTxt, " : ");
+
+	if (m_iPKCount > 0) {
+		ZeroMemory(cTxt2, sizeof(cTxt2));
+		wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER1, m_iPKCount);
+		strcat(G_cTxt, cTxt2);
+	}
+
+	ZeroMemory(cTxt2, sizeof(cTxt2));
+	wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER2, m_iContribution);
+	strcat(G_cTxt, cTxt2);
+	PutAlignedString(sX + 24, sX + 252, sY + 52, G_cTxt, 45, 20, 20);
+	ZeroMemory(G_cTxt, sizeof(G_cTxt));
+
+	if (m_bCitizen == FALSE)
+	{
+		strcpy(G_cTxt, DRAW_DIALOGBOX_CHARACTER7); // "Traveller"
+	}
+	else
+	{
+		if (m_bHunter)
+		{
+			if (m_bAresden)
+				strcat(G_cTxt, DEF_MSG_ARECIVIL); //
+			else strcat(G_cTxt, DEF_MSG_ELVCIVIL); // "Elvine Civilian"
+		}
+		else
+		{
+			if (m_bAresden)
+				strcat(G_cTxt, DEF_MSG_ARESOLDIER); //
+			else strcat(G_cTxt, DEF_MSG_ELVSOLDIER); //
+		}
+		if (m_iGuildRank >= 0)
+		{
+			strcat(G_cTxt, "(");
+			strcat(G_cTxt, m_cGuildName);
+			if (m_iGuildRank == 0) strcat(G_cTxt, DEF_MSG_GUILDMASTER1);
+			else strcat(G_cTxt, DEF_MSG_GUILDSMAN1); // " Guildsman)"
+		}
+	}
+
+	PutAlignedString(sX, sX + 275, sY + 69, G_cTxt, 45, 25, 25);
+
+	int iTemp;
+	// Level
+	// centu - agregado majestic level
+
+	wsprintf(G_cTxt, "%d", m_iLevel);
+	PutAlignedString(sX + 180, sX + 250, sY + 107 - 6, G_cTxt, 45, 25, 25);
+
+	// Exp
+	// centu - mostrar valor con coma
+
+	DisplayCommaNumber_G_cTxt(m_iExp);
+	PutAlignedString(sX + 180, sX + 250, sY + 120 - 6, G_cTxt, 45, 25, 25);
+
+	// Next.Exp
+	// centu - agregado majestic level
+	DisplayCommaNumber_G_cTxt(iGetLevelExp(m_iLevel + 1));
+	PutAlignedString(sX + 180, sX + 250, sY + 134 - 7, G_cTxt, 45, 25, 25);
+
+	// Hp
+	iTemp = m_iHP;
+	wsprintf(G_cTxt, "%d/%d", iTemp, m_iVit * 3 + (m_iLevel) * 2 + (m_iStr + m_iAngelicStr) / 2);
+	PutAlignedString(sX + 180, sX + 250, sY + 148 - 9, G_cTxt, 45, 25, 25);
+
+	// Mp
+	iTemp = m_iMP;
+	wsprintf(G_cTxt, "%d/%d", iTemp, ((m_iMag + m_iAngelicMag) * 2) + (m_iLevel) * 2 + (m_iInt + m_iAngelicInt) / 2);
+	PutAlignedString(sX + 180, sX + 250, sY + 161 - 9, G_cTxt, 45, 25, 25);
+
+	// Sp
+	iTemp = m_iSP;
+	wsprintf(G_cTxt, "%d/%d", iTemp, (m_iLevel) * 2 + (m_iStr + m_iAngelicStr) * 2);
+	PutAlignedString(sX + 180, sX + 250, sY + 175 - 11, G_cTxt, 45, 25, 25);
+
+	// Max.Load
+	wsprintf(G_cTxt, "%d/%d", (_iCalcTotalWeight() / 100), (((m_iStr + m_iAngelicStr) * 5) + (m_iLevel) * 5));
+	PutAlignedString(sX + 180, sX + 250, sY + 189 - 12, G_cTxt, 45, 25, 25);
+
+	// Enemy Kills
+	// centu - muestra el maximo total de eks
+	wsprintf(G_cTxt, "%d/%d", m_iEnemyKillCount, m_iMaxEK);
+	PutAlignedString(sX + 198, sX + 250, sY + 203 - 13, G_cTxt, 45, 25, 25);
+
+	// Majestic Points
+	wsprintf(G_cTxt, "%d", m_iGizonItemUpgradeLeft);
+	PutAlignedString(sX + 198, sX + 250, sY + 230 - 14, G_cTxt, 45, 25, 25);
+
+	// Deaths
+	wsprintf(G_cTxt, "%d", m_iPlayerDeaths);
+	PutAlignedString(sX + 198, sX + 250, sY + 257 - 15, G_cTxt, 45, 25, 25);
+
+	// REP
+	wsprintf(G_cTxt, "%d", m_iRating);
+	PutAlignedString(sX + 198, sX + 250, sY + 244 - 15, G_cTxt, 45, 25, 25);
+
+	// DeathMach Points
+	wsprintf(G_cTxt, "%d", m_iPlayerDGPoints);
+	PutAlignedString(sX + 198, sX + 250, sY + 216 - 13, G_cTxt, 45, 25, 25);
+
+	//MORLA 2.2 - Determina el rango del pj
+	/*if ((m_iMaxEK >= 100) && (m_iRating >= 20))
+	{
+		if (((m_iMaxEK >= 100) && (m_iRating < 30)) || ((m_iMaxEK < 200) && (m_iRating >= 20)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK1);
+		}
+		else if (((m_iMaxEK >= 200) && (m_iRating < 40)) || ((m_iMaxEK < 300) && (m_iRating >= 30)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK2);
+		}
+		else if (((m_iMaxEK >= 300) && (m_iRating < 50)) || ((m_iMaxEK < 400) && (m_iRating >= 40)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK3);
+		}
+		else if (((m_iMaxEK >= 400) && (m_iRating < 60)) || ((m_iMaxEK < 500) && (m_iRating >= 50)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK4);
+		}
+		else if (((m_iMaxEK >= 500) && (m_iRating < 70)) || ((m_iMaxEK < 600) && (m_iRating >= 60)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK5);
+		}
+		else if (((m_iMaxEK >= 600) && (m_iRating < 80)) || ((m_iMaxEK < 700) && (m_iRating >= 70)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK6);
+		}
+		else if (((m_iMaxEK >= 700) && (m_iRating < 90)) || ((m_iMaxEK < 800) && (m_iRating >= 80)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK7);
+		}
+		else if (((m_iMaxEK >= 800) && (m_iRating < 100)) || ((m_iMaxEK < 900) && (m_iRating >= 90)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK8);
+		}
+		else if (((m_iMaxEK >= 900) && (m_iRating < 200)) || ((m_iMaxEK < 1000) && (m_iRating >= 100)))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK9);
+		}
+		else if ((m_iMaxEK >= 1000) && (m_iRating >= 200))
+		{
+			strcpy(G_cTxt, DEF_MSG_RANGOEK10);
+		}
+		PutAlignedString(sX + 121, sX + 250, sY + 216 + 39, G_cTxt, 255, 255, 0);
+	}
+	else
+	{
+		strcpy(G_cTxt, "Common Player");
+		PutAlignedString(sX + 121, sX + 250, sY + 216 + 39, G_cTxt, 45, 25, 25);
+	}*/
+
+	// centu : coins / Adjustes by Magn0S, saving again centuu
+	wsprintf(G_cTxt, "Coins: %d", m_iCoinPoints);
+	PutAlignedString(sX + 121, sX + 250, sY + 216 + 39, G_cTxt, 255, 255, 0);
+
+	// Str
+	if (m_iAngelicStr == 0)
+	{
+		wsprintf(G_cTxt, "%d", m_iStr);
+		PutAlignedString(sX + 48 + 2, sX + 82, sY + 285 - 2, G_cTxt, 45, 25, 25);
+	}
+	else
+	{
+		wsprintf(G_cTxt, "%d", m_iStr + m_iAngelicStr);
+		PutAlignedString(sX + 48 + 2, sX + 82, sY + 285 - 2, G_cTxt, 0, 0, 192);
+	}
+
+	// Vit
+	wsprintf(G_cTxt, "%d", m_iVit);
+	PutAlignedString(sX + 218, sX + 251, sY + 285 - 2, G_cTxt, 45, 25, 25);
+
+	// Dex
+	if (m_iAngelicDex == 0)
+	{
+		wsprintf(G_cTxt, "%d", m_iDex);
+		PutAlignedString(sX + 48 + 2, sX + 82, sY + 302 - 2, G_cTxt, 45, 25, 25);
+	}
+	else
+	{
+		wsprintf(G_cTxt, "%d", m_iDex + m_iAngelicDex);
+		PutAlignedString(sX + 48 + 2, sX + 82, sY + 302 - 2, G_cTxt, 0, 0, 192);
+	}
+
+	// Int
+	if (m_iAngelicInt == 0)
+	{
+		wsprintf(G_cTxt, "%d", m_iInt);
+		PutAlignedString(sX + 135, sX + 167, sY + 285 - 2, G_cTxt, 45, 25, 25);
+	}
+	else
+	{
+		wsprintf(G_cTxt, "%d", m_iInt + m_iAngelicInt);
+		PutAlignedString(sX + 135, sX + 167, sY + 285 - 2, G_cTxt, 0, 0, 192);
+	}
+
+	// Mag
+	if (m_iAngelicMag == 0)
+	{
+		wsprintf(G_cTxt, "%d", m_iMag);
+		PutAlignedString(sX + 135, sX + 167, sY + 302 - 2, G_cTxt, 45, 25, 25);
+	}
+	else
+	{
+		wsprintf(G_cTxt, "%d", m_iMag + m_iAngelicMag);
+		PutAlignedString(sX + 135, sX + 167, sY + 302 - 2, G_cTxt, 0, 0, 192);
+	}
+
+	// Chr
+	wsprintf(G_cTxt, "%d", m_iCharisma);
+	PutAlignedString(sX + 218, sX + 251, sY + 302 - 2, G_cTxt, 45, 25, 25);
+
+	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++)
+		cEquipPoiStatus[i] = -1;
+
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		if ((m_pItemList[i] != NULL) && (m_bIsItemEquipped[i] == TRUE))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+	}
+	if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
+	{
+		cCollison = -1;
+		m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + 0]->PutSpriteFast(sX + 171, sY + 290, m_sPlayerType - 1, m_dwCurTime);
+		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] == -1)
+		{
+			_GetHairColorRGB(((m_sPlayerAppr1 & 0x00F0) >> 4), &iR, &iG, &iB);
+			m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + 18]->PutSpriteRGB(sX + 171, sY + 290, (m_sPlayerAppr1 & 0x0F00) >> 8, iR, iG, iB, m_dwCurTime);
+		}
+
+		m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + 19]->PutSpriteFast(sX + 171, sY + 290, (m_sPlayerAppr1 & 0x000F), m_dwCurTime);
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BACK]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 41, sY + 137, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 41, sY + 137, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 41, sY + 137, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 41, sY + 137, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 41, sY + 137, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BACK;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_PANTS;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_ARMS;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BOOTS;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BODY]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BODY;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_FULLBODY;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 90, sY + 170, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 90, sY + 170, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 90, sY + 170, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 90, sY + 170, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 170, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_LHAND;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 57, sY + 186, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 57, sY + 186, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 57, sY + 186, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 57, sY + 186, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_RHAND;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 57, sY + 186, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 57, sY + 186, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 57, sY + 186, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 57, sY + 186, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_TWOHAND;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_NECK]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 35, sY + 120, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 35, sY + 120, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 35, sY + 120, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 35, sY + 120, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_NECK;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 32, sY + 193, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 32, sY + 193, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 32, sY + 193, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 32, sY + 193, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_RFINGER;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 90, sY + 175, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 90, sY + 175, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 90, sY + 175, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 90, sY + 175, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_LFINGER;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 72, sY + 135, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteRGB(sX + 72, sY + 135, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite2(sX + 72, sY + 135, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSpriteRGB(sX + 72, sY + 135, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 72, sY + 135, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_HEAD;
+		}
+		if (cCollison != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[cCollison]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[cCollison]]->m_sSpriteFrame;
+			if (cCollison == DEF_EQUIPPOS_HEAD)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 72, sY + 135, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_RFINGER)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 32, sY + 193, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_LFINGER)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 90, sY + 175, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_NECK)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 35, sY + 120, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_TWOHAND)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 57, sY + 186, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_RHAND)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 57, sY + 186, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_LHAND)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 90, sY + 170, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_BODY)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_FULLBODY)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_BOOTS)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_ARMS)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_PANTS)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_BACK)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutTransSprite(sX + 41, sY + 137, sFrame, m_dwCurTime);
+		}
+	}
+	else if ((m_sPlayerType >= 4) && (m_sPlayerType <= 6))
+	{
+		cCollison = -1;
+		m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + 40]->PutSpriteFast(sX + 171, sY + 290, m_sPlayerType - 4, m_dwCurTime);
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] == -1)
+		{
+			_GetHairColorRGB(((m_sPlayerAppr1 & 0x00F0) >> 4), &iR, &iG, &iB);
+			m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + 18 + 40]->PutSpriteRGB(sX + 171, sY + 290, (m_sPlayerAppr1 & 0x0F00) >> 8, iR, iG, iB, m_dwCurTime);
+		}
+
+		m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + 19 + 40]->PutSpriteFast(sX + 171, sY + 290, (m_sPlayerAppr1 & 0x000F), m_dwCurTime);
+
+		if ((cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1))
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+			if ((sSprH == 12) && (sFrame == 0)) iSkirtDraw = 1;
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BACK]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 45, sY + 143, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 45, sY + 143, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 45, sY + 143, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 45, sY + 143, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 45, sY + 143, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BACK;
+		}
+
+		if ((cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) && (iSkirtDraw == 1))
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BOOTS;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_PANTS;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_ARMS;
+		}
+
+		if ((cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) && (iSkirtDraw == 0))
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BOOTS;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BODY]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_BODY;
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 171, sY + 290, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 171, sY + 290, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_FULLBODY;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 84, sY + 175, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 84, sY + 175, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 84, sY + 175, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 84, sY + 175, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 84, sY + 175, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_LHAND;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_cItemColor;
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 60, sY + 191, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 60, sY + 191, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 60, sY + 191, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 60, sY + 191, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_RHAND;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_cItemColor;
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 60, sY + 191, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 60, sY + 191, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 60, sY + 191, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 60, sY + 191, sFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_TWOHAND;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_NECK]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 35, sY + 120, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 35, sY + 120, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 35, sY + 120, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 35, sY + 120, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_NECK;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 32, sY + 193, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 32, sY + 193, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 32, sY + 193, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 32, sY + 193, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_RFINGER;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 90, sY + 175, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 90, sY + 175, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 90, sY + 175, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 90, sY + 175, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_LFINGER;
+		}
+
+		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+			cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_cItemColor;
+
+			if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]] == FALSE)
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 72, sY + 139, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteRGB(sX + 72, sY + 139, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			else
+			{
+				if (cItemColor == 0)
+					m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite2(sX + 72, sY + 139, sFrame, m_dwCurTime);
+				else m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSpriteRGB(sX + 72, sY + 139, sFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], m_dwCurTime);
+			}
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 72, sY + 139, sFrame, msX, msY))
+				cCollison = DEF_EQUIPPOS_HEAD;
+		}
+		if (cCollison != -1)
+		{
+			sSprH = m_pItemList[cEquipPoiStatus[cCollison]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[cCollison]]->m_sSpriteFrame;
+			if (cCollison == DEF_EQUIPPOS_HEAD)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 72, sY + 139, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_RFINGER)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 32, sY + 193, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_LFINGER)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 90, sY + 175, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_NECK)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 35, sY + 120, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_TWOHAND)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 60, sY + 191, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_RHAND)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 60, sY + 191, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_LHAND)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 84, sY + 175, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_BODY)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_FULLBODY)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_BOOTS)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_ARMS)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_PANTS)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 171, sY + 290, sFrame, m_dwCurTime);
+			else if (cCollison == DEF_EQUIPPOS_BACK)
+				m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutTransSprite(sX + 45, sY + 143, sFrame, m_dwCurTime);
+		}
+	}
+
+	// v2.05
+	if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 15, sY + 340, 5, FALSE, m_bDialogTrans);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 15, sY + 340, 4, FALSE, m_bDialogTrans);
+
+	if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 98, sY + 340, 45, FALSE, m_bDialogTrans);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 98, sY + 340, 44, FALSE, m_bDialogTrans);
+
+	if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 11, FALSE, m_bDialogTrans);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 10, FALSE, m_bDialogTrans);
 }
 
 BOOL CGame::_bCheckDraggingItemRelease(short msX, short msY)
@@ -5365,12 +6297,12 @@ BOOL CGame::_bCheckDraggingItemRelease(short msX, short msY)
 #endif
 
 	
-		//Snoopy: 41->61
-		for (i = 0; i < 61; i++)
+	//Snoopy: 41->61
+	for (i = 0; i < MAXDIALOGBOX; i++)
+		//Snoopy: 40->60
+		if (m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i] != NULL) {
 			//Snoopy: 40->60
-			if (m_cDialogBoxOrder[60 - i] != NULL) {
-				//Snoopy: 40->60
-				cDlgID = m_cDialogBoxOrder[60 - i];
+			cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i];
 				if ((m_stDialogBoxInfo[cDlgID].sX < msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX)
 					&& (m_stDialogBoxInfo[cDlgID].sY < msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY))
 				{
@@ -19974,7 +20906,7 @@ void CGame::DlgBoxClick_Inventory(short msX, short msY)
 }
 
 //Magn0S:: Update F5
-void CGame::DlgBoxClick_Character(short msX, short msY)
+/*void CGame::DlgBoxClick_Character(short msX, short msY)
 {
 	short sX, sY;
 	int i;
@@ -20060,12 +20992,44 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 			EnableDialogBox(12, NULL, NULL, NULL);
 			DisableDialogBox(1);
 			PlaySound('E', 14, 5);
-		}*/
+		}*
 		break;
 
 	case 1:
 
 		break;
+	}
+}*/
+
+//Magn0S:: Voltando a usar o antigo, devido ao cancelamento de uso do novo
+void CGame::DlgBoxClick_Character(short msX, short msY)
+{
+	short sX, sY;
+	int i;
+
+	sX = m_stDialogBoxInfo[1].sX;
+	sY = m_stDialogBoxInfo[1].sY;
+
+
+	if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+		//Magn0S:: Mult Quest - Click selecioon on F5
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			if (m_stQuest[i].sQuestType != NULL)
+				EnableDialogBox(28, 0, NULL, NULL);
+			else EnableDialogBox(28, 3, NULL, NULL);
+		}
+		DisableDialogBox(1);
+		PlaySound('E', 14, 5);
+	}
+	else if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+		EnableDialogBox(32, NULL, NULL, NULL);
+		DisableDialogBox(1);
+		PlaySound('E', 14, 5);
+	}
+	else if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+		EnableDialogBox(12, NULL, NULL, NULL);
+		DisableDialogBox(1);
+		PlaySound('E', 14, 5);
 	}
 }
 
@@ -26026,6 +26990,13 @@ void CGame::NotifyMsgHandler(char * pData)
 		}
         break;
 
+	case DEF_NOTIFY_MONSTERCOUNTAPOC:
+			cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+			sp = (short*)cp;
+			m_iTotalAliveObject = *sp;
+			cp += 2;
+			break;
+
 	case DEF_NOTIFY_SLATE_BERSERK:		// reversed by Snoopy: 0x0BED
 		AddEventList( DEF_MSG_NOTIFY_SLATE_BERSERK, 10 );//"Berserk magic casted!"
 		m_bUsingSlate = TRUE;
@@ -26383,6 +27354,11 @@ void CGame::NotifyMsgHandler(char * pData)
 		/*ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		wsprintf(G_cTxt, "1 %d - 2 %d - r %d", iFirstDropProb, iSecDropPro, iStatedDropProb);
 		AddEventList(G_cTxt, 10);*/
+		break;
+
+	//Magn0S:: Put to start Ghost Music on event
+	case DEF_NOTIFY_ABBYAPPEAR:
+		StartBGMGhost();
 		break;
 
 	// Slates - Diuuude
@@ -28542,8 +29518,8 @@ void CGame::EraseItem(char cItemID)
 	m_bIsItemDisabled[cItemID] = FALSE;
 }
 
-//Magn0S:: Update F5
-void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
+//Magn0S:: Update F5 - 26/07/2020 - Cancelado devido a queda de fps
+/*void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 {
 	char cEquipPoiStatus[DEF_MAXITEMEQUIPPOS], cItemID = -1;
 	short sX, sY, sSprH, sFrame;
@@ -28785,8 +29761,238 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 		}
 		break;
 	}
-}
+}*/
 
+void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
+{
+	char cEquipPoiStatus[DEF_MAXITEMEQUIPPOS], cItemID = -1;
+	short sX, sY, sSprH, sFrame;
+	int i;
+	if (m_bIsDialogEnabled[17] == TRUE) return;
+	sX = m_stDialogBoxInfo[1].sX;
+	sY = m_stDialogBoxInfo[1].sY;
+
+	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++)
+		cEquipPoiStatus[i] = -1;
+
+	for (i = 0; i < DEF_MAXITEMS; i++) {
+		if ((m_pItemList[i] != NULL) && (m_bIsItemEquipped[i] == TRUE))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+	}
+	if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
+	{
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 41, sY + 137, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BACK];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_PANTS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_ARMS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BODY];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 170, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LHAND];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RHAND];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_NECK];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RFINGER];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 72, sY + 135, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_HEAD];
+		}
+	}
+	else if ((m_sPlayerType >= 4) && (m_sPlayerType <= 6)) {
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 45, sY + 143, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BACK];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_PANTS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_ARMS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BODY];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 84, sY + 175, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LHAND];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RHAND];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_NECK];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RFINGER];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
+		}
+		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
+			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 72, sY + 139, sFrame, msX, msY))
+				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_HEAD];
+		}
+	}
+
+	if (cItemID == -1 || m_pItemList[cItemID] == NULL) return;
+	if ((m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_CONSUME) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW) || (m_pItemList[cItemID]->m_dwCount > 1)) return;
+	if ((m_bIsDialogEnabled[11] == TRUE) && (m_bIsDialogEnabled[23] == FALSE) && (m_stDialogBoxInfo[39].sV3 == 24))
+		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, NULL, cItemID, m_stDialogBoxInfo[39].sV3, NULL, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
+	else {
+		if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == TRUE)
+		{
+			char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+			GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);//"
+			AddEventList(G_cTxt, 10);
+			if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 53, 0);
+			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(DEX)", 19) == 0) PlaySound('E', 53, 0);
+			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
+			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);
+			else PlaySound('E', 29, 0);
+			// Remove Angelic Stats
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos >= 11)
+				&& (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == 1))
+			{
+				char cItemID = m_stMCursor.sSelectedObjectID;
+				if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
+				{
+					m_iAngelicStr = 0;
+				}
+				else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
+				{
+					m_iAngelicDex = 0;
+				}
+				else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
+				{
+					m_iAngelicInt = 0;
+				}
+				else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
+				{
+					m_iAngelicMag = 0;
+				}
+			}
+			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, NULL, m_stMCursor.sSelectedObjectID, NULL, NULL, NULL);
+			m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] = FALSE;
+			m_sItemEquipmentStatus[m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos] = -1;
+			m_stMCursor.cSelectedObjectType = NULL;
+			m_stMCursor.sSelectedObjectID = NULL;
+		}
+	}
+}
 
 void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 {short si = m_stMCursor.sCursorFrame;
@@ -32452,7 +33658,7 @@ void CGame::UpdateScreen_OnGame()
 			m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame, dwTime);
 
 		char cStr1[128], cStr2[128], cStr3[128], cStr4[128], cStr5[128], cStr6[128];
-		int iLoc;
+		int iLoc, iEntry2 = 0;
 		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 		//Magn0S:: Reformulate Shadow box on item viewer
 		int iEntry = 0;
@@ -32504,13 +33710,14 @@ void CGame::UpdateScreen_OnGame()
 
 		if (iEntry == 1)
 		{
-			iEntry = 0;
+			//iEntry = 0;
 			for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++) {
 				if (m_pItemList[iTmp] != NULL) {
-					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry++;
+					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry2++;
 			}	}
-			if (iEntry > 1) {
-				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
+			if (iEntry2 > 1) {
+				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iEntry2);
+				iEntry++;
 		}	}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
@@ -32549,7 +33756,6 @@ void CGame::UpdateScreen_OnGame()
 				PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), FALSE, 1);
 			else
 				PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), FALSE, 1);
-
 
 			iLoc += 15;
 		}
@@ -32630,6 +33836,22 @@ void CGame::UpdateScreen_OnGame()
 		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 45, 57, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
 		PutString(10 + 10, 180 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+	}
+
+	//Magn0S:: Apocalypse info help
+	if ((m_bApocalypse) && (iUpdateRet != 0) && ((memcmp(m_cCurLocation, "procella", 8) == 0) || (memcmp(m_cCurLocation, "abaddon", 7) == 0)))
+	{
+		m_DDraw.DrawShadowBox(650, 142, 780, 190, 0, true);
+		PutString2(655, 150, "Apocalypse Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
+
+		if (m_iTotalAliveObject > -1) {
+			PutString2(745, 150, "Closed", 255, 0, 0); //255,200,0); "ON", 0,255,0);
+			wsprintf(G_cTxt, "Mobs Left: %u", m_iTotalAliveObject);
+			PutString2(680, 170, G_cTxt, 255, 200, 0);
+		}
+		else {
+			PutString2(745, 150, "Open", 0, 255, 0);
+		}
 	}
 
 	//Snoopy adding Heldenian turret count:
@@ -33060,14 +34282,27 @@ void CGame::ResponseQuestList(char* pData)
 void CGame::DlgBoxClick_QuestList(short msX, short msY)
 {
 	short sX, sY, szX;
-	int iEntry = 0;
+	int i, iEntry = 0;
 
 	sX = m_stDialogBoxInfo[59].sX;
 	sY = m_stDialogBoxInfo[59].sY;
 	szX = m_stDialogBoxInfo[59].sSizeX;
 	szX = m_stDialogBoxInfo[59].sSizeX;
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
+
+	for (i = 0; i < 18; i++)
+	{
+		if (((i + m_stDialogBoxInfo[59].sView) < 50) && (m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID != NULL))
+		{
+			if ((msX >= sX + 20) && (msX <= sX + 400) && (msY >= sY + i * 15 + 50) && (msY <= sY + i * 15 + 62))
+			{
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_TALKTONPC, NULL, 4, m_stQuestList[i + m_stDialogBoxInfo[59].sView].iQuestID, NULL, NULL);
+				DisableDialogBox(55);
+			}
+		}
+	}
+
+/*	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
 
 	for (int i = 0; i <= 49; i++)
 	{
@@ -33080,15 +34315,20 @@ void CGame::DlgBoxClick_QuestList(short msX, short msY)
 			}
 			iEntry++;
 		}
-	}
+	}*/
 
 }
 
-void CGame::DrawDialogBox_QuestList(short msX, short msY)
+void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY, szX;
 	char dane1[120], cTxt[50], cMapName[25];
 	short toX, toY, limitX, limitY;
+
+	double dTmp1, dTmp2, dTmp3;
+	int  iTotalLines, iPointerLoc;
+	double d1, d2, d3;
+	int j, i;
 
 	sX = m_stDialogBoxInfo[59].sX;
 	sY = m_stDialogBoxInfo[59].sY;
@@ -33097,7 +34337,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY)
 
 	toX = sX;
 	toY = sY;
-	limitX = sX + 370;
+	limitX = sX + 420;
 	limitY = sY + 339;
 	int iEntry = 0;
 	int iEntry2 = 0;
@@ -33108,20 +34348,168 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY)
 
 	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
 	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
-	PutString_SprFont2(sX + 150, sY + 5, "Quest List", 240, 240, 240);
+	PutString_SprFont2(sX + 180, sY + 5, "Quest List", 240, 240, 240);
 
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
-	//PutString_SprFont(sX + 90, sY + 35, "Quest List", 1, 1, 8);
+	switch (m_stDialogBoxInfo[59].cMode) {
+	case 0:
+		PutString(sX + 35, sY + 30, "Monster", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 110, sY + 30, "Kill", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 150, sY + 30, "Contrib.", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 250, sY + 30, "Item Name", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 360, sY + 30, "Map", RGB(255, 255, 255), FALSE, 1);
 
-	PutString(sX + 25, sY + 30, "Monster", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 82, sY + 30, "Amount", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 135, sY + 30, "Contrib.", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 195, sY + 30, "Item Name", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 290, sY + 30, "Map", RGB(255, 255, 255), FALSE, 1);
+		iTotalLines = 0;
+		for (i = 0; i < 50; i++)
+			if (m_stQuestList[i].iNpcID != NULL) iTotalLines++;
 
-	for (int i = 0; i <= 49; i++)
+		if (iTotalLines > 18) {
+			d1 = (double)m_stDialogBoxInfo[59].sView;
+			d2 = (double)(iTotalLines - 18);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)(d3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 410, sY + iPointerLoc + 35, 7);
+		}
+		else iPointerLoc = 0;
+
+		if (cLB != 0 && iTotalLines > 18)
+		{
+			if ((iGetTopDialogBoxIndex() == 59))
+			{
+				if ((msX >= sX + 405) && (msX <= sX + 420) && (msY >= sY + 20) && (msY <= sY + 330))
+				{
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 18);
+					d3 = (d1 * d2) / 274.0f;
+					m_stDialogBoxInfo[59].sView = (int)(d3 + 0.5f);
+				}
+			}
+		}
+		else m_stDialogBoxInfo[59].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 59 && msZ != 0)
+		{
+			m_stDialogBoxInfo[59].sView = m_stDialogBoxInfo[59].sView - msZ / 60;
+			m_DInput.m_sZ = 0;
+		}
+		if (iTotalLines > 18 && m_stDialogBoxInfo[59].sView > iTotalLines - 18) m_stDialogBoxInfo[59].sView = iTotalLines - 18;
+		if (m_stDialogBoxInfo[59].sView < 0 || iTotalLines < 18) m_stDialogBoxInfo[59].sView = 0;
+
+		for (i = 0; i < 18; i++)
+			if (((i + m_stDialogBoxInfo[59].sView) < 50) && (m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID != NULL))
+			{
+				if ((msX >= sX + 20) && (msX <= sX + 380) && (msY >= sY + i * 15 + 50) && (msY <= sY + i * 15 + 62))
+			{
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cTxt, sizeof(cTxt));
+				GetNpcName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID, cTxt);
+				wsprintf(dane1, "%s", cTxt);
+				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iMaxCount);
+				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iContribution);
+				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%s", m_stQuestList[i + m_stDialogBoxInfo[59].sView].cPrizeName);
+				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cMapName, sizeof(cMapName));
+				GetOfficialMapName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].cMapName, cMapName);
+				wsprintf(dane1, "%s", cMapName);
+				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 255);
+			}
+			else {
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cTxt, sizeof(cTxt));
+				GetNpcName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID, cTxt);
+				wsprintf(dane1, "%s", cTxt);
+				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iMaxCount);
+				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iContribution);
+				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%s", m_stQuestList[i + m_stDialogBoxInfo[59].sView].cPrizeName);
+				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cMapName, sizeof(cMapName));
+				GetOfficialMapName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].cMapName, cMapName);
+				wsprintf(dane1, "%s", cMapName);
+				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 100);
+			}
+			}
+
+		break;
+	}
+
+	/*for (i = 0; i < 18; i++)
+		if (((i + m_stDialogBoxInfo[59].sView) < 50) && (m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID != NULL))
+		{
+			if ((msX >= sX + 20) && (msX <= sX + 380) && (msY >= sY + i * 15 + 50) && (msY <= sY + i * 15 + 62))
+			{
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cTxt, sizeof(cTxt));
+				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
+				wsprintf(dane1, "%s", cTxt);
+				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
+				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
+				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
+				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 255);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cMapName, sizeof(cMapName));
+				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
+				wsprintf(dane1, "%s", cMapName);
+				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 255);
+			}
+			else {
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cTxt, sizeof(cTxt));
+				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
+				wsprintf(dane1, "%s", cTxt);
+				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
+				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
+				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
+				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 100);
+
+				ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(cMapName, sizeof(cMapName));
+				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
+				wsprintf(dane1, "%s", cMapName);
+				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 100);
+			}
+		}
+
+/*	for (int i = 0; i <= 18; i++)
 	{
-		//if (strlen(m_stQuestList[i].cTargetName) > 0)
 		if (m_stQuestList[i].iNpcID > 0)
 		{
 			if ((msX > sX + 20) && (msX < sX + 310) && (msY > sY + 50 + (iEntry * 15)) && (msY < sY + 50 + (iEntry * 15) + 12))
@@ -33130,27 +34518,25 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
 				wsprintf(dane1, "%s", cTxt);
-				PutString(sX + 20, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 255));
+				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
 
 				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
-				PutString(sX + 100, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 255));
+				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
 
 				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
-				PutString(sX + 145, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 255));
+				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
 
-			//	if (strlen(m_stQuestList[i].cPrizeName) > 0) {
 				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
-				PutString(sX + 180, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 255));
-			//	}
+				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
 
 				ZeroMemory(dane1, sizeof(dane1));
 				ZeroMemory(cMapName, sizeof(cMapName));
 				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
 				wsprintf(dane1, "%s", cMapName);
-				PutString(sX + 280, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 255));
+				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
 			}
 			else
 			{
@@ -33158,29 +34544,27 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
 				wsprintf(dane1, "%s", cTxt);
-				PutString(sX + 20, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 100));
+				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
 
 				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
-				PutString(sX + 100, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 100));
+				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
 
 				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
-				PutString(sX + 145, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 100));
+				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
 
-				//if (strlen(m_stQuestList[i].cPrizeName) > 0) {
 				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
-				PutString(sX + 180, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 100));
-				//}
+				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
 
 				ZeroMemory(dane1, sizeof(dane1));
 				ZeroMemory(cMapName, sizeof(cMapName));
 				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
 				wsprintf(dane1, "%s", cMapName);
-				PutString(sX + 280, sY + 50 + (iEntry * 15), dane1, RGB(255, 255, 100));
+				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
 			}
-			iEntry++;
+
 		}
-	}
+	}*/
 }

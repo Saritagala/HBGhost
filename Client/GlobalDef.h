@@ -24,7 +24,8 @@
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"170.81.42.173"
+#define DEF_SERVER_IP			"10.0.0.105"
+//#define DEF_SERVER_IP			"170.81.42.173" // Host IP
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port
@@ -59,6 +60,8 @@
 
 #define DROP_MA				0
 #define DROP_PA				1
+
+#define MAXDIALOGBOX	66
 
 #ifdef DEF_ANTI_HACK
 	#define DEF_HIDDEN_LOWERVERSION		95

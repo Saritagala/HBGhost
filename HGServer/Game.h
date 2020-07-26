@@ -1093,7 +1093,6 @@ public:
 	int m_iSummonGuildCost;
 	
 	// Apocalypse
-	BOOL	m_bIsApocalyseMode;
 	BOOL	m_bIsHeldenianTeleport;
 
 	DWORD m_dwApocalypseGUID;
