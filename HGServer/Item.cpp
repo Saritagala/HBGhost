@@ -1535,7 +1535,7 @@ void CGame::CheckUniqueItemEquipment(int iClientH)
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[i]->m_cEquipPos, i, NULL, NULL);
 					ReleaseItemHandler(iClientH, i, TRUE);
 					// v1.4 ´ë¹ÌÁö¸¦ ¾ò´Â´Ù. 
-					iDamage = iDice(1, 100); // Centuu
+					iDamage = iDice(1, 10); // Centuu
 					m_pClientList[iClientH]->m_iHP -= iDamage;
 					if (m_pClientList[iClientH]->m_iHP <= 0) {
 						ClientKilledHandler(iClientH, NULL, NULL, iDamage);
@@ -1948,6 +1948,10 @@ void CGame::ConfirmExchangeItem(int iClientH)
 
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EXCHANGEITEMCOMPLETE, NULL, NULL, NULL, NULL);
 					SendNotifyMsg(NULL, iExH, DEF_NOTIFY_EXCHANGEITEMCOMPLETE, NULL, NULL, NULL, NULL);
+
+					// centu - log
+					wsprintf(G_cTxt, "%s exchanged with %s", m_pClientList[iClientH]->m_cCharName, m_pClientList[iExH]->m_cCharName);
+					PutItemLogFileList(G_cTxt);
 
 					// ���� �缳��
 					iCalcTotalWeight(iClientH);
@@ -5463,6 +5467,10 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor); //v1.4 color
+
+			// centu - log
+			wsprintf(G_cTxt, "%s droped %s in %s(%d,%d)", m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName, m_pClientList[iClientH]->m_cMapName, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
+			PutItemLogFileList(G_cTxt);
 		}
 		else {
 			if (cOwnerType == DEF_OWNERTYPE_PLAYER) {
@@ -5482,6 +5490,10 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 				if (_bAddClientItemList(sOwnerH, pItem, &iEraseReq) == TRUE) {
 					SendItemNotifyMsg(sOwnerH, DEF_NOTIFY_ITEMOBTAINED, pItem, NULL);
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIVEITEMFIN_COUNTCHANGED, sItemIndex, iAmount, NULL, cCharName);
+				
+					// centu - log
+					wsprintf(G_cTxt, "%s gave %s to %s", m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName, m_pClientList[sOwnerH]->m_cMapName);
+					PutItemLogFileList(G_cTxt);
 				}
 				else {
 					m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
@@ -7170,6 +7182,10 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 
 	// ¼ÒÁöÇ° ÃÑ Áß·® Àç °è»ê 
 	iCalcTotalWeight(iClientH);
+
+	// centu - log
+	wsprintf(G_cTxt, "%s droped %s in %s(%d,%d)", m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName, m_pClientList[iClientH]->m_cMapName, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
+	PutItemLogFileList(G_cTxt);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

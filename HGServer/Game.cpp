@@ -2200,6 +2200,12 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 		ForceChangePlayMode(iClientH);
 	}
 
+	// centu - exp formula fix
+	if (m_pClientList[iClientH]->m_iExp < m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel])
+	{
+		m_pClientList[iClientH]->m_iExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel];
+	}
+
 	// centu - rep limit
 	if (m_pClientList[iClientH]->m_iRating < -2000)
 		m_pClientList[iClientH]->m_iRating = -2000;
@@ -3108,7 +3114,7 @@ void CGame::CheckClientResponseTime()
 				if ((dwTime - m_pClientList[i]->m_dwExpStockTime) > (DWORD)DEF_EXPSTOCKTIME) {
 					m_pClientList[i]->m_dwExpStockTime = dwTime;
 					//CalcExpStock(i);
-					CheckUniqueItemEquipment(i);
+					//CheckUniqueItemEquipment(i);
 					CheckCrusadeResultCalculation(i);
 					CheckHeldenianResultCalculation(i); // new
 				}
@@ -3340,6 +3346,10 @@ void CGame::CalcExpStock(int iClientH)
 	m_pClientList[iClientH]->m_iAutoExpAmount += m_pClientList[iClientH]->m_iExpStock;
 	m_pClientList[iClientH]->m_iExpStock = 0;
 
+	if (bCheckLimitedUser(iClientH) == FALSE) {
+		// Ã¼ÇèÆÇ »ç¿ëÀÚ Á¦ÇÑ¿¡ ÇØ´çµÇÁö ¾ÊÀ¸¸é °æÇèÄ¡°¡ ¿Ã¶ú´Ù´Â Åëº¸¸¦ ÇÑ´Ù.
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EXP, NULL, NULL, NULL, NULL);
+	}
 	bCheckLevelUp(iClientH);
 
 }
@@ -9596,8 +9606,6 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 		if (m_pNpcList[iAttackerH] != NULL)
 			memcpy(cAttackerName, m_pNpcList[iAttackerH]->m_cNpcName, 20);
 		break ;
-	default:
-		break;
 	}
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HP, NULL, NULL, NULL, NULL);
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_KILLED, NULL, NULL, NULL, NULL);
@@ -9982,13 +9990,13 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 				ApplyCombatKilledPenalty(iClientH, 12, bIsSAattacked);
 			}
 
+			wsprintf(G_cTxt, "%s killed %s", cAttackerName, m_pClientList[iClientH]->m_cCharName);
 			for (Killedi = 1; Killedi < DEF_MAXCLIENTS; Killedi++) {
 				if (m_pClientList[Killedi] != NULL) {
-					wsprintf(G_cTxt, "%s killed %s", cAttackerName, m_pClientList[iClientH]->m_cCharName);
 					SendNotifyMsg(NULL, Killedi, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, G_cTxt);
-					PutLogFileList(G_cTxt);
 				}
 			}
+			PutLogFileList(G_cTxt);
 		}
 	}
 	else if (cAttackerType == DEF_OWNERTYPE_NPC) {
@@ -10445,7 +10453,7 @@ unsigned long long CGame::iGetLevelExp(int iLevel)
 	
 	if (iLevel == 0) return 0;
 	
-	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 175) * (iLevel / 175) ) );
+	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 17) * (iLevel / 17) ) );
 
 	return iRet;
 }
@@ -17681,24 +17689,24 @@ void CGame::MultiplicadorExp(int Client, unsigned long long Exp)
 	}
 	else if (m_iExpSetting == 1) 
 	{*/
-		if		(m_pClientList[Client]->m_iLevel < 20)		Exp *= m_iExpSetting;
+		if		(m_pClientList[Client]->m_iLevel < 50)		Exp *= m_iExpSetting;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 20 && 
-				 m_pClientList[Client]->m_iLevel < 60)		Exp *= m_iExpSetting-2.5f;
+		else if	(m_pClientList[Client]->m_iLevel >= 50 && 
+				 m_pClientList[Client]->m_iLevel < 80)		Exp *= m_iExpSetting-5;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 60 && 
-				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-5;
+		else if	(m_pClientList[Client]->m_iLevel >= 80 && 
+				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-10;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 100 &&
-				 m_pClientList[Client]->m_iLevel < 140)		Exp *= m_iExpSetting-7.5f;
+				 m_pClientList[Client]->m_iLevel < 140)		Exp *= m_iExpSetting-20;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 140 &&
-				 m_pClientList[Client]->m_iLevel < 160)		Exp *= m_iExpSetting-10;
+				 m_pClientList[Client]->m_iLevel < 160)		Exp *= m_iExpSetting-30;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 160 &&
-				 m_pClientList[Client]->m_iLevel < 180)		Exp *= m_iExpSetting-12.5f;
+				 m_pClientList[Client]->m_iLevel < 180)		Exp *= m_iExpSetting-40;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 180)	Exp *= m_iExpSetting-15;
+		else if	(m_pClientList[Client]->m_iLevel >= 180)	Exp *= m_iExpSetting-50;
 	/*}
 	else if (m_iExpSetting == 2) 
 	{
@@ -18054,6 +18062,7 @@ void CGame::ForceChangePlayMode(int iClientH)
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CHANGEPLAYMODE, NULL, NULL, NULL, m_pClientList[iClientH]->m_cLocation);
 	SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 	
+	DeleteClient(iClientH, TRUE, TRUE);
 }
 
 // v2.15 2002-5-21
@@ -24434,8 +24443,7 @@ RTH_NEXTSTEP:;
 				if (iQuestType == 1) {
 					if (_bCheckIsQuestCompleted(iClientH, j) == TRUE)
 					{
-						//sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
-						sV1 = m_pClientList[iClientH]->m_iCurQuestCount[j];
+						sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
 						if (sV1 < 0) sV1 = 0;
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, j, sV1, NULL, NULL);
 					}
@@ -24635,8 +24643,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 				{
 					if (_bCheckIsQuestCompleted(iClientH, j) == TRUE)
 					{
-						//sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
-						sV1 = m_pClientList[iClientH]->m_iCurQuestCount[j];
+						sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
 						if (sV1 > 0)
 						{
 							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, j, sV1, NULL, NULL);
@@ -24843,17 +24850,17 @@ void CGame::PlayerOrder_Criticals(int iClientH)
 {
 	if (m_pClientList[iClientH] == NULL) return;
 	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");
-	if (m_pClientList[iClientH]->m_iSuperAttackLeft < 1000 && m_pClientList[iClientH]->m_iGizonItemUpgradeLeft >= 10 && dwGoldCount >= 40000)
+	if (m_pClientList[iClientH]->m_iSuperAttackLeft < 1000 && /*m_pClientList[iClientH]->m_iGizonItemUpgradeLeft >= 10 &&*/ dwGoldCount >= 40000)
 	{
 		m_pClientList[iClientH]->m_iSuperAttackLeft += 500;
 		if (m_pClientList[iClientH]->m_iSuperAttackLeft > 1000) m_pClientList[iClientH]->m_iSuperAttackLeft = 1000;
 		SetItemCount(iClientH, "Gold", dwGoldCount - 40000);
-		m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 10;
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+		//m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 10;
+		//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
 		ShowClientMsg(iClientH, "You've received 500 Criticals!");
 	}
-	else ShowClientMsg(iClientH, "Max Crits 1000 - Req 10 Majestics & 40k Gold");
+	else ShowClientMsg(iClientH, "Max Crits 1000 - Req 40k Gold");
 }
 
 void CGame::PlayerOrder_ChangeCity(int iClientH, BOOL bChange) 
@@ -25733,8 +25740,8 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 				CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iIndex);
 
 				// centu - fixed que lea probabilidades
-				if (iDice(1, 10000) >= CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
-				if (iDice(1, 10000) >= CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
+				if (iDice(1, 1000) >= CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
+				if (iDice(1, 1000) >= CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
 
 				if (bFirstDice && bSecondDice) {
 					iItemID = CTempNpcItem.m_sItemID;

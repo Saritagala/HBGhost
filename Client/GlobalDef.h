@@ -19,13 +19,16 @@
 #define NAME_WORLDNAME			"WS1"											// Name for default (1st) server
 #define MSG_WORLDNAME1			"Helbreath Ghost"								// Long name for 1st server...
 
-#define MSG_HOMEPAGE			"http://www.helbreath.com"					// Web Server
+#define MSG_HOMEPAGE			"http://www.helbreathghost.com"					// Web Server
 
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"192.168.2.8"
-//#define DEF_SERVER_IP			"170.81.42.173" // Host IP
+#define DEF_UPPERVERSION2		1
+#define DEF_LOWERVERSION2		0
+
+//#define DEF_SERVER_IP			"192.168.2.8"
+#define DEF_SERVER_IP			"170.81.42.173" // Host IP
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port

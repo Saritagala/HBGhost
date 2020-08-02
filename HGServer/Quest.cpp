@@ -465,8 +465,10 @@ void CGame::QuestAcceptedHandler(int iClientH)
 	for (i = 0; i < DEF_MAXQUEST; i++) { //Magn0S:: Multi Quest
 		if ((m_pClientList[iClientH]->m_iQuest[i] != NULL) && (m_pClientList[iClientH]->m_iQuest[i] == m_pClientList[iClientH]->m_iAskedQuest)) {
 			//Magn0S:: Mult quest can't accept same question
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You can't repeat Quest. Please finish your quest to get the same Quest later.");
-			return;
+			if (m_pClientList[iClientH]->m_iQuest[i] == m_pClientList[iClientH]->m_iAskedQuest) {
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You can't repeat Quest. Please finish your quest to get the same Quest later.");
+				return;
+			}
 		}
 		else {
 			if (m_pClientList[iClientH]->m_iQuest[i] == NULL) {
@@ -497,8 +499,7 @@ void CGame::QuestAcceptedHandler(int iClientH)
 
 				if (m_pClientList[iClientH]->m_iQuest[i] != NULL)
 				{
-					//cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
-					cQuestRemain = m_pClientList[iClientH]->m_iCurQuestCount[i]; 
+					cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, NULL, NULL);
 					_bCheckIsQuestCompleted(iClientH, i);
 				}
@@ -549,8 +550,7 @@ void CGame::_SendQuestContents(int iClientH)
 				//------------------------------------------------------------------------------------------------------
 
 				//Magn0S:: Add to fix.
-				//cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
-				cQuestRemain = m_pClientList[iClientH]->m_iCurQuestCount[i]; 
+				cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, NULL, NULL);
 			}
 		}
@@ -893,11 +893,6 @@ class CItem* pItem;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
 	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == TRUE) return;
-
-	if (m_pClientList[iClientH]->m_bIsInsideWarehouse == FALSE) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Go back to City Hall to have your prize.");
-		return;
-	}
 
 	if (m_pClientList[iClientH]->m_iQuest[iQuest] != NULL) {
 		if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]] == NULL)

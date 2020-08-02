@@ -18091,7 +18091,29 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		}
 	}
 
-	wsprintf(G_cTxt, "%s (%d,%d)", m_cMapMessage, m_sPlayerX, m_sPlayerY);// Map Message (Center Pannel)
+	if (m_bCtrlPressed)
+	{
+		int iCurExp = iGetLevelExp(m_iLevel);
+		int iNextExp = iGetLevelExp(m_iLevel + 1);
+		if (m_iExp < iNextExp)
+		{
+			iNextExp = iNextExp - iCurExp;
+			if (m_iExp > iCurExp) iCurExp = m_iExp - iCurExp; // curxp: partie faite
+			else iCurExp = 0; // below current lvl !
+			short sPerc = 0;
+			if (iCurExp > 200000) sPerc = short(((iCurExp >> 4) * 10000) / (iNextExp >> 4));
+			else sPerc = (short)((iCurExp * 10000) / iNextExp);
+			wsprintf(G_cTxt, "Rest Exp: %d (%d.%02d%%)", iNextExp - iCurExp, sPerc / 100, sPerc % 100);
+		}
+		else
+		{
+			wsprintf(G_cTxt, "Exp: %d (100.00%)", m_iExp); // "Exp: 151000/150000"
+		}
+	}
+	else
+	{
+		wsprintf(G_cTxt, "%s (%d,%d)", m_cMapMessage, m_sPlayerX, m_sPlayerY);// Map Message (Center Pannel)
+	}
 	PutAlignedString(140 + resx, 323 + resx, 456 + resy, G_cTxt, 200, 200, 120);
 
 	if ((msY > 436 + resy) && (msY < 478 + resy)) // Menu Icons
@@ -21344,7 +21366,7 @@ void CGame::DlgBoxClick_ItemSellorRepair(short msX, short msY)
 unsigned long long CGame::iGetLevelExp(int iLevel)
 {unsigned long long iRet;
 	if (iLevel == 0) return 0;
-	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 175) * (iLevel / 175) ) );
+	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 17) * (iLevel / 17) ) );
 	return iRet;
 }
 
@@ -31080,10 +31102,10 @@ void CGame::DrawVersion(BOOL bAuthor)
 
 	m_Misc.ColorTransfer(m_DDraw.m_cPixelFormat, RGB(140, 140, 140), &wR, &wG, &wB);
 	m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutTransSpriteRGB(14, 580, 19, wR, wG, wB, dwTime);
-	wsprintf(G_cTxt, "%d", DEF_UPPERVERSION);
+	wsprintf(G_cTxt, "%d", DEF_UPPERVERSION2);
 	PutString_SprNum(36, 580, G_cTxt, 140, 140, 140);
 	m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutTransSpriteRGB(42, 580, 18, wR, wG, wB, dwTime);
-	wsprintf(G_cTxt, "%d", DEF_LOWERVERSION);
+	wsprintf(G_cTxt, "%d", DEF_LOWERVERSION2);
 	PutString_SprNum(46, 580, G_cTxt, 140, 140, 140);
 	if (bAuthor == FALSE) return;
 
@@ -31744,6 +31766,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						if ((m_bIsDialogEnabled[12] != TRUE) && (m_iLU_Point > 0))
 						{
 							EnableDialogBox(12, NULL, NULL, NULL);
+							PlaySound('E', 14, 5);
 						}
 					}
 					else // Centuu : restart
@@ -31754,10 +31777,10 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 							m_dwRestartCountTime = timeGetTime();
 							wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 							AddEventList(G_cTxt, 10);
+							PlaySound('E', 14, 5);
 
 						}
 					}
-					PlaySound('E', 14, 5);
 					m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
 					return;
 				}
