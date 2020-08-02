@@ -24434,7 +24434,8 @@ RTH_NEXTSTEP:;
 				if (iQuestType == 1) {
 					if (_bCheckIsQuestCompleted(iClientH, j) == TRUE)
 					{
-						sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						//sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						sV1 = m_pClientList[iClientH]->m_iCurQuestCount[j];
 						if (sV1 < 0) sV1 = 0;
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, j, sV1, NULL, NULL);
 					}
@@ -24634,7 +24635,8 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 				{
 					if (_bCheckIsQuestCompleted(iClientH, j) == TRUE)
 					{
-						sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						//sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						sV1 = m_pClientList[iClientH]->m_iCurQuestCount[j];
 						if (sV1 > 0)
 						{
 							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, j, sV1, NULL, NULL);

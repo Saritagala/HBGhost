@@ -194,10 +194,10 @@ CGame::CGame()
 	//Magn0S:: Changed
 	m_stDialogBoxInfo[10].sX = 135 + SCREENX;
 	m_stDialogBoxInfo[10].sY = 273 + SCREENY + SCREENY;
-	m_stDialogBoxInfo[10].sSizeX = 405;
-	m_stDialogBoxInfo[10].sSizeY = 180;
-	//m_stDialogBoxInfo[10].sSizeX = 364;
-	//m_stDialogBoxInfo[10].sSizeY = 162;
+	//m_stDialogBoxInfo[10].sSizeX = 405;
+	//m_stDialogBoxInfo[10].sSizeY = 180;
+	m_stDialogBoxInfo[10].sSizeX = 364;
+	m_stDialogBoxInfo[10].sSizeY = 162;
 
 	//Sale Menu Dialog
 	m_stDialogBoxInfo[11].sX = 70 + SCREENX;
@@ -4293,7 +4293,8 @@ BOOL CGame::_bCheckDlgBoxDoubleClick(short msX, short msY)
 	limitX = sX + m_stDialogBoxInfo[1].sSizeX;
 	limitY = sY + m_stDialogBoxInfo[1].sSizeY;
 
-	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	m_DDraw.
+	(sX, sY, limitX, limitY, 0, true);
 	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
 
 	if (m_stDialogBoxInfo[1].cMode == 1) {
@@ -16874,6 +16875,7 @@ void CGame::InitDataResponseHandler(char * pData)
 	DisableDialogBox(51); // Gail's diag
 	DisableDialogBox(58); // Centuu : Guild Warehouse
 	DisableDialogBox(43);
+	DisableDialogBox(59); // Magn0S:: Quest List
 	DisableDialogBox(57); // MORLA 2.4 - shop 2
 
 	m_cCommand = DEF_OBJECTSTOP;
@@ -18781,8 +18783,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
  double d1, d2, d3;
 	sX = m_stDialogBoxInfo[10].sX;
 	sY = m_stDialogBoxInfo[10].sY;
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, FALSE, m_bDialogTrans);
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, FALSE, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, FALSE, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, FALSE, m_bDialogTrans);
 
 	//Magn0S:: Updated Chat Box
 	short toX, toY, limitX, limitY;
@@ -18792,48 +18794,48 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 	limitY = sY + 180;
 	int iminus = 0;
 
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	/*m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
 	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
 	m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
-	PutString_SprFont2(sX + 180, sY + 5, "Chat Log", 240, 240, 240);
+	PutString_SprFont2(sX + 180, sY + 5, "Chat Log", 240, 240, 240);*/
 
-	if (((msX >= sX + 10) && (msX <= sX + 50) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GLOBAL)
-		PutString2(sX + 20, sY + 25, "Global", 255, 255, 255);
-	else PutString2(sX + 20, sY + 25, "Global", 0, 255, 0);
+	if (((msX >= sX + 10) && (msX <= sX + 25) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == 99)
+		PutString2(sX + 20, sY + 25, "All", 255, 255, 255);
+	else PutString2(sX + 20, sY + 25, "All", 0, 255, 0);
 
-	if (((msX >= sX + 55) && (msX <= sX + 90) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_CITY)
-		PutString2(sX + 60, sY + 25, "Town", 255, 255, 255);
-	else PutString2(sX + 60, sY + 25, "Town", 0, 255, 0);
+	if (((msX >= sX + 35) && (msX <= sX + 65) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_CITY)
+		PutString2(sX + 40, sY + 25, "Town", 255, 255, 255);
+	else PutString2(sX + 40, sY + 25, "Town", 0, 255, 0);
 
-	if (((msX >= sX + 95) && (msX <= sX + 140) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_NORMAL)
-		PutString2(sX + 100, sY + 25, "Nearby", 255, 255, 255);
-	else PutString2(sX + 100, sY + 25, "Nearby", 0, 255, 0);
+	if (((msX >= sX + 75) && (msX <= sX + 115) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_NORMAL)
+		PutString2(sX + 80, sY + 25, "Nearby", 255, 255, 255);
+	else PutString2(sX + 80, sY + 25, "Nearby", 0, 255, 0);
 
-	if (((msX >= sX + 145) && (msX <= sX + 180) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GUILD)
-		PutString2(sX + 150, sY + 25, "Guild", 255, 255, 255);
-	else PutString2(sX + 150, sY + 25, "Guild", 0, 255, 0);
+	if (((msX >= sX + 125) && (msX <= sX + 155) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GUILD)
+		PutString2(sX + 130, sY + 25, "Guild", 255, 255, 255);
+	else PutString2(sX + 130, sY + 25, "Guild", 0, 255, 0);
 
-	if (((msX >= sX + 185) && (msX <= sX + 220) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_PARTY)
-		PutString2(sX + 190, sY + 25, "Party", 255, 255, 255);
-	else PutString2(sX + 190, sY + 25, "Party", 0, 255, 0);
+	if (((msX >= sX + 165) && (msX <= sX + 195) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_PARTY)
+		PutString2(sX + 170, sY + 25, "Party", 255, 255, 255);
+	else PutString2(sX + 170, sY + 25, "Party", 0, 255, 0);
 
-	if (((msX >= sX + 225) && (msX <= sX + 280) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_WHISP)
-		PutString2(sX + 230, sY + 25, "Whisper", 255, 255, 255);
-	else PutString2(sX + 230, sY + 25, "Whisper", 0, 255, 0);
+	if (((msX >= sX + 205) && (msX <= sX + 255) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_WHISP)
+		PutString2(sX + 210, sY + 25, "Whisper", 255, 255, 255);
+	else PutString2(sX + 210, sY + 25, "Whisper", 0, 255, 0);
 
-	if (((msX >= sX + 285) && (msX <= sX + 330) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_MARKET)
-		PutString2(sX + 290, sY + 25, "Market", 255, 255, 255);
-	else PutString2(sX + 290, sY + 25, "Market", 0, 255, 0);
+	if (((msX >= sX + 265) && (msX <= sX + 310) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_MARKET)
+		PutString2(sX + 270, sY + 25, "Market", 255, 255, 255);
+	else PutString2(sX + 270, sY + 25, "Market", 0, 255, 0);
 
-	if (((msX >= sX + 335) && (msX <= sX + 360) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GM)
-		PutString2(sX + 340, sY + 25, "GM", 255, 255, 255);
-	else PutString2(sX + 340, sY + 25, "GM", 0, 255, 0);
+	if (((msX >= sX + 315) && (msX <= sX + 335) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == CHAT_GM)
+		PutString2(sX + 320, sY + 25, "GM", 255, 255, 255);
+	else PutString2(sX + 320, sY + 25, "GM", 0, 255, 0);
 
-	if (((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == 99)
+	/*if (((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == 99)
 		PutString2(sX + 370, sY + 25, "All", 255, 255, 255);
-	else PutString2(sX + 370, sY + 25, "All", 0, 255, 0);
+	else PutString2(sX + 370, sY + 25, "All", 0, 255, 0);*/
 
 	switch (m_stDialogBoxInfo[10].cMode) {
 	case 0:
@@ -18849,35 +18851,35 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 		d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
 		iPointerLoc = (int)d3;
 		iPointerLoc = 105 - iPointerLoc;
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 390, sY + 60 + iPointerLoc, 7); // , 
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 346, sY + 33 + iPointerLoc, 7); // , 
 
 		for (i = 0; i < 8; i++)
 			if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
 				switch (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime) {
-				case 0:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 230); break;
-				case 1:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
-				case 2:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 130, 130); break;
-				case 3:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 130, 255); break;
-				case 4:  PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
-				case 10: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 180, 255, 180); break;
-				case CHAT_GM: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 184, 0); break;
-				case CHAT_MARKET: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 50, 255, 255); break;
-				case 20: PutString2(sX + 25, sY + 157 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 150, 150, 170); break;
+				case 0:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 230); break;
+				case 1:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
+				case 2:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 130, 130); break;
+				case 3:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 130, 255); break;
+				case 4:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
+				case 10: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 180, 255, 180); break;
+				case CHAT_GM: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 184, 0); break;
+				case CHAT_MARKET: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 50, 255, 255); break;
+				case 20: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 150, 150, 170); break;
 				}
 			}
 
 		if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
 		{
-			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY >= sY + 48) && (msY <= sY + 160)) { //,,  
+			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY >= sY + 28) && (msY <= sY + 140)) { //,,  
 				d1 = (double)(msY - (sY + 28));
 				d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
 				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
 			}
 
-			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 38) && (msY < sY + 48)) //,
+			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 18) && (msY < sY + 28))
 				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
 
-			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 160) && (msY < sY + 181)) //,,,
+			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 140) && (msY < sY + 163))
 				m_stDialogBoxInfo[10].sView = 0;
 		}
 		else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
@@ -18897,7 +18899,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 		d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
 		iPointerLoc = (int)d3;
 		iPointerLoc = 105 - iPointerLoc;
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 390, sY + 60 + iPointerLoc, 7); // , 
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 346, sY + 33 + iPointerLoc, 7); // , 
 
 		int cordx;
 		int cordy;
@@ -18908,7 +18910,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 		for (i = 0; i < MAXCHATLINES; i++)
 		if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
 		
-		cordy = sY + 157 - (i-iminus)*13;
+		cordy = sY + 127 - (i-iminus)*13;
 		cordx = sX + 25;
 
 		ZeroMemory(msgview, sizeof(msgview));
@@ -18966,16 +18968,16 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 
 		if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
 		{
-			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY >= sY + 48) && (msY <= sY + 160)) { //,,  
+			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY >= sY + 28) && (msY <= sY + 140)) { //,,  
 				d1 = (double)(msY - (sY + 28));
 				d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
 				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
 			}
 
-			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 38) && (msY < sY + 48)) //,
+			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 18) && (msY < sY + 28))
 				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
 
-			if ((msX >= sX + 380) && (msX <= sX + 402) && (msY > sY + 160) && (msY < sY + 181)) //,,,
+			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 140) && (msY < sY + 163))
 				m_stDialogBoxInfo[10].sView = 0;
 		}
 		else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
@@ -18989,59 +18991,59 @@ void CGame::DlgBoxClick_Chat(short msX, short msY)
 	sX = m_stDialogBoxInfo[10].sX;
 	sY = m_stDialogBoxInfo[10].sY;
 
-	if ((msX >= sX + 10) && (msX <= sX + 50) && (msY >= sY + 25) && (msY <= sY + 39)) {
-		m_stDialogBoxInfo[10].cMode = 1;
-		chatmode = CHAT_GLOBAL;
+	if ((msX >= sX + 10) && (msX <= sX + 25) && (msY >= sY + 25) && (msY <= sY + 39)) {
+		m_stDialogBoxInfo[10].cMode = 0;
+		chatmode = 99;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 55) && (msX <= sX + 90) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 35) && (msX <= sX + 65) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //Town
 		chatmode = CHAT_CITY;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 95) && (msX <= sX + 140) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 75) && (msX <= sX + 115) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //Nearby
 		chatmode = CHAT_NORMAL;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 145) && (msX <= sX + 180) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 125) && (msX <= sX + 155) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //Guild
 		chatmode = CHAT_GUILD;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 185) && (msX <= sX + 220) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 165) && (msX <= sX + 195) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //Party
 		chatmode = CHAT_PARTY;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 225) && (msX <= sX + 280) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 205) && (msX <= sX + 255) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //Whisper
 		chatmode = CHAT_WHISP;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 285) && (msX <= sX + 330) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 265) && (msX <= sX + 310) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //Market
 		chatmode = CHAT_MARKET;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 335) && (msX <= sX + 380) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	if ((msX >= sX + 315) && (msX <= sX + 335) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 1; //GM
 		chatmode = CHAT_GM;
 		PlaySound('E', 14, 5);
 	}
 
-	if ((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	/*if ((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 0; //All
 		chatmode = 99;
 		PlaySound('E', 14, 5);
-	}
+	}*/
 }
 
 
@@ -21013,11 +21015,16 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 
 	if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
 		//Magn0S:: Mult Quest - Click selecioon on F5
-		for (i = 0; i < DEF_MAXQUEST; i++) {
+		/*for (i = 0; i < DEF_MAXQUEST; i++) {
 			if (m_stQuest[i].sQuestType != NULL)
 				EnableDialogBox(28, 0, NULL, NULL);
 			else EnableDialogBox(28, 3, NULL, NULL);
-		}
+		}*/
+		if ((m_stQuest[0].sQuestType == NULL) && (m_stQuest[1].sQuestType == NULL) && (m_stQuest[2].sQuestType == NULL) &&
+			(m_stQuest[3].sQuestType == NULL) && (m_stQuest[4].sQuestType == NULL) && (m_stQuest[5].sQuestType == NULL))
+			EnableDialogBox(28, 3, NULL, NULL);
+		else EnableDialogBox(28, 0, NULL, NULL);
+
 		DisableDialogBox(1);
 		PlaySound('E', 14, 5);
 	}
@@ -22430,10 +22437,15 @@ void CGame::DlgBoxClick_Quest(int msX, int msY)
 		}
 		break;
 
-	case 2:
+	case 2: // Quest Canceled
+		//Back
+		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
+			m_stDialogBoxInfo[28].cMode = 0; // Return
+			PlaySound('E', 14, 5);
+		}
 		break;
 
-	case 3:
+	case 3: // No Quest
 		//Back
 		if ((msX > sX + 220) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
 			m_stDialogBoxInfo[28].cMode = 0; // Return
@@ -25574,11 +25586,18 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 81://'Q'
-		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) && (m_iAdminUserLevel > 0))
+		if(( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ))
 		{
-			if (m_bIsDialogEnabled[56] == FALSE)
-				EnableDialogBox(56, NULL, NULL, NULL);
-			else DisableDialogBox(56);
+			if (m_iAdminUserLevel > 0) {
+				if (m_bIsDialogEnabled[56] == FALSE)
+					EnableDialogBox(56, NULL, NULL, NULL);
+				else DisableDialogBox(56);
+			}
+			else {
+				if (m_bIsDialogEnabled[28] == FALSE)
+					EnableDialogBox(28, NULL, NULL, NULL);
+				else DisableDialogBox(28);
+			}
 		}	
 		break;
 
@@ -27144,11 +27163,11 @@ void CGame::NotifyMsgHandler(char * pData)
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 
 		ip = (int*)cp;
-		iV1 = *ip;
+		iV1 = *ip; //Quest Vector (1, 2, 3, 4, 5)
 		cp += 4;
 
 		ip = (int*)cp;
-		iV2 = *ip;
+		iV2 = *ip; // Quest Kills
 		cp += 4;
 
 		ip = (int*)cp;

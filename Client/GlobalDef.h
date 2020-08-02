@@ -24,7 +24,7 @@
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51
 
-#define DEF_SERVER_IP			"10.0.0.105"
+#define DEF_SERVER_IP			"192.168.2.8"
 //#define DEF_SERVER_IP			"170.81.42.173" // Host IP
 
 #define DEF_SERVER_DNS			"hbtest.ddns.net"							

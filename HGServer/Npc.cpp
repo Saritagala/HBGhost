@@ -459,7 +459,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 							if ((memcmp(m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) && 
 								(m_pQuestConfigList[iQuestIndex]->m_iTargetType == m_pNpcList[iNpcH]->m_sType)) {
 								m_pClientList[sAttackerH]->m_iCurQuestCount[j]++;
-								cQuestRemain = (m_pQuestConfigList[m_pClientList[sAttackerH]->m_iQuest[j]]->m_iMaxCount - m_pClientList[sAttackerH]->m_iCurQuestCount[j]);
+								//cQuestRemain = (m_pQuestConfigList[m_pClientList[sAttackerH]->m_iQuest[j]]->m_iMaxCount - m_pClientList[sAttackerH]->m_iCurQuestCount[j]);
+								cQuestRemain = m_pClientList[sAttackerH]->m_iCurQuestCount[j];
 								SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, cQuestRemain, NULL, NULL);
 								_bCheckIsQuestCompleted(sAttackerH, j);
 							}
@@ -1478,9 +1479,9 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 			{
 				iQuestNum = iQuest;
 
-				iReward = iDice(1, 3);
+				iReward = 1; // iDice(1, 3); // Setando sempre para o 1º
 				iResMode = m_pQuestConfigList[iQuestNum]->m_iResponseMode;
-				iRewardType = m_pQuestConfigList[iQuestNum]->m_iRewardType[iReward];
+				iRewardType = m_pQuestConfigList[iQuestNum]->m_iRewardType[iReward]; 
 				iRewardAmount = m_pQuestConfigList[iQuestNum]->m_iRewardAmount[iReward];
 				iContribution = m_pQuestConfigList[iQuestNum]->m_iContribution;
 

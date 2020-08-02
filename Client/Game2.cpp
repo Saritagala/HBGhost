@@ -13100,7 +13100,8 @@ void CGame::DrawQuestHelper()
 					ZeroMemory(cTemp, sizeof(cTemp));
 					GetNpcName(m_stQuest[i].sTargetType, cTemp);
 					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, "%s: %d/%d", cTemp, (m_stQuest[i].sTargetCount - m_stQuest[i].sCurrentCount), m_stQuest[i].sTargetCount);
+					//wsprintf(cTxt, "%s: %d/%d", cTemp, (m_stQuest[i].sTargetCount - m_stQuest[i].sCurrentCount), m_stQuest[i].sTargetCount);
+					wsprintf(cTxt, "%s: %d/%d", cTemp, m_stQuest[i].sCurrentCount, m_stQuest[i].sTargetCount);
 					PutString2(iX, iY + 28 + (iEntry *32), cTxt, 55, 255, 255);
 				}
 			}
@@ -21350,7 +21351,9 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 	char cTxt[120];
 	int y;
 	int nickheight = 16;
-	short toX, toY, limitX, limitY;
+	//short toX, toY, limitX, limitY;
+	int iNext = 0;
+	int iEntry = 0;
 
 	sX = m_stDialogBoxInfo[53].sX;
 	sY = m_stDialogBoxInfo[53].sY;
@@ -21358,21 +21361,20 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 
 	//if ((strcmp(m_cPlayerName, "Magn0S[GM]") != 0) || (strcmp(m_cPlayerName, "Centuu[GM]") != 0) || (strcmp(m_cPlayerName, "Nixu[GM]") != 0)) return;
 
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_NEWPANEL, sX, sY, 0);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
 
-	toX = sX;
+	/*toX = sX;
 	toY = sY;
 	limitX = sX + 258;
 	limitY = sY + 339;
-	int iNext = 0;
-	int iEntry = 0;
 
 	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
-	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);*/
 
 	switch (m_stDialogBoxInfo[53].cMode) {
 	case 0:
-		PutString_SprFont3(sX + 80, sY + 10, "Player Panel", 2, 150, 0);
+		//PutString_SprFont3(sX + 80, sY + 10, "Player Panel", 2, 150, 0);
+		PutString_SprFont(sX + 80, sY + 35, "Player Panel", 7, 0, 0);
 		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
@@ -21383,7 +21385,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 			//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 255);
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 100);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Top Ek List", 19, 104, 169);
 			//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 100);
 
 		iNext += 1;
@@ -21392,40 +21394,41 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 			//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 255);
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Event Schedule", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Event Schedule", 255, 255, 100);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Event Schedule", 19, 104, 169);
 		//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 100);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{	PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Game Options", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Game Options", 255, 255, 100);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Game Options", 19, 104, 169);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Online User List", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Online User List", 255, 255, 100);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Online User List", 19, 104, 169);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Server News", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Server News", 255, 255, 100);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Server News", 19, 104, 169);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 255, 255, 100);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 19, 104, 169);
 
 		break;
 
 	case 1:
-		PutString_SprFont3(sX + 70, sY + 10, "Server Top Ek", 2, 150, 0);
+		//PutString_SprFont3(sX + 70, sY + 10, "Server Top Ek", 2, 150, 0);
+		PutString_SprFont(sX + 70, sY + 35, "Server Top Ek", 7, 0, 0);
 		for (int i = 1; i <= 15; i++)
 		{
 			if (i >= 10)
@@ -21449,7 +21452,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		break;
 
 	case 2: // Game Administration
-		PutString_SprFont3(sX + 70, sY + 10, "Event Schedule", 200, 250, 2);
+		//PutString_SprFont3(sX + 70, sY + 10, "Event Schedule", 200, 250, 2);
+		PutString_SprFont(sX + 70, sY + 35, "Event Schedule", 7, 0, 0);
 		SYSTEMTIME SysTime;
 		GetLocalTime(&SysTime);
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
@@ -21458,8 +21462,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		if (bServerTime)
 			wsprintf(G_cTxt, "Server time: %d:%d:%d", sServerHour, SysTime.wMinute, SysTime.wSecond);
 		else wsprintf(G_cTxt, "Local time: %d:%d:%d", SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
-		PutString(sX + 150, sY + 35, G_cTxt, RGB(0, 255, 0));
-		PutString(sX + 150, sY + 35, G_cTxt, RGB(0, 255, 0));
+		PutString(sX + 130, sY + 35, G_cTxt, RGB(0, 255, 0));
+		PutString(sX + 130, sY + 35, G_cTxt, RGB(0, 255, 0));
 
 		iNext += 1;
 		PutString2(sX + 35, sY + iNext * 15 + 35, "Event name:", 255, 255, 255);
@@ -21657,7 +21661,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		break;*/
 
 	case 3:
-		PutString_SprFont3(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 15, "Graphic's Options", 200, 250, 2);
+	//	PutString_SprFont3(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 15, "Graphic's Options", 200, 250, 2);
+		PutString_SprFont(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 15, "Graphic's Options", 7, 0, 0);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
