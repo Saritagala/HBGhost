@@ -375,7 +375,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 	int* ip, i, iQuestIndex, iConstructionPoint, iWarContribution, iMapIndex, j;
 	double dTmp1, dTmp2, dTmp3;
 	char* cp, cData[120], cQuestRemain, cTargetName[21];
-	unsigned long long iExp;
+	int iExp;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
 	if (m_pNpcList[iNpcH]->m_bIsKilled == TRUE) return;
@@ -1721,7 +1721,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	switch (m_pNpcList[iNpcH]->m_sType) {
 		// NPC not dropping Gold
 	case 21: // Guard
-	case 34: // Dummy
+	//case 34: // Dummy
 	case 64: // Crop
 		return;
 	}

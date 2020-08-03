@@ -16268,13 +16268,13 @@ void CGame::NotifyMsg_Exp(char * pData)
 	DWORD * dwp;
 	int  * ip;
 	char * cp, cTxt[120];
-	unsigned long long iPrevExp, * lp;
+	int iPrevExp;
 
 	iPrevExp = m_iExp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	lp = (unsigned long long*)cp;
-	m_iExp = *lp;
-	cp += 8;
+	ip = (int*)cp;
+	m_iExp = *ip;
+	cp += 4;
 }
 
 void CGame::NotifyMsg_GiveItemFin_CountChanged(char *pData)
@@ -21375,9 +21375,9 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 	case 0:
 		//PutString_SprFont3(sX + 80, sY + 10, "Player Panel", 2, 150, 0);
 		PutString_SprFont(sX + 80, sY + 35, "Player Panel", 7, 0, 0);
-		wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
-		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
-		PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
+		//wsprintf(G_cTxt, "Hi %s", m_cPlayerName);
+		//PutAlignedString(sX + 30, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
+		//PutAlignedString(sX + 32, sX + szX - 30, sY + 30, G_cTxt, 255, 255, 255);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
@@ -21385,7 +21385,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 			//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 255);
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Top Ek List", 19, 104, 169);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Top Ek List", 0, 0, 0);
 			//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 100);
 
 		iNext += 1;
@@ -21394,35 +21394,35 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 			//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 255);
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Event Schedule", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Event Schedule", 19, 104, 169);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Event Schedule", 0, 0, 0);
 		//PutString2(sX + 25, sY + iNext * 17 + 45, "Top Ek List", 255, 255, 100);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{	PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Game Options", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Game Options", 19, 104, 169);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Game Options", 0, 0, 0);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Online User List", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Online User List", 19, 104, 169);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Online User List", 0, 0, 0);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Server News", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Server News", 19, 104, 169);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Server News", 0, 0, 0);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
 			PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 255, 255, 255);
 		}
-		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 19, 104, 169);
+		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 0, 0, 0);
 
 		break;
 
@@ -21474,7 +21474,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Death Match Game", 255, 255, 255);
 		} else {
-			PutString2(sX + 25, sY + iNext * 17 + 35, "Death Match Game", 19, 104, 169);
+			PutString2(sX + 25, sY + iNext * 17 + 35, "Death Match Game", 0, 0, 0);
 		}
 		if (!bDeathmatch) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21483,7 +21483,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Crusade", 255, 255, 255);
-		} else { PutString2(sX + 25, sY + iNext * 17 + 35, "Crusade", 19, 104, 169);
+		} else { PutString2(sX + 25, sY + iNext * 17 + 35, "Crusade", 0, 0, 0);
 		}
 		if (!m_bIsCrusadeMode) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21493,7 +21493,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Apocalypse", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Apocalypse", 19, 104, 169);
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Apocalypse", 0, 0, 0);
 		}
 		if (!m_bApocalypse) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21502,7 +21502,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Heldenian", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Heldenian", 19, 104, 169);
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Heldenian", 0, 0, 0);
 		}
 		if (!m_bIsHeldenian) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21511,7 +21511,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "DBeholder Event", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Beholder Event", 19, 104, 169);
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Beholder Event", 0, 0, 0);
 		}
 		if (!_revelation) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21520,7 +21520,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Shinning", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Shinning", 19, 104, 169); 
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Shinning", 0, 0, 0);
 		}
 		if (!bShinning) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21529,7 +21529,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Candy Fury", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Candy Fury", 19, 104, 169);
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Candy Fury", 0, 0, 0);
 		}
 		if (!_candy_boost) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21538,7 +21538,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Capture The Flag", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Capture The Flag", 19, 104, 169);
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Capture The Flag", 0, 0, 0);
 		}
 		if (!_drop_inhib) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21547,7 +21547,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Bag Protection", 255, 255, 255);
-		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Bag Protection", 19, 104, 169);
+		} else {PutString2(sX + 25, sY + iNext * 17 + 35, "Bag Protection", 0, 0, 0);
 		}
 		if (!_drop_inhib) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21556,7 +21556,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Team Arena", 255, 255, 255);
-		} else { PutString2(sX + 25, sY + iNext * 17 + 35, "Team Arena", 19, 104, 169);
+		} else { PutString2(sX + 25, sY + iNext * 17 + 35, "Team Arena", 0, 0, 0);
 		}
 		if (!_team_arena) {
 			PutString2(sX + 200, sY + iNext * 17 + 35, "OFF", 255, 0, 0);
@@ -21565,7 +21565,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 180) && (msY >= sY + iNext * 17 + 35) && (msY <= sY + iNext * 17 + 49)) {
 			PutString2(sX + 25, sY + iNext * 17 + 35, "Dungeon Attack", 255, 255, 255);
-		} else { PutString2(sX + 25, sY + iNext * 17 + 35, "Dungeon Attack", 19, 104, 169);
+		} else { PutString2(sX + 25, sY + iNext * 17 + 35, "Dungeon Attack", 0, 0, 0);
 		}
 
 		if (!_city_teleport) {
@@ -21669,7 +21669,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		{
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Party Info", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Party Info", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Party Info", 0, 0, 0);
 
 		if (m_bShowParty) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
@@ -21679,7 +21679,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		{
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Events Info", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Events Info", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Events Info", 0, 0, 0);
 
 		if (bShowEventInfo) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
@@ -21689,7 +21689,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		{
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 0, 0, 0);
 
 		if (bNpcMap) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
@@ -21699,7 +21699,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		{
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Emblems", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Emblems", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Emblems", 0, 0, 0);
 
 		if (m_bShowEmblems) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
@@ -21709,7 +21709,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		{
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Trees", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Trees", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Trees", 0, 0, 0);
 
 		if (m_bShowTrees) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
@@ -21719,7 +21719,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		{
 			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 0, 0, 0);
 
 		if (m_bGrid) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);

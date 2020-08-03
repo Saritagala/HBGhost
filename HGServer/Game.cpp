@@ -1618,7 +1618,6 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
  int iMapSide, iMapSide2;
  BOOL bIsItemListNull;
  POINT TempItemPosList[DEF_MAXITEMS];
- unsigned long long * lp;
  bool* bp;
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -1722,9 +1721,9 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	*ip  = m_pClientList[iClientH]->m_iExp;
 	cp  += 4;*/
 
-	lp = (unsigned long long*)cp;
-	*lp = m_pClientList[iClientH]->m_iExp;
-	cp += 8;
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iExp;
+	cp += 4;
 
 //66
 	ip = (int *)cp;
@@ -1787,7 +1786,7 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
 	cp += 4;
 
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 130);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 126);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -2201,10 +2200,10 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	}
 
 	// centu - exp formula fix
-	if (m_pClientList[iClientH]->m_iExp < m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel])
+	/*if (m_pClientList[iClientH]->m_iExp < m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel])
 	{
 		m_pClientList[iClientH]->m_iExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel];
-	}
+	}*/
 
 	// centu - rep limit
 	if (m_pClientList[iClientH]->m_iRating < -2000)
@@ -8182,7 +8181,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
  BOOL    bNearAttack = FALSE, var_AC = FALSE;
  short sItemIndex;
  int tX, tY, iErr;
- unsigned long long iExp;
+ int iExp;
  int  iDamage, iV1, iV2, iV3;
 
 	if (m_pClientList[iClientH] == NULL) return 0;
@@ -10447,13 +10446,13 @@ void CGame::Quit()
 
 }
 
-unsigned long long CGame::iGetLevelExp(int iLevel)
+int CGame::iGetLevelExp(int iLevel)
 {
-	unsigned long long iRet;
+	int iRet;
 	
 	if (iLevel == 0) return 0;
 	
-	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 17) * (iLevel / 17) ) );
+	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 175) * (iLevel / 175) ) );
 
 	return iRet;
 }
@@ -11047,7 +11046,7 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 	// Elvine kills Aresden in Elvine and gets an EK
 	// Aresden kills Elvine in Elvine and doesnt get an EK
 	
-	unsigned long long iRewardExp;
+	int iRewardExp;
 
 	int iRangoAttacker = 1;
 	
@@ -11289,7 +11288,7 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 // 05/22/2004 - Hypnotoad - register in pk log
 void CGame::ApplyCombatKilledPenalty(int iClientH, int cPenaltyLevel, BOOL bIsSAattacked)
 {  
-	unsigned long long iExp;
+	int iExp;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -11628,7 +11627,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
  DWORD dwTime;
  register double dTmp1, dTmp2, dTmp3;
  short sAtkX, sAtkY, sTgtX, sTgtY, dX, dY, sItemIndex;
- unsigned long long iExp;
+ int iExp;
 
  	if (cAttackerType == DEF_OWNERTYPE_PLAYER)
 		if (m_pClientList[sAttackerH] == NULL) return;
@@ -12191,7 +12190,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
  DWORD dwTime;
  register double dTmp1, dTmp2, dTmp3;
  short sTgtX, sTgtY, sItemIndex;
- unsigned long long iExp;
+ int iExp;
 
 	if ((cAttackerType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH] == NULL)) return;
 	if ((cAttackerType == DEF_OWNERTYPE_NPC) && (m_pNpcList[sAttackerH] == NULL)) return;
@@ -12692,6 +12691,8 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
  register double dTmp1, dTmp2, dTmp3;
  int iPartyID, iMoveDamage;
  short sTgtX, sTgtY;
+ //Crusade
+ int iExp;
 
 	if (cAttackerType == DEF_OWNERTYPE_PLAYER)
 		if (m_pClientList[sAttackerH] == NULL) return;
@@ -13160,8 +13161,7 @@ EDSD_SKIPDAMAGEMOVE:;
 					bRemoveFromDelayEventList(sTargetH, DEF_OWNERTYPE_NPC, DEF_MAGICTYPE_HOLDOBJECT);
 				}
 
-				//Crusade
-				unsigned long long iExp;
+				
 
 				// NPC¿¡ ´ëÇÑ °ø°ÝÀÌ ¼º°øÇßÀ¸¹Ç·Î °ø°ÝÀÚ°¡ ÇÃ·¹ÀÌ¾î¶ó¸é ÀÔÈù ´ë¹ÌÁö ¸¸Å­ÀÇ °æÇèÄ¡¸¦ °ø°ÝÀÚ¿¡°Ô ÁØ´Ù. 
 				if ( (m_pNpcList[sTargetH]->m_iNoDieRemainExp > 0) && (m_pNpcList[sTargetH]->m_bIsSummoned != TRUE) && 
@@ -14856,7 +14856,7 @@ void CGame::ResponseSavePlayerDataReplyHandler(char * pData, DWORD dwMsgSize)
 	}
 }
 
-unsigned long long CGame::iGetExpLevel(unsigned long long iExp)
+int CGame::iGetExpLevel(int iExp)
 {
  int i;
 
@@ -17546,14 +17546,14 @@ void CGame::RequestOnlines(int iClientH)
 	
 }
 
-void CGame::GetExp(int iClientH, unsigned long long iExp, BOOL bIsAttackerOwn)
+void CGame::GetExp(int iClientH, int iExp, BOOL bIsAttackerOwn)
 {
 
 	double dV1, dV2, dV3;
 	int i, iH;
 	DWORD dwTime = timeGetTime();
 	int iTotalPartyMembers;
-	unsigned long long iUnitValue;
+	int iUnitValue;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (iExp <= 0) return;
@@ -17564,7 +17564,7 @@ void CGame::GetExp(int iClientH, unsigned long long iExp, BOOL bIsAttackerOwn)
 		dV2 = dV1 * 0.025f;
 		dV3 = (double)iExp;
 		dV1 = (dV2 + 1.025f)*dV3;
-		iExp = (unsigned long long)dV1;
+		iExp = (int)dV1;
 	}
 		
 	//Check for party status, else give exp to player
@@ -17622,7 +17622,7 @@ void CGame::GetExp(int iClientH, unsigned long long iExp, BOOL bIsAttackerOwn)
 			}
 
 			dV3 = dV2 + 5.0e-1;
-			iUnitValue = (unsigned long long)dV3;
+			iUnitValue = (int)dV3;
 
 			//Divide exp among party members
 			for(i = 0; i < iTotalPartyMembers; i++){
@@ -17662,7 +17662,7 @@ void CGame::GetExp(int iClientH, unsigned long long iExp, BOOL bIsAttackerOwn)
 	}
 }
 
-void CGame::MultiplicadorExp(int Client, unsigned long long Exp)
+void CGame::MultiplicadorExp(int Client, int Exp)
 {
 	if (m_pClientList[Client] == NULL) return;
 
@@ -17692,21 +17692,21 @@ void CGame::MultiplicadorExp(int Client, unsigned long long Exp)
 		if		(m_pClientList[Client]->m_iLevel < 50)		Exp *= m_iExpSetting;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 50 && 
-				 m_pClientList[Client]->m_iLevel < 80)		Exp *= m_iExpSetting-5;
+				 m_pClientList[Client]->m_iLevel < 80)		Exp *= m_iExpSetting-1;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 80 && 
-				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-10;
+				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-2;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 100 &&
-				 m_pClientList[Client]->m_iLevel < 140)		Exp *= m_iExpSetting-20;
+				 m_pClientList[Client]->m_iLevel < 140)		Exp *= m_iExpSetting-3;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 140 &&
-				 m_pClientList[Client]->m_iLevel < 160)		Exp *= m_iExpSetting-30;
+				 m_pClientList[Client]->m_iLevel < 160)		Exp *= m_iExpSetting-4;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 160 &&
-				 m_pClientList[Client]->m_iLevel < 180)		Exp *= m_iExpSetting-40;
+				 m_pClientList[Client]->m_iLevel <= 180)	Exp *= m_iExpSetting-5;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 180)	Exp *= m_iExpSetting-50;
+		else if	(m_pClientList[Client]->m_iLevel > 180)	Exp *= 400;
 	/*}
 	else if (m_iExpSetting == 2) 
 	{
@@ -19853,7 +19853,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
  int    iPartyID, iConstructionPoint, iWarContribution, tX, tY, iDst1, iDst2;
  short	sItemIndex;
  short	sSkillUsed;
- unsigned long long iExp;
+ int iExp;
 
 	dwTime = timeGetTime();
 	bKilled = FALSE;
@@ -22300,7 +22300,6 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 	char* cp;
 	short* sp;
 	int* ip, iRet, i;
-	unsigned long long* lp;
 	bool* bp;
 
 	if (m_pClientList[iToH] == NULL) return;
@@ -23182,18 +23181,18 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		*dwp = (DWORD)m_pClientList[iToH]->m_iRewardGold;
 		cp += 4;
 
-		lp = (unsigned long long*)cp;
-		*lp = m_pClientList[iToH]->m_iExp;
-		cp += 8;
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iExp;
+		cp += 4;
 
-		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 32);
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 28);
 		break;
 
 	case DEF_NOTIFY_PKPENALTY:
 		// PK Ã†Ã¤Â³ÃŽÃ†Â¼Â¸Â¦ Â¸Ã”Â¾ÃºÂ´Ã™.
-		lp = (unsigned long long*)cp;
-		*lp = m_pClientList[iToH]->m_iExp;
-		cp += 8;
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iExp;
+		cp += 4;
 		dwp = (DWORD*)cp;
 		*dwp = (DWORD)m_pClientList[iToH]->m_iStr;
 		cp += 4;
@@ -23216,17 +23215,15 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		*dwp = (DWORD)m_pClientList[iToH]->m_iPKCount;
 		cp += 4;
 
-		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 42);
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 38);
 		break;
 
-	case DEF_NOTIFY_TRAVELERLIMITEDLEVEL:
-	case DEF_NOTIFY_LIMITEDLEVEL:
 	case DEF_NOTIFY_EXP:
-		lp = (unsigned long long*)cp;
-		*lp = m_pClientList[iToH]->m_iExp;
-		cp += 8;
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iExp;
+		cp += 4;
 
-		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
 		break;
 
 	case DEF_NOTIFY_HP:
@@ -23275,6 +23272,8 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	/* Centuu: msgs agrupados */
+	case DEF_NOTIFY_TRAVELERLIMITEDLEVEL:
+	case DEF_NOTIFY_LIMITEDLEVEL:
 	case DEF_NOTIFY_BUILDITEMFAIL:
 	case DEF_NOTIFY_HELDENIANSTART:
 	case DEF_NOTIFY_ANGEL_RECEIVED:
@@ -23839,11 +23838,7 @@ void CGame::bCheckLevelUp(int iClientH)
 			{
 				ForceChangePlayMode(iClientH);
 			}
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_LEVELUP, NULL, NULL, NULL, NULL);
-			m_pClientList[iClientH]->m_iNextLevelExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel + 1];
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EXP, NULL, NULL, NULL, NULL);
-			CalcTotalItemEffect(iClientH, -1, FALSE);
-
+			
 			//Magn0S:: Add Gold per lvl up to help new players
 			if (m_pClientList[iClientH]->m_iLevel < 50) 
 			{
@@ -23858,11 +23853,16 @@ void CGame::bCheckLevelUp(int iClientH)
 					bAddItem(iClientH, pItem, NULL);
 				}
 			}
-
+			
 			// centu - max hp,mp,sp when level up
 			if (m_pClientList[iClientH]->m_iHP < iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 			if (m_pClientList[iClientH]->m_iMP < iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 			if (m_pClientList[iClientH]->m_iSP < iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_LEVELUP, NULL, NULL, NULL, NULL);
+			m_pClientList[iClientH]->m_iNextLevelExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel + 1];
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EXP, NULL, NULL, NULL, NULL);
+			CalcTotalItemEffect(iClientH, -1, FALSE);
 
 		}
 		else 

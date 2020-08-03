@@ -659,7 +659,7 @@ int CGame::_iTalkToNpcResult_Cityhall(int iClientH, int* pQuestType, int* pMode,
 {
 	int iQuest, iEraseReq, i;
 	class CItem* pItem;
-	unsigned long long iExp;
+	int iExp;
 
 	// Return Code
 	// -1  : ÇöÀç ÀÓ¹« ¼öÇàÁß

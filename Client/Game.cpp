@@ -6704,16 +6704,16 @@ void CGame::NotifyMsg_EnemyKillReward(char *pData)
 	char  * cp, cName[12], cGuildName[24], cTxt[120];
 	int   iEnemyKillCount, iWarContribution;
 	int i;
-	unsigned long long iExp, *lp;
+	int iExp;
 
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cGuildName, sizeof(cGuildName));
 	ZeroMemory(cEKNotifySubject, sizeof(cEKNotifySubject)); // VAMP
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	
-	lp = (unsigned long long*)cp;
-	iExp = *lp;
-	cp += 8;
+	dwp = (DWORD*)cp;
+	iExp = *dwp;
+	cp += 4;
 
 	dwp = (DWORD *)cp;
 	iEnemyKillCount = *dwp;
@@ -6935,7 +6935,6 @@ void CGame::InitPlayerCharacteristics(char * pData)
  char * cp;
  WORD * wp;
  bool* bp;
- unsigned long long* lp;
 	// Snoopy: Angels
 	m_iAngelicStr = 0;
 	m_iAngelicDex = 0;
@@ -6985,9 +6984,9 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	m_iLU_Point = *ip;
 	cp += 4; // 2 + 5
 
-	lp   = (unsigned long long*)cp;
-	m_iExp = *lp;
-	cp += 8;
+	ip   = (int*)cp;
+	m_iExp = *ip;
+	cp += 4;
 
 	ip   = (int *)cp;
 	m_iEnemyKillCount = *ip;
@@ -18100,14 +18099,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 			iNextExp = iNextExp - iCurExp;
 			if (m_iExp > iCurExp) iCurExp = m_iExp - iCurExp; // curxp: partie faite
 			else iCurExp = 0; // below current lvl !
-			short sPerc = 0;
-			if (iCurExp > 200000) sPerc = short(((iCurExp >> 4) * 10000) / (iNextExp >> 4));
-			else sPerc = (short)((iCurExp * 10000) / iNextExp);
-			wsprintf(G_cTxt, "Rest Exp: %d (%d.%02d%%)", iNextExp - iCurExp, sPerc / 100, sPerc % 100);
-		}
-		else
-		{
-			wsprintf(G_cTxt, "Exp: %d (100.00%)", m_iExp); // "Exp: 151000/150000"
+			wsprintf(G_cTxt, "Rest Exp: %d", iNextExp - iCurExp);
 		}
 	}
 	else
@@ -18407,10 +18399,10 @@ void CGame::DrawDialogBox_GaugePannel()
 
 	// Experience Gauge - MORLA - arreglada para que vaya de izquierda a derecha
 
-	unsigned long long iMaxPoint3;
+	int iMaxPoint3;
 	iMaxPoint3 = iGetLevelExp(m_iLevel + 1) - iGetLevelExp(m_iLevel);
 
-	unsigned long long uTemp = m_iExp - iGetLevelExp(m_iLevel);
+	int uTemp = m_iExp - iGetLevelExp(m_iLevel);
 	iBarWidth = (uTemp * 800) / iMaxPoint3;
 	if (iBarWidth < 0) iBarWidth = 0;
 	if (iBarWidth > 800) iBarWidth = 800;
@@ -21363,10 +21355,10 @@ void CGame::DlgBoxClick_ItemSellorRepair(short msX, short msY)
 }
 
 
-unsigned long long CGame::iGetLevelExp(int iLevel)
-{unsigned long long iRet;
+int CGame::iGetLevelExp(int iLevel)
+{int iRet;
 	if (iLevel == 0) return 0;
-	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 17) * (iLevel / 17) ) );
+	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 175) * (iLevel / 175) ) );
 	return iRet;
 }
 
@@ -30823,17 +30815,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		else strcpy(cTxt, "?????");
 	}
 
-	if (strcmp(m_cMapName, "team") == 0) {
-		strcpy(cTxt, "?????");
-		PutString2(sX, sY, cTxt, 255, 255, 255);
-		ZeroMemory(cTxt, sizeof(cTxt));
-		strcpy(cTxt, "(Enemy)");
-		PutString2(sX, sY + 14 + iAddY, cTxt, 255, 0, 9);
-		ZeroMemory(cTxt, sizeof(cTxt));
-		return;
-	}
-
-	if (bMapHideEnemy) {
+	if (strcmp(m_cMapName, "team") == 0 || bMapHideEnemy) {
 		strcpy(cTxt, "?????");
 		PutString2(sX, sY, cTxt, 255, 255, 255);
 		ZeroMemory(cTxt, sizeof(cTxt));
@@ -30997,18 +30979,18 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		}*/	
 
 		// Wanted System
-		if (m_iWantedLevel > 0)
+		/*if (m_iWantedLevel > 0)
 		{
 			wsprintf(cTxt, "Wanted (Lv. %d)", m_iWantedLevel);
 			PutString2(sX, sY + 28 + iAddY, cTxt, 49, 203, 253);
-		}
+		}*/
 	}
 
 	//50Cent - GM Effect sin shield
-	/*if (((memcmp(pName, "GM1", 3) == 0) && (strlen(pName) == strlen("GM1"))) || ((memcmp(pName, "GM2", 3) == 0) && (strlen(pName) == strlen("GM2"))))
+	if (strcmp(pName, "Centuu[GM]") == 0 || strcmp(pName, "Nixu[GM]") == 0 || strcmp(pName, "Magn0S[GM]") == 0)
 	{
 		m_pEffectSpr[45]->PutTransSprite(sX - 13, sY - 34, 0, m_dwCurTime);
-	}*/
+	}
 
 }
 

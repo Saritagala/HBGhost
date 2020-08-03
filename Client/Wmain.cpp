@@ -65,7 +65,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 		if ( (G_pGame->m_cGameMode == DEF_GAMEMODE_ONMAINGAME) && ( G_pGame->m_bForceDisconn == FALSE ) )
 		{
 
-#ifndef _DEBUG
+#ifdef _DEBUG
 			if (G_pGame->m_cLogOutCount == -1 || G_pGame->m_cLogOutCount > 2) G_pGame->m_cLogOutCount = 1; 
 #else
 			if (G_pGame->m_cLogOutCount == -1 || G_pGame->m_cLogOutCount > 11) G_pGame->m_cLogOutCount = 11; 
@@ -227,7 +227,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// Snoopy: MP3 support
 	Mp3Init();
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 	if (OpenMutex(MUTEX_ALL_ACCESS, FALSE, "0543kjg3j31%") != NULL) {
 		MessageBox(NULL, "Only one Helbreath client program allowed!", "ERROR!", MB_OK);
 		return 0;
@@ -237,7 +237,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	EventLoop();
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 	ReleaseMutex(hMutex);
 	CloseHandle(hMutex);
 #endif

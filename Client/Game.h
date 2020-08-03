@@ -152,7 +152,6 @@ using namespace std;
 class CGame
 {
 public:
-
 	int m_iAdminUserLevel = 0;
 	char m_cCFTEventCount[2];
 	void NotifyMsg_EventInfo(char* pData);
@@ -524,7 +523,7 @@ public:
 	BOOL bCheckExID(char * pName);
 	BOOL bCheckLocalChatCommand(char * pMsg);
 	char GetOfficialMapName(char * pMapName, char * pName);
-	unsigned long long iGetLevelExp(int iLevel);
+	int iGetLevelExp(int iLevel);
 	int _iCalcTotalWeight();
 	void DrawVersion(BOOL bAuthor = FALSE);
 	BOOL _bIsItemOnHand();
@@ -993,7 +992,7 @@ public:
 	int m_iTHAC0;					// To Hit Armour Class 0
 
 	int m_iLevel, m_iStr, m_iInt, m_iVit, m_iDex, m_iMag, m_iCharisma, m_iContribution;
-	unsigned long long m_iExp;
+	int m_iExp;
 	// Snoopy: Added Angels
 	int m_iAngelicStr, m_iAngelicInt, m_iAngelicDex, m_iAngelicMag;
 

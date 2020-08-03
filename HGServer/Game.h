@@ -459,7 +459,7 @@ public:
 	// v1.4311-3 변경 함수 선언  Expire -> Ban 으로 
 	void UserCommand_BanGuildsman(int iClientH, char* pData, DWORD dwMsgSize);
 	// v1.4311-3 추가 함수 선언 이벤트를 대비하여 운영자가 사투장을 예약해놓는다.
-	unsigned long long iGetExpLevel(unsigned long long iExp);
+	int iGetExpLevel(int iExp);
 	
 	void ResponseSavePlayerDataReplyHandler(char* pData, DWORD dwMsgSize);
 	void NoticeHandler();
@@ -537,7 +537,7 @@ public:
 	void FightzoneReserveHandler(int iClientH, char* pData, DWORD dwMsgSize);
 	void bCheckLevelUp(int iClientH);
 
-	unsigned long long iGetLevelExp(int iLevel);
+	int iGetLevelExp(int iLevel);
 	void TimeManaPointsUp(int iClientH);
 	void TimeStaminarPointsUp(int iClientH);
 
@@ -589,7 +589,7 @@ public:
 
 	void RequestOnlines(int iClientH);
 
-	void MultiplicadorExp(int Client, unsigned long long Exp);
+	void MultiplicadorExp(int Client, int Exp);
 
 	BOOL bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify = TRUE);
 	BOOL _bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq);
@@ -676,7 +676,7 @@ public:
 	void PartyOperationResult_Info(int iClientH, char* pName, int iTotal, char* pNameList);
 	void RequestDeletePartyHandler(int iClientH);
 	void RequestAcceptJoinPartyHandler(int iClientH, int iResult);
-	void GetExp(int iClientH, unsigned long long iExp, BOOL bIsAttackerOwn = FALSE);
+	void GetExp(int iClientH, int iExp, BOOL bIsAttackerOwn = FALSE);
 
 	// New 07/05/2004
 	// Guild Codes
@@ -765,7 +765,7 @@ public:
 	int  m_iGateServerPort;
 	int  m_iWorldServerPort;
 
-	unsigned long long  m_iLimitedUserExp, m_iLevelExp20;
+	int  m_iLimitedUserExp, m_iLevelExp20;
 
 	class CClient* m_pClientList[DEF_MAXCLIENTS];
 	class CNpc* m_pNpcList[DEF_MAXNPCS];
@@ -819,7 +819,7 @@ public:
 	//LifeX Auto Skills
     void AutoSkill(int iClientH);
 
-	unsigned long long m_iLevelExpTable[DEF_MAXEXPTABLE];	//New 22/10/14 - centu: int -> unsigned long
+	int m_iLevelExpTable[DEF_MAXEXPTABLE];	//New 22/10/14 - centu: int -> unsigned long
 
 	class CFish* m_pFish[DEF_MAXFISHS];
 
