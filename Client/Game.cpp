@@ -412,6 +412,12 @@ CGame::CGame()
 	m_stDialogBoxInfo[45].sSizeX = 315;
 	m_stDialogBoxInfo[45].sSizeY = 171;
 
+	// VAMP - arena restart
+	m_stDialogBoxInfo[46].sX = 185;
+	m_stDialogBoxInfo[46].sY = 200;
+	m_stDialogBoxInfo[46].sSizeX = 270;
+	m_stDialogBoxInfo[46].sSizeY = 105;
+
 	// Snoopy: Resurection
 	m_stDialogBoxInfo[50].sX = 185 + SCREENX;
 	m_stDialogBoxInfo[50].sY = 100 + SCREENY;
@@ -740,7 +746,7 @@ void CGame::SaveGameConfigFile()
 
 	strcpy(cFn2, "[CONFIG]");
 	strcat(cFn2, "\n");
-	strcat(cFn2, "\n");
+	//strcat(cFn2, "\n");
 
 	strcat(cFn2, "music-mode = ");
 	wsprintf(cBuffer, "%d", (int)m_bMusicStat);
@@ -820,7 +826,7 @@ void CGame::SaveGameConfigFile()
 	strcat(cFn2, "show-grid = ");
 	wsprintf(cBuffer, "%d", (int)m_bGrid);
 	strcat(cFn2, cBuffer);
-	strcat(cFn2, "\n");
+	//strcat(cFn2, "\n");
 
 	fwrite(cFn2, 1, strlen(cFn2), pFile);
 
@@ -945,9 +951,9 @@ BOOL CGame::bReadGameConfigFile(char* cFn)
 				if (memcmp(token, "whisper-mode", 12) == 0)			cReadMode = 12;
 				if (memcmp(token, "show-trees", 10) == 0)			cReadMode = 13;
 				if (memcmp(token, "show-party", 10) == 0)			cReadMode = 14;
-				if (memcmp(token, "show-events", 12) == 0)			cReadMode = 15;
-				if (memcmp(token, "show-npc-map", 8) == 0)			cReadMode = 16;
-				if (memcmp(token, "show-grid", 9) == 0)			cReadMode = 17;
+				if (memcmp(token, "show-events", 11) == 0)			cReadMode = 15;
+				if (memcmp(token, "show-npc-map", 12) == 0)			cReadMode = 16;
+				if (memcmp(token, "show-grid", 9) == 0)				cReadMode = 17;
 			}
 			token = pStrTok->pGet();
 		}
@@ -2614,9 +2620,15 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 	if ((dwTime - m_dwEnvEffectTime) > 300) m_dwEnvEffectTime = dwTime;
 
 	if (m_sMCX != NULL)	// CLEROTH - STATUS
-	{	if( _iGetFOE(iFocuiStatus) < 0 ) m_stMCursor.sCursorFrame = 3;
-		else m_stMCursor.sCursorFrame = 6;
-
+	{
+		if (_iGetFOE(iFocuiStatus) < 0 || strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0 || bMapHideEnemy)
+		{
+			m_stMCursor.sCursorFrame = 3;
+		}
+		else
+		{
+			m_stMCursor.sCursorFrame = 6;
+		}
 		_tmp_wObjectID  = wFocusObjectID;
 		_tmp_sOwnerType = sFocusOwnerType;
 		_tmp_cAction    = cFocusAction;
@@ -4204,6 +4216,9 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
 			   break;
 			case 45: // kamal
 				DlgBoxClick_SetTrap(msX, msY);
+				break;
+			case 46: // VAMP - arena restart
+				DlgBoxClick_ArenaRestart(msX, msY);
 				break;
 			case 50:
 				DlgBoxClick_Resurect(msX, msY);
@@ -16919,6 +16934,15 @@ void CGame::InitDataResponseHandler(char * pData)
 		m_pChatMsgList[i] = NULL;
 	}
 
+	// VAMP - arena
+	for (i = 0; i < 200; i++)
+	{
+		//m_stArenaPlayers[i].iTeam = 0;
+		m_stArenaPlayers[i].iKills = 0;
+		m_stArenaPlayers[i].iDeaths = 0;
+		ZeroMemory(m_stArenaPlayers[i].cCharName, sizeof(m_stArenaPlayers[i].cCharName));
+	}
+
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	// PlayerObjectID
@@ -20526,7 +20550,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 120) && (msY < sY + 145))
-		{	if (m_iEnemyKillCount < 100) return;
+		{	if (m_iEnemyKillCount < 0) return;
 			m_stDialogBoxInfo[13].cMode = 7;
 			PlaySound('E', 14, 5);
 		}
@@ -20575,13 +20599,6 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 			m_stDialogBoxInfo[13].cMode = 13;
 			PlaySound('E', 14, 5);
 		}
-
-		//MORLA 2.4 - Clcik en TP DeathMach Game
-		/*if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 280) && (msY < sY + 293))
-		{
-			if (bDeathmatch) bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQTPDG, NULL, NULL, NULL, NULL, NULL); // MORLA2.2 - Pregunta EK y REP del player
-			PlaySound('E', 14, 5);
-		}*/
 		break;
 
 	case 1:
@@ -26799,17 +26816,6 @@ void CGame::NotifyMsgHandler(char * pData)
 		}
 		break;
 
-	//MORLA 2.3 - Deathmatch Activado
-    case DEF_NOTIFY_DEATHMATCHSTART: 
-		bDeathmatch = TRUE;
-        SetTopMsg("Deathmatch Game Started! Teleport in CityHall", 10);
-		break;
-
-    case DEF_NOTIFY_DEATHMATCHEND:
-		bDeathmatch = FALSE;
-        SetTopMsg("Deathmatch Game is Closed!", 10);
-		break;
-
 		//News Addons - ZeroEoyPnk
 	case DEF_SEND_PARTYHP:
 		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -28528,6 +28534,85 @@ NMH_LOOPBREAK2:;
 		m_iContribution = *ip;
 		break;
 
+	case DEF_NOTIFY_DEATHMATCHSTART:
+		SetTopMsg("Deathmatch Arena is Open! Teleport in CityHall.", 10);
+		break;
+		
+	case DEF_NOTIFY_DEATHMATCHEND:
+		SetTopMsg("Deathmatch Arena is Closed.", 10);
+		break;
+
+	case DEF_NOTIFY_ARENASTATUS:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		ip = (int*)cp;
+		sV1 = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		sV2 = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		sV3 = *ip;
+		cp += 4;
+
+		ZeroMemory(cTemp, sizeof(cTemp));
+		memcpy(cTemp, cp, 10);
+		cp += 10;
+
+		ip = (int*)cp;
+		sV4 = *ip;
+		cp += 4;
+
+		if (sV3 > 0)
+		{
+			bool bFound = false;
+
+			for (i = 0; i < 200; i++)
+			{
+				if (bFound) break;
+				if (strcmp(m_stArenaPlayers[i].cCharName, cTemp) == 0)
+				{
+					m_stArenaPlayers[i].iKills = sV1;
+					m_stArenaPlayers[i].iDeaths = sV2;
+					//m_stArenaPlayers[i].iTeam = sV4;
+					bFound = true;
+				}
+			}
+			if (bFound == false)
+			{
+				for (i = 0; i < 200; i++)
+				{
+					if (strlen(m_stArenaPlayers[i].cCharName) == 0)
+					{
+						m_stArenaPlayers[i].iKills = sV1;
+						m_stArenaPlayers[i].iDeaths = sV2;
+						//m_stArenaPlayers[i].iTeam = sV4;
+						ZeroMemory(m_stArenaPlayers[i].cCharName, sizeof(m_stArenaPlayers[i].cCharName));
+						strcpy(m_stArenaPlayers[i].cCharName, cTemp);
+						break;
+					}
+				}
+			}
+		}
+		else // player DC/Logout/Recall, remove from list 
+		{
+			for (i = 0; i < 200; i++)
+			{
+				if (strcmp(m_stArenaPlayers[i].cCharName, cTemp) == 0)
+				{
+					//m_stArenaPlayers[i].iTeam = 0;
+					m_stArenaPlayers[i].iKills = 0;
+					m_stArenaPlayers[i].iDeaths = 0;
+					ZeroMemory(m_stArenaPlayers[i].cCharName, sizeof(m_stArenaPlayers[i].cCharName));
+				}
+			}
+		}
+
+		SortArenaPlayers();
+
+		break;
+
 	case DEF_NOTIFY_DGKILL: // MORLA 2.2 - Recibe la informacion de un Kill en Deathmach Game
 		NotifyMsg_DGKill(pData);
 		break;
@@ -28990,6 +29075,49 @@ NMH_LOOPBREAK2:;
 			break;
 		}
 		break;
+	}
+}
+
+void CGame::SortArenaPlayers()
+{
+	char cTmpCName[11];
+	int iTmpKills;
+	int iTmpDeaths;
+	int iTmpTeam;
+
+	//iArenaTeamKills[] = {0,0,0,0,0};
+	//iArenaTeamDeaths[] = {0,0,0,0,0};
+
+	for (int j = 0; j < 200; j++)
+	{
+		for (int k = j; k < 200 - 1; k++)
+		{
+			if (strlen(m_stArenaPlayers[j].cCharName) > 0 && strlen(m_stArenaPlayers[k].cCharName) > 0)
+			{
+				ZeroMemory(cTmpCName, sizeof(cTmpCName));
+
+				if (m_stArenaPlayers[j].iKills < m_stArenaPlayers[k].iKills)
+				{
+					memcpy(cTmpCName, m_stArenaPlayers[j].cCharName, 10);
+					iTmpKills = m_stArenaPlayers[j].iKills;
+					iTmpDeaths = m_stArenaPlayers[j].iDeaths;
+					//iTmpTeam = m_stArenaPlayers[j].iTeam;
+
+					memcpy(m_stArenaPlayers[j].cCharName, m_stArenaPlayers[k].cCharName, 10);
+					m_stArenaPlayers[j].iKills = m_stArenaPlayers[k].iKills;
+					m_stArenaPlayers[j].iDeaths = m_stArenaPlayers[k].iDeaths;
+					//m_stArenaPlayers[j].iTeam = m_stArenaPlayers[k].iTeam;
+
+					memcpy(m_stArenaPlayers[k].cCharName, cTmpCName, 10);
+					m_stArenaPlayers[k].iKills = iTmpKills;
+					m_stArenaPlayers[k].iDeaths = iTmpDeaths;
+					//m_stArenaPlayers[k].iTeam = iTmpTeam;
+				}
+
+				//iArenaTeamKills[m_stArenaPlayers[j].iTeam] += m_stArenaPlayers[j].iKills;
+				//iArenaTeamDeaths[m_stArenaPlayers[j].iTeam] += m_stArenaPlayers[j].iDeaths;
+			}
+		}
 	}
 }
 
@@ -30787,7 +30915,6 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	ZeroMemory(cTxt, sizeof(cTxt));
 	ZeroMemory(cTxt2, sizeof(cTxt2));
 
-	if (strcmp(m_cMapName, "team") != 0) {
 		if (m_iIlusionOwnerH == NULL)
 		{
 			if (m_bIsCrusadeMode == FALSE) wsprintf(cTxt, "%s", pName);
@@ -30812,18 +30939,13 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 				}
 			}
 		}
-		else strcpy(cTxt, "?????");
-	}
-
-	if (strcmp(m_cMapName, "team") == 0 || bMapHideEnemy) {
-		strcpy(cTxt, "?????");
-		PutString2(sX, sY, cTxt, 255, 255, 255);
-		ZeroMemory(cTxt, sizeof(cTxt));
-		strcpy(cTxt, "(Enemy)");
-		PutString2(sX, sY + 14 + iAddY, cTxt, 255, 0, 9);
-		ZeroMemory(cTxt, sizeof(cTxt));
-		return;
-	}
+		else
+		{
+			strcpy(cTxt, "?????");
+			PutString2(sX, sY, cTxt, 255, 255, 255);
+			return;
+		}
+	
 
 	if ((iStatus & 0x20) != 0) strcat(cTxt, " (Berserked)");//" Berserk"
 	if ((iStatus & 0x40) != 0) strcat(cTxt, " (Frozen)");//" Frozen"
@@ -30832,10 +30954,11 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	ZeroMemory(cTxt, sizeof(cTxt));
 
 	// centu - deathmatch show only enemies
-	if ((strcmp(m_cMapName, "fightzone1") == 0) && (bDeathmatch) && ( memcmp(pName, m_cPlayerName, 12) != 0 ))
+	if ((strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0 || bMapHideEnemy) && ( memcmp(pName, m_cPlayerName, 12) != 0 ))
 	{
 		strcpy(cTxt, DRAW_OBJECT_NAME90);
 		PutString2(sX, sY+14, cTxt, 255, 0, 0);
+		return;
 	}
 	else {
 		if( memcmp(m_cPlayerName, pName, 10) == 0 )
@@ -31156,7 +31279,7 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME61);	// Tower of Hell 2
 		return 19;
 	}else if (strcmp(pMapName, "toh3") == 0)
-	{	strcpy(pName, GET_OFFICIAL_MAP_NAME62);	// Tower of Hell 3
+	{	strcpy(pName, "Tower of Hunt");	// Tower of Hell 3
 		return 20;
 	}else if (strcmp(pMapName, "middled1x") == 0)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME58);	// Middleland Mine
@@ -31283,7 +31406,7 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME11);	// Elvine Barrack 2
 		return -1;
 	}else if (strcmp(pMapName, "fightzone1") == 0)
-	{	strcpy(pName, GET_OFFICIAL_MAP_NAME12);	// Arena 1
+	{	strcpy(pName, "Deathmatch Arena");	// Arena 1
 		return -1;
 	}else if (strcmp(pMapName, "arejail") == 0)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME63);	// Aresden Jail
@@ -31748,19 +31871,27 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						if ((m_bIsDialogEnabled[12] != TRUE) && (m_iLU_Point > 0))
 						{
 							EnableDialogBox(12, NULL, NULL, NULL);
-							PlaySound('E', 14, 5);
+							//PlaySound('E', 14, 5);
 						}
 					}
 					else // Centuu : restart
 					{
-						if (m_cRestartCount == -1)
+						if (strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0)
 						{
-							m_cRestartCount = 5;
-							m_dwRestartCountTime = timeGetTime();
-							wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
-							AddEventList(G_cTxt, 10);
-							PlaySound('E', 14, 5);
+							EnableDialogBox(46, NULL, NULL, NULL);
+							//PlaySound('E', 14, 5);
 
+						}
+						else{
+							if (m_cRestartCount == -1)
+							{
+								m_cRestartCount = 5;
+								m_dwRestartCountTime = timeGetTime();
+								wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
+								AddEventList(G_cTxt, 10);
+								//PlaySound('E', 14, 5);
+
+							}
 						}
 					}
 					m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
@@ -34000,107 +34131,49 @@ void CGame::UpdateScreen_OnGame()
 	// centuu - si esta en Arena 1 desactiva el mapa para mostrar las auras arriba
 	if (memcmp(m_cCurLocation, "fightzone1", 10) == 0)
 	{
-		if (m_bIsDialogEnabled[9]) m_bIsDialogEnabled[9] = FALSE;
+		if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
 
-		//MORLA2.2 - Deathmach Game
-		if (bDeathmatch)
+		BOOL IsPlayer;
+		char cCol1[24], cCol2[24], cCol3[24], cCol4[24], cCol5[24];
+		int i, iEntry = 0, iRedEntry = 0, iBlueEntry = 0, iGreenEntry = 0, iYellowEntry = 0, iMaxEntries = 5;
+
+		if (m_bCtrlPressed) iMaxEntries = 15;
+
+		wsprintf(cCol1, "Name");
+		wsprintf(cCol2, "Kills");
+		wsprintf(cCol3, "Deaths");
+
+		PutAlignedString(110, 160, 160, cCol3, 192, 192, 192);
+		PutAlignedString(60, 110, 160, cCol2, 192, 192, 192);
+		PutAlignedString(10, 60, 160, cCol1, 192, 192, 192);
+
+		for (i = 0; i < 200; i++)
 		{
-			wsprintf(G_cTxt, "NAME");
-			PutAlignedString(10, 45, 160, G_cTxt, 255, 120, 120); // 10 , 45
-			wsprintf(G_cTxt, "KILLS");
-			PutAlignedString(75, 85, 160, G_cTxt, 255, 120, 120); // 75 , 85
-			wsprintf(G_cTxt, "DEATHS");
-			PutAlignedString(110, 120, 160, G_cTxt, 255, 120, 120); // 110 , 120
-			if (iDGKill1 != 0) {
-				wsprintf(G_cTxt, "%s", cDGName1);
-				PutAlignedString(10, 45, 160 + 14, G_cTxt, 255, 255, 0);
-				wsprintf(G_cTxt, "%d", iDGKill1);
-				PutAlignedString(75, 85, 160 + 14, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGDeath1);
-				PutAlignedString(110, 120, 160 + 14, G_cTxt, 180, 180, 180);
-			}
-
-			if (iDGKill2 != 0) {
-				wsprintf(G_cTxt, "%s", cDGName2);
-				PutAlignedString(10, 45, 160 + 14 * 2, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGKill2);
-				PutAlignedString(75, 85, 160 + 14 * 2, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGDeath2);
-				PutAlignedString(110, 120, 160 + 14 * 2, G_cTxt, 180, 180, 180);
-			}
-
-			if (iDGKill3 != 0) {
-				wsprintf(G_cTxt, "%s", cDGName3);
-				PutAlignedString(10, 45, 160 + 14 * 3, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGKill3);
-				PutAlignedString(75, 85, 160 + 14 * 3, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGDeath3);
-				PutAlignedString(110, 120, 160 + 14 * 3, G_cTxt, 180, 180, 180);
-			}
-
-			if (iDGKill4 != 0) {
-				wsprintf(G_cTxt, "%s", cDGName4);
-				PutAlignedString(10, 45, 160 + 14 * 4, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGKill4);
-				PutAlignedString(75, 85, 160 + 14 * 4, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGDeath4);
-				PutAlignedString(110, 120, 160 + 14 * 4, G_cTxt, 180, 180, 180);
-			}
-
-			if (iDGKill5 != 0) {
-				wsprintf(G_cTxt, "%s", cDGName5);
-				PutAlignedString(10, 45, 160 + 14 * 5, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGKill5);
-				PutAlignedString(75, 85, 160 + 14 * 5, G_cTxt, 180, 180, 180);
-				wsprintf(G_cTxt, "%d", iDGDeath5);
-				PutAlignedString(110, 120, 160 + 14 * 5, G_cTxt, 180, 180, 180);
-			}
-
-			if (m_bCtrlPressed)
+			if (iEntry >= iMaxEntries) break;  // only show top 5 
+			if (strlen(m_stArenaPlayers[i].cCharName) != 0)
 			{
-				if (iDGKill6 != 0) {
-					wsprintf(G_cTxt, "%s", cDGName6);
-					PutAlignedString(10, 45, 160 + 14 * 6, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGKill6);
-					PutAlignedString(75, 85, 160 + 14 * 6, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGDeath6);
-					PutAlignedString(110, 120, 160 + 14 * 6, G_cTxt, 180, 180, 180);
-				}
+				IsPlayer = FALSE;
+				iEntry++;
 
-				if (iDGKill7 != 0) {
-					wsprintf(G_cTxt, "%s", cDGName7);
-					PutAlignedString(10, 45, 160 + 14 * 7, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGKill7);
-					PutAlignedString(75, 85, 160 + 14 * 7, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGDeath7);
-					PutAlignedString(110, 120, 160 + 14 * 7, G_cTxt, 180, 180, 180);
-				}
+				if (strcmp(m_stArenaPlayers[i].cCharName, m_cPlayerName) == 0) IsPlayer = TRUE;
 
-				if (iDGKill8 != 0) {
-					wsprintf(G_cTxt, "%s", cDGName8);
-					PutAlignedString(10, 45, 160 + 14 * 8, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGKill8);
-					PutAlignedString(75, 85, 160 + 14 * 8, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGDeath8);
-					PutAlignedString(110, 120, 160 + 14 * 8, G_cTxt, 180, 180, 180);
+				if (IsPlayer == TRUE)
+				{
+					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
+					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
+					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
+					PutAlignedString(110, 160, 160 + (iEntry * 15), cCol3, 255, 255, 204);
+					PutAlignedString(60, 110, 160 + (iEntry * 15), cCol2, 255, 255, 204);
+					PutAlignedString(10, 60, 160 + (iEntry * 15), cCol1, 255, 255, 204);
 				}
-
-				if (iDGKill9 != 0) {
-					wsprintf(G_cTxt, "%s", cDGName9);
-					PutAlignedString(10, 45, 160 + 14 * 9, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGKill9);
-					PutAlignedString(75, 85, 160 + 14 * 9, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGDeath9);
-					PutAlignedString(110, 120, 160 + 14 * 9, G_cTxt, 180, 180, 180);
-				}
-
-				if (iDGKill10 != 0) {
-					wsprintf(G_cTxt, "%s", cDGName10);
-					PutAlignedString(10, 45, 160 + 14 * 10, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGKill10);
-					PutAlignedString(75, 85, 160 + 14 * 10, G_cTxt, 180, 180, 180);
-					wsprintf(G_cTxt, "%d", iDGDeath10);
-					PutAlignedString(110, 120, 160 + 14 * 10, G_cTxt, 180, 180, 180);
+				else
+				{
+					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
+					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
+					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
+					PutAlignedString(110, 160, 160 + (iEntry * 15), cCol3, 255, 255, 255);
+					PutAlignedString(60, 110, 160 + (iEntry * 15), cCol2, 255, 255, 255);
+					PutAlignedString(10, 60, 160 + (iEntry * 15), cCol1, 255, 255, 255);
 				}
 			}
 		}
@@ -34182,8 +34255,8 @@ void CGame::UpdateScreen_OnGame()
 		}
 
 		if (strcmp(m_cMapName, "team") == 0) {
-			if (m_bIsDialogEnabled[9]) m_bIsDialogEnabled[9] = FALSE;
-			wsprintf(G_cTxt, "TEAM");
+			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
+			wsprintf(G_cTxt, "Team");
 			PutString(10, 160, G_cTxt, RGB(220, 200, 200));
 			wsprintf(G_cTxt, "Red");
 			PutString(10, 180, G_cTxt, RGB(255, 0, 9));
@@ -34194,7 +34267,7 @@ void CGame::UpdateScreen_OnGame()
 			wsprintf(G_cTxt, "Yellow");
 			PutString(10, 240, G_cTxt, RGB(255, 255, 0));
 
-			wsprintf(G_cTxt, "KILLS");
+			wsprintf(G_cTxt, "Kills");
 			PutString(70, 160, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", redkills);

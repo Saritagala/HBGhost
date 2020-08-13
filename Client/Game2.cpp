@@ -3021,7 +3021,7 @@ int CGame::iGetManaCost(int iMagicNo)
 	int i, iManaSave, iManaCost;
 	iManaSave = 0;
 	if (iMagicNo < 0 || iMagicNo >= 100) return 1;
-	/*for (i = 0; i<DEF_MAXITEMS; i++)
+	for (i = 0; i<DEF_MAXITEMS; i++)
 	{
 		if (m_pItemList[i] == NULL) continue;
 		if (m_bIsItemEquipped[i] == TRUE)
@@ -3049,8 +3049,13 @@ int CGame::iGetManaCost(int iMagicNo)
 			else if (strcmp(m_pItemList[i]->m_cName, "MagicNecklace(MS14)") == 0) iManaSave += 14;
 			else if (strcmp(m_pItemList[i]->m_cName, "MagicNecklace(MS16)") == 0) iManaSave += 16;
 			else if (strcmp(m_pItemList[i]->m_cName, "MagicNecklace(MS18)") == 0) iManaSave += 18;
+			// Ghost items
+			else if (strcmp(m_pItemList[i]->m_cName, "HeroWand") == 0) iManaSave += 35;
+			else if (strcmp(m_pItemList[i]->m_cName, "SupremoHeroWand") == 0) iManaSave += 40;
+			else if (strcmp(m_pItemList[i]->m_cName, "GhostWand") == 0) iManaSave += 50;
+			else if (strcmp(m_pItemList[i]->m_cName, "MagicWand(MS60-LLF)") == 0) iManaSave += 60;
 		}
-	}*/
+	}
 	//Magn0S:: Added to fix the right value.
 	iManaCost = m_iManaSaveRatio;
 	// Snoopy: MS max = 80%
@@ -6862,7 +6867,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 		PutString_SprFont3(sX + 65, sY + 50, "Event Manager", 200, 250, 2);
 		iNext += 2;
-		PutString2(sX + 15, sY + iNext * 17 + 45, "Gladiator Arena", 255, 255, 255);
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Deathmatch Arena", 255, 255, 255);
 		if (!bDeathmatch) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
@@ -10652,7 +10657,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		else    PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU4, 65, 65, 65);			//"
 
 		// 3.51 Cityhall Menu - Request Hero's Items - Diuuude
-		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 10))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 120) && (msY < sY + 145))
 				PutAlignedString(sX, sX + szX, sY + 120, DRAW_DIALOGBOX_CITYHALL_MENU8, 255, 255, 255);
@@ -10807,7 +10812,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 	case 7:// 3.51 Cityhall Menu - Request Hero's Items - Diuuude
 		PutAlignedString(sX, sX + szX, sY + 60, DRAW_DIALOGBOX_CITYHALL_MENU46, 255, 255, 255);// Here are the Hero's Item aivable :
 		// Hero's Cape (EK 300)
-		if (m_iEnemyKillCount >= 300)
+		if (m_iEnemyKillCount >= 0)
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 95) && (msY < sY + 110))
 				PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU47, 255, 255, 255);// On mouse over Mode
@@ -10815,7 +10820,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU47, 65, 65, 65);// Disabled Mode
 		// Hero's Helm (EK 150 - Contrib 20)
-		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 125) && (msY < sY + 140))
 				PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU48, 255, 255, 255);// On mouse over Mode
@@ -10823,7 +10828,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU48, 65, 65, 65);// Disabled Mode
 		// Hero's Cap (EK 100 - Contrib 20)
-		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 155) && (msY < sY + 170))
 				PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU49, 255, 255, 255);// On mouse over Mode
@@ -10831,7 +10836,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU49, 65, 65, 65);// Disabled Mode
 		// Hero's Armor (EK 300 - Contrib 30)
-		if ((m_iEnemyKillCount >= 300) && (m_iContribution >= 30))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 185) && (msY < sY + 200))
 				PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU50, 255, 255, 255);// On mouse over Mode
@@ -10839,7 +10844,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU50, 65, 65, 65);// Disabled Mode
 		// Hero's Robe (EK 200 - Contrib 20)
-		if ((m_iEnemyKillCount >= 200) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 215) && (msY < sY + 230))
 				PutAlignedString(sX, sX + szX, sY + 215, DRAW_DIALOGBOX_CITYHALL_MENU51, 255, 255, 255);// On mouse over Mode
@@ -10847,7 +10852,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 215, DRAW_DIALOGBOX_CITYHALL_MENU51, 65, 65, 65);// Disabled Mode
 		// Hero's Hauberk (EK 100 - Contrib 10)
-		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 10))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 245) && (msY < sY + 260))
 				PutAlignedString(sX, sX + szX, sY + 245, DRAW_DIALOGBOX_CITYHALL_MENU52, 255, 255, 255);// On mouse over Mode
@@ -10855,7 +10860,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 245, DRAW_DIALOGBOX_CITYHALL_MENU52, 65, 65, 65);// Disabled Mode
 		// Hero's Leggings (EK 150 - Contrib 15)
-		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 15))
+		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 275) && (msY < sY + 290))
 				PutAlignedString(sX, sX + szX, sY + 275, DRAW_DIALOGBOX_CITYHALL_MENU53, 255, 255, 255);// On mouse over Mode
@@ -16000,10 +16005,14 @@ void CGame::ResponseChargedTeleport(char *pData)
 		AddEventList(RESPONSE_CHARGED_TELEPORT6, 10);
 		break;
 	case 7: // Magn0S:: Added
-		AddEventList("Deathmatch Game is Closed. You can't teleport.", 10);
+		AddEventList("Deathmatch Arena is Closed. You can't teleport.", 10);
+		break;
+	case 8: // Centuu:: Added
+		AddEventList("Team Arena is Closed. You can't teleport.", 10);
 		break;
 	default:
 		AddEventList(RESPONSE_CHARGED_TELEPORT7, 10);
+		break;
 	}
 }
 
@@ -19306,6 +19315,9 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 			case 45: // kamal
 				DrawDialogBox_SetTrap(msX, msY);
 				break;
+			case 46: // VAMP - arena restart
+				DrawDialogBox_ArenaRestart(msX, msY, msZ, cLB);
+				break;
 			case 50: // Snoopy: Resurection?
 				DrawDialogBox_Resurect(msX, msY);
 				break;
@@ -20778,6 +20790,17 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 		}
 		break;
 
+	case 46: // VAMP - arena restart
+		if (m_bIsDialogEnabled[46] == FALSE)
+		{
+			m_stDialogBoxInfo[46].sX = 185;
+			m_stDialogBoxInfo[46].sY = 200;
+			m_stDialogBoxInfo[46].cMode = 0;
+			m_stDialogBoxInfo[46].sView = 0;
+			m_bSkillUsingStatus = FALSE;
+		}
+		break;
+
 	case 50: // Snoopy: Resurection
 		if (m_bIsDialogEnabled[50] == FALSE)
 		{
@@ -20901,6 +20924,55 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 			m_cDialogBoxOrder[i] = iBoxID;
 			return;
 		}
+}
+
+// VAMP - arena restart
+void CGame::DrawDialogBox_ArenaRestart(short msX, short msY, short msZ, char cLB)
+{
+	short sX, sY;
+
+	sX = m_stDialogBoxInfo[46].sX;
+	sY = m_stDialogBoxInfo[46].sY;
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME1, sX, sY, 2);
+
+	PutString_SprFont(sX + 90, sY + 25, "Continue?", 7, 0, 0); // previously 1,1,8
+
+	//PutString(sX + 50, sY + 20, "You have died in the Gladiator Arena", RGB(4,0,50));
+	//PutString(sX + 80, sY + 35, "Do you want to continue?", RGB(4,0,50));
+
+	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 30, sY + 55, 19);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 30, sY + 55, 18);
+
+	if ((msX >= sX + 170) && (msX <= sX + 170 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 170, sY + 55, 3);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 170, sY + 55, 2);
+}
+
+
+void CGame::DlgBoxClick_ArenaRestart(short msX, short msY)
+{
+	short sX, sY;
+
+	char G_cTxt[64];
+
+	sX = m_stDialogBoxInfo[46].sX;
+	sY = m_stDialogBoxInfo[46].sY;
+	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+	{   // yes
+		m_cRestartCount = 5;
+		m_dwRestartCountTime = timeGetTime();
+		DisableDialogBox(46);
+		wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
+		AddEventList(G_cTxt, 10);
+		PlaySound('E', 14, 5);
+	}
+	else if ((msX >= sX + 170) && (msX <= sX + 170 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+	{	// no
+		bSendCommand(MSGID_REQUEST_LEAVEARENA, NULL, NULL, NULL, NULL, NULL, NULL);
+		DisableDialogBox(46);
+		PlaySound('E', 14, 5);
+	}
 }
 
 void CGame::DisableDialogBox(int iBoxID)
@@ -22228,6 +22300,15 @@ void CGame::ResetValues()
 	m_iHelmPA = 0;
 	m_iCapePA = 0;
 	m_iShieldPA = 0;
+
+	// VAMP - arena
+	for (int i = 0; i < 200; i++)
+	{
+		//m_stArenaPlayers[i].iTeam = 0;
+		m_stArenaPlayers[i].iKills = 0;
+		m_stArenaPlayers[i].iDeaths = 0;
+		ZeroMemory(m_stArenaPlayers[i].cCharName, sizeof(m_stArenaPlayers[i].cCharName));
+	}
 
 	bReadGameConfigFile("GameConfig.cfg");
 }

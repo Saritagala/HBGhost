@@ -1200,6 +1200,17 @@ public:
 
 	void NotifyMsg_CurLifeSpan(char* pData);
 
+	// VAMP - arena
+	struct {
+		//int iTeam;
+		int iKills;
+		int iDeaths;
+		char cCharName[12];
+	} m_stArenaPlayers[200];
+
+	void SortArenaPlayers();
+	void DlgBoxClick_ArenaRestart(short msX, short msY);
+	void DrawDialogBox_ArenaRestart(short msX, short msY, short msZ, char cLB);
 
 	struct {
 		char cCharName[12];

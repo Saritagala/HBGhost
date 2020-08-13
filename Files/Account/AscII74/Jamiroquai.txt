@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/6/0/8)  IP(201.214.183.164)
+
+[NAME]
+
+account-name     = Jamiroquai
+
+[PASSWORD]
+
+account-password = J4m1r0qu41
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 13
+
+account-change-password = 2020 8 6
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = esflores@gmail.com
+account-Quiz     = Son
+account-Answer   = Matias
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Jamiroquai
+

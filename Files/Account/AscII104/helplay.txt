@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/7/29/2/35)  IP(100.33.33.204)
+
+[NAME]
+
+account-name     = helplay
+
+[PASSWORD]
+
+account-password = ppp12345
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 5
+
+account-change-password = 2020 7 29
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = frank.liu02@yahoo.com
+account-Quiz     = f_u_man?
+account-Answer   = f u
+account-created-by = 
+
+[CHARACTERS]
+account-character  = GGhE
+account-character  = GGHA
+

@@ -1,0 +1,121 @@
+[FILE-DATE]
+
+file-saved-date: 2020 7 30 16 51
+
+[NAME-ACCOUNT]
+
+character-name     = Doluk
+account-name       = 2478
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = elvine
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = arebrk11
+character-loc-x   = 29
+character-loc-y   = 43
+
+character-HP       = 227
+character-MP       = 181
+character-SP       = 341
+character-LEVEL    = 78
+character-RATING   = 0
+character-STR      = 130
+character-INT      = 10
+character-VIT      = 12
+character-DEX      = 101
+character-MAG      = 10
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 1762596
+character-LU_Pool  = 28
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = 18030
+character-IDnum2 = 512
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 1
+skin-status      = 3
+hairstyle-status = 3
+haircolor-status = 6
+underwear-status = 5
+hunger-status    = 84
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 0 0 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 0
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 7
+reserved-fightzone-id = 0 0 0
+special-ability-time = 33
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 2096086
+party-id = 0
+gizon-item-upgrade-left = 0
+character-Deaths = 0
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 181.43.22.115
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+
+
+appr1 = 869
+appr2 = -4080
+appr3 = 768
+appr4 = 0
+appr-color = 3072
+
+[ITEMLIST]
+
+character-item = Dagger               1 0 0 0 0 0 0 0 0 150 0 0 0 1 0
+character-item = RedPotion            1 0 0 0 0 0 0 0 0 300 0 0 0 1 0
+character-item = GreenPotion          1 0 0 0 0 0 0 0 0 300 0 0 0 1 0
+character-item = ChainHose(M)         1 0 0 0 0 12 0 0 0 300 0 0 0 0 0
+character-item = Gold                 48700 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 0000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 0 0 0 0 234 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 10010000000000000000000000000000000000000000000000
+item-position-x = 42 40 61 59 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 
+item-position-y = 40 30 46 58 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 
+
+[EOF]
+
+
+

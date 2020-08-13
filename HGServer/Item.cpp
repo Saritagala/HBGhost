@@ -1324,8 +1324,8 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	WORD* wp;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
-	if (m_pClientList[iClientH]->m_iContribution < 10) return;
+	//if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
+	//if (m_pClientList[iClientH]->m_iContribution < 10) return;
 	if (m_pClientList[iClientH]->m_cSide == 0) return;
 
 	if (_iGetItemSpaceLeft(iClientH) == 0) {
@@ -1336,7 +1336,7 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	//Prevents a crash if item dosent exist
 	if (m_pItemConfigList[iItemID] == NULL)  return;
 
-	switch (iItemID) {
+	/*switch (iItemID) {
 		// Hero Cape
 	case 400: //Aresden HeroCape
 	case 401: //Elvine HeroCape
@@ -1439,7 +1439,7 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 			break;
 		}
 		break;
-	}
+	}*/
 
 	ZeroMemory(cItemName, sizeof(cItemName));
 	memcpy(cItemName, m_pItemConfigList[iItemID]->m_cName, 20);
@@ -1463,12 +1463,12 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 				pItem->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
 
 				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, NULL);
-
+				/*
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
 				calcularTop15HB(iClientH);
 				// centu - manage contrib
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
-
+				*/
 				if (iEraseReq == 1) delete pItem;
 
 				iCalcTotalWeight(iClientH);

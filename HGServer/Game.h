@@ -100,6 +100,15 @@ public:
 
 //private:
 
+	void GlobalStartGladiatorArena();
+	void GlobalEndGladiatorArena();
+	void ManualStartGladiatorArena(int iClientH, char* pData, DWORD dwMsgSize);
+	void ManualEndGladiatorArena(int iClientH, char* pData, DWORD dwMsgSize);
+
+	void RequestLeaveArena(int iClientH);
+	void RequestArenaStatus(int iSubjectH, bool bUpdate);
+	void RequestArenaStatus(int iClientH);
+
 	void CheckDenialServiceAttack(int iClientH, DWORD dwClientTime);
 	BOOL iUpgradeHeroItemRequirements(int iClientH, int iItemIndex);
 
@@ -293,9 +302,6 @@ public:
 	void SetIllusionMovementFlag(short sOwnerH, char cOwnerType, BOOL bStatus);
 	void SetIllusionFlag(short sOwnerH, char cOwnerType, BOOL bStatus);
 
-	void RefreshDeathmatch(int iClientH);
-
-	void SendThunders();
 
 	void RequestChangePlayMode(int iClientH);
 	void GetHeroMantleHandler(int iClientH, int iItemID, char* pString);
@@ -743,7 +749,6 @@ public:
 
 	void ApocalypseStarter();
 
-	void DeathmatchGame();
 
 	void CheckSpecialEvent(int iClientH);
 

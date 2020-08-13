@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/6/2/7)  IP(190.215.237.188)
+
+[NAME]
+
+account-name     = Caco90
+
+[PASSWORD]
+
+account-password = x1185tomas
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 13
+
+account-change-password = 2020 8 6
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = caco_vial25@hotmail.com
+account-Quiz     = hola?
+account-Answer   = chao
+account-created-by = 
+
+[CHARACTERS]
+account-character  = BoLuda
+

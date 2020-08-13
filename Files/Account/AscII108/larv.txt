@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/7/28/18/11)  IP(79.136.78.139)
+
+[NAME]
+
+account-name     = larv
+
+[PASSWORD]
+
+account-password = larvas
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 4
+
+account-change-password = 2020 7 28
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = sss@gmail.com
+account-Quiz     = ss
+account-Answer   = ss
+account-created-by = 
+
+[CHARACTERS]
+account-character  = KKthxBYE
+

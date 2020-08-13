@@ -1,4 +1,4 @@
-Account-generated:  Time(2017/4/9/0/26)  IP(192.168.1.8)
+Account-generated:  Time(2020/7/28/14/16)  IP(181.44.105.64)
 
 [NAME]
 
@@ -6,14 +6,14 @@ account-name     = Centuu
 
 [PASSWORD]
 
-account-password = jccenturio
+account-password = moadxi4M
 
 [ACCOUNT-STATUS]
 
 account-valid-time = 0
-account-valid-date = 2017 4 16
+account-valid-date = 2020 8 4
 
-account-change-password = 2017 4 9
+account-change-password = 2020 7 28
 [ETC]
 
 account-Gender   =  
@@ -29,7 +29,8 @@ account-Answer   = Perro
 account-created-by = 
 
 [CHARACTERS]
-account-character  = bauti
-account-character  = Testin
+account-character  = prueba
+account-character  = Porotex
 account-character  = Centuu
+account-character  = Centuu[GM]
 

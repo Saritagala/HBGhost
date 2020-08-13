@@ -1,0 +1,76 @@
+Character-updated:  Time(2020/8/2/18/2)
+
+
+
+[NAME-ACCOUNT]
+
+character-name     = GasChamber
+account-name       = xlimitz
+account-password   = purple
+
+[STATUS]
+
+character-location   = NONE
+character-guild-name = NONE
+character-guild-rank = -1
+
+character-loc-map  = default
+character-loc-x	  = -1
+character-loc-y	  = -1
+
+character-HP       = 26
+character-MP       = 22
+character-SP       = 30
+character-DefenseRatio = 14
+character-LEVEL    = 1
+character-STR      = 14
+character-INT      = 10
+character-VIT      = 12
+character-DEX      = 14
+character-MAG      = 10
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 0
+character-LU_Str    = 0
+character-LU_Vit    = 0
+character-LU_Dex    = 0
+character-LU_Int    = 0
+character-LU_Mag    = 0
+character-LU_Char   = 0
+character-EK-Count  = 0
+character-PK-Count  = 0
+sex-status       = 2
+skin-status      = 1
+hairstyle-status = 2
+haircolor-status = 6
+underwear-status = 5
+
+appr1 = 613
+appr2 = 0
+appr3 = 0
+appr4 = 0
+
+[ITEMLIST]
+
+character-item = Dagger               1 0 0 0 0 0 0 0 0 300 0
+character-item = Map                  1 0 0 0 0 0 0 0 0 300 0
+character-item = RedPotion            1 0 0 0 0 0 0 0 0 300 0
+character-item = BluePotion           1 0 0 0 0 0 0 0 0 300 0
+character-item = GreenPotion          1 0 0 0 0 0 0 0 0 300 0
+character-item = Chemise(W)           1 0 0 0 0 0 0 0 0 300 0
+
+[MAGIC-SKILL-MASTERY]
+
+magic-mastery     = 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+skill-mastery     = 0 0 0 3 20 24 0 24 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00000100000000000000000000000000000000000000000000
+
+
+
+
+

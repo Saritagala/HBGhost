@@ -2291,13 +2291,13 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) != 0) && (bDeathmatch))
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_DEATHMATCHSTART, NULL, NULL, NULL, NULL);
 
-	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 10) != 0) && (c_team->bteam))
+	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 4) != 0) && (c_team->bteam))
 		SendAlertMsg(iClientH, "Event Team Arena Enabled");
 
 	if (bShinning)
 		SendAlertMsg(iClientH, "Event Shinning Enabled");
 
-	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 10) == 0) && (c_team->bteam)) {
+	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 4) == 0) && (c_team->bteam)) {
 		if (m_pClientList[iClientH]->IsLocation("elvine"))
 			RequestTeleportHandler(iClientH, "2", "elvine", -1, -1, true);
 		else
@@ -2447,13 +2447,6 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == TRUE) {
 
-		// centu - refresh when player gets dc/cl
-		if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) && (bDeathmatch)) {
-			m_pClientList[iClientH]->m_iDGKills = 0;
-			m_pClientList[iClientH]->m_iDGDeaths = 0;
-			RefreshDeathmatch(iClientH); // Morla 2.3 - actualiza el deathmach
-		}
-
 		// Capture the Flag
 		if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0) {
 			switch (m_pClientList[iClientH]->m_cSide) {
@@ -2469,6 +2462,12 @@ void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogo
 
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
 				if (i != iClientH && m_pClientList[i] != NULL && m_pClientList[i]->m_cSide != 0) SendNotifyMsg(NULL, i, DEF_NOTIFY_EVENT, 0, 8 + m_pClientList[iClientH]->m_cSide - 1, NULL, NULL);
+		}
+
+		//Magn0S:: Arena Gladiator
+		if (memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0)
+		{
+			RequestArenaStatus(iClientH, false);
 		}
 
 		/*if (memcmp(m_pClientList[iClientH]->m_cMapName, "fight", 5) == 0) {
@@ -2929,7 +2928,7 @@ void CGame::EventEnd()
 	if (dwTime < dwEventFinishTime) return;
 
 	if (m_bIsCTFEvent)	AdminOrder_SetEvent();
-	if (bDeathmatch)	DeathmatchGame();
+	if (bDeathmatch)	GlobalEndGladiatorArena();
 	
 	if (c_team->bteam) 
 	{
@@ -7841,7 +7840,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 		else if (memcmp(cp, "/deathmatch", 11) == 0) {
             if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
-			DeathmatchGame();
+			//DeathmatchGame();
 			
 		}
 		
@@ -7883,7 +7882,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		}
 
 		else if (memcmp(cp, "/banpj ", 7) == 0) { // MORLA - 2.12 Cagar pc del player
-			AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
+			//AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
 			
 		}
 
@@ -8843,6 +8842,10 @@ DWORD * dwp, dwTimeRcv;
 			case DEF_REQUEST_ANGEL: // Angels by Snoopy...
 				GetAngelHandler(iClientH, pData, dwMsgSize);
 				break;
+
+			case MSGID_REQUEST_LEAVEARENA:
+				RequestLeaveArena(iClientH);
+				break;
 						
 			case MSGID_REQUEST_INITPLAYER:
 				RequestInitPlayerHandler(iClientH, pData, cKey);
@@ -9379,19 +9382,6 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		RequestRango(iClientH, iV1);
 		break;
 
-
-	case DEF_COMMONTYPE_REQTPDG: // MORLA 2.3 - TP Deathmach Game
-		if (m_pClientList[iClientH]->m_iLevel >= 100) 
-		{
-			if (bDeathmatch) 
-			{
-				RequestTeleportHandler(iClientH, "2   ", "fightzone1", 51, 56);
-			}
-			else SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Deathmatch event is offline.");
-		}
-		else SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You need to be level 100 or higher.");
-		break;
-
 	//50Cent - HP Bar
 	case DEF_COMMONTYPE_REQ_GETNPCHP:
 		if ((iV1 - 10000 <= 0) || (iV1 - 10000 >= DEF_MAXNPCS)) return;
@@ -9402,6 +9392,10 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 
 	case DEF_COMMONTYPE_REQUEST_ACCEPTJOINPARTY:
 		RequestAcceptJoinPartyHandler(iClientH, iV1);
+		break;
+
+	case DEF_COMMONTYPE_REQARENASTATUS:
+		RequestArenaStatus(iClientH);
 		break;
 
 	//Magn0S:: Set Function to receive orders from Client
@@ -9416,57 +9410,6 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 	}
 }
 
-void CGame::RefreshDeathmatch(int iClientH) // MORLA 2.3 - Actualiza los pjs del Deathmach
-{
-	if (m_pClientList[iClientH] != NULL && iClientH != 0) 
-	{
-		if (iClientH == iDGtop1) { iDGtop1 = iDGtop2; }
-		if (iClientH == iDGtop2) { iDGtop2 = iDGtop3; }
-		if (iClientH == iDGtop3) { iDGtop3 = iDGtop4; }
-		if (iClientH == iDGtop4) { iDGtop4 = iDGtop5; }
-		if (iClientH == iDGtop5) { iDGtop5 = iDGtop6; }
-		if (iClientH == iDGtop6) { iDGtop6 = iDGtop7; }
-		if (iClientH == iDGtop7) { iDGtop7 = iDGtop8; }
-		if (iClientH == iDGtop8) { iDGtop8 = iDGtop9; }
-		if (iClientH == iDGtop9) { iDGtop9 = iDGtop10; }
-		if (iClientH == iDGtop10) { iDGtop10 = 0; }
-	
-		if (iDGtop1 == iDGtop2)
-		{iDGtop2 = iDGtop3; iDGtop3 = iDGtop4; iDGtop4 = iDGtop5; iDGtop5 = iDGtop6; iDGtop6 = iDGtop7; iDGtop7 = iDGtop8; iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop2 == iDGtop3)
-		{iDGtop3 = iDGtop4; iDGtop4 = iDGtop5; iDGtop5 = iDGtop6; iDGtop6 = iDGtop7; iDGtop7 = iDGtop8; iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop3 == iDGtop4)
-		{iDGtop4 = iDGtop5; iDGtop5 = iDGtop6; iDGtop6 = iDGtop7; iDGtop7 = iDGtop8; iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop4 == iDGtop5)
-		{iDGtop5 = iDGtop6; iDGtop6 = iDGtop7; iDGtop7 = iDGtop8; iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop5 == iDGtop6)
-		{iDGtop6 = iDGtop7; iDGtop7 = iDGtop8; iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop6 == iDGtop7)
-		{iDGtop7 = iDGtop8; iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop7 == iDGtop8)
-		{iDGtop8 = iDGtop9; iDGtop9 = iDGtop10; iDGtop10 = 0;}
-		if (iDGtop8 == iDGtop9)
-		{iDGtop9 = iDGtop10; iDGtop10 = 0;
-		}
-	}
-
-	for (int i = 1; i < DEF_MAXCLIENTS; i++) // Check all clients
-	{
-		if (m_pClientList[i] != NULL) 
-		{
-			if (m_pClientList[iDGtop1]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 1, m_pClientList[iDGtop1]->m_iDGKills, m_pClientList[iDGtop1]->m_iDGDeaths, m_pClientList[iDGtop1]->m_cCharName);
-			if (m_pClientList[iDGtop2]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 2, m_pClientList[iDGtop2]->m_iDGKills, m_pClientList[iDGtop2]->m_iDGDeaths, m_pClientList[iDGtop2]->m_cCharName);
-			if (m_pClientList[iDGtop3]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 3, m_pClientList[iDGtop3]->m_iDGKills, m_pClientList[iDGtop3]->m_iDGDeaths, m_pClientList[iDGtop3]->m_cCharName);
-			if (m_pClientList[iDGtop4]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 4, m_pClientList[iDGtop4]->m_iDGKills, m_pClientList[iDGtop4]->m_iDGDeaths, m_pClientList[iDGtop4]->m_cCharName);
-			if (m_pClientList[iDGtop5]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 5, m_pClientList[iDGtop5]->m_iDGKills, m_pClientList[iDGtop5]->m_iDGDeaths, m_pClientList[iDGtop5]->m_cCharName);
-			if (m_pClientList[iDGtop6]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 6, m_pClientList[iDGtop6]->m_iDGKills, m_pClientList[iDGtop6]->m_iDGDeaths, m_pClientList[iDGtop6]->m_cCharName);
-			if (m_pClientList[iDGtop7]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 7, m_pClientList[iDGtop7]->m_iDGKills, m_pClientList[iDGtop7]->m_iDGDeaths, m_pClientList[iDGtop7]->m_cCharName);
-			if (m_pClientList[iDGtop8]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 8, m_pClientList[iDGtop8]->m_iDGKills, m_pClientList[iDGtop8]->m_iDGDeaths, m_pClientList[iDGtop8]->m_cCharName);
-			if (m_pClientList[iDGtop9]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 9, m_pClientList[iDGtop9]->m_iDGKills, m_pClientList[iDGtop9]->m_iDGDeaths, m_pClientList[iDGtop9]->m_cCharName);
-			if (m_pClientList[iDGtop10]!=NULL)SendNotifyMsg(NULL, i, DEF_NOTIFY_DGKILL, 10, m_pClientList[iDGtop10]->m_iDGKills, m_pClientList[iDGtop10]->m_iDGDeaths, m_pClientList[iDGtop10]->m_cCharName);
-		}
-	}
-}
 
 /////////////////////////////////////////////////////////////////////////////////////
 //  int CGame::iClientMotion_Stop_Handler(int iClientH, short sX, short sY, char cDir)
@@ -9534,6 +9477,80 @@ int CGame::iClientMotion_Stop_Handler(int iClientH, short sX, short sY, char cDi
 	}
 
 	return 1;
+}
+
+void CGame::GlobalStartGladiatorArena()
+{
+	int i;
+
+	bDeathmatch = true;
+	dwEventFinishTime = timeGetTime() + m_sDeathmatchFinish * 60 * 1000;
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
+		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE)) {
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_DEATHMATCHSTART, NULL, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_EVENTUPDATER, (int)bDeathmatch, (int)m_bIsCrusadeMode, (int)m_bIsApocalypseMode, NULL, (int)m_bIsHeldenianMode, (int)m_bIsCTFEvent);
+		}
+	}
+	
+}
+
+
+void CGame::GlobalEndGladiatorArena()
+{
+	int i;
+	bDeathmatch = false;
+	dwEventFinishTime = 0;
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
+		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE)) {
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_DEATHMATCHEND, NULL, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_EVENTUPDATER, (int)bDeathmatch, (int)m_bIsCrusadeMode, (int)m_bIsApocalypseMode, NULL, (int)m_bIsHeldenianMode, (int)m_bIsCTFEvent);
+			if (memcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0) {
+				RequestTeleportHandler(i, "0   ");
+			}
+			m_pClientList[i]->m_iDGKills = 0;
+			m_pClientList[i]->m_iDeaths = 0;
+		}
+	}
+}
+
+void CGame::ManualStartGladiatorArena(int iClientH, char* pData, DWORD dwMsgSize)
+{
+	char cBuff[256] = {}, seps[] = "= \t\n";
+
+	memcpy(cBuff, pData, dwMsgSize);
+
+	if (bDeathmatch == true) return;
+	if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
+		return;
+	}
+
+	GlobalStartGladiatorArena();
+
+	wsprintf(G_cTxt, "Admin Order(%s): Start Gladiator Arena.", m_pClientList[iClientH]->m_cCharName);
+	PutAdminLogFileList(G_cTxt);
+	PutLogList(G_cTxt);
+	PutLogEventFileList(G_cTxt);
+}
+
+void CGame::ManualEndGladiatorArena(int iClientH, char* pData, DWORD dwMsgSize)
+{
+	char cBuff[256], seps[] = "= \t\n";
+	ZeroMemory(cBuff, sizeof(cBuff));
+	memcpy(cBuff, pData, dwMsgSize);
+
+	if (bDeathmatch == false) return;
+	if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
+		return;
+	}
+
+	GlobalEndGladiatorArena();
+
+	wsprintf(G_cTxt, "Admin Order(%s): Closing Gladiator.", m_pClientList[iClientH]->m_cCharName);
+	PutAdminLogFileList(G_cTxt);
+	PutLogList(G_cTxt);
+	PutLogEventFileList(G_cTxt);
 }
 
 void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType, short sDamage)
@@ -9674,222 +9691,18 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 				if (m_pClientList[i] != NULL && m_pClientList[i]->m_cSide != 0) SendNotifyMsg(NULL, i, DEF_NOTIFY_EVENT, 0, 8 + m_pClientList[iClientH]->m_cSide - 1, NULL, NULL);
 		}
 
-		if (memcmp(m_pClientList[iAttackerH]->m_cMapName, "fightzone1", 10) == 0) 
-		{ 	
-			char cScanMessage[50];
-									
-			//MORLA 2.2 - Deathmach Game completo:
+		//Magn0S:: Arena Gladiator
+		if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0) && (iAttackerH != iClientH) && (cAttackerType != DEF_OWNERTYPE_NPC))
+		{
+			m_pClientList[iClientH]->m_iDeaths++;
 			m_pClientList[iAttackerH]->m_iDGKills++;
-			m_pClientList[iClientH]->m_iDGDeaths++;
-			
-			m_pClientList[iAttackerH]->m_iEnemyKillCount += 5;
-			if (m_pClientList[iAttackerH]->m_iEnemyKillCount > m_pClientList[iAttackerH]->m_iMaxEK)
-			{
-				m_pClientList[iAttackerH]->m_iMaxEK = m_pClientList[iAttackerH]->m_iEnemyKillCount;
-			}
-			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iAttackerH]->m_iEnemyKillCount, m_pClientList[iAttackerH]->m_iMaxEK, NULL, NULL);
-			calcularTop15HB(iAttackerH);
 
-			DWORD dwTimeThisKill = timeGetTime();
-			if (iLastKill == iAttackerH)
-			{
-				if (dwTimeLastKill > dwTimeThisKill) 
-				{
-					iTotalKills++;
-					for (i = 1; i < DEF_MAXCLIENTS; i++) // Check all clients
-					{
-						if ((m_pClientList[i] != NULL)) 
-						{
-							if ((iTotalKills == 1) && (memcmp(m_pClientList[i]->m_cMapName, "fightzone1", 10) == 0))
-								SendNotifyMsg(NULL, i, DEF_NOTIFY_DOUBLEKILL, NULL, NULL, NULL, NULL);
-							else if ((iTotalKills == 2) && (memcmp(m_pClientList[i]->m_cMapName, "fightzone1", 10) == 0))
-								SendNotifyMsg(NULL, i, DEF_NOTIFY_KILLSPRING, NULL, NULL, NULL, NULL);
-							else if ((iTotalKills == 3) && (memcmp(m_pClientList[i]->m_cMapName, "fightzone1", 10) == 0))
-								SendNotifyMsg(NULL, i, DEF_NOTIFY_MONSTERKILL, NULL, NULL, NULL, NULL);
-							else if ((iTotalKills >= 4) && (memcmp(m_pClientList[i]->m_cMapName, "fightzone1", 10) == 0))
-								SendNotifyMsg(NULL, i, DEF_NOTIFY_HOLYSHIT, NULL, NULL, NULL, NULL); 
-						}
-						dwTimeLastKill = (timeGetTime()+ 30*1000);
-					}
-				}
-				else {
-					iTotalKills = 0;
-					iLastKill = iAttackerH;
-					dwTimeLastKill = (timeGetTime()+ 30*1000);
-				}
-			}
-			else {
-				iTotalKills = 0;
-				iLastKill = iAttackerH;
-				dwTimeLastKill = (timeGetTime()+ 30*1000);
-			}
-			/*for (i = 25; i < 5000; i += 25) 
-			{
-				if (m_pClientList[iAttackerH]->m_iDGKills == i) 
-				{
-					m_pClientList[iAttackerH]->m_iDGPoints++;
-					ZeroMemory(cScanMessage, sizeof(cScanMessage));
-					wsprintf(cScanMessage, "�Got a Deathmatch Point! Total: %d", m_pClientList[iAttackerH]->m_iDGPoints);
-					SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, cScanMessage);
-					SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[iAttackerH]->m_iDGPoints, m_pClientList[iAttackerH]->m_iTotalDGKills, m_pClientList[iAttackerH]->m_iRating, NULL);
-					bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iAttackerH);
-				}
-			}*/
-			if (m_pClientList[iDGtop1] != NULL) 
-			{	
-				if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop1]->m_iDGKills)
-				{
-					if(iDGtop1!=iAttackerH){
-						iDGtop2 = iDGtop1;	
-						iDGtop1 = iAttackerH;
-					}
-				}
-				else
-				{	
-					if (m_pClientList[iDGtop2] != NULL)
-					{ 
-						if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop2]->m_iDGKills)
-						{ 
-							if(iDGtop2!=iAttackerH){
-								iDGtop3 = iDGtop2;	
-								iDGtop2 = iAttackerH;
-							}
-						}
-						else
-						{	
-							if (m_pClientList[iDGtop3] != NULL)
-							{
-								if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop3]->m_iDGKills)
-								{
-									if(iDGtop3!=iAttackerH){
-										iDGtop4 = iDGtop3;	
-										iDGtop3 = iAttackerH;
-									}
-								}
-								else
-								{	
-									if (m_pClientList[iDGtop4] != NULL)
-									{
-										if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop4]->m_iDGKills)
-										{
-											if(iDGtop4!=iAttackerH){
-												iDGtop5 = iDGtop4;	
-												iDGtop4 = iAttackerH;
-											}
-										}
-										else
-										{	
-											if (m_pClientList[iDGtop5] != NULL)
-											{
-												if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop5]->m_iDGKills)
-												{
-													if(iDGtop5!=iAttackerH){
-														iDGtop6 = iDGtop5;	
-														iDGtop5 = iAttackerH;
-													}
-												} 
-												else
-												{	
-													if (m_pClientList[iDGtop6] != NULL)
-													{
-														if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop6]->m_iDGKills)
-														{
-															if(iDGtop6!=iAttackerH){
-																iDGtop7 = iDGtop6;	
-																iDGtop6 = iAttackerH;
-															}
-														}
-														else
-														{	
-															if (m_pClientList[iDGtop7] != NULL)
-															{
-																if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop7]->m_iDGKills)
-																{
-																	if(iDGtop7!=iAttackerH){
-																		iDGtop8 = iDGtop7;	
-																		iDGtop7 = iAttackerH;
-																	}
-																}
-																else
-																{	
-																	if (m_pClientList[iDGtop8] != NULL)
-																	{
-																		if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop8]->m_iDGKills)
-																		{
-																			if(iDGtop8!=iAttackerH){
-																				iDGtop9 = iDGtop8;	
-																				iDGtop8 = iAttackerH;
-																			}
-																		}
-																		else
-																		{	
-																			if (m_pClientList[iDGtop9] != NULL)
-																			{
-																				if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop9]->m_iDGKills)
-																				{
-																					if(iDGtop9!=iAttackerH){
-																						iDGtop10 = iDGtop9;	
-																						iDGtop9 = iAttackerH;
-																					}
-																				}
-																				else
-																				{	
-																					if (m_pClientList[iDGtop10] != NULL)
-																					{
-																						if (m_pClientList[iAttackerH]->m_iDGKills >= m_pClientList[iDGtop10]->m_iDGKills)
-																						{	
-																							iDGtop10 = iAttackerH;
-																						}
-																					}
-																					else {
-																						iDGtop10 = iAttackerH;
-																					}	
-																				}
-																			} 
-																			else {
-																				iDGtop9 = iAttackerH;
-																			} 
-																		}
-																	} 
-																	else {
-																		iDGtop8 = iAttackerH;
-																	} 
-																}
-															} 
-															else {
-																iDGtop7 = iAttackerH;
-															} 
-														}
-													} 
-													else {
-														iDGtop6 = iAttackerH;
-													} 
-												}
-											} 
-											else {
-												iDGtop5 = iAttackerH;
-											}
-										}
-									} 
-									else {
-										iDGtop4 = iAttackerH;
-									} 
-								}
-							} 
-							else {
-								iDGtop3 = iAttackerH;
-							} 
-						}
-					} 
-					else {
-						iDGtop2 = iAttackerH;
-					} 
-				}
-			} 
-			else {
-				iDGtop1 = iAttackerH;
-			}
-			RefreshDeathmatch(0);
+			m_pClientList[iAttackerH]->m_iEnemyKillCount += 5;
+			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLREWARD, iClientH, NULL, NULL, NULL);
+
+			RequestArenaStatus(iClientH, true);
+			RequestArenaStatus(iAttackerH, true);
+
 			return;
 		}
 		else 
@@ -15230,6 +15043,7 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, DWORD dwMsgSize)
 	if (strcmp("middleland", cMapName) == 0) bFlag = TRUE;
 	if (strcmp("procella", cMapName) == 0) bFlag = TRUE;
 	if (string(cMapName) == "team") bFlag = TRUE;
+	if (string(cMapName) == "toh3") bFlag = TRUE;
 
 	if (bFlag == TRUE)
 		RequestTeleportHandler(iClientH, "2   ", cMapName, dX, dY);
@@ -18062,7 +17876,8 @@ void CGame::ForceChangePlayMode(int iClientH)
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CHANGEPLAYMODE, NULL, NULL, NULL, m_pClientList[iClientH]->m_cLocation);
 	SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 	
-	DeleteClient(iClientH, TRUE, TRUE);
+	//DeleteClient(iClientH, TRUE, TRUE);
+	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
 }
 
 // v2.15 2002-5-21
@@ -22317,6 +22132,25 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 	// !!! sV1, sV2, sV3´Â DWORDÇüÀÓÀ» ¸í½ÉÇÏ¶ó.
 	switch (wMsgType) {
 
+	case DEF_NOTIFY_ARENASTATUS:
+		ip = (int*)cp;
+		*ip = sV1;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = sV2;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = sV3;
+		cp += 4;
+
+		memcpy(cp, pString, 11);
+		cp += 11;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 29);
+		break;
+
 	case DEF_NOTIFY_EVENT: // kamal
 		*cp = (char)sV1;
 		cp++;
@@ -23840,7 +23674,7 @@ void CGame::bCheckLevelUp(int iClientH)
 			}
 			
 			//Magn0S:: Add Gold per lvl up to help new players
-			if (m_pClientList[iClientH]->m_iLevel < 50) 
+			/* if (m_pClientList[iClientH]->m_iLevel < 50)
 			{
 				pItem = new class CItem;
 				if(_bInitItemAttr(pItem, 90) == FALSE)
@@ -23853,7 +23687,7 @@ void CGame::bCheckLevelUp(int iClientH)
 					bAddItem(iClientH, pItem, NULL);
 				}
 			}
-			
+			*/
 			// centu - max hp,mp,sp when level up
 			if (m_pClientList[iClientH]->m_iHP < iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 			if (m_pClientList[iClientH]->m_iMP < iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
@@ -23893,6 +23727,12 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
 	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == TRUE) return;
 	if (m_pClientList[iClientH]->m_bIsForceDisconnect == TRUE) return;
+	
+	//Magn0S:: Arena
+	if (memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) {
+		RequestArenaStatus(iClientH, false); // remove player
+	}
+
 	if ((m_pClientList[iClientH]->m_cSide == 2) && 
 		(memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cLocationName, "aresden", 7) == 0) &&
 		((pData[0] == '1')  || (pData[0] == '3'))) {
@@ -24431,9 +24271,16 @@ RTH_NEXTSTEP:;
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[iClientH]->m_iConstructionPoint, m_pClientList[iClientH]->m_iWarContribution, 1, NULL);
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
 	
+	//Magn0S:: Arena
+	if (memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0)
+	{
+		RequestArenaStatus(iClientH);
+		RequestArenaStatus(iClientH, true);
+	}
+
 	//50Cent - Critical Count Login Fix
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
-	
+
 	for (j = 0; j < DEF_MAXQUEST; j++) { // Magn0S:: Multi Quest
 		if (m_pClientList[iClientH]->m_iQuest[j] != NULL) {
 			iQuestNumber = m_pClientList[iClientH]->m_iQuest[j];
@@ -24452,11 +24299,6 @@ RTH_NEXTSTEP:;
 		}
 	}
 
-	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "fightzone1", 10) == 0) && (bDeathmatch))
-	{
-		RefreshDeathmatch(iClientH); // Morla 2.3 - actualiza el deathmach
-	}
-
 	// SNOOPY: Send gate positions if applicable.
 	Notify_ApocalypseGateState(iClientH);
 	RefreshPartyCoords(iClientH);
@@ -24466,6 +24308,87 @@ RTH_NEXTSTEP:;
 	//Magn0S:: NPC Info on Apoc
 	if ((m_pClientList[iClientH]->m_bIsOnApocMap == TRUE) && (m_bIsApocalypseMode)) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MONSTERCOUNTAPOC, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_iTotalAliveObject, NULL, NULL, NULL);
+	}
+}
+
+// notify player who just joined
+void CGame::RequestArenaStatus(int iClientH)
+{
+	int i;
+	if (m_pClientList[iClientH] == NULL) return;
+
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
+		if ((m_pClientList[i] != NULL) && (memcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0))
+		{
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARENASTATUS, m_pClientList[i]->m_iDGKills, m_pClientList[i]->m_iDeaths, 1, m_pClientList[i]->m_cCharName);
+		}
+	}
+}
+
+// update all players with score change
+void CGame::RequestArenaStatus(int iSubjectH, bool bUpdate)
+{
+	int i;
+	if (m_pClientList[iSubjectH] == NULL) return;
+	if (m_pClientList[iSubjectH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iSubjectH]->m_bIsOnWaitingProcess == TRUE) return;
+
+	if (bUpdate)
+	{
+		for (i = 0; i < DEF_MAXCLIENTS; i++) {
+			if ((m_pClientList[i] != NULL) && (memcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0)) //crash line
+			{
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_ARENASTATUS, m_pClientList[iSubjectH]->m_iDGKills, m_pClientList[iSubjectH]->m_iDeaths, 1, m_pClientList[iSubjectH]->m_cCharName);
+			}
+		}
+	}
+	else
+	{
+		for (i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			if ((m_pClientList[i] != NULL) && (memcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0))
+			{
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_ARENASTATUS, 0, 0, 0, m_pClientList[iSubjectH]->m_cCharName);
+			}
+		}
+	}
+}
+//Magn0S:: Leave Arena
+void CGame::RequestLeaveArena(int iClientH)
+{
+	short sX, sY;
+
+	if (m_pClientList[iClientH] == NULL) return;
+	sX = m_pClientList[iClientH]->m_sX;
+	sY = m_pClientList[iClientH]->m_sY;
+
+	if (bDeathmatch) {
+		RequestArenaStatus(iClientH, false);
+		m_pClientList[iClientH]->m_iDGKills = 0;
+		m_pClientList[iClientH]->m_iDeaths = 0;
+	}
+
+	m_pClientList[iClientH]->m_bIsKilled = FALSE;
+	m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
+	m_pClientList[iClientH]->m_iHungerStatus = 100;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HP, NULL, NULL, NULL, NULL);
+	m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MP, NULL, NULL, NULL, NULL);
+	m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SP, NULL, NULL, NULL, NULL);
+
+	if (c_team->bteam)
+	{
+		if (m_pClientList[iClientH]->m_cSide == 1)
+			RequestTeleportHandler(iClientH, "2   ", "aresden", -1, -1, true);
+		else
+			RequestTeleportHandler(iClientH, "2   ", "elvine", -1, -1, true);
+	}
+	else {
+		if (m_pClientList[iClientH]->m_cSide == 1)
+			RequestTeleportHandler(iClientH, "2   ", "aresden", -1, -1);
+		else
+			RequestTeleportHandler(iClientH, "2   ", "elvine", -1, -1);
 	}
 }
 
@@ -24490,7 +24413,7 @@ void CGame::RequestRestartHandler(int iClientH)
 			// centu - added majestic level to calculate criticals
 			//m_pClientList[iClientH]->m_iSuperAttackLeft = (m_pClientList[iClientH]->m_iLevel) / 10;
 			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
-			RequestTeleportHandler(iClientH, "2   ", m_pClientList[iClientH]->m_cMapName, 51, 56);
+			RequestTeleportHandler(iClientH, "2   ", m_pClientList[iClientH]->m_cMapName, -1, -1);
 		}
 		else {
 			strcpy(cTmpMap,m_pClientList[iClientH]->m_cMapName) ;
@@ -25012,12 +24935,6 @@ void CGame::ParseCommand(char * pMsg)
 		}
 	} 
 
-	else if (memcmp(pMsg, "/deathmatch", 11) == 0) 
-	{ 
-		bFlag = TRUE;
-		DeathmatchGame();
-	}
-
 	else if (memcmp(pMsg, "/bum ", 5) == 0) { 
 		bFlag = TRUE;   
 		ZeroMemory(ss, 100); 
@@ -25053,47 +24970,6 @@ void CGame::ParseCommand(char * pMsg)
 	} 
 }
 
-
-void CGame::DeathmatchGame()
-{
-	int i;
-	if (bDeathmatch) {
-		bDeathmatch = FALSE;
-		if (m_pClientList[iDGtop1] != NULL) 
-		{
-			m_pClientList[iDGtop1]->m_iEnemyKillCount += 200;
-			if (m_pClientList[iDGtop1]->m_iEnemyKillCount > m_pClientList[iDGtop1]->m_iMaxEK)
-			{
-				m_pClientList[iDGtop1]->m_iMaxEK = m_pClientList[iDGtop1]->m_iEnemyKillCount;
-			}
-			SendNotifyMsg(NULL, iDGtop1, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iDGtop1]->m_iEnemyKillCount, m_pClientList[iDGtop1]->m_iMaxEK, NULL, NULL);
-			ShowClientMsg(iDGtop1, "You've received 200 EKs for been in 1st place!");
-			calcularTop15HB(iDGtop1);
-		}
-		for (i = 1; i < DEF_MAXCLIENTS; i++) // Check all clients
-		{
-			if ((m_pClientList[i] != NULL)) {
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_DEATHMATCHEND, NULL, NULL, NULL, NULL);
-				if (memcmp(m_pClientList[i]->m_cMapName, "fightzone1", 10) == 0)
-					RequestTeleportHandler(i, "1   ");
-			}
-		}
-		dwEventFinishTime = 0;
-		PutLogList("DEATHMATCH MODE OFF");
-	}
-	else {
-		bDeathmatch = TRUE;
-		for (i = 1; i < DEF_MAXCLIENTS; i++) // Check all clients
-		{
-			if ((m_pClientList[i] != NULL)) {
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_DEATHMATCHSTART, NULL, NULL, NULL, NULL); 					
-			}
-		}
-		iDGtop1 = iDGtop2 = iDGtop3 = iDGtop4 = iDGtop5 = iDGtop6 = iDGtop7 = iDGtop8 = iDGtop9 = iDGtop10 = 0;
-		dwEventFinishTime = timeGetTime() + m_sDeathmatchFinish * 60 * 1000;
-		PutLogList("DEATHMATCH MODE ON");
-	}
-}
 
 //LifeX Fix Revive 14/10/2019
 void CGame::AdminOrder_Revive(int iClientH, char * pData, DWORD dwMsgSize)
@@ -27617,7 +27493,7 @@ void CGame::RequestChargedTeleportHandler(int iClientH, char* pData, DWORD dwMsg
 		(!c_team->bteam))
 	{
 		wConfirm = DEF_MSGTYPE_REJECT;
-		sError = 7;
+		sError = 8;
 	}
 
 	if (wConfirm == DEF_MSGTYPE_CONFIRM &&
@@ -28223,7 +28099,9 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 			return;
 		}
 
-		DeathmatchGame();
+		if (!bDeathmatch)
+			ManualStartGladiatorArena(iClientH, NULL, NULL);
+		else ManualEndGladiatorArena(iClientH, NULL, NULL);
 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EVENTUPDATER, (int)bDeathmatch, (int)m_bIsCrusadeMode, (int)m_bIsApocalypseMode, NULL, (int)m_bIsHeldenianMode, (int)m_bIsCTFEvent);
 		break;

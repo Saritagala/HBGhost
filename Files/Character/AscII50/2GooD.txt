@@ -1,0 +1,126 @@
+[FILE-DATE]
+
+file-saved-date: 2020 7 28 22 41
+
+[NAME-ACCOUNT]
+
+character-name     = 2GooD
+account-name       = djsmile
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = aresden
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = aresden
+character-loc-x   = 67
+character-loc-y   = 60
+
+character-HP       = 69
+character-MP       = 165
+character-SP       = 578
+character-LEVEL    = 180
+character-RATING   = 0
+character-STR      = 200
+character-INT      = 36
+character-VIT      = 12
+character-DEX      = 200
+character-MAG      = 10
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 1020355
+character-LU_Pool  = 139
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = -24672
+character-IDnum2 = 412
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 2
+skin-status      = 3
+hairstyle-status = 5
+haircolor-status = 14
+underwear-status = 5
+hunger-status    = 93
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 0 0 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 0
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 1
+reserved-fightzone-id = 0 0 0
+special-ability-time = 303
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 6295971
+party-id = 0
+gizon-item-upgrade-left = 20
+character-Deaths = 0
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 31.4.247.181
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+
+
+appr1 = 1509
+appr2 = -3632
+appr3 = 0
+appr4 = 0
+appr-color = 0
+
+[ITEMLIST]
+
+character-item = Dagger               1 0 0 0 0 0 0 0 0 279 0 0 0 1 0
+character-item = RedPotion            1 0 0 0 0 0 0 0 0 300 0 0 0 1 0
+character-item = GreenPotion          1 0 0 0 0 0 0 0 0 300 0 0 0 1 0
+character-item = Gold                 37695 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-item = BarbarianHammer      1 0 0 0 0 0 0 0 0 4444 0 0 0 0 0
+character-item = MagicWand(MS0)       1 2 7198 6728 728 5 0 0 0 1200 10616832 0 0 0 0
+character-item = Dagger               1 0 0 0 0 0 0 0 0 300 0 0 0 1 0
+character-item = LightingBlade        1 1 12296 613 1 0 0 0 0 3997 0 0 0 0 0
+character-item = PowerGreenPotion     1 2 4606 27800 728 0 0 0 0 1 0 0 0 0 0
+character-item = Horned-Helm(M)       1 2 22483 6989 728 0 0 0 0 3500 8668928 0 0 0 0
+
+
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1110000000111110000011011111101011111010000000000000000000000000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 0 29 0 0 53 367 0 0 0 0 0 105 0 0 0 0 0 0 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00000001000000000000000000000000000000000000000000
+item-position-x = 35 53 18 60 40 40 35 97 40 150 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 
+item-position-y = 31 25 17 28 30 30 31 27 30 14 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 
+
+[EOF]
+
+
+

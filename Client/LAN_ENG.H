@@ -1926,9 +1926,9 @@
 #define DEF_MSG_MAPNAME_CATH		"Church"
 //Snoopy
 #define DEF_MSG_MAPNAME_CMDHALL		"Command Hall"
-#define DEF_MSG_MAPNAME_FARM		"The entrance to the PromiseLand"
-#define DEF_MSG_MAPNAME_HUNT		"The entrance to the Hunt-Zone"
-#define DEF_MSG_MAPNAME_ML			"The entrance to the MiddleLand"
+#define DEF_MSG_MAPNAME_FARM		"PromiseLand"
+#define DEF_MSG_MAPNAME_HUNT		"Icebound"
+#define DEF_MSG_MAPNAME_ML			"MiddleLand"
 
 #define DEF_MSG_WARNING1	" ** This is a battle area **"
 #define DEF_MSG_WARNING2	"This is a dangerous area where you"

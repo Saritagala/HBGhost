@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/7/28/14/17)  IP(181.44.105.64)
+
+[NAME]
+
+account-name     = Magnos
+
+[PASSWORD]
+
+account-password = cambiapass
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 4
+
+account-change-password = 2020 7 28
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = magnos@hbghost.com
+account-Quiz     = Noob?
+account-Answer   = Yes
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Magn0S[GM]
+

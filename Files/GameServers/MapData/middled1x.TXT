@@ -99,21 +99,5 @@ mineral-point = 59 112 35
 mineral-point = 60 101 35
 mineral-point = 61 99  34
 mineral-point = 62 98  35
-mineral-point = 63 71  65
-mineral-point = 64 84  68
-mineral-point = 65 92 111
-mineral-point = 66 87  135
-mineral-point = 67 115 147
-mineral-point = 68 117 139
-mineral-point = 69 130 139
-mineral-point = 70 132 147
-mineral-point = 71 160 141
-mineral-point = 72 173 105
-mineral-point = 73 168 83
-mineral-point = 74 152 66
-mineral-point = 75 137 37
-mineral-point = 76 138 37
-
-
 
 [END-MAP-INFO]
