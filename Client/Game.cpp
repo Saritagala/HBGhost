@@ -27157,6 +27157,7 @@ void CGame::NotifyMsgHandler(char * pData)
 
 	case DEF_NOTIFY_APOCGATEENDMSG: // Snoopy 0x0BD3
 		SetTopMsg("The portal to the Apocalypse is closed.", 10);
+		bPlayGhostMusic = false;
 		break;
 
 	case DEF_NOTIFY_APOCGATEOPEN: // Snoopy ;  Case BD4 of switch 00454077
@@ -27397,7 +27398,8 @@ void CGame::NotifyMsgHandler(char * pData)
 
 	//Magn0S:: Put to start Ghost Music on event
 	case DEF_NOTIFY_ABBYAPPEAR:
-		StartBGMGhost();
+		//StartBGMGhost();
+		bPlayGhostMusic = true;
 		break;
 
 	// Slates - Diuuude
@@ -30168,9 +30170,12 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 	if( sX < 20 ) sX = 0;
 	if( sY < 20 ) sY = 0;
 #ifdef RES_HIGH
+	//Magn0S:: Fix map
+	if( sX > 800-128-20 ) sX = 800-128;
+	if( sY > 547-128-20 ) sY = 547-128;
 	//LifeX Fix Map
-	if (sX > 400) sX = 800 - 128;
-	if (sY > 273) sY = 547 - 128;
+	/*if (sX > 400) sX = 800 - 128;
+	if (sY > 273) sY = 547 - 128;*/
 #else
 	if( sX > 640-128-20 ) sX = 640-128;
 	if( sY > 427-128-20 ) sY = 427-128;
@@ -32014,25 +32019,10 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 				if (m_stMCursor.sSelectedObjectID == 9)
 				{
 #ifdef RES_HIGH
-
-					if (msX < 400) //LifeX Fix Map
-					{
-						m_stDialogBoxInfo[9].sX = 0;
-					}
-					else
-					{
-						m_stDialogBoxInfo[9].sX = 800 - m_stDialogBoxInfo[9].sSizeX;
-					}
-
-					if (msY < 273)
-					{
-						m_stDialogBoxInfo[9].sY = 0;
-					}
-					else
-					{
-						m_stDialogBoxInfo[9].sY = 547 - m_stDialogBoxInfo[9].sSizeY;
-					}
-
+					if (msX < 400) m_stDialogBoxInfo[9].sX = 0;
+					else m_stDialogBoxInfo[9].sX = 800 - m_stDialogBoxInfo[9].sSizeX;
+					if (msY < 273) m_stDialogBoxInfo[9].sY = 0;
+					else m_stDialogBoxInfo[9].sY = 547 - m_stDialogBoxInfo[9].sSizeY;
 #else
 					if (msX < 320) m_stDialogBoxInfo[9].sX = 0;
 					else m_stDialogBoxInfo[9].sX = 640 - m_stDialogBoxInfo[9].sSizeX;

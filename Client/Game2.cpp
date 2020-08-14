@@ -18700,9 +18700,8 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 	if (sX < 20) sX = 0;
 	if (sY < 20) sY = 0;
 #ifdef RES_HIGH
-	//LifeX Fix Map
-	if (sX > 400) sX = 800 - 128;
-	if (sY > 273) sY = 547 - 128;
+	if (sX > 800 - 128 - 20) sX = 800 - 128;
+	if (sY > 547 - 128 - 20) sY = 547 - 128;
 #else
 	if (sX > 640 - 128 - 20) sX = 640 - 128;
 	if (sY > 427 - 128 - 20) sY = 427 - 128;
@@ -19083,11 +19082,12 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 	if (cLB != 0) return;
 	if (msX >= sX && msX < sX + szY && msY >= sY && msY < sY + szY)
 	{
-#ifdef RES_HIGH
+/*#ifdef RES_HIGH
 		if (sY > 273) shY = sY - 17;
 #else
 		if (sY > 213) shY = sY - 17;
-#endif
+#endif*/
+		if (sY > 213) shY = sY - 17;
 		else shY = sY + szY + 4;
 		if (m_bZoomMap) PutString(sX, shY, DEF_MSG_GUIDEMAP_MIN, RGB(200, 200, 120));//"(-)
 		else PutString(sX, shY, DEF_MSG_GUIDEMAP_MAX, RGB(200, 200, 120));//"(+)
@@ -20058,7 +20058,7 @@ void CGame::SetBGMVolume()
 }
 void CGame::StartBGM()
 {
-	if (m_bSoundFlag == FALSE)
+	if ((m_bSoundFlag == FALSE) && (bPlayGhostMusic == false))
 	{
 		StopBGM();	// Snoopy: mp3 support
 		if (m_pBGM != NULL)
@@ -20090,7 +20090,14 @@ void CGame::StartBGM()
 			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
 			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
 			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) strcpy(cWavFileName, "music\\abaddon.wav");
+			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) 
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 100; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.wav");				}
+				else {
+					strcpy(cWavFileName, "music\\abaddon.wav");
+				}
 			else strcpy(cWavFileName, "music\\MainTm.wav");
 		}
 	}
@@ -20118,17 +20125,18 @@ void CGame::StartBGM()
 }
 
 //Magn0S:: Add to start Special Music on Ghost Abaddon fight
-void CGame::StartBGMGhost()
+/*void CGame::StartBGMGhost()
 {
-
 	char cWavFileName[32];
 	ZeroMemory(cWavFileName, sizeof(cWavFileName));
-
-	if ((m_cGameMode == DEF_GAMEMODE_ONMAINGAME) && (memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.wav");
 
 	StopBGM();
 	if (m_bSoundFlag == FALSE) m_bSoundFlag = TRUE;
 
+	if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
+		if ((memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.wav");
+
+	}
 	//Snoopy: mp3 support
 	if (Mp3Playing(cWavFileName) == FALSE)
 	{
@@ -20151,7 +20159,7 @@ void CGame::StartBGMGhost()
 			PauseBGM();
 		}
 	}
-}
+}*/
 
 void CGame::MotionResponseHandler(char * pData)
 {

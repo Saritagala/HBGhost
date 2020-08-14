@@ -1289,6 +1289,7 @@ public:
 	bool m_bNullDrop[10];
 
 	void StartBGMGhost();
+	bool bPlayGhostMusic = false;
 	int m_iTotalAliveObject = -1;
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
