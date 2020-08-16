@@ -182,7 +182,7 @@ CGame::CGame()
 
 	//Guide Map Dialog
 #ifdef RES_HIGH
-	m_stDialogBoxInfo[9].sX = 800-128; //LifeX Fix Map
+	m_stDialogBoxInfo[9].sX = 800 - 128; //LifeX Fix Map
 #else
 	m_stDialogBoxInfo[9].sX = 512;
 #endif
@@ -27183,19 +27183,13 @@ void CGame::NotifyMsgHandler(char * pData)
 	case DEF_NOTIFY_QUESTCOUNTER: //Magn0S:: Multi Quest
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 
-		ip = (int*)cp;
-		iV1 = *ip; //Quest Vector (1, 2, 3, 4, 5)
-		cp += 4;
+		sp = (short*)cp;
+		sV1 = *sp; //Quest Vector (1, 2, 3, 4, 5)
+		cp += 2;
 
-		ip = (int*)cp;
-		iV2 = *ip; // Quest Kills
-		cp += 4;
-
-		ip = (int*)cp;
-		iV3 = *ip;
-		cp += 4;
-
-		m_stQuest[iV1].sCurrentCount = iV2;
+		sp = (short*)cp;
+		m_stQuest[sV1].sCurrentCount = *sp; // Quest Kills
+		cp += 2;
 
 		/*for (i = 0; i < DEF_MAXQUEST; i++) {
 			if (i == iV1) {
@@ -32019,10 +32013,12 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 				if (m_stMCursor.sSelectedObjectID == 9)
 				{
 #ifdef RES_HIGH
-					if (msX < 400) m_stDialogBoxInfo[9].sX = 0;
-					else m_stDialogBoxInfo[9].sX = 800 - m_stDialogBoxInfo[9].sSizeX;
-					if (msY < 273) m_stDialogBoxInfo[9].sY = 0;
-					else m_stDialogBoxInfo[9].sY = 547 - m_stDialogBoxInfo[9].sSizeY;
+					if (msX < 400) 
+						m_stDialogBoxInfo[9].sX = 0;
+					else m_stDialogBoxInfo[9].sX = 800 - 128;
+					if (msY < 273) 
+						m_stDialogBoxInfo[9].sY = 0;
+					else m_stDialogBoxInfo[9].sY = 547 - 128;
 #else
 					if (msX < 320) m_stDialogBoxInfo[9].sX = 0;
 					else m_stDialogBoxInfo[9].sX = 640 - m_stDialogBoxInfo[9].sSizeX;

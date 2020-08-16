@@ -459,8 +459,9 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 							if ((memcmp(m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) && 
 								(m_pQuestConfigList[iQuestIndex]->m_iTargetType == m_pNpcList[iNpcH]->m_sType)) {
 								m_pClientList[sAttackerH]->m_iCurQuestCount[j]++;
-								cQuestRemain = (m_pQuestConfigList[m_pClientList[sAttackerH]->m_iQuest[j]]->m_iMaxCount - m_pClientList[sAttackerH]->m_iCurQuestCount[j]);
-								SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, cQuestRemain, NULL, NULL);
+								//cQuestRemain = (m_pQuestConfigList[m_pClientList[sAttackerH]->m_iQuest[j]]->m_iMaxCount - m_pClientList[sAttackerH]->m_iCurQuestCount[j]);
+								//SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, cQuestRemain, NULL, NULL);
+								SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, m_pClientList[sAttackerH]->m_iCurQuestCount[j], NULL, NULL);
 								_bCheckIsQuestCompleted(sAttackerH, j);
 							}
 							break;

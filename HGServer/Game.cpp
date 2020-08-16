@@ -23236,11 +23236,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		*sp = (short)sV2;
 		cp += 2;
 
-		sp = (short*)cp;
-		*sp = (short)sV3;
-		cp += 2;
-
-		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 12);
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
 		break;
 	
 	case DEF_NOTIFY_CURLIFESPAN:
@@ -23278,8 +23274,19 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
 		break;
 
+	case DEF_NOTIFY_QUESTCOUNTER: // Magn0S:: Multi Quest - centu
+		sp = (short*)cp;
+		*sp = (short)sV1;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = (short)sV2;
+		cp += 2;
+		
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
+		break;
+
 	case DEF_NOTIFY_REPDGDEATHS:
-	case DEF_NOTIFY_QUESTCOUNTER: // Magn0S:: Multi Quest
 	case DEF_NOTIFY_QUESTCOMPLETED:
 	case DEF_NOTIFY_QUESTABORTED:
 		ip = (int*)cp;
@@ -24290,7 +24297,8 @@ RTH_NEXTSTEP:;
 				if (iQuestType == 1) {
 					if (_bCheckIsQuestCompleted(iClientH, j) == TRUE)
 					{
-						sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						//sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						sV1 = m_pClientList[iClientH]->m_iCurQuestCount[j];
 						if (sV1 < 0) sV1 = 0;
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, j, sV1, NULL, NULL);
 					}
@@ -24566,7 +24574,8 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 				{
 					if (_bCheckIsQuestCompleted(iClientH, j) == TRUE)
 					{
-						sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						//sV1 = m_pQuestConfigList[iQuestNumber]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[j];
+						sV1 = m_pClientList[iClientH]->m_iCurQuestCount[j];
 						if (sV1 > 0)
 						{
 							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, j, sV1, NULL, NULL);
@@ -26421,7 +26430,7 @@ void CGame::NpcBehavior_Flee(int iNpcH)
 		m_pNpcList[iNpcH]->m_iTargetIndex = sTarget;
 		m_pNpcList[iNpcH]->m_cTargetType = cTargetType;
 	}
-	//else return;
+	else return;
 
 	// 목표물과 자신의 위치를 구한다. 반대방향으로 도망치기 위함.
 	sX = m_pNpcList[iNpcH]->m_sX;

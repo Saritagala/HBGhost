@@ -744,18 +744,18 @@ void CGame::NotifyMsg_ShowMap(char * pData)
 
 void CGame::NotifyMsg_Skill(char *pData)
 {
-	WORD * wp;
-	short sSkillIndex, sValue;
+	//WORD * wp; // centu - fix negative skills
+	short sSkillIndex, sValue, *sp;
 	char * cp;
 	char cTxt[120];
 	int i;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
-	sSkillIndex = (short)*wp;
+	sp = (short *)cp;
+	sSkillIndex = *sp;
 	cp += 2;
-	wp = (WORD *)cp;
-	sValue = (short)*wp;
+	sp = (short *)cp;
+	sValue = *sp;
 	cp += 2;
 	_RemoveChatMsgListByObjectID(m_sPlayerObjectID);
 	if (m_pSkillCfgList[sSkillIndex]->m_iLevel < sValue)
@@ -13092,12 +13092,12 @@ void CGame::DrawQuestHelper()
 				PutString2(iX, iY + 28 + (iEntry * 32), cTxt, 70, 70, 70);
 			}
 			else {
-				if (m_stQuest[i].sX != 0) {
+				/*if (m_stQuest[i].sX != 0) {
 					ZeroMemory(cTxt, sizeof(cTxt));
 					wsprintf(cTxt, "%d,%d /%d", m_stQuest[1].sX, m_stQuest[i].sY, m_stQuest[i].sRange);
 					PutString2(iX, iY + 14 + (iEntry *15), cTxt, 55, 255, 255);
 				}
-				else {
+				else {*/
 					ZeroMemory(cTxt2, sizeof(cTxt2));
 					GetOfficialMapName(m_stQuest[i].cTargetName, cTxt2);
 					PutString2(iX, iY + 14 + (iEntry * 32), cTxt2, 255, 255, 255);
@@ -13108,7 +13108,7 @@ void CGame::DrawQuestHelper()
 					//wsprintf(cTxt, "%s: %d/%d", cTemp, (m_stQuest[i].sTargetCount - m_stQuest[i].sCurrentCount), m_stQuest[i].sTargetCount);
 					wsprintf(cTxt, "%s: %d/%d", cTemp, m_stQuest[i].sCurrentCount, m_stQuest[i].sTargetCount);
 					PutString2(iX, iY + 28 + (iEntry *32), cTxt, 55, 255, 255);
-				}
+				//}
 			}
 			iEntry++;
 		}

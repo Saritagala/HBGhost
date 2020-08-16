@@ -499,8 +499,9 @@ void CGame::QuestAcceptedHandler(int iClientH)
 
 				if (m_pClientList[iClientH]->m_iQuest[i] != NULL)
 				{
-					cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, NULL, NULL);
+					//cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
+					//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, NULL, NULL);
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, m_pClientList[iClientH]->m_iCurQuestCount[i], NULL, NULL);
 					_bCheckIsQuestCompleted(iClientH, i);
 				}
 				return;
@@ -550,8 +551,9 @@ void CGame::_SendQuestContents(int iClientH)
 				//------------------------------------------------------------------------------------------------------
 
 				//Magn0S:: Add to fix.
-				cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, NULL, NULL);
+				//cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
+				//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, NULL, NULL);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, m_pClientList[iClientH]->m_iCurQuestCount[i], NULL, NULL);
 			}
 		}
 	}
@@ -628,6 +630,7 @@ BOOL CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 						if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) &&
 						(m_pClientList[iClientH]->m_iCurQuestCount[iQuest] >= m_pQuestConfigList[iQuestIndex]->m_iMaxCount)) {
 						m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = TRUE;
+						m_pClientList[iClientH]->m_iCurQuestCount[iQuest] = m_pQuestConfigList[iQuestIndex]->m_iMaxCount;
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOMPLETED, iQuest, NULL, NULL, NULL);
 						return TRUE;
 					}
