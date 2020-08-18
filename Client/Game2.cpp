@@ -5495,6 +5495,18 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/shinning");
 				PlaySound('E', 14, 5);
 			}
+
+			iNext += 1;
+			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/happy");
+				PlaySound('E', 14, 5);
+			}
+
+			iNext += 1;
+			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/fury");
+				PlaySound('E', 14, 5);
+			}
 		} else { AddEventList("Admin User Level is too low for this action.", 10); }
 
 		//Back
@@ -6956,6 +6968,24 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		iNext += 1;
 		PutString2(sX + 15, sY + iNext * 17 + 45, "Shinning Event", 255, 255, 255);
 		if (!bShinning) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Happy Hour", 255, 255, 255);
+		if (!m_bHappyHour) {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+		}
+		else {
+			PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		}
+
+		iNext += 1;
+		PutString2(sX + 15, sY + iNext * 17 + 45, "Fury Hour", 255, 255, 255);
+		if (!m_bFuryHour) {
 			PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 		}
 		else {
@@ -21974,6 +22004,14 @@ void CGame::NotifyEvents(char* pData)
 
 	bp = (bool*)cp;
 	bShinning = *bp;
+	cp++;
+
+	bp = (bool*)cp;
+	m_bHappyHour = *bp;
+	cp++;
+
+	bp = (bool*)cp;
+	m_bFuryHour = *bp;
 	cp++;
 
 	// ON

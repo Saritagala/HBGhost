@@ -747,6 +747,8 @@ BOOL CGame::bInit()
 	iTotalKills = 0;
 	dwTimeLastKill = dwTime;
 	iDGtop1=iDGtop2=iDGtop3=iDGtop4=iDGtop5=iDGtop6=iDGtop7=iDGtop8=iDGtop9=iDGtop10=0;
+	m_bHappyHour = FALSE;
+	m_bFuryHour = FALSE;
 	// 	Heldenian
 	m_bIsHeldenianMode			 = FALSE;
 	m_bHeldenianWarInitiated	 = FALSE;
@@ -1786,7 +1788,15 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
 	cp += 4;
 
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 126);
+	bp = (bool*)cp;
+	*bp = m_bHappyHour;
+	cp++;
+
+	bp = (bool*)cp;
+	*bp = m_bFuryHour;
+	cp++;
+
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 128);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -2297,6 +2307,12 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	if (bShinning)
 		SendAlertMsg(iClientH, "Event Shinning Enabled");
 
+	if (m_bHappyHour)
+		SendAlertMsg(iClientH, "Happy Hour Activated! Ek x40");
+
+	if (m_bFuryHour)
+		SendAlertMsg(iClientH, "Fury Hour Activated! Ek x100");
+
 	if ((memcmp(m_pClientList[iClientH]->m_cMapName, "team", 4) == 0) && (c_team->bteam)) {
 		if (m_pClientList[iClientH]->IsLocation("elvine"))
 			RequestTeleportHandler(iClientH, "2", "elvine", -1, -1, true);
@@ -2802,7 +2818,7 @@ void CGame::OnTimer(char cType)
 		SpecialEventHandler();
 		
 		if (m_bIsCTFEvent || bDeathmatch || c_team->bteam || bShinning || _drop_inhib || _candy_boost ||
-			_revelation || _city_teleport)
+			_revelation || _city_teleport || m_bHappyHour || m_bFuryHour)
 		{
 			EventEnd();
 		}
@@ -2959,6 +2975,9 @@ void CGame::EventEnd()
 		_drop_inhib = false;
 		NotifyEvents();
 	}
+
+	if (m_bHappyHour) ManageHappyHour();
+	if (m_bFuryHour) ManageFuryHour();
 }
 
 
@@ -7580,6 +7599,18 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
+		else if (strcmp(cp, "/happy") == 0)
+		{
+			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
+			ManageHappyHour();
+		}
+
+		else if (strcmp(cp, "/fury") == 0)
+		{
+			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
+			ManageFuryHour();
+		}
+
 		else if (strcmp(cp, "/team") == 0)
 		{
 			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
@@ -7767,7 +7798,6 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
 			
 			ManageShinning();
-			NotifyEvents();
 		}
 
 		else if (memcmp(cp, "/who", 4) == 0) 
@@ -9508,7 +9538,7 @@ void CGame::GlobalEndGladiatorArena()
 				RequestTeleportHandler(i, "0   ");
 			}
 			m_pClientList[i]->m_iDGKills = 0;
-			m_pClientList[i]->m_iDeaths = 0;
+			m_pClientList[i]->m_iDGDeaths = 0;
 		}
 	}
 }
@@ -9694,7 +9724,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 		//Magn0S:: Arena Gladiator
 		if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0) && (iAttackerH != iClientH) && (cAttackerType != DEF_OWNERTYPE_NPC))
 		{
-			m_pClientList[iClientH]->m_iDeaths++;
+			m_pClientList[iClientH]->m_iDGDeaths++;
 			m_pClientList[iAttackerH]->m_iDGKills++;
 
 			m_pClientList[iAttackerH]->m_iEnemyKillCount += 5;
@@ -10936,7 +10966,13 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 		// Èñ»ýÀÚÀÇ ·¹º§ÀÌ 80ÀÌ»óÀÌ°í
 		if (memcmp(m_pClientList[iClientH]->m_cLocation, m_pClientList[iClientH]->m_cMapName, 10) != 0) {
 			// Èñ»ýÀÚ°¡ Á×Àº °÷ÀÌ ÀÚ½ÅÀÇ ¸¶À»ÀÌ ¾Æ´Ï¶ó¸é EK·Î ÀÎÁ¤ 
-			m_pClientList[iAttackerH]->m_iEnemyKillCount += m_iEnemyKillAdjust;
+			if (m_bHappyHour)
+				m_pClientList[iAttackerH]->m_iEnemyKillCount += 40;
+			else if (m_bFuryHour)
+				m_pClientList[iAttackerH]->m_iEnemyKillCount += 100;
+			else
+				m_pClientList[iAttackerH]->m_iEnemyKillCount += m_iEnemyKillAdjust;
+			
 			if (m_pClientList[iAttackerH]->m_iEnemyKillCount > m_pClientList[iAttackerH]->m_iMaxEK)
 			{
 				m_pClientList[iAttackerH]->m_iMaxEK = m_pClientList[iAttackerH]->m_iEnemyKillCount;
@@ -24328,7 +24364,7 @@ void CGame::RequestArenaStatus(int iClientH)
 	for (i = 0; i < DEF_MAXCLIENTS; i++) {
 		if ((m_pClientList[i] != NULL) && (memcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0))
 		{
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARENASTATUS, m_pClientList[i]->m_iDGKills, m_pClientList[i]->m_iDeaths, 1, m_pClientList[i]->m_cCharName);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARENASTATUS, m_pClientList[i]->m_iDGKills, m_pClientList[i]->m_iDGDeaths, 1, m_pClientList[i]->m_cCharName);
 		}
 	}
 }
@@ -24346,7 +24382,7 @@ void CGame::RequestArenaStatus(int iSubjectH, bool bUpdate)
 		for (i = 0; i < DEF_MAXCLIENTS; i++) {
 			if ((m_pClientList[i] != NULL) && (memcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cName, "fightzone1", 10) == 0)) //crash line
 			{
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_ARENASTATUS, m_pClientList[iSubjectH]->m_iDGKills, m_pClientList[iSubjectH]->m_iDeaths, 1, m_pClientList[iSubjectH]->m_cCharName);
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_ARENASTATUS, m_pClientList[iSubjectH]->m_iDGKills, m_pClientList[iSubjectH]->m_iDGDeaths, 1, m_pClientList[iSubjectH]->m_cCharName);
 			}
 		}
 	}
@@ -24373,7 +24409,7 @@ void CGame::RequestLeaveArena(int iClientH)
 	if (bDeathmatch) {
 		RequestArenaStatus(iClientH, false);
 		m_pClientList[iClientH]->m_iDGKills = 0;
-		m_pClientList[iClientH]->m_iDeaths = 0;
+		m_pClientList[iClientH]->m_iDGDeaths = 0;
 	}
 
 	m_pClientList[iClientH]->m_bIsKilled = FALSE;
@@ -28655,6 +28691,14 @@ void CGame::NotifyEvents()
 	*bp = bShinning;
 	cp++;
 
+	bp = (bool*)cp;
+	*bp = m_bHappyHour;
+	cp++;
+
+	bp = (bool*)cp;
+	*bp = m_bFuryHour;
+	cp++;
+
 	for (int iClientH = 0; iClientH < DEF_MAXCLIENTS; iClientH++)
 	{
 		if (!m_pClientList[iClientH])
@@ -28713,6 +28757,65 @@ void CGame::ManageShinning()
 		}
 		dwEventFinishTime = 0;
 	}
+	NotifyEvents();
+}
+
+void CGame::ManageHappyHour()
+{
+	if (m_bFuryHour) m_bFuryHour = false;
+	if (m_bHappyHour) m_bHappyHour = false;
+	else m_bHappyHour = true;
+
+	if (m_bHappyHour)
+	{
+		for (int i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			auto pi = m_pClientList[i];
+			if (!pi) continue;
+			SendAlertMsg(i, "Happy Hour Activated! Ek x40");
+		}
+		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+	}
+	else
+	{
+		for (int i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			auto pi = m_pClientList[i];
+			if (!pi) continue;
+			SendAlertMsg(i, "Happy Hour Ended");
+		}
+		dwEventFinishTime = 0;
+	}
+	NotifyEvents();
+}
+
+void CGame::ManageFuryHour()
+{
+	if (m_bHappyHour) m_bHappyHour = false;
+	if (m_bFuryHour) m_bFuryHour = false;
+	else m_bFuryHour = true;
+
+	if (m_bFuryHour)
+	{
+		for (int i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			auto pi = m_pClientList[i];
+			if (!pi) continue;
+			SendAlertMsg(i, "Fury Hour Activated! Ek x100");
+		}
+		dwEventFinishTime = timeGetTime() + 60 * 60 * 1000;
+	}
+	else
+	{
+		for (int i = 0; i < DEF_MAXCLIENTS; i++)
+		{
+			auto pi = m_pClientList[i];
+			if (!pi) continue;
+			SendAlertMsg(i, "Fury Hour Ended");
+		}
+		dwEventFinishTime = 0;
+	}
+	NotifyEvents();
 }
 
 void CGame::minimap_clear(int client)

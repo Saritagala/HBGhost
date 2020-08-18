@@ -7086,6 +7086,14 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	ip = (int*)cp;
 	m_iAdminUserLevel = *ip;
 	cp += 4;
+
+	bp = (bool*)cp;
+	m_bHappyHour = *bp;
+	cp++;
+
+	bp = (bool*)cp;
+	m_bFuryHour = *bp;
+	cp++;
 }
 
 

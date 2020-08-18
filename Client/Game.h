@@ -1253,6 +1253,7 @@ public:
 	void DlgBoxClick_GeneralPanel(short msX, short msY);
 	void DrawDialogBox_GeneralPanel(short msX, short msY);
 
+	BOOL m_bHappyHour, m_bFuryHour;
 	//Magn0S:: New varaibles
 	int iNewShop, m_iCoinPoints;
 	bool m_bApocalypse, m_bAttackMode;

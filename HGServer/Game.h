@@ -100,6 +100,11 @@ public:
 
 //private:
 
+	BOOL m_bHappyHour, m_bFuryHour;
+
+	void ManageHappyHour();
+	void ManageFuryHour();
+
 	void GlobalStartGladiatorArena();
 	void GlobalEndGladiatorArena();
 	void ManualStartGladiatorArena(int iClientH, char* pData, DWORD dwMsgSize);
