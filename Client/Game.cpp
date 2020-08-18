@@ -52,7 +52,7 @@ CGame::CGame()
 	m_cDetailLevel = 2;
 	m_cLoading = 0;
 	m_bZoomMap = TRUE;
-	m_bIsFirstConn = TRUE;
+	//m_bIsFirstConn = TRUE;
 	m_iItemDropCnt = 0;
 	m_bItemDrop = FALSE;
 	m_bIsSpecial = FALSE;
@@ -17028,8 +17028,8 @@ void CGame::InitDataResponseHandler(char * pData)
 	case 1:	m_bIsXmas = FALSE; break;
 	case 2: m_bIsXmas = FALSE; break;
 	case 3: // Snoopy Special night with chrismas bulbs
-		if (m_cWhetherStatus >3) m_bIsXmas = TRUE;
-		else m_bIsXmas = FALSE;
+		//if (m_cWhetherStatus >3) m_bIsXmas = TRUE;
+		//else m_bIsXmas = FALSE;
 		G_cSpriteAlphaDegree = 2;
 		break;
 	}
@@ -17053,15 +17053,7 @@ void CGame::InitDataResponseHandler(char * pData)
 
 	ZeroMemory(cMapFileName, sizeof(cMapFileName));
 	strcat(cMapFileName, "mapdata\\");
-	// CLEROTH - MW MAPS
-	if (memcmp(m_cMapName, "defaultmw", 9) == 0)
-	{
-		strcat(cMapFileName, "mw\\defaultmw");
-}
-	else
-	{
-		strcat(cMapFileName, m_cMapName);
-	}
+	strcat(cMapFileName, m_cMapName);
 
 	strcat(cMapFileName, ".amd");
 	m_pMapData->OpenMapDataFile(cMapFileName);
@@ -17117,7 +17109,7 @@ void CGame::InitDataResponseHandler(char * pData)
 	else m_bIsCombatMode = FALSE;
 
 	//v1.42
-	if (m_bIsFirstConn == TRUE)
+	/*if (m_bIsFirstConn == TRUE)
 	{
 		m_bIsFirstConn = FALSE;
 		hFile = CreateFile("contents\\contents1000.txt", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
@@ -17129,7 +17121,9 @@ void CGame::InitDataResponseHandler(char * pData)
 			CloseHandle(hFile);
 		}
 		bSendCommand(MSGID_REQUEST_NOTICEMENT, NULL, NULL, (int)dwFileSize, NULL, NULL, NULL);
-	}
+	}*/
+
+	
 }
 
 void CGame::DrawChatMsgs(short sX, short sY, short dX, short dY)
@@ -23004,12 +22998,12 @@ void CGame::NoticementHandler(char * pData)
 		if (pFile == NULL) return;
 		fwrite(cp, strlen(cp), 1, pFile);
 		fclose(pFile);
-		m_stDialogBoxInfo[18].sX  =  20;
-		m_stDialogBoxInfo[18].sY  =  65;
+		//m_stDialogBoxInfo[18].sX  =  20;
+		//m_stDialogBoxInfo[18].sY  =  65;
 		EnableDialogBox(18, 1000, NULL, NULL);
 		break;
 	}
-	AddEventList("Press F1 for help.", 10);
+	AddEventList("Press Ctrl+H for help.", 10);
 	if (m_iLevel < 42) EnableDialogBox(35, NULL, NULL, NULL);
 
 }
@@ -32012,20 +32006,25 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 				}
 				if (m_stMCursor.sSelectedObjectID == 9)
 				{
-#ifdef RES_HIGH
-					if (msX < 400) 
-						m_stDialogBoxInfo[9].sX = 0;
-					else m_stDialogBoxInfo[9].sX = 800 - 128;
-					if (msY < 273) 
-						m_stDialogBoxInfo[9].sY = 0;
-					else m_stDialogBoxInfo[9].sY = 547 - 128;
-#else
-					if (msX < 320) m_stDialogBoxInfo[9].sX = 0;
-					else m_stDialogBoxInfo[9].sX = 640 - m_stDialogBoxInfo[9].sSizeX;
-					if (msY < 213) m_stDialogBoxInfo[9].sY = 0;
-					else m_stDialogBoxInfo[9].sY = 427 - m_stDialogBoxInfo[9].sSizeY;
+					{
+						if (msX < 400) //LifeX Fix Map
+						{
+							m_stDialogBoxInfo[9].sX = 0;
+						}
+						else
+						{
+							m_stDialogBoxInfo[9].sX = 800 - m_stDialogBoxInfo[9].sSizeX;
+						}
 
-#endif
+						if (msY < 273)
+						{
+							m_stDialogBoxInfo[9].sY = 0;
+						}
+						else
+						{
+							m_stDialogBoxInfo[9].sY = 547 - m_stDialogBoxInfo[9].sSizeY;
+						}
+					}
 				}
 
 				m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;

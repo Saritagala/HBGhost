@@ -957,7 +957,7 @@ public:
 	BOOL m_bSuperAttackMode;	//
 	BOOL m_bIsObserverMode, m_bIsObserverCommanded;
 	CInt m_bIsPoisoned;//was BOOL
-	BOOL m_bIsFirstConn;
+	//BOOL m_bIsFirstConn;
 	BOOL m_bIsConfusion;
 	BOOL m_bIsRedrawPDBGS;
 	BOOL m_bDrawFlagDir;
