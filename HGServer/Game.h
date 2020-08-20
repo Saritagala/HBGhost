@@ -899,6 +899,7 @@ public:
 	} m_stCrusadeStructures[DEF_MAXCRUSADESTRUCTURES];
 
 
+
 	int m_iCollectedMana[3];
 	int m_iAresdenMana, m_iElvineMana;
 

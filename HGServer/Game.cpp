@@ -3153,7 +3153,7 @@ void CGame::CheckClientResponseTime()
 				}*/
 
 				// SNOOPY: Added shinning DemonSlayer if Demon/GG around
-				sItemIndex = m_pClientList[i]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
+				/*sItemIndex = m_pClientList[i]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 				if (sItemIndex != -1)
 				{
 					if (m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 616)   // DS equiped
@@ -3174,7 +3174,7 @@ void CGame::CheckClientResponseTime()
 							SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 						}
 					}
-				}
+				}*/
 
 				if (m_pClientList[i]->m_iSpecialAbilityTime == 3) {
 					SendNotifyMsg(NULL, i, DEF_NOTIFY_SPECIALABILITYENABLED, NULL, NULL, NULL, NULL);
@@ -24570,9 +24570,9 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 	m_pClientList[iClientH]->m_iStatus = iTemp;
 
 	// centu - skills 100%
-	if (m_pClientList[iClientH]->m_iLevel == 1) {
+	//if (m_pClientList[iClientH]->m_iLevel == 1) {
 		AutoSkill(iClientH);
-	}
+	//}
 	
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {
 		ForceChangePlayMode(iClientH);
@@ -24981,7 +24981,7 @@ void CGame::ParseCommand(char * pMsg)
 	} 
 
 	else if (memcmp(pMsg, "/bum ", 5) == 0) { 
-		bFlag = TRUE;   
+		/*bFlag = TRUE;   
 		ZeroMemory(ss, 100); 
 		memcpy(ss, pMsg, strlen(pMsg)); 
 		ss[0] = ' '; 
@@ -24996,7 +24996,7 @@ void CGame::ParseCommand(char * pMsg)
 				SendNotifyMsg(NULL, i, DEF_NOTIFY_MORLEARPJ, NULL, NULL, NULL, NULL);
 				DeleteClient(i, TRUE, TRUE);
 			}
-		}
+		}*/
 	} 
 
 	//Mang0S:: Add new commands
@@ -28885,6 +28885,50 @@ void CGame::minimap_clear(int client)
 			}
 		}
 	}
+
+	if (!bShinning && p->m_iGuildRank != -1)
+	{
+		if (p->IsInMap("elvine") ||
+			p->IsInMap("aresden") ||
+			p->IsInMap("middleland") ||
+			p->IsInMap("2ndmiddle") ||
+			p->IsInMap("middled1n") ||
+			p->IsInMap("icebound"))
+		{
+			char cData[56];
+			DWORD* dwp;
+			WORD* wp;
+			char* cp;
+			int* ip;
+
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			*wp = MINIMAPGREEN_CLEAR;
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				if (pi == p) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				if (strcmp(pi->m_cGuildName, "NONE") == 0) continue;
+				if (strcmp(pi->m_cGuildName, p->m_cGuildName) != 0) continue;
+
+				pi->m_pXSock->iSendMsg(cData, 10);
+			}
+		}
+	}
 }
 
 void CGame::minimap_update(int client)
@@ -28958,6 +29002,58 @@ void CGame::minimap_update(int client)
 
 				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
 
+				pi->m_pXSock->iSendMsg(cData, 14);
+			}
+		}
+	}
+
+	if (!bShinning && p->m_iGuildRank != -1)
+	{
+		if (p->IsInMap("elvine") ||
+			p->IsInMap("aresden") ||
+			p->IsInMap("middleland") ||
+			p->IsInMap("2ndmiddle") ||
+			p->IsInMap("middled1n") ||
+			p->IsInMap("icebound"))
+		{
+			char cData[56];
+			DWORD* dwp;
+			WORD* wp;
+			char* cp;
+			int* ip;
+			short* sp;
+
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			*wp = MINIMAPGREEN_UPDATE;
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			sp = (short*)cp;
+			*sp = p->m_sX;
+			cp += 2;
+			sp = (short*)cp;
+			*sp = p->m_sY;
+			cp += 2;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				if (pi == p) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				if (strcmp(pi->m_cGuildName, "NONE") == 0) continue;
+				if (strcmp(pi->m_cGuildName, p->m_cGuildName) != 0) continue;
+				
 				pi->m_pXSock->iSendMsg(cData, 14);
 			}
 		}

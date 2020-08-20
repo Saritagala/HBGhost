@@ -152,6 +152,9 @@ using namespace std;
 class CGame
 {
 public:
+
+	BOOL bOnlyGuild, bOnlyAll;
+
 	int m_iAdminUserLevel = 0;
 	char m_cCFTEventCount[2];
 	void NotifyMsg_EventInfo(char* pData);
@@ -654,6 +657,11 @@ public:
 	void minimapred_update(char* cp);
 	void minimapred_clear(char* cp);
 
+	void minimapgreen_update(char* cp);
+	void minimapgreen_clear(char* cp);
+	void minimapyellow_update(char* cp);
+	void minimapyellow_clear(char* cp);
+
 	class Minimap {
 	public:
 		Minimap() {}
@@ -704,6 +712,40 @@ public:
 		void Clear();
 		void Remove(int handle);
 	} m_minimapred;
+
+	class MinimapGreen {
+	public:
+		MinimapGreen() {}
+		~MinimapGreen() {}
+
+		struct Unit {
+			Unit() {}
+			short x, y;
+			int id;
+			DWORD time;
+		};
+
+		std::vector<Unit> list;
+		void Clear();
+		void Remove(int handle);
+	} m_minimapgreen;
+
+	class MinimapYellow {
+	public:
+		MinimapYellow() {}
+		~MinimapYellow() {}
+
+		struct Unit {
+			Unit() {}
+			short x, y;
+			int id;
+			DWORD time;
+		};
+
+		std::vector<Unit> list;
+		void Clear();
+		void Remove(int handle);
+	} m_minimapyellow;
 
 	char m_cFriends[13][10];
 	int m_iTotalFriends;
@@ -957,7 +999,7 @@ public:
 	BOOL m_bSuperAttackMode;	//
 	BOOL m_bIsObserverMode, m_bIsObserverCommanded;
 	CInt m_bIsPoisoned;//was BOOL
-	//BOOL m_bIsFirstConn;
+	BOOL m_bIsFirstConn;
 	BOOL m_bIsConfusion;
 	BOOL m_bIsRedrawPDBGS;
 	BOOL m_bDrawFlagDir;

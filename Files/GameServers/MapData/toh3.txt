@@ -9,13 +9,13 @@ level-limit   = 100
 not-permanent-map		= 1
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
-teleport-loc     =      93     38     toh2                101    270   5
-teleport-loc     =      94     38     toh2                101    270   5
-teleport-loc     =      94     39     toh2                101    270   5
+teleport-loc     =      93     38     middleland                101    270   5
+teleport-loc     =      94     38     middleland                101    270   5
+teleport-loc     =      94     39     middleland                101    270   5
 
-teleport-loc     =      147    30     toh2                251    240   5
-teleport-loc     =      148    30     toh2                251    240   5
-teleport-loc     =      148    31     toh2                251    240   5
+teleport-loc     =      147    30     middleland                251    240   5
+teleport-loc     =      148    30     middleland                251    240   5
+teleport-loc     =      148    31     middleland                251    240   5
 
 //-WayPoint-Set---------Num-----X-----Y----;
 waypoint          =     0       81    50
@@ -50,10 +50,20 @@ spot-mob-generator	= 6  1    35 265 45 275      52   5
 spot-mob-generator	= 7  1    35 265 45 275      53   5
 spot-mob-generator	= 8  1    35 265 45 275      54   8
 
-spot-mob-generator	= 9   1    225 248 235 257    49   1
+spot-mob-generator	= 9   1    225 248 235 257    49   5
 spot-mob-generator	= 10  1    225 248 235 257    52   5
 spot-mob-generator	= 11  1    225 248 235 257    53   5
-spot-mob-generator	= 12  1    225 248 235 257    54   8
+spot-mob-generator	= 13  1    57 226 85 274      73   3
+spot-mob-generator	= 14  1    98 199 96 207      93   8
+spot-mob-generator	= 15  1    78 115 94 118      95   2
+spot-mob-generator	= 16  1    187 84 169 103     98   2
+spot-mob-generator	= 17  1    114 118 161 121    92   5
+spot-mob-generator	= 18  1    253 133 275 153    49   6
+spot-mob-generator	= 19  1    35  64  56  75     94   2
+spot-mob-generator	= 20  1    30 108 50 123      93   8
+spot-mob-generator	= 21  1    187 84 169 103     93   2
+spot-mob-generator	= 22  1    114 118 161 121    50   3
+spot-mob-generator	= 23  1    119 68 254 221     50   8
 
 //------------------------RECT---------TargetMap------TargetCoord
 DynamicGateCoord	= 40 248 41 249        procella	   -1  -1

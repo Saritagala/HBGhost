@@ -9,6 +9,9 @@
 #define MINIMAPRED_CLEAR									0x1F36
 #define MINIMAPRED_UPDATE									0x1F37
 
+#define MINIMAPGREEN_CLEAR									0x1F38
+#define MINIMAPGREEN_UPDATE									0x1F39
+
 #define DEF_NOTIFY_ARENASTATUS			        0x0D27
 #define DEF_COMMONTYPE_REQARENASTATUS	        0x0A70
 //Vamp Arena

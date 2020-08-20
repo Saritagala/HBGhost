@@ -31,6 +31,9 @@ CGame::CGame()
 
 	m_bToggleScreen = FALSE;
 
+	bOnlyAll = TRUE;
+	bOnlyGuild = FALSE;
+
 	//LifeX Fix Declaration Bugs 01/01
 	DEF_STATS_LIMIT = 0;
 	bDeathmatch = FALSE;
@@ -52,7 +55,7 @@ CGame::CGame()
 	m_cDetailLevel = 2;
 	m_cLoading = 0;
 	m_bZoomMap = TRUE;
-	//m_bIsFirstConn = TRUE;
+	m_bIsFirstConn = TRUE;
 	m_iItemDropCnt = 0;
 	m_bItemDrop = FALSE;
 	m_bIsSpecial = FALSE;
@@ -17117,7 +17120,7 @@ void CGame::InitDataResponseHandler(char * pData)
 	else m_bIsCombatMode = FALSE;
 
 	//v1.42
-	/*if (m_bIsFirstConn == TRUE)
+	if (m_bIsFirstConn == TRUE)
 	{
 		m_bIsFirstConn = FALSE;
 		hFile = CreateFile("contents\\contents1000.txt", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
@@ -17129,7 +17132,7 @@ void CGame::InitDataResponseHandler(char * pData)
 			CloseHandle(hFile);
 		}
 		bSendCommand(MSGID_REQUEST_NOTICEMENT, NULL, NULL, (int)dwFileSize, NULL, NULL, NULL);
-	}*/
+	}
 
 	
 }
@@ -18196,23 +18199,29 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_RESQUEST_PARTYHP, NULL, NULL, NULL, NULL, NULL);
 				ActualizarParty = FALSE;
 			}
+			int x = 0;
 			for (int i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
 			{
 				if (strlen(m_stPartyMemberNameList[i].cName) != 0) {
+					
+					if (strcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName) == 0) continue;
+					
 					if (iPartySex[i] == 1)
 					{
-						m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFast(16 + 71 * i, 8, i, dwTime);
+						m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFast(16 + (71 * x), 8, i, dwTime);
 
 					}
 					else
 					{
-						m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFast(16 + 71 * i, 8, 8 + i, dwTime);
+						m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFast(16 + (71 * x), 8, 8 + i, dwTime);
 
 					}
 					wsprintf(G_cTxt, "%s", m_stPartyMemberNameList[i].cName);
-					PutAlignedString(71 * i, 71 * (i + 1), 45, G_cTxt, 220, 130, 45);
-					m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(3 + 71 * i, 60, 28, dwTime);
-					m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(3 + 71 * i, 65, 28, dwTime);
+					PutAlignedString(71 * x, 71 * (x + 1), 45, G_cTxt, 220, 130, 45);
+					m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(3 + (71 * x), 60, 28, dwTime);
+					m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(3 + (71 * x), 65, 28, dwTime);
+					x++;
+
 				}
 			}
 		}
@@ -18444,29 +18453,32 @@ void CGame::DrawDialogBox_GaugePannel()
 	m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFastWidth(401, 558, 17, iBarWidth, m_dwCurTime, true);
 	iTemp = iHungerStatus;
 
-	int i;
 	if (m_bShowParty)
 	{
 		if (m_iPartyStatus != NULL)
 		{
-			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+			int x = 0;
+			for (int i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
 			{
 				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
 				{
+					if (strcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName) == 0) continue;
+
 					if (iPartyHp[i] > iMaxPoint2[i]) iPartyHp[i] = iMaxPoint2[i];
 					if (iPartyHp[i] > 0)
 					{
 						iBarWidth2[i] = (iPartyHp[i] * 66) / iMaxPoint2[i];
 						if (iBarWidth2[i] < 0) iBarWidth2[i] = 0;
 						if (iBarWidth2[i] > 66) iBarWidth2[i] = 66;
-						m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFastWidth(3 + (71 * i), 60, 26, iBarWidth2[i], m_dwCurTime, false);
+						m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFastWidth(3 + (71 * x), 60, 26, iBarWidth2[i], m_dwCurTime, false);
 
 						if (iPartyMp[i] > iMaxPoint0[i]) iPartyMp[i] = iMaxPoint0[i];
 						iBarWidth0[i] = (iPartyMp[i] * 66) / iMaxPoint0[i];
 						if (iBarWidth0[i] < 0) iBarWidth0[i] = 0;
 						if (iBarWidth0[i] > 66) iBarWidth0[i] = 66;
-						m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFastWidth(3 + (71 * i), 65, 27, iBarWidth0[i], m_dwCurTime, false);
+						m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFastWidth(3 + (71 * x), 65, 27, iBarWidth0[i], m_dwCurTime, false);
 					}
+					x++;
 				}
 			}
 		}
@@ -23008,11 +23020,11 @@ void CGame::NoticementHandler(char * pData)
 		fclose(pFile);
 		//m_stDialogBoxInfo[18].sX  =  20;
 		//m_stDialogBoxInfo[18].sY  =  65;
-		EnableDialogBox(18, 1000, NULL, NULL);
+		//EnableDialogBox(18, 1000, NULL, NULL);
 		break;
 	}
 	AddEventList("Press Ctrl+H for help.", 10);
-	if (m_iLevel < 42) EnableDialogBox(35, NULL, NULL, NULL);
+	//if (m_iLevel < 42) EnableDialogBox(35, NULL, NULL, NULL);
 
 }
 
@@ -25404,10 +25416,6 @@ void CGame::UpdateScreen_OnLogin()
 			return;
 	}	}
 
-	/*
-		pMI->AddRect(240-90, 400-65, 400-90, 430-65);
-		pMI->AddRect(460-90, 400-65, 600-90, 430-65);
-	*/
 	if ((msX >= 240-90) && (msX <= 400-90) && (msY >= 400-65) && (msY <= 430-65)) m_cCurFocus = 3;
 	if ((msX >= 440-90) && (msX <= 600-90) && (msY >= 400-65) && (msY <= 430-65)) m_cCurFocus = 4;
 
@@ -26215,16 +26223,16 @@ void CGame::OnKeyDown(WPARAM wParam)
 			// MORLA - Modificado para que no escriba al apretar los hotkeys de Casting Bar
 			}else if ((m_bInputStatus == FALSE) && (GetAsyncKeyState(VK_MENU)>>15 == FALSE))
 			{
-				if ((m_bShiftPressed == TRUE) || ((wParam!=49) && (wParam!=50)
-					&& (wParam!=51)&& (wParam!=52) && (wParam!=53)))
-				{
+				//if ((m_bShiftPressed == TRUE) || ((wParam!=49) && (wParam!=50)
+				//	&& (wParam!=51)&& (wParam!=52) && (wParam!=53)))
+				//{
 #ifdef RES_HIGH
 					StartInputString(10, 532, sizeof(m_cChatMsg), m_cChatMsg);
 #else
 					StartInputString(10, 414, sizeof(m_cChatMsg), m_cChatMsg);
 #endif
 					ClearInputString(); 
-				}
+				//}
 		}	}
 		break;
 	}
@@ -27329,6 +27337,22 @@ void CGame::NotifyMsgHandler(char * pData)
 
 	case MINIMAPRED_UPDATE:
 		minimapred_update(pData + 6);
+		break;
+
+	case MINIMAPGREEN_CLEAR:
+		minimapgreen_clear(pData + 6);
+		break;
+
+	case MINIMAPGREEN_UPDATE:
+		minimapgreen_update(pData + 6);
+		break;
+
+	case MINIMAPYELLOW_CLEAR:
+		minimapyellow_clear(pData + 6);
+		break;
+
+	case MINIMAPYELLOW_UPDATE:
+		minimapyellow_update(pData + 6);
 		break;
 
 	case DEF_NOTIFY_TEAMARENA: // Case BEC of switch 00454077
@@ -30955,7 +30979,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	ZeroMemory(cTxt, sizeof(cTxt));
 
 	// centu - deathmatch show only enemies
-	if ((strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0 || bMapHideEnemy) && ( memcmp(pName, m_cPlayerName, 12) != 0 ))
+	if ((strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0 || bMapHideEnemy) && ( memcmp(pName, m_cPlayerName, 10) != 0 ))
 	{
 		strcpy(cTxt, DRAW_OBJECT_NAME90);
 		PutString2(sX, sY+14, cTxt, 255, 0, 0);
@@ -31001,15 +31025,14 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 					{	if( strcmp(m_stGuildName[iGuildIndex].cGuildName, "NONE" )!=0 )
 						{	if( m_stGuildName[iGuildIndex].iGuildRank == 0 )
 							{	wsprintf( G_cTxt, DEF_MSG_GUILDMASTER, m_stGuildName[iGuildIndex].cGuildName );//
-								PutString2(sX, sY+14, G_cTxt, 180,180,180);
-								m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
-								iAddY += 14;
-							}else if( m_stGuildName[iGuildIndex].iGuildRank > 0 )
+								
+							}else //if( m_stGuildName[iGuildIndex].iGuildRank > 0 )
 							{	wsprintf( G_cTxt, DEF_MSG_GUILDSMAN, m_stGuildName[iGuildIndex].cGuildName );//"
-								PutString2(sX, sY+14, G_cTxt, 180,180,180);
-								m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
-								iAddY += 14;
+								
 							}
+							PutString2(sX, sY + 14, G_cTxt, 180, 180, 180);
+							m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
+							iAddY += 14;
 						}else
 						{	m_stGuildName[iGuildIndex].dwRefTime = 0;
 					}	}

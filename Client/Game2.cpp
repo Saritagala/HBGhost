@@ -8478,106 +8478,217 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 
 	switch (m_stDialogBoxInfo[60].cMode) {
 	case 0:
-		iTotalLines = 0;
-		for (i = 0; i < DEF_MAXMENUITEMS; i++)
-			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
-		if (iTotalLines > 13) {
-			d1 = (double)m_stDialogBoxInfo[60].sView;
-			d2 = (double)(iTotalLines - 13);
-			d3 = (274.0f * d1) / d2;
-			iPointerLoc = (int)(d3);
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
-		}
-		else iPointerLoc = 0;
+		if (bOnlyAll) {
+			iTotalLines = 0;
+			for (i = 0; i < DEF_MAXMENUITEMS; i++)
+				if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
+			if (iTotalLines > 13) {
+				d1 = (double)m_stDialogBoxInfo[60].sView;
+				d2 = (double)(iTotalLines - 13);
+				d3 = (274.0f * d1) / d2;
+				iPointerLoc = (int)(d3);
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+			}
+			else iPointerLoc = 0;
 
-		if (cLB != 0 && iTotalLines > 13)
-		{
-			if ((iGetTopDialogBoxIndex() == 60))
+			if (cLB != 0 && iTotalLines > 13)
 			{
-				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
+				if ((iGetTopDialogBoxIndex() == 60))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
-					d3 = (d1 * d2) / 274.0f;
-					m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
+					if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
+					{
+						d1 = (double)(msY - (sY + 35));
+						d2 = (double)(iTotalLines - 13);
+						d3 = (d1 * d2) / 274.0f;
+						m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
+					}
 				}
 			}
-		}
-		else m_stDialogBoxInfo[60].bIsScrollSelected = FALSE;
-		if (iGetTopDialogBoxIndex() == 60 && msZ != 0)
-		{
-			m_stDialogBoxInfo[60].sView = m_stDialogBoxInfo[60].sView - msZ / 60;
-			m_DInput.m_sZ = 0;
-		}
-		if (iTotalLines > 13 && m_stDialogBoxInfo[60].sView > iTotalLines - 13) m_stDialogBoxInfo[60].sView = iTotalLines - 13;
-		if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[60].sView = 0;
-
-
-		for (i = 0; i < 13; i++)
-			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+			else m_stDialogBoxInfo[60].bIsScrollSelected = FALSE;
+			if (iGetTopDialogBoxIndex() == 60 && msZ != 0)
 			{
-				ZeroMemory(cTemp, sizeof(cTemp));
-				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
+				m_stDialogBoxInfo[60].sView = m_stDialogBoxInfo[60].sView - msZ / 60;
+				m_DInput.m_sZ = 0;
+			}
+			if (iTotalLines > 13 && m_stDialogBoxInfo[60].sView > iTotalLines - 13) m_stDialogBoxInfo[60].sView = iTotalLines - 13;
+			if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[60].sView = 0;
 
-				ZeroMemory(cTemp2, sizeof(cTemp2));
-				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
-				m_Misc.ReplaceString(cTemp2, '_', ' ');
 
-				if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
+			for (i = 0; i < 13; i++)
+				if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 				{
-					iR = 0;	iG = 255; iB = 0;
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
+
+					ZeroMemory(cTemp2, sizeof(cTemp2));
+					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
+					m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+					if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
+					{
+						iR = 0;	iG = 255; iB = 0;
+					}
+					else
+					{
+						iR = 255;	iG = 255; iB = 255;
+					}
+
+
+					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+					{
+						PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+					}
+					else
+					{
+						PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					}
 				}
-				else
-				{
-					iR = 255;	iG = 255; iB = 255;
-				}
 
+			for (i = 0; i < 13; i++)
+				if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+				{
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
+					m_Misc.ReplaceString(cTemp, '_', ' ');
 
-				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
-				{
-					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+					ZeroMemory(cTemp2, sizeof(cTemp2));
+					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
+
+					// display blank space rather than NONE if char has no guild
+					if (memcmp(cTemp, "NONE", 4) == 0)
+					{
+						memcpy(cTemp, "    ", 4);
+					}
+
+					if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
+					{
+						iR = 0;	iG = 255; iB = 0;
+					}
+					else
+					{
+						iR = 255;	iG = 255; iB = 255;
+					}
+
+					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+					{
+						PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR, iG, iB);
+					}
+					else
+					{
+						PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					}
 				}
-				else
+		}
+
+		if (bOnlyGuild) {
+			int x;
+			iTotalLines = 0;
+			for (i = 0; i < DEF_MAXMENUITEMS; i++)
+				if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
+			if (iTotalLines > 13) {
+				d1 = (double)m_stDialogBoxInfo[60].sView;
+				d2 = (double)(iTotalLines - 13);
+				d3 = (274.0f * d1) / d2;
+				iPointerLoc = (int)(d3);
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+			}
+			else iPointerLoc = 0;
+
+			if (cLB != 0 && iTotalLines > 13)
+			{
+				if ((iGetTopDialogBoxIndex() == 60))
 				{
-					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
+					{
+						d1 = (double)(msY - (sY + 35));
+						d2 = (double)(iTotalLines - 13);
+						d3 = (d1 * d2) / 274.0f;
+						m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
+					}
 				}
 			}
-
-		for (i = 0; i < 13; i++)
-			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+			else m_stDialogBoxInfo[60].bIsScrollSelected = FALSE;
+			if (iGetTopDialogBoxIndex() == 60 && msZ != 0)
 			{
-				ZeroMemory(cTemp, sizeof(cTemp));
-				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
-				m_Misc.ReplaceString(cTemp, '_', ' ');
-
-				ZeroMemory(cTemp2, sizeof(cTemp2));
-				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
-
-				// display blank space rather than NONE if char has no guild
-				if (memcmp(cTemp, "NONE", 4) == 0)
-				{
-					memcpy(cTemp, "    ", 4);
-				}
-
-				if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
-				{
-					iR = 0;	iG = 255; iB = 0;
-				}
-				else
-				{
-					iR = 255;	iG = 255; iB = 255;
-				}
-
-				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
-				{
-					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR, iG, iB);
-				}
-				else
-				{
-					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
-				}
+				m_stDialogBoxInfo[60].sView = m_stDialogBoxInfo[60].sView - msZ / 60;
+				m_DInput.m_sZ = 0;
 			}
+			if (iTotalLines > 13 && m_stDialogBoxInfo[60].sView > iTotalLines - 13) m_stDialogBoxInfo[60].sView = iTotalLines - 13;
+			if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[60].sView = 0;
+
+			x = 0;
+			for (i = 0; i < 13; i++)
+				if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+				{
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
+
+					ZeroMemory(cTemp2, sizeof(cTemp2));
+					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
+					m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+					if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
+					{
+						iR = 0;	iG = 255; iB = 0;
+					}
+					else
+					{
+						//iR = 255;	iG = 255; iB = 255;
+						continue;
+					}
+
+
+					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+					{
+						PutString2(sX + 25, sY + x * 18 + 65, cTemp, iR, iG, iB);
+					}
+					else
+					{
+						PutString2(sX + 25, sY + x * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					}
+					x++;
+				}
+
+			x = 0;
+			for (i = 0; i < 13; i++)
+				if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+				{
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
+					m_Misc.ReplaceString(cTemp, '_', ' ');
+
+					ZeroMemory(cTemp2, sizeof(cTemp2));
+					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
+
+					// display blank space rather than NONE if char has no guild
+					if (memcmp(cTemp, "NONE", 4) == 0)
+					{
+						memcpy(cTemp, "    ", 4);
+					}
+
+					if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
+					{
+						iR = 0;	iG = 255; iB = 0;
+					}
+					else
+					{
+						//iR = 255;	iG = 255; iB = 255;
+						continue;
+					}
+
+					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+					{
+						PutString2(sX + 125, sY + x * 18 + 65, cTemp, iR, iG, iB);
+					}
+					else
+					{
+						PutString2(sX + 125, sY + x * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					}
+					x++;
+				}
+		}
 
 		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
 		{
@@ -8587,16 +8698,29 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 			else {
 				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 128, 128, 128);
 			}
+			if ((msX > sX + 30) && (msX < sX + 30 + 10) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+				PutString2(sX + 30, sY + 45 + (14 * 18), "All", 255, 255, 255);
+			}
+			else {
+				PutString2(sX + 30, sY + 45 + (14 * 18), "All", 128, 128, 128);
+			}
+			if ((msX > sX + 55) && (msX < sX + 55 + 30) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+				PutString2(sX + 55, sY + 45 + (14 * 18), "Guild", 255, 255, 255);
+			}
+			else {
+				PutString2(sX + 55, sY + 45 + (14 * 18), "Guild", 128, 128, 128);
+			}
 		}
 		else
 		{
 			PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 65, 65, 65);
+			PutString2(sX + 30, sY + 45 + (14 * 18), "All", 65, 65, 65);
+			PutString2(sX + 55, sY + 45 + (14 * 18), "Guild", 65, 65, 65);
 		}
 
+
 		break;
 
-	default:
-		break;
 	}
 }
 
@@ -8610,15 +8734,18 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	sX = m_stDialogBoxInfo[60].sX;
 	sY = m_stDialogBoxInfo[60].sY;
 
-	for (i = 0; i < 13; i++)
-	{
-		if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+	if (!bOnlyGuild) {
+
+		for (i = 0; i < 13; i++)
 		{
-			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
-				ZeroMemory(cTemp, sizeof(cTemp));
-				wsprintf(cTemp, "/to %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName);
-				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				{
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "/to %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName);
+					bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
+				}
 			}
 		}
 	}
@@ -8638,6 +8765,41 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 			m_dwReqUsersTime = m_dwCurTime;
 			m_cCommandCount--;
 		}
+	}
+
+	if ((msX > sX + 30) && (msX < sX + 30 + 10) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		{
+			for (i = 0; i < DEF_MAXMENUITEMS; i++)
+				if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
+
+			for (i = 0; i < 200; i++)
+				if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
+
+			bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
+
+			m_dwReqUsersTime = m_dwCurTime;
+			m_cCommandCount--;
+		}
+		bOnlyGuild = FALSE;
+		bOnlyAll = TRUE;
+	}
+	if ((msX > sX + 55) && (msX < sX + 55 + 30) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		{
+			for (i = 0; i < DEF_MAXMENUITEMS; i++)
+				if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
+
+			for (i = 0; i < 200; i++)
+				if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
+
+			bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
+
+			m_dwReqUsersTime = m_dwCurTime;
+			m_cCommandCount--;
+		}
+		bOnlyAll = FALSE;
+		bOnlyGuild = TRUE;
 	}
 }
 
@@ -18775,6 +18937,32 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		m_DDraw.PutPixel(x + 2, y, 255, 0, 0);
 	};
 
+	auto pixgreen = [&](int x, int y, int r, int g, int b)
+	{
+		m_DDraw.PutPixel(x - 1, y, 0, 255, 0);
+		m_DDraw.PutPixel(x, y - 1, 0, 255, 0);
+		m_DDraw.PutPixel(x - 2, y, 0, 255, 0);
+		m_DDraw.PutPixel(x, y - 2, 0, 255, 0);
+		m_DDraw.PutPixel(x, y, 0, 255, 0);
+		m_DDraw.PutPixel(x, y + 1, 0, 255, 0);
+		m_DDraw.PutPixel(x + 1, y, 0, 255, 0);
+		m_DDraw.PutPixel(x, y + 2, 0, 255, 0);
+		m_DDraw.PutPixel(x + 2, y, 0, 255, 0);
+	};
+
+	auto pixyellow = [&](int x, int y, int r, int g, int b)
+	{
+		m_DDraw.PutPixel(x - 1, y, 255, 255, 0);
+		m_DDraw.PutPixel(x, y - 1, 255, 255, 0);
+		m_DDraw.PutPixel(x - 2, y, 255, 255, 0);
+		m_DDraw.PutPixel(x, y - 2, 255, 255, 0);
+		m_DDraw.PutPixel(x, y, 255, 255, 0);
+		m_DDraw.PutPixel(x, y + 1, 255, 255, 0);
+		m_DDraw.PutPixel(x + 1, y, 255, 255, 0);
+		m_DDraw.PutPixel(x, y + 2, 255, 255, 0);
+		m_DDraw.PutPixel(x + 2, y, 255, 255, 0);
+	};
+
 
 	if (m_bZoomMap)
 	{
@@ -18787,6 +18975,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
 		else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
 
+		/*
 		if (m_iPartyStatus != NULL)
 		{
 			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
@@ -18802,6 +18991,12 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
+		*/
+		
+		if (m_bAresden)
+			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 38, m_dwCurTime);
+		else
+			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
 
 		if (bShinning || m_bIsCTFMode)
 		{
@@ -18814,7 +19009,6 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				if (m_dwTime - p->time > 25000)
 					continue;
 
-				int r = 255, g = 255, b = 255;
 				pixblue(sX + p->x - shX, sY + p->y - shY, 0, 0, 255);
 			}
 
@@ -18827,8 +19021,34 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				if (m_dwTime - p->time > 25000)
 					continue;
 
-				int r = 255, g = 255, b = 255;
 				pixred(sX + p->x - shX, sY + p->y - shY, 255, 0, 0);
+			}
+		}
+		if (!bShinning)
+		{
+			for (auto& u : m_minimapgreen.list)
+			{
+				auto* p = &u;
+				if (p->x < shX || p->x > shX + 128 || p->y < shY || p->y > shY + 128)
+					continue;
+
+				if (m_dwTime - p->time > 25000)
+					continue;
+
+				pixgreen(sX + p->x - shX, sY + p->y - shY, 0, 255, 0);
+			}
+
+			if (m_iPartyStatus != NULL)
+			{
+				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+				{
+					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
+						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) != 0)
+								if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
+									//m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
+									pixyellow(sX + iParty_sX[i] - shX, sY + iParty_sY[i] - shY, 255, 255, 0);
+				}
 			}
 		}
 
@@ -18952,7 +19172,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		else m_pSprite[m_iMinMapIndex]->PutSpriteFastNoColorKey(sX, sY, m_iMinMapSquare, m_dwCurTime);
 		shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
 		shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
-
+		/*
 		if (m_iPartyStatus != NULL)
 		{
 			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
@@ -18978,6 +19198,12 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		}
 		else
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+		*/
+
+		if (m_bAresden)
+			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
+		else
+			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 
 		if (bShinning || m_bIsCTFMode)
 		{
@@ -18989,8 +19215,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				if (m_dwCurTime - p->time > 25000)
 					continue;
 
-				int r = 255, g = 255, b = 255;
-
+				
 				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 0, 255);
 				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 0, 255);
 				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 0, 255);
@@ -19010,8 +19235,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				if (m_dwCurTime - p->time > 25000)
 					continue;
 
-				int r = 255, g = 255, b = 255;
-
+				
 				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 0, 0);
 				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 0, 0);
 				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 0, 0);
@@ -19021,6 +19245,59 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 0, 0);
 				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 0, 0);
 				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 0, 0);
+			}
+		}
+
+		if (!bShinning)
+		{
+			for (auto& u : m_minimapgreen.list) {
+				auto* p = &u;
+				shX = (p->x * 128) / (m_pMapData->m_sMapSizeX);
+				shY = (p->y * 128) / (m_pMapData->m_sMapSizeY);
+
+				if (m_dwCurTime - p->time > 25000)
+					continue;
+
+
+				m_DDraw.PutPixel(sX + shX, sY + shY - 1, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX - 1, sY + shY, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY - 2, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX - 2, sY + shY, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX + 1, sY + shY, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 1, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX + 2, sY + shY, 0, 255, 0);
+				m_DDraw.PutPixel(sX + shX, sY + shY + 2, 0, 255, 0);
+			}
+
+			if (m_iPartyStatus != NULL)
+			{
+				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
+				{
+					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
+					{
+						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+						{
+							
+								shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
+								shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
+								if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 10) != 0) {
+									//m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
+									
+									m_DDraw.PutPixel(sX + shX, sY + shY - 1, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX - 1, sY + shY, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX, sY + shY - 2, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX - 2, sY + shY, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX, sY + shY, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX + 1, sY + shY, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX, sY + shY + 1, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX + 2, sY + shY, 255, 255, 0);
+									m_DDraw.PutPixel(sX + shX, sY + shY + 2, 255, 255, 0);
+								}
+							
+						}
+					}
+				}
 			}
 		}
 
@@ -19110,12 +19387,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 	if (cLB != 0) return;
 	if (msX >= sX && msX < sX + szY && msY >= sY && msY < sY + szY)
 	{
-/*#ifdef RES_HIGH
 		if (sY > 273) shY = sY - 17;
-#else
-		if (sY > 213) shY = sY - 17;
-#endif*/
-		if (sY > 213) shY = sY - 17;
 		else shY = sY + szY + 4;
 		if (m_bZoomMap) PutString(sX, shY, DEF_MSG_GUIDEMAP_MIN, RGB(200, 200, 120));//"(-)
 		else PutString(sX, shY, DEF_MSG_GUIDEMAP_MAX, RGB(200, 200, 120));//"(+)
@@ -19550,6 +19822,15 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 					case 67:
 					case 68:
 					case 69:
+					case 27:
+					case 41: //Snoopy: Drag exchange confirmation dialog
+					case 42:  // Snoopy: Drag majestic stats
+					case 60:
+					case 43: // Drajwer - friendlist s
+					case 51:  // Snoopy: Drag Gail menu
+					case 56: //Magn0S:: Add focus on GM Panel
+					case 53: // General Panel
+
 						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
 						m_stMCursor.sSelectedObjectID = cDlgID;
 						break;
@@ -19680,37 +19961,7 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 						}
 						break;
 
-					case 27:
-						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
-						m_stMCursor.sSelectedObjectID = cDlgID;
-						break;
-
-					case 41: //Snoopy: Drag exchange confirmation dialog
-						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
-						m_stMCursor.sSelectedObjectID = cDlgID;
-						break;
-
-					case 42:  // Snoopy: Drag majestic stats
-						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
-						m_stMCursor.sSelectedObjectID = cDlgID;
-						break;
-
-					case 43: // Drajwer - friendlist s
-						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
-						m_stMCursor.sSelectedObjectID = cDlgID;
-						break;
-
-					case 51:  // Snoopy: Drag Gail menu
-						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
-						m_stMCursor.sSelectedObjectID = cDlgID;
-						break;
-
-					case 56: //Magn0S:: Add focus on GM Panel
-					case 53: // General Panel
-						m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_DLGBOX;
-						m_stMCursor.sSelectedObjectID = cDlgID;
-						break;
-
+					
 					case 57: // MORLA 2.4 - shop 2
 						sX = m_stDialogBoxInfo[57].sX;
 						sY = m_stDialogBoxInfo[57].sY;
@@ -22089,7 +22340,7 @@ void CGame::minimapblue_clear(char* cp)
 	h = *ip;
 	cp += 4;
 
-	m_minimapred.Remove(h);
+	m_minimapblue.Remove(h);
 }
 
 void CGame::minimapred_update(char* cp)
@@ -22129,12 +22380,92 @@ void CGame::minimapred_clear(char* cp)
 	m_minimapred.Remove(h);
 }
 
+void CGame::minimapgreen_update(char* cp)
+{
+	int* ip = (int*)cp;
+	int h = *ip;
+	cp += 4;
+
+	short* sp = (short*)cp;
+	short x = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	short y = *sp;
+	cp += 2;
+
+	MinimapGreen::Unit u;
+	u.id = h;
+	u.x = x;
+	u.y = y;
+	auto t = timeGetTime();
+	u.time = t;
+	m_minimapgreen.Remove(h);
+	m_minimapgreen.list.push_back(u);
+}
+
+void CGame::minimapgreen_clear(char* cp)
+{
+	int h;
+
+	int* ip = (int*)cp;
+	h = *ip;
+	cp += 4;
+
+	m_minimapgreen.Remove(h);
+}
+
+void CGame::minimapyellow_update(char* cp)
+{
+	int* ip = (int*)cp;
+	int h = *ip;
+	cp += 4;
+
+	short* sp = (short*)cp;
+	short x = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	short y = *sp;
+	cp += 2;
+
+	MinimapYellow::Unit u;
+	u.id = h;
+	u.x = x;
+	u.y = y;
+	auto t = timeGetTime();
+	u.time = t;
+	m_minimapyellow.Remove(h);
+	m_minimapyellow.list.push_back(u);
+}
+
+void CGame::minimapyellow_clear(char* cp)
+{
+	int h;
+
+	int* ip = (int*)cp;
+	h = *ip;
+	cp += 4;
+
+	m_minimapyellow.Remove(h);
+}
+
 void CGame::MinimapRed::Clear()
 {
 	list.clear();
 }
 
 void CGame::MinimapBlue::Clear()
+{
+	list.clear();
+}
+
+void CGame::MinimapGreen::Clear()
+{
+	list.clear();
+}
+
+void CGame::MinimapYellow::Clear()
 {
 	list.clear();
 }
@@ -22150,6 +22481,20 @@ void CGame::MinimapBlue::Remove(int handle) {
 
 void CGame::MinimapRed::Remove(int handle) {
 	stdremove(list, [&](MinimapRed::Unit& p)
+		{
+			return p.id == handle;
+		});
+}
+
+void CGame::MinimapGreen::Remove(int handle) {
+	stdremove(list, [&](MinimapGreen::Unit& p)
+		{
+			return p.id == handle;
+		});
+}
+
+void CGame::MinimapYellow::Remove(int handle) {
+	stdremove(list, [&](MinimapYellow::Unit& p)
 		{
 			return p.id == handle;
 		});

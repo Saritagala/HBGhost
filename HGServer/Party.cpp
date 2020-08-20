@@ -933,13 +933,7 @@ void CGame::RefreshPartyCoords(int iClientH)
 
 	if (m_pClientList[iClientH] == NULL) return;
 
-	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
-		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
-		RequestDeletePartyHandler(iClientH);
-		return;
-	}
-
-	if ((m_pClientList[iClientH]->m_iPartyID != NULL) && (m_pClientList[iClientH]->m_iPartyStatus == DEF_PARTYSTATUS_CONFIRM))
+	if ((!bShinning) && (m_pClientList[iClientH]->m_iPartyID != NULL) && (m_pClientList[iClientH]->m_iPartyStatus == DEF_PARTYSTATUS_CONFIRM))
 	{
 		Party_sX = m_pClientList[iClientH]->m_sX;
 		Party_sY = m_pClientList[iClientH]->m_sY;
@@ -966,3 +960,4 @@ void CGame::RefreshPartyCoords(int iClientH)
 		}
 	}
 }
+
