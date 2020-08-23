@@ -1344,7 +1344,7 @@ void CGame::MotionEventHandler(char* pData)
 				int iFontType;
 				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
 				else if ((iDamage >= 120) && (iDamage < 300)) iFontType = 22;
-				else if (iDamage >= 300)    iFontType = 23;
+				else if (iDamage >= 300 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1377,7 +1377,7 @@ void CGame::MotionEventHandler(char* pData)
 				int iFontType;
 				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
 				else if ((iDamage >= 120) && (iDamage < 300)) iFontType = 22;
-				else if (iDamage >= 300)    iFontType = 23;
+				else if (iDamage >= 300 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -22056,7 +22056,7 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 	case 3:
 		//PutString_SprFont3(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 5, "Graphic's Options", 255, 255, 255);
 		//PutString_SprFont(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 15, "Graphic's Options", 7, 0, 0);
-		PutString_SprFont2(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 5, "Graphic's Options", 19, 104, 169);
+		PutString_SprFont2(sX + 125 - ((strlen("Graphics Options") * 7) / 2), sY + 5, "Graphics Options", 19, 104, 169);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))

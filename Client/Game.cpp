@@ -1338,7 +1338,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		break;
 
 	case MSGID_REQUEST_PING:
-        /*dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
+        dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
         *dwp = dwMsgID;
         wp  = (WORD *)(cMsg + DEF_INDEX2_MSGTYPE);
         *wp = NULL;
@@ -1348,7 +1348,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
         *dwp = dwTime;
         cp += 4;
 
-        iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);*/
+        iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
         break;
 
 	case DEF_REQUEST_ANGEL:	// to Game Server
@@ -1357,12 +1357,12 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		wp  = (WORD *)(cMsg + DEF_INDEX2_MSGTYPE);
 		*wp = NULL;
 		cp = (char*)(cMsg + 6);
-		memset( cp, 0, 20 );
+		memset( cp, 0, 5 );
 		memcpy((char *)cp, pString, strlen(pString) + 1);
-		cp += 20;
+		cp += 5;
 		ip = (int *)cp;
 		*ip = iV1; // Angel ID
-		iRet = m_pGSock->iSendMsg(cMsg, 30, cKey);
+		iRet = m_pGSock->iSendMsg(cMsg, 15, cKey);
 		break;
 
 	case MSGID_REQUEST_RESTART:
@@ -1384,9 +1384,9 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		wp  = (WORD *)(cMsg + DEF_INDEX2_MSGTYPE);
 		*wp = NULL;
 		cp = (char*)(cMsg + 6);
-		memset( cp, 0, 20 );
+		memset( cp, 0, 5 );
 		memcpy((char *)cp, pString, strlen(pString) + 1);
-		cp += 20;
+		cp += 5;
 		wp = (WORD *)cp;
 		*wp = wCommand; // Item ID
 		iRet = m_pGSock->iSendMsg(cMsg, 28, cKey);
@@ -2166,13 +2166,13 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 
 	indexY = sDivY + sPivotY - 7;
 #ifdef RES_HIGH
-	for (iy = -sModY - 224; iy <= 600 + 352; iy += 32)
+	for (iy = -sModY - 224; iy <= 547 + 352; iy += 32)
 	{
 		indexX = sDivX + sPivotX - 4;
 		for (ix = -sModX - 128; ix <= 800 + 128; ix += 32)
 		{	sDynamicObject = NULL;
 			bRet = FALSE;
-			if ((ix >= -sModX) && (ix <= 800 + 16) && (iy >= -sModY) && (iy <= 600 + 32 + 16))
+			if ((ix >= -sModX) && (ix <= 800 + 16) && (iy >= -sModY) && (iy <= 547 + 32 + 16))
 #else
 	for (iy = -sModY-224; iy <= 427+352; iy += 32)
 	{	indexX = sDivX + sPivotX-4;
@@ -4035,6 +4035,12 @@ void CGame::OnTimer()
 #endif
 		}
 
+		if ((dwTime - m_dwCheckPingTime) > 5000)
+		{
+			m_dwCheckPingTime = dwTime;
+			bSendCommand(MSGID_REQUEST_PING, NULL, NULL, NULL, NULL, NULL, NULL);
+		}
+
 		if ((dwTime - m_dwCheckChatTime) > 2000)
 		{	m_dwCheckChatTime = m_dwTime;
 			ReleaseTimeoverChatMsg();
@@ -4475,7 +4481,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutAlignedString(sX + 218+30, sX + 251+30, sY + 285 - 2, G_cTxt, 0, 255, 0);
 
 		// Dex
-		PutString(sX + 30, sY + 302 - 2, "Dex:", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 25, sY + 302 - 2, "Dex:", RGB(255, 255, 255), FALSE, 1);
 		if (m_iAngelicDex == 0)
 		{
 			wsprintf(G_cTxt, "%d", m_iDex);
@@ -16195,7 +16201,7 @@ void CGame::DrawBackground(short sDivX, short sModX, short sDivY, short sModY)
 		m_iPDBGSdivY = sDivY;
 		SetRect(&m_DDraw.m_rcClipArea, 0,0, 800+32, 600+32);
 		indexY = sDivY+m_pMapData->m_sPivotY;
-		for (iy = -sModY; iy < 600 + 48; iy += 32) 
+		for (iy = -sModY; iy < 547 + 48; iy += 32) // 600 
 		{
 			indexX = sDivX+m_pMapData->m_sPivotX;
 			for (ix = -sModX; ix < 800+48 ; ix += 32)
@@ -18055,7 +18061,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 			else wsprintf(G_cTxt, "Attack");
 		}
 		else wsprintf(G_cTxt, "Peace");
-		PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+		//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 	}
 
 	if ((m_bIsCrusadeMode) && (m_iCrusadeDuty != 0)) { // Crusade Icon
@@ -18087,6 +18093,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 	{
 		wsprintf(G_cTxt, "%s (%d,%d)", m_cMapMessage, m_sPlayerX, m_sPlayerY);// Map Message (Center Pannel)
 	}
+	//PutAlignedString(140 + resx+1, 323 + resx+1, 456 + resy+1, G_cTxt, 0, 0, 0);
 	PutAlignedString(140 + resx, 323 + resx, 456 + resy, G_cTxt, 200, 200, 120);
 
 	if ((msY > 436 + resy) && (msY < 478 + resy)) // Menu Icons
@@ -18094,32 +18101,32 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		if ((msX > 410 + resx + addx) && (msX < 447 + resx + addx)) { // Character    
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(410 + resx + addx + 2, 434 + resy, 6, dwTime);
 			wsprintf(G_cTxt, "Character Menu");
-			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 447 + resx + addx) && (msX < 484 + resx + addx)) { // Inventory
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(447 + resx + addx + 1, 434 + resy, 7, dwTime);
 			wsprintf(G_cTxt, "Inventory");
-			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 484 + resx + addx) && (msX < 521 + resx + addx)) { // Magic
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(484 + resx + addx, 434 + resy, 8, dwTime);
 			wsprintf(G_cTxt, "Spell Book");
-			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 521 + resx + addx) && (msX < 558 + resx + addx)) { // Skill
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(521 + resx + addx + 1, 434 + resy, 9, dwTime);
 			wsprintf(G_cTxt, "Skill List");
-			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 558 + resx + addx) && (msX < 595 + resx + addx)) { // History
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(558 + resx + addx, 434 + resy, 10, dwTime);
 			wsprintf(G_cTxt, "Chat History");
-			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 595 + resx + addx) && (msX < 631 + resx + addx)) { // System Menu
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(595 + resx + addx + 1, 434 + resy, 11, dwTime);
 			wsprintf(G_cTxt, "Options");
-			PutString(msX - 20, msY - 20, G_cTxt, RGB(250, 250, 220));
+			//PutString(msX - 20, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 	}
 
@@ -18128,7 +18135,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		PutString(msX - 20, msY - 20, G_cTxt, RGB(250, 250, 220));
 	}*/
 
-	DWORD dwTimeThis = timeGetTime(); // MORLA 2.3 - Muestra el icono de Holy Shit etc...
+	/*DWORD dwTimeThis = timeGetTime(); // MORLA 2.3 - Muestra el icono de Holy Shit etc...
 	if (dwTimeThis < dwTimeLastMsg) {
 		if (iKillAnnouncer == 1)
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutTransSprite(200, 8, 39, dwTime);
@@ -18138,7 +18145,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutTransSprite(200, 8, 41, dwTime);
 		if (iKillAnnouncer == 4)
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutTransSprite(200, 8, 42, dwTime);
-	}
+	}*/
 
 	if (m_bShowParty)
 	{
@@ -18169,6 +18176,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 
 					}
 					wsprintf(G_cTxt, "%s", m_stPartyMemberNameList[i].cName);
+					PutAlignedString(71 * x+1, 71 * (x + 1)+1, 45+1, G_cTxt, 0, 0, 0);
 					PutAlignedString(71 * x, 71 * (x + 1), 45, G_cTxt, 220, 130, 45);
 					m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(3 + (71 * x), 60, 28, dwTime);
 					m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(3 + (71 * x), 65, 28, dwTime);
@@ -18362,8 +18370,11 @@ void CGame::DrawDialogBox_GaugePannel()
 		PutString_SprNum(85 + resx, 441 + resy, G_cTxt, m_wR[5] * 11, m_wG[5] * 11, m_wB[5] * 11);
 		PutString_SprFont3(35 + resx, 439 + resy, "Poisoned", m_wR[5] * 8, m_wG[5] * 8, m_wB[5] * 8, TRUE, 2);
 	}
-	else PutString_SprNum(80 + resx, 441 + resy, G_cTxt, 200, 100, 100);
-
+	else
+	{
+		PutString_SprNum(80 + resx+1, 441 + resy+1, G_cTxt, 0, 0, 0);
+		PutString_SprNum(80 + resx, 441 + resy, G_cTxt, 255, 255, 255);
+	}
 	// Mana Gauge
 	iMaxPoint = ((m_iMag + m_iAngelicMag) * 2) + (m_iLevel) * 2 + ((m_iInt + m_iAngelicInt) / 2);
 	iBarWidth = 101 - (m_iMP * 101) / iMaxPoint;
@@ -18372,7 +18383,8 @@ void CGame::DrawDialogBox_GaugePannel()
 	m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFastWidth(23 + resx, 459 + resy, 12, iBarWidth, m_dwCurTime, false);
 	iTemp = m_iMP;
 	wsprintf(G_cTxt, "%d", iTemp);
-	PutString_SprNum(80 + resx, 463 + resy, G_cTxt, 100, 100, 200);
+	PutString_SprNum(80 + resx+1, 463 + resy+1, G_cTxt, 0, 0, 0);
+	PutString_SprNum(80 + resx, 463 + resy, G_cTxt, 255, 255, 255);
 
 	// Stamina Gauge
 	iMaxPoint = ((m_iStr + m_iAngelicStr) * 2) + (m_iLevel) * 2;
@@ -18382,7 +18394,8 @@ void CGame::DrawDialogBox_GaugePannel()
 	m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFastWidth(147 + resx, 434 + resy, 13, iBarWidth, m_dwCurTime, false);
 	iTemp = m_iSP;
 	wsprintf(G_cTxt, "%d", iTemp, iMaxPoint);
-	PutString_SprNum(228 + resx, 435 + resy, G_cTxt, 100, 100, 200);
+	PutString_SprNum(228 + resx+1, 435 + resy+1, G_cTxt, 0, 0, 0);
+	PutString_SprNum(228 + resx, 435 + resy, G_cTxt, 255, 255, 255);
 
 	// Experience Gauge - MORLA - arreglada para que vaya de izquierda a derecha
 
@@ -26656,7 +26669,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 	else if (m_cGameModeCount >= 6)
 	{
 		m_DDraw.DrawShadowBox(0, 0, 800, 600);
-		m_DDraw.DrawShadowBox(0, 0, 800, 600);
+		//m_DDraw.DrawShadowBox(0, 0, 800, 600);
 	}
 #else
 	if ((m_cGameModeCount >= 0) && (m_cGameModeCount < 6))
@@ -33140,7 +33153,7 @@ MOTION_COMMAND_PROCESS:;
 					int iFontType;
 					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 120))        iFontType = 21;
 					else if ((m_sDamageMoveAmount >= 120) && (m_sDamageMoveAmount < 300)) iFontType = 22;
-					else if (m_sDamageMoveAmount >= 300) iFontType = 23;
+					else if (m_sDamageMoveAmount >= 300 || m_sDamageMoveAmount < 0) iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
@@ -33962,12 +33975,14 @@ void CGame::UpdateScreen_OnGame()
 	}
 
 	if (m_bIsCTFMode && iUpdateRet != 0) {
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180, 56, dwTime);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 20, 56, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[0]);
-		PutString(10 + 10, 180 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 45, 57, dwTime);
+		PutString(10 + 10+1, 180 + 5 + 20+1, G_cTxt, RGB(0, 0, 0), FALSE, 1);
+		PutString(10 + 10, 180 + 5 + 20, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 45 + 20, 57, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
-		PutString(10 + 10, 180 + 45 + 5, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		PutString(10 + 10+1, 180 + 45 + 5 + 20+1, G_cTxt, RGB(0, 0, 0), FALSE, 1);
+		PutString(10 + 10, 180 + 45 + 5 + 20, G_cTxt, RGB(225, 225, 225), FALSE, 1);
 	}
 
 	//Magn0S:: Apocalypse info help
@@ -33976,9 +33991,9 @@ void CGame::UpdateScreen_OnGame()
 		m_DDraw.DrawShadowBox(650, 142, 780, 190, 0, true);
 		PutString2(655, 150, "Apocalypse Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
 
-		if (m_iTotalAliveObject > -1) {
+		if (m_iTotalAliveObject > 0) {
 			PutString2(745, 150, "Closed", 255, 0, 0); //255,200,0); "ON", 0,255,0);
-			wsprintf(G_cTxt, "Mobs Left: %u", m_iTotalAliveObject);
+			wsprintf(G_cTxt, "Mobs Left: %d", m_iTotalAliveObject);
 			PutString2(680, 170, G_cTxt, 255, 200, 0);
 		}
 		else {
@@ -33990,17 +34005,23 @@ void CGame::UpdateScreen_OnGame()
 	if ((iUpdateRet != 0) && (m_bIsHeldenian) && (memcmp(m_cCurLocation, "BtField", 7) == 0))
 	{
 		wsprintf(G_cTxt, "Aresden flags : %d", m_iHeldenianAresdenFlags);
-		PutString(10, 140+20, G_cTxt, RGB(255, 255, 255));
+		PutString(10+1, 140 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
+		PutString(10, 140+20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine flags : %d", m_iHeldenianElvineFlags);
-		PutString(10, 160 + 20, G_cTxt, RGB(255, 255, 255));
+		PutString(10+1, 160 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
+		PutString(10, 160 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Aresden death toll : %d", m_iHeldenianAresdenDead);
-		PutString(10, 180 + 20, G_cTxt, RGB(255, 255, 255));
+		PutString(10+1, 180 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
+		PutString(10, 180 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine death toll : %d", m_iHeldenianElvineDead);
-		PutString(10, 200 + 20, G_cTxt, RGB(255, 255, 255));
+		PutString(10+1, 200 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
+		PutString(10, 200 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Aresden rest building number : %d", m_iHeldenianAresdenLeftTower);
-		PutString(10, 220 + 20, G_cTxt, RGB(255, 255, 255));
+		PutString(10+1, 220 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
+		PutString(10, 220 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine rest building number : %d", m_iHeldenianElvineLeftTower);
-		PutString(10, 240 + 20, G_cTxt, RGB(255, 255, 255));
+		PutString(10+1, 240 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
+		PutString(10, 240 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 	}
 
 	DrawTopMsg();
@@ -34120,9 +34141,13 @@ void CGame::UpdateScreen_OnGame()
 		wsprintf(cCol2, "Kills");
 		wsprintf(cCol3, "Deaths");
 
-		PutAlignedString(110, 160, 160, cCol3, 192, 192, 192);
-		PutAlignedString(60, 110, 160, cCol2, 192, 192, 192);
-		PutAlignedString(10, 60, 160, cCol1, 192, 192, 192);
+		PutAlignedString(110+1, 160+1, 160 + 20+1, cCol3, 192, 192, 192);
+		PutAlignedString(60+1, 110+1, 160 + 20+1, cCol2, 192, 192, 192);
+		PutAlignedString(10+1, 60+1, 160 + 20+1, cCol1, 192, 192, 192);
+
+		PutAlignedString(110, 160, 160 + 20, cCol3, 192, 192, 192);
+		PutAlignedString(60, 110, 160 + 20, cCol2, 192, 192, 192);
+		PutAlignedString(10, 60, 160 + 20, cCol1, 192, 192, 192);
 
 		for (i = 0; i < 200; i++)
 		{
@@ -34139,18 +34164,26 @@ void CGame::UpdateScreen_OnGame()
 					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
 					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
 					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
-					PutAlignedString(110, 160, 160 + (iEntry * 15), cCol3, 255, 255, 204);
-					PutAlignedString(60, 110, 160 + (iEntry * 15), cCol2, 255, 255, 204);
-					PutAlignedString(10, 60, 160 + (iEntry * 15), cCol1, 255, 255, 204);
+					PutAlignedString(110+1, 160+1, 160 + (iEntry * 15) + 20+1, cCol3, 255, 255, 204);
+					PutAlignedString(60+1, 110+1, 160 + (iEntry * 15) + 20+1, cCol2, 255, 255, 204);
+					PutAlignedString(10+1, 60+1, 160 + (iEntry * 15) + 20+1, cCol1, 255, 255, 204);
+
+					PutAlignedString(110, 160, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 204);
+					PutAlignedString(60, 110, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 204);
+					PutAlignedString(10, 60, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 204);
 				}
 				else
 				{
 					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
 					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
 					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
-					PutAlignedString(110, 160, 160 + (iEntry * 15), cCol3, 255, 255, 255);
-					PutAlignedString(60, 110, 160 + (iEntry * 15), cCol2, 255, 255, 255);
-					PutAlignedString(10, 60, 160 + (iEntry * 15), cCol1, 255, 255, 255);
+					PutAlignedString(110+1, 160+1, 160 + (iEntry * 15) + 20+1, cCol3, 255, 255, 255);
+					PutAlignedString(60+1, 110+1, 160 + (iEntry * 15) + 20+1, cCol2, 255, 255, 255);
+					PutAlignedString(10+1, 60+1, 160 + (iEntry * 15) + 20+1, cCol1, 255, 255, 255);
+
+					PutAlignedString(110, 160, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 255);
+					PutAlignedString(60, 110, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 255);
+					PutAlignedString(10, 60, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 255);
 				}
 			}
 		}
@@ -34226,38 +34259,56 @@ void CGame::UpdateScreen_OnGame()
 	{
 		if (m_bShowFPS)
 		{
-			wsprintf(G_cTxt, "fps : %.3d", m_sFPS);
+			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
+			PutString(10 + 1, 140 + 1, G_cTxt, RGB(0, 0, 0));
 			PutString(10, 140, G_cTxt, RGB(255, 255, 255));
+			
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "Ping : %.3d", m_iPing);
+			PutString(10 + 1, 160 + 1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 160, G_cTxt, RGB(255, 255, 255));
+			
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+
 		}
 
 		if (strcmp(m_cMapName, "team") == 0) {
 			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
 			wsprintf(G_cTxt, "Team");
-			PutString(10, 160, G_cTxt, RGB(220, 200, 200));
+			PutString(10+1, 160 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 160+20, G_cTxt, RGB(220, 200, 200));
 			wsprintf(G_cTxt, "Red");
-			PutString(10, 180, G_cTxt, RGB(255, 0, 9));
+			PutString(10+1, 180 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 180 + 20, G_cTxt, RGB(255, 0, 9));
 			wsprintf(G_cTxt, "Blue");
-			PutString(10, 200, G_cTxt, RGB(61, 100, 255));
+			PutString(10+1, 200 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 200 + 20, G_cTxt, RGB(61, 100, 255));
 			wsprintf(G_cTxt, "Green");
-			PutString(10, 220, G_cTxt, RGB(51, 204, 0));
+			PutString(10+1, 220 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 220 + 20, G_cTxt, RGB(51, 204, 0));
 			wsprintf(G_cTxt, "Yellow");
-			PutString(10, 240, G_cTxt, RGB(255, 255, 0));
+			PutString(10+1, 240 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 240 + 20, G_cTxt, RGB(255, 255, 0));
 
 			wsprintf(G_cTxt, "Kills");
-			PutString(70, 160, G_cTxt, RGB(220, 200, 200));
+			PutString(70+1, 160 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(70, 160 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", redkills);
-			PutString(70, 180, G_cTxt, RGB(220, 200, 200));
+			PutString(70+1, 180 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(70, 180 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", bluekills);
-			PutString(70, 200, G_cTxt, RGB(220, 200, 200));
+			PutString(70+1, 200 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(70, 200 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", greenkills);
-			PutString(70, 220, G_cTxt, RGB(220, 200, 200));
+			PutString(70+1, 220 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(70, 220 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", yellowkills);
-			PutString(70, 240, G_cTxt, RGB(220, 200, 200));
+			PutString(70+1, 240 + 20+1, G_cTxt, RGB(0, 0, 0));
+			PutString(70, 240 + 20, G_cTxt, RGB(220, 200, 200));
 		}
 
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();

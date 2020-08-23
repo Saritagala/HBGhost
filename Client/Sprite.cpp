@@ -681,7 +681,7 @@ void CSprite::PutShadowSprite(int sX, int sY, int sFrame, DWORD dwTime)
 				if (pSrc[ix] != m_wColorKey)
 				{
 #ifdef RES_HIGH
-					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 600 ) 
+					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 547 ) 
 #else
 					if( iSangX >= 0 && iSangX < 640 && iSangY >= 0 && iSangY < 427 )
 #endif
@@ -703,7 +703,7 @@ void CSprite::PutShadowSprite(int sX, int sY, int sFrame, DWORD dwTime)
 				if (pSrc[ix] != m_wColorKey)
 				{
 #ifdef RES_HIGH
-					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 600 ) 
+					if( iSangX >= 0 && iSangX < 800 && iSangY >= 0 && iSangY < 547 ) 
 #else
 					if( iSangX >= 0 && iSangX < 640 && iSangY >= 0 && iSangY < 427 )
 #endif
