@@ -1551,7 +1551,7 @@ void CGame::CheckUniqueItemEquipment(int iClientH)
 *********************************************************************************************************************/
 void CGame::GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize)
 {
-	char* cp, cData[256], cTmpName[21];
+	char* cp, cData[256], cTmpName[5];
 	int   iAngel, iItemNbe;
 	class CItem* pItem;
 	int   iRet, iEraseReq;
@@ -1580,10 +1580,10 @@ void CGame::GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, cp);
-	cp += 20;
+	cp += 5;
 	ip = (int*)cp;
 	iAngel = (int)*ip; // 0x00 l a i
-	cp += 2;
+	cp += 4;
 	switch (iAngel) {
 	case 1: // STR
 		iItemNbe = 908;

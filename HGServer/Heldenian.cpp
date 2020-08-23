@@ -1635,7 +1635,7 @@ BOOL CGame::UpdateHeldenianStatus(int iClientH)
 *********************************************************************************************************************/
 void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 {
-	char* cp, cData[256], cTmpName[21];
+	char* cp, cData[256], cTmpName[5];
 	int   iItemNbe;
 	class CItem* pItem;
 	int   iRet, iEraseReq, iNeededPts;
@@ -1653,7 +1653,7 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, cp);
-	cp += 20;
+	cp += 5;
 	wp = (WORD*)cp;
 	iItemNbe = (int)*wp; // 0x00 l a i
 	cp += 2;

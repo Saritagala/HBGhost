@@ -7685,7 +7685,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 				GlobalStartApocalypseMode(iClientH, 0);
 			}
 		}
-		else if (memcmp(cp, "/openapocalypsegate", 19) == 0)
+		/*else if (memcmp(cp, "/openapocalypsegate", 19) == 0)
 		{	if (   (m_pClientList[iClientH]->m_iAdminUserLevel >= 3) 
 				&& (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == TRUE)) 
 			{	wsprintf(cTemp, "GM Order(%-10s): /openapocalypsegate", m_pClientList[iClientH]->m_cCharName);
@@ -7700,7 +7700,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 				bSendMsgToLS(MSGID_GAMEMASTERLOG, iClientH, FALSE, cTemp);
 				GlobalStartApocalypseMode(iClientH, 2);
 			}
-		}
+		}*/
 		else if (memcmp(cp, "/endapocalypse", 14) == 0)
 		{	if (   (m_pClientList[iClientH]->m_iAdminUserLevel >= 3) 	
 				&& (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == TRUE)) 
@@ -8850,7 +8850,7 @@ DWORD * dwp, dwTimeRcv;
 				
 				//Change ping response
 
-				/*if (m_pClientList[iClientH] == NULL) return;
+				if (m_pClientList[iClientH] == NULL) return;
 
 				cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 				dwp = (DWORD *)cp;
@@ -8866,7 +8866,7 @@ DWORD * dwp, dwTimeRcv;
 				*dwp = dwTimeRcv;
 				cp += 4;
 
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cBuffer, 10);*/
+				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cBuffer, 10);
 				break;
 
 			case DEF_REQUEST_ANGEL: // Angels by Snoopy...
@@ -26983,6 +26983,8 @@ void CGame::calcularTop15HB(int iClientH) // MORLA 2.4 - Calcular si tiene mas D
 {
 	int p;
 	bool bExiste = false;
+
+	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0) return;
 
 	for (p = 1; p <= 15; p++)
 	{
