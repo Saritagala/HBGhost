@@ -235,8 +235,12 @@
 
 #define DEF_ITEMEFFECTTYPE_PANDORA			34
 #define DEF_ITEMEFFECTTYPE_WEAPONDYE		41 // WeaponDye
+#define DEF_ITEMEFFECTTYPE_ATTUNE			42
 
 //Magn0S:: Added---------------------------------------------------------------
+#define DEF_MAXMAGICALABS		70
+#define DEF_MAXPHYSICALABS		80
+
 #define DEF_ITEMEFFECTTYPE_REP				35
 #define DEF_ITEMEFFECTTYPE_COINS			36
 #define DEF_ITEMEFFECTTYPE_REPAIR			37

@@ -303,10 +303,14 @@ public:
 	int   m_iAddPhysicalDamage;					// v1.2 고정 대미지 추가 포인트 
 	int   m_iAddMagicalDamage;	
 
-	int   m_iAddAbsAir;							// 속성별 대미지 흡수
+	int   m_iAddAbsLight;							// 속성별 대미지 흡수
 	int   m_iAddAbsEarth;
 	int   m_iAddAbsFire;
 	int   m_iAddAbsWater;
+	//Magn0S:: Add
+	int   m_iAddAbsHoly;
+	int   m_iAddAbsUnholy;
+	int   m_iAddElementAbs;
 
 	DWORD m_dwDSLAT, m_dwDSLATOld, m_dwDSLATS;
 	int m_iDSCount;

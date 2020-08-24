@@ -1334,6 +1334,12 @@ public:
 	void StartBGMGhost();
 	bool bPlayGhostMusic = false;
 	int m_iTotalAliveObject = -1;
+
+	// VAMP - attune armour
+	void NotifyMsg_AttuneArmour(char* pData);
+	// VAMP - notifiers
+	short m_sEarthValue, m_sAirValue, m_sFireValue, m_sWaterValue, m_sHolyValue, m_sUnholyValue;
+	void NotifyMsg_ArmourValues(char* pData);
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
 };
 

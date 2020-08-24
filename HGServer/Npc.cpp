@@ -1711,6 +1711,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	DWORD dwType, dwValue;
 	double dTmp1, dTmp2, dTmp3;
 	short sMagicLevel = 0;
+	short sElement;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
 	if ((cAttackerType != DEF_OWNERTYPE_PLAYER) || (m_pNpcList[iNpcH]->m_bIsSummoned == TRUE)) return;
@@ -2575,8 +2576,23 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 3: // DR Min +21%
 						case 7: // MR Min +21%
 						case 8: // PA Min +9%
+							if (dwValue <= 3) dwValue = 3;
+							break;
 						case 9: // MA Min +9%
 							if (dwValue <= 3) dwValue = 3;
+							//Magn0S:: Add Elements
+							iResult = iDice(1, 10200);
+							if ((iResult >= 1) && (iResult < 2750)) sElement = 1;  //Earth 27%
+							else if ((iResult >= 2750) && (iResult < 5500)) sElement = 2;  //Light 27%
+							else if ((iResult >= 5500) && (iResult < 6500)) sElement = 3;  //Fire 10%
+							else if ((iResult >= 6500) && (iResult < 9250)) sElement = 4;  //Water 27%
+							else if ((iResult >= 9250) && (iResult < 9625)) sElement = 5;  //Holy 04%
+							else if ((iResult >= 9625) && (iResult < 10000)) sElement = 6;  //Unnholy 04%
+							else if ((iResult >= 10000) && (iResult < 10200)) sElement = 7;  //Untunned 02%
+							else sElement = 0;
+
+							pItem->m_sNewEffect1 = sElement;
+							break;
 							break;
 						}
 						// Max = 7

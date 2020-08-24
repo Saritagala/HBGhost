@@ -29,6 +29,5 @@ account-Answer   = a
 account-created-by = 
 
 [CHARACTERS]
-account-character  = Magn0S[GM]
 account-character  = magnos
 

@@ -691,3 +691,8 @@
 #define DEF_NOTIFY_SERVERTIME					0x002095
 #define DEF_NOTIFY_ABBYAPPEAR					0x003010
 #define DEF_NOTIFY_MONSTERCOUNTAPOC				0x003020
+
+// VAMP - elemental armours attunement
+#define DEF_NOTIFY_ATTUNEARMOUR					0x0D19
+// VAMP - notifiers
+#define DEF_NOTIFY_ARMOURVALUES					0x0D20

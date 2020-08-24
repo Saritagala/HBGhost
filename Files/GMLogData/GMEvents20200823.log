@@ -1,0 +1,18 @@
+2020:08:23:23:43:07	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/enableadmincommand 2257516364627831 "
+2020:08:23:23:43:20	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem Hauberk(W) 8492544"
+2020:08:23:23:43:20	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(Hauberk(W))
+2020:08:23:23:43:31	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem ChainHose(W) 8492544"
+2020:08:23:23:43:31	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(ChainHose(W))
+2020:08:23:23:43:40	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem Hoses(W) 8492544"
+2020:08:23:23:43:46	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem ChainHose(W)"
+2020:08:23:23:43:46	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(ChainHose(W))
+2020:08:23:23:43:54	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem ChainHose(W) 8492544"
+2020:08:23:23:43:54	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(ChainHose(W))
+2020:08:23:23:44:02	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/tp gshop_1"
+2020:08:23:23:44:05	Loc(default) IP(10.0.0.105) GM(Magn0S[GM]):"/tp gshop_1"
+2020:08:23:23:45:04	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem AttunePotion(Water)"
+2020:08:23:23:45:51	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem AttunePotion(WATER)"
+2020:08:23:23:45:51	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(AttunePotion(WATER))
+2020:08:23:23:45:55	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem AttunePotion(EARTH)"
+2020:08:23:23:45:55	(10.0.0.105) GM Order(Magn0S[GM]): Create ItemName(AttunePotion(EARTH))
+2020:08:23:23:45:59	Loc(cityhall_1) IP(10.0.0.105) GM(Magn0S[GM]):"/createitem AttunePotion(LIGHT)"

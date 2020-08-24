@@ -4402,8 +4402,8 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		// Hp
 		iTemp = m_iHP;
 		iEntry++;
-		PutString(sX + 130, sY + 100 + (iEntry * 14), "HP Ponts:", RGB(255, 255, 255), FALSE, 1);
-		wsprintf(G_cTxt, "%d/%d", iTemp, m_iVit * 3 + (m_iLevel) * 2 + (m_iStr + m_iAngelicStr) / 2);
+		PutString(sX + 130, sY + 100 + (iEntry * 14), "HP Points:", RGB(255, 255, 255), FALSE, 1);
+		wsprintf(G_cTxt, "%d/%d", iTemp, (m_iVit * 4) + (m_iLevel * 4) + (m_iStr + m_iAngelicStr) + (m_iMag + m_iAngelicMag));
 		PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 255, 0, 0);
 
 		// Mp
@@ -18359,7 +18359,11 @@ void CGame::DrawDialogBox_GaugePannel()
 #endif
 
 	// Health Gauge
-	iMaxPoint = m_iVit * 3 + (m_iLevel) * 2 + ((m_iStr + m_iAngelicStr) / 2);
+	//iMaxPoint = m_iVit * 3 + (m_iLevel) * 2 + ((m_iStr + m_iAngelicStr) / 2);
+
+	//Magn0S:: Changed HP Formula
+	iMaxPoint = (m_iVit * 4) + (m_iLevel * 4) + (m_iStr + m_iAngelicStr) + (m_iMag + m_iAngelicMag);
+
 	iBarWidth = 101 - (m_iHP * 101) / iMaxPoint;
 	if (iBarWidth < 0) iBarWidth = 0;
 	if (iBarWidth > 101) iBarWidth = 101;
@@ -28450,6 +28454,15 @@ NMH_LOOPBREAK2:;
 		NotifyMsg_ItemColorChange(pData);
 		break;
 
+		// VAMP - attune armour
+	case DEF_NOTIFY_ATTUNEARMOUR:
+		NotifyMsg_AttuneArmour(pData);
+		break;
+
+	case DEF_NOTIFY_ARMOURVALUES:
+		NotifyMsg_ArmourValues(pData);
+		break;
+
 	case DEF_NOTIFY_DROPITEMFIN_COUNTCHANGED:
 		NotifyMsg_DropItemFin_CountChanged(pData);
 		break;
@@ -34692,4 +34705,95 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 
 		}
 	}*/
+}
+
+// VAMP - elemental armours change attunement
+void CGame::NotifyMsg_AttuneArmour(char* pData)
+{
+	short* sp, sItemIndex, sItemElement;
+	char* cp;
+	char cTxt[120];
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	sp = (short*)cp;
+	sItemIndex = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	sItemElement = (short)*sp;
+	cp += 2;
+
+	if (m_pItemList[sItemIndex] != NULL) {
+		char cStr1[128], cStr2[128], cStr3[128], cElement[64], cStr4[64], cStr5[64], cStr6[64];
+		GetItemName(m_pItemList[sItemIndex], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+
+		if (sItemElement != -1) {
+			ZeroMemory(cElement, sizeof(cElement));
+			switch (sItemElement)
+			{
+			case 1:
+				wsprintf(cElement, "Earth");
+				break;
+			case 2:
+				wsprintf(cElement, "Air");
+				break;
+			case 3:
+				wsprintf(cElement, "Fire");
+				break;
+			case 4:
+				wsprintf(cElement, "Water");
+				break;
+			case 5:
+				wsprintf(cElement, "Holy");
+				break;
+			case 6:
+				wsprintf(cElement, "Unholy");
+				break;
+
+			}
+			m_pItemList[sItemIndex]->m_sNewEffect1 = (int)sItemElement;
+			wsprintf(cTxt, "%s has been attuned to %s!", cStr1, cElement);
+			AddEventList(cTxt, 10);
+		}
+		else {
+			wsprintf(cTxt, "Unable to attune %s", cStr1);
+			AddEventList(cTxt, 10);
+		}
+	}
+}
+
+// VAMP - notifiers
+void CGame::NotifyMsg_ArmourValues(char* pData)
+{
+	short* sp, sItemIndex, sItemElement;
+	char* cp;
+
+	m_sEarthValue = m_sAirValue = m_sFireValue = m_sWaterValue = m_sHolyValue = m_sUnholyValue = 0;
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	sp = (short*)cp;
+	m_sEarthValue = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	m_sAirValue = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	m_sFireValue = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	m_sWaterValue = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	m_sHolyValue = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	m_sUnholyValue = *sp;
+	cp += 2;
 }

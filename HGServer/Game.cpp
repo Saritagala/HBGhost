@@ -11678,9 +11678,9 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			break;
 
 		case 2:
-			if (m_pClientList[sTargetH]->m_iAddAbsAir != 0) {
+			if (m_pClientList[sTargetH]->m_iAddAbsLight != 0) {
 				dTmp1 = (double)iDamage;
-				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsAir;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsLight;
 				dTmp3 = (dTmp2/100.0f)*dTmp1;
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
@@ -11702,6 +11702,27 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 				dTmp1 = (double)iDamage;
 				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsWater;
 				dTmp3 = (dTmp2/100.0f)*dTmp1;
+				iDamage = iDamage - (int)(dTmp3);
+				if (iDamage < 0) iDamage = 0;
+			}
+			break;
+
+		//Magn0S: New Elements
+		case 5:
+			if (m_pClientList[sTargetH]->m_iAddAbsHoly != 0) {
+				dTmp1 = (double)iDamage;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsHoly;
+				dTmp3 = (dTmp2 / 100.0f) * dTmp1;
+				iDamage = iDamage - (int)(dTmp3);
+				if (iDamage < 0) iDamage = 0;
+			}
+			break;
+
+		case 6:
+			if (m_pClientList[sTargetH]->m_iAddAbsUnholy != 0) {
+				dTmp1 = (double)iDamage;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsUnholy;
+				dTmp3 = (dTmp2 / 100.0f) * dTmp1;
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
 			}
@@ -12215,9 +12236,9 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 			break;
 
 		case 2:
-			if (m_pClientList[sTargetH]->m_iAddAbsAir != 0) {
+			if (m_pClientList[sTargetH]->m_iAddAbsLight != 0) {
 				dTmp1 = (double)iDamage;
-				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsAir;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsLight;
 				dTmp3 = (dTmp2/100.0f)*dTmp1;
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
@@ -12239,6 +12260,27 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				dTmp1 = (double)iDamage;
 				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsWater;
 				dTmp3 = (dTmp2/100.0f)*dTmp1;
+				iDamage = iDamage - (int)(dTmp3);
+				if (iDamage < 0) iDamage = 0;
+			}
+			break;
+
+		//Magn0S: New Elements
+		case 5:
+			if (m_pClientList[sTargetH]->m_iAddAbsHoly != 0) {
+				dTmp1 = (double)iDamage;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsHoly;
+				dTmp3 = (dTmp2 / 100.0f) * dTmp1;
+				iDamage = iDamage - (int)(dTmp3);
+				if (iDamage < 0) iDamage = 0;
+			}
+			break;
+
+		case 6:
+			if (m_pClientList[sTargetH]->m_iAddAbsUnholy != 0) {
+				dTmp1 = (double)iDamage;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsUnholy;
+				dTmp3 = (dTmp2 / 100.0f) * dTmp1;
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
 			}
@@ -12715,9 +12757,9 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			break;
 
 		case 2:
-			if (m_pClientList[sTargetH]->m_iAddAbsAir != 0) {
+			if (m_pClientList[sTargetH]->m_iAddAbsLight != 0) {
 				dTmp1 = (double)iDamage;
-				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsAir;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsLight;
 				dTmp3 = (dTmp2/100.0f)*dTmp1;
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
@@ -12744,23 +12786,41 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 			break;
 
+		//Magn0S: New Elements
+		case 5:
+			if (m_pClientList[sTargetH]->m_iAddAbsHoly != 0) {
+				dTmp1 = (double)iDamage;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsHoly;
+				dTmp3 = (dTmp2 / 100.0f) * dTmp1;
+				iDamage = iDamage - (int)(dTmp3);
+				if (iDamage < 0) iDamage = 0;
+			}
+			break;
+
+		case 6:
+			if (m_pClientList[sTargetH]->m_iAddAbsUnholy != 0) {
+				dTmp1 = (double)iDamage;
+				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsUnholy;
+				dTmp3 = (dTmp2 / 100.0f) * dTmp1;
+				iDamage = iDamage - (int)(dTmp3);
+				if (iDamage < 0) iDamage = 0;
+			}
+			break;
+
 		default: break;
 		}
 		
 		iIndex = m_pClientList[sTargetH]->m_iMagicDamageSaveItemIndex;
 		if ((iIndex != -1) && (iIndex >= 0) && (iIndex < DEF_MAXITEMS)) {
-			// 마법 대미지 절감 효과를 가진 아이템이다.
-			
-			// 아이템의 종류에 따라 대미지를 줄인다. 
 			switch (m_pClientList[sTargetH]->m_pItemList[iIndex]->m_sIDnum) {
-			case 335: // 에머랄드 반지 20%
+			case 335: // 20%
 				dTmp1 = (double)iDamage;
 				dTmp2 = dTmp1 * 0.2f;
 				dTmp3 = dTmp1 - dTmp2;
 				iDamage = (int)(dTmp3 +0.5f);
 				break;
 						
-			case 337: // 루비 반지 10%
+			case 337: // 10%
 				dTmp1 = (double)iDamage;
 				dTmp2 = dTmp1 * 0.1f;
 				dTmp3 = dTmp1 - dTmp2;
@@ -15782,7 +15842,10 @@ int CGame::iGetMaxHP(int iClientH, BOOL bBloodEffect)
 	int iRet;
 	if (m_pClientList[iClientH] == NULL) return 0;
 	// Changed to this due to patch in client that in case of odd level and Str gives 1 more HP.
-	iRet = (3*m_pClientList[iClientH]->m_iVit) + (2 * (m_pClientList[iClientH]->m_iLevel)) + ((m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr)/2);
+	//iRet = (3*m_pClientList[iClientH]->m_iVit) + (2 * (m_pClientList[iClientH]->m_iLevel)) + ((m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr)/2);
+
+	//Magn0S:: Changed HP Formula
+	iRet = (4 * m_pClientList[iClientH]->m_iVit) + (4 * (m_pClientList[iClientH]->m_iLevel)) + (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) + (m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag);
 
 	if ((bBloodEffect == TRUE) && (m_pClientList[iClientH]->m_iSideEffect_MaxHPdown != 0))
 		iRet -= (iRet/m_pClientList[iClientH]->m_iSideEffect_MaxHPdown);
@@ -23279,6 +23342,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 	case DEF_NOTIFY_ITEMCOLORCHANGE:
 	case DEF_NOTIFY_ITEMRELEASED:
 	case DEF_NOTIFY_ITEMLIFESPANEND:
+	case DEF_NOTIFY_ATTUNEARMOUR:
 		sp = (short *)cp;
 		*sp = (short)sV1;
 		cp += 2;
@@ -23288,6 +23352,34 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		cp += 2;
 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
+		break;
+
+	case DEF_NOTIFY_ARMOURVALUES:
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iAddAbsEarth;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iAddAbsLight;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iAddAbsFire;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iAddAbsWater;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iAddAbsHoly;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iAddAbsUnholy;
+		cp += 4;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30);
 		break;
 
 	case DEF_NOTIFY_DROPITEMFIN_COUNTCHANGED:
@@ -29393,7 +29485,7 @@ void CGame::NotifyPlayerAttributes(int iClientH)
 	i += 4;
 
 	ip = (int*)cp;
-	*ip = player->m_iAddAbsAir;
+	*ip = player->m_iAddAbsLight;
 	cp += 4;
 	i += 4;
 

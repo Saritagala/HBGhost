@@ -164,10 +164,15 @@ CClient::CClient(HWND hWnd)
 	m_iAddMagicalDamage = 0;
 	m_bIsLuckyEffect = FALSE;
 	m_iSideEffect_MaxHPdown = 0;
-	m_iAddAbsAir = 0;
+
+	m_iAddAbsLight = 0;
 	m_iAddAbsEarth = 0;
 	m_iAddAbsFire = 0;
 	m_iAddAbsWater = 0;
+	m_iAddAbsHoly = 0;
+	m_iAddAbsUnholy = 0;
+	m_iAddElementAbs = 0;
+
 	m_iComboAttackCount = 0;
 	m_iDownSkillIndex = -1;
 	m_iMagicDamageSaveItemIndex = -1;
