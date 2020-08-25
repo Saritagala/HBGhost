@@ -68,7 +68,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 #ifdef _DEBUG
 			if (G_pGame->m_cLogOutCount == -1 || G_pGame->m_cLogOutCount > 2) G_pGame->m_cLogOutCount = 1; 
 #else
-			if (G_pGame->m_cLogOutCount == -1 || G_pGame->m_cLogOutCount > 11) G_pGame->m_cLogOutCount = 11; 
+			if (G_pGame->m_cLogOutCount == -1 || G_pGame->m_cLogOutCount > 6) G_pGame->m_cLogOutCount = 6; 
 #endif
 
 		}

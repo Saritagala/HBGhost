@@ -4328,9 +4328,9 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutString_SprFont2(sX + 50, sY + 5, "Character", 255, 255, 255);
 		PutString_SprFont2(sX + 180, sY + 5, "Information", 19, 104, 169); //145 pra frente
 
-		//m_DDraw.DrawShadowBox(sX + 20, sY + 90, sX + 50, sY + 145, 1, false); //neck
-		//m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, false); //ring
-		//m_DDraw.DrawShadowBox(sX + 92, sY + 170, sX + 110, sY + 192, 1, false); //angel
+		m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
+		m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
+		m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
 
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		strcpy(G_cTxt, m_cPlayerName);
@@ -6771,7 +6771,7 @@ void CGame::NotifyMsg_ForceDisconn(char *pData)
 	m_bForceDisconn = TRUE;
 	if (m_bIsProgramActive)
 	{
-		if (m_cLogOutCount < 0 || m_cLogOutCount > 10) m_cLogOutCount = 10;
+		if (m_cLogOutCount < 0 || m_cLogOutCount > 6) m_cLogOutCount = 6;
 		AddEventList(NOTIFYMSG_FORCE_DISCONN1, 10);
 	}
 	else
@@ -26218,7 +26218,7 @@ void CGame::OnKeyDown(WPARAM wParam)
 
 void CGame::UpdateScreen_OnQuit()
 {
- short msX, msY, msZ;
+/* short msX, msY, msZ;
  char cLB, cRB;
  char cMIresult;
  int  iMIbuttonNum;
@@ -26281,7 +26281,10 @@ void CGame::UpdateScreen_OnQuit()
 		return;
 	}
 
-	if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
+	if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();*/
+
+	ChangeGameMode(DEF_GAMEMODE_NULL);
+	SendMessage(m_hWnd, WM_DESTROY, NULL, NULL);
 }
 
 void CGame::UpdateScreen_OnQueryForceLogin()
@@ -30805,7 +30808,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 #ifdef _DEBUG
 			m_cLogOutCount = 1;
 #else
-			m_cLogOutCount = 11;
+			m_cLogOutCount = 6;
 #endif
 		else {
 			m_cLogOutCount = -1;
@@ -31017,7 +31020,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 							{	wsprintf( G_cTxt, DEF_MSG_GUILDSMAN, m_stGuildName[iGuildIndex].cGuildName );//"
 								
 							}
-							PutString2(sX, sY + 14, G_cTxt, 180, 180, 180);
+							PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
 							m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
 							iAddY += 14;
 						}else
@@ -31121,7 +31124,8 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	}
 
 	//50Cent - GM Effect sin shield
-	if (strcmp(pName, "Centuu[GM]") == 0 || strcmp(pName, "Nixu[GM]") == 0 || strcmp(pName, "Magn0S[GM]") == 0)
+	string st1 = pName;
+	if (st1.find("[GM]") != string::npos)
 	{
 		m_pEffectSpr[45]->PutTransSprite(sX - 13, sY - 34, 0, m_dwCurTime);
 	}
@@ -34154,10 +34158,6 @@ void CGame::UpdateScreen_OnGame()
 		wsprintf(cCol2, "Kills");
 		wsprintf(cCol3, "Deaths");
 
-		PutAlignedString(110+1, 160+1, 160 + 20+1, cCol3, 192, 192, 192);
-		PutAlignedString(60+1, 110+1, 160 + 20+1, cCol2, 192, 192, 192);
-		PutAlignedString(10+1, 60+1, 160 + 20+1, cCol1, 192, 192, 192);
-
 		PutAlignedString(110, 160, 160 + 20, cCol3, 192, 192, 192);
 		PutAlignedString(60, 110, 160 + 20, cCol2, 192, 192, 192);
 		PutAlignedString(10, 60, 160 + 20, cCol1, 192, 192, 192);
@@ -34177,10 +34177,6 @@ void CGame::UpdateScreen_OnGame()
 					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
 					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
 					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
-					PutAlignedString(110+1, 160+1, 160 + (iEntry * 15) + 20+1, cCol3, 255, 255, 204);
-					PutAlignedString(60+1, 110+1, 160 + (iEntry * 15) + 20+1, cCol2, 255, 255, 204);
-					PutAlignedString(10+1, 60+1, 160 + (iEntry * 15) + 20+1, cCol1, 255, 255, 204);
-
 					PutAlignedString(110, 160, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 204);
 					PutAlignedString(60, 110, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 204);
 					PutAlignedString(10, 60, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 204);
@@ -34190,10 +34186,6 @@ void CGame::UpdateScreen_OnGame()
 					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
 					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
 					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
-					PutAlignedString(110+1, 160+1, 160 + (iEntry * 15) + 20+1, cCol3, 255, 255, 255);
-					PutAlignedString(60+1, 110+1, 160 + (iEntry * 15) + 20+1, cCol2, 255, 255, 255);
-					PutAlignedString(10+1, 60+1, 160 + (iEntry * 15) + 20+1, cCol1, 255, 255, 255);
-
 					PutAlignedString(110, 160, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 255);
 					PutAlignedString(60, 110, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 255);
 					PutAlignedString(10, 60, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 255);
@@ -34273,13 +34265,13 @@ void CGame::UpdateScreen_OnGame()
 		if (m_bShowFPS)
 		{
 			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
-			PutString(10 + 1, 140 + 1, G_cTxt, RGB(0, 0, 0));
-			PutString(10, 140, G_cTxt, RGB(255, 255, 255));
+			PutString(10 + 1, 560 + 1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 560, G_cTxt, RGB(255, 255, 255));
 			
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 			wsprintf(G_cTxt, "Ping : %.3d", m_iPing);
-			PutString(10 + 1, 160 + 1, G_cTxt, RGB(0, 0, 0));
-			PutString(10, 160, G_cTxt, RGB(255, 255, 255));
+			PutString(10 + 1, 575 + 1, G_cTxt, RGB(0, 0, 0));
+			PutString(10, 575, G_cTxt, RGB(255, 255, 255));
 			
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 

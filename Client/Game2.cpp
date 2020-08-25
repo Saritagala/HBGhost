@@ -8534,14 +8534,28 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 						iR = 255;	iG = 255; iB = 255;
 					}
 
-
-					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+					string st1 = cTemp;
+					if (st1.find("[GM]") != string::npos)
 					{
-						PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+						if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+						{
+							PutString2(sX + 25, sY + i * 18 + 65, cTemp, 255, 255, 255);
+						}
+						else
+						{
+							PutString2(sX + 25, sY + i * 18 + 65, cTemp, 255, 184, 0);
+						}
 					}
 					else
 					{
-						PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+						if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+						{
+							PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+						}
+						else
+						{
+							PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+						}
 					}
 				}
 
