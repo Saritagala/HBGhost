@@ -4115,7 +4115,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 
 				//LifeX Added Reset Stat Scroll
 				case 9:
-					m_pClientList[iClientH]->m_iMag;
+					/*m_pClientList[iClientH]->m_iMag;
 					m_pClientList[iClientH]->m_iMag = 10;
 					m_pClientList[iClientH]->m_iStr;
 					m_pClientList[iClientH]->m_iStr = 10;
@@ -4140,7 +4140,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 					ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND], FALSE);
 					ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
 					bCheckMagicInt(iClientH);
-					DeleteClient(iClientH, TRUE, TRUE);
+					DeleteClient(iClientH, TRUE, TRUE);*/
 					break;
 
 				case 11:

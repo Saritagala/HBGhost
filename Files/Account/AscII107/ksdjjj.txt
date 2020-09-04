@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/8/12/4/3)  IP(39.116.65.249)
+
+[NAME]
+
+account-name     = ksdjjj
+
+[PASSWORD]
+
+account-password = qltksehd
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 19
+
+account-change-password = 2020 8 12
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = ksdjjjdall@naver.com
+account-Quiz     = 가장가보고싶은곳
+account-Answer   = qltksehd
+account-created-by = 
+
+[CHARACTERS]
+account-character  = sand
+account-character  = sample
+

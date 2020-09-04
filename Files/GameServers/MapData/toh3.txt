@@ -4,7 +4,6 @@ initial-point = 1  93 40
 initial-point = 2  147 32
 fixed-dayornight-mode = 1
 pk-mode = 0
-level-limit   = 100
 
 not-permanent-map		= 1
 

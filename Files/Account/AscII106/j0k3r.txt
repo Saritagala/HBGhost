@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/20/14/38)  IP(76.84.132.200)
+
+[NAME]
+
+account-name     = j0k3r
+
+[PASSWORD]
+
+account-password = hbg1312
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 27
+
+account-change-password = 2020 8 20
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = h0w4d.h0lm3s@gmail.com
+account-Quiz     = whos_ya_babz?
+account-Answer   = casey
+account-created-by = 
+
+[CHARACTERS]
+account-character  = j0ker
+

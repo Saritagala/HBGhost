@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/23/14/50)  IP(81.190.152.77)
+
+[NAME]
+
+account-name     = Suchy43
+
+[PASSWORD]
+
+account-password = z43hx1505
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 30
+
+account-change-password = 2020 8 23
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = dsadasda@o2.pl
+account-Quiz     = adasd
+account-Answer   = dad
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Suchy
+

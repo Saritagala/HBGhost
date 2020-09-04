@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/31/14/2)  IP(45.183.172.2)
+
+[NAME]
+
+account-name     = derar
+
+[PASSWORD]
+
+account-password = 29794195
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 7
+
+account-change-password = 2020 8 31
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = asddsa@ddsd.com
+account-Quiz     = asdsdaa
+account-Answer   = asdasd
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Derrr
+

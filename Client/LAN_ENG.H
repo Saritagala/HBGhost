@@ -96,9 +96,9 @@
 #define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER28	"as well as maximum MP and MP recovery."
 
 #define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER29	"Determine your character's initial"
-#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER30	"charisma assigned. If CHR is increased"
-#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER31	"to a certain amount, you can form a"
-#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER32	"guild. Cost of item purchase is reduced."
+#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER30	"agility assigned. As AGI is"
+#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER31	"increased, arrow accuracy and"
+#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER32	"hit probability(for bow's) increases."
 
 #define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER35	"Please enter a character name."
 
@@ -120,7 +120,7 @@
 #define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER49	"Return to the main selecting menu."
 #define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER50	"Sets stats for a basic Warrior"
 #define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER51	"Sets stats for a basic Mage"
-#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER52	"Sets stats for a basic Priest"
+#define	UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER52	"Sets stats for a basic Archer"
 
 
 // Centuu - Reintroducidos mensajes de CreateAccount del cliente original.
@@ -1334,7 +1334,8 @@
 #define	DRAW_DIALOGBOX_SHOP17	"Available for above Vit %d"
 #define	DRAW_DIALOGBOX_SHOP18	"Available for above Int %d"
 #define	DRAW_DIALOGBOX_SHOP19	"Available for above Mag %d"
-#define	DRAW_DIALOGBOX_SHOP20	"Available for above Chr %d"
+//#define	DRAW_DIALOGBOX_SHOP20	"Available for above Chr %d"
+#define	DRAW_DIALOGBOX_SHOP20	"Available for above Agi %d"
 #define	DRAW_DIALOGBOX_SHOP21	"(Warning!) Your stat is too low for this item."
 #define	DRAW_DIALOGBOX_SHOP22	"(Warning!) only for male."
 #define	DRAW_DIALOGBOX_SHOP23	"(Warning!) only for female."

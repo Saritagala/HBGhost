@@ -29,6 +29,7 @@ account-Answer   = upurple
 account-created-by = 
 
 [CHARACTERS]
+account-character  = TickleStic
 account-character  = GasChamber
 account-character  = Moist
 

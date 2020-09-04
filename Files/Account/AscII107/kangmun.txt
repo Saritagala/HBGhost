@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/8/30/2/35)  IP(115.133.94.100)
+
+[NAME]
+
+account-name     = kangmun
+
+[PASSWORD]
+
+account-password = ckmforever
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 6
+
+account-change-password = 2020 8 30
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = ckmun91@gmail.com
+account-Quiz     = food
+account-Answer   = tiger
+account-created-by = 
+
+[CHARACTERS]
+account-character  = CallMeNuna
+account-character  = CallMeOppa
+

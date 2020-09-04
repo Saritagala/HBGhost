@@ -1,4 +1,4 @@
-Account-generated:  Time(2020/6/27/14/17)  IP(192.168.0.12)
+Account-generated:  Time(2020/8/12/19/25)  IP(181.117.24.127)
 
 [NAME]
 
@@ -6,14 +6,14 @@ account-name     = Admin
 
 [PASSWORD]
 
-account-password = a
+account-password = lkymsso123
 
 [ACCOUNT-STATUS]
 
 account-valid-time = 0
-account-valid-date = 2020 7 4
+account-valid-date = 2020 8 19
 
-account-change-password = 2020 6 27
+account-change-password = 2020 8 12
 [ETC]
 
 account-Gender   =  
@@ -23,11 +23,11 @@ account-Birth-Month =
 account-Birth-Day   =  
 account-RealName = 
 account-SSN      = -
-account-Email    = a@gmail.com
-account-Quiz     = a
-account-Answer   = a
+account-Email    = asdasdas@gmail.com
+account-Quiz     = hola
+account-Answer   = como
 account-created-by = 
 
 [CHARACTERS]
-account-character  = Admin
+account-character  = Nixuu
 

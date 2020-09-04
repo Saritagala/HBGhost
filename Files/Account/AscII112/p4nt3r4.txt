@@ -6,14 +6,14 @@ account-name     = p4nt3r4
 
 [PASSWORD]
 
-account-password = e2emrtkwrd
+account-password = gastonputo
 
 [ACCOUNT-STATUS]
 
 account-valid-time = 0
 account-valid-date = 2020 8 7
 
-account-change-password = 2020 7 31
+account-change-password = 2020 8 12
 [ETC]
 
 account-Gender   =  

@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/21/9/26)  IP(62.141.208.151)
+
+[NAME]
+
+account-name     = fluxxpl
+
+[PASSWORD]
+
+account-password = massdnm1
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 28
+
+account-change-password = 2020 8 21
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = lubieplacki@hotmail.com
+account-Quiz     = imie_pierwszego_kota
+account-Answer   = agata
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Fluksik
+

@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/25/22/5)  IP(76.84.132.200)
+
+[NAME]
+
+account-name     = ghost
+
+[PASSWORD]
+
+account-password = goat1312
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 1
+
+account-change-password = 2020 8 25
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = kakee12@yahoo.com
+account-Quiz     = no
+account-Answer   = yes
+account-created-by = 
+
+[CHARACTERS]
+account-character  = GOAT
+

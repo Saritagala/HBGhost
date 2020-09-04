@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/8/27/13/35)  IP(181.171.154.168)
+
+[NAME]
+
+account-name     = ggww
+
+[PASSWORD]
+
+account-password = tbvbn
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 3
+
+account-change-password = 2020 8 27
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = alekpo22.arg@gmail.com
+account-Quiz     = hola
+account-Answer   = chau
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Sarpada
+account-character  = LALONGA
+

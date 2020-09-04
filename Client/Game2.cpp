@@ -3406,7 +3406,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME4]->PutSpriteFast(sX + 210, sY + 203, 6, dwTime);
 
 	// Charisma
-	PutString(sX + 24, sY + 220, DRAW_DIALOGBOX_LEVELUP_SETTING9, RGB(5, 5, 5));
+	//PutString(sX + 24, sY + 220, DRAW_DIALOGBOX_LEVELUP_SETTING9, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 220, "Agility", RGB(5, 5, 5));
 	wsprintf(cTxt, "%d", m_iCharisma);
 	PutString(sX + 109, sY + 220, cTxt, RGB(25, 35, 25));
 	iStats = m_iCharisma + m_cLU_Char;
@@ -5251,7 +5252,7 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 
 		iNext += 1; //Illusion
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
-			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 2, 4, NULL, NULL);
+			//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 2, 4, NULL, NULL); // centu - bug by magn0s
 			PlaySound('E', 14, 5);
 		}
 
@@ -10497,8 +10498,8 @@ void CGame::DlgBoxClick_GuildMenu(short msX, short msY)
 		if ((msX > sX + iAdjX + 80) && (msX < sX + iAdjX + 210) && (msY > sY + iAdjY + 63) && (msY < sY + iAdjY + 78))
 		{
 			if (m_iGuildRank != -1) return;
-			if (m_iCharisma < 20) return;
-			if (m_iLevel < 20) return;
+			//if (m_iCharisma < 20) return;
+			if (m_iLevel < 100) return;
 			if (m_bIsCrusadeMode) return;
 			if (m_bIsHeldenian) return;
 			EndInputString();
@@ -10829,7 +10830,8 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME4]->PutSpriteFast(sX + 210, sY + 203, 6, dwTime);
 
 	// Charisma
-	PutString(sX + 24, sY + 220, DRAW_DIALOGBOX_LEVELUP_SETTING9, RGB(5, 5, 5));
+	//PutString(sX + 24, sY + 220, DRAW_DIALOGBOX_LEVELUP_SETTING9, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 220, "Agility", RGB(5, 5, 5));
 	wsprintf(cTxt, "%d", m_iCharisma);
 	PutString(sX + 109, sY + 220, cTxt, RGB(25, 35, 25));
 	iStats = m_iCharisma + m_cLU_Char;
@@ -11938,7 +11940,7 @@ void CGame::DrawDialogBox_GuildMenu(short msX, short msY)
 
 	switch (m_stDialogBoxInfo[7].cMode) {
 	case 0:
-		if ((m_iGuildRank == -1) && (m_iCharisma >= 20) && (m_iLevel >= 20)) {
+		if ((m_iGuildRank == -1) && /*(m_iCharisma >= 20) &&*/ (m_iLevel >= 100)) {
 			if ((msX > sX + iAdjX + 80) && (msX < sX + iAdjX + 210) && (msY > sY + iAdjY + 63) && (msY < sY + iAdjY + 78))
 				PutAlignedString(sX, sX + szX, sY + iAdjY + 65, DRAW_DIALOGBOX_GUILDMENU1, 255, 255, 255);//"
 			else PutAlignedString(sX, sX + szX, sY + iAdjY + 65, DRAW_DIALOGBOX_GUILDMENU1, 4, 0, 50);//"
@@ -13664,7 +13666,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 	int  i, iTemp;
 	char cTemp[255], cStr2[255], cStr3[255], cStr4[255], cStr5[255], cStr6[255];
 
-	int  iCost, iDiscountCost, iDiscountRatio;
+	int  iCost, iDiscountCost, iDiscountRatio=0;
 
 	double dTmp1, dTmp2, dTmp3;
 	int  iTotalLines, iPointerLoc;
@@ -13734,7 +13736,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 		for (i = 0; i < 13; i++)
 			if (((i + m_stDialogBoxInfo[11].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView] != NULL))
 			{
-				iDiscountRatio = ((m_iCharisma - 10) / 4);
+				//iDiscountRatio = ((m_iCharisma - 10) / 4);
 				dTmp1 = (double)iDiscountRatio;
 				dTmp2 = dTmp1 / 100.0f;
 				dTmp1 = (double)m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView]->m_wPrice;
@@ -13770,7 +13772,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 		PutString(sX + 90, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 		PutString(sX + 91, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 
-		iDiscountRatio = ((m_iCharisma - 10) / 4);
+		//iDiscountRatio = ((m_iCharisma - 10) / 4);
 		dTmp1 = (double)iDiscountRatio;
 		dTmp2 = dTmp1 / 100.0f;
 		dTmp1 = (double)m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wPrice;

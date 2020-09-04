@@ -29,5 +29,5 @@ account-Answer   = asd
 account-created-by = 
 
 [CHARACTERS]
-account-character  = Cuka
+account-character  = att
 

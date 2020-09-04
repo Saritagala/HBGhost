@@ -2,7 +2,7 @@
 
 map-location  = arebrk11
 initial-point = 1  80 80
-upper-level-limit = 179
+upper-level-limit = 309
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 

@@ -2356,7 +2356,8 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	}
 	// Heldenian
 	else if (m_bIsHeldenianMode == TRUE) 
-	{	sSummonPoints = 10000 + m_pClientList[iClientH]->m_iCharisma*100;
+	{
+		sSummonPoints = 10000;// + m_pClientList[iClientH]->m_iCharisma*100;
 		if (m_pClientList[iClientH]->m_dwHeldenianGUID == NULL) 
 		{	m_pClientList[iClientH]->m_dwHeldenianGUID    = m_dwHeldenianGUID;
 			m_pClientList[iClientH]->m_iConstructionPoint = sSummonPoints;
@@ -10344,12 +10345,12 @@ void CGame::StateChangeHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if(m_pClientList[iClientH]->m_iGuildRank == 0 )
+	/*if(m_pClientList[iClientH]->m_iGuildRank == 0 )
 	{	if(m_pClientList[iClientH]->m_iCharisma - cChar < 20)
 		{	// gm cn't drop charisma below 20
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 			return;
-	}	}
+	}	}*/
 	if(iOldStr +iOldVit	+iOldDex +iOldInt +iOldMag +iOldChar != ((m_iPlayerMaxLevel-1)*3 + 70))
 	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
@@ -24366,7 +24367,8 @@ RTH_NEXTSTEP:;
 	}
 	// Heldenian mode on
 	else if (m_bIsHeldenianMode == TRUE) 
-	{	sSummonPoints = 10000 + m_pClientList[iClientH]->m_iCharisma*100;
+	{
+		sSummonPoints = 10000; //+ m_pClientList[iClientH]->m_iCharisma*100;
 		if (m_pClientList[iClientH]->m_dwHeldenianGUID == NULL) 
 		{	m_pClientList[iClientH]->m_dwHeldenianGUID    = m_dwHeldenianGUID;
 			m_pClientList[iClientH]->m_iConstructionPoint = sSummonPoints;

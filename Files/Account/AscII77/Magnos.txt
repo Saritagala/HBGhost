@@ -30,3 +30,4 @@ account-created-by =
 
 [CHARACTERS]
 account-character  = Magn0S[GM]
+

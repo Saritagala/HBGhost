@@ -4476,12 +4476,12 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		}
 
 		// Vit
-		PutString(sX + 200+30, sY + 285 - 2, " Vit:", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 200+30, sY + 285 - 2, "Vit:", RGB(255, 255, 255), FALSE, 1);
 		wsprintf(G_cTxt, "%d", m_iVit);
 		PutAlignedString(sX + 218+30, sX + 251+30, sY + 285 - 2, G_cTxt, 0, 255, 0);
 
 		// Dex
-		PutString(sX + 25, sY + 302 - 2, "Dex:", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 25+1, sY + 302 - 2, "Dex:", RGB(255, 255, 255), FALSE, 1);
 		if (m_iAngelicDex == 0)
 		{
 			wsprintf(G_cTxt, "%d", m_iDex);
@@ -4494,7 +4494,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		}
 
 		// Int
-		PutString(sX + 110+20, sY + 285 - 2, " Int:", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 110+20+3, sY + 285 - 2, "Int:", RGB(255, 255, 255), FALSE, 1);
 		if (m_iAngelicInt == 0)
 		{
 			wsprintf(G_cTxt, "%d", m_iInt);
@@ -4507,7 +4507,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		}
 
 		// Mag
-		PutString(sX + 110+20, sY + 302 - 2, "Mag:", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 110+20-5, sY + 302 - 2, "Mag:", RGB(255, 255, 255), FALSE, 1);
 		if (m_iAngelicMag == 0)
 		{
 			wsprintf(G_cTxt, "%d", m_iMag);
@@ -4520,7 +4520,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		}
 
 		// Chr
-		PutString(sX + 195+30, sY + 302 - 2, "Char:", RGB(255, 255, 255), FALSE, 1);
+		PutString(sX + 195+30+2, sY + 302 - 2, "Agi:", RGB(255, 255, 255), FALSE, 1);
 		wsprintf(G_cTxt, "%d", m_iCharisma);
 		PutAlignedString(sX + 218+30, sX + 251+30, sY + 302 - 2, G_cTxt, 0, 255, 0);
 
@@ -24109,7 +24109,8 @@ BOOL CGame::_bDraw_OnCreateNewCharacter(char* pName, short msX, short msY, int i
 	PutString(100 + SCREENX, 309 + SCREENY, DEF_MSG_DEXTERITY, RGB(5, 5, 5));//"Dexterity"
 	PutString(100 + SCREENX, 326 + SCREENY, DEF_MSG_INTELLIGENCE, RGB(5, 5, 5));//"Intelligence"
 	PutString(100 + SCREENX, 343 + SCREENY, DEF_MSG_MAGIC, RGB(5, 5, 5));//"Magic"
-	PutString(100 + SCREENX, 360 + SCREENY, DEF_MSG_CHARISMA, RGB(5, 5, 5));//"Charisma"
+	//PutString(100 + SCREENX, 360 + SCREENY, DEF_MSG_CHARISMA, RGB(5, 5, 5));//"Charisma"
+	PutString(100 + SCREENX, 360 + SCREENY, "Agility", RGB(5, 5, 5));
 
 	wsprintf(G_cTxt, "%d", m_ccStr);
 	PutString(204 + SCREENX, 277 + 16 * i++ + SCREENY, G_cTxt, RGB(25, 35, 25));
@@ -24513,24 +24514,23 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 			iPoint = 70 - iPoint;
 			break;
 
-		case 28: // PRIEST
+		case 28: // Archer
 			if (m_cCurFocus != 6) {
 				m_cCurFocus = 6;
 				return;
 			}
 
-			m_ccMag = 12;
+			m_ccMag = 10;
 			m_ccInt = 10;
 			m_ccChr = 14;
-			m_ccStr = 14;
-			m_ccVit = 10;
-			m_ccDex = 10;
+			m_ccStr = 10;
+			m_ccVit = 12;
+			m_ccDex = 14;
 			iPoint = m_ccStr + m_ccVit + m_ccDex + m_ccInt + m_ccMag + m_ccChr;
 			iPoint = 70 - iPoint;
 			break;
 		}
 	}
-	//fuck sake :(
 	if ((msX >= 65 + 4 - 127 + SCREENX) && (msX <= 275 + 4 + SCREENX) && (msY >= 65 + 45 + SCREENY) && (msY <= 82 + 45 + SCREENY)) {
 		PutAlignedString(370 + SCREENX, 580 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER1);
 	}

@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/11/17/57)  IP(73.192.187.115)
+
+[NAME]
+
+account-name     = momofgod
+
+[PASSWORD]
+
+account-password = momofgod
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 18
+
+account-change-password = 2020 8 11
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = leevang0@hotmail.com
+account-Quiz     = who_are_you?
+account-Answer   = daddy
+account-created-by = 
+
+[CHARACTERS]
+account-character  = TheHmoob
+

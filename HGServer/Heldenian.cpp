@@ -1245,7 +1245,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_HELDENIANTELEPORT, NULL, NULL, NULL, NULL); // You can now, go to the battle field
 			m_pClientList[i]->m_dwHeldenianGUID = m_dwHeldenianGUID;
 			m_pClientList[i]->m_iWarContribution = 0;
-			m_pClientList[i]->m_iConstructionPoint = 10000 + (m_pClientList[i]->m_iCharisma * 100);
+			m_pClientList[i]->m_iConstructionPoint = 10000; //+ (m_pClientList[i]->m_iCharisma * 100);
 			m_pClientList[i]->m_cWarType = 2;// character have been informed of heldenian starting...
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, NULL); //0: Tell player of acquired points
 			UpdateHeldenianStatus(i);

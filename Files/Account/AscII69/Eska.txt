@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/22/13/38)  IP(181.167.102.28)
+
+[NAME]
+
+account-name     = Eska
+
+[PASSWORD]
+
+account-password = urza0102
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 29
+
+account-change-password = 2020 8 22
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = emdp@hotmail.com
+account-Quiz     = hola
+account-Answer   = chau
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Trist
+

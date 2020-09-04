@@ -29,6 +29,7 @@ account-Answer   = asdasd
 account-created-by = 
 
 [CHARACTERS]
+account-character  = aadsa
 account-character  = QLOKURA
 account-character  = ASDASD
 account-character  = Test

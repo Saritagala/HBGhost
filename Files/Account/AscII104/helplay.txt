@@ -29,6 +29,7 @@ account-Answer   = f u
 account-created-by = 
 
 [CHARACTERS]
+account-character  = DD
 account-character  = GGhE
 account-character  = GGHA
 

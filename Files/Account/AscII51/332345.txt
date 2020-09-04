@@ -29,6 +29,7 @@ account-Answer   = df
 account-created-by = 
 
 [CHARACTERS]
+account-character  = severe
 account-character  = Xasthur
 account-character  = Otto
 

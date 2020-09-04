@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/8/22/13/29)  IP(179.62.70.61)
+
+[NAME]
+
+account-name     = Fernandito
+
+[PASSWORD]
+
+account-password = cabezon1
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 8 29
+
+account-change-password = 2020 8 22
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = fmendezsatentur@gmail.com
+account-Quiz     = fer
+account-Answer   = mendez
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Ferni
+account-character  = Ferchux
+

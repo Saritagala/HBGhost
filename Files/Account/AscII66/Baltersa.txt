@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/8/30/8/54)  IP(62.226.19.211)
+
+[NAME]
+
+account-name     = Baltersa
+
+[PASSWORD]
+
+account-password = klau1234
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 6
+
+account-change-password = 2020 8 30
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = milakumoweugen@yahoo.de
+account-Quiz     = wie_alt?
+account-Answer   = ich bin 31
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Baltersa
+

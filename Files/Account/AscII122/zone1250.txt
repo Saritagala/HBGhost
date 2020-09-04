@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/9/1/2/10)  IP(190.161.70.190)
+
+[NAME]
+
+account-name     = zone1250
+
+[PASSWORD]
+
+account-password = poroto88
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 8
+
+account-change-password = 2020 9 1
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = asdf@asdf.com
+account-Quiz     = aldo
+account-Answer   = aldo12
+account-created-by = 
+
+[CHARACTERS]
+account-character  = ClouD
+

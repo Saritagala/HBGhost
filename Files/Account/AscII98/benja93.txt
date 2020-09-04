@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/8/30/4/12)  IP(190.160.100.93)
+
+[NAME]
+
+account-name     = benja93
+
+[PASSWORD]
+
+account-password = 9330bt
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 9 6
+
+account-change-password = 2020 8 30
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = dasdsads@sdsad.cl
+account-Quiz     = dsaads
+account-Answer   = sdasda
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Fuku
+account-character  = Knone
+

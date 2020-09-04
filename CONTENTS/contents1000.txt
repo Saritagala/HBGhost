@@ -1,6 +1,9 @@
-3.82 files edited by Centuu.-
+Welcome to Helbreath Ghost!
 .
-based on HBx 3.0 sources 
-& snoopy81/diuuude/cleroth 3.82 client
+Administration and Coordination by Nixu
 .
-thanks to all helbreath sites
+Coding and Features by Centuu and Magn0S
+.
+.
+Initial Release v1.0
+.
