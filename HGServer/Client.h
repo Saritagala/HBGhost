@@ -145,6 +145,8 @@ public:
 	
 	BOOL m_bInhibition;
 
+	int m_iClass;
+
 	char m_cAttackDiceThrow_SM;	// 공격치 주사위 던지는 회수 
 	char m_cAttackDiceRange_SM;	// 공격치 주사위 범위 
 	char m_cAttackDiceThrow_L;	// 공격치 주사위 던지는 회수 

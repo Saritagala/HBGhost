@@ -92,6 +92,7 @@ CClient::CClient(HWND hWnd)
 	m_cSide = 0;
 	m_iHitRatio = 0;
 	m_iDefenseRatio = 0;
+	m_iClass = 0;
 	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++) {
 		m_iDamageAbsorption_Armor[i]  = 0;
 	}

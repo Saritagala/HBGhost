@@ -153,13 +153,13 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	//if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
 	//	m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00080000;
 	
-	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = 0;
-	m_pClientList[iClientH]->m_cAttackDiceRange_SM = 0;
-	m_pClientList[iClientH]->m_cAttackBonus_SM = 0;
+	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = m_pClientList[iClientH]->m_iCharisma;
+	m_pClientList[iClientH]->m_cAttackDiceRange_SM = m_pClientList[iClientH]->m_iCharisma;
+	m_pClientList[iClientH]->m_cAttackBonus_SM = m_pClientList[iClientH]->m_iCharisma;
 
-	m_pClientList[iClientH]->m_cAttackDiceThrow_L = 0;
-	m_pClientList[iClientH]->m_cAttackDiceRange_L = 0;
-	m_pClientList[iClientH]->m_cAttackBonus_L = 0;
+	m_pClientList[iClientH]->m_cAttackDiceThrow_L = m_pClientList[iClientH]->m_iCharisma;
+	m_pClientList[iClientH]->m_cAttackDiceRange_L = m_pClientList[iClientH]->m_iCharisma;
+	m_pClientList[iClientH]->m_cAttackBonus_L = m_pClientList[iClientH]->m_iCharisma;
 
 	m_pClientList[iClientH]->m_iHitRatio = 0;
 
@@ -658,12 +658,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 				}
 				else
 				{
-					m_pClientList[iClientH]->m_cAttackDiceThrow_SM = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
-					m_pClientList[iClientH]->m_cAttackDiceRange_SM = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
-					m_pClientList[iClientH]->m_cAttackBonus_SM = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
-					m_pClientList[iClientH]->m_cAttackDiceThrow_L = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue4;
-					m_pClientList[iClientH]->m_cAttackDiceRange_L = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue5;
-					m_pClientList[iClientH]->m_cAttackBonus_L = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue6;
+					m_pClientList[iClientH]->m_cAttackDiceThrow_SM += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
+					m_pClientList[iClientH]->m_cAttackDiceRange_SM += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+					m_pClientList[iClientH]->m_cAttackBonus_SM += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+					m_pClientList[iClientH]->m_cAttackDiceThrow_L += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue4;
+					m_pClientList[iClientH]->m_cAttackDiceRange_L += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue5;
+					m_pClientList[iClientH]->m_cAttackBonus_L += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue6;
 				}
 				// Xelima Upgraded bows
 				iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;

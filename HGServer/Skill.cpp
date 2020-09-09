@@ -402,14 +402,6 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 
 		switch (sSkillIndex) {
 
-		case 22: // Taming
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > (m_pClientList[iClientH]->m_iCharisma * 2)) {
-				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
-				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
-			}
-			else m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 0;
-			break;
-
 		case 0:  // Mining
 		case 5:  // Hand-Attack
 		case 13: // Manufacturing
@@ -438,8 +430,15 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 			else m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 0;
 			break;
 
-		case 1:  // Fishing
 		case 6:  // Archery
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > (m_pClientList[iClientH]->m_iCharisma * 2)) {
+				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
+				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
+			}
+			else m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 0;
+			break;
+
+		case 1:  // Fishing
 		case 7:  // Short-Sword
 		case 8:  // Long-Sword
 		case 9:  // Fencing 
@@ -458,6 +457,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		case 12: // Alchemy
 		case 15: // ����óġ
 		case 19: // Pretend-Corpse
+		case 22: // Taming
 			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
@@ -566,7 +566,6 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 			break;
 
 		case 1:
-		case 6:
 		case 7:
 		case 8:
 		case 9:
@@ -586,6 +585,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 		case 14:
 		case 15:
 		case 19:
+		case 22:
 			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) * 2)) {
 				// Á¦ÇÑÄ¡º¸´Ù Ä¿Á³´Ù. ¹«È¿ÀÌ¹Ç·Î ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù.
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
@@ -603,7 +603,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 			else m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 0;
 			break;
 
-		case 22: // SNOOPY:Taming
+		case 6:
 			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > (m_pClientList[iClientH]->m_iCharisma * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
@@ -922,17 +922,22 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 	if (m_pClientList[iClientH]->m_iAdminUserLevel == 0)
 	{
 		if ((m_pClientList[iClientH]->m_iStr > 100)
-			&& (m_pClientList[iClientH]->m_iCharisma > 49))
+			&& (m_pClientList[iClientH]->m_iInt > 49))
 		{
-			iTamingType = 2; // War-GuildMaster
+			iTamingType = 2; // War
 		}
-		else if ((m_pClientList[iClientH]->m_iInt > 100)
-			&& (m_pClientList[iClientH]->m_iCharisma > 49))
+		else if ((m_pClientList[iClientH]->m_iMag > 100)
+			&& (m_pClientList[iClientH]->m_iInt > 49))
 		{
-			iTamingType = 1; // Mage-GuildMaster
+			iTamingType = 1; // Mage
+		}
+		else if ((m_pClientList[iClientH]->m_iCharisma > 100)
+			&& (m_pClientList[iClientH]->m_iInt > 49))
+		{
+			iTamingType = 3; // Archer
 		}
 	}
-	else iTamingType = 3; // GameMaster
+	else iTamingType = 4; // GameMaster
 	iSkillLevel = (int)m_pClientList[iClientH]->m_cSkillMastery[iSkillNum];
 	iRange = 2 + iSkillLevel / 20;
 	for (iX = dX - iRange; iX <= dX + iRange; iX++)
@@ -990,7 +995,9 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 							break;
 						}
 						break;
-					case 3: // GameMaster
+					case 3: // Archer
+						break;
+					case 4: // GameMaster
 						iTamingLevel = 30;
 						if (m_pNpcList[sOwnerH]->m_cSide == 0) iTamingLevel = 201;
 						break;
@@ -1006,10 +1013,10 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 						switch (iTamingType) {
 						default:
 						case 0: // Default -> npc becomes neutral 	
-						case 3: // GameMaster
+						case 4: // GameMaster
 							m_pNpcList[sOwnerH]->m_cSide = 0;
 							break;
-						case 1: // Mage-GuildMaster -> npc becomes friendly 					
+						case 1: // Mage -> npc becomes friendly 					
 							switch (m_pNpcList[sOwnerH]->m_sType) {
 							case 12: // Stone
 							case 23: // Clay
@@ -1024,7 +1031,7 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 								break;
 							}
 							break;
-						case 2: // War-GuildMaster	-> npc becomes friendly
+						case 2: // War	-> npc becomes friendly
 							switch (m_pNpcList[sOwnerH]->m_sType) {
 							case 18: // Zombie 
 							case 11: // Skel
@@ -1042,6 +1049,8 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 								m_pNpcList[sOwnerH]->m_cSide = 0;
 								break;
 							}
+							break;
+						case 3: // Archer
 							break;
 						}
 						if (iGetFollowerNumber(sOwnerH, cOwnerType) > 5) return;
@@ -1075,10 +1084,10 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLUSINGEND, 1, NULL, NULL, NULL);
 		ZeroMemory(cTamedString, sizeof(cTamedString));
 		switch (iTamingType) {
-		case 2:	// War-GuildMaster
+		case 2:	// War
 			wsprintf(cTamedString, "Undead turned: %d", iNbeTamed);
 			break;
-		case 1:	// Mage-GuildMaster
+		case 1:	// Mage
 			wsprintf(cTamedString, "Magic things controled: %d", iNbeTamed);
 			break;
 		default: // GameMaster

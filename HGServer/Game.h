@@ -61,8 +61,8 @@ warning C4700: local variable 'i' used without having been initialized
 #include "Crusade.h"
 
 // Time
-#define _ms					_s / 1000
 #define _s					* CLOCKS_PER_SEC
+#define _ms					_s / 1000
 #define _m					_s * 60
 #define _h					_m * 60
 #define _d					_h * 24
@@ -84,11 +84,22 @@ public:
 	void OnKeyUp(WPARAM wParam, LPARAM lParam);
 	void OnKeyDown(WPARAM wParam, LPARAM lParam);
 	BOOL bOnClose();
+	
 	void OnGateSocketEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	void OnMainLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	void OnSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	void OnClientSocketEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	void OnStartGameSignal();
+	
+	void SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD sV2, DWORD sV3, char* pString, DWORD sV4 = NULL, DWORD sV5 = NULL, DWORD sV6 = NULL, DWORD sV7 = NULL, DWORD sV8 = NULL, DWORD sV9 = NULL, char* pString2 = NULL, DWORD sV10 = NULL, DWORD sV11 = NULL, DWORD sV12 = NULL, DWORD sV13 = NULL, DWORD sV14 = NULL);
+	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1, bool deleteteam = false);
+	void ShowClientMsg(int iClientH, char* pMsg);
+	void calcularTop15HB(int iClientH);
+	void SendAlertMsg(int client, char* pMsg);
+	BOOL _bInitItemAttr(class CItem* pItem, char* pItemName);
+	BOOL _bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq);
+	BOOL bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify = TRUE);
+	void ItemDepleteHandler(int iClientH, short sItemIndex, BOOL bIsUseItemResult, BOOL bIsItemUsed);
 
 	char m_cGameServerAddrInternal[16];
 	char m_cGameServerAddrExternal[16];
@@ -96,10 +107,12 @@ public:
 	char m_cGameServerAddr[16];
 	int  m_iGameServerPort;
 
+	class CClient* m_pClientList[DEF_MAXCLIENTS];
 	class CMap* m_pMapList[DEF_MAXMAPS];
 
-//private:
+private:
 
+	void SetClass(int iClientH);
 	BOOL m_bHappyHour, m_bFuryHour;
 
 	void ManageHappyHour();
@@ -124,8 +137,7 @@ public:
 	void UpdateEventStatus();
 	void AdminOrder_SetEvent();
 
-	void SendAlertMsg(int client, char* pMsg);
-
+	
 	void SendLoginData(int client);
 
 	void NotifyEvents();
@@ -523,7 +535,6 @@ public:
 	void Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, BOOL bExp, int iAttr);
 	void UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, short sDestItemID);
 	void NpcBehavior_Stop(int iNpcH);
-	void ItemDepleteHandler(int iClientH, short sItemIndex, BOOL bIsUseItemResult, BOOL bIsItemUsed);
 	int _iGetArrowItemIndex(int iClientH);
 	void RequestFullObjectData(int iClientH, char* pData);
 	void DeleteNpc(int iNpcH);
@@ -564,7 +575,6 @@ public:
 	BOOL _bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize);
 	void ReleaseFollowMode(short sOwnerH);
 	BOOL bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerType);
-	void RequestTeleportHandler(int iClientH, char* pData, char* cMapName = NULL, int dX = -1, int dY = -1, bool deleteteam = false);
 	void PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect = FALSE, int iV1 = NULL, BOOL bIgnoreOwnerLimits = FALSE);
 	int  iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cDir);
 	void SendMsgToGateServer(DWORD dwMsg, int iClientH, char* pData = NULL);
@@ -589,7 +599,6 @@ public:
 	void JoinGuildRejectHandler(int iClientH, char* pName);
 	void JoinGuildApproveHandler(int iClientH, char* pName);
 	//void SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD sV2, DWORD sV3, char* pString, DWORD sV4 = NULL, DWORD sV5 = NULL, DWORD sV6 = NULL, DWORD sV7 = NULL, DWORD sV8 = NULL, DWORD sV9 = NULL, char* pString2 = NULL, DWORD sV10 = NULL);
-	void SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD sV2, DWORD sV3, char* pString, DWORD sV4 = NULL, DWORD sV5 = NULL, DWORD sV6 = NULL, DWORD sV7 = NULL, DWORD sV8 = NULL, DWORD sV9 = NULL, char* pString2 = NULL, DWORD sV10 = NULL, DWORD sV11 = NULL, DWORD sV12 = NULL, DWORD sV13 = NULL, DWORD sV14 = NULL);
 	void GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, WORD wObjectID, char* pItemName);
 	void RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum);
 	void ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize);
@@ -602,8 +611,6 @@ public:
 
 	void MultiplicadorExp(int Client, int Exp);
 
-	BOOL bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify = TRUE);
-	BOOL _bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq);
 	int  iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char cDir);
 	void DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* pItemName, BOOL bByPlayer = TRUE);
 	void ClientCommonHandler(int iClientH, char* pData);
@@ -630,7 +637,6 @@ public:
 
 
 	BOOL _bGetIsStringIsNumber(char* pStr);
-	BOOL _bInitItemAttr(class CItem* pItem, char* pItemName);
 	BOOL bReadProgramConfigFile(char* cFn);
 
 	void InitPlayerData(int iClientH, char* pData, DWORD dwSize);
@@ -738,7 +744,6 @@ public:
 	void SetPlayingStatus(int iClientH);
 	void ForceChangePlayMode(int iClientH);
 
-	void ShowClientMsg(int iClientH, char* pMsg);
 	void RequestResurrectPlayer(int iClientH, bool bResurrect);
 
 	void AdminOrder_SummonGuild(int iClientH, char* pData, DWORD dwMsgSize);
@@ -777,7 +782,6 @@ public:
 
 	int  m_iLimitedUserExp, m_iLevelExp20;
 
-	class CClient* m_pClientList[DEF_MAXCLIENTS];
 	class CNpc* m_pNpcList[DEF_MAXNPCS];
 	
 	class CNpcItem* m_pTempNpcItem[DEF_MAXNPCITEMS];
@@ -1198,8 +1202,7 @@ public:
 	BOOL bReadTopPlayersFile(char* cFn);
 	void _CreateTopPlayers();
 	void ordenarTop15HB(int iClientH);
-	void calcularTop15HB(int iClientH);
-
+	
 	void PlayerCommandCheckAdmins(int iClientH);
 
 	//Magn0S:: Teleport List

@@ -2201,19 +2201,14 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	}
 
 	// centu - 100% skills
-	if (m_pClientList[iClientH]->m_iLevel == 1) {
-		AutoSkill(iClientH);
-	}
+	AutoSkill(iClientH);
+	
+	if (m_pClientList[iClientH]->m_iLevel == 1) SetClass(iClientH);
+	
 	// new
 	if ((m_pClientList[iClientH]->m_iLevel > 49) && (m_pClientList[iClientH]->m_bIsPlayerCivil)) {
 		ForceChangePlayMode(iClientH);
 	}
-
-	// centu - exp formula fix
-	/*if (m_pClientList[iClientH]->m_iExp < m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel])
-	{
-		m_pClientList[iClientH]->m_iExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel];
-	}*/
 
 	// centu - rep limit
 	if (m_pClientList[iClientH]->m_iRating < -2000)
@@ -2438,12 +2433,6 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	NotifyMapRestrictions(iClientH, false);
 
 	if (m_bIsCTFEvent) UpdateEventStatus();
-
-	// MORLA 2.10 - Top:
-	/*for (i = 1; i <= 15; i++)
-	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_TOP15HB, i, aHBTopKills[i], NULL, aHBTopClientH[i]);
-	}*/
 }
 
 /*********************************************************************************************************************
@@ -6218,6 +6207,19 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				m_pClientList[iClientH]->iteam = atoi(token);
 				cReadModeA = 0;
 				break;
+
+			case 93:
+				if (_bGetIsStringIsNumber(token) == FALSE) {
+					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
+					PutLogList(cTxt);
+					delete pContents;
+					delete pStrTok;
+					return FALSE;
+				}
+
+				m_pClientList[iClientH]->m_iClass = atoi(token);
+				cReadModeA = 0;
+				break;
 			}
 		}
 		else {
@@ -6362,6 +6364,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 			if (memcmp(token, "coin-points", 11) == 0)    cReadModeA = 91; // // Coins
 
 			if (memcmp(token, "character-team", 14) == 0)    cReadModeA = 92;
+			if (memcmp(token, "character-class", 15) == 0)    cReadModeA = 93;
 
 			if (memcmp(token, "[EOF]", 5) == 0) goto DPDC_STOP_DECODING;
 		}
@@ -6404,6 +6407,7 @@ DPDC_STOP_DECODING:;
 		if (cStatPointTotal > ((m_pClientList[iClientH]->m_iLevel-1)*3 + 70)) return FALSE;
 		m_pClientList[iClientH]->m_iLU_Pool = ((m_pClientList[iClientH]->m_iLevel-1)*3 + 73) - ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit + m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma));
 	}*/
+	
 	if (m_Misc.bCheckValidName(m_pClientList[iClientH]->m_cAccountName) == FALSE) return FALSE;
 	if (m_pClientList[iClientH]->m_iPenaltyBlockYear != 0) {
 		GetLocalTime(&SysTime);
@@ -6434,7 +6438,7 @@ DPDC_STOP_DECODING:;
 	case 1:
 		break;
 	case 2:
-		sTmpType ++;
+		sTmpType++;
 		break;
 	case 3:
 		sTmpType += 2;
@@ -6874,6 +6878,11 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	strcat(pData, "\n");
 
 	wsprintf(cTxt, "character-team = %d", m_pClientList[iClientH]->iteam);
+	strcat(pData, cTxt);
+	strcat(pData, "\n");
+
+	// Centuu : 1 War | 2 Mage | 3 Archer | 4 GM
+	wsprintf(cTxt, "character-class = %d", m_pClientList[iClientH]->m_iClass);
 	strcat(pData, cTxt);
 	strcat(pData, "\n");
 
@@ -10350,11 +10359,11 @@ void CGame::StateChangeHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		{	// gm cn't drop charisma below 20
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 			return;
-	}	}*/
+	}	}
 	if(iOldStr +iOldVit	+iOldDex +iOldInt +iOldMag +iOldChar != ((m_iPlayerMaxLevel-1)*3 + 70))
 	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
-	}
+	}*/
 	if(cStr < 0 || cVit < 0 || cDex < 0 || cInt < 0 || cMag < 0 || cChar < 0
 		|| cStr + cVit + cDex + cInt + cMag + cChar != 3)
 	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
@@ -17580,52 +17589,24 @@ void CGame::MultiplicadorExp(int Client, int Exp)
 {
 	if (m_pClientList[Client] == NULL) return;
 
-	/*if (m_iExpSetting == 0) 
-	{
-		if		(m_pClientList[Client]->m_iLevel < 20)		Exp *= 2.0f;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 20 && 
-				 m_pClientList[Client]->m_iLevel < 60)		Exp *= 1.75f;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 60 && 
-				 m_pClientList[Client]->m_iLevel < 100)		Exp *= 1.5f;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 100 &&
-				 m_pClientList[Client]->m_iLevel < 140)		Exp *= 1.25f;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 140 &&
-				 m_pClientList[Client]->m_iLevel < 160)		Exp *= 0.75f;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 160 &&
-				 m_pClientList[Client]->m_iLevel < 180)		Exp *= 0.5f;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 180)	Exp *= 0.25f;
-	}
-	else if (m_iExpSetting == 1) 
-	{*/
 		if		(m_pClientList[Client]->m_iLevel < 50)		Exp *= m_iExpSetting;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 50 && 
-				 m_pClientList[Client]->m_iLevel < 80)		Exp *= m_iExpSetting-1;
+				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-1;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 80 && 
-				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-2;
+		else if	(m_pClientList[Client]->m_iLevel >= 100 && 
+				 m_pClientList[Client]->m_iLevel < 150)		Exp *= m_iExpSetting-2;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 100 &&
-				 m_pClientList[Client]->m_iLevel < 140)		Exp *= m_iExpSetting-3;
+		else if	(m_pClientList[Client]->m_iLevel >= 150 &&
+				 m_pClientList[Client]->m_iLevel < 200)		Exp *= m_iExpSetting-3;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 140 &&
-				 m_pClientList[Client]->m_iLevel < 160)		Exp *= m_iExpSetting-4;
+		else if	(m_pClientList[Client]->m_iLevel >= 200 &&
+				 m_pClientList[Client]->m_iLevel < 250)		Exp *= m_iExpSetting-4;
 
-		else if	(m_pClientList[Client]->m_iLevel >= 160 &&
-				 m_pClientList[Client]->m_iLevel <= 180)	Exp *= m_iExpSetting-5;
+		else if	(m_pClientList[Client]->m_iLevel >= 250 &&
+				 m_pClientList[Client]->m_iLevel <= 310)	Exp *= m_iExpSetting-5;
 
-		else if	(m_pClientList[Client]->m_iLevel > 180)	Exp *= 400;
-	/*}
-	else if (m_iExpSetting == 2) 
-	{
-		Exp *= 400;
-	}*/
+		else if	(m_pClientList[Client]->m_iLevel > 310)	Exp = 1;	
 	
 	m_pClientList[Client]->m_iExp += Exp;
 	//m_pClientList[Client]->m_iExpStock += Exp;
@@ -19919,7 +19900,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 			iAP_L = (int)(dTmp3 +0.5f);
 		}
-		else if ((wWeaponType >= 40) && (wWeaponType < 55)) {
+		else if ((wWeaponType >= 40) && (wWeaponType < 55)) { // Centu : Archer
 			iAP_SM = iDice(m_pClientList[sAttackerH]->m_cAttackDiceThrow_SM, m_pClientList[sAttackerH]->m_cAttackDiceRange_SM);
 			iAP_L  = iDice(m_pClientList[sAttackerH]->m_cAttackDiceThrow_L, m_pClientList[sAttackerH]->m_cAttackDiceRange_L);
 
@@ -19929,8 +19910,25 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			iAttackerHitRatio = m_pClientList[sAttackerH]->m_iHitRatio;
 			bNormalMissileAttack = TRUE;
 
-			iAP_SM += iDice(1, ((m_pClientList[sAttackerH]->m_iStr+m_pClientList[sAttackerH]->m_iAngelicStr) / 20));
-			iAP_L  += iDice(1, ((m_pClientList[sAttackerH]->m_iStr+m_pClientList[sAttackerH]->m_iAngelicStr) / 20));
+			dTmp1 = (double)iAP_SM;
+			if (m_pClientList[sAttackerH]->m_iCharisma <= 0)	dTmp2 = 1.0f;
+			else dTmp2 = (double)m_pClientList[sAttackerH]->m_iCharisma;
+
+			dTmp2 = dTmp2 / 5.0f;
+			dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
+			iAP_SM = (int)(dTmp3 + 0.5f);
+
+			dTmp1 = (double)iAP_L;
+			if (m_pClientList[sAttackerH]->m_iCharisma <= 0)	dTmp2 = 1.0f;
+			else dTmp2 = (double)m_pClientList[sAttackerH]->m_iCharisma;
+
+			dTmp2 = dTmp2 / 5.0f;
+			dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
+			iAP_L = (int)(dTmp3 + 0.5f);
+
+			// STR -> DEX
+			iAP_SM += iDice(1, ((m_pClientList[sAttackerH]->m_iDex+m_pClientList[sAttackerH]->m_iAngelicDex) / 20));
+			iAP_L  += iDice(1, ((m_pClientList[sAttackerH]->m_iDex+m_pClientList[sAttackerH]->m_iAngelicDex) / 20));
 		}
 	
 		iAttackerHitRatio += 50;
@@ -24664,10 +24662,10 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 	m_pClientList[iClientH]->m_iStatus = iTemp;
 
 	// centu - skills 100%
-	//if (m_pClientList[iClientH]->m_iLevel == 1) {
-		AutoSkill(iClientH);
-	//}
+	AutoSkill(iClientH);
 	
+	if (m_pClientList[iClientH]->m_iLevel == 1) SetClass(iClientH);
+
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {
 		ForceChangePlayMode(iClientH);
 	}
@@ -29630,5 +29628,23 @@ void CGame::CityTeleport()
 			}
 			
 		}
+	}
+}
+
+void CGame::SetClass(int iClientH)
+{
+	if (m_pClientList[iClientH] == NULL) return;
+
+	if (m_pClientList[iClientH]->m_iStr == 14) 
+	{
+		m_pClientList[iClientH]->m_iClass = 1;
+	}
+	else if (m_pClientList[iClientH]->m_iMag == 14)
+	{
+		m_pClientList[iClientH]->m_iClass = 2;
+	}
+	else if (m_pClientList[iClientH]->m_iCharisma == 14)
+	{
+		m_pClientList[iClientH]->m_iClass = 3;
 	}
 }
