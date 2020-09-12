@@ -16559,7 +16559,7 @@ void CGame::AdminOrder_CreateItem(int iClientH, char *pData, DWORD dwMsgSize)
 			else pItem->m_dwAttribute = NULL;
 		} // close if
 		else {
-			if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK) {
+			if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK || pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_ARROW) {
 				switch ((pItem->m_dwAttribute & 0xF00000) >> 20) {
 				case 6:	pItem->m_cItemColor = 2; break;
 				case 8: pItem->m_cItemColor = 3; break;
@@ -25999,12 +25999,12 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 
 		//If player not same side and is invied (Beholder Hack)
 		// there is another person on the tiles, and the owner is not the player
-		if ((m_pClientList[pTile->m_sOwner] != NULL) && (pTile->m_sOwner != iClientH))
+		/*if ((m_pClientList[pTile->m_sOwner] != NULL) && (pTile->m_sOwner != iClientH))
 			if ((m_pClientList[pTile->m_sOwner]->m_cSide != 0) &&
 				(m_pClientList[pTile->m_sOwner]->m_cSide != m_pClientList[iClientH]->m_cSide) &&
 				((m_pClientList[pTile->m_sOwner]->m_iStatus & 0x00000010) != 0)) {
 				continue;
-			}
+			}*/
 
 		if ((pTile->m_sOwner != NULL) || (pTile->m_sDeadOwner != NULL) || (pTile->m_pItem[0] != NULL) || (pTile->m_sDynamicObjectType != NULL)) {
 			iTileExists++;
@@ -28729,7 +28729,7 @@ void CGame::RequestSetTrapHandler(int iClientH, char* pData)
 	if (cMagicID[0] == NULL && cMagicID[1] == NULL && cMagicID[2] == NULL) return;
 
 	for (int i = 0; i < DEF_MAXITEMS; i++)
-		if (m_pClientList[iClientH]->m_pItemList[i] != NULL && m_pClientList[iClientH]->m_pItemList[i]->m_sIDnum == 1050) {
+		if (m_pClientList[iClientH]->m_pItemList[i] != NULL && m_pClientList[iClientH]->m_pItemList[i]->m_sIDnum == 1032) {
 			iItemID = i;
 			break;
 		}

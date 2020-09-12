@@ -340,7 +340,6 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x000F0000) >> 16;
 					switch (dwSWEType) {
 					case ITEMSTAT_POISONING:  // Poison			-> Increase effect of 1st item, or replace a different effect
-						break;
 					case ITEMSTAT_CRITICAL:  // Crit +			-> Increase effect of 1st item, or replace a different effect
 					case ITEMSTAT_CASTPROB: // CP (as wand)	-> Increase effect of 1st item, or replace a different effect
 						if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == dwSWEType)
@@ -368,9 +367,6 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					case ITEMSTAT_CRITICAL2: // Crit Increase 
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
 						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
-						break;
-					case 4:  // Magic-using weapons
-
 						break;
 					default: // All others
 						m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
@@ -679,43 +675,39 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					dwSWEType = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) >> 20;
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x000F0000) >> 16;
 					switch (dwSWEType) {
-					case 2:  // Poison			-> Increase effect of 1st item, or replace a different effect					
-						break;
-					case 1:  // Crit +			-> Increase effect of 1st item, or replace a different effect
-					case 10: // CP (as wand)	-> Increase effect of 1st item, or replace a different effect
-						if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == dwSWEType)
-						{
-							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue += dwSWEValue;
-						}
-						else
-						{
+						case ITEMSTAT_POISONING:  // Poison			-> Increase effect of 1st item, or replace a different effect
+						case ITEMSTAT_CRITICAL:  // Crit +			-> Increase effect of 1st item, or replace a different effect
+						case ITEMSTAT_CASTPROB: // CP (as wand)	-> Increase effect of 1st item, or replace a different effect
+							if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == dwSWEType)
+							{
+								m_pClientList[iClientH]->m_iSpecialWeaponEffectValue += dwSWEValue;
+							}
+							else
+							{
+								m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
+								m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = dwSWEValue;
+							}
+							break;
+						case ITEMSTAT_SHARP:  // Sharp
+							m_pClientList[iClientH]->m_cAttackDiceRange_SM++;
+							m_pClientList[iClientH]->m_cAttackDiceRange_L++;
+							break;
+						case ITEMSTAT_ANCIENT:  // Ancient
+							m_pClientList[iClientH]->m_cAttackDiceRange_SM += 2;
+							m_pClientList[iClientH]->m_cAttackDiceRange_L += 2;
+							break;
+						case ITEMSTAT_MANACONV: // ManaConv 
+							m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
+							if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
+							break;
+						case ITEMSTAT_CRITICAL2: // Crit Increase 
+							m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
+							if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
+							break;
+						default: // All others
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = dwSWEValue;
-						}
-						break;
-					case 7:  // Sharp
-						m_pClientList[iClientH]->m_cAttackDiceRange_SM++;
-						m_pClientList[iClientH]->m_cAttackDiceRange_L++;
-						break;
-					case 9:  // Ancient
-						m_pClientList[iClientH]->m_cAttackDiceRange_SM += 2;
-						m_pClientList[iClientH]->m_cAttackDiceRange_L += 2;
-						break;
-					case 11: // ManaConv 
-						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
-						if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
-						break;
-					case 12: // Crit Increase 
-						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
-						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
-						break;
-					case 4:  // Magic-using weapons, don't overide a main weapon
-
-						break;
-					default: // All others
-						m_pClientList[iClientH]->m_iSpecialWeaponEffectType = (int)dwSWEType;
-						m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = (int)dwSWEValue;
-						break;
+							break;
 					}
 				}
 
@@ -830,8 +822,6 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
 						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
-					case 4: // ???
-						break;
 					default:
 						break;
 					}
@@ -936,7 +926,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					// Merien Upgraded armor +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += iTemp;
-					switch (m_pClientList[iClientH]->m_cSex) {
+					/*switch (m_pClientList[iClientH]->m_cSex) {
 					case 1: // Male  1:Leather, 5:Tunic
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue) {
 						case 1:  // Leather
@@ -948,6 +938,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							break;
 						case 2:  // Chain
 						case 3:  // Scale
+							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
 
 							break;
 						case 6: //  Robe(M)
@@ -958,6 +949,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							break;
 						case 4: // Plate
 						default:	// plate +				
+							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
 
 							break;
 						}
@@ -974,6 +966,8 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							break;
 						case 4:  // Chain
 						case 5:  // Scale
+							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
+
 							break;
 						case 7: //  Robe(M)
 						case 11: // eHeroRobe(M)
@@ -982,18 +976,19 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							break;
 						case 6: // Plate
 						default:
+							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
 
 							break;
 						}
 						break;
-					}
+					}*/
 					break;
 				case DEF_EQUIPPOS_ARMS:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					// Merien Upgraded hauberks +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += iTemp;
-					switch (m_pClientList[iClientH]->m_cSex) {
+					/*switch (m_pClientList[iClientH]->m_cSex) {
 					case 1: // Male  1:Chemise 2:Hauberk
 						if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue <= 1)
 						{
@@ -1006,7 +1001,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] / 2;
 						}
 						break;
-					}
+					}*/
 					break;
 				case DEF_EQUIPPOS_PANTS:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
@@ -1088,7 +1083,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
 
 	// Snoopy: Bonus for Angels	
-	m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_iAngelicDex * 2;
+	m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_iAngelicDex;
 
 	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);

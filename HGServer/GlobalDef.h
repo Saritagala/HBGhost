@@ -238,7 +238,7 @@
 #define DEF_ITEMEFFECTTYPE_ATTUNE			42
 
 //Magn0S:: Added---------------------------------------------------------------
-#define DEF_MAXMAGICALABS		70
+#define DEF_MAXMAGICALABS		80
 #define DEF_MAXPHYSICALABS		80
 
 #define DEF_ITEMEFFECTTYPE_REP				35

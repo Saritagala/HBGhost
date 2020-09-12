@@ -4187,9 +4187,9 @@ BOOL CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char 
 	if (cProtect == 5) return TRUE;
 	if ((iHitRatio < 1000) && (cProtect == 2)) return TRUE;
 	if (iTargetMagicResistRatio < 1) iTargetMagicResistRatio = 1;
-	if ((cAttackerDir != 0) && (m_pClientList[sTargetH] != NULL) && (m_pClientList[sTargetH]->m_cHeroArmourBonus == 2)) {
+	/*if ((cAttackerDir != 0) && (m_pClientList[sTargetH] != NULL) && (m_pClientList[sTargetH]->m_cHeroArmourBonus == 2)) {
 		iHitRatio += 50;
-	}
+	}*/
 
 	dTmp1 = (double)(iHitRatio);
 	dTmp2 = (double)(iTargetMagicResistRatio);

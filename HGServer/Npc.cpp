@@ -2150,7 +2150,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				}
 
 				//Magn0S:: Begin to update Drop Management from .cfg file
-				if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK) {
+				if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK || pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_ARROW) {
 					iResult = iDice(1, m_iMaxAttrWeaponDrop); //11500
 					if ((iResult >= 1) && (iResult <= m_iAttrWeaponDrop[0])) {
 						dwType = ITEMSTAT_LIGHT;

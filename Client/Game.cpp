@@ -31,9 +31,6 @@ CGame::CGame()
 
 	m_bToggleScreen = FALSE;
 
-	bOnlyAll = TRUE;
-	bOnlyGuild = FALSE;
-
 	//LifeX Fix Declaration Bugs 01/01
 	DEF_STATS_LIMIT = 0;
 	bDeathmatch = FALSE;
@@ -5284,7 +5281,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Phy. Hit. Ratio:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iHitRatio);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2+5, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//-----
 		PutString2(sX + iSLine, sY + iNext * 17 + 15, "HP Rec.:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddHP);
@@ -5293,7 +5290,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Physical Damage:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddPhysicalDamage);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2+5, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		PutString2(sX + iSLine, sY + iNext * 17 + 15, "MP Rec.:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddMP);
@@ -5302,31 +5299,31 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magical Damage:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddMagicalDamage);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2+5, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Phy. Absorption:", 255, 255, 255);
+		/*PutString2(sX + iSLine, sY + iNext * 17 + 15, "Phy. Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddAbsPD);
-		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Defense Ratio:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalDR);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2+5, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
+		/*PutString2(sX + iSLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddAbsMD);
-		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Resistense:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalMR);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2+5, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//=====================================================================
 		iNext += 1;
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Water Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsWater);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2-20, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Plate PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iArmorPA);
@@ -5335,7 +5332,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsEarth);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2-20, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Hauberk PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iBerkPA);
@@ -5344,7 +5341,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Light Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsAir);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2-20, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iHelmPA);
@@ -5353,7 +5350,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsFire);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2-20, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		PutString2(sX + iSLine, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iLeggsPA);
@@ -8217,6 +8214,19 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			PlaySound('E', 39, sDist, lPan);
 			break;
 
+		case 197: // Centuu: Fury-Of-Thor
+			m_pEffectList[i]->m_mX = sX * 32;
+			m_pEffectList[i]->m_mY = sY * 32;
+			m_pEffectList[i]->m_iErr = 0;
+			m_pEffectList[i]->m_cMaxFrame = 8;
+			m_pEffectList[i]->m_dwFrameTime = 25;
+			sAbsX = abs(400 - (sX - m_sViewPointX));
+			sAbsY = abs(300 - (sY - m_sViewPointY));
+			if (sAbsX > sAbsY) sDist = sAbsX;
+			else sDist = sAbsY;
+			sDist = sDist / 32;
+			break;
+
 		case 110: // Energy-Bolt
 			m_pEffectList[i]->m_mX     = sX*32;
 			m_pEffectList[i]->m_mY     = sY*32 - 40;
@@ -8815,6 +8825,17 @@ void CGame::DrawEffects()
 			if (cTempFrame < 0) break;
 			iDvalue = 0;
 			m_pEffectSpr[19]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime); // RGB2
+			break;
+
+		case 197: // Magn0S:: Fury-of-Thor (Not like original, but works...)
+			cTempFrame = m_pEffectList[i]->m_cFrame;
+			if (cTempFrame < 0) break;
+			dX = (m_pEffectList[i]->m_mX) - m_sViewPointX;
+			dY = (m_pEffectList[i]->m_mY) - m_sViewPointY;
+			_DrawThunderEffect(m_pEffectList[i]->m_dX * 32 - m_sViewPointX - 400, m_pEffectList[i]->m_dY * 32 - m_sViewPointY - 800,
+				dX, dY,
+				m_pEffectList[i]->m_rX, m_pEffectList[i]->m_rY, 1);
+
 			break;
 
 		case 34: // absent (220 et 351)
@@ -25640,8 +25661,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
 		{	if (m_bIsDialogEnabled[60] == FALSE)
 			{	
-				EnableDialogBox(60, NULL, NULL, NULL);
-				bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
+				//EnableDialogBox(60, NULL, NULL, NULL);
+				//bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
 				
 			}else	
 			{	DisableDialogBox(60);
