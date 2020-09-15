@@ -1007,14 +1007,14 @@ void CGame::DeleteNpc(int iNpcH)
 		ZeroMemory(cItemName, sizeof(cItemName));
 		switch (m_pNpcList[iNpcH]->m_sType) {
 
-		case 10: // Slime
+		/*case 10: // Slime
 			if (iDice(1, 25) == 1) iItemID = 220; // SlimeJelly 
 			break;
 
 		case 11: // Skeleton
 			switch (iDice(1, 2)) {
 			case 1:if (iDice(1, 20) == 1) iItemID = 219; break; // SkeletonBones
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1022,7 +1022,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 12: // Stone-Golem
 			switch (iDice(1, 2)) {
 			case 1:	if (iDice(1, 30) == 1) iItemID = 221; break; // StoneGolemPiece
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1034,7 +1034,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 3:	if (iDice(1, 30) == 1) iItemID = 196; break; // CyclopsHeart
 			case 4:	if (iDice(1, 22) == 1) iItemID = 197; break; // CyclopsMeat
 			case 5:	if (iDice(1, 40) == 1) iItemID = 198; break; // CyclopsLeather
-			case 6:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 6:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1044,7 +1044,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 1:	if (iDice(1, 11) == 1) iItemID = 206; break; // OrcMeat
 			case 2:	if (iDice(1, 20) == 1) iItemID = 207; break; // OrcLeather
 			case 3:	if (iDice(1, 21) == 1) iItemID = 208; break; // OrcTeeth
-			case 4: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 4: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1053,7 +1053,7 @@ void CGame::DeleteNpc(int iNpcH)
 			switch (iDice(1, 3)) {
 			case 1:	if (iDice(1, 9) == 1) iItemID = 192; break; // AntLeg
 			case 2:	if (iDice(1, 10) == 1) iItemID = 193; break; // AntFeeler
-			case 3:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 3:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1064,13 +1064,13 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 20) == 1) iItemID = 216; break; // ScorpionMeat
 			case 3: if (iDice(1, 50) == 1) iItemID = 217; break; // ScorpionSting
 			case 4: if (iDice(1, 40) == 1) iItemID = 218; break; // ScorpionSkin
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
 
 		case 18: //Zombie
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType);
+			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
 			break;
 
 		case 22: //Amphis
@@ -1079,7 +1079,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 16) == 1) iItemID = 189; break; // SnakeSkin
 			case 3:	if (iDice(1, 16) == 1) iItemID = 190; break; // SnakeTeeth
 			case 4:	if (iDice(1, 17) == 1) iItemID = 191; break; // SnakeTongue
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1087,7 +1087,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 23: //Clay-Golem
 			switch (iDice(1, 2)) {
 			case 1: if (iDice(1, 30) == 1) iItemID = 205; break; // LumpofClay
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1101,7 +1101,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 4:	if (iDice(1, 36) == 1) iItemID = 202; break; // HelboundTeeth
 			case 5:	if (iDice(1, 36) == 1) iItemID = 203; break; // HelboundClaw
 			case 6:	if (iDice(1, 50) == 1) iItemID = 204; break; // HelboundTongue
-			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1112,7 +1112,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 23) == 1) iItemID = 223; break; // TrollMeat
 			case 3:	if (iDice(1, 25) == 1) iItemID = 224; break; // TrollLeather
 			case 4:	if (iDice(1, 27) == 1) iItemID = 225; break; // TrollClaw
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1125,22 +1125,23 @@ void CGame::DeleteNpc(int iNpcH)
 			case 4:	if (iDice(1, 25) == 1) iItemID = 212; break; // OgreLeather
 			case 5:	if (iDice(1, 28) == 1) iItemID = 213; break; // OgreTeeth
 			case 6:	if (iDice(1, 28) == 1) iItemID = 214; break; // OgreClaw
-			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
 
 		case 30: //Liche
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType);
+			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
 			break;
 
 		case 31: //Demon
+		case 93: //Black-Demon
 			switch (iDice(1, 5)) {
 			case 1:	if (iDice(1, 400) == 123) iItemID = 541; break; // DemonHeart
 			case 2:	if (iDice(1, 1000) == 123) iItemID = 542; break; // DemonMeat
 			case 3:	if (iDice(1, 200) == 123) iItemID = 543; break; // DemonLeather
 			case 4:	if (iDice(1, 300) == 123) iItemID = 540; break; // DemonEye
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1151,7 +1152,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 500) == 3) iItemID = 545; break; // UnicornHorn
 			case 3:	if (iDice(1, 100) == 3) iItemID = 546; break; // UnicornMeat
 			case 4:	if (iDice(1, 200) == 3) iItemID = 547; break; // UnicornLeather
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1165,7 +1166,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 5:	if (iDice(1, 28) == 3) iItemID = 552; break; // WerewolfTeeth
 			case 6:	if (iDice(1, 28) == 3) iItemID = 554; break; // WerewolfClaw
 			case 7:	if (iDice(1, 38) == 3) iItemID = 549; break; // WerewolfNail
-			case 8: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 8: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
 
 			}
 			break;
@@ -1186,14 +1187,13 @@ void CGame::DeleteNpc(int iNpcH)
 		case 62: //DireBoar
 		case 63: //Frost
 		case 65: //Ice
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType);
-			break;
+			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
+			break;*/
 
-			// new 05/10/2004
+		// new 05/10/2004
 		case 66: // Wyvern
 		case 73: // Fire-Wyvern
 		case 92: // Eternal Dragon
-		case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -1211,8 +1211,9 @@ void CGame::DeleteNpc(int iNpcH)
 				ItemPositions,				// ¾ÆÀÌÅÛµéÀÇ À§Ä¡
 				&iNumItem);					// ¾ÆÀÌÅÛÀÇ ÃÑ °¹¼ö
 			break;
-		case 81:
-		case 99:
+
+		case 81: // Abaddon
+		case 99: // Ghost-Abaddon
 			bGetMultipleItemNamesWhenDeleteNpc(m_pNpcList[iNpcH]->m_sType,	// NPC Type
 				50,							// È®·ü( ÃÖ¼Ò ~ ÃÖ´ë »çÀÌÀÇ ¾ÆÀÌÅÛÀÌ ³ª¿Ã È®·ü , 100 ÀÌ¸é ÃÖ´ë °¹¼ö ¸¸Å­ ³ª¿Â´Ù.)
 				12,							// ³ª¿Í¾ß ÇÏ´Â Item ÃÖ¼Ò °³¼ö
@@ -1224,6 +1225,10 @@ void CGame::DeleteNpc(int iNpcH)
 				iItemIDs,					// ¹Þ¾Æ¿Ã ¾ÆÀÌÅÛ Idµé
 				ItemPositions,				// ¾ÆÀÌÅÛµéÀÇ À§Ä¡
 				&iNumItem);
+			break;
+
+		default: // Centu - Read from NpcItem.cfg
+			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
 			break;
 		}
 
@@ -1757,7 +1762,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		else {
 			// 9000 default; the lower the greater the Weapon/Armor/Wand Drop
 			// 35% Drop 40% of that is an Item 
-			if (iDice(1, 10000) >= m_iSecondaryDropRate) {
+			if (iDice(1, 10000) < m_iSecondaryDropRate) {
 				// 40% Drop 90% of that is a standard drop
 				// Standard Drop Calculation: (35/100) * (40/100) * (90/100) = 12.6%
 				iResult = iDice(1, 12000);
@@ -1814,16 +1819,16 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					  break;
 
 				case 9:
-					SYSTEMTIME SysTime;
-					GetLocalTime(&SysTime);
-					if (((short)SysTime.wMonth == 12) && (m_pNpcList[iNpcH]->m_sType == 61 || m_pNpcList[iNpcH]->m_sType == 55)) {
-						switch (iDice(1, 4)) {
-						case 1: iItemID = 780; break; // Red Candy
-						case 2: iItemID = 781; break; // Blue Candy
-						case 3: iItemID = 782; break; // Green Candy
-						case 4: iItemID = 91;  break; // Red Potion
-						}
-					}
+					//SYSTEMTIME SysTime;
+					//GetLocalTime(&SysTime);
+					//if (((short)SysTime.wMonth == 12) && (m_pNpcList[iNpcH]->m_sType == 61 || m_pNpcList[iNpcH]->m_sType == 55)) {
+					//	switch (iDice(1, 4)) {
+					//	case 1: iItemID = 780; break; // Red Candy
+					//	case 2: iItemID = 781; break; // Blue Candy
+					//	case 3: iItemID = 782; break; // Green Candy
+					//	case 4: iItemID = 91;  break; // Red Potion
+					//	}
+					//}
 					break;
 				}
 				// If a non-existing item is created then delete the item
@@ -1836,312 +1841,315 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			else {
 				// Valuable Drop Calculation: (35/100) * (40/100) * (10/100) = 1.4%
 				// Define iGenLevel using Npc.cfg#
-				switch (m_pNpcList[iNpcH]->m_sType) {
+				//switch (m_pNpcList[iNpcH]->m_sType) {
 
-				case 10: // Slime
-				case 16: // Giant-Ant
-				case 22: // Amphis
-				case 55: // Rabbit
-				case 56: //	Cat
-					iGenLevel = 1;
-					break;
+				//case 10: // Slime
+				//case 16: // Giant-Ant
+				//case 22: // Amphis
+				//case 55: // Rabbit
+				//case 56: //	Cat
+				//	iGenLevel = 1;
+				//	break;
 
-				case 11: // Skeleton
-				case 14: // Orc, Orc-Mage
-				case 17: // Scorpion
-				case 18: // Zombie
-					iGenLevel = 2;
-					break;
+				//case 11: // Skeleton
+				//case 14: // Orc, Orc-Mage
+				//case 17: // Scorpion
+				//case 18: // Zombie
+				//	iGenLevel = 2;
+				//	break;
 
-				case 12: // Stone-Golem
-				case 23: // Clay-Golem
-					iGenLevel = 3;
-					break;
+				//case 12: // Stone-Golem
+				//case 23: // Clay-Golem
+				//	iGenLevel = 3;
+				//	break;
 
-				case 27: // Hellbound
-				case 61: // Rudolph
-					iGenLevel = 4;
-					break;
+				//case 27: // Hellbound
+				//case 61: // Rudolph
+				//	iGenLevel = 4;
+				//	break;
 
-				case 72: // Claw-Turtle
-				case 76: // Giant-Plant
-				case 74: // Giant-Crayfish
-				case 13: // Cyclops
-				case 28: // Troll
-				case 53: // Beholder
-				case 60: // Cannibal-Plant
-				case 62: // DireBoar
-					iGenLevel = 5;
-					break;
+				//case 72: // Claw-Turtle
+				//case 76: // Giant-Plant
+				//case 74: // Giant-Crayfish
+				//case 13: // Cyclops
+				//case 28: // Troll
+				//case 53: // Beholder
+				//case 60: // Cannibal-Plant
+				//case 62: // DireBoar
+				//	iGenLevel = 5;
+				//	break;
 
-				case 29: // Orge
-				case 33: // WereWolf
-				case 48: // Stalker
-				case 54: // Dark-Elf
-				case 65: // Ice-Golem
-				case 78: // Minotaurus
-					iGenLevel = 6;
-					break;
+				//case 29: // Orge
+				//case 33: // WereWolf
+				//case 48: // Stalker
+				//case 54: // Dark-Elf
+				//case 65: // Ice-Golem
+				//case 78: // Minotaurus
+				//	iGenLevel = 6;
+				//	break;
 
-				case 70: // Balrogs
-				case 71: // Centaurus
-				case 30: // Liche
-				case 63: // Frost
-				case 79: // Nizie
-					iGenLevel = 7;
-					break;
+				//case 70: // Balrogs
+				//case 71: // Centaurus
+				//case 30: // Liche
+				//case 63: // Frost
+				//case 79: // Nizie
+				//	iGenLevel = 7;
+				//	break;
 
-				case 31: // Demon
-				case 32: // Unicorn
-				case 49: // Hellclaw
-				case 50: // Tigerworm
-				case 52: // Gagoyle
-					iGenLevel = 8;
-					break;
+				//case 31: // Demon
+				//case 32: // Unicorn
+				//case 49: // Hellclaw
+				//case 50: // Tigerworm
+				//case 52: // Gagoyle
+				//	iGenLevel = 8;
+				//	break;
 
-				case 58: // MountainGiant
-					iGenLevel = 9;
-					break;
+				//case 58: // MountainGiant
+				//	iGenLevel = 9;
+				//	break;
 
-				case 77: // MasterMage-Orc
-				case 59: // Ettin
-				case 75: // Lizards
-					iGenLevel = 10;
-					break;
-				}
+				//case 77: // MasterMage-Orc
+				//case 59: // Ettin
+				//case 75: // Lizards
+				//	iGenLevel = 10;
+				//	break;
+				//}
 
-				if (iGenLevel == 0) return;
+				//if (iGenLevel == 0) return;
 
-				// Weapon Drop: 
-				// 1.4% chance Valuable Drop 60% that it is a Weapon
-				if (iDice(1, 10000) <= m_iPrimaryDropRate) {
-					if (iDice(1, 10000) >= m_iSecondaryDropRate) {
-						// 70% the Weapon is Melee
-						switch (iGenLevel) {
+				//// Weapon Drop: 
+				//// 1.4% chance Valuable Drop 60% that it is a Weapon
+				//if (iDice(1, 10000) <= m_iPrimaryDropRate) {
+				//	if (iDice(1, 10000) >= m_iSecondaryDropRate) {
+				//		// 70% the Weapon is Melee
+				//		switch (iGenLevel) {
 
-						case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
-							switch (iDice(1, 3)) {
-								case 1: iItemID = 1;  break; // Dagger
-								case 2: iItemID = 8;  break; // ShortSword
-								case 3: iItemID = 59; break; // LightAxe
-							}
-							break;
+				//		case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
+				//			switch (iDice(1, 3)) {
+				//				case 1: iItemID = 1;  break; // Dagger
+				//				case 2: iItemID = 8;  break; // ShortSword
+				//				case 3: iItemID = 59; break; // LightAxe
+				//			}
+				//			break;
 
-						case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
-							switch (iDice(1, 6)) {
-								case 1: iItemID = 12;  break; // MainGauche
-								case 2: iItemID = 15;  break; // Gradius
-								case 3: iItemID = 65;  break; // SexonAxe
-								case 4: iItemID = 62;  break; // Tomahoc
-								case 5: iItemID = 23;  break; // Sabre
-								case 6: iItemID = 31;  break; // Esterk
-							}
-							break;
+				//		case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
+				//			switch (iDice(1, 6)) {
+				//				case 1: iItemID = 12;  break; // MainGauche
+				//				case 2: iItemID = 15;  break; // Gradius
+				//				case 3: iItemID = 65;  break; // SexonAxe
+				//				case 4: iItemID = 62;  break; // Tomahoc
+				//				case 5: iItemID = 23;  break; // Sabre
+				//				case 6: iItemID = 31;  break; // Esterk
+				//			}
+				//			break;
 
-						case 3: // Stone-Golem, Clay-Golem
-							switch (iDice(1, 4)) {
-								case 1: iItemID = 17;  break; // LongSword
-								case 2: iItemID = 68;  break; // DoubleAxe
-								case 3: iItemID = 23;  break; // Sabre
-								case 4: iItemID = 31;  break; // Esterk
-							}
-							break;
+				//		case 3: // Stone-Golem, Clay-Golem
+				//			switch (iDice(1, 4)) {
+				//				case 1: iItemID = 17;  break; // LongSword
+				//				case 2: iItemID = 68;  break; // DoubleAxe
+				//				case 3: iItemID = 23;  break; // Sabre
+				//				case 4: iItemID = 31;  break; // Esterk
+				//			}
+				//			break;
 
-						case 4: // Hellbound, Rudolph
-							switch (iDice(1, 5)) {
-								case 1: iItemID = 23;  break; // Sabre
-								case 2: iItemID = 25;  break; // Scimitar
-								case 3: iItemID = 28;  break; // Falchion
-								case 4: iItemID = 31;  break; // Esterk
-								case 5: iItemID = 34;  break; // Rapier
-							}
-							break;
+				//		case 4: // Hellbound, Rudolph
+				//			switch (iDice(1, 5)) {
+				//				case 1: iItemID = 23;  break; // Sabre
+				//				case 2: iItemID = 25;  break; // Scimitar
+				//				case 3: iItemID = 28;  break; // Falchion
+				//				case 4: iItemID = 31;  break; // Esterk
+				//				case 5: iItemID = 34;  break; // Rapier
+				//			}
+				//			break;
 
-						case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
-							switch (iDice(1, 3)) {
-								case 1: iItemID = 31;  break; // Esterk
-								case 2: iItemID = 34;  break; // Rapier
-								case 3: iItemID = 71;  break; // WarAxe
-							}
-							break;
+				//		case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
+				//			switch (iDice(1, 3)) {
+				//				case 1: iItemID = 31;  break; // Esterk
+				//				case 2: iItemID = 34;  break; // Rapier
+				//				case 3: iItemID = 71;  break; // WarAxe
+				//			}
+				//			break;
 
-						case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-							switch (iDice(1, 6)) {
-								case 1: iItemID = 50;  break; // GreatSword
-								case 2: iItemID = 54;  break; // Flameberge
-								case 3: iItemID = 46;  break; // Claymore
-								case 4: iItemID = 31;  break; // Esterk
-								case 5: iItemID = 34;  break; // Rapier
-								case 6: iItemID = 617; break; // CompositeBow
-							}
-							break;
+				//		case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
+				//			switch (iDice(1, 6)) {
+				//				case 1: iItemID = 50;  break; // GreatSword
+				//				case 2: iItemID = 54;  break; // Flameberge
+				//				case 3: iItemID = 46;  break; // Claymore
+				//				case 4: iItemID = 31;  break; // Esterk
+				//				case 5: iItemID = 34;  break; // Rapier
+				//				case 6: iItemID = 617; break; // CompositeBow
+				//			}
+				//			break;
 
-						case 7: // Liche, Frost
-							switch (iDice(1, 4)) {
-								case 1: iItemID = 50;  break; // GreatSword
-								case 2: iItemID = 54;  break; // Flameberge
-								case 3: iItemID = 31;  break; // Esterk
-								case 4: iItemID = 34;  break; // Rapier
-							}
-							break;
+				//		case 7: // Liche, Frost
+				//			switch (iDice(1, 4)) {
+				//				case 1: iItemID = 50;  break; // GreatSword
+				//				case 2: iItemID = 54;  break; // Flameberge
+				//				case 3: iItemID = 31;  break; // Esterk
+				//				case 4: iItemID = 34;  break; // Rapier
+				//			}
+				//			break;
 
-						case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
-							switch (iDice(1, 7)) {
-								case 1: iItemID = 50;  break; // GreatSword
-								case 2: iItemID = 54;  break; // Flameberge
-								case 3: iItemID = 560; break; // BattleAxe
-								case 4: iItemID = 31;  break; // Esterk
-								case 5: iItemID = 34;  break; // Rapier
-								case 6: iItemID = 55;  break; // Flameberge+1
-								case 7: iItemID = 615; break; // GiantSword
-							}
-							break;
+				//		case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
+				//			switch (iDice(1, 7)) {
+				//				case 1: iItemID = 50;  break; // GreatSword
+				//				case 2: iItemID = 54;  break; // Flameberge
+				//				case 3: iItemID = 560; break; // BattleAxe
+				//				case 4: iItemID = 31;  break; // Esterk
+				//				case 5: iItemID = 34;  break; // Rapier
+				//				case 6: iItemID = 55;  break; // Flameberge+1
+				//				case 7: iItemID = 615; break; // GiantSword
+				//			}
+				//			break;
 
-						case 9: // MountainGiant
-							switch (iDice(1, 6)) {
-								case 1: iItemID = 23;  break; // Sabre
-								case 2: iItemID = 25;  break; // Scimitar
-								case 3: iItemID = 28;  break; // Falchion
-								case 4: iItemID = 31;  break; // Esterk
-								case 5: iItemID = 34;  break; // Rapier
-								case 6: iItemID = 760; break; // Hammer
-							}
-							break;
+				//		case 9: // MountainGiant
+				//			switch (iDice(1, 6)) {
+				//				case 1: iItemID = 23;  break; // Sabre
+				//				case 2: iItemID = 25;  break; // Scimitar
+				//				case 3: iItemID = 28;  break; // Falchion
+				//				case 4: iItemID = 31;  break; // Esterk
+				//				case 5: iItemID = 34;  break; // Rapier
+				//				case 6: iItemID = 760; break; // Hammer
+				//			}
+				//			break;
 
-						case 10: // Ettin
-							switch (iDice(1, 5)) {
-								case 1: iItemID = 46;  break; // Claymore
-								case 2: iItemID = 31;  break; // Esterk
-								case 3: iItemID = 34;  break; // Rapier
-								case 4: iItemID = 760; break; // Hammer
-								case 5: iItemID = 761; break; // GiantHammer
-							}
-							break;
+				//		case 10: // Ettin
+				//			switch (iDice(1, 5)) {
+				//				case 1: iItemID = 46;  break; // Claymore
+				//				case 2: iItemID = 31;  break; // Esterk
+				//				case 3: iItemID = 34;  break; // Rapier
+				//				case 4: iItemID = 760; break; // Hammer
+				//				case 5: iItemID = 761; break; // GiantHammer
+				//			}
+				//			break;
 
-						}
-					}
-					else {
-						// 30% the weapon is a Wand
-						switch (iGenLevel) {
+				//		}
+				//	}
+				//	else {
+				//		// 30% the weapon is a Wand
+				//		switch (iGenLevel) {
 
-						case 2:
-						case 3:
-						case 9:
-						case 10:
-							iItemID = 258; 
-							break; // MagicWand(MS0)
-						case 4:
-						case 5:
-						case 6:
-							iItemID = 257; 
-							break; // MagicWand(MS10)
-						case 7:
-						case 8:
-							iItemID = 256; 
-							break; // MagicWand(MS20)
-						}
-					}
-				}
-				else {
-					// 1.4% chance Valuable Drop 40% that drop is an Armor/Shield
-					switch (iGenLevel) {
+				//		case 2:
+				//		case 3:
+				//		case 9:
+				//		case 10:
+				//			iItemID = 258; 
+				//			break; // MagicWand(MS0)
+				//		case 4:
+				//		case 5:
+				//		case 6:
+				//			iItemID = 257; 
+				//			break; // MagicWand(MS10)
+				//		case 7:
+				//		case 8:
+				//			iItemID = 256; 
+				//			break; // MagicWand(MS20)
+				//		}
+				//	}
+				//}
+				//else {
+				//	// 1.4% chance Valuable Drop 40% that drop is an Armor/Shield
+				//	switch (iGenLevel) {
 
-					case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
-					case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
-						switch (iDice(1, 2)) {
-							case 1: iItemID = 79;  break; // WoodShield
-							case 2: iItemID = 81;  break; // TargeShield
-						}
-						break;
+				//	case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
+				//	case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
+				//		switch (iDice(1, 2)) {
+				//			case 1: iItemID = 79;  break; // WoodShield
+				//			case 2: iItemID = 81;  break; // TargeShield
+				//		}
+				//		break;
 
-					case 3: // Stone-Golem, Clay-Golem
-						iItemID = 81; // TargeShield
-						break;
+				//	case 3: // Stone-Golem, Clay-Golem
+				//		iItemID = 81; // TargeShield
+				//		break;
 
-					case 4: // Hellbound, Rudolph
-						switch (iDice(1, 5)) {
-							case 1: iItemID = 454; break; // Hauberk(M)
-							case 2: iItemID = 472; break; // Hauberk(W)
-							case 3: iItemID = 461; break; // ChainHose(M)
-							case 4: iItemID = 482; break; // ChainHose(W)
-							case 5: iItemID = 83;  break; // BlondeShield
-						}
-						break;
+				//	case 4: // Hellbound, Rudolph
+				//		switch (iDice(1, 5)) {
+				//			case 1: iItemID = 454; break; // Hauberk(M)
+				//			case 2: iItemID = 472; break; // Hauberk(W)
+				//			case 3: iItemID = 461; break; // ChainHose(M)
+				//			case 4: iItemID = 482; break; // ChainHose(W)
+				//			case 5: iItemID = 83;  break; // BlondeShield
+				//		}
+				//		break;
 
-					case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
-						switch (iDice(1, 3)) {
-							case 1: iItemID = 455; break; // LeatherArmor(M)
-							case 2: iItemID = 475; break; // LeatherArmor(W)
-							case 3: iItemID = 84;  break; // IronShield
-						}
-						break;
+				//	case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
+				//		switch (iDice(1, 3)) {
+				//			case 1: iItemID = 455; break; // LeatherArmor(M)
+				//			case 2: iItemID = 475; break; // LeatherArmor(W)
+				//			case 3: iItemID = 84;  break; // IronShield
+				//		}
+				//		break;
 
-					case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-						switch (iDice(1, 17)) {
-							case 1: iItemID = 456; break; // ChainMail(M)
-							case 2: iItemID = 476; break; // ChainMail(W)
-							case 3: iItemID = 458; break; // PlateMail(M)
-							case 4: iItemID = 478; break; // PlateMail(W)
-							case 5: iItemID = 85; break; // LagiShield
-							case 6: iItemID = 750; break; // Horned-Helm(M)
-							case 7: iItemID = 751; break; // Wings-Helm(M)
-							case 8: iItemID = 754; break; // Horned-Helm(W)
-							case 9: iItemID = 755; break; // Wings-Helm(W)
-							case 10: iItemID = 752; break; // Wizard-Cap(M) 
-							case 11: iItemID = 753; break; // Wizard-Hat(M)
-							case 12: iItemID = 756; break; // Wizard-Cap(W) 
-							case 13: iItemID = 757; break; // Wizard-Hat(W) 
-							case 14: iItemID = 454; break; // Hauberk(M)
-							case 15: iItemID = 472; break; // Hauberk(W)
-							case 16: iItemID = 461; break; // ChainHose(M)
-							case 17: iItemID = 482; break; // ChainHose(W)
-						}
-						break;
+				//	case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
+				//		switch (iDice(1, 17)) {
+				//			case 1: iItemID = 456; break; // ChainMail(M)
+				//			case 2: iItemID = 476; break; // ChainMail(W)
+				//			case 3: iItemID = 458; break; // PlateMail(M)
+				//			case 4: iItemID = 478; break; // PlateMail(W)
+				//			case 5: iItemID = 85; break; // LagiShield
+				//			case 6: iItemID = 750; break; // Horned-Helm(M)
+				//			case 7: iItemID = 751; break; // Wings-Helm(M)
+				//			case 8: iItemID = 754; break; // Horned-Helm(W)
+				//			case 9: iItemID = 755; break; // Wings-Helm(W)
+				//			case 10: iItemID = 752; break; // Wizard-Cap(M) 
+				//			case 11: iItemID = 753; break; // Wizard-Hat(M)
+				//			case 12: iItemID = 756; break; // Wizard-Cap(W) 
+				//			case 13: iItemID = 757; break; // Wizard-Hat(W) 
+				//			case 14: iItemID = 454; break; // Hauberk(M)
+				//			case 15: iItemID = 472; break; // Hauberk(W)
+				//			case 16: iItemID = 461; break; // ChainHose(M)
+				//			case 17: iItemID = 482; break; // ChainHose(W)
+				//		}
+				//		break;
 
-					case 7: // Liche, Frost
-						switch (iDice(1, 10)) {
-							case 1: iItemID = 457; break; // ScaleMail(M)
-							case 2: iItemID = 477; break; // ScaleMail(W)
-							case 3: iItemID = 458; break; // PlateMail(M)
-							case 4: iItemID = 478; break; // PlateMail(W)
-							case 5: iItemID = 86; break; // KnightShield
-							case 6: iItemID = 87; break; // TowerShield
-							case 7: iItemID = 600; break; // Helm(M)
-							case 8: iItemID = 602; break; // Helm(W)
-							case 9: iItemID = 601; break; // Full-Helm(M)
-							case 10: iItemID = 603; break; // Full-Helm(W)
-						}
-						break;
+				//	case 7: // Liche, Frost
+				//		switch (iDice(1, 10)) {
+				//			case 1: iItemID = 457; break; // ScaleMail(M)
+				//			case 2: iItemID = 477; break; // ScaleMail(W)
+				//			case 3: iItemID = 458; break; // PlateMail(M)
+				//			case 4: iItemID = 478; break; // PlateMail(W)
+				//			case 5: iItemID = 86; break; // KnightShield
+				//			case 6: iItemID = 87; break; // TowerShield
+				//			case 7: iItemID = 600; break; // Helm(M)
+				//			case 8: iItemID = 602; break; // Helm(W)
+				//			case 9: iItemID = 601; break; // Full-Helm(M)
+				//			case 10: iItemID = 603; break; // Full-Helm(W)
+				//		}
+				//		break;
 
-					case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
-						iItemID = 402; // Cape
-						break;
+				//	case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
+				//		iItemID = 402; // Cape
+				//		break;
 
-					// Centu - Mountain-Giant, Ettin, MasterMage-Orc, Giant-Lizard
-					case 9:
-					case 10:
-						switch (iDice(1, 17)) {
-						case 1: iItemID = 456; break; // ChainMail(M)
-						case 2: iItemID = 476; break; // ChainMail(W)
-						case 3: iItemID = 458; break; // PlateMail(M)
-						case 4: iItemID = 478; break; // PlateMail(W)
-						case 5: iItemID = 85; break; // LagiShield
-						case 6: iItemID = 750; break; // Horned-Helm(M)
-						case 7: iItemID = 751; break; // Wings-Helm(M)
-						case 8: iItemID = 754; break; // Horned-Helm(W)
-						case 9: iItemID = 755; break; // Wings-Helm(W)
-						case 10: iItemID = 752; break; // Wizard-Cap(M) 
-						case 11: iItemID = 753; break; // Wizard-Hat(M)
-						case 12: iItemID = 756; break; // Wizard-Cap(W) 
-						case 13: iItemID = 757; break; // Wizard-Hat(W) 
-						case 14: iItemID = 454; break; // Hauberk(M)
-						case 15: iItemID = 472; break; // Hauberk(W)
-						case 16: iItemID = 461; break; // ChainHose(M)
-						case 17: iItemID = 482; break; // ChainHose(W)
-						}
-						break;
-					}
-				}
+				//	// Centu - Mountain-Giant, Ettin, MasterMage-Orc, Giant-Lizard
+				//	case 9:
+				//	case 10:
+				//		switch (iDice(1, 17)) {
+				//		case 1: iItemID = 456; break; // ChainMail(M)
+				//		case 2: iItemID = 476; break; // ChainMail(W)
+				//		case 3: iItemID = 458; break; // PlateMail(M)
+				//		case 4: iItemID = 478; break; // PlateMail(W)
+				//		case 5: iItemID = 85; break; // LagiShield
+				//		case 6: iItemID = 750; break; // Horned-Helm(M)
+				//		case 7: iItemID = 751; break; // Wings-Helm(M)
+				//		case 8: iItemID = 754; break; // Horned-Helm(W)
+				//		case 9: iItemID = 755; break; // Wings-Helm(W)
+				//		case 10: iItemID = 752; break; // Wizard-Cap(M) 
+				//		case 11: iItemID = 753; break; // Wizard-Hat(M)
+				//		case 12: iItemID = 756; break; // Wizard-Cap(W) 
+				//		case 13: iItemID = 757; break; // Wizard-Hat(W) 
+				//		case 14: iItemID = 454; break; // Hauberk(M)
+				//		case 15: iItemID = 472; break; // Hauberk(W)
+				//		case 16: iItemID = 461; break; // ChainHose(M)
+				//		case 17: iItemID = 482; break; // ChainHose(W)
+				//		}
+				//		break;
+				//	}
+				//}
+
+				// Centu - Read from NpcItem.cfg
+				bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0);
 				
 				pItem = new class CItem;
 				if (_bInitItemAttr(pItem, iItemID) == FALSE) {
@@ -2902,7 +2910,7 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 						for (iNpcConfigListIndex = 0; iNpcConfigListIndex < DEF_MAXNPCTYPES; iNpcConfigListIndex++)
 							if (m_pNpcConfigList[iNpcConfigListIndex] != NULL) {
 								if (strcmp(m_pNpcConfigList[iNpcConfigListIndex]->m_cNpcName, token) == 0) {
-									PutLogList(token);
+									//PutLogList(token);
 									break;
 								}
 							}
@@ -2996,7 +3004,6 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 
 						// ù��° Ȯ���� ���� Ÿ�ٰ��� ���Ƿ� �ش�. 
 
-
 						cReadModeB = 5;
 						break;
 
@@ -3062,7 +3069,7 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 	return TRUE;
 
 }
-BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
+BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType, short sIsRare)
 {
 	if (m_bNpcItemConfig == TRUE) {
 
@@ -3072,7 +3079,6 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		int    iNumNpcitem;
 		int    iIndex;
 		int    iDiceValue;
-		BOOL    bFirstDice = FALSE, bSecondDice = FALSE;
 
 		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {
 			if (m_pNpcConfigList[iNpcIndex] != NULL) {
@@ -3092,10 +3098,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
 			// centu - fixed que lea probabilidades
-			if (iDice(1, 1000) == CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
-			if (iDice(1, 1000) == CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
-
-			if ((bFirstDice == TRUE) && (bSecondDice == TRUE)) {
+			if (iDice(1, 10000) == CTempNpcItem.m_sFirstProbability && sIsRare == CTempNpcItem.m_sSecondProbability) {
 				iItemID = CTempNpcItem.m_sItemID;
 
 				wsprintf(G_cTxt, "NpcType 1 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);

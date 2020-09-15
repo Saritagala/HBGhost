@@ -8293,7 +8293,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 	sAbsY = abs(sY - dY);
 	if ((wType != 2) && (wType < 20)) {
 		if (var_AC == FALSE) {
-			sItemIndex = m_pClientList[iClientH]->m_sItemEquipmentStatus[ DEF_EQUIPPOS_TWOHAND ];
+			/*sItemIndex = m_pClientList[iClientH]->m_sItemEquipmentStatus[ DEF_EQUIPPOS_TWOHAND ];
 			if (sItemIndex != -1) {
 				if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return 0;
 				if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845) {
@@ -8305,7 +8305,8 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 			}
 			else{
 				if ((sAbsX > 1) || (sAbsY > 1)) wType = 0;
-			}
+			}*/
+			if ((sAbsX > 1) || (sAbsY > 1)) wType = 0;
 		}
 		else{
 			cDir = m_Misc.cGetNextMoveDir(sX, sY, dX, dY);
@@ -8430,7 +8431,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 							// Critical Attack - Mass-Magic-Missile Aura
 							if (wType >= 20)
 							{
-								sType = 84;
+								sType = 82;
 								SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_MAGIC, m_pClientList[iClientH]->m_cMapIndex, sX, sY, sX, sY, (sType + 100), m_pClientList[iClientH]->m_sType);
 							}
 						}
@@ -8439,7 +8440,8 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 				// End of Magic Weapons
 				sItemIndex = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 				if (sItemIndex != -1 && m_pClientList[iClientH]->m_pItemList[sItemIndex] != NULL) {
-					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845) { // StormBringer
+					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845 || // StormBringer
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 1037) { // StunSB
 						short sAppr2 = (short)((m_pClientList[iClientH]->m_sAppr2 & 0xF000) >> 12);
 						if (sAppr2 != 0) {
 							iV1 = m_pClientList[iClientH]->m_cAttackDiceThrow_L;
@@ -8475,10 +8477,9 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 						}
 						iExp += iCalculateAttackEffect(sOwner, cOwnerType, iClientH, DEF_OWNERTYPE_PLAYER, dX, dY, wType, bNearAttack, bIsDash, FALSE);
 					}
-					// Directional Bow. Fixed by juan249
-					else if(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 874){ // Directional bow 
+					else if(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 1050){ // hunt bow 
 						iErr = 0; 
-						for(i = 1; i < 6; i++){ 
+						for(i = 1; i < 2; i++){ 
 							m_Misc.GetPoint2(sX, sY, dX, dY, &tX, &tY, &iErr, i); 
 							m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->GetOwner(&sOwner, &cOwnerType, tX, tY); 
 							iExp += iCalculateAttackEffect(sOwner, cOwnerType, iClientH, DEF_OWNERTYPE_PLAYER, tX, tY, wType, bNearAttack, bIsDash, TRUE); // 1 
@@ -8491,7 +8492,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 								while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
 									dX += 4; dY += 4; tY += 4; tX += 4; 
 								} 
-								while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
+								/*while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
 									dX += 4; dY += 4; tY += 4; tX += 4; 
 								} 
 								while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
@@ -8502,7 +8503,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 								} 
 								while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
 									dX += 4; dY += 4; tY += 4; tX += 4; 
-								} 
+								} */
 							} 
 						} 
 					}
@@ -11504,7 +11505,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 	iDamage = (iDice(sV1, sV2) + sV3);
 	if (iDamage <= 0) iDamage = 0;
 
-	switch (cAttackerType)
+	/*switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -11515,7 +11516,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			}
 		}
 		break;
-	}
+	}*/
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:	
@@ -12617,7 +12618,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 
 	iPartyID = 0;
 
-	switch (cAttackerType)
+	/*switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -12628,7 +12629,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 		}
 		break;
-	}
+	}*/
 
 	// 공격자가 플레이어라면 Mag에 따른 보너스 대미지를 가산 
 	switch (cAttackerType) {
@@ -15150,6 +15151,16 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, DWORD dwMsgSize)
 	if (strcmp("procella", cMapName) == 0) bFlag = TRUE;
 	if (string(cMapName) == "team") bFlag = TRUE;
 	if (string(cMapName) == "toh3") bFlag = TRUE;
+
+	if (string(cMapName) == "asgarde") bFlag = TRUE;
+	if (string(cMapName) == "catacombs") bFlag = TRUE;
+	if (string(cMapName) == "lost") bFlag = TRUE;
+	if (string(cMapName) == "qusmarsh") bFlag = TRUE;
+	if (string(cMapName) == "stadium") bFlag = TRUE;
+
+	if (string(cMapName) == "dungeon5") bFlag = TRUE;
+	if (string(cMapName) == "procella2") bFlag = TRUE;
+	if (string(cMapName) == "abbylair") bFlag = TRUE;
 
 	if (bFlag == TRUE)
 		RequestTeleportHandler(iClientH, "2   ", cMapName, dX, dY);
@@ -19761,7 +19772,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = NULL;
 	wWeaponType      = NULL;
 
-	switch (cAttackerType)
+	/*switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -19772,7 +19783,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 		}
 		break;
-	}
+	}*/
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -25712,7 +25723,6 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 		int    iNumNpcitem;
 		int    iIndex;
 		int    iDiceValue;
-		BOOL    bFirstDice = FALSE, bSecondDice = FALSE;
 		int		iItemID = 0;
 		int		iNum = 0;
 
@@ -25753,20 +25763,18 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 				CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iIndex);
 
 				// centu - fixed que lea probabilidades
-				if (iDice(1, 1000) >= CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
-				if (iDice(1, 1000) >= CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
+				if (iDice(1, 1000) >= CTempNpcItem.m_sFirstProbability &&
+					iDice(1, 1000) >= CTempNpcItem.m_sSecondProbability) {
 
-				if (bFirstDice && bSecondDice) {
-					iItemID = CTempNpcItem.m_sItemID;
+					// item id
+					iItemIDs[iNum] = CTempNpcItem.m_sItemID;
 
 					wsprintf(G_cTxt, "NpcType 2 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);
 					PutLogList(G_cTxt);
 					//break;
 				}
+				else iItemIDs[iNum] = 90; // Gold
 				
-				// item id
-				iItemIDs[iNum] = iItemID;
-
 				// item position
 				switch (iItemSpreadType)
 				{
@@ -25780,9 +25788,10 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 						BasePos[iNum].y = sBaseY + ITEMSPREAD_FIEXD_COORD[iNum][1];
 						break;
 				}
+				
 				iNum++;
 				
-			}
+			} // for
 			break;
 
 		} // switch

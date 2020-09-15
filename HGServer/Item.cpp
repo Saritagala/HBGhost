@@ -7546,10 +7546,6 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 				ReleaseItemHandler(iClientH, sItemIndex, TRUE);
 				return FALSE;
 			}
-			else
-			{
-				m_pClientList[iClientH]->m_iHitRatio += 10;
-			}
 		}
 		// Centuu : Fixed las armas Blood by KaoZureS
 		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 490) { // Sword

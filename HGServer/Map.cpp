@@ -3037,12 +3037,12 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 			pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 
 			//If player not same side and is invied (Beholder Hack)
-			if ((m_pClientList[pTile->m_sOwner] != NULL) && (pTile->m_sOwner != iClientH))
+			/*if ((m_pClientList[pTile->m_sOwner] != NULL) && (pTile->m_sOwner != iClientH))
 				if ((m_pClientList[pTile->m_sOwner]->m_cSide != 0) &&
 					(m_pClientList[pTile->m_sOwner]->m_cSide != m_pClientList[iClientH]->m_cSide) &&
 					((m_pClientList[pTile->m_sOwner]->m_iStatus & 0x00000010) != 0)) {
 					continue;
-				}
+				}*/
 
 			if ((pTile->m_sOwner != NULL) || (pTile->m_sDeadOwner != NULL) ||
 				(pTile->m_pItem[0] != NULL) || (pTile->m_sDynamicObjectType != NULL)) {

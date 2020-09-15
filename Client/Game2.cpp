@@ -20362,15 +20362,24 @@ void CGame::StartBGM()
 			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
 			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
 			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) 
+			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) {
 				if (bPlayGhostMusic) {
 					m_bSoundFlag = TRUE;
 					m_cMusicVolume = 100; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.wav");				}
+					strcpy(cWavFileName, "music\\Ghost.wav");
+				}
 				else {
 					strcpy(cWavFileName, "music\\abaddon.wav");
 				}
+			}
+			else if (memcmp(m_cCurLocation, "stadium", 7) == 0) strcpy(cWavFileName, "music\\stadium.mp3");
+			else if (memcmp(m_cCurLocation, "lost", 4) == 0) strcpy(cWavFileName, "music\\lost.mp3");
+			else if (memcmp(m_cCurLocation, "catacombs", 9) == 0) strcpy(cWavFileName, "music\\lost1.mp3");
+			else if (memcmp(m_cCurLocation, "qusmarsh", 8) == 0) strcpy(cWavFileName, "music\\lost2.mp3");
+			else if (memcmp(m_cCurLocation, "asgarde", 7) == 0) strcpy(cWavFileName, "music\\lost3.mp3");
+
 			else strcpy(cWavFileName, "music\\MainTm.wav");
+
 		}
 	}
 

@@ -375,7 +375,7 @@ private:
 
 	void AgingMapSectorInfo();
 	void UpdateMapSectorInfo();
-	BOOL bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType);
+	BOOL bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType, short sIsRare);
 	int iGetItemWeight(class CItem* pItem, int iCount);
 	void CancelQuestHandler(int iClientH, int iQuest);
 	void ActivateSpecialAbilityHandler(int iClientH);

@@ -3305,19 +3305,21 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			}
 
 			MakeSprite( "Telescope", DEF_SPRID_INTERFACE_GUIDEMAP    , 32, FALSE);	  // Snoopy: 20->32
-			MakeSprite( "Telescope2", DEF_SPRID_INTERFACE_GUIDEMAP+35, 4 , FALSE); // Snoopy: Ajout.351 (heldenian maps)
+			MakeSprite("Telescope2", DEF_SPRID_INTERFACE_GUIDEMAP + 35, 9, FALSE);
+			//MakeSprite( "Telescope2", DEF_SPRID_INTERFACE_GUIDEMAP+35, 4 , FALSE); // Snoopy: Ajout.351 (heldenian maps)
 			MakeSprite( "monster", DEF_SPRID_INTERFACE_MONSTER, 1, FALSE);
 			m_cLoading = 4;
 		}
 		break;
 	case 4:
 		{	MakeTileSpr( "maptiles1", 0, 32, TRUE);
-			m_hPakFile = CreateFile("sprites\\structures1.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL); //¾È¾²´Â Å¸ÀÏ ·Îµù ¾ÈÇÑ´Ù.2002.09.06»óÇÏ
+			MakeTileSpr("structures1", 50, 20, TRUE);
+			/*m_hPakFile = CreateFile("sprites\\structures1.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL); //¾È¾²´Â Å¸ÀÏ ·Îµù ¾ÈÇÑ´Ù.2002.09.06»óÇÏ
 			if( m_hPakFile != INVALID_HANDLE_VALUE ) {
 				m_pTileSpr[1 + 50] = new class CSprite(m_hPakFile, &m_DDraw, "structures1",  1, TRUE);
 				m_pTileSpr[5 + 50] = new class CSprite(m_hPakFile, &m_DDraw, "structures1",  5, TRUE);
 				CloseHandle(m_hPakFile);
-			}
+			}*/
 			MakeTileSpr( "Sinside1", 70, 27, FALSE);
 			MakeTileSpr( "Trees1", 100, 46, TRUE);
 			MakeTileSpr( "TreeShadows", 150, 46, TRUE);
@@ -31456,6 +31458,41 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 	}else if (strcmp(pMapName, "CmdHall_2") == 0)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME79);
 		return -1;
+	}
+	else if (strcmp(pMapName, "catacombs") == 0)
+	{
+		strcpy(pName, "Catacombs");
+		return 38;
+	}
+	else if (strcmp(pMapName, "qusmarsh") == 0)
+	{
+		strcpy(pName, "Qu's marsh");
+		return 39;
+	}
+	else if (strcmp(pMapName, "asgarde") == 0)
+	{
+		strcpy(pName, "Mount Asgarde");
+		return 40;
+	}
+	else if (strcmp(pMapName, "lost") == 0)
+	{
+		strcpy(pName, "Lost City"); // Equilibrium city
+		return 41;
+	}
+	else if (strcmp(pMapName, "procella2") == 0)
+	{
+		strcpy(pName, "Field Of Dreams");	 //Shattered
+		return 31;
+	}
+	else if (strcmp(pMapName, "abbylair") == 0)
+	{
+		strcpy(pName, "Abaddon's Lair");
+		return 32;
+	}
+	else if (strcmp(pMapName, "dungeon5") == 0)
+	{
+		strcpy(pName, "Dungeon of the Damned");	// Elvine Dungeon - GET_OFFICIAL_MAP_NAME23
+		return 33;
 	}
 	else
 	{	strcpy(pName, pMapName);
