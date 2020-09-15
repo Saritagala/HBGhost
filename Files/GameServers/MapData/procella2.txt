@@ -1,0 +1,217 @@
+[MAP-INFO]
+
+map-location = procella2
+initial-point = 1  120 50
+
+fixed-dayornight-mode = 0
+
+//-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
+teleport-loc     =     29    123     elvine           222    23     2
+teleport-loc     =     29    124     elvine           222    23     2
+teleport-loc     =     29    125     elvine           222    23     2
+teleport-loc     =     29    126     elvine           222    23     2
+teleport-loc     =     29    127     elvine           222    23     2
+teleport-loc     =     29    128     elvine           222    23     2
+
+
+teleport-loc     =     30    123     elvine           222    23     2
+teleport-loc     =     30    124     elvine           222    23     2
+teleport-loc     =     30    125     elvine           222    23     2
+teleport-loc     =     30    126     elvine           222    23     2
+teleport-loc     =     30    127     elvine           222    23     2
+teleport-loc     =     30    128     elvine           222    23     2
+
+
+teleport-loc     =     31    123     elvine           222    23     2
+teleport-loc     =     31    124     elvine           222    23     2
+teleport-loc     =     31    125     elvine           222    23     2
+teleport-loc     =     31    126     elvine           222    23     2
+teleport-loc     =     31    127     elvine           222    23     2
+teleport-loc     =     31    128     elvine           222    23     2
+
+teleport-loc     =     32    123     elvine           222    23     2
+teleport-loc     =     32    124     elvine           222    23     2
+teleport-loc     =     32    125     elvine           222    23     2
+teleport-loc     =     32    126     elvine           222    23     2
+teleport-loc     =     32    127     elvine           222    23     2
+teleport-loc     =     32    128     elvine           222    23     2
+
+teleport-loc     =     33    123     elvine           222    23     2
+teleport-loc     =     33    124     elvine           222    23     2
+teleport-loc     =     33    125     elvine           222    23     2
+teleport-loc     =     33    126     elvine           222    23     2
+teleport-loc     =     33    127     elvine           222    23     2
+teleport-loc     =     33    128     elvine           222    23     2
+
+teleport-loc     =     34    122     elvine           222    23     2
+teleport-loc     =     34    123     elvine           222    23     2
+teleport-loc     =     34    124     elvine           222    23     2
+teleport-loc     =     34    125     elvine           222    23     2
+teleport-loc     =     34    126     elvine           222    23     2
+teleport-loc     =     34    127     elvine           222    23     2
+teleport-loc     =     34    128     elvine           222    23     2
+
+teleport-loc     =     35    123     elvine           222    23     2
+teleport-loc     =     35    124     elvine           222    23     2
+teleport-loc     =     35    125     elvine           222    23     2
+teleport-loc     =     35    126     elvine           222    23     2
+teleport-loc     =     35    127     elvine           222    23     2
+teleport-loc     =     35    128     elvine           222    23     2
+
+teleport-loc     =     36    123     elvine           222    23     2
+teleport-loc     =     36    124     elvine           222    23     2
+teleport-loc     =     36    125     elvine           222    23     2
+teleport-loc     =     36    126     elvine           222    23     2
+teleport-loc     =     36    127     elvine           222    23     2
+teleport-loc     =     36    128     elvine           222    23     2
+
+teleport-loc     =     160    40     aresden          32     276    2
+teleport-loc     =     160    41     aresden          32     276    2
+teleport-loc     =     160    42     aresden          32     276    2
+teleport-loc     =     160    43     aresden          32     276    2
+teleport-loc     =     160    44     aresden          32     276    2
+teleport-loc     =     160    45     aresden          32     276    2
+teleport-loc     =     160    46     aresden          32     276    2
+teleport-loc     =     160    47     aresden          32     276    2
+
+teleport-loc     =     161    40     aresden          32     276    2
+teleport-loc     =     161    41     aresden          32     276    2
+teleport-loc     =     161    42     aresden          32     276    2
+teleport-loc     =     161    43     aresden          32     276    2
+teleport-loc     =     161    44     aresden          32     276    2
+teleport-loc     =     161    45     aresden          32     276    2
+teleport-loc     =     161    46     aresden          32     276    2
+teleport-loc     =     161    47     aresden          32     276    2
+
+teleport-loc     =     162    40     aresden          32     276    2
+teleport-loc     =     162    41     aresden          32     276    2
+teleport-loc     =     162    42     aresden          32     276    2
+teleport-loc     =     162    43     aresden          32     276    2
+teleport-loc     =     162    44     aresden          32     276    2
+teleport-loc     =     162    45     aresden          32     276    2
+teleport-loc     =     162    46     aresden          32     276    2
+teleport-loc     =     162    47     aresden          32     276    2
+
+teleport-loc     =     163    40     aresden          32     276    2
+teleport-loc     =     163    41     aresden          32     276    2
+teleport-loc     =     163    42     aresden          32     276    2
+teleport-loc     =     163    43     aresden          32     276    2
+teleport-loc     =     163    44     aresden          32     276    2
+teleport-loc     =     163    45     aresden          32     276    2
+teleport-loc     =     163    46     aresden          32     276    2
+teleport-loc     =     163    47     aresden          32     276    2
+
+teleport-loc     =     164    40     aresden          32     276    2
+teleport-loc     =     164    41     aresden          32     276    2
+teleport-loc     =     164    42     aresden          32     276    2
+teleport-loc     =     164    43     aresden          32     276    2
+teleport-loc     =     164    44     aresden          32     276    2
+teleport-loc     =     164    45     aresden          32     276    2
+teleport-loc     =     164    46     aresden          32     276    2
+teleport-loc     =     164    47     aresden          32     276    2
+
+teleport-loc     =     165    40     aresden          32     276    2
+teleport-loc     =     165    41     aresden          32     276    2
+teleport-loc     =     165    42     aresden          32     276    2
+teleport-loc     =     165    43     aresden          32     276    2
+teleport-loc     =     165    44     aresden          32     276    2
+teleport-loc     =     165    45     aresden          32     276    2
+teleport-loc     =     165    46     aresden          32     276    2
+teleport-loc     =     165    47     aresden          32     276    2
+
+teleport-loc     =     166    40     aresden          32     276    2
+teleport-loc     =     166    41     aresden          32     276    2
+teleport-loc     =     166    42     aresden          32     276    2
+teleport-loc     =     166    43     aresden          32     276    2
+teleport-loc     =     166    44     aresden          32     276    2
+teleport-loc     =     166    45     aresden          32     276    2
+teleport-loc     =     166    46     aresden          32     276    2
+teleport-loc     =     166    47     aresden          32     276    2
+
+teleport-loc     =     167    40     aresden          32     276    2
+teleport-loc     =     167    41     aresden          32     276    2
+teleport-loc     =     167    42     aresden          32     276    2
+teleport-loc     =     167    43     aresden          32     276    2
+teleport-loc     =     167    44     aresden          32     276    2
+teleport-loc     =     167    45     aresden          32     276    2
+teleport-loc     =     167    46     aresden          32     276    2
+teleport-loc     =     167    47     aresden          32     276    2
+
+
+
+//-WayPoint-Set---------Num-----X-----Y----;
+waypoint          =     0       114    43
+waypoint          =     1       114    43
+waypoint          =     2       114    43
+waypoint          =     3       114    43
+waypoint          =     4       114    43
+waypoint          =     5       114    43
+waypoint          =     6       114    43
+waypoint          =     7       114    43
+waypoint          =     8       114    43
+waypoint          =     9       114    43
+
+//------------------------Num-Type-waypoints--------------Mob-MobNum-Event
+
+
+
+//Helclaw
+spot-mob-generator	=  1   1    49 62 60 72            49  2 0
+spot-mob-generator	=  2   1    48 50 57 57            49  2 0
+spot-mob-generator	=  3   1    65 64 78 72            49  2 0
+
+//GiantCrayfish
+spot-mob-generator	=  4   1    33 30 54 43            74  9 0
+
+
+//MasterMage-Orc
+spot-mob-generator	=  6   1    130 35 149 46            77  8 0
+
+//Nizie
+spot-mob-generator	=  7   1    149 58 164 68            79  8 0
+
+//Barlog
+spot-mob-generator	=  8   1    111 92 130 99            70  8 0
+
+//Stalker
+spot-mob-generator	=  9   1    130 83 144 97            48  8 0
+
+//Minotaurs
+spot-mob-generator	=  10  1    142 70 161 86           78  8 0
+
+//Centaurus
+spot-mob-generator	=  11  1    58 80 73 91             71  7 0
+
+//Gagoyle
+spot-mob-generator	=  12   1    66 46 82 56          52  5 0
+
+//Tentocle
+spot-mob-generator	=  13  1    120 53 130 60           80  5 0
+
+//Claw-Turtle
+spot-mob-generator	=  14  1    92 76 105 88             72  7 0
+
+//Direboar
+spot-mob-generator	=  15  1    98 60 110 70             62  5 0
+
+//Snakes
+spot-mob-generator	=  16   1    80 96 96 103            22  10 0
+
+//Cyc
+spot-mob-generator	=  17   1    95 42 110 53            13  5 0
+
+//Hellhounds
+spot-mob-generator	=  18   1    101 38 112 46            27  5 0
+
+
+//-NPC-setting--------Name---------------MoveType----WaypointIndex(10)-------NamePrefix-------;
+ 
+npc               =   Howard             1         1 2 3 4 5 6 7 8 9 10         1  
+
+
+//-No-Attack-Area----------Num-----RECT-------------
+
+maximum-object		= 1200
+RecallImpossible        = 0
+
+[END-MAP-INFO]
