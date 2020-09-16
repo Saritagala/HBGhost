@@ -920,7 +920,7 @@
 #define	DRAW_DIALOGBOX_BANK4	"or click an item to take out on the list."
 #define	DRAW_DIALOGBOX_BANK5	"item to take out on the list."
 
-#define	DRAW_DIALOGBOX_CHARACTER1	"Criminal (%d)"
+#define	DRAW_DIALOGBOX_CHARACTER1	" Criminal (%d)"
 #define	DRAW_DIALOGBOX_CHARACTER2	"Contribution (%d)"
 #define	DRAW_DIALOGBOX_CHARACTER3	"Aresden %s GuildMaster"
 #define	DRAW_DIALOGBOX_CHARACTER4	"Elvine %s GuildMaster"

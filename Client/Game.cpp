@@ -4335,15 +4335,15 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		strcpy(G_cTxt, m_cPlayerName);
 		strcat(G_cTxt, " : ");
 
+		ZeroMemory(cTxt2, sizeof(cTxt2));
+		wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER2, m_iContribution);
+		strcat(G_cTxt, cTxt2);
+
 		if (m_iPKCount > 0) {
 			ZeroMemory(cTxt2, sizeof(cTxt2));
 			wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER1, m_iPKCount);
 			strcat(G_cTxt, cTxt2);
 		}
-
-		ZeroMemory(cTxt2, sizeof(cTxt2));
-		wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER2, m_iContribution);
-		strcat(G_cTxt, cTxt2);
 		PutAlignedString(sX + 14, sX + 290, sY + 32, G_cTxt, 255, 255, 100);
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 
@@ -4367,14 +4367,31 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 			}
 			if (m_iGuildRank >= 0)
 			{
-				strcat(G_cTxt, "(");
+				strcat(G_cTxt, " (");
 				strcat(G_cTxt, m_cGuildName);
 				if (m_iGuildRank == 0) strcat(G_cTxt, DEF_MSG_GUILDMASTER1);
 				else strcat(G_cTxt, DEF_MSG_GUILDSMAN1); // " Guildsman)"
 			}
 		}
-
 		PutAlignedString(sX, sX + 300, sY + 49, G_cTxt, 255, 255, 100);
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+
+		// Centuu - show class
+		strcpy(G_cTxt, "Class : ");
+		if (m_iClass == 1)
+		{
+			strcat(G_cTxt, "Warrior");
+		}
+		else if (m_iClass == 2)
+		{
+			strcat(G_cTxt, "Magician");
+		}
+		else if (m_iClass == 3)
+		{
+			strcat(G_cTxt, "Archer");
+		}
+		PutAlignedString(sX, sX + 300, sY + 49 + 17, G_cTxt, 255, 255, 100);
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 
 		int iTemp;
 		// Level
@@ -7054,6 +7071,10 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	bp = (bool*)cp;
 	m_bFuryHour = *bp;
 	cp++;
+
+	ip = (int*)cp;
+	m_iClass = *ip;
+	cp += 4;
 }
 
 
@@ -24152,12 +24173,14 @@ BOOL CGame::_bDraw_OnCreateNewCharacter(char* pName, short msX, short msY, int i
 	if (iPoint > 0) bFlag = FALSE;
 	if (m_Misc.bCheckValidName(pName) == FALSE) bFlag = FALSE;
 
-	if ((bFlag == TRUE) && (m_cCurFocus == 2)) m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(384 + SCREENX, 445 + SCREENY, 25, dwTime);
+	if ((bFlag == TRUE) && (m_cCurFocus == 2)) 
+		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(384 + SCREENX, 445 + SCREENY, 25, dwTime);
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(384 + SCREENX, 445 + SCREENY, 24, dwTime);
 	if (m_cCurFocus == 3)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(500 + SCREENX, 445 + SCREENY, 17, dwTime);
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(500 + SCREENX, 445 + SCREENY, 16, dwTime);
-	if (m_cCurFocus == 4)
+	
+	/*if (m_cCurFocus == 4)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(60 + SCREENX, 445 + SCREENY, 68, dwTime);
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(60 + SCREENX, 445 + SCREENY, 67, dwTime);
 	if (m_cCurFocus == 5)
@@ -24165,8 +24188,34 @@ BOOL CGame::_bDraw_OnCreateNewCharacter(char* pName, short msX, short msY, int i
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(145 + SCREENX, 445 + SCREENY, 65, dwTime);
 	if (m_cCurFocus == 6)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(230 + SCREENX, 445 + SCREENY, 64, dwTime);
-	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(230 + SCREENX, 445 + SCREENY, 63, dwTime);
+	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(230 + SCREENX, 445 + SCREENY, 63, dwTime);*/
 
+	if (m_cCurFocus == 4) {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, 40 + SCREENX, 450 + SCREENY, 0);
+		PutAlignedString2(40 + SCREENX, 40 + SCREENX + 90, 450 + SCREENY + 2, "Warrior", 255, 255, 100);
+	}
+	else {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, 40 + SCREENX, 450 + SCREENY, 1);
+		PutAlignedString2(40 + SCREENX, 40 + SCREENX + 90, 450 + SCREENY + 2, "Warrior", 180, 188, 180);
+	}
+
+	if (m_cCurFocus == 5) {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, 135 + SCREENX, 450 + SCREENY, 0);
+		PutAlignedString2(135 + SCREENX, 135 + SCREENX + 90, 450 + SCREENY + 2, "Magician", 255, 255, 100);
+	}
+	else {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, 135 + SCREENX, 450 + SCREENY, 1);
+		PutAlignedString2(135 + SCREENX, 135 + SCREENX + 90, 450+ SCREENY + 2, "Magician", 180, 188, 180);
+	}
+
+	if (m_cCurFocus == 6) {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, 230 + SCREENX, 450 + SCREENY, 0);
+		PutAlignedString2(230 + SCREENX, 230 + SCREENX + 90, 450 + SCREENY + 2, "Archer", 255, 255, 100);
+	}
+	else {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, 230 + SCREENX, 450 + SCREENY, 1);
+		PutAlignedString2(230 + SCREENX, 230 + SCREENX + 90, 450 + SCREENY + 2, "Archer", 180, 188, 180);
+	}
 
 	ShowReceivedString();
 
@@ -24264,9 +24313,9 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 		pMI->AddRect(384 + SCREENX, 445 + SCREENY, 384 + 72 + SCREENX, 445 + 15 + SCREENY);
 		pMI->AddRect(500 + SCREENX, 445 + SCREENY, 500 + 72 + SCREENX, 445 + 15 + SCREENY);
 
-		pMI->AddRect(60 + SCREENX, 445 + SCREENY, 60 + 72 + SCREENX, 445 + 15 + SCREENY);
-		pMI->AddRect(145 + SCREENX, 445 + SCREENY, 145 + 72 + SCREENX, 445 + 15 + SCREENY);
-		pMI->AddRect(230 + SCREENX, 445 + SCREENY, 230 + 72 + SCREENX, 445 + 15 + SCREENY);
+		pMI->AddRect(40 + SCREENX, 450 + SCREENY, 40 + 72 + SCREENX, 450 + 15 + SCREENY);
+		pMI->AddRect(135 + SCREENX, 450 + SCREENY, 135 + 72 + SCREENX, 450 + 15 + SCREENY);
+		pMI->AddRect(230 + SCREENX, 450 + SCREENY, 230 + 72 + SCREENX, 450 + 15 + SCREENY);
 
 		iPoint = m_ccStr + m_ccVit + m_ccDex + m_ccInt + m_ccMag + m_ccChr;
 		iPoint = 70 - iPoint;
@@ -24657,17 +24706,17 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 								PutAlignedString(370 + SCREENX, 580 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER49);
 							}
 
-	if ((msX >= 60 + SCREENX) && (msX <= 60 + 72 + SCREENX) && (msY >= 445 + SCREENY) && (msY <= 445 + 15 + SCREENY)) {
+	if ((msX >= 40 + SCREENX) && (msX <= 40 + 72 + SCREENX) && (msY >= 450 + SCREENY) && (msY <= 450 + 15 + SCREENY)) {
 		m_cCurFocus = 4;
 		PutAlignedString(370 + SCREENX, 580 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER50);
 	}
 
-	if ((msX >= 145 + SCREENX) && (msX <= 145 + 72 + SCREENX) && (msY >= 445 + SCREENY) && (msY <= 445 + 15 + SCREENY)) {
+	if ((msX >= 135 + SCREENX) && (msX <= 135 + 72 + SCREENX) && (msY >= 450 + SCREENY) && (msY <= 450 + 15 + SCREENY)) {
 		m_cCurFocus = 5;
 		PutAlignedString(370 + SCREENX, 580 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER51);
 	}
 
-	if ((msX >= 230 + SCREENX) && (msX <= 230 + 72 + SCREENX) && (msY >= 445 + SCREENY) && (msY <= 445 + 15 + SCREENY)) {
+	if ((msX >= 230 + SCREENX) && (msX <= 230 + 72 + SCREENX) && (msY >= 450 + SCREENY) && (msY <= 450 + 15 + SCREENY)) {
 		m_cCurFocus = 6;
 		PutAlignedString(370 + SCREENX, 580 + SCREENX, 345 + SCREENY, UPDATE_SCREEN_ON_CREATE_NEW_CHARACTER52);
 	}
@@ -33922,6 +33971,25 @@ void CGame::UpdateScreen_OnGame()
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
+		// Centuu - Class
+		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
+		{
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
+			{
+				wsprintf(G_cTxt, "Only for Warrior.");
+			}
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
+			{
+				wsprintf(G_cTxt, "Only for Magician.");
+			}
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+			{
+				wsprintf(G_cTxt, "Only for Archer.");
+			}
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
 		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
 		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
 			iEntry++;
@@ -33953,10 +34021,10 @@ void CGame::UpdateScreen_OnGame()
 		PutString(msX + 5, msY - 10, G_cTxt, RGB(255, 255, 255), FALSE, 1);*/
 
 		if (iLenSize <= 15)
-			iLenSize = iLenSize * 7.0;
+			iLenSize = iLenSize * 7.0f;
 		else if (iLenSize <= 28)
-			iLenSize = iLenSize * 5.5;
-		else iLenSize = iLenSize * 6.2;
+			iLenSize = iLenSize * 5.5f;
+		else iLenSize = iLenSize * 6.2f;
 
 		if (iEntry > 1) {	
 			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
@@ -34022,6 +34090,30 @@ void CGame::UpdateScreen_OnGame()
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}
+
+		// Centuu - Class
+		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
+		{
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
+			{
+				wsprintf(G_cTxt, "Only for Warrior");
+			}
+			else if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
+			{
+				wsprintf(G_cTxt, "Only for Magician");
+			}
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+			{
+				wsprintf(G_cTxt, "Only for Archer");
+			}
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == m_iClass)
+			{
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(0, 255, 0), FALSE, 1);
+			}
+			else PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(255, 0, 0), FALSE, 1);
+			iLoc += 15;
+		}
+
 		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
 		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);

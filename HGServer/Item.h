@@ -78,6 +78,7 @@ public:
 
 	short m_sNewEffect1, m_sNewEffect2, m_sNewEffect3, m_sNewEffect4;
 
+	int m_iClass;
 };
 
 /*

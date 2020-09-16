@@ -1066,7 +1066,7 @@ void CGame::ClientMotionHandler(int iClientH, char * pData)
 			else {
 				wsprintf(G_cTxt, "(!) Cast Delay Hack: (%s) Player: (%s) - player casting too fast.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 				PutHackLogFileList(G_cTxt);
-				DeleteClient(iClientH, TRUE, TRUE);
+				//DeleteClient(iClientH, TRUE, TRUE);
 			}
 			/********END*********/
 		}
@@ -1796,7 +1796,11 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 	*bp = m_bFuryHour;
 	cp++;
 
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 128);
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iClass;
+	cp += 4;
+
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 132);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -1944,6 +1948,10 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 		wp = (WORD*)cp;
 		*wp = m_pClientList[iClientH]->m_pItemList[i]->m_wMaxLifeSpan;
 		cp += 2;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iClass;
+		cp += 4;
 	}
 	iTotalItemB = 0;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++)
@@ -2056,6 +2064,10 @@ void CGame::RequestInitDataHandler(int iClientH, char * pData, char cKey, BOOL b
 		wp = (WORD*)cp;
 		*wp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_wMaxLifeSpan;
 		cp += 2;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iClass;
+		cp += 4;
 	}
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
@@ -6881,7 +6893,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	strcat(pData, cTxt);
 	strcat(pData, "\n");
 
-	// Centuu : 1 War | 2 Mage | 3 Archer | 4 GM
+	// Centuu : 1 War | 2 Mage | 3 Archer 
 	wsprintf(cTxt, "character-class = %d", m_pClientList[iClientH]->m_iClass);
 	strcat(pData, cTxt);
 	strcat(pData, "\n");
@@ -29640,20 +29652,21 @@ void CGame::CityTeleport()
 	}
 }
 
+// Centuu - new classes
 void CGame::SetClass(int iClientH)
 {
 	if (m_pClientList[iClientH] == NULL) return;
 
 	if (m_pClientList[iClientH]->m_iStr == 14) 
 	{
-		m_pClientList[iClientH]->m_iClass = 1;
+		m_pClientList[iClientH]->m_iClass = 1; // War
 	}
 	else if (m_pClientList[iClientH]->m_iMag == 14)
 	{
-		m_pClientList[iClientH]->m_iClass = 2;
+		m_pClientList[iClientH]->m_iClass = 2; // Mage
 	}
 	else if (m_pClientList[iClientH]->m_iCharisma == 14)
 	{
-		m_pClientList[iClientH]->m_iClass = 3;
+		m_pClientList[iClientH]->m_iClass = 3; // Archer
 	}
 }

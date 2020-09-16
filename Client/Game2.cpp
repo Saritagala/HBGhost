@@ -16727,7 +16727,7 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	char * cp;
 	short * sp;
 	DWORD * dwp;
-	int i, j;
+	int i, j, *ip, iClass;
 
 	DWORD dwCount, dwAttribute;
 	char  cName[21], cItemType, cEquipPos;
@@ -16841,6 +16841,11 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	wMaxLifeSpan = *wp;
 	cp += 2;
 
+	// Centuu - class
+	ip = (int*)cp;
+	iClass = *ip;
+	cp += 4;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -16921,6 +16926,8 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 			m_pItemList[i]->m_sItemEffectType = sItemEffectType;
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
+			m_pItemList[i]->m_iClass = iClass; // Centuu - class
+
 			_bCheckBuildItemStatus();
 
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -16938,7 +16945,7 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	short * sp;
 	DWORD * dwp;
 	WORD  * wp;
-	int i, j;
+	int i, j, *ip, iClass;
 
 	DWORD dwCount, wCost;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
@@ -17048,6 +17055,11 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	wp = (WORD*)cp;
 	wMaxLifeSpan = *wp;
 	cp += 2;
+	
+	// Centuu - class
+	ip = (int*)cp;
+	iClass = *ip;
+	cp += 4;
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
@@ -17116,6 +17128,8 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 
 			m_pItemList[i]->m_sItemEffectType = sItemEffectType;
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
+
+			m_pItemList[i]->m_iClass = iClass;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -17193,6 +17207,7 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	//Magn0S::
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
 	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
+	int* ip, iClass;
 
 	//cp = (pData + DEF_INDEX2_MSGTYPE + 2);
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -17307,6 +17322,10 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	wMaxLifeSpan = *wp;
 	cp += 2;
 
+	ip = (int*)cp;
+	iClass = *ip;
+	cp += 4;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17345,6 +17364,7 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 
 		m_pBankList[cIndex]->m_sItemEffectType = sItemEffectType;
 		m_pBankList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
+		m_pBankList[cIndex]->m_iClass = iClass;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -20016,7 +20036,7 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 void CGame::InitItemList(char * pData)
 {
 	char    cTotalItems;
-	int     i, iAngelValue;
+	int     i, iAngelValue, *ip;
 	short * sp;
 	DWORD * dwp;
 	WORD  * wp;
@@ -20143,6 +20163,10 @@ void CGame::InitItemList(char * pData)
 		wp = (WORD*)cp;
 		m_pItemList[i]->m_wMaxLifeSpan = *wp;
 		cp += 2;
+
+		ip = (int*)cp;
+		m_pItemList[i]->m_iClass = *ip;
+		cp += 4;
 
 		m_cItemOrder[i] = i;
 		// Snoopy: Add Angelic Stats
@@ -20282,6 +20306,10 @@ void CGame::InitItemList(char * pData)
 		wp = (WORD*)cp;
 		m_pBankList[i]->m_wMaxLifeSpan = *wp;
 		cp += 2;
+
+		ip = (int*)cp;
+		m_pBankList[i]->m_iClass = *ip;
+		cp += 4;
 
 	}
 

@@ -17,6 +17,8 @@ CItem::CItem()
 	m_sItemSpecEffectValue1 = 0;
 	m_sItemSpecEffectValue2 = 0;
 	m_sItemSpecEffectValue3 = 0;
+
+	m_iClass = 0;
 }
 
 CItem::~CItem()

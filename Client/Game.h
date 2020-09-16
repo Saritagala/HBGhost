@@ -153,6 +153,8 @@ class CGame
 {
 public:
 
+	int m_iClass = 0;
+
 	BOOL bOnlyGuild, bOnlyAll;
 
 	int m_iAdminUserLevel = 0;

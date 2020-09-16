@@ -387,15 +387,15 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	if ((dX < 0) || (dX >= m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeX) ||
 		(dY < 0) || (dY >= m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY)) return;
 
-	if (((dwTime - m_pClientList[iClientH]->m_dwRecentAttackTime) < 800) && (bItemEffect == 0)) { // 1000 -> 800
+	if (((dwTime - m_pClientList[iClientH]->m_dwRecentAttackTime) < 1000) && (bItemEffect == 0)) {
 		wsprintf(G_cTxt, "(!) 3.51 Detection: (%s) Player: (%s) - Magic casting speed is too fast! Hack?", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		DeleteClient(iClientH, TRUE, TRUE);
+		//DeleteClient(iClientH, TRUE, TRUE);
 		return;
 	}
 	m_pClientList[iClientH]->m_dwRecentAttackTime = dwTime;
 	m_pClientList[iClientH]->m_dwLastActionTime = dwTime;//m_pClientList[iClientH]->m_dwAFKCheckTime = dwTime;
-	//m_pClientList[iClientH]->m_bMagicConfirm = TRUE; //centu
+	m_pClientList[iClientH]->m_bMagicConfirm = TRUE; 
 	if (m_pClientList[iClientH]->m_cMapIndex < 0) return;
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex] == NULL) return;
 

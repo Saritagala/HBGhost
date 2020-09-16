@@ -71,6 +71,8 @@ CItem::CItem()
 	m_sNewEffect3 = 0;
 	m_sNewEffect4 = 0;
 
+	m_iClass = 0;
+
 	bEkSale = false;
 	bContrbSale = false;
 	bCoinSale = false;
@@ -1859,7 +1861,7 @@ void CGame::ConfirmExchangeItem(int iClientH)
 
 	//Magn0S:: Cancelado ações de char bloqueado.
 	if (m_pClientList[iClientH]->m_iPenaltyBlockYear != 0) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Blocked characters can't Exchange itens.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Blocked characters can't Exchange items.");
 		return;
 	}
 
@@ -4394,7 +4396,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 
 BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 {
-	int i, iRet;
+	int i, iRet, *ip;
 	DWORD* dwp;
 	WORD* wp;
 	char* cp;
@@ -4535,7 +4537,11 @@ BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			*wp = pItem->m_wMaxLifeSpan;
 			cp += 2;
 
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 24);
+			ip = (int*)cp;
+			*ip = pItem->m_iClass;
+			cp += 4;
+
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 28);
 			switch (iRet) {
 			case DEF_XSOCKEVENT_QUENEFULL:
 			case DEF_XSOCKEVENT_SOCKETERROR:
@@ -4550,7 +4556,7 @@ BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 }
 BOOL CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 {
-	int i, iRet;
+	int i, iRet, *ip;
 	DWORD* dwp;
 	WORD* wp;
 	char* cp;
@@ -4685,7 +4691,11 @@ BOOL CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			*wp = pItem->m_wMaxLifeSpan;
 			cp += 2;
 
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 24);
+			ip = (int*)cp;
+			*ip = pItem->m_iClass;
+			cp += 4;
+
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 28);
 			switch (iRet) {
 			case DEF_XSOCKEVENT_QUENEFULL:
 			case DEF_XSOCKEVENT_SOCKETERROR:
@@ -6532,7 +6542,8 @@ BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					//cReadModeA = 0;
 					cReadModeB = 27;
 					break;
-					//Magn0S:: New variables for trades
+
+				//Magn0S:: New variables for trades
 				case 27:
 					// m_wContribPrice
 					if (_bGetIsStringIsNumber(token) == FALSE) {
@@ -6579,6 +6590,23 @@ BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					else m_pItemConfigList[iItemConfigListIndex]->bCoinSale = true;
 
 					m_pItemConfigList[iItemConfigListIndex]->m_wCoinPrice = abs(iTemp);
+					cReadModeB = 30;
+					break;
+
+				// Centuu - class
+				case 30:
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Class");
+						delete[] pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->m_iClass = 0;
+					else m_pItemConfigList[iItemConfigListIndex]->m_iClass = iTemp;
+					
 					cReadModeA = 0;
 					cReadModeB = 0;
 					break;
@@ -6674,6 +6702,8 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
 				pItem->m_sNewEffect2 = m_pItemConfigList[i]->m_sNewEffect2;
 				pItem->m_sNewEffect3 = m_pItemConfigList[i]->m_sNewEffect3;
 				pItem->m_sNewEffect4 = m_pItemConfigList[i]->m_sNewEffect4;
+
+				pItem->m_iClass = m_pItemConfigList[i]->m_iClass;
 				return TRUE;
 			}
 		}
@@ -6735,6 +6765,8 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, int iItemID)
 				pItem->m_sNewEffect2 = m_pItemConfigList[i]->m_sNewEffect2;
 				pItem->m_sNewEffect3 = m_pItemConfigList[i]->m_sNewEffect3;
 				pItem->m_sNewEffect4 = m_pItemConfigList[i]->m_sNewEffect4;
+
+				pItem->m_iClass = m_pItemConfigList[i]->m_iClass;
 				return TRUE;
 			}
 		}
@@ -6758,7 +6790,7 @@ BOOL CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 	DWORD* dwp;
 	WORD* wp;
 	short* sp;
-	int iRet, iEraseReq;
+	int iRet, iEraseReq, *ip;
 
 
 	ZeroMemory(cData, sizeof(cData));
@@ -6873,12 +6905,16 @@ BOOL CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
+		ip = (int*)cp;
+		*ip = pItem->m_iClass;
+		cp += 4;
+
 		if (iEraseReq == 1) {
 			delete pItem;
 			pItem = NULL;
 		}
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 77); //Original = 53
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 81); //Original = 53
 
 		return TRUE;
 	}
@@ -6910,7 +6946,7 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 	DWORD* dwp;
 	WORD* wp;
 	short* sp;
-	int     iRet;
+	int     iRet, *ip;
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -7023,7 +7059,11 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 77); // 53
+		ip = (int*)cp;
+		*ip = pItem->m_iClass;
+		cp += 4;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 81); // 53
 		break;
 
 	case DEF_NOTIFY_ITEMPURCHASED:
@@ -7125,7 +7165,11 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 74); // 48
+		ip = (int*)cp;
+		*ip = pItem->m_iClass;
+		cp += 4;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 78); // 48
 		break;
 
 	case DEF_NOTIFY_CANNOTCARRYMOREITEM:
@@ -7449,13 +7493,23 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_wCurLifeSpan <= 0) return FALSE;
 
 	if ((m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapEquip == false) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Equip Itens is not allowed in this Map.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Equip Items is not allowed in this Map.");
 		return FALSE;
 	}
 
 	if (((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000001) == NULL) &&
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sLevelLimit > m_pClientList[iClientH]->m_iLevel)) return FALSE;
 
+	// Centuu - class
+	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iClass != 0)
+	{
+		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iClass != m_pClientList[iClientH]->m_iClass)
+		{
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+			ReleaseItemHandler(iClientH, sItemIndex, TRUE);
+			return FALSE;
+		}
+	}
 
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cGenderLimit != 0) {
 		switch (m_pClientList[iClientH]->m_sType) {
@@ -9505,6 +9559,8 @@ BOOL CGame::bCopyItemContents(CItem* pCopy, CItem* pOriginal)
 	pCopy->m_sNewEffect2 = pOriginal->m_sNewEffect2;
 	pCopy->m_sNewEffect3 = pOriginal->m_sNewEffect3;
 	pCopy->m_sNewEffect4 = pOriginal->m_sNewEffect4;
+
+	pCopy->m_iClass = pOriginal->m_iClass;
 
 	return TRUE;
 }
