@@ -7501,13 +7501,17 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sLevelLimit > m_pClientList[iClientH]->m_iLevel)) return FALSE;
 
 	// Centuu - class
-	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iClass != 0)
+	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iClass > 0)
 	{
 		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iClass != m_pClientList[iClientH]->m_iClass)
 		{
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
 			ReleaseItemHandler(iClientH, sItemIndex, TRUE);
 			return FALSE;
+		}
+		else
+		{
+			// Centuu - Bonus for classes
 		}
 	}
 
@@ -7593,13 +7597,9 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 	}
 
 	if (cEquipPos == DEF_EQUIPPOS_TWOHAND) {
-		// Stormbringer
-		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845) {
-			if ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) < 65) {
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, NULL, NULL);
-				ReleaseItemHandler(iClientH, sItemIndex, TRUE);
-				return FALSE;
-			}
+		// StunSB / StormBringer
+		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 1037 || m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845) {
+			m_pClientList[iClientH]->m_iHitRatio += 10;
 		}
 		// Centuu : Fixed las armas Blood by KaoZureS
 		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 490) { // Sword

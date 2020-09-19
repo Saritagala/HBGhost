@@ -484,12 +484,12 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 		}
 	}
 
-	switch (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cWhetherStatus) {
+	/*switch (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cWhetherStatus) {
 	case 0: break;
 	case 1: iResult = iResult - (iResult / 24); break;
 	case 2:	iResult = iResult - (iResult / 12); break;
 	case 3: iResult = iResult - (iResult / 5);  break;
-	}
+	}*/
 
 	if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == 10) {
 		dV1 = (double)iResult;
@@ -503,11 +503,11 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	iWhetherBonus = iGetWhetherMagicBonusEffect(sType, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cWhetherStatus);
 
 	iManaCost = m_pMagicConfigList[sType]->m_sValue1;
-	/*if ((m_pClientList[iClientH]->m_bIsSafeAttackMode == TRUE) &&
+	if ((m_pClientList[iClientH]->m_bIsSafeAttackMode == TRUE) &&
 		(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsFightZone == FALSE)) {
 		//SNOOPY: Spell in safe mode only cost 10% more	
 		iManaCost += (iManaCost / 10);
-	}*/
+	}
 
 	if (m_pClientList[iClientH]->m_iManaSaveRatio > 0) {
 		dV1 = (double)m_pClientList[iClientH]->m_iManaSaveRatio;
@@ -4187,7 +4187,7 @@ BOOL CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char 
 	if (cProtect == 5) return TRUE;
 	if ((iHitRatio < 1000) && (cProtect == 2)) return TRUE;
 	if (iTargetMagicResistRatio < 1) iTargetMagicResistRatio = 1;
-	/*if ((cAttackerDir != 0) && (m_pClientList[sTargetH] != NULL) && (m_pClientList[sTargetH]->m_cHeroArmourBonus == 2)) {
+	/*if (m_pClientList[sTargetH]->m_cHeroArmourBonus == 2) { // Centuu - crash point
 		iHitRatio += 50;
 	}*/
 

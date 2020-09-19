@@ -87,9 +87,8 @@ void CGame::PoisonEffect(int iClientH, int iV1)
 	if (iPrevHP != m_pClientList[iClientH]->m_iHP)
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HP, NULL, NULL, NULL, NULL);
 
-
 	// µ¶¼º ÀúÇ× È®·ü·Î Áßµ¶ÀÌ Ç®¸± ¼ö ÀÖ´Ù.
-	iProb = m_pClientList[iClientH]->m_cSkillMastery[23] - 10 + m_pClientList[iClientH]->m_iAddPR;
+	iProb = m_pClientList[iClientH]->m_cSkillMastery[23] + m_pClientList[iClientH]->m_iAddPR;
 	if (iProb <= 10) iProb = 10;
 	if (iDice(1, 100) <= iProb) {
 		m_pClientList[iClientH]->m_bIsPoisoned = FALSE;
@@ -115,8 +114,8 @@ BOOL CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 		break;
 	}
 
-	iResult = iDice(1, 100);
-	if (iResult >= iResist) // µ¶¼º ÀúÇ× ½ÇÆÐ. Áßµ¶µÈ´Ù.
+	iResult = iDice(1, 1000);
+	if (iResult > iResist) // µ¶¼º ÀúÇ× ½ÇÆÐ. Áßµ¶µÈ´Ù.
 		return FALSE;
 
 	// µ¶¼º ÀúÇ× ¼º°ø. ÇÃ·¹ÀÌ¾î¶ó¸é ½ºÅ³À» ¿Ã¸°´Ù. 

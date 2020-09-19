@@ -418,7 +418,6 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	WORD   wTemp;
 	short sMagicLevel = 0;
 
-	// »ç¿ëÀÚ°¡ ¾ÆÀÌÅÛ Á¦ÀÛÀ» ½ÅÃ»Çß´Ù.
 	if (m_pClientList[iClientH] == NULL) return;
 	m_pClientList[iClientH]->m_iSkillMsgRecvCount++;
 
@@ -441,16 +440,16 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	cElementItemID[5] = *cp;
 	cp++;
 
-	// ¾ÕºÎºÐÀÇ ºó°ø°£À» ¾ø¾Ø´Ù.
 	bFlag = TRUE;
 	while (bFlag == TRUE) {
 		bFlag = FALSE;
-		for (i = 0; i <= 4; i++)
+		for (i = 0; i <= 4; i++) {
 			if ((cElementItemID[i] == -1) && (cElementItemID[i + 1] != -1)) {
 				cElementItemID[i] = cElementItemID[i + 1];
 				cElementItemID[i + 1] = -1;
 				bFlag = TRUE;
 			}
+		}
 	}
 
 	for (i = 0; i < 6; i++) bItemFlag[i] = FALSE;
@@ -459,35 +458,27 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	iResult = iDice(1, 100);
 
 	if (iResult > iPlayerSkillLevel) {
-		// ½ÇÆÐ´Ù.
-		// ¾ÆÀÌÅÛ Á¦ÀÛ¿¡ ½ÇÆÐÇÏ¿´´Ù.
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_BUILDITEMFAIL, NULL, NULL, NULL, NULL);
 		return;
 	}
 
-	// °¢°¢ÀÇ ¾ÆÀÌÅÛÀÌ ´Ù Á¸ÀçÇÏ´ÂÁö °Ë»ç.
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 6; i++) {
 		if (cElementItemID[i] != -1) {
-			// Àß¸øµÈ Item ID°ªÀÌ´Ù. ¹«½Ã
 			if ((cElementItemID[i] < 0) || (cElementItemID[i] > DEF_MAXITEMS)) return;
 			if (m_pClientList[iClientH]->m_pItemList[cElementItemID[i]] == NULL) return;
 		}
-
-	// ÇØ´ç ÀÌ¸§À» °¡Áø ¾ÆÀÌÅÛÀ» ºôµå ¾ÆÀÌÅÛ ¸®½ºÆ®¿¡¼* Ã£´Â´Ù.
-	for (i = 0; i < DEF_MAXBUILDITEMS; i++)
+	}
+	for (i = 0; i < DEF_MAXBUILDITEMS; i++) {
 		if (m_pBuildItemList[i] != NULL) {
 			if (memcmp(m_pBuildItemList[i]->m_cName, cName, 20) == 0) {
-				// ¾ÆÀÌÅÛÀ» Ã£¾Ò´Ù. Á¦ÀÛ Á¶°Ç°ú ¾ÆÀÌÅÛÀÌ ÀÏÄ¡ÇÏ´ÂÁö °Ë»ç.
-
-				// ½ºÅ³ÀÌ ³·¾Æ¼* Á¦ÀÛ ºÒ°¡´É. ¿ø·¡ Å¬¶óÀÌ¾ðÆ®¿¡¼* °É·¯ Áø´Ù.
 				if (m_pBuildItemList[i]->m_iSkillLimit > m_pClientList[iClientH]->m_cSkillMastery[13]) return;
 
-				for (x = 0; x < DEF_MAXITEMS; x++)
+				for (x = 0; x < DEF_MAXITEMS; x++) {
 					if (m_pClientList[iClientH]->m_pItemList[x] != NULL)
 						iItemCount[x] = m_pClientList[iClientH]->m_pItemList[x]->m_dwCount;
 					else iItemCount[x] = 0;
+				}
 
-				// ÇØ´ç ºôµå ¾ÆÀÌÅÛÀÇ Àç·á°¡ ÃæºÐÇÑÁö¸¦ °Ë»çÇÑ´Ù. ´õºÒ¾î ºôµå ¾ÆÀÌÅÛÀÇ °¡ÁßÄ¡ °ªµµ °è»ê.
 				iMatch = 0;
 				iTotalValue = 0;
 
@@ -496,16 +487,14 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						iMatch++;
 					}
 					else {
-						for (z = 0; z < 6; z++)
+						for (z = 0; z < 6; z++) {
 							if ((cElementItemID[z] != -1) && (bItemFlag[z] == FALSE)) {
 
 								if ((m_pClientList[iClientH]->m_pItemList[cElementItemID[z]]->m_sIDnum == m_pBuildItemList[i]->m_iMaterialItemID[x]) &&
 									(m_pClientList[iClientH]->m_pItemList[cElementItemID[z]]->m_dwCount >= m_pBuildItemList[i]->m_iMaterialItemCount[x]) &&
 									(iItemCount[cElementItemID[z]] > 0)) {
-									// Àç·áÁß ÇÏ³ª¸¦ Ã£¾Ò´Ù.
 									iTemp = m_pClientList[iClientH]->m_pItemList[cElementItemID[z]]->m_sItemSpecEffectValue2;
 									if (iTemp > m_pClientList[iClientH]->m_cSkillMastery[13]) {
-										// Àç·áÀÇ ¼øµµ°¡ ³» ½ºÅ³ ¼öÁØÀ» »óÈ¸ÇÑ´Ù¸é ¼øµµ¸¦ ³·Ãá´Ù.
 										iTemp = iTemp - (iTemp - m_pClientList[iClientH]->m_cSkillMastery[13]) / 2;
 									}
 
@@ -514,48 +503,40 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 									iMatch++;
 									bItemFlag[z] = TRUE;
 
-									goto BIH_LOOPBREAK;
+									break;
 								}
 							}
-					BIH_LOOPBREAK:;
+						}
 					}
 				}
 
-				// ¿©±â¼* iMatch°¡ 6ÀÌ¸é ¾ÆÀÌÅÛ Á¦ÀÛ Á¶°ÇÀÌ ¸¸Á·µÈ °ÍÀÌ´Ù.
 				if (iMatch != 6) {
-					// Àç·á ºÎÁ·. ¾ÆÀÌÅÛ Á¦ÀÛ ºÒ°¡
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_BUILDITEMFAIL, NULL, NULL, NULL, NULL);
 					return;
 				}
 
-				// ¼øµµ °è»ê
 				dV2 = (double)m_pBuildItemList[i]->m_iMaxValue;
 				if (iTotalValue <= 0)
 					dV3 = 1.0f;
 				else dV3 = (double)iTotalValue;
 				dV1 = (double)(dV3 / dV2) * 100.0f;
 
-				// ¹éºÐ·ü·Î ¹Ù²ï °ª.
 				iTotalValue = (int)dV1;
 
-				// ¾ÆÀÌÅÛ »ý¼º
 				pItem = new class CItem;
 				if (_bInitItemAttr(pItem, m_pBuildItemList[i]->m_cName) == FALSE) {
 					delete pItem;
 					return;
 				}
 
-				// ¾ÆÀÌÅÛÀÌ Custom-MadeÀÓÀ» ³ªÅ¸³»´Â ÇÃ·¡±×¸¦ ÀÔ·Â
 				dwTemp = pItem->m_dwAttribute;
 				dwTemp = dwTemp & 0xFFFFFFFE;
 				dwTemp = dwTemp | 0x00000001;
 				pItem->m_dwAttribute = dwTemp;
 
 				if (pItem->m_cItemType == DEF_ITEMTYPE_MATERIAL) {
-					// ¸¸µé¾îÁø ¾ÆÀÌÅÛÀÌ ¹«±â Á¦ÀÛ Àç·á(À×°÷)ÀÌ¶ó¸é ±â¼ú ¼öÁØ¿¡ µû¸¥ ¼øµµ¸¦ ÀÔ·ÂÇÑ´Ù.
 					iTemp = iDice(1, (iPlayerSkillLevel / 2) + 1) - 1;
 					pItem->m_sItemSpecEffectValue2 = (iPlayerSkillLevel / 2) + iTemp;
-					// v2.15 Á¦ÀÛ ¾ÆÀÌÅÛ¿¡ ¾ÆÀÌÅÛ °íÀ¯¹øÈ£ Ãß°¡
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
@@ -563,8 +544,6 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 
 				}
 				else {
-					// ¹«±â Á¦ÀÛ Àç·á°¡ ¾Æ´Ï°í ¹«±â³ª ¹æ¾î±¸·ù¶ó¸é
-					// ¾ÆÀÌÅÛ ¼Ó¼º°ª ÀÔ·Â
 					dwTemp = pItem->m_dwAttribute;
 					dwTemp = dwTemp & 0x0000FFFF;
 
@@ -575,9 +554,6 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					pItem->m_dwAttribute = dwTemp;
 
 					iResultValue = (iTotalValue - m_pBuildItemList[i]->m_iAverageValue);
-					//Àç·á ¼øµµ¿¡ µû¸¥ ¼º´É ÀÔ·Â: SpecEffectValue1Àº ¼ö¸í, SpecEffectValue2´Â ¼º´É °¡ÁßÄ¡
-
-					// 1. ¼º´É °¡ÁßÄ¡ °è»ê(¹éºÐÀ²)
 					if (iResultValue > 0) {
 						dV2 = (double)iResultValue;
 						dV3 = (double)(100 - m_pBuildItemList[i]->m_iAverageValue);
@@ -592,7 +568,6 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					}
 					else pItem->m_sItemSpecEffectValue2 = 0;
 
-					// 2. »õ·Î¿î ÃÖ´ë ¼ö¸í °è»ê
 					dV2 = (double)pItem->m_sItemSpecEffectValue2;
 					dV3 = (double)pItem->m_wMaxLifeSpan;
 					dV1 = (dV2 / 100.0f) * dV3;
@@ -600,29 +575,26 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					iTemp = (int)pItem->m_wMaxLifeSpan;
 					iTemp += (int)dV1;
 
-					// v2.15 Á¦ÀÛ ¾ÆÀÌÅÛ¿¡ ¾ÆÀÌÅÛ °íÀ¯¹øÈ£ Ãß°¡
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue3 = timeGetTime();
+
+					// Centuu - VER ENDURANCE
+					pItem->m_wCurLifeSpan = pItem->m_wMaxLifeSpan;
 
 					if (iTemp <= 0)
 						wTemp = 1;
 					else wTemp = (WORD)iTemp;
 
 					if (wTemp <= pItem->m_wMaxLifeSpan * 2) {
-						// ¿¡·¯·Î ÀÎÇØ ³Ê¹« ¸¹Àº ¼ö¸í°ªÀÌ ³ª¿ÈÀ» ¸·±âÀ§ÇÔ
-						pItem->m_wMaxLifeSpan = wTemp;
+						//pItem->m_wMaxLifeSpan = wTemp;
 						pItem->m_sItemSpecEffectValue1 = (short)wTemp;
-						pItem->m_wCurLifeSpan = pItem->m_wMaxLifeSpan;
+						//pItem->m_wCurLifeSpan = pItem->m_wMaxLifeSpan;
 					}
 					else pItem->m_sItemSpecEffectValue1 = (short)pItem->m_wMaxLifeSpan;
-
-					//Custom-ItemÀº »ö»óÀÌ 2¹ø OGEID.
-
-					if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK) {
-						// Â°Ã¸Â°Ã? Â¹Â«Â±Ã¢Â·Ã¹Â¿Â¡ ÂºÃ™Ã€Â» Â¼Ã¶ Ã€Ã–Â´Ã‚ Ã?Â¢ÂµÃŽÂ»Ã§Â¸Â¦ Â¼Â±Ã…Ãƒ
-						// Â°Â¡ÂºÂ*Â¿Ã®(3%) Â°Â*ÃˆÂ*ÂµÃˆ(7%) Ã‡ÃŠÂ»Ã¬Ã€Ã‡(15%) Â¹ÃŽÃƒÂ¸Ã€Ã‡(20%) Ã?Â¤Ã€Ã‡Ã€Ã‡(20%) Ã?ÃŸÂµÂ¶Ã€Ã‡(16%) Â¿Â¹Â¸Â®Ã‡Ã‘(16%) Â°Ã*Â´Ã«Â¹Â®Â¸Ã*Ã€Ã‡(3%)
+					
+					if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK || pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_ARROW) {
 						iResult = iDice(1, 11500);
 						if ((iResult >= 1) && (iResult <= 299)) {
 							dwType = 10;
@@ -661,13 +633,8 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 							cColor = 10; // Black Color
 						}
 
-						// Â¾Ã†Ã€ÃŒÃ…Ã› Â»Ã¶Â»Ã³ Ã€Ã”Â·Ã‚
 						pItem->m_cItemColor = cColor;
 
-						// Â°Â¡ÂºÂ*Â¿Ã®, Â°Â*ÃˆÂ*ÂµÃˆ, Ã‡ÃŠÂ»Ã¬Ã€Ã‡, Â¹ÃŽÃƒÂ¸Ã€Ã‡, Ã?Â¤Ã€Ã‡Ã€Ã‡, Ã?ÃŸÂµÂ¶Ã€Ã‡, Â¿Â¹Â¸Â®Ã‡Ã‘, Â°Ã*Â´Ã«Â¹Â®Â¸Ã*Ã€Ã‡
-						// Â¾Ã†Ã€ÃŒÃ…Ã› Main Ã†Â¯Â¼ÂºÃ„Â¡ Ã?Â¤ÂµÂµÂ°Âª Ã€Ã”Â·Ã‚
-
-						// Â¾Ã†Ã€ÃŒÃ…Ã› Sub Ã†Â¯Â¼ÂºÃ„Â¡ Ã?Â¤ÂµÂµÂ°Âª Ã€Ã”Â·Ã‚
 						if (dwType == 15) {
 							iResult = iDice(1, 30060);
 							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
@@ -703,30 +670,25 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
 							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
 							else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-							else dwValue = 1; // v2.03 906
+							else dwValue = 1; 
 							sMagicLevel = 0;
 						}
 
-						// Â¹Â«Â±Ã¢Ã€Ã‡ Main Ã†Â¯Â¼ÂºÃ„Â¡Â¿Â¡ ÂµÃ»Â¶Ã³ Â¼Ã¶Ã„Â¡ ÂºÂ¸Ã?Â¤
 						switch (dwType) {
-						case 1: // Ã‡ÃŠÂ»Ã¬ Ã…Â¸Â°Ã? ÃƒÃ–Ã€Ãº +5
+						case 1: 
 							if (dwValue <= 5) dwValue = 5;
 							break;
-						case 2: // Ã?ÃŸÂµÂ¶ Ã…Â¸Â°Ã? ÃƒÃ–Ã€Ãº +20
+						case 2: 
+						case 6: 
 							if (dwValue <= 4) dwValue = 4;
 							break;
-						case 6: // Â°Ã¦Â·Â®ÃˆÂ* ÃƒÃ–Ã€Ãº  +16%
-							if (dwValue <= 4) dwValue = 4;
-							break;
-						case 8: // Â¼Ã¶Â¸Ã* ÃƒÃ–Ã€Ãº +14%               
+						case 8:                
 							if (dwValue <= 2) dwValue = 2;
 							break;
 
 						}
-						// v2.03 912 Â¾Ã†Ã€ÃŒÃ…Ã› Â¼Ã¶Ã?Ã˜Ã€ÃŒ 2Ã€ÃŒÃ‡Ã?Ã€Ã?Â¶Â§ Ã†Â¯Â¼ÂºÃ„Â¡ ÃƒÃ–Â´Ã«Â°ÂªÃ€Âº 7
 						if (dwValue > 7) dwValue = 7;
 
-						// Â¾Ã†Ã€ÃŒÃ…Ã› Main Ã†Â¯Â¼ÂºÃ„Â¡, Â°Âª Ã€Ã”Â·Ã‚
 						pItem->m_dwAttribute = NULL;
 						dwType = dwType << 20;
 						dwValue = dwValue << 16;
@@ -734,16 +696,12 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					}
 
 					if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_DEFENSE) {
-						// Â¹Ã¦Â¾Ã®Â±Â¸Â¿Â¡ Â¸Ã‚Â´Ã‚ Ã?Â¢ÂµÃŽÂ»Ã§Â¿Ã? Ã†Â¯Â¼ÂºÃ„Â¡Â¸Â¦ Â¼Â±Ã…Ãƒ, Ã‡Ã’Â´Ã§Ã‡Ã‘Â´Ã™.
-
-						// Â°Â*ÃˆÂ*ÂµÃˆ(60%) Â°Â¡ÂºÂ*Â¿Ã® (30%) Â¸Â¶Â³Âª ÂºÂ¯ÃˆÂ¯Ã€Ã‡(5%) Ã‡ÃŠÂ»Ã¬ ÃƒÃ¦Ã€Ã¼Ã€Ã‡(5%)
-						iResult = iDice(1, 10000);//AQUI OGEID
+						iResult = iDice(1, 10000);
 						if ((iResult >= 1) && (iResult <= 5999))          dwType = 8;
 						else if ((iResult >= 6000) && (iResult <= 8999))  dwType = 6;
-						else if ((iResult >= 9000) && (iResult <= 9554))  dwType = 11; //dwType = 11;
-						else if ((iResult >= 9555) && (iResult <= 10000)) dwType = 12; //dwType = 12;
+						else if ((iResult >= 9000) && (iResult <= 9554))  dwType = 11; 
+						else if ((iResult >= 9555) && (iResult <= 10000)) dwType = 12; 
 
-						// Â¾Ã†Ã€ÃŒÃ…Ã› Sub Ã†Â¯Â¼ÂºÃ„Â¡ Ã?Â¤ÂµÂµÂ°Âª Ã€Ã”Â·Ã‚
 						iResult = iDice(1, 30000);
 						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
 						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 1;  // 6600/29348 = 22.4%
@@ -758,45 +716,32 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 6; // 156/29348 = 0.5%
 						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 10; // 103/29348 = 0.3%
 						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 10; // 68/29348 = 0.1%
-						else dwValue = 1; // v2.03 906
+						else dwValue = 1; 
 
-						// Â¹Ã¦Â¾Ã®Â±Â¸Ã€Ã‡ Main Ã†Â¯Â¼ÂºÃ„Â¡Â¿Â¡ ÂµÃ»Â¶Ã³ Â¼Ã¶Ã„Â¡ ÂºÂ¸Ã?Â¤
 						switch (dwType) {
-						case 6: // Â°Ã¦Â·Â®ÃˆÂ* ÃƒÃ–Ã€Ãº +16%
+						case 6: 
 							if (dwValue <= 4) dwValue = 4;
 							break;
-						case 8: // Â¼Ã¶Â¸Ã* ÃƒÃ–Ã€Ãº +14%
+						case 8: 
 							if (dwValue <= 2) dwValue = 2;
 							break;
 
 						case 11:
 						case 12:
-							// v2.04
 							dwValue = (dwValue + 1) / 2;
 							if (dwValue < 1) dwValue = 1;
 							if (dwValue > 2) dwValue = 2;
 							break;
 						}
-						// v2.03 912 Â¾Ã†Ã€ÃŒÃ…Ã› Â¼Ã¶Ã?Ã˜Ã€ÃŒ 2Ã€ÃŒÃ‡Ã?Ã€Ã?Â¶Â§ Ã†Â¯Â¼ÂºÃ„Â¡ ÃƒÃ–Â´Ã«Â°ÂªÃ€Âº 7
 						if (dwValue > 7) dwValue = 7;
 
-						// Â¹Ã¦Â¾Ã®Â±Â¸ Main Ã†Â¯Â¼ÂºÃ„Â¡, Â°Âª Ã€Ã”Â·Ã‚
 						pItem->m_dwAttribute = NULL;
 						dwType = dwType << 20;
 						dwValue = dwValue << 16;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-						// Â¹Ã¦Â¾Ã®Â±Â¸ Sub Ã†Â¯Â¼ÂºÃ„Â¡Â°Â¡ Ã€Ã”Â·Ã‚ÂµÃ‰ ÃˆÂ®Â·Ã¼Ã€Âº 40%
 						if (iDice(1, 10000) >= m_iRareDropRate) {
 
-							// ÃˆÃ±Â±Ã? Â¾Ã†Ã€ÃŒÃ…Ã› Sub Ã†Â¯Â¼ÂºÃ„Â¡ ÃˆÂ¿Â°Ãº Ã?Â¾Â·Ã¹:
-							//ÃƒÃŸÂ°Â¡ ÂµÂ¶Â¼ÂºÃ€ÃºÃ‡Ã—(1), ÃƒÃŸÂ°Â¡ Â¸Ã*Ã?ÃŸÂ°Âª(2), ÃƒÃŸÂ°Â¡ Â¹Ã¦Â¾Ã®Â°Âª(3), HP ÃˆÂ¸ÂºÂ¹Â·Â® ÃƒÃŸÂ°Â¡(4), SP ÃˆÂ¸ÂºÂ¹Â·Â® ÃƒÃŸÂ°Â¡(5)
-							//MP ÃˆÂ¸ÂºÂ¹Â·Â® ÃƒÃŸÂ°Â¡(6), ÃƒÃŸÂ°Â¡ Â¸Â¶Â¹Ã½Ã€ÃºÃ‡Ã—(7), Â¹Â°Â¸Â® Â´Ã«Â¹ÃŒÃ?Ã¶ ÃˆÃ*Â¼Ã¶(8), Â¸Â¶Â¹Ã½ Â´Ã«Â¹ÃŒÃ?Ã¶ ÃˆÃ*Â¼Ã¶(9)
-							//Â¿Â¬Ã…Â¸ Â´Ã«Â¹ÃŒÃ?Ã¶ ÃƒÃŸÂ°Â¡(10), Â´Ãµ Â¸Â¹Ã€Âº Â°Ã¦Ã‡Ã¨Ã„Â¡(11), Â´ÃµÂ¸Â¹Ã€Âº Gold(12)
-
-						   // Â¹Ã¦Â¾Ã®Â±Â¸ Ã€ÃŒÂ±Ã¢ Â¶Â§Â¹Â®Â¿Â¡
-							// ÃƒÃŸÂ°Â¡Â¹Ã¦Â¾Ã®Â°Âª(10%) ÃƒÃŸÂ°Â¡ÂµÂ¶Â¼ÂºÃ€ÃºÃ‡Ã—(30%)    SPÃˆÂ¸ÂºÂ¹ÃƒÃŸÂ°Â¡(15%)  HPÃˆÂ¸ÂºÂ¹ÃƒÃŸÂ°Â¡(10%)
-							// MPÃˆÂ¸ÂºÂ¹ ÃƒÃŸÂ°Â¡(10%) ÃƒÃŸÂ°Â¡Â¸Â¶Â¹Ã½Ã€ÃºÃ‡Ã—(15%) Â¹Â°Â¸Â®Â´Ã«Â¹ÃŒÃ?Ã¶ÃˆÃ*Â¼Ã¶(3%) Â¸Â¶Â¹Ã½Â´Ã«Â¹ÃŒÃ?Ã¶ÃˆÃ*Â¼Ã¶(3%)
 							iResult = iDice(1, 10000);
 							if ((iResult >= 1) && (iResult <= 999)) {
 								dwType = 8;
@@ -833,7 +778,6 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 
 							pItem->m_cItemColor = cColor;
 
-							// Â¾Ã†Ã€ÃŒÃ…Ã› Sub Ã†Â¯Â¼ÂºÃ„Â¡ Ã?Â¤ÂµÂµÂ°Âª Ã€Ã”Â·Ã‚
 							iResult = iDice(1, 30000);
 							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
 							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 1;  // 6600/29348 = 22.4%
@@ -848,47 +792,34 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 8; // 156/29348 = 0.5%
 							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 8; // 103/29348 = 0.3%
 							else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 8; // 68/29348 = 0.1%
-							else dwValue = 1; // v2.03 906
+							else dwValue = 1; 
 
-							// Â¹Ã¦Â¾Ã®Â±Â¸Ã€Ã‡ Sub Ã†Â¯Â¼ÂºÃ„Â¡Â¿Â¡ ÂµÃ»Â¶Ã³ Â¼Ã¶Ã„Â¡ ÂºÂ¸Ã?Â¤
 							switch (dwType) {
-							case 1: // ÂµÂ¶Â¼ÂºÃ€ÃºÃ‡Ã— ÃƒÃ–Ã€Ãº +21%
-							case 3: // Â¹Â°Â¸Â®Â¹Ã¦Â¾Ã® ÃƒÃ–Ã€Ãº +21%
-							case 7: // Â¸Â¶Â¹Ã½ Ã€ÃºÃ‡Ã— ÃƒÃ–Ã€Ãº +21%
-							case 8: // Â¹Â°Â¸Â®ÃˆÃ*Â¼Ã¶ ÃƒÃ–Ã€Ãº +9%
-							case 9: // Â¸Â¶Â¹Ã½ÃˆÃ*Â¼Ã¶ ÃƒÃ–Ã€Ãº +9%
+							case 1: 
+							case 3: 
+							case 7: 
+							case 8: 
+							case 9: 
 								if (dwValue <= 3) dwValue = 3;
 								break;
 							}
-							// v2.03 912 Â¾Ã†Ã€ÃŒÃ…Ã› Â¼Ã¶Ã?Ã˜Ã€ÃŒ 2Ã€ÃŒÃ‡Ã?Ã€Ã?Â¶Â§ Ã†Â¯Â¼ÂºÃ„Â¡ ÃƒÃ–Â´Ã«Â°ÂªÃ€Âº 7
 							if (dwValue > 7) dwValue = 7;
 
-							// Â¾Ã†Ã€ÃŒÃ…Ã› Sub Ã†Â¯Â¼ÂºÃ„Â¡ Ã€Ã”Â·Ã‚
 							dwType = dwType << 12;
 							dwValue = dwValue << 8;
 							pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 						}
 					}
 				}
-				//testcode
 				wsprintf(G_cTxt, "Custom-Item(%s) Value(%d) Life(%d/%d)", pItem->m_cName, pItem->m_sItemSpecEffectValue2, pItem->m_wCurLifeSpan, pItem->m_wMaxLifeSpan);
 				PutLogList(G_cTxt);
 
-				// ¾ÆÀÌÅÛ Àü´Þ
 				bAddItem(iClientH, pItem, NULL);
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_BUILDITEMSUCCESS, pItem->m_sItemSpecEffectValue2, pItem->m_cItemType, NULL, NULL); // Integer¸¦ Àü´ÞÇÏ±â À§ÇØ
 
-#ifdef DEF_TAIWANLOG
-		 // v1.41 Èñ±Í ¾ÆÀÌÅÛÀÌ¶ó¸é ·Î±×¸¦ ³²±ä´Ù.
-				_bItemLog(DEF_ITEMLOG_MAKE, iClientH, (int)-1, pItem);
-#endif   
-
-				// ¸¶Áö¸·À¸·Î Àç·á°¡ µÇ´Â ¾ÆÀÌÅÛÀ» ¾ø¾Ø´Ù.
-				for (x = 0; x < 6; x++)
+				for (x = 0; x < 6; x++) {
 					if (cElementItemID[x] != -1) {
 						if (m_pClientList[iClientH]->m_pItemList[cElementItemID[x]] == NULL) {
-							// ### BUG POINT!!!
-							// ¹ö±×ÀÇ ¿øÀÎÀ» ¹àÈù´Ù.
 							wsprintf(G_cTxt, "(?) Char(%s) ElementItemID(%d)", m_pClientList[iClientH]->m_cCharName, cElementItemID[x]);
 							PutLogFileList(G_cTxt);
 						}
@@ -898,17 +829,16 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 							SetItemCount(iClientH, cElementItemID[x], iCount);
 						}
 					}
-
-				// ÀÌÁ¦ ½ºÅ³À» Ä«¿îÆ® ÇÑ´Ù. ´Ü ¾ÆÀÌÅÛÀÇ ÃÖ´ë ¼ºÀå ½ºÅ³ ÇÑµµ ³»¿¡¼*¸¸ °¡´ÉÇÏ´Ù. 
-				if (m_pBuildItemList[i]->m_iMaxSkill > m_pClientList[iClientH]->m_cSkillMastery[13])
+				}
+				if (m_pBuildItemList[i]->m_iMaxSkill > m_pClientList[iClientH]->m_cSkillMastery[13]) {
 					CalculateSSN_SkillIndex(iClientH, 13, 1);
-
-				// v1.41 ¼Ò·®ÀÇ °æÇèÄ¡ Áõ°¡
+				}
 				GetExp(iClientH, iDice(1, (m_pBuildItemList[i]->m_iSkillLimit / 4)));
 
 				break;
 			}
 		}
+	}
 }
 
 void CGame::MineralGenerator()

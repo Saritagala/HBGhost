@@ -1007,14 +1007,17 @@ void CGame::DeleteNpc(int iNpcH)
 		ZeroMemory(cItemName, sizeof(cItemName));
 		switch (m_pNpcList[iNpcH]->m_sType) {
 
-		/*case 10: // Slime
-			if (iDice(1, 25) == 1) iItemID = 220; // SlimeJelly 
+		case 10: // Slime
+			switch (iDice(1, 2)) {
+			case 1: if (iDice(1, 25) == 1) iItemID = 220;  break;// SlimeJelly
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
+			}
 			break;
 
 		case 11: // Skeleton
 			switch (iDice(1, 2)) {
 			case 1:if (iDice(1, 20) == 1) iItemID = 219; break; // SkeletonBones
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1022,7 +1025,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 12: // Stone-Golem
 			switch (iDice(1, 2)) {
 			case 1:	if (iDice(1, 30) == 1) iItemID = 221; break; // StoneGolemPiece
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1034,7 +1037,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 3:	if (iDice(1, 30) == 1) iItemID = 196; break; // CyclopsHeart
 			case 4:	if (iDice(1, 22) == 1) iItemID = 197; break; // CyclopsMeat
 			case 5:	if (iDice(1, 40) == 1) iItemID = 198; break; // CyclopsLeather
-			case 6:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 6:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1044,7 +1047,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 1:	if (iDice(1, 11) == 1) iItemID = 206; break; // OrcMeat
 			case 2:	if (iDice(1, 20) == 1) iItemID = 207; break; // OrcLeather
 			case 3:	if (iDice(1, 21) == 1) iItemID = 208; break; // OrcTeeth
-			case 4: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 4: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1053,7 +1056,7 @@ void CGame::DeleteNpc(int iNpcH)
 			switch (iDice(1, 3)) {
 			case 1:	if (iDice(1, 9) == 1) iItemID = 192; break; // AntLeg
 			case 2:	if (iDice(1, 10) == 1) iItemID = 193; break; // AntFeeler
-			case 3:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 3:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1064,13 +1067,16 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 20) == 1) iItemID = 216; break; // ScorpionMeat
 			case 3: if (iDice(1, 50) == 1) iItemID = 217; break; // ScorpionSting
 			case 4: if (iDice(1, 40) == 1) iItemID = 218; break; // ScorpionSkin
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
 
 		case 18: //Zombie
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
+			switch (iDice(1, 2)) {
+			case 1: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			}
 			break;
 
 		case 22: //Amphis
@@ -1079,7 +1085,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 16) == 1) iItemID = 189; break; // SnakeSkin
 			case 3:	if (iDice(1, 16) == 1) iItemID = 190; break; // SnakeTeeth
 			case 4:	if (iDice(1, 17) == 1) iItemID = 191; break; // SnakeTongue
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1087,7 +1093,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 23: //Clay-Golem
 			switch (iDice(1, 2)) {
 			case 1: if (iDice(1, 30) == 1) iItemID = 205; break; // LumpofClay
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1101,7 +1107,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 4:	if (iDice(1, 36) == 1) iItemID = 202; break; // HelboundTeeth
 			case 5:	if (iDice(1, 36) == 1) iItemID = 203; break; // HelboundClaw
 			case 6:	if (iDice(1, 50) == 1) iItemID = 204; break; // HelboundTongue
-			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1112,7 +1118,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 23) == 1) iItemID = 223; break; // TrollMeat
 			case 3:	if (iDice(1, 25) == 1) iItemID = 224; break; // TrollLeather
 			case 4:	if (iDice(1, 27) == 1) iItemID = 225; break; // TrollClaw
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1125,13 +1131,13 @@ void CGame::DeleteNpc(int iNpcH)
 			case 4:	if (iDice(1, 25) == 1) iItemID = 212; break; // OgreLeather
 			case 5:	if (iDice(1, 28) == 1) iItemID = 213; break; // OgreTeeth
 			case 6:	if (iDice(1, 28) == 1) iItemID = 214; break; // OgreClaw
-			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
 
 		case 30: //Liche
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
+			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0);
 			break;
 
 		case 31: //Demon
@@ -1166,7 +1172,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 5:	if (iDice(1, 28) == 3) iItemID = 552; break; // WerewolfTeeth
 			case 6:	if (iDice(1, 28) == 3) iItemID = 554; break; // WerewolfClaw
 			case 7:	if (iDice(1, 38) == 3) iItemID = 549; break; // WerewolfNail
-			case 8: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 8: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
 
 			}
 			break;
@@ -1187,8 +1193,11 @@ void CGame::DeleteNpc(int iNpcH)
 		case 62: //DireBoar
 		case 63: //Frost
 		case 65: //Ice
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
-			break;*/
+			switch (iDice(1, 2)) {
+			case 1: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 0); break;
+			}
+			break;
 
 		// new 05/10/2004
 		case 66: // Wyvern
@@ -1227,9 +1236,6 @@ void CGame::DeleteNpc(int iNpcH)
 				&iNumItem);
 			break;
 
-		default: // Centu - Read from NpcItem.cfg
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType, 1);
-			break;
 		}
 
 		dwCount = 1;
@@ -1726,7 +1732,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	bIsGold = FALSE;
 
 	switch (m_pNpcList[iNpcH]->m_sType) {
-		// NPC not dropping Gold
+	// NPC not dropping Gold
 	case 21: // Guard
 	//case 34: // Dummy
 	case 64: // Crop
@@ -2853,20 +2859,6 @@ void CGame::NpcBehavior_Dead(int iNpcH)
 
 BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 {
-	/*char* pContents, * token;
-	char seps[] = "= \t\n";
-	char cReadModeA = 0;
-	char cReadModeB = 0;
-	int  iNpcConfigListIndex = 0, k = 0;
-	class CStrTok* pStrTok;
-	class CNpcItem* pTempNpcItem = NULL;
-
-	pContents = new char[dwMsgSize + 1];
-	ZeroMemory(pContents, dwMsgSize + 1);
-	memcpy(pContents, pData, dwMsgSize);
-
-	pStrTok = new class CStrTok(pContents, seps);*/
-
 	FILE* pFile;
 	HANDLE hFile;
 	DWORD  dwFileSize;
@@ -2885,7 +2877,7 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 	pFile = fopen(cFn, "rt");
 	if (pFile != NULL) {
 
-		PutLogList("(!) Reading Npc Item file...");
+		PutLogList("(!) NpcItemConfig file contents received. Now decoding...");
 		cp = new char[dwFileSize + 2];
 		ZeroMemory(cp, dwFileSize + 2);
 		fread(cp, dwFileSize, 1, pFile);
@@ -3018,7 +3010,7 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 
 						pTempNpcItem->m_sSecondProbability = atoi(token);
 
-						if (pTempNpcItem->m_sSecondProbability <= 0) {
+						if (pTempNpcItem->m_sSecondProbability < 0) {
 							PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Second probability have wrong value");
 							delete[] cp;
 							delete pStrTok;
@@ -3026,7 +3018,6 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 						}
 
 						// 두번째 확률에 대한 타겟값을 임의로 준다. 
-
 
 						cReadModeB = 3;
 
@@ -3065,7 +3056,9 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 		PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file contents error!");
 		return FALSE;
 	}
-
+	ZeroMemory(G_cTxt, sizeof(G_cTxt));
+	wsprintf(G_cTxt, "(!) NPC-Item(Total:%d) configuration - success!", iNpcConfigListIndex);
+	PutLogList(G_cTxt);
 	return TRUE;
 
 }
@@ -3079,6 +3072,8 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType, short sIsRar
 		int    iNumNpcitem;
 		int    iIndex;
 		int    iDiceValue;
+
+		int iProb;
 
 		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {
 			if (m_pNpcConfigList[iNpcIndex] != NULL) {
@@ -3097,8 +3092,13 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType, short sIsRar
 
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
+			if (sIsRare == 1)
+				iProb = m_iRareDropRate;
+			else
+				iProb = m_iSecondaryDropRate;
+
 			// centu - fixed que lea probabilidades
-			if (iDice(1, 10000) == CTempNpcItem.m_sFirstProbability && sIsRare == CTempNpcItem.m_sSecondProbability) {
+			if (iDice(1, iProb) == CTempNpcItem.m_sFirstProbability && sIsRare == CTempNpcItem.m_sSecondProbability) {
 				iItemID = CTempNpcItem.m_sItemID;
 
 				wsprintf(G_cTxt, "NpcType 1 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);

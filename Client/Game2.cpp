@@ -757,7 +757,8 @@ void CGame::NotifyMsg_Skill(char *pData)
 	sp = (short *)cp;
 	sValue = *sp;
 	cp += 2;
-	_RemoveChatMsgListByObjectID(m_sPlayerObjectID);
+	
+	/*_RemoveChatMsgListByObjectID(m_sPlayerObjectID);
 	if (m_pSkillCfgList[sSkillIndex]->m_iLevel < sValue)
 	{
 		wsprintf(cTxt, NOTIFYMSG_SKILL1, m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
@@ -796,7 +797,7 @@ void CGame::NotifyMsg_Skill(char *pData)
 				}
 				break;
 			}
-	}
+	}*/
 	m_pSkillCfgList[sSkillIndex]->m_iLevel = sValue;
 	m_cSkillMastery[sSkillIndex] = (unsigned char)sValue;
 }
@@ -15501,7 +15502,7 @@ void CGame::DlgBoxClick_Magic(short msX, short msY)
 	sY = m_stDialogBoxInfo[3].sY;
 	iCPivot = m_stDialogBoxInfo[3].sView * 10;
 	iYloc = 0;
-	for (i = 0; i < 9; i++)
+	for (i = 0; i < 10; i++)
 	{
 		if ((m_cMagicMastery[iCPivot + i] != NULL) && (m_pMagicCfgList[iCPivot + i] != NULL))
 		{
@@ -17887,6 +17888,86 @@ BOOL CGame::bEffectFrameCounter()
 					}
 					break;
 
+				case 193: // Mass-Blizzard
+					if (m_pEffectList[i]->m_cFrame > m_pEffectList[i]->m_cMaxFrame)
+					{
+						delete m_pEffectList[i];
+						m_pEffectList[i] = NULL;
+					}
+					else /*if (m_pEffectList[i]->m_cFrame == 1)*/
+					{
+						bAddNewEffect(71, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY,
+							m_pEffectList[i]->m_dX * 32 + (rand() % 120) - 60, m_pEffectList[i]->m_dY * 32 + (rand() % 120) - 60, 0);
+						sAbsX = abs(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						sAbsY = abs(((m_sViewPointY / 32) + 9) - m_pEffectList[i]->m_dY);
+						if (sAbsX > sAbsY) sDist = sAbsX;
+						else sDist = sAbsY;
+						lPan = -(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						PlaySound('E', 1, sDist, lPan);
+					}
+					break;
+				case 192: // Fiery-Shock-Wave
+					m_Misc.GetPoint(m_pEffectList[i]->m_mX
+						, m_pEffectList[i]->m_mY
+						, m_pEffectList[i]->m_dX * 32
+						, m_pEffectList[i]->m_dY * 32
+						, &m_pEffectList[i]->m_mX
+						, &m_pEffectList[i]->m_mY
+						, &m_pEffectList[i]->m_iErr
+						, 40);
+					// 30 - looks ok, good fps, bit amaturish
+					// 31 - looks good, good fps
+					// 67 - looks pants, best fps tho
+					// 66 - very FPS intensive
+					// 5 - looks ok, bit gappy
+					// 18 - ENERGY SHOCK WAVE-looking sprite :P
+					bAddNewEffect(66, m_pEffectList[i]->m_mX + (rand() % 20) - 10, m_pEffectList[i]->m_mY + (rand() % 20) - 10, NULL, NULL, 0, 0);
+					if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
+					{
+						delete m_pEffectList[i];
+						m_pEffectList[i] = NULL;
+					}
+					else
+					{
+						sAbsX = abs(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						sAbsY = abs(((m_sViewPointY / 32) + 9) - m_pEffectList[i]->m_dY);
+						if (sAbsX > sAbsY) sDist = sAbsX - 10;
+						else sDist = sAbsY - 10;
+						lPan = -(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						PlaySound('E', 1, sDist, lPan);
+					}
+					break;
+				case 199: // VAMP - Call-Of-The-Gods
+					m_Misc.GetPoint(m_pEffectList[i]->m_mX
+						, m_pEffectList[i]->m_mY
+						, m_pEffectList[i]->m_dX * 32
+						, m_pEffectList[i]->m_dY * 32
+						, &m_pEffectList[i]->m_mX
+						, &m_pEffectList[i]->m_mY
+						, &m_pEffectList[i]->m_iErr
+						, 40);
+					if (m_pEffectList[i]->m_cFrame % 2 == 0)
+						bAddNewEffect(68, m_pEffectList[i]->m_mX + (rand() % 30) - 15, m_pEffectList[i]->m_mY + (rand() % 30) - 15, NULL, NULL, 0, 1);
+
+					bAddNewEffect(71, m_pEffectList[i]->m_sX, m_pEffectList[i]->m_sY,
+						m_pEffectList[i]->m_dX * 32 + (rand() % 120) - 60, m_pEffectList[i]->m_dY * 32 + (rand() % 120) - 60, 0);
+					if (m_pEffectList[i]->m_cFrame >= m_pEffectList[i]->m_cMaxFrame)
+					{
+						delete m_pEffectList[i];
+						m_pEffectList[i] = NULL;
+					}
+					else
+					{
+						sAbsX = abs(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						sAbsY = abs(((m_sViewPointY / 32) + 9) - m_pEffectList[i]->m_dY);
+						if (sAbsX > sAbsY) sDist = sAbsX - 10;
+						else sDist = sAbsY - 10;
+						lPan = -(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						PlaySound('E', 1, sDist, lPan);
+					}
+
+					break;
+
 				case 6: // Lightning Bolt Burst
 					if (m_pEffectList[i]->m_cFrame == 1)
 					{
@@ -18863,8 +18944,8 @@ BOOL CGame::bEffectFrameCounter()
 				case 183: //
 				case 184: // EP's Magic Drain
 				case 190:
-				case 192:
-				case 193:
+				//case 192:
+				//case 193:
 				case 194:
 				case 195:
 				case 242: // Mage hero effect

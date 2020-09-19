@@ -6555,7 +6555,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	iCPivot = m_stDialogBoxInfo[3].sView * 10;
 	iYloc = 0;
 
-	for (i = 0; i < 9; i++) {
+	for (i = 0; i < 10; i++) {
 		if ((m_cMagicMastery[iCPivot + i] != NULL) && (m_pMagicCfgList[iCPivot + i] != NULL)) {
 			wsprintf(cTxt, "%s", m_pMagicCfgList[iCPivot + i]->m_cName);
 
@@ -7458,6 +7458,36 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			//SetCameraShakingEffect(sDist);
 			break;
 
+		case 192: // VAMP: Fiery-Shock-Wave
+			m_pEffectList[i]->m_mX = sX * 32;
+			m_pEffectList[i]->m_mY = sY * 32;
+			m_pEffectList[i]->m_iErr = 0;
+			m_pEffectList[i]->m_cMaxFrame = 8;
+			m_pEffectList[i]->m_dwFrameTime = 25;
+			sAbsX = abs(400 - (sX - m_sViewPointX));
+			sAbsY = abs(300 - (sY - m_sViewPointY));
+			if (sAbsX > sAbsY) sDist = sAbsX;
+			else sDist = sAbsY;
+			sDist = sDist / 32;
+			SetCameraShakingEffect(sDist);
+			break;
+		case 193: // VAMP: Mass-Blizzard
+			m_pEffectList[i]->m_cMaxFrame = 15;
+			m_pEffectList[i]->m_dwFrameTime = 100;
+			break;
+		case 199: // VAMP: Call-Of-The-Gods
+			m_pEffectList[i]->m_mX = sX * 32;
+			m_pEffectList[i]->m_mY = sY * 32;
+			m_pEffectList[i]->m_iErr = 0;
+			m_pEffectList[i]->m_cMaxFrame = 8;
+			m_pEffectList[i]->m_dwFrameTime = 25;
+			sAbsX = abs(400 - (sX - m_sViewPointX));
+			sAbsY = abs(300 - (sY - m_sViewPointY));
+			if (sAbsX > sAbsY) sDist = sAbsX;
+			else sDist = sAbsY;
+			sDist = sDist / 32;
+			break;
+
 		case 6:	 // Energy Bolt
 		case 10: // Lightning Arrow
 			m_pEffectList[i]->m_mX     = sX;
@@ -8237,7 +8267,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			PlaySound('E', 39, sDist, lPan);
 			break;
 
-		case 197: // Centuu: Fury-Of-Thor
+		case 197: // Fury-Of-Thor
 			m_pEffectList[i]->m_mX = sX * 32;
 			m_pEffectList[i]->m_mY = sY * 32;
 			m_pEffectList[i]->m_iErr = 0;
