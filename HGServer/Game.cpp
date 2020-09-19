@@ -1097,7 +1097,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
  class CTile * pTile;
  DWORD * dwp, dwTime;
  WORD  * wp, wObjectID;
- short * sp, dX, dY, sDOtype, pTopItem, wV1, wV2, sTemp;
+ short * sp, dX, dY, sDOtype, /*pTopItem,*/ wV1, wV2, sTemp;
  int   * ip, iRet, iSize, iDamage, iTemp, iTemp2, iDestX, iDestY;
  BOOL  bRet, bIsBlocked = FALSE;
  char cTemp[11], cDestMapName[11], cDestDir;
@@ -1186,8 +1186,8 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 		case 7:	dX--; break;
 		case 8:	dX--; dY--;	break;
 	}
-	pTopItem = 0;
-	bRet = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(dX, dY, &sDOtype, &pTopItem);
+	//pTopItem = 0;
+	bRet = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(dX, dY, &sDOtype/*, &pTopItem*/);
 	if (m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_HOLDOBJECT] != 0) bRet = FALSE;
 
 	// Capture the Flag
@@ -11351,7 +11351,7 @@ int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, cha
 		if (sType == DEF_DYNAMICOBJECT_MAGICTRAP)
 			SendEventToNearClient_TypeC(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_CONFIRM, cMapIndex, sX, sY, sType, i, NULL);
 		else
-			SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_CONFIRM, cMapIndex, sX, sY, sType, i, NULL);
+			SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_CONFIRM, cMapIndex, sX, sY, sType, i, NULL, (short)0);
 
 		return i;
 	}
@@ -11397,7 +11397,7 @@ void CGame::CheckDynamicObjectList()
 			// µî·Ï½Ã°£ÀÌ ÀÏÄ¡ÇÑ´Ù¸é °´Ã¼°¡ »ç¶óÁø´Ù´Â ¸Þ½ÃÁö¸¦ º¸³»Áà¾ß ÇÑ´Ù.
 			
 			if (dwRegisterTime == m_pDynamicObjectList[i]->m_dwRegisterTime) {
-				SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[i]->m_cMapIndex, m_pDynamicObjectList[i]->m_sX, m_pDynamicObjectList[i]->m_sY, m_pDynamicObjectList[i]->m_sType, i, NULL);
+				SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[i]->m_cMapIndex, m_pDynamicObjectList[i]->m_sX, m_pDynamicObjectList[i]->m_sY, m_pDynamicObjectList[i]->m_sType, i, NULL, (short)0);
 				// ¸Ê¿¡¼­ »èÁ¦ÇÑ´Ù.
 				m_pMapList[m_pDynamicObjectList[i]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[i]->m_sX, m_pDynamicObjectList[i]->m_sY, dwTime);
 			}
@@ -15811,9 +15811,10 @@ void CGame::LocalSavePlayerData(int iClientH)
 void CGame::CheckFireBluring(char cMapIndex, int sX, int sY)
 {
  int ix, iy, iItemNum;
-  short sSpr, sSprFrame;
+  short sSpr, sSprFrame, sItemID;
  char  cItemColor;
  class CItem * pItem;
+ DWORD dwItemAttr;
 
 	for (ix = sX -1; ix <= sX +1; ix++)
 	for (iy = sY -1; iy <= sY +1; iy++) {
@@ -15823,12 +15824,18 @@ void CGame::CheckFireBluring(char cMapIndex, int sX, int sY)
 		switch (iItemNum) {
 		case 355: 
 			// ¼®ÅºÀÌ´Ù. ¾ÆÀÌÅÛÀ» Áö¿ì°í ºÒÀ» ¸¸µç´Ù.
-			pItem = m_pMapList[cMapIndex]->pGetItem(ix, iy, &sSpr, &sSprFrame, &cItemColor);
+			//pItem = m_pMapList[cMapIndex]->pGetItem(ix, iy, &sSpr, &sSprFrame, &cItemColor);
+			pItem = m_pMapList[cMapIndex]->pGetItem(ix, iy, &sItemID/*&sSpr, &sSprFrame*/, &cItemColor, &dwItemAttr);
+
 			if (pItem != NULL) delete pItem;
 			iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_FIRE, cMapIndex, ix, iy, 6000);	
 
+			//SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_SETITEM, cMapIndex,
+			//	                        ix, iy, sSpr, sSprFrame, cItemColor);
+
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_SETITEM, cMapIndex,
-				                        ix, iy, sSpr, sSprFrame, cItemColor);
+				ix, iy, sItemID, 0, cItemColor, dwItemAttr);
+
 			break;
 		}
 	}
@@ -19638,9 +19645,9 @@ void CGame::AdminOrder_CleanMap(int iClientH, char * pData, DWORD dwMsgSize)
 	BOOL bFlag = FALSE;	//Used to check if we are on the map we wanna clear
 	int i;
 	CItem *pItem;
-	short sRemainItemSprite, sRemainItemSpriteFrame, dX, dY;
+	short sRemainItemSprite, sRemainItemSpriteFrame, dX, dY, sRemainItemID;
 	char cRemainItemColor, len;
-
+	DWORD dwRemainItemAttr;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((dwMsgSize)	<= 0) return;
@@ -19672,7 +19679,9 @@ void CGame::AdminOrder_CleanMap(int iClientH, char * pData, DWORD dwMsgSize)
 					for(int j = 1; j < m_x; j++)
 						for(int k = 1; k < m_y; k++){
 							do {	//Delete all items on current tile
-								pItem = m_pMapList[i]->pGetItem(j, k, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor); // v1.4
+								//pItem = m_pMapList[i]->pGetItem(j, k, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor); // v1.4
+								pItem = m_pMapList[i]->pGetItem(j, k, &sRemainItemID/*, &sRemainItemSprite, &sRemainItemSpriteFrame*/, &cRemainItemColor, &dwRemainItemAttr);
+
 								if (pItem != NULL) {
 									delete pItem;	//Delete item;
 								}
@@ -26068,26 +26077,44 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char* pData)
 {
 	register int* ip, ix, iy, iSize, iTileExists, iIndex;
-	class CTile* pTileSrc, * pTile;
+	class CTile/** pTileSrc,*/ * pTile;
 	unsigned char ucHeader;
 	short* sp, * pTotal;
 	int iTemp, iTemp2;
 	WORD* wp;
 	char* cp;
+	DWORD* dwp;
 
 	if (m_pClientList[iClientH] == NULL) return 0;
 	pTotal = (short*)pData;
 	cp = (char*)(pData + 2);
 	iSize = 2;
 	iTileExists = 0;
-	pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+	
+	/*pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 	iIndex = 0;
 	while (1) {
 		ix = _tmp_iMoveLocX[cDir][iIndex];
 		iy = _tmp_iMoveLocY[cDir][iIndex];
 		if ((ix == -1) || (iy == -1)) break;
-		iIndex++;
-		pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+		iIndex++;*/
+
+	for (iy = 0; iy < 20; iy++)
+	for (ix = 0; ix < 26; ix++) {
+		switch (cDir) {
+			//case 0: break;
+			case 1: if (!(iy <= 0)) continue; break;
+			case 2: if (!(iy <= 0 || ix >= 26 - 1)) continue; break;
+			case 3: if (!(ix >= 26 - 1)) continue; break;
+			case 4: if (!(ix >= 26 - 1 || iy >= 20 - 1)) continue; break;
+			case 5: if (!(iy >= 20 - 1)) continue; break;
+			case 6: if (!(ix <= 0 || iy >= 20 - 1)) continue; break;
+			case 7: if (!(ix <= 0)) continue; break;
+			case 8: if (!(ix <= 0 || iy <= 0)) continue; break;
+		}
+		
+		//pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+		pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + sX + ix + (sY + iy) * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 
 		//If player not same side and is invied (Beholder Hack)
 		// there is another person on the tiles, and the owner is not the player
@@ -26180,7 +26207,9 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 
 					ip = (int*)cp;
 
-					iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner);
+					//iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner);
+					iTemp = m_pClientList[pTile->m_sOwner]->m_iStatus;
+
 					iTemp = 0x0FFFFFFF & iTemp;
 					iTemp2 = iGetPlayerABSStatus(pTile->m_sOwner, iClientH);
 					iTemp = (iTemp | (iTemp2 << 28));
@@ -26325,6 +26354,11 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 			}
 			if (pTile->m_pItem[0] != NULL) {
 				sp = (short*)cp;
+				*sp = pTile->m_pItem[0]->m_sIDnum; // kamal
+				cp += 2;
+				iSize += 2;
+				
+				/*sp = (short*)cp;
 				*sp = pTile->m_pItem[0]->m_sSprite;
 				cp += 2;
 				iSize += 2;
@@ -26332,11 +26366,16 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 				sp = (short*)cp;
 				*sp = pTile->m_pItem[0]->m_sSpriteFrame;
 				cp += 2;
-				iSize += 2;
+				iSize += 2;*/
 
 				*cp = pTile->m_pItem[0]->m_cItemColor;
 				cp++;
 				iSize++;
+
+				dwp = (DWORD*)cp;
+				*dwp = pTile->m_pItem[0]->m_dwAttribute;
+				cp += 4;
+				iSize += 4;
 			}
 			if (pTile->m_sDynamicObjectType != NULL) {
 

@@ -103,7 +103,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 		}
 
 	// ¾ÆÀÌÅÛ ¸®½ºÆ®°¡ ¸¸µé¾î Á³´Ù. ¼ÒºñµÇ´Â ¾ÆÀÌÅÛÀÌ¶ó¸é °¹¼ö¸¦ È®ÀÎÇÑ´Ù. 
-	for (i = 0; i < 6; i++)
+	for (i = 0; i < 6; i++) {
 		if (sItemIndex[i] != -1) {
 			if (sItemIndex[i] < 0) return;
 			if ((sItemIndex[i] >= 0) && (sItemIndex[i] >= DEF_MAXITEMS)) return;
@@ -111,12 +111,13 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 			// ¾ÆÀÌÅÛÀÌ °¹¼ö°¡ ¿À¹öÇØµµ ¸®ÅÏ.
 			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_dwCount < sItemNumber[i]) return;
 		}
+	}
 
 	// ¾ÆÀÌÅÛÀ» ¾ÆÀÌÅÛ ¾ÆÀÌµð ¹øÈ£°¡ Å« ¼ø¼­ºÎÅÍ Á¤·ÄÇÑ´Ù. Bubble Sort
 	bFlag = TRUE;
 	while (bFlag == TRUE) {
 		bFlag = FALSE;
-		for (i = 0; i < 5; i++)
+		for (i = 0; i < 5; i++) {
 			if ((sItemIndex[i] != -1) && (sItemIndex[i + 1] != -1)) {
 				if ((m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_sIDnum) <
 					(m_pClientList[iClientH]->m_pItemList[sItemIndex[i + 1]]->m_sIDnum)) {
@@ -130,6 +131,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 					bFlag = TRUE;
 				}
 			}
+		}
 	}
 
 	//testcode
@@ -299,9 +301,13 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 					m_pClientList[iClientH]->m_sY, pItem);
 
 				// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4
+
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor); // v1.4
+					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
 // ´õÀÌ»ó °¡Áú¼ö ¾ø´Ù´Â ¸Þ½ÃÁö¸¦ º¸³½´Ù.
 				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
@@ -577,6 +583,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	}
 
 	for (i = 0; i < 6; i++)
+	{
 		if (cI[i] >= 0)
 		{
 			bDup = FALSE;
@@ -598,9 +605,10 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 			RCPH_LOOPBREAK:;
 			}
 		}
-
+	}
 
 	for (i = 0; i < 6; i++)
+	{
 		if (sItemIndex[i] != -1)
 		{
 			if (sItemIndex[i] < 0) return;
@@ -630,13 +638,14 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 				iNeededContrib = 10; // Necks Crafting requires 10 contrib
 			}
 		}
-
+	}
 	// Bubble Sort
 	bFlag = TRUE;
 	while (bFlag == TRUE)
 	{
 		bFlag = FALSE;
 		for (i = 0; i < 5; i++)
+		{
 			if ((sItemIndex[i] != -1) && (sItemIndex[i + 1] != -1))
 			{
 				if ((m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_sIDnum) < (m_pClientList[iClientH]->m_pItemList[sItemIndex[i + 1]]->m_sIDnum))
@@ -653,6 +662,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 					bFlag = TRUE;
 				}
 			}
+		}
 	}
 	j = 0;
 	for (i = 0; i < 6; i++)
@@ -786,7 +796,8 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 		if (iNeededContrib != 0)
 		{
 			m_pClientList[iClientH]->m_iContribution -= iNeededContrib;
-			// No known msg to send info to client, so client will compute shown Contrib himself.		
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
+
 		}
 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CRAFTING_SUCCESS, NULL, NULL, NULL, NULL);
@@ -881,9 +892,13 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 			{
 				m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 					m_pClientList[iClientH]->m_sY, pItem);
+				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/
+
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);
+					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
 				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;

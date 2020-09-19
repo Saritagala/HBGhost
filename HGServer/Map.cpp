@@ -289,7 +289,7 @@ void CMap::GetDeadOwner(short * pOwner, char * pOwnerClass, short sX, short sY)
 	*pOwnerClass = pTile->m_cDeadOwnerClass;
 }
  								  
-BOOL CMap::bGetMoveable(short dX, short dY, short * pDOtype, short * pTopItem)
+BOOL CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*/)
 {
  class CTile * pTile;	
 	
@@ -297,7 +297,7 @@ BOOL CMap::bGetMoveable(short dX, short dY, short * pDOtype, short * pTopItem)
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
 	if (pDOtype != NULL) *pDOtype = pTile->m_sDynamicObjectType;
-	if (pTopItem != NULL) *pTopItem = pTile->m_cTotalItem;
+	//if (pTopItem != NULL) *pTopItem = pTile->m_cTotalItem;
 
 	if (pTile->m_sOwner != NULL) return FALSE;
 	if (pTile->m_bIsMoveAllowed == FALSE) return FALSE;
@@ -423,7 +423,7 @@ BOOL CMap::bSetItem(short sX, short sY, class CItem * pItem)
 	return TRUE;
 }
 
-class CItem * CMap::pGetItem(short sX, short sY, short * pRemainItemSprite, short * pRemainItemSpriteFrame, char * pRemainItemColor) //v1.4 color
+/*class CItem * CMap::pGetItem(short sX, short sY, short * pRemainItemSprite, short * pRemainItemSpriteFrame, char * pRemainItemColor) //v1.4 color
 {
  class CTile * pTile;	
  class CItem * pItem;
@@ -450,6 +450,42 @@ class CItem * CMap::pGetItem(short sX, short sY, short * pRemainItemSprite, shor
 		*pRemainItemSprite      = pTile->m_pItem[0]->m_sSprite;
 		*pRemainItemSpriteFrame = pTile->m_pItem[0]->m_sSpriteFrame;
 		*pRemainItemColor       = pTile->m_pItem[0]->m_cItemColor;
+	}
+
+	return pItem;
+}*/
+
+class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, DWORD* pRemainItemAttr) //v1.4 color
+{
+	class CTile* pTile;
+	class CItem* pItem;
+	register int i;
+
+	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return NULL;
+
+	pTile = (class CTile*)(m_pTile + sX + sY * m_sSizeY);
+	pItem = pTile->m_pItem[0];
+	if (pTile->m_cTotalItem == 0) return NULL;
+
+	for (i = 0; i <= DEF_TILE_PER_ITEMS - 2; i++)
+		pTile->m_pItem[i] = pTile->m_pItem[i + 1];
+	pTile->m_cTotalItem--;
+	pTile->m_pItem[pTile->m_cTotalItem] = NULL;
+
+	if (pTile->m_pItem[0] == NULL) {
+		*pRemainItemID = 0;
+		/**pRemainItemSprite      = 0;
+		*pRemainItemSpriteFrame = 0;*/
+		*pRemainItemColor = 0;
+		*pRemainItemAttr = 0;
+	}
+	else
+	{
+		*pRemainItemID = pTile->m_pItem[0]->m_sIDnum;
+		/**pRemainItemSprite      = pTile->m_pItem[0]->m_sSprite;
+		*pRemainItemSpriteFrame = pTile->m_pItem[0]->m_sSpriteFrame;*/
+		*pRemainItemColor = pTile->m_pItem[0]->m_cItemColor;
+		*pRemainItemAttr = pTile->m_pItem[0]->m_dwAttribute;
 	}
 
 	return pItem;
@@ -2974,8 +3010,9 @@ void CGame::ClearMap()
 {
 	int i, k, j, m;
 	class CItem* pItem;
-	short sRemainItemSprite, sRemainItemSpriteFrame;
+	short sRemainItemSprite, sRemainItemSpriteFrame, sRemainItemID;
 	char cRemainItemColor;
+	DWORD dwRemainItemAttr;
 	for (m = 0; m < DEF_MAXMAPS; m++)
 	{
 		if (m_pMapList[m] != NULL)
@@ -2986,7 +3023,8 @@ void CGame::ClearMap()
 				{
 					do
 					{
-						pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor);
+						//pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor);
+						pItem = m_pMapList[m_pClientList[m]->m_cMapIndex]->pGetItem(j, k, &sRemainItemID/*, &sRemainItemSprite, &sRemainItemSpriteFrame*/, &cRemainItemColor, &dwRemainItemAttr);
 						if (pItem != NULL)
 						{
 							delete pItem;
@@ -3023,6 +3061,7 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 	int iTemp, iTemp2;
 	WORD* wp;
 	char* cp;
+	DWORD* dwp;
 
 	if (m_pClientList[iClientH] == NULL) return 0;
 	pTotal = (short*)pData;
@@ -3033,7 +3072,7 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 	// centu - 800x600
 	for (iy = 0; iy < 20; iy++)
 		for (ix = 0; ix < 26; ix++) {
-			if (((sX + ix) == 100) && ((sY + iy) == 100)) sX = sX;
+			//if (((sX + ix) == 100) && ((sY + iy) == 100)) sX = sX;
 			pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 
 			//If player not same side and is invied (Beholder Hack)
@@ -3131,7 +3170,10 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 						iSize += 4;
 						// Status
 						ip = (int*)cp;
-						iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner); // CHANGED - m_pClientList[pTile->m_sOwner]->m_iStatus;
+
+						//iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner); // CHANGED - m_pClientList[pTile->m_sOwner]->m_iStatus;
+						iTemp = m_pClientList[pTile->m_sOwner]->m_iStatus;
+						
 						iTemp = 0x0FFFFFFF & iTemp;//Original : sTemp = 0x0FFF & sTemp;
 						iTemp2 = iGetPlayerABSStatus(pTile->m_sOwner, iClientH); //(short)iGetPlayerRelationship(iClientH, pTile->m_sOwner);
 						iTemp = (iTemp | (iTemp2 << 28));
@@ -3224,7 +3266,10 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 						iSize += 4;
 						// Status
 						ip = (int*)cp;
-						iTemp = iGetPlayerStatus(iClientH, pTile->m_sDeadOwner); // CHANGED - m_pClientList[pTile->m_sDeadOwner]->m_iStatus;
+						
+						//iTemp = iGetPlayerStatus(iClientH, pTile->m_sDeadOwner); // CHANGED - m_pClientList[pTile->m_sDeadOwner]->m_iStatus;
+						iTemp = m_pClientList[pTile->m_sDeadOwner]->m_iStatus;
+						
 						iTemp = 0x0FFFFFFF & iTemp;//Original : sTemp = 0x0FFF & sTemp;
 						iTemp2 = iGetPlayerABSStatus(pTile->m_sDeadOwner, iClientH); //(short)iGetPlayerRelationship(iClientH, pTile->m_sDeadOwner);
 						iTemp = (iTemp | (iTemp2 << 28));//Original : 12
@@ -3275,7 +3320,14 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 				}
 
 				if (pTile->m_pItem[0] != NULL) {
+
+					// Centu - id num
 					sp = (short*)cp;
+					*sp = pTile->m_pItem[0]->m_sIDnum;
+					cp += 2;
+					iSize += 2;
+
+					/*sp = (short*)cp;
 					*sp = pTile->m_pItem[0]->m_sSprite;
 					cp += 2;
 					iSize += 2;
@@ -3283,11 +3335,17 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 					sp = (short*)cp;
 					*sp = pTile->m_pItem[0]->m_sSpriteFrame;
 					cp += 2;
-					iSize += 2;
+					iSize += 2;*/
 
 					*cp = pTile->m_pItem[0]->m_cItemColor;
 					cp++;
 					iSize++;
+
+					// Centu - attribute
+					dwp = (DWORD*)cp;
+					*dwp = pTile->m_pItem[0]->m_dwAttribute;
+					cp += 4;
+					iSize += 4;
 				}
 
 				if (pTile->m_sDynamicObjectType != NULL) {
@@ -3885,6 +3943,73 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	sp = (short*)cp;
 	*sp = sV4;
 	cp += 2;
+
+	dwTime = timeGetTime();
+
+	//for (i = 1; i < DEF_MAXCLIENTS; i++)
+	bFlag = TRUE;
+	iShortCutIndex = 0;
+	while (bFlag == TRUE) {
+		i = m_iClientShortCut[iShortCutIndex];
+		iShortCutIndex++;
+		if (i == 0) bFlag = FALSE;
+
+		if ((bFlag == TRUE) && (m_pClientList[i] != NULL)) {
+			if ((m_pClientList[i]->m_cMapIndex == cMapIndex) &&
+				(m_pClientList[i]->m_sX >= sX - 12) &&
+				(m_pClientList[i]->m_sX <= sX + 12) &&
+				(m_pClientList[i]->m_sY >= sY - 10) &&
+				(m_pClientList[i]->m_sY <= sY + 10)) {
+
+				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 18, cKey);
+			}
+		}
+	}
+}
+void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, DWORD sV4)
+{
+	int i, iRet, iShortCutIndex;
+	char* cp, cData[100];
+	DWORD* dwp, dwTime;
+	WORD* wp;
+	short* sp;
+	BOOL bFlag;
+	char  cKey;
+
+	cKey = (char)(rand() % 255) + 1; // v1.4
+
+	ZeroMemory(cData, sizeof(cData));
+
+	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	*dwp = dwMsgID;
+	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	*wp = wMsgType;
+
+	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+
+	sp = (short*)cp;
+	*sp = sX;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sY;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV1;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV2;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = sV3;
+	cp += 2;
+
+	dwp = (DWORD*)cp;
+	*dwp = sV4;
+	cp += 4;
 
 	dwTime = timeGetTime();
 

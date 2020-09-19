@@ -88,7 +88,7 @@ class CItem
 public:
 	CItem();
 	virtual ~CItem();
-	char  m_cName[21];
+	/*char  m_cName[21];
 	char  m_cItemType;
 	char  m_cEquipPos;
 	char  m_cItemColor;
@@ -104,6 +104,27 @@ public:
 	WORD  m_wCurLifeSpan;
 	WORD  m_wMaxLifeSpan;
 	WORD  m_wPrice, m_wWeight;
+	DWORD m_dwCount;
+	DWORD m_dwAttribute;*/
+
+	char  m_cName[21];
+	char  m_cItemType;
+	char  m_cEquipPos;
+	char  m_cItemColor;
+	char  m_cSpeed;
+	char  m_cGenderLimit, m_cApprValue, m_cCategory;
+	//	short m_sItemEffectType;
+	short m_sLevelLimit, m_sIDnum, m_sItemEffectType, m_sSpecialEffect, m_sSpecialEffectValue1, m_sSpecialEffectValue2, m_sRelatedSkill;
+	bool m_bIsForSale;
+	short m_sSprite;
+	short m_sSpriteFrame;
+	short m_sX, m_sY;
+	short m_sItemSpecEffectValue1, m_sItemSpecEffectValue2, m_sItemSpecEffectValue3;
+	short m_sItemEffectValue1, m_sItemEffectValue2, m_sItemEffectValue3, m_sItemEffectValue4, m_sItemEffectValue5, m_sItemEffectValue6;
+	WORD  m_wCurLifeSpan;
+	WORD  m_wMaxLifeSpan;
+	WORD  m_wWeight;
+	unsigned int m_wPrice;
 	DWORD m_dwCount;
 	DWORD m_dwAttribute;
 

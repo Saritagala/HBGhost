@@ -153,6 +153,9 @@ class CGame
 {
 public:
 
+	class CItem* m_pItemConfigList[5000];
+	BOOL _bDecodeItemConfigFileContents(char* pFileName);
+
 	int m_iClass = 0;
 
 	BOOL bOnlyGuild, bOnlyAll;

@@ -9241,11 +9241,12 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 	ZeroMemory(cStr5, sizeof(cStr5));
 
 	strcpy(cName, cItemName);
-	for (i = 0; i < DEF_MAXITEMNAMES; i++)
+	for (i = 0; i < DEF_MAXITEMNAMES; i++) {
 		if ((m_pItemNameList[i] != NULL) && (strcmp(m_pItemNameList[i]->m_cOriginName, cItemName) == 0)) {
 			strcpy(cName, m_pItemNameList[i]->m_cName);
 			break;
 		}
+	}
 
 	if (0 == memcmp(cItemName, "AcientTablet", 12)) m_bIsSpecial = TRUE;
 	else if (0 == memcmp(cItemName, "NecklaceOf", 10)) m_bIsSpecial = TRUE;

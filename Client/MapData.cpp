@@ -1863,7 +1863,7 @@ BOOL __fastcall CMapData::bGetOwner(short sX, short sY, short * pOwnerType, char
 
 	return TRUE;
 }
-
+/*
 BOOL __fastcall CMapData::bGetDeadOwner(short sX, short sY, short * pOwnerType, char * pDir, short * pAppr1, short * pAppr2, short * pAppr3, short * pAppr4, int * pApprColor, char * pFrame, char * pName, short * pItemSprite, short * pItemSpriteFrame, int * pChatIndex)
 {
  int dX, dY;
@@ -1896,7 +1896,7 @@ BOOL __fastcall CMapData::bGetDeadOwner(short sX, short sY, short * pOwnerType, 
 
 	return TRUE;
 }
-
+*/
 int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short sViewPointY)
 {
  int dX,dY, sVal;
@@ -4000,7 +4000,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 }
 
 
-BOOL CMapData::bSetItem(short sX, short sY, short sItemSpr, short sItemSprFrame, char cItemColor, BOOL bDropEffect)
+/*BOOL CMapData::bSetItem(short sX, short sY, short sItemSpr, short sItemSprFrame, char cItemColor, BOOL bDropEffect)
 {int dX, dY;
  int sAbsX, sAbsY, sDist;
 	if ((sX < m_sPivotX) || (sX >= m_sPivotX + MAPDATASIZEX) ||
@@ -4032,6 +4032,48 @@ BOOL CMapData::bSetItem(short sX, short sY, short sItemSpr, short sItemSprFrame,
 			m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), NULL, NULL, (rand() % 2), 0);
 			//m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), NULL, NULL, (rand() % 2), 0);
 	}	}
+
+	return TRUE;
+}*/
+
+BOOL CMapData::bSetItem(short sX, short sY, short sIDnum/*, short sItemSpr, short sItemSprFrame*/, char cItemColor, DWORD dwItemAttr, BOOL bDropEffect)
+{
+	int dX, dY;
+	int sAbsX, sAbsY, sDist;
+	if ((sX < m_sPivotX) || (sX >= m_sPivotX + MAPDATASIZEX) ||
+		(sY < m_sPivotY) || (sY >= m_sPivotY + MAPDATASIZEY))
+	{
+		return FALSE;
+	}
+
+	dX = sX - m_sPivotX;
+	dY = sY - m_sPivotY;
+
+	/*m_pData[dX][dY].m_sItemSprite      = sItemSpr;
+	m_pData[dX][dY].m_sItemSpriteFrame = sItemSprFrame;*/
+	m_pData[dX][dY].m_sItemID = sIDnum;
+	m_pData[dX][dY].m_cItemColor = cItemColor;
+	m_pData[dX][dY].m_dwItemAttr = dwItemAttr;
+#ifdef RES_HIGH
+	sAbsX = abs(((m_pGame->m_sViewPointX / 32) + 12) - sX);
+	sAbsY = abs(((m_pGame->m_sViewPointY / 32) + 9) - sY);
+#else
+	sAbsX = abs(((m_pGame->m_sViewPointX / 32) + 10) - sX);
+	sAbsY = abs(((m_pGame->m_sViewPointY / 32) + 7) - sY);
+#endif
+	if (sAbsX > sAbsY) sDist = sAbsX;
+	else sDist = sAbsY;
+
+	if (sIDnum != NULL)
+	{
+		if (bDropEffect == TRUE)
+		{
+			m_pGame->PlaySound('E', 11, sDist);
+			m_pGame->bAddNewEffect(14, (m_sPivotX + dX) * 32, (m_sPivotY + dY) * 32, NULL, NULL, 0, 0);
+			m_pGame->bAddNewEffect(14, (m_sPivotX + dX) * 32 + (10 - (rand() % 20)), (m_sPivotY + dY) * 32 + (10 - (rand() % 20)), NULL, NULL, (rand() % 2), 0);
+			//m_pGame->bAddNewEffect(14, (m_sPivotX + dX) * 32 + (10 - (rand() % 20)), (m_sPivotY + dY) * 32 + (10 - (rand() % 20)), NULL, NULL, (rand() % 2), 0);
+		}
+	}
 
 	return TRUE;
 }

@@ -82,6 +82,8 @@ CGame::CGame()
 		m_pMSound[i]  = NULL;
 	}
 
+	for (i = 0; i < 5000; i++) m_pItemConfigList[i] = NULL;
+
 	for (i = 0; i < DEF_MAXCHATMSGS; i++) m_pChatMsgList[i] = NULL;
 
 	for (i = 0; i < DEF_MAXEFFECTS; i++) m_pEffectList[i] = NULL;
@@ -619,6 +621,12 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 		return FALSE;
 	}
 
+	if (_bDecodeItemConfigFileContents("contents\\Item.txt") == FALSE)
+	{
+		MessageBox(m_hWnd, "Item.cfg file contains wrong infomation.", "ERROR", MB_ICONEXCLAMATION | MB_OK);
+		return FALSE;
+	}
+
 	if (m_DDraw.bInit(m_hWnd) == FALSE)
 	{	MessageBox(m_hWnd, "This program requires DirectX7.0a!","ERROR",MB_ICONEXCLAMATION | MB_OK);
 		return FALSE;
@@ -718,6 +726,380 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 
 	bReadGameConfigFile("GameConfig.cfg");
 	SaveGameConfigFile();
+
+	return TRUE;
+}
+
+BOOL CGame::_bDecodeItemConfigFileContents(char* pFileName)
+{
+	char* pContents, * token;
+	char seps[] = "= ,\t\n";
+	char cReadModeA = 0;
+	char cReadModeB = 0;
+	int  iItemConfigListIndex = 0, iTemp;
+	class CStrTok* pStrTok;
+	HANDLE hFile;
+	FILE* pFile;
+	DWORD  dwFileSize;
+
+	hFile = CreateFile(pFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
+	dwFileSize = GetFileSize(hFile, NULL);
+	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
+
+	pFile = fopen(pFileName, "rt");
+	if (pFile == NULL) return FALSE;
+	else {
+		pContents = new char[dwFileSize + 1];
+		ZeroMemory(pContents, dwFileSize + 1);
+		fread(pContents, dwFileSize, 1, pFile);
+		fclose(pFile);
+	}
+
+	pStrTok = new class CStrTok(pContents, seps);
+	token = pStrTok->pGet();
+	//token = strtok( pContents, seps );   
+	while (token != NULL) {
+		if (cReadModeA != 0) {
+			switch (cReadModeA) {
+			case 1:
+				switch (cReadModeB) {
+				case 1:
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						//PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemIDnumber");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					iItemConfigListIndex = atoi(token);
+
+					// ¸¸¾à ÀÌ¹Ì ÀÌ·± ¾ÆÀÌ °ªÀ» °¡Áø ¾ÆÀÌÅÛÀÌ Á¤ÀÇµÇ¾î ÀÖ´Ù¸é ¿¡·¯ÀÌ´Ù.
+					if (m_pItemConfigList[iItemConfigListIndex] != NULL) {
+						// ÀÌ¹Ì °°Àº °íÀ¯¹øÈ£¸¦ °¡Áø ¾ÆÀÌÅÛÀÌ Á¤ÀÇµÇ¾î ÀÖ´Ù. Áßº¹ Á¤ÀÇ ¿¡·¯!
+						wsprintf(G_cTxt, "(!!!) CRITICAL ERROR! Duplicate ItemIDnum(%d)", iItemConfigListIndex);
+						DebugLog(G_cTxt);
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex] = new class CItem;
+					m_pItemConfigList[iItemConfigListIndex]->m_sIDnum = iItemConfigListIndex;
+					cReadModeB = 2;
+					break;
+				case 2:
+					// m_cName 
+					ZeroMemory(m_pItemConfigList[iItemConfigListIndex]->m_cName, sizeof(m_pItemConfigList[iItemConfigListIndex]->m_cName));
+					memcpy(m_pItemConfigList[iItemConfigListIndex]->m_cName, token, strlen(token));
+					cReadModeB = 3;
+					break;
+				case 3:
+					// m_cItemType
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemType");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cItemType = atoi(token);
+					cReadModeB = 4;
+					break;
+				case 4:
+					// m_cEquipPos
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - EquipPos");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cEquipPos = atoi(token);
+					cReadModeB = 5;
+					break;
+				case 5:
+					// m_sItemEffectType
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectType");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectType = atoi(token);
+					cReadModeB = 6;
+					break;
+				case 6:
+					// m_sItemEffectValue1
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue1");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue1 = atoi(token);
+					cReadModeB = 7;
+					break;
+				case 7:
+					// m_sItemEffectValue2
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue2");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue2 = atoi(token);
+					cReadModeB = 8;
+					break;
+				case 8:
+					// m_sItemEffectValue3
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue3");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue3 = atoi(token);
+					cReadModeB = 9;
+					break;
+				case 9:
+					// m_sItemEffectValue4
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue4");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue4 = atoi(token);
+					cReadModeB = 10;
+					break;
+				case 10:
+					// m_sItemEffectValue5
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue5");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue5 = atoi(token);
+					cReadModeB = 11;
+					break;
+				case 11:
+					// m_sItemEffectValue6
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue6");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue6 = atoi(token);
+					cReadModeB = 12;
+					break;
+				case 12:
+					// m_wMaxLifeSpan
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - MaxLifeSpan");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_wMaxLifeSpan = (WORD)atoi(token);
+					cReadModeB = 13;
+					break;
+				case 13:
+					// m_sSpecialEffect
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - MaxFixCount");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffect = atoi(token);
+					cReadModeB = 14;
+					break;
+				case 14:
+					// m_sSprite
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Sprite");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sSprite = atoi(token);
+					cReadModeB = 15;
+					break;
+				case 15:
+					// m_sSpriteFrame
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - SpriteFrame");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sSpriteFrame = atoi(token);
+					cReadModeB = 16;
+					break;
+				case 16:
+					// m_wPrice
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Price");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->m_bIsForSale = FALSE;
+					else m_pItemConfigList[iItemConfigListIndex]->m_bIsForSale = TRUE;
+
+					m_pItemConfigList[iItemConfigListIndex]->m_wPrice = abs(iTemp);
+					cReadModeB = 17;
+					break;
+				case 17:
+					// m_wWeight
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Weight");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_wWeight = atoi(token);
+					cReadModeB = 18;
+					break;
+				case 18:
+					// Appr Value
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ApprValue");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cApprValue = atoi(token);
+					cReadModeB = 19;
+					break;
+				case 19:
+					// m_cSpeed
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Speed");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cSpeed = atoi(token);
+					cReadModeB = 20;
+					break;
+
+				case 20:
+					// m_sLevelLimit
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - LevelLimit");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sLevelLimit = atoi(token);
+					cReadModeB = 21;
+					break;
+
+				case 21:
+					// m_cGederLimit
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - GenderLimit");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cGenderLimit = atoi(token);
+					cReadModeB = 22;
+					break;
+
+				case 22:
+					// m_sSpecialEffectValue1
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - SM_HitRatio");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffectValue1 = atoi(token);
+					cReadModeB = 23;
+					break;
+
+				case 23:
+					// m_sSpecialEffectValue2
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - L_HitRatio");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffectValue2 = atoi(token);
+					cReadModeB = 24;
+					break;
+
+				case 24:
+					// m_sRelatedSkill
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - RelatedSkill");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_sRelatedSkill = atoi(token);
+					cReadModeB = 25;
+					break;
+
+				case 25:
+					// m_cCategory
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Category");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cCategory = atoi(token);
+					cReadModeB = 26;
+					break;
+
+				case 26:
+					// m_cItemColor
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Category");
+						delete pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+					m_pItemConfigList[iItemConfigListIndex]->m_cItemColor = atoi(token);
+					cReadModeA = 0;
+					cReadModeB = 0;
+					break;
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+		else {
+			if (memcmp(token, "Item", 4) == 0) {
+				cReadModeA = 1;
+				cReadModeB = 1;
+			}
+
+			if (memcmp(token, "[ENDITEMLIST]", 13) == 0) {
+				cReadModeA = 0;
+				cReadModeB = 0;
+				goto DICFC_STOPDECODING;
+			}
+		}
+		token = pStrTok->pGet();
+		//token = strtok( NULL, seps );
+	}
+
+DICFC_STOPDECODING:;
+
+	delete pStrTok;
+	delete[]pContents;
+
+	if ((cReadModeA != 0) || (cReadModeB != 0)) {
+		DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file contents error!");
+		return FALSE;
+	}
 
 	return TRUE;
 }
@@ -968,6 +1350,9 @@ void CGame::Quit()
 {int i;
 	WriteSettings();
 	ChangeGameMode(DEF_GAMEMODE_NULL);
+
+	for (i = 0; i < 5000; i++)
+		if (m_pItemConfigList[i] != NULL) delete m_pItemConfigList[i];
 
 	for (i = 0; i < DEF_MAXSPRITES; i++)
 	if (m_pSprite[i] != NULL) delete m_pSprite[i];
@@ -2139,12 +2524,12 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 
 
 void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, short sModX, short sModY, short msX, short msY)
-{int ix, iy, indexX, indexY, dX, dY, iDvalue;
+{int ix, iy, indexX, indexY, dX, dY, iDvalue, iItemSelectedx, iItemSelectedy;
  char cItemColor;
  BOOL bIsPlayerDrawed = FALSE;
  BOOL bContact = FALSE;
  BOOL bRet = FALSE;
- short sItemSprite, sItemSpriteFrame, sObjSpr, sObjSprFrame, sDynamicObject, sDynamicObjectFrame;
+ short sItemSprite, sItemSpriteFrame, sObjSpr, sObjSprFrame, sDynamicObject, sDynamicObjectFrame, sItemID, sItemSelectedID = -1;
  static DWORD dwMCAnimTime = G_dwGlobalTime;
  static short sMCAnimFrame = 1;
 // Xmas
@@ -2152,6 +2537,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
  static int iy2[100];
  static int iXmasTreeBulbDelay = 76;
  int idelay = 75;
+ DWORD dwItemAttr, dwItemSelectedAttr;
 
 	if( sDivY < 0 || sDivX < 0) return ;
 	m_sMCX = NULL;
@@ -2184,10 +2570,14 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 				ZeroMemory(_tmp_cName, sizeof(_tmp_cName));
 				if ((indexX < m_pMapData->m_sPivotX) || (indexX > m_pMapData->m_sPivotX + MAPDATASIZEX) ||
 					(indexY < m_pMapData->m_sPivotY) || (indexY > m_pMapData->m_sPivotY + MAPDATASIZEY))
-				{	sItemSprite = NULL;
+				{	/*sItemSprite = NULL;
 					sItemSpriteFrame = NULL;
 					bRet = FALSE;
+					cItemColor = NULL;*/
+					sItemID = NULL;
+					bRet = FALSE;
 					cItemColor = NULL;
+					dwItemAttr = NULL;
 				}else
 				{	_tmp_dX = dX = indexX - m_pMapData->m_sPivotX;
 					_tmp_dY = dY = indexY - m_pMapData->m_sPivotY;
@@ -2203,11 +2593,15 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					_tmp_iChatIndex = m_pMapData->m_pData[dX][dY].m_iDeadChatMsg;
 					_tmp_iStatus    = m_pMapData->m_pData[dX][dY].m_iDeadStatus;
 					strcpy(_tmp_cName, m_pMapData->m_pData[dX][dY].m_cDeadOwnerName);
-					sItemSprite      = m_pMapData->m_pData[dX][dY].m_sItemSprite;
-					sItemSpriteFrame = m_pMapData->m_pData[dX][dY].m_sItemSpriteFrame;
+					
+					sItemID = m_pMapData->m_pData[dX][dY].m_sItemID;
+					//sItemSprite      = m_pMapData->m_pData[dX][dY].m_sItemSprite;
+					//sItemSpriteFrame = m_pMapData->m_pData[dX][dY].m_sItemSpriteFrame;
 					cItemColor       = m_pMapData->m_pData[dX][dY].m_cItemColor;
+					dwItemAttr = m_pMapData->m_pData[dX][dY].m_dwItemAttr;
 					sDynamicObject      = m_pMapData->m_pData[dX][dY].m_sDynamicObjectType;
 					sDynamicObjectFrame = (short)m_pMapData->m_pData[dX][dY].m_cDynamicObjectFrame;
+					
 					cDynamicObjectData1 = m_pMapData->m_pData[dX][dY].m_cDynamicObjectData1;
 					cDynamicObjectData2 = m_pMapData->m_pData[dX][dY].m_cDynamicObjectData2;
 					cDynamicObjectData3 = m_pMapData->m_pData[dX][dY].m_cDynamicObjectData3;
@@ -2215,7 +2609,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					bRet = TRUE;
 			 	}
 
-				if ((bRet == TRUE) && (sItemSprite != 0))
+				/*if ((bRet == TRUE) && (sItemSprite != 0))
 				{	if (cItemColor == 0)
 						 m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + sItemSprite]->PutSpriteFast(ix, iy, sItemSpriteFrame, dwTime);
 					else
@@ -2241,7 +2635,48 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 							else sMCAnimFrame = 1;
 						}
 						m_stMCursor.sCursorFrame  = sMCAnimFrame;
-				}	}
+				}	}*/
+
+				if ((bRet == TRUE) && (sItemID != 0) && sItemID >= 0 && sItemID < 5000 && m_pItemConfigList[sItemID] != NULL)
+				{
+					if (cItemColor == 0)
+						m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + m_pItemConfigList[sItemID]->m_sSprite]->PutSpriteFast(ix, iy, m_pItemConfigList[sItemID]->m_sSpriteFrame, dwTime);
+					else
+					{
+						switch (m_pItemConfigList[sItemID]->m_sSprite) {
+						case 1: // Swds
+						case 2: // Bows
+						case 3: // Shields
+						case 15: // Axes hammers
+							m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + m_pItemConfigList[sItemID]->m_sSprite]->PutSpriteRGB(ix, iy
+								, m_pItemConfigList[sItemID]->m_sSpriteFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], dwTime);
+							break;
+						default:
+							m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + m_pItemConfigList[sItemID]->m_sSprite]->PutSpriteRGB(ix, iy
+								, m_pItemConfigList[sItemID]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
+							break;
+						}
+					}
+
+					if (m_bShiftPressed && msX >= ix - 16 && msY >= iy - 16 && msX <= ix + 16 && msY <= iy + 16) {
+						sItemSelectedID = sItemID;
+						dwItemSelectedAttr = dwItemAttr;
+						iItemSelectedx = ix;
+						iItemSelectedy = iy;
+					}
+
+					if ((ix - 13 < msX) && (ix + 13 > msX) && (iy - 13 < msY) && (iy + 13 > msY))
+					{
+						if ((dwTime - dwMCAnimTime) > 200)
+						{
+							dwMCAnimTime = dwTime;
+							if (sMCAnimFrame == 1)
+								sMCAnimFrame = 2;
+							else sMCAnimFrame = 1;
+						}
+						m_stMCursor.sCursorFrame = sMCAnimFrame;
+					}
+				}
 
 				if ((bRet == TRUE) && (_tmp_wObjectID != NULL))
 				{	bContact = DrawObject_OnDead(indexX, indexY, ix, iy, FALSE, dwTime, msX, msY);
@@ -2759,6 +3194,118 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 			DrawObject_OnDead(m_sMCX, m_sMCY, sFocusX, sFocusY, TRUE, dwTime, msX, msY);
 			break;
 	}	}
+
+	if (sItemSelectedID != -1) {
+		/*char cStr1[64], cStr2[64], cStr3[64];
+		int  iLoc = -15;
+		GetItemName(m_pItemConfigList[sItemSelectedID]->m_cName, dwItemSelectedAttr, cStr1, cStr2, cStr3);//, cStr4, cStr5);
+		
+		iLoc = 0;
+		if (strlen(cStr1) != 0)
+		{
+			if (m_bIsSpecial)
+				PutString(iItemSelectedx, iItemSelectedy + 25 - 15, cStr1, RGB(0, 255, 50), FALSE, 1);
+			else
+				PutString(iItemSelectedx, iItemSelectedy + 25 - 15, cStr1, RGB(255, 255, 255), FALSE, 1);
+			iLoc += 15;
+		}
+		if (strlen(cStr2) != 0)
+		{
+			PutString(iItemSelectedx, iItemSelectedy + 25 + iLoc - 15, cStr2, RGB(150, 150, 150), FALSE, 1);
+			iLoc += 15;
+		}
+		if (strlen(cStr3) != 0)
+		{
+			PutString(iItemSelectedx, iItemSelectedy + 25 + iLoc - 15, cStr3, RGB(150, 150, 150), FALSE, 1);
+			iLoc += 15;
+		}*/
+
+		char cStr1[128], cStr2[128], cStr3[128], cStr4[128], cStr5[128], cStr6[128];
+		int iLoc, iEntry2 = 0;
+		GetItemName(m_pItemConfigList[sItemSelectedID]->m_cName, dwItemSelectedAttr, cStr1, cStr2, cStr3);
+		//Magn0S:: Reformulate Shadow box on item viewer
+		int iEntry = 0;
+		if (strlen(cStr1) != 0) iEntry++;
+		if (strlen(cStr2) != 0) iEntry++;
+		if (strlen(cStr3) != 0) iEntry++;
+		
+		int iLenSize = (int)strlen(cStr1);
+		if (iLenSize < (int)strlen(cStr2)) iLenSize = (int)strlen(cStr2);
+		if (iLenSize < (int)strlen(cStr3)) iLenSize = (int)strlen(cStr3);
+		
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		if (iEntry == 1)
+		{
+			for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++) {
+				if (m_pItemList[iTmp] != NULL) {
+					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry2++;
+				}
+			}
+			if (iEntry2 > 1) {
+				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iEntry2);
+				iEntry++;
+			}
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		if (iLenSize <= 15)
+			iLenSize = iLenSize * 7.0f;
+		else if (iLenSize <= 28)
+			iLenSize = iLenSize * 5.5f;
+		else iLenSize = iLenSize * 6.2f;
+
+		if (iEntry > 1) {
+			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
+		}
+		else m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
+		//-----------------------------------------------------------------------------------------------------------------------------------
+
+		iLoc = 0;
+		if (strlen(cStr1) != 0)
+		{
+			if (m_bIsRare)
+				PutString(msX, msY + 25, cStr1, RGB(255, 232, 0), FALSE, 1);
+			else if (m_bIsFragile)
+				PutString(msX, msY + 25, cStr1, RGB(50, 255, 255), FALSE, 1);
+			else if (m_bIsSpecial)
+				PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), FALSE, 1);
+			else
+				PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), FALSE, 1);
+
+			iLoc += 15;
+		}
+
+		if (strlen(cStr2) != 0)
+		{
+			PutString(msX, msY + 25 + iLoc, cStr2, RGB(150, 150, 150), FALSE, 1);
+			iLoc += 15;
+		}
+		if (strlen(cStr3) != 0)
+		{
+			PutString(msX, msY + 25 + iLoc, cStr3, RGB(150, 150, 150), FALSE, 1);
+			iLoc += 15;
+		}
+		
+		if (iLoc == 15)
+		{
+			iLoc = 0;
+			for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++)
+			{
+				if (m_pItemList[iTmp] != NULL)
+				{
+					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iLoc++;
+				}
+			}
+			if (iLoc > 1)
+			{
+				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
+				PutString(msX, msY + 40, G_cTxt, RGB(150, 150, 150), FALSE, 1);
+			}
+		}
+	}
 
 	if (m_bIsGetPointingMode == TRUE)
 	{	if ( (m_iPointCommandType >= 100) && (m_iPointCommandType < 200) ) // spell
@@ -6870,6 +7417,7 @@ void CGame::CommonEventHandler(char * pData)
  WORD * wp, wEventType;
  short * sp, sX, sY, sV1, sV2, sV3, sV4;
  char * cp;
+ DWORD* dwp, dwV4;
 
 	wp   = (WORD *)(pData + DEF_INDEX2_MSGTYPE);
 	wEventType = *wp;
@@ -6902,10 +7450,17 @@ void CGame::CommonEventHandler(char * pData)
 
 	switch (wEventType) {
 	case DEF_COMMONTYPE_ITEMDROP:
+		/*if ((sV1 == 6) && (sV2 == 0)) {
+			bAddNewEffect(4, sX, sY, NULL, NULL, 0);
+		}
+		m_pMapData->bSetItem(sX, sY, sV1, sV2, (char)sV3);*/
+		dwp = (DWORD*)cp;
+		dwV4 = *dwp;
+		cp += 4;
 		if ((sV1 == 6) && (sV2 == 0)) {
 			bAddNewEffect(4, sX, sY, NULL, NULL, 0);
 		}
-		m_pMapData->bSetItem(sX, sY, sV1, sV2, (char)sV3);
+		m_pMapData->bSetItem(sX, sY, sV1, (char)sV3, dwV4);
 		break;
 
 	case DEF_COMMONTYPE_SETITEM:
@@ -15245,6 +15800,8 @@ void CGame::_ReadMapData(short sPivotX, short sPivotY, char * pData)
  int   * ip, iApprColor;
  WORD    wObjectID;
  WORD  * wp, wDynamicObjectID;
+ short sItemID;
+ DWORD* dwp, dwItemAttr;
 	cp = pData;
 	m_sVDL_X = sPivotX; // Valid Data Loc-X
 	m_sVDL_Y = sPivotY;
@@ -15360,7 +15917,7 @@ void CGame::_ReadMapData(short sPivotX, short sPivotY, char * pData)
 			}
 			m_pMapData->bSetDeadOwner(wObjectID, sPivotX + sX, sPivotY + sY, sType, cDir, sAppr1, sAppr2, sAppr3, sAppr4, iApprColor, iStatus, cName);
 		}
-		if (ucHeader & 0x04)
+		/*if (ucHeader & 0x04)
 		{	sp  = (short *)cp;
 			sItemSpr = *sp;
 			cp += 2;
@@ -15370,6 +15927,18 @@ void CGame::_ReadMapData(short sPivotX, short sPivotY, char * pData)
 			cItemColor = *cp;
 			cp++;
 			m_pMapData->bSetItem(sPivotX + sX, sPivotY + sY, sItemSpr, sItemSprFrame, cItemColor, FALSE);
+		}*/
+		if (ucHeader & 0x04)
+		{
+			sp = (short*)cp;
+			sItemID = *sp;
+			cp += 2;
+			cItemColor = *cp;
+			cp++;
+			dwp = (DWORD*)cp; // kamal
+			dwItemAttr = *dwp;
+			cp += 4;
+			m_pMapData->bSetItem(sPivotX + sX, sPivotY + sY, sItemID, cItemColor, dwItemAttr, FALSE);
 		}
 		if (ucHeader & 0x08) // Dynamic object
 		{	wp = (WORD *)cp;
@@ -32255,7 +32824,8 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 		}
 
 		m_pMapData->bGetOwner(m_sMCX, m_sMCY - 1, cName, &sObjectType, &iObjectStatus, &m_wCommObjectID); // v1.4
-		if (memcmp(m_cMCName, m_cPlayerName, 10) == 0 && (sObjectType <= 6 || m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemSprite != 0))
+		//if (memcmp(m_cMCName, m_cPlayerName, 10) == 0 && (sObjectType <= 6 || m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemSprite != 0))
+		if (memcmp(m_cMCName, m_cPlayerName, 10) == 0 && (sObjectType <= 6 || (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID != 0 && m_pItemConfigList[m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID]->m_sSprite != 0))) 
 		{
 			if ((m_sPlayerType >= 1) && (m_sPlayerType <= 6))
 			{

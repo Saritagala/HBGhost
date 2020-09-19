@@ -530,7 +530,7 @@ void CGame::_DeleteRandomOccupyFlag(int iMapIndex)
 				// Å¬¶óÀÌ¾ðÆ®¿¡°Ô ±ê¹ßÀÌ »ç¶óÁüÀ» ¾Ë¸®°í 
 				SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iDynamicObjectIndex]->m_cMapIndex,
 					m_pDynamicObjectList[iDynamicObjectIndex]->m_sX, m_pDynamicObjectList[iDynamicObjectIndex]->m_sY,
-					m_pDynamicObjectList[iDynamicObjectIndex]->m_sType, iDynamicObjectIndex, NULL);
+					m_pDynamicObjectList[iDynamicObjectIndex]->m_sType, iDynamicObjectIndex, NULL, (short)0);
 				// ¸Ê¿¡¼­ ±ê¹ß µ¿Àû °´Ã¼¸¦ »èÁ¦ÇÑ´Ù.
 				m_pMapList[m_pDynamicObjectList[iDynamicObjectIndex]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[iDynamicObjectIndex]->m_sX, m_pDynamicObjectList[iDynamicObjectIndex]->m_sY, dwTime);
 
@@ -696,7 +696,7 @@ void CGame::RemoveOccupyFlags(int iMapIndex)
 			if (m_pDynamicObjectList[iDynamicObjectIndex] == NULL) continue;
 			SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT
 				, iMapIndex, dX, dY, m_pDynamicObjectList[iDynamicObjectIndex]->m_sType
-				, iDynamicObjectIndex, NULL);
+				, iDynamicObjectIndex, NULL, (short)0);
 			m_pMapList[iMapIndex]->SetDynamicObject(NULL, NULL, dX, dY, dwTime);
 
 			if (m_pDynamicObjectList[iDynamicObjectIndex] == NULL)
@@ -1769,9 +1769,13 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 		{
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 				m_pClientList[iClientH]->m_sY, pItem);
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4	
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor); // v1.4			
+				pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
+
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
