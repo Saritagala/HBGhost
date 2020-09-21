@@ -8610,7 +8610,6 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		break;
 
 	case DEF_OWNERTYPE_NPC:
-	default:
 		return;
 	}
 
@@ -8621,9 +8620,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8642,9 +8641,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8662,9 +8661,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8682,9 +8681,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8702,9 +8701,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8722,9 +8721,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8740,9 +8739,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8760,9 +8759,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8779,9 +8778,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8800,9 +8799,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8818,9 +8817,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8838,9 +8837,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8858,9 +8857,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8875,9 +8874,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8894,9 +8893,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8912,9 +8911,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8931,9 +8930,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8950,9 +8949,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}
@@ -8968,9 +8967,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 
 
 			if ((m_pClientList[iTargetH]->m_cSide != 0) && (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan > 0)) {
-				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= 500;
+				m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan -= iValue;
 				SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_CURLIFESPAN, iTemp, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan, NULL, NULL);
-				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 1500) {
+				if (m_pClientList[iTargetH]->m_pItemList[iTemp]->m_wCurLifeSpan <= 2000) {
 					ReleaseItemHandler(iTargetH, iTemp, TRUE);
 					SendNotifyMsg(NULL, iTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iTargetH]->m_pItemList[iTemp]->m_cEquipPos, iTemp, NULL, NULL);
 				}

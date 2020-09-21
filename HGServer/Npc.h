@@ -24,10 +24,10 @@ class CNpcItem
     CNpcItem();
 
     char  m_cName[21];
-    short m_sItemID;    // 2002-09-09 #1 Item ID
-    short m_sFirstProbability;
+    int m_sItemID;    // 2002-09-09 #1 Item ID
+    int m_sFirstProbability;
     char  m_cFirstTargetValue;
-    short m_sSecondProbability;
+    int m_sSecondProbability;
     char  m_cSecondTargetValue;
 };
 

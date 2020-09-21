@@ -227,7 +227,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// Snoopy: MP3 support
 	Mp3Init();
 
-#ifndef _DEBUG
+#ifndef DEF_MULTI_CLIENT
 	if (OpenMutex(MUTEX_ALL_ACCESS, FALSE, "0543kjg3j31%") != NULL) {
 		MessageBox(NULL, "Only one Helbreath Ghost client program allowed!", "ERROR!", MB_OK);
 		return 0;
@@ -237,7 +237,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	
 	EventLoop();
 
-#ifndef _DEBUG
+#ifndef DEF_MULTI_CLIENT
 	ReleaseMutex(hMutex);
 	CloseHandle(hMutex);
 #endif

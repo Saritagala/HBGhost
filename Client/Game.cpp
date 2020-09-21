@@ -1648,7 +1648,7 @@ char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, BOOL bMo
 			}
 		}
 	}
-	if (m_cPlayerTurn == 1) {
+	else if (m_cPlayerTurn == 1) {
 		for (i = cDir; i >= cDir - 2;i--)
 		{
 			cTmpDir = i;
@@ -1684,7 +1684,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 	dwTime = timeGetTime();
 	ZeroMemory(cMsg, sizeof(cMsg));
 
-	cKey = (char)(rand() % 255) +1;
+	cKey = (char)(rand() % 245) +1;
 
 	switch (dwMsgID) {
 
@@ -2718,7 +2718,9 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 
 				if ((indexX < m_pMapData->m_sPivotX) || (indexX > m_pMapData->m_sPivotX + MAPDATASIZEX) ||
 					(indexY < m_pMapData->m_sPivotY) || (indexY > m_pMapData->m_sPivotY + MAPDATASIZEY))
-				{	sItemSprite = NULL;
+				{
+					sItemID = NULL;
+					//sItemSprite = NULL;
 					bRet = FALSE;
 				}else
 				{	_tmp_dX = dX = indexX - m_pMapData->m_sPivotX; // v2.171 2002-6-14
@@ -2836,10 +2838,9 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 							m_sViewDstX = (indexX*32) - 288 - 32;
 							m_sViewDstY = (indexY*32) - 224;
 #endif
-							SetRect(&m_rcPlayerRect, m_rcBodyRect.left, m_rcBodyRect.top, m_rcBodyRect.right, m_rcBodyRect.bottom);
-							bIsPlayerDrawed = TRUE;
 						}
-						
+						SetRect(&m_rcPlayerRect, m_rcBodyRect.left, m_rcBodyRect.top, m_rcBodyRect.right, m_rcBodyRect.bottom);
+						bIsPlayerDrawed = TRUE;
 		   	}	}	}
 
 			// CLEROTH
@@ -2850,7 +2851,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 			{	if ((sObjSpr < 100) || (sObjSpr >= 200))
 				{	switch (sObjSpr) {
 					case 200:
-					case 223:
+					//case 223:
 						m_pTileSpr[sObjSpr]->PutShadowSprite(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						break;
 
@@ -2876,6 +2877,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 
 					switch (sObjSpr) {
 					case 223:
+						m_pTileSpr[sObjSpr]->PutShadowSprite(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						if (sObjSprFrame == 4)
 						{	if (G_cSpriteAlphaDegree == 2) //nuit
 							{	int iDvalue1 = -1*(rand() % 5);
@@ -3196,30 +3198,6 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 	}	}
 
 	if (sItemSelectedID != -1) {
-		/*char cStr1[64], cStr2[64], cStr3[64];
-		int  iLoc = -15;
-		GetItemName(m_pItemConfigList[sItemSelectedID]->m_cName, dwItemSelectedAttr, cStr1, cStr2, cStr3);//, cStr4, cStr5);
-		
-		iLoc = 0;
-		if (strlen(cStr1) != 0)
-		{
-			if (m_bIsSpecial)
-				PutString(iItemSelectedx, iItemSelectedy + 25 - 15, cStr1, RGB(0, 255, 50), FALSE, 1);
-			else
-				PutString(iItemSelectedx, iItemSelectedy + 25 - 15, cStr1, RGB(255, 255, 255), FALSE, 1);
-			iLoc += 15;
-		}
-		if (strlen(cStr2) != 0)
-		{
-			PutString(iItemSelectedx, iItemSelectedy + 25 + iLoc - 15, cStr2, RGB(150, 150, 150), FALSE, 1);
-			iLoc += 15;
-		}
-		if (strlen(cStr3) != 0)
-		{
-			PutString(iItemSelectedx, iItemSelectedy + 25 + iLoc - 15, cStr3, RGB(150, 150, 150), FALSE, 1);
-			iLoc += 15;
-		}*/
-
 		char cStr1[128], cStr2[128], cStr3[128], cStr4[128], cStr5[128], cStr6[128];
 		int iLoc, iEntry2 = 0;
 		GetItemName(m_pItemConfigList[sItemSelectedID]->m_cName, dwItemSelectedAttr, cStr1, cStr2, cStr3);
@@ -3244,10 +3222,6 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry2++;
 				}
 			}
-			if (iEntry2 > 1) {
-				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iEntry2);
-				iEntry++;
-			}
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
@@ -3258,34 +3232,34 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 		else iLenSize = iLenSize * 6.2f;
 
 		if (iEntry > 1) {
-			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
+			m_DDraw.DrawShadowBox(iItemSelectedx - 3, iItemSelectedy + 25 - 1, iItemSelectedx + iLenSize, iItemSelectedy + 26 + 15 * iEntry, 0, true);
 		}
-		else m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
+		else m_DDraw.DrawShadowBox(iItemSelectedx - 3, iItemSelectedy + 25 - 1, iItemSelectedx + iLenSize, iItemSelectedy + 26 + 15 * iEntry, 0, true);
 		//-----------------------------------------------------------------------------------------------------------------------------------
 
 		iLoc = 0;
 		if (strlen(cStr1) != 0)
 		{
 			if (m_bIsRare)
-				PutString(msX, msY + 25, cStr1, RGB(255, 232, 0), FALSE, 1);
+				PutString(iItemSelectedx, iItemSelectedy + 25, cStr1, RGB(255, 232, 0), FALSE, 1);
 			else if (m_bIsFragile)
-				PutString(msX, msY + 25, cStr1, RGB(50, 255, 255), FALSE, 1);
+				PutString(iItemSelectedx, iItemSelectedy + 25, cStr1, RGB(50, 255, 255), FALSE, 1);
 			else if (m_bIsSpecial)
-				PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), FALSE, 1);
+				PutString(iItemSelectedx, iItemSelectedy + 25, cStr1, RGB(0, 255, 50), FALSE, 1);
 			else
-				PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), FALSE, 1);
+				PutString(iItemSelectedx, iItemSelectedy + 25, cStr1, RGB(255, 255, 255), FALSE, 1);
 
 			iLoc += 15;
 		}
 
 		if (strlen(cStr2) != 0)
 		{
-			PutString(msX, msY + 25 + iLoc, cStr2, RGB(150, 150, 150), FALSE, 1);
+			PutString(iItemSelectedx, iItemSelectedy + 25 + iLoc, cStr2, RGB(150, 150, 150), FALSE, 1);
 			iLoc += 15;
 		}
 		if (strlen(cStr3) != 0)
 		{
-			PutString(msX, msY + 25 + iLoc, cStr3, RGB(150, 150, 150), FALSE, 1);
+			PutString(iItemSelectedx, iItemSelectedy + 25 + iLoc, cStr3, RGB(150, 150, 150), FALSE, 1);
 			iLoc += 15;
 		}
 		
@@ -3298,11 +3272,6 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 				{
 					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iLoc++;
 				}
-			}
-			if (iLoc > 1)
-			{
-				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
-				PutString(msX, msY + 40, G_cTxt, RGB(150, 150, 150), FALSE, 1);
 			}
 		}
 	}
@@ -26311,8 +26280,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
 		{	if (m_bIsDialogEnabled[60] == FALSE)
 			{	
-				//EnableDialogBox(60, NULL, NULL, NULL);
-				//bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
+				EnableDialogBox(60, NULL, NULL, NULL);
+				bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
 				
 			}else	
 			{	DisableDialogBox(60);
@@ -32637,7 +32606,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 		}
 		break;
 	case DEF_CURSORSTATUS_SELECTED:
-		if (cLB == 0)
+		/*if (cLB == 0)
 		{
 			if (((dwTime - m_stMCursor.dwSelectClickTime) < DEF_DOUBLECLICKTIME) 	// Double Click
 				&& (msX == m_stMCursor.sClickX) && (msY == m_stMCursor.sClickY))
@@ -32664,6 +32633,72 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 			return;
 		}
 		if (cLB != 0) 			// v2.05 01-11-30
+		{
+			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY) == TRUE) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
+
+			if ((m_stMCursor.sPrevX != msX) || (m_stMCursor.sPrevY != msY))
+			{
+				m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_DRAGGING;
+				m_stMCursor.sPrevX = msX;
+				m_stMCursor.sPrevY = msY;
+				if ((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_DLGBOX) &&
+					((m_stMCursor.sSelectedObjectID == 30) || (m_stMCursor.sSelectedObjectID == 29)))
+				{
+					m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+				}
+				if ((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_DLGBOX) &&
+					(m_stMCursor.sSelectedObjectID == 7) && (m_stDialogBoxInfo[7].cMode == 1))
+				{
+					EndInputString();
+					m_stDialogBoxInfo[7].cMode = 20;
+				}
+				// Query Drop Item Amount
+				if ((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_DLGBOX) &&
+					(m_stMCursor.sSelectedObjectID == 17) && (m_stDialogBoxInfo[17].cMode == 1))
+					// Guild Menu
+				{
+					EndInputString();
+					m_stDialogBoxInfo[17].cMode = 20;
+				}
+				return;
+			}
+			if ((m_cCommand == DEF_OBJECTMOVE) || (m_cCommand == DEF_OBJECTRUN)) goto MOTION_COMMAND_PROCESS;
+			return;
+		}*/
+		if (cLB == 0)
+		{	//ZeroEoyPnk - Bye delay...
+			if ((m_bIsDialogEnabled[12] != TRUE) || (m_stMCursor.sSelectedObjectID != 12))
+			{
+				if (((dwTime - m_stMCursor.dwSelectClickTime) < DEF_DOUBLECLICKTIME) 	// Double Click
+					&& (msX == m_stMCursor.sClickX) && (msY == m_stMCursor.sClickY))
+				{
+					m_stMCursor.dwSelectClickTime = m_stMCursor.dwSelectClickTime;
+					_bCheckDlgBoxDoubleClick(msX, msY);
+				}
+				else // Click
+				{
+					_bCheckDlgBoxClick(msX, msY);
+					m_stMCursor.sClickX = msX;
+					m_stMCursor.sClickY = msY;
+				}
+			}
+			else
+			{
+				_bCheckDlgBoxClick(msX, msY);
+				m_stMCursor.sClickX = msX;
+				m_stMCursor.sClickY = msY;
+			}
+			m_stMCursor.dwSelectClickTime = dwTime;
+			m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+			if (m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_ITEM)
+			{
+				_bCheckDraggingItemRelease(msX, msY);
+				m_stMCursor.cSelectedObjectType = NULL;
+				m_stMCursor.sSelectedObjectID = NULL;
+			}
+			return;
+		}
+		else //if (cLB != 0) 			// v2.05 01-11-30
 		{
 			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY) == TRUE) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
 

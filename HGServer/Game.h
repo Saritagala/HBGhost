@@ -375,7 +375,7 @@ private:
 
 	void AgingMapSectorInfo();
 	void UpdateMapSectorInfo();
-	BOOL bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType, short sIsRare);
+	BOOL bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType);
 	int iGetItemWeight(class CItem* pItem, int iCount);
 	void CancelQuestHandler(int iClientH, int iQuest);
 	void ActivateSpecialAbilityHandler(int iClientH);
@@ -647,9 +647,8 @@ private:
 	void CheckClientResponseTime();
 
 	int iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char* pData);
-	void SendEventToNearClient_TypeC(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4 = NULL);
-	void SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, DWORD sV4 = NULL);
-	void SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4 = NULL);
+	void SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1 = 0, short sV2 = 0, short sV3 = 0, short sV4 = 0);
+	void SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1 = 0, short sV2 = 0, short sV3 = 0, DWORD sV4 = 0);
 	void SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dwMsgID, WORD wMsgType, short sV1, short sV2, short sV3);
 	void DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogout = TRUE, BOOL bForceCloseConn = FALSE);
 	int  iComposeInitMapData(short sX, short sY, int iClientH, char* pData);

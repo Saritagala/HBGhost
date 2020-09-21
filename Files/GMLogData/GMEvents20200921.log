@@ -1,0 +1,5 @@
+2020:09:21:16:15:34	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/tp abbylair"
+2020:09:21:16:15:44	Loc(abbylair) IP(192.168.0.28) GM(Centuu[GM]):"/tp cityhall_1"
+2020:09:21:16:15:50	Loc(cityhall_1) IP(192.168.0.28) GM(Centuu[GM]):"/tp abbylair"
+2020:09:21:16:16:05	Loc(abbylair) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostSword"
+2020:09:21:16:16:05	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostSword)

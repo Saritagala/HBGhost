@@ -4995,7 +4995,7 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			//m_stDialogBoxInfo[56].cMode = 22; // Check Online
 			//EnableDialogBox(60, NULL, NULL, NULL); 
 			m_stDialogBoxInfo[56].cMode = 40; // Player Manipulation
-			AddEventList("Online Users List Requested...", 10);
+			//AddEventList("Online Users List Requested...", 10);
 			PlaySound('E', 14, 5);
 		}
 		break;
@@ -5388,9 +5388,10 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			} else { AddEventList("Admin User Level is too low for this action.", 10); }
 		}
 
-		iNext += 1; //Observe mode
+		iNext += 1; //Admin goto
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
-			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 31, NULL, NULL, NULL);
+			//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 31, NULL, NULL, NULL);
+			m_stDialogBoxInfo[56].cMode = 42; // Admin Goto
 			PlaySound('E', 14, 5);
 		}
 		iNext += 1; //Set inv
@@ -6252,6 +6253,7 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 						m_stDialogBoxInfo[56].cMode = 23; // Manipulate Char
 						bListSelected = true;
 						PlaySound('E', 14, 5);
+						break;
 						//wsprintf(cTemp, "/to %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName);
 						//bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
 					}
@@ -6265,7 +6267,45 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 					for (i = 0; i < DEF_MAXMENUITEMS; i++)
 						if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
 
-					for (i = 0; i < 200; i++)
+					for (i = 0; i < DEF_MAXMENUITEMS; i++)
+						if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
+
+					bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
+
+					m_dwReqUsersTime = m_dwCurTime;
+					m_cCommandCount--;
+				}
+			}
+			break;
+
+		case 42: // centu
+			for (i = 0; i < 13; i++)
+			{
+				if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+				{
+					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+					{
+						ZeroMemory(cTemp, sizeof(cTemp));
+						//ZeroMemory(cCharSelection, sizeof(cCharSelection));
+						//strcpy(cCharSelection, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cName);
+						//m_stDialogBoxInfo[56].cMode = 23; // Manipulate Char
+						//bListSelected = true;
+						wsprintf(cTemp, "/goto %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cName);
+						bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
+						PlaySound('E', 14, 5);
+						break;
+					}
+				}
+			}
+
+			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18))
+			{
+				if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+				{
+					for (i = 0; i < DEF_MAXMENUITEMS; i++)
+						if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
+
+					for (i = 0; i < DEF_MAXMENUITEMS; i++)
 						if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
 
 					bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -6311,8 +6351,8 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 	double d1, d2, d3;
 	int iR, iG, iB;
 
-	char cTmpCName[21];
-	char cTmpGName[22];
+	char cTmpCName[11];
+	char cTmpGName[21];
 
 	for (int j = 0; j < DEF_MAXMENUITEMS; j++)
 	{
@@ -6325,14 +6365,14 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 				if (m_pOnlineUsersList[j]->m_cName[0] > m_pOnlineUsersList[k]->m_cName[0])
 				{
-					memcpy(cTmpCName, m_pOnlineUsersList[j]->m_cName, 21);
-					memcpy(cTmpGName, m_pOnlineUsersList[j]->m_cGuildName, 22);
+					memcpy(cTmpCName, m_pOnlineUsersList[j]->m_cName, 11);
+					memcpy(cTmpGName, m_pOnlineUsersList[j]->m_cGuildName, 21);
 
-					memcpy(m_pOnlineUsersList[j]->m_cName, m_pOnlineUsersList[k]->m_cName, 21);
-					memcpy(m_pOnlineUsersList[j]->m_cGuildName, m_pOnlineUsersList[k]->m_cGuildName, 22);
+					memcpy(m_pOnlineUsersList[j]->m_cName, m_pOnlineUsersList[k]->m_cName, 11);
+					memcpy(m_pOnlineUsersList[j]->m_cGuildName, m_pOnlineUsersList[k]->m_cGuildName, 21);
 
-					memcpy(m_pOnlineUsersList[k]->m_cName, cTmpCName, 21);
-					memcpy(m_pOnlineUsersList[k]->m_cGuildName, cTmpGName, 22);
+					memcpy(m_pOnlineUsersList[k]->m_cName, cTmpCName, 11);
+					memcpy(m_pOnlineUsersList[k]->m_cGuildName, cTmpGName, 21);
 				}
 			}
 		}
@@ -6846,9 +6886,9 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
-			PutString2(sX + 25, sY + iNext * 17 + 45, "Set Oberse Mode", 255, 255, 255);
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Admin GoTo", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Set Oberse Mode", 255, 255, 100);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Admin GoTo", 255, 255, 100);
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
@@ -7647,7 +7687,7 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 
 		break;
 
-		case 40: // GM Online List
+	case 40: // GM Online List
 		PutString_SprFont3(sX + 65, sY + 10, "Online List for GM's", 2, 150, 0);
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, "Select a player to manipulate this character.", 255, 255, 255);
 
@@ -7686,6 +7726,124 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		if (iTotalLines > 13 && m_stDialogBoxInfo[56].sView > iTotalLines - 13) m_stDialogBoxInfo[56].sView = iTotalLines - 13;
 		if (m_stDialogBoxInfo[56].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[56].sView = 0;
 
+		for (i = 0; i < 13; i++)
+			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cName, cStr2, cStr3);
+
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+				if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 0;	iG = 255; iB = 0;
+				}
+				else
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				{
+					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+				}
+			}
+
+		for (i = 0; i < 13; i++)
+			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp, '_', ' ');
+
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cName, cStr2, cStr3);
+
+				// display blank space rather than NONE if char has no guild
+				if (memcmp(cTemp, "NONE", 4) == 0)
+				{
+					memcpy(cTemp, "    ", 4);
+				}
+
+				if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 0;	iG = 255; iB = 0;
+				}
+				else
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				{
+					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+				}
+			}
+
+		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		{
+			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 255);
+			}
+			else {
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 100);
+			}
+		}
+		else
+		{
+			PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 65, 65, 65);
+		}
+		break;
+
+	case 42: // GM Online List
+		PutString_SprFont3(sX + 65, sY + 10, "Online List for GM's", 2, 150, 0);
+		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, "Select a player to teleport.", 255, 255, 255);
+
+		iTotalLines = 0;
+		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
+		if (iTotalLines > 13) {
+			d1 = (double)m_stDialogBoxInfo[56].sView;
+			d2 = (double)(iTotalLines - 13);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)(d3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+		}
+		else iPointerLoc = 0;
+
+		if (cLB != 0 && iTotalLines > 13)
+		{
+			if ((iGetTopDialogBoxIndex() == 56))
+			{
+				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
+				{
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 13);
+					d3 = (d1 * d2) / 274.0f;
+					m_stDialogBoxInfo[56].sView = (int)(d3 + 0.5f);
+				}
+			}
+		}
+		else m_stDialogBoxInfo[56].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 56 && msZ != 0)
+		{
+			m_stDialogBoxInfo[56].sView = m_stDialogBoxInfo[56].sView - msZ / 60;
+			m_DInput.m_sZ = 0;
+		}
+		if (iTotalLines > 13 && m_stDialogBoxInfo[56].sView > iTotalLines - 13) m_stDialogBoxInfo[56].sView = iTotalLines - 13;
+		if (m_stDialogBoxInfo[56].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[56].sView = 0;
 
 		for (i = 0; i < 13; i++)
 			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
@@ -7713,7 +7871,7 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 				}
 				else
 				{
-					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR , iG , 100);
+					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
 				}
 			}
 
@@ -8474,7 +8632,7 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 	int iR, iG, iB;
 
 	char cTmpCName[11];
-	char cTmpGName[22];
+	char cTmpGName[21];
 
 	for (int j = 0; j<DEF_MAXMENUITEMS; j++)
 	{
@@ -8488,13 +8646,13 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 				if (m_pOnlineUsersList[j]->m_cName[0] > m_pOnlineUsersList[k]->m_cName[0])
 				{
 					memcpy(cTmpCName, m_pOnlineUsersList[j]->m_cName, 11);
-					memcpy(cTmpGName, m_pOnlineUsersList[j]->m_cGuildName, 22);
+					memcpy(cTmpGName, m_pOnlineUsersList[j]->m_cGuildName, 21);
 
 					memcpy(m_pOnlineUsersList[j]->m_cName, m_pOnlineUsersList[k]->m_cName, 11);
-					memcpy(m_pOnlineUsersList[j]->m_cGuildName, m_pOnlineUsersList[k]->m_cGuildName, 22);
+					memcpy(m_pOnlineUsersList[j]->m_cGuildName, m_pOnlineUsersList[k]->m_cGuildName, 21);
 
 					memcpy(m_pOnlineUsersList[k]->m_cName, cTmpCName, 11);
-					memcpy(m_pOnlineUsersList[k]->m_cGuildName, cTmpGName, 22);
+					memcpy(m_pOnlineUsersList[k]->m_cGuildName, cTmpGName, 21);
 				}
 			}
 		}
@@ -8519,116 +8677,113 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 
 	switch (m_stDialogBoxInfo[60].cMode) {
 	case 0:
-		
-			iTotalLines = 0;
-			for (i = 0; i < DEF_MAXMENUITEMS; i++)
-				if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
-			if (iTotalLines > 13) {
-				d1 = (double)m_stDialogBoxInfo[60].sView;
-				d2 = (double)(iTotalLines - 13);
-				d3 = (274.0f * d1) / d2;
-				iPointerLoc = (int)(d3);
-				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
-				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
-			}
-			else iPointerLoc = 0;
+		iTotalLines = 0;
+		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
+		if (iTotalLines > 13) {
+			d1 = (double)m_stDialogBoxInfo[60].sView;
+			d2 = (double)(iTotalLines - 13);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)(d3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+		}
+		else iPointerLoc = 0;
 
-			if (cLB != 0 && iTotalLines > 13)
+		if (cLB != 0 && iTotalLines > 13)
+		{
+			if ((iGetTopDialogBoxIndex() == 60))
 			{
-				if ((iGetTopDialogBoxIndex() == 60))
+				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
-					{
-						d1 = (double)(msY - (sY + 35));
-						d2 = (double)(iTotalLines - 13);
-						d3 = (d1 * d2) / 274.0f;
-						m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
-					}
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 13);
+					d3 = (d1 * d2) / 274.0f;
+					m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
 				}
 			}
-			else m_stDialogBoxInfo[60].bIsScrollSelected = FALSE;
-			if (iGetTopDialogBoxIndex() == 60 && msZ != 0)
+		}
+		else m_stDialogBoxInfo[60].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 60 && msZ != 0)
+		{
+			m_stDialogBoxInfo[60].sView = m_stDialogBoxInfo[60].sView - msZ / 60;
+			m_DInput.m_sZ = 0;
+		}
+		if (iTotalLines > 13 && m_stDialogBoxInfo[60].sView > iTotalLines - 13) m_stDialogBoxInfo[60].sView = iTotalLines - 13;
+		if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[60].sView = 0;
+
+		for (i = 0; i < 13; i++)
+			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
-				m_stDialogBoxInfo[60].sView = m_stDialogBoxInfo[60].sView - msZ / 60;
-				m_DInput.m_sZ = 0;
-			}
-			if (iTotalLines > 13 && m_stDialogBoxInfo[60].sView > iTotalLines - 13) m_stDialogBoxInfo[60].sView = iTotalLines - 13;
-			if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[60].sView = 0;
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
 
-			for (i = 0; i < 13; i++)
-				if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+				if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
 				{
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
-
-					/*ZeroMemory(cTemp2, sizeof(cTemp2));
-					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
-					m_Misc.ReplaceString(cTemp2, '_', ' ');
-
-					if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
-					{
-						iR = 0;	iG = 255; iB = 0;
-					}
-					else
-					{
-						iR = 255;	iG = 255; iB = 255;
-					}*/
-
+					iR = 0;	iG = 255; iB = 0;
+				}
+				else
+				{
 					iR = 255;	iG = 255; iB = 255;
-
-					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
-						{
-							PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
-						}
-						else
-						{
-							PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
-						}
-					
 				}
 
-			/*for (i = 0; i < 13; i++)
-				if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
 				{
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
-					m_Misc.ReplaceString(cTemp, '_', ' ');
+					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+				}
+			}
 
-					ZeroMemory(cTemp2, sizeof(cTemp2));
-					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
+		for (i = 0; i < 13; i++)
+			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp, '_', ' ');
 
-					// display blank space rather than NONE if char has no guild
-					if (memcmp(cTemp, "NONE", 4) == 0)
-					{
-						memcpy(cTemp, "    ", 4);
-					}
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
 
-					if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
-					{
-						iR = 0;	iG = 255; iB = 0;
-					}
-					else
-					{
-						iR = 255;	iG = 255; iB = 255;
-					}
+				// display blank space rather than NONE if char has no guild
+				if (memcmp(cTemp, "NONE", 4) == 0)
+				{
+					memcpy(cTemp, "    ", 4);
+				}
 
-					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
-					{
-						PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR, iG, iB);
-					}
-					else
-					{
-						PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
-					}
-				}*/	
+				if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 0;	iG = 255; iB = 0;
+				}
+				else
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				{
+					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+				}
+			}
 
 		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
 		{
-			if ((msX>sX + 180) && (msX<sX + 180 + 40) && (msY>sY + 45 + 14 * 18) && (msY<sY + 45 + 15 * 18)) {
+			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
 				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 255);
 			}
 			else {
-				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 128, 128, 128);
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 100);
 			}
 		}
 		else
@@ -8671,7 +8826,7 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 			for (i = 0; i < DEF_MAXMENUITEMS; i++)
 				if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
 
-			for (i = 0; i < 200; i++)
+			for (i = 0; i < DEF_MAXMENUITEMS; i++)
 				if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
 
 			bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -21677,8 +21832,8 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			//m_stDialogBoxInfo[53].cMode = 4; // Online Users
-			//EnableDialogBox(60, NULL, NULL, NULL);
-			//bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
+			EnableDialogBox(60, NULL, NULL, NULL);
+			bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
 			PlaySound('E', 14, 5);
 		}
 		iNext += 1;

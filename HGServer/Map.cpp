@@ -3024,7 +3024,7 @@ void CGame::ClearMap()
 					do
 					{
 						//pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor);
-						pItem = m_pMapList[m_pClientList[m]->m_cMapIndex]->pGetItem(j, k, &sRemainItemID/*, &sRemainItemSprite, &sRemainItemSpriteFrame*/, &cRemainItemColor, &dwRemainItemAttr);
+						pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemID/*, &sRemainItemSprite, &sRemainItemSpriteFrame*/, &cRemainItemColor, &dwRemainItemAttr);
 						if (pItem != NULL)
 						{
 							delete pItem;
@@ -3392,7 +3392,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 	ZeroMemory(cData_Srt, sizeof(cData_Srt));
 	ZeroMemory(cData_Srt_Av, sizeof(cData_Srt_Av));
 	ipStatus = (int*)&iDumm;
-	cKey = (rand() % 255) + 1;
+	cKey = (rand() % 245) + 1;
 
 	dwp = (DWORD*)(cData_All + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
@@ -3898,74 +3898,6 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 	}
 }
 
-void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4)
-{
-	int i, iRet, iShortCutIndex;
-	char* cp, cData[100];
-	DWORD* dwp, dwTime;
-	WORD* wp;
-	short* sp;
-	BOOL bFlag;
-	char  cKey;
-
-	cKey = (char)(rand() % 255) + 1; // v1.4
-
-
-	ZeroMemory(cData, sizeof(cData));
-
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
-	*dwp = dwMsgID;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
-	*wp = wMsgType;
-
-	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
-
-	sp = (short*)cp;
-	*sp = sX;
-	cp += 2;
-
-	sp = (short*)cp;
-	*sp = sY;
-	cp += 2;
-
-	sp = (short*)cp;
-	*sp = sV1;
-	cp += 2;
-
-	sp = (short*)cp;
-	*sp = sV2;
-	cp += 2;
-
-	sp = (short*)cp;
-	*sp = sV3;
-	cp += 2;
-
-	sp = (short*)cp;
-	*sp = sV4;
-	cp += 2;
-
-	dwTime = timeGetTime();
-
-	//for (i = 1; i < DEF_MAXCLIENTS; i++)
-	bFlag = TRUE;
-	iShortCutIndex = 0;
-	while (bFlag == TRUE) {
-		i = m_iClientShortCut[iShortCutIndex];
-		iShortCutIndex++;
-		if (i == 0) bFlag = FALSE;
-
-		if ((bFlag == TRUE) && (m_pClientList[i] != NULL)) {
-			if ((m_pClientList[i]->m_cMapIndex == cMapIndex) &&
-				(m_pClientList[i]->m_sX >= sX - 12) &&
-				(m_pClientList[i]->m_sX <= sX + 12) &&
-				(m_pClientList[i]->m_sY >= sY - 10) &&
-				(m_pClientList[i]->m_sY <= sY + 10)) {
-
-				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 18, cKey);
-			}
-		}
-	}
-}
 void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, DWORD sV4)
 {
 	int i, iRet, iShortCutIndex;
@@ -3976,7 +3908,7 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	BOOL bFlag;
 	char  cKey;
 
-	cKey = (char)(rand() % 255) + 1; // v1.4
+	cKey = (char)(rand() % 245) + 1; // v1.4
 
 	ZeroMemory(cData, sizeof(cData));
 
@@ -4028,13 +3960,13 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 				(m_pClientList[i]->m_sY >= sY - 10) &&
 				(m_pClientList[i]->m_sY <= sY + 10)) {
 
-				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 18, cKey);
+				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 20, cKey);
 			}
 		}
 	}
 }
 
-void CGame::SendEventToNearClient_TypeC(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4)
+void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4)
 {
 	int i, iRet, iShortCutIndex;
 	char* cp, cData[100];
@@ -4044,7 +3976,7 @@ void CGame::SendEventToNearClient_TypeC(DWORD dwMsgID, WORD wMsgType, char cMapI
 	BOOL bFlag;
 	char  cKey;
 
-	cKey = (char)(rand() % 255) + 1; // v1.4
+	cKey = (char)(rand() % 245) + 1; // v1.4
 
 	ZeroMemory(cData, sizeof(cData));
 
@@ -4133,11 +4065,12 @@ BOOL CGame::_bRegisterMap(char* pName)
 			if ((m_iBTFieldMapIndex == -1) && (strcmp("BtField", pName) == 0)) m_iBTFieldMapIndex = i; // new
 			if ((m_iGodHMapIndex == -1) && (strcmp("GodH", pName) == 0)) m_iGodHMapIndex = i; // new
 			if ((m_iRampartMapIndex == -1) && (strcmp("HRampart", pName) == 0)) m_iRampartMapIndex = i;
+			
 			m_iTotalMaps++;
 			return TRUE;
 		}
 	}
-	wsprintf(cTxt, "(!!!) CRITICAL ERROR! Map (%s) canot be added - no more map space.", pName);
+	wsprintf(cTxt, "(!!!) CRITICAL ERROR! Map (%s) cannot be added - no more map space.", pName);
 	PutLogList(cTxt);
 	return FALSE;
 }
