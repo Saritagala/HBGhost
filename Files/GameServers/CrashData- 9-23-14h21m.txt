@@ -1,0 +1,14 @@
+ 9 23 - 14:21:12
+HGServer Exception Information
+Code : 0xC0000005
+Flags : 0x00000000
+Address : 0x00815E57
+Parameters : 0x00000002
+
+
+Context :
+EDI: 0x04D31020		ESI: 0x0000005A		EAX: 0x00000000
+EBX: 0x04D336C8		ECX: 0x125681C0		EDX: 0x00000000
+EIP: 0x00815E57		EBP: 0x003EF4EC		SegCs: 0x00000023
+EFlags: 0x00010246	ESP: 0x003EF4B0		SegSs: 0x0000002B
+--------------------------------------------------------------------------------

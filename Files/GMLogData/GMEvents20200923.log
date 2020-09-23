@@ -1,0 +1,18 @@
+2020:09:23:14:32:15	Loc(cityhall_2) IP(192.168.100.2) PC(TestWarr):"/tp procella"
+2020:09:23:14:57:32	Loc(cityhall_2) IP(192.168.100.2) PC(TestWarr):"/who"
+2020:09:23:15:00:34	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem MerienShield"
+2020:09:23:15:00:34	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(MerienShield)
+2020:09:23:15:00:38	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem RingOfDemonPower"
+2020:09:23:15:00:49	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem SupremoHeroWand"
+2020:09:23:15:00:49	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(SupremoHeroWand)
+2020:09:23:15:03:46	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem RingofDemonPower"
+2020:09:23:15:04:00	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem RingofdemonPower"
+2020:09:23:15:20:00	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem KlonnesEsterk"
+2020:09:23:15:20:05	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem KlonessEsterk"
+2020:09:23:15:20:05	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(KlonessEsterk)
+2020:09:23:15:20:11	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem BloodRapier"
+2020:09:23:15:20:11	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(BloodRapier)
+2020:09:23:15:20:17	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem XelimaRapier"
+2020:09:23:15:20:17	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(XelimaRapier)
+2020:09:23:15:20:30	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem SupremoHeroWand"
+2020:09:23:15:20:30	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(SupremoHeroWand)
