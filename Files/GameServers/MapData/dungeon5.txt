@@ -75,7 +75,7 @@ teleport-loc     =     141 133     abbylair             49 28    5
 teleport-loc     =     141 134     abbylair             49 28    5
 
 
-maximum-object		= 500
+maximum-object		= 400
 //random-mob-generator	= 1  7
 
 fixed-dayornight-mode = 1

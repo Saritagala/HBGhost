@@ -94,7 +94,7 @@ waypoint          =     18      400   455
 waypoint          =     19      450   525			
 
 
-maximum-object	=	750
+maximum-object	=	500
 random-mob-generator	=	1	3							
 
 //-----------------------Num-Type-RECT---------------Mob-MobNum									

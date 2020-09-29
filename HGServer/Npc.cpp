@@ -1008,8 +1008,7 @@ void CGame::DeleteNpc(int iNpcH)
 		switch (m_pNpcList[iNpcH]->m_sType) {
 
 		case 10: // Slime
-			if (iDice(1, 25) == 1) iItemID = 220;  // SlimeJelly
-			
+			if (iDice(1, 25) == 1) iItemID = 220;  // SlimeJelly			
 			break;
 
 		case 11: // Skeleton
@@ -1070,11 +1069,6 @@ void CGame::DeleteNpc(int iNpcH)
 			}
 			break;
 
-		case 18: //Zombie
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType);
-			
-			break;
-
 		case 22: //Amphis
 			switch (iDice(1, 5)) {
 			case 1: if (iDice(1, 15) == 1) iItemID = 188; break; // SnakeMeat
@@ -1132,10 +1126,6 @@ void CGame::DeleteNpc(int iNpcH)
 			}
 			break;
 
-		case 30: //Liche
-			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType);
-			break;
-
 		case 31: //Demon
 		case 93: //Black-Demon
 			switch (iDice(1, 5)) {
@@ -1188,15 +1178,11 @@ void CGame::DeleteNpc(int iNpcH)
 		case 62: //DireBoar
 		case 63: //Frost
 		case 65: //Ice
+		case 54: //Dark-Elf
+		case 30: //Liche
+		case 18: //Zombie
 			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); 
 			
-			break;
-
-		case 54: //Dark-Elf
-			switch (iDice(1, 2)) {
-			case 1: if (iDice(1, 30) == 3) iItemID = 77; break; // Arrow
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
-			}
 			break;
 
 		// new 05/10/2004
@@ -1252,7 +1238,7 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem = NULL;
 				}
 				else {
-					if (iItemIDs[j] == 90) // Gold
+					if (iItemIDs[j] == 90 || iItemIDs[j] == 77) // Gold or Arrow
 						pItem->m_dwCount = iDice(10, 15000);
 					else
 						pItem->m_dwCount = dwCount;
@@ -1322,7 +1308,7 @@ void CGame::DeleteNpc(int iNpcH)
 				//	m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, pItem2->m_sSprite, pItem2->m_sSpriteFrame, pItem2->m_cItemColor);
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 					m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
-					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
+					pItem2->m_sIDnum, pItem2->m_sSpriteFrame, pItem2->m_cItemColor, pItem2->m_dwAttribute);
 				_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, m_pNpcList[iNpcH]->m_cNpcName, pItem2);
 			}
 		}
@@ -1746,7 +1732,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	switch (m_pNpcList[iNpcH]->m_sType) {
 	// NPC not dropping Gold
 	case 21: // Guard
-	//case 34: // Dummy
 	case 64: // Crop
 		return;
 	}
@@ -1756,7 +1741,10 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		// 35% Drop 60% of that is gold
 		// 35% Chance of drop (35/100)
 		if (iDice(1, 10000) <= m_iGoldRate) { // Centuu : Agregado para controlar el drop de oro.
-			iItemID = 90; // Gold: (35/100) * (60/100) = 21%
+			switch (iDice(1, 2)) {
+			case 1: iItemID = 90; break; // Gold: (35/100) * (60/100) = 21%
+			case 2: iItemID = 77; break; // Arrow
+			}
 			// If a non-existing itemID is given create no item 
 			pItem = new class CItem;
 			if (_bInitItemAttr(pItem, iItemID) == FALSE) {
@@ -1775,15 +1763,20 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			}
 
 			//Magn0S:: Multiplicador de Gold
-			pItem->m_dwCount *= 10;
+			//pItem->m_dwCount *= 10;
 		}
 		else {
+
+			switch (m_pNpcList[iNpcH]->m_sType) {
+			case 34: // Dummy
+				return;
+			}
 			// 9000 default; the lower the greater the Weapon/Armor/Wand Drop
 			// 35% Drop 40% of that is an Item 
 			if (iDice(1, 10000) < m_iSecondaryDropRate) {
 				// 40% Drop 90% of that is a standard drop
 				// Standard Drop Calculation: (35/100) * (40/100) * (90/100) = 12.6%
-				iResult = iDice(1, 12000);
+				iResult = iDice(1, 10000);
 				if ((iResult >= 1) && (iResult <= 3000))          dwValue = 1;
 				else if ((iResult >= 3001) && (iResult <= 4000))  dwValue = 2;
 				else if ((iResult >= 4001) && (iResult <= 5500))  dwValue = 3;
@@ -1792,62 +1785,24 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				else if ((iResult >= 8501) && (iResult <= 9200))  dwValue = 6;
 				else if ((iResult >= 9201) && (iResult <= 9800))  dwValue = 7;
 				else if ((iResult >= 9801) && (iResult <= 10000)) dwValue = 8;
-				else if ((iResult >= 10001) && (iResult <= 12000)) dwValue = 9;
-
+				
 				switch (dwValue) {
-				case 1: iItemID = 95; break; // Green Potion
-				case 2: iItemID = 91; break; // Red Potion
-				case 3: iItemID = 93; break; // Blue Potion
+				case 1: // Green Potion
 				case 4: iItemID = 96; break; // Big Green Potion
+				case 2: // Red Potion
 				case 5: iItemID = 92; break; // Big Red Potion
+				case 3: // Blue Potion
 				case 6: iItemID = 94; break; // Big Blue Potion
-				case 7: switch (iDice(1, 2)) {
-				case 1: iItemID = 390; break; // Power Green Potion
-				case 2: iItemID = 95;  break; // Green Potion
-				}
-					  break;
-				case 8: switch (iDice(1, 6)) {
-				case 1: iItemID = 391; break; // Super Power Green Potion
-				case 2: iItemID = 650; break; // Zemstone of Sacrifice
-				case 3: iItemID = 656; break; // Xelima Stone
-				case 4: iItemID = 657; break; // Merien Stone
-				case 5: iItemID = 95;  break; // Green Potion
-				case 6: switch (iDice(1, 5)) {
-				case 1: iItemID = 651; break; // GreenBall
-				case 2: iItemID = 652; break; // RedBall
-				case 3: iItemID = 653; break; // YellowBall
-				case 4: iItemID = 654; break; // BlueBall
-				case 5: switch (iDice(1, 11)) {
-				case 1: iItemID = 881; break; // ArmorDye(Indigo)
-				case 2: iItemID = 882; break; // ArmorDye(Crimson-Red)
-				case 3: iItemID = 883; break; // ArmorDye(Gold)
-				case 4: iItemID = 884; break; // ArmorDye(Aqua)
-				case 5: iItemID = 885; break; // ArmorDye(Pink)
-				case 6: iItemID = 886; break; // ArmorDye(Violet)
-				case 7: iItemID = 887; break; // ArmorDye(Blue)
-				case 8: iItemID = 888; break; // ArmorDye(Khaki)
-				case 9: iItemID = 889; break; // ArmorDye(Yellow)
-				case 10: iItemID = 890; break; // ArmorDye(Red)
-				case 11: iItemID = 655; break; // PearlBall
-				}
-					  break;
-				}
-					  break;
-				}
-					  break;
-
-				case 9:
-					//SYSTEMTIME SysTime;
-					//GetLocalTime(&SysTime);
-					//if (((short)SysTime.wMonth == 12) && (m_pNpcList[iNpcH]->m_sType == 61 || m_pNpcList[iNpcH]->m_sType == 55)) {
-					//	switch (iDice(1, 4)) {
-					//	case 1: iItemID = 780; break; // Red Candy
-					//	case 2: iItemID = 781; break; // Blue Candy
-					//	case 3: iItemID = 782; break; // Green Candy
-					//	case 4: iItemID = 91;  break; // Red Potion
-					//	}
-					//}
+				case 7: iItemID = 390; break; // Power Green Potion
+				case 8: 
+					switch (iDice(1, 3)) {
+						case 1: iItemID = 650; break; // Zemstone of Sacrifice
+						case 2: iItemID = 656; break; // Xelima Stone
+						case 3: iItemID = 657; break; // Merien Stone
+						
+					}
 					break;
+
 				}
 				// If a non-existing item is created then delete the item
 				pItem = new class CItem;
@@ -1930,6 +1885,10 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				case 59: // Ettin
 				case 75: // Lizards
 					iGenLevel = 10;
+					break;
+
+				default:
+					iGenLevel = 0;
 					break;
 				}
 
@@ -2053,17 +2012,17 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 3:
 						case 9:
 						case 10:
-							iItemID = 258; 
-							break; // MagicWand(MS0)
+							iItemID = 258; // MagicWand(MS0) 
+							break; 
 						case 4:
 						case 5:
 						case 6:
-							iItemID = 257; 
-							break; // MagicWand(MS10)
+							iItemID = 257; // MagicWand(MS10) 
+							break; 
 						case 7:
 						case 8:
-							iItemID = 256; 
-							break; // MagicWand(MS20)
+							iItemID = 256; // MagicWand(MS20) 
+							break; 
 						}
 					}
 				}
@@ -2618,7 +2577,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 							pItem->m_sNewEffect1 = sElement;
 							break;
-							break;
+							
 						}
 						// Max = 7
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
@@ -2677,200 +2636,6 @@ void CGame::NpcBehavior_Dead(int iNpcH)
 		DeleteNpc(iNpcH);
 }
 
-// v2.15 2002-8-7 // 2002-09-06 #1
-/*void CGame::_bDecodeNpcItemConfigFileContents(char* pData, DWORD dwMsgSize)
-{
-	char* pContents, * token;
-	char seps[] = "= \t\n";
-	char cReadModeA = 0;
-	char cReadModeB = 0;
-	int  iNpcConfigListIndex = 0, k = 0;
-	class CStrTok* pStrTok;
-	class CNpcItem* pTempNpcItem = NULL;
-
-	pContents = new char[dwMsgSize + 1];
-	ZeroMemory(pContents, dwMsgSize + 1);
-	memcpy(pContents, pData, dwMsgSize);
-
-	pStrTok = new class CStrTok(pContents, seps);
-	token = pStrTok->pGet();
-	while (token != NULL) {
-		if (cReadModeA != 0) {
-			switch (cReadModeA) {
-			case 1:
-
-				switch (cReadModeB) {
-
-				case 1:
-					// NPC 이름
-					if (strlen(token) > 20) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Too long Npc name.");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-					for (iNpcConfigListIndex = 0; iNpcConfigListIndex < DEF_MAXNPCTYPES; iNpcConfigListIndex++)
-						if (m_pNpcConfigList[iNpcConfigListIndex] != NULL) {
-							if (strcmp(m_pNpcConfigList[iNpcConfigListIndex]->m_cNpcName, token) == 0) {
-								PutLogList(token);
-								break;
-							}
-						}
-					if (iNpcConfigListIndex == DEF_MAXNPCTYPES) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - No exist Npc Name");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-					cReadModeB = 2;
-					break;
-
-				case 2:
-					if (strlen(token) > 2) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Type Error.");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-					m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemType = atoi(token);
-					cReadModeB = 3;
-					break;
-
-				case 3:
-					if (strlen(token) > 20) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Too long Item name.");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-					if (pTempNpcItem == NULL)
-						pTempNpcItem = new class CNpcItem();
-
-					if (memcmp(token, "[ENDITEM]", 9) == 0) {
-						cReadModeA = 0;
-						cReadModeB = 0;
-
-						if (pTempNpcItem != NULL) {
-							delete pTempNpcItem;
-							pTempNpcItem = NULL;
-						}
-						break;
-					}
-
-					strcpy(pTempNpcItem->m_cName, token);
-					if (!m_bReceivedItemList)	// ITEM List가 오지 않았다.
-					{
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration error - Before Item List receiving.");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-
-					for (k = 0; k < DEF_MAXITEMTYPES; k++)
-					{
-						if (m_pItemConfigList[k] == NULL)
-							continue;
-
-						if (strcmp(token, m_pItemConfigList[k]->m_cName) == 0) {
-							pTempNpcItem->m_sItemID = m_pItemConfigList[k]->m_sIDnum;
-							break;
-						}
-					}
-
-					if (k == DEF_MAXITEMTYPES) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration error - Do Not exist in ITEM LIST");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-
-					cReadModeB = 4;
-					break;
-
-				case 4:
-					// 첫번째 확률
-					if (_bGetIsStringIsNumber(token) == FALSE) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Wrong Data format.");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-					pTempNpcItem->m_sFirstProbability = atoi(token);
-
-					if (pTempNpcItem->m_sFirstProbability <= 0) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - First probability have wrong value");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-
-					// 첫번째 확률에 대한 타겟값을 임의로 준다. 
-
-
-					cReadModeB = 5;
-					break;
-
-				case 5:
-					// 두번째 확률
-					if (_bGetIsStringIsNumber(token) == FALSE) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Wrong Data format.");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-
-					pTempNpcItem->m_sSecondProbability = atoi(token);
-
-					if (pTempNpcItem->m_sSecondProbability <= 0) {
-						PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file error - Second probability have wrong value");
-						delete[] pContents;
-						delete pStrTok;
-						return;
-					}
-
-					// 두번째 확률에 대한 타겟값을 임의로 준다. 
-
-
-					cReadModeB = 3;
-
-					// vector에 현재 까지 읽어 드린 값을 넣는다. 
-					m_pNpcConfigList[iNpcConfigListIndex]->m_vNpcItem.push_back(*pTempNpcItem);
-
-					// 2002-09-17 #1 NPCITEM Type 2일 경우
-					if (m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax < pTempNpcItem->m_sSecondProbability)
-						m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax = pTempNpcItem->m_sSecondProbability;
-
-					break;
-
-				} // switch #2
-
-			default:
-				break;
-
-			} // switch #1
-		} // if
-		else {
-
-			if (memcmp(token, "NpcItem", 7) == 0) {
-				cReadModeA = 1;
-				cReadModeB = 1;
-
-			}
-		}
-		token = pStrTok->pGet();
-	}
-
-	delete pStrTok;
-	delete[] pContents;
-
-	if ((cReadModeA != 0) || (cReadModeB != 0)) {
-		PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file contents error!");
-		return;
-	}
-
-	m_bNpcItemConfig = TRUE;
-
-}*/
 
 BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 {
@@ -3114,12 +2879,19 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			if (iDice(1, 1000) == CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
 			if (iDice(1, 1000) == CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
 		
-			if ((bFirstDice) && (bSecondDice)) {
+			if (bFirstDice && bSecondDice) {
 				iItemID = CTempNpcItem.m_sItemID;
 
 				wsprintf(G_cTxt, "NpcType 1 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);
 				PutLogList(G_cTxt);
 
+			}
+			else {
+				switch (iDice(1, 2))
+				{
+					case 1: iItemID = 90; break;
+					case 2: iItemID = 77; break;
+				}
 			}
 			break;
 

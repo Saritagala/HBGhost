@@ -142,7 +142,7 @@ no-attack-area           = 7       136 201 144 210
 no-attack-area           = 8       253 115 259 120
 
 
-maximum-object		= 600
+maximum-object		= 500
 //random-mob-generator	= 1  1
 
 

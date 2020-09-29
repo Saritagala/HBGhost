@@ -31,7 +31,7 @@ extern BOOL	G_bIsThread;
 extern unsigned __stdcall ThreadProc(void *ch);
 
 // Move lock para 800 x 600
-int _tmp_iMoveLocX[9][47] = {
+/*int _tmp_iMoveLocX[9][47] = {
 	// 0   1   2   3   4   5   6   7   8   9  10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46
 	// 0
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -73,7 +73,7 @@ int _tmp_iMoveLocY[9][47] = {
 	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 18, 19, 20, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
 	//8
 	{ 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 }
-};
+};*/
 
 char _tmp_cTmpDirX[9] =
 {
@@ -1719,10 +1719,6 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		*cp = 0; // missing data
 		cp++;*/
 
-		/*ip   = (int *)cp;
-		*ip  = m_pClientList[iClientH]->m_iExp;
-		cp  += 4;*/
-
 	ip = (int*)cp;
 	*ip = m_pClientList[iClientH]->m_iExp;
 	cp += 4;
@@ -2212,10 +2208,14 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, NULL, NULL, NULL);
 	}
 
+	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
+	{
+		m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00040000;
+	}
+
 	if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
-		// centu - 100% skills
-		AutoSkill(iClientH);
+		//AutoSkill(iClientH);
 		SetClass(iClientH);
 	}
 	// new
@@ -3160,16 +3160,29 @@ void CGame::CheckClientResponseTime()
 					m_pClientList[i]->m_dwAutoExpTime = dwTime;
 				}*/
 
-				// SNOOPY: Added shinning DemonSlayer if Demon/GG around
-				/*sItemIndex = m_pClientList[i]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
-				if (sItemIndex != -1)
+				// Centuu - shinning bow+15
+				if (m_pClientList[i]->m_iClass == 3) 
 				{
-					if (m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 616)   // DS equiped
+					sItemIndex = m_pClientList[i]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
+					if (sItemIndex != -1)
 					{
-						if (SpecialWeapon_DS(i) == true)
+						if (m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 140)
 						{
-							sTemp = m_pClientList[i]->m_sAppr4;
-							sTemp = sTemp | 0x0004;
+							if (((m_pClientList[i]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28) == 15)
+							{
+								sTemp = m_pClientList[i]->m_sAppr4;
+								sTemp = sTemp | 0x0004;
+							}
+							else
+							{
+								sTemp = m_pClientList[i]->m_sAppr4;
+								sTemp = sTemp & 0xFFFB;
+							}
+							if (m_pClientList[i]->m_sAppr4 != sTemp) // has changed
+							{
+								m_pClientList[i]->m_sAppr4 = sTemp;
+								SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
+							}
 						}
 						else
 						{
@@ -3182,7 +3195,17 @@ void CGame::CheckClientResponseTime()
 							SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 						}
 					}
-				}*/
+					else
+					{
+						sTemp = m_pClientList[i]->m_sAppr4;
+						sTemp = sTemp & 0xFFFB;
+					}
+					if (m_pClientList[i]->m_sAppr4 != sTemp) // has changed
+					{
+						m_pClientList[i]->m_sAppr4 = sTemp;
+						SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
+					}
+				}
 
 				if (m_pClientList[i]->m_iSpecialAbilityTime == 3) {
 					SendNotifyMsg(NULL, i, DEF_NOTIFY_SPECIALABILITYENABLED, NULL, NULL, NULL, NULL);
@@ -8942,6 +8965,13 @@ DWORD * dwp, dwTimeRcv;
 				}
 				break;
 
+			case MSGID_REQUEST_SKILLPOINT:
+				for (i = 0; i < 24; i++)
+				{
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLPOINT, i, m_pClientList[iClientH]->m_iSkillSSN[i], NULL, NULL);
+				}
+				break;
+
 			case MSGID_REQUEST_PING:
 				
 				//Change ping response
@@ -11586,7 +11616,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 	iDamage = (iDice(sV1, sV2) + sV3);
 	if (iDamage <= 0) iDamage = 0;
 
-	/*switch (cAttackerType)
+	switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -11597,7 +11627,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			}
 		}
 		break;
-	}*/
+	}
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:	
@@ -12699,7 +12729,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 
 	iPartyID = 0;
 
-	/*switch (cAttackerType)
+	switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -12710,7 +12740,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 		}
 		break;
-	}*/
+	}
 
 	// 공격자가 플레이어라면 Mag에 따른 보너스 대미지를 가산 
 	switch (cAttackerType) {
@@ -15939,16 +15969,11 @@ void CGame::_BWM_Command_Shutup(char *pData)
 	}
 }
 
-// centu - added majestic level to calculate max hp/sp/mp
 int CGame::iGetMaxHP(int iClientH, BOOL bBloodEffect)
 {
 	int iRet;
 	if (m_pClientList[iClientH] == NULL) return 0;
-	// Changed to this due to patch in client that in case of odd level and Str gives 1 more HP.
-	//iRet = (3*m_pClientList[iClientH]->m_iVit) + (2 * (m_pClientList[iClientH]->m_iLevel)) + ((m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr)/2);
-
-	//Magn0S:: Changed HP Formula
-	iRet = (4 * m_pClientList[iClientH]->m_iVit) + (4 * (m_pClientList[iClientH]->m_iLevel)) + (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) + (m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag);
+	iRet = (3*m_pClientList[iClientH]->m_iVit) + (2 * m_pClientList[iClientH]->m_iLevel) + ((m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr)/2);
 
 	if ((bBloodEffect == TRUE) && (m_pClientList[iClientH]->m_iSideEffect_MaxHPdown != 0))
 		iRet -= (iRet/m_pClientList[iClientH]->m_iSideEffect_MaxHPdown);
@@ -19856,7 +19881,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = NULL;
 	wWeaponType      = NULL;
 
-	/*switch (cAttackerType)
+	switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -19867,7 +19892,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 		}
 		break;
-	}*/
+	}
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -19920,7 +19945,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		// SNOOPY Added a 2nd attack if character has a MainGauche.
 		if (bMainGaucheAttack)
 		{	sSkillUsed = 20;
-			iAttackerHitRatio = m_pClientList[sAttackerH]->m_iHitRatio + m_pClientList[sAttackerH]->m_cSkillMastery[20];			
+			iAttackerHitRatio = m_pClientList[sAttackerH]->m_iHitRatio/* + m_pClientList[sAttackerH]->m_cSkillMastery[20]*/;			
 			if ( iAttackerHitRatio < 1 ) iAttackerHitRatio = 1;
 			// Compute damage
 			iAP_SM = iDice(1, 6);
@@ -20827,7 +20852,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY];
 					break;
 				case 2: // jambes
-					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS];
+					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS];
 					break;
 				case 3:  // bras
 					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS];
@@ -20836,15 +20861,15 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD];
 					break;	
 				case 5: // Bottes
-					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS];
+					iAP_Abs_Armor = (double)m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS];
 					break;	
 				case 6: // Bottes et jambes
-					if ((m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] +
+					if ((m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] +
 						m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS]) > 0) 
-					{	if ((m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] +
-							m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS]) >= 60)
-							 iAP_Abs_Armor = 60.0f;
-						else iAP_Abs_Armor = (double)(m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] + m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS]);
+					{	if ((m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] +
+							m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS]) >= 80)
+							 iAP_Abs_Armor = 80;
+						else iAP_Abs_Armor = (double)(m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] + m_pClientList[sTargetH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS]);
 					}
 					break;
 				}
@@ -20990,7 +21015,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				{	iAP_SM = m_pClientList[sTargetH]->m_iHP - 1;
 				}
 
-				/*switch (iHitPoint) 
+				switch (iHitPoint) 
 				{
 				case 1:
 					iTemp = m_pClientList[sTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
@@ -21002,7 +21027,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 					break;
 
 				case 2:
-					iTemp = m_pClientList[sTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+					iTemp = m_pClientList[sTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 					if ((iTemp != -1) && (m_pClientList[sTargetH]->m_pItemList[iTemp] != NULL) && (cAttackerType != DEF_OWNERTYPE_NPC)) {
 						bCalculateEnduranceDecrement(sTargetH, sAttackerH, cTargetType, iTemp);
 					}
@@ -21027,22 +21052,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 						bCalculateEnduranceDecrement(sTargetH, sAttackerH, cTargetType, iTemp);
 					}
 					break;
-				}*/
-
-				// Centuu : calculate endurance decrement
-				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 762) { // GiantBattleHammer
-					ArmorLifeDecrement(sAttackerH, sTargetH, DEF_OWNERTYPE_PLAYER, 250);
 				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 843) { // BarbarianHammer
-					ArmorLifeDecrement(sAttackerH, sTargetH, DEF_OWNERTYPE_PLAYER, 150);
-				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 854) { // KlonessHammer
-					ArmorLifeDecrement(sAttackerH, sTargetH, DEF_OWNERTYPE_PLAYER, 350);
-				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1038) { // StripBarbarian
-					ArmorLifeDecrement(sAttackerH, sTargetH, DEF_OWNERTYPE_PLAYER, 500);
-				}
-				
 	
 				if ((cAttackerSA == 2) && (m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] != 0)) {
 					SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_PROTECT, m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT ], NULL, NULL);
@@ -21104,10 +21114,17 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 							if(m_pClientList[sAttackerH]->m_iMP >= sManaCost){
 								iWeaponDamage = (double)dwValue2*7;
 								iInitial_AP_SM = (double)iAP_SM;
-								//m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT]
+								
 								iMagDamage = (double)(m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag)/20;
-								iTotalMagicDamage = ((iInitial_AP_SM/100.0f)*(iWeaponDamage+100))+iMagDamage;
-								iAP_SM = (int)iTotalMagicDamage;
+								iTotalMagicDamage = ((iInitial_AP_SM/100.0f)*(iWeaponDamage/100.0f))+iMagDamage;
+								
+								if (m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 2) 
+									iAP_SM = (int)iTotalMagicDamage / 2;
+								else if (m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 5)
+									iAP_SM = iWeaponDamage;
+								else
+									iAP_SM = (int)iTotalMagicDamage;
+
 								m_pClientList[sAttackerH]->m_iMP -= sManaCost;
 								SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_MP, NULL, NULL, NULL, NULL);
 							}
@@ -21141,7 +21158,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 							SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cDamageMod);
 							break;
 						default:
-							wsprintf(cDamageMod ,"You did %d Damage to %s (NONE)", iAP_SM, m_pClientList[sTargetH]->m_cCharName);
+							wsprintf(cDamageMod ,"You did %d Damage to %s", iAP_SM, m_pClientList[sTargetH]->m_cCharName);
 							SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cDamageMod);
 							break;
 						}
@@ -21414,7 +21431,7 @@ CAE_SKIPDAMAGEMOVE:;
 							iWeaponDamage = (double)dwValue2*7;
 							iInitial_AP_SM = (double)iDamage;
 							iMagDamage = (double)(m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag)/20;
-							iTotalMagicDamage = ((iInitial_AP_SM/100.0f)*(iWeaponDamage+100))+iMagDamage;
+							iTotalMagicDamage = ((iInitial_AP_SM/100.0f)*(iWeaponDamage+100.0f))+iMagDamage;
 							iDamage = (int)iTotalMagicDamage;
 							m_pClientList[sAttackerH]->m_iMP -= sManaCost;
 							SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_MP, NULL, NULL, NULL, NULL);
@@ -21639,19 +21656,19 @@ CAE_SKIPDAMAGEMOVE2:;
 				iWeaponSkill = _iGetWeaponSkillType(sAttackerH);
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 10) // MainGauche
 					&& ((iWeaponSkill==7)||(iWeaponSkill==9)) // Only SS or Fencers					
-					&& (iDice(1,120) < m_pClientList[sAttackerH]->m_cSkillMastery[20]) )// Dual-Wielding skill					 
+					/*&& (iDice(1,120) < m_pClientList[sAttackerH]->m_cSkillMastery[20])*/ )// Dual-Wielding skill					 
 				{	iExp += iCalculateAttackEffect(sTargetH, cTargetType, sAttackerH, DEF_OWNERTYPE_PLAYER, tdX, tdY, 2, FALSE, FALSE, FALSE, TRUE);				
 			}	}			
 			//SNOOPY: Increase Dual-Wielding Skill if appropriate
 			if (bMainGaucheAttack == TRUE) {
-				CalculateSSN_SkillIndex(sAttackerH, 20, 1);
+				/*CalculateSSN_SkillIndex(sAttackerH, 20, 1);
 				if (bKilled == FALSE)
 					CalculateSSN_SkillIndex(sAttackerH, 20, 1);
 				else {
 					if (m_pClientList[sAttackerH]->m_iHP <= 3)
 						 CalculateSSN_SkillIndex(sAttackerH, 20, iDice(1, iKilledDice));
 					else CalculateSSN_SkillIndex(sAttackerH, 20, iDice(1, ((int)(iKilledDice/2))));
-				}
+				}*/
 			}else // Else compute normal weapons skill increase
 			// Compute skill increase
 			if ((sWeaponIndex != -1) && (bArrowUse != TRUE)) {
@@ -21705,7 +21722,7 @@ CAE_SKIPDAMAGEMOVE2:;
 				iWeaponSkill = _iGetWeaponSkillType(sAttackerH);
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 10) // MainGauche
 					&& ((iWeaponSkill == 7)||(iWeaponSkill == 9)) // Only SS or Fencers					
-					&& (iDice(1,150) < m_pClientList[sAttackerH]->m_cSkillMastery[20]) )// Dual-Wielding skill					 
+					/*&& (iDice(1,100) < m_pClientList[sAttackerH]->m_cSkillMastery[20])*/ )// Dual-Wielding skill					 
 				{	iExp = iCalculateAttackEffect(sTargetH, cTargetType, sAttackerH, DEF_OWNERTYPE_PLAYER, tdX, tdY, 2, FALSE, FALSE, FALSE, TRUE);
 	}	}	}	}
 	return iExp;
@@ -23439,7 +23456,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
 		break;
 
-	case DEF_NOTIFY_SKILL:
+	case DEF_NOTIFY_SKILLPOINT:
 		sp = (short*)cp;
 		*sp = (short)sV1;
 		cp += 2;
@@ -23449,6 +23466,22 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		cp += 2;
 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
+		break;
+
+	case DEF_NOTIFY_SKILL:
+		sp = (short*)cp;
+		*sp = (short)sV1;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = (short)sV2;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = (short)sV3;
+		cp += 2;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 12);
 		break;
 	
 	case DEF_NOTIFY_CURLIFESPAN:
@@ -24072,6 +24105,18 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			strcpy(cDestMapName, m_pClientList[iClientH]->m_cLockedMapName);
 		}
 	}
+	if (strcmp(m_pClientList[iClientH]->m_cMapName, "arebrk11") == 0)
+	{
+		ZeroMemory(cDestMapName, sizeof(cDestMapName));
+		if (m_pClientList[iClientH]->m_cSide == 1) 
+		{
+			strcpy(cDestMapName, "cityhall_1");
+		}
+		else
+		{
+			strcpy(cDestMapName, "cityhall_2");
+		}
+	}
 	if ((bRet == TRUE) && (cMapName == NULL)) {
 		for (i = 0; i < DEF_MAXMAPS; i++) {
 			if ((m_pMapList[i] != NULL) && (memcmp(m_pMapList[i]->m_cName, cDestMapName, 10) == 0)) {
@@ -24092,8 +24137,8 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[ DEF_MAGICTYPE_CONFUSE ], NULL, NULL);
 		SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 		bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-		m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
-		m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+		//m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
+		//m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 		return;
 	}
 	else {
@@ -24133,19 +24178,6 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 					m_pClientList[iClientH]->m_sX = aX;
 					m_pClientList[iClientH]->m_sY = aY;
 
-					/*
-					short playerCoordX = m_pClientList[iClientH]->m_sX;
-					short playerCoordY = m_pClientList[iClientH]->m_sY;
-
-					GetMapInitialPoint(i, &m_pClientList[iClientH]->m_sX, &m_pClientList[iClientH]->m_sY, m_pClientList[iClientH]->m_cLocation);
-
-					if (playerCoordX == m_pClientList[iClientH]->m_sX && playerCoordY == m_pClientList[iClientH]->m_sY)
-					{
-						RequestTeleportHandler(iClientH, "1");
-						return;
-					}
-					*/
-
 					m_pClientList[iClientH]->m_cMapIndex = i;
 					ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
 					memcpy(m_pClientList[iClientH]->m_cMapName, m_pMapList[i]->m_cName, 10);
@@ -24159,44 +24191,15 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 			SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);	
 			bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE, FALSE);
-			m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
-			m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+			//m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
+			//m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+
+			m_pClientList[iClientH]->m_iDGKills = 0;
+			m_pClientList[iClientH]->m_iDGDeaths = 0;
+
 			return;
 
 		case '2':
-			if ((strcmp(m_pClientList[iClientH]->m_cLockedMapName, "NONE") != 0) && 
-				(m_pClientList[iClientH]->m_iLockedMapTime > 0) &&
-				(memcmp(cMapName, "cityhall", 8) != 0)) {
-				dX = -1;
-				dY = -1;
-				bIsLockedMapNotify = TRUE;
-				ZeroMemory(cTempMapName, sizeof(cTempMapName));
-				strcpy(cTempMapName, m_pClientList[iClientH]->m_cLockedMapName);
-			}
-			else {
-				ZeroMemory(cTempMapName, sizeof(cTempMapName));
-				strcpy(cTempMapName, cMapName);
-			}
-			cMapIndex = iGetMapIndex(cTempMapName);
-			if (cMapIndex == -1) {
-				m_pClientList[iClientH]->m_sX   = dX;
-				m_pClientList[iClientH]->m_sY   = dY;
-				ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
-				memcpy(m_pClientList[iClientH]->m_cMapName, cTempMapName, 10);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
-				SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
-				bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-				m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
-				m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
-				return;
-			}
-			m_pClientList[iClientH]->m_sX   = dX;
-			m_pClientList[iClientH]->m_sY   = dY;
-			m_pClientList[iClientH]->m_cMapIndex = cMapIndex;
-			ZeroMemory(m_pClientList[iClientH]->m_cMapName, sizeof(m_pClientList[iClientH]->m_cMapName));
-			memcpy(m_pClientList[iClientH]->m_cMapName, m_pMapList[cMapIndex]->m_cName, 10);  
-			goto RTH_NEXTSTEP;		
-		
 		case '3':
 			if ((strcmp(m_pClientList[iClientH]->m_cLockedMapName, "NONE") != 0) && 
 				(m_pClientList[iClientH]->m_iLockedMapTime > 0) &&
@@ -24220,8 +24223,8 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 				SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 				bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-				m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
-				m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+				//m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
+				//m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 				return;
 			}		
 			m_pClientList[iClientH]->m_sX   = dX;
@@ -24773,8 +24776,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 
 	if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
-		// centu - skills 100%
-		AutoSkill(iClientH);
+		//AutoSkill(iClientH);
 		SetClass(iClientH);
 	}
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {
@@ -25584,8 +25586,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 					switch (m_pNpcList[iNpcH]->m_cTargetType) {
 					case DEF_OWNERTYPE_PLAYER:
 						// npc dont waste magic on AMP targets
-						if (((m_pClientList[m_pNpcList[iNpcH]->m_iTargetIndex]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 2) ||
-							(m_pClientList[m_pNpcList[iNpcH]->m_iTargetIndex]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 5)) &&
+						if ((m_pClientList[m_pNpcList[iNpcH]->m_iTargetIndex]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 5) &&
 							(iMagicType > 90)) {
 							if ((abs(sX - dX) > m_pNpcList[iNpcH]->m_iAttackRange) || (abs(sY - dY) > m_pNpcList[iNpcH]->m_iAttackRange)) {
 								m_pNpcList[iNpcH]->m_sBehaviorTurnCount = 0;
@@ -25695,7 +25696,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 						break;
 
 					case DEF_OWNERTYPE_NPC:
-						if (m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex] == NULL) goto NBA_BREAK1;
+						/*if (m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex] == NULL) goto NBA_BREAK1;
 						if ((m_pMagicConfigList[57]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
 							NpcMagicHandler(iNpcH, dX, dY, 57);
 						if ((m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex]->m_iHP > 0) && //Magn0S:: Crash line
@@ -25707,7 +25708,8 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 								bRegisterDelayEvent(DEF_DELAYEVENTTYPE_MAGICRELEASE, DEF_MAGICTYPE_ICE, dwTime + (5 * 1000),
 									m_pNpcList[iNpcH]->m_iTargetIndex, DEF_OWNERTYPE_NPC, NULL, NULL, NULL, 1, NULL, NULL);
 							}
-						}
+						}*/
+						goto NBA_BREAK1;
 						break;
 					}
 					break;
@@ -25734,7 +25736,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 						break;
 
 					case DEF_OWNERTYPE_NPC:
-						if (m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex] == NULL) goto NBA_BREAK1;
+						/*if (m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex] == NULL) goto NBA_BREAK1;
 						if ((m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex]->m_iHP > 0) &&
 							(bCheckResistingIceSuccess(m_pNpcList[iNpcH]->m_cDir, m_pNpcList[iNpcH]->m_iTargetIndex, DEF_OWNERTYPE_NPC, m_pNpcList[iNpcH]->m_iMagicHitRatio) == FALSE)) {
 							if (m_pNpcList[m_pNpcList[iNpcH]->m_iTargetIndex]->m_cMagicEffectStatus[DEF_MAGICTYPE_ICE] == 0) {
@@ -25744,7 +25746,8 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 								bRegisterDelayEvent(DEF_DELAYEVENTTYPE_MAGICRELEASE, DEF_MAGICTYPE_ICE, dwTime + (5 * 1000),
 									m_pNpcList[iNpcH]->m_iTargetIndex, DEF_OWNERTYPE_NPC, NULL, NULL, NULL, 1, NULL, NULL);
 							}
-						}
+						}*/
+						goto NBA_BREAK1;
 						break;
 					}
 				NBA_BREAK1:;
@@ -25843,23 +25846,27 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 			break;
 
 		case 2:
-			iNumNpcitem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size();
+			iNumNpcitem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size() - 1;
 			
 			for (iIndex = 0; iIndex < iNumNpcitem; iIndex++) {
+				
+				if (iNum == iMax) break;
+				
 				CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iIndex);
 
 				// centu - fixed que lea probabilidades
 				if (iDice(1, 1000) >= CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
 				if (iDice(1, 1000) >= CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
 
-				if ((bFirstDice) && (bSecondDice)) {
+				if (bFirstDice && bSecondDice) {
 
 					iItemID = CTempNpcItem.m_sItemID;
-					
+
 					wsprintf(G_cTxt, "NpcType 2 (%d) size(%d) %s(%d) (%d)", sNpcType, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size(), CTempNpcItem.m_cName, CTempNpcItem.m_sItemID, iItemID);
 					PutLogList(G_cTxt);
 					//break;
 				}
+				else continue;
 				
 				// item id
 				iItemIDs[iNum] = iItemID;
@@ -26772,7 +26779,7 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 {
 	int iDownValue, iHammerChance, iItemIndex;
 
-	iHammerChance = 100;
+	//iHammerChance = 100;
 	iDownValue = 1;
 	if (m_pClientList[sTargetH] == NULL) return;
 
@@ -26786,36 +26793,37 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 				(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 59)) {
 				iItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 				if ((iItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[iItemIndex] != NULL))
-				{
-					if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 761) { // BattleHammer 
-						iDownValue = 20;
+				{	//Nixu : aca se maneja la cantidad de endu que saca cada hammer
+					if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 760) { // Hammer 
+						iDownValue = 50;
+						break;
+					}
+					else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 761) { // BattleHammer 
+						iDownValue = 100;
 						break;
 					}
 					else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 762) { // GiantBattleHammer
-						iDownValue = 25;
+						iDownValue = 250;
 						break;
 					}
 					else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 843) { // BarbarianHammer
-						iDownValue = 20;
+						iDownValue = 150;
 						break;
 					}
 					else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 854) { // KlonessHammer
-						iDownValue = 30;
+						iDownValue = 350;
 						break;
 					}
 					else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 1038) { // StripBarbarian
-						iDownValue = 35;
+						iDownValue = 500;
 						break;
 					}
 				}
 			}
 			iDownValue = 10;
 			break;
-		case 10:
-			iDownValue = 3;
-			break;
 		default:
-			iDownValue = 1;
+			iDownValue = 10;
 			break;
 		}
 	}
@@ -26830,15 +26838,18 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 	if ((m_pClientList[sTargetH]->m_cSide != 0) && (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan > 0)) {
 		m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan -= iDownValue;
 		SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_CURLIFESPAN, iArmorType, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan, NULL, NULL);
-		
+		if (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan <= 0) {
+			m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan = 0;
+			SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_ITEMLIFESPANEND, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_cEquipPos, iArmorType, NULL, NULL);
+			ReleaseItemHandler(sTargetH, iArmorType, TRUE);
+			return;
+		}
+		if (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan <= 2000) {
+			ReleaseItemHandler(sTargetH, iArmorType, TRUE);
+			SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_cEquipPos, iArmorType, NULL, NULL);
+		}
 	}
-	if (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan <= 0) {
-		m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan = 0;
-		SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_ITEMLIFESPANEND, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_cEquipPos, iArmorType, NULL, NULL);
-		ReleaseItemHandler(sTargetH, iArmorType, TRUE);
-		return;
-	}
-	if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH]->m_sUsingWeaponSkill == 14) && (iHammerChance == 100)) {
+	/*if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH]->m_sUsingWeaponSkill == 14) && (iHammerChance == 100)) {
 		if (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wMaxLifeSpan <= 3500) {
 			iHammerChance = iDice(6, (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wMaxLifeSpan - m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan));
 		}
@@ -26877,7 +26888,7 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 				SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_cEquipPos, iArmorType, NULL, NULL);
 			}
 		}
-	}
+	}*/
 }
 
 // Wanted System
@@ -29661,7 +29672,7 @@ void CGame::NotifyPlayerAttributes(int iClientH)
 	i += 4;
 
 	ip = (int*)cp;
-	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] + player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS];
+	*ip = player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] + player->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS];
 	cp += 4;
 	i += 4;
 

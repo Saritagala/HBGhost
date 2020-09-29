@@ -155,15 +155,15 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	//if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
 	//	m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00080000;
 	
-	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = m_pClientList[iClientH]->m_iCharisma;
-	m_pClientList[iClientH]->m_cAttackDiceRange_SM = m_pClientList[iClientH]->m_iCharisma;
-	m_pClientList[iClientH]->m_cAttackBonus_SM = m_pClientList[iClientH]->m_iCharisma;
+	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = 0;
+	m_pClientList[iClientH]->m_cAttackDiceRange_SM = 0;
+	m_pClientList[iClientH]->m_cAttackBonus_SM = 0;
 
-	m_pClientList[iClientH]->m_cAttackDiceThrow_L = m_pClientList[iClientH]->m_iCharisma;
-	m_pClientList[iClientH]->m_cAttackDiceRange_L = m_pClientList[iClientH]->m_iCharisma;
-	m_pClientList[iClientH]->m_cAttackBonus_L = m_pClientList[iClientH]->m_iCharisma;
+	m_pClientList[iClientH]->m_cAttackDiceThrow_L = 0;
+	m_pClientList[iClientH]->m_cAttackDiceRange_L = 0;
+	m_pClientList[iClientH]->m_cAttackBonus_L = 0;
 
-	m_pClientList[iClientH]->m_iHitRatio = 0;
+	m_pClientList[iClientH]->m_iHitRatio = 0; 
 
 	m_pClientList[iClientH]->m_iDefenseRatio = (m_pClientList[iClientH]->m_iDex * 2);
 
@@ -585,7 +585,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += iTemp;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += iTemp;
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] += iTemp;
+					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += iTemp;
 					break;
 
 					/*
@@ -1005,19 +1005,19 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						break;
 					}*/
 					break;
-				case DEF_EQUIPPOS_PANTS:
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
-					// Merien Upgraded leggings +1 PA
+				case DEF_EQUIPPOS_BOOTS:
+					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					// Merien Upgraded boots +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] += iTemp;
+					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] += iTemp;
+					// Motemorphosed char is still affected by original boots
+					m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 					break;
 				case DEF_EQUIPPOS_LEGGINGS:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
-					// Merien Upgraded boots +1 PA
+					// Merien Upgraded leggings +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += iTemp;
-					// Motemorphosed char is still affected by original boots
-					m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 					break;
 				case DEF_EQUIPPOS_BACK: // Cape
 					// Motemorphosed char is still affected by original cape
@@ -1098,8 +1098,8 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] = DEF_MAXPHYSICALABS;
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] > DEF_MAXPHYSICALABS)	// Membres max 60
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] = DEF_MAXPHYSICALABS;
-	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] > DEF_MAXPHYSICALABS)	// Membres max 60 
-		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_PANTS] = DEF_MAXPHYSICALABS;
+	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] > DEF_MAXPHYSICALABS)	// Membres max 60 
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] = DEF_MAXPHYSICALABS;
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] > DEF_MAXPHYSICALABS)	// Pieds   max 60 
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] = DEF_MAXPHYSICALABS;
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] > DEF_MAXPHYSICALABS)	// Dos     max 60
@@ -2361,15 +2361,14 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 				{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, NULL, NULL, NULL);
 					return; 
 				}
-					m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= sItemUpgrade; 
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
-					iValue++;
-					dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-					dwTemp = dwTemp & 0x0FFFFFFF;
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
-					_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int) -1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
-				
+				m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= sItemUpgrade; 
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+				iValue++;
+				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+				dwTemp = dwTemp & 0x0FFFFFFF;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int) -1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
 				break;
 			}
 			break;
@@ -2380,9 +2379,6 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 		case 709: // DarkKnightFlameberge
 		case 737: // DarkKnightGiantSword
 		case 745: // BlackKnightTemple
-		case 989: // BlackKnightHammer
-		case 990: // BlackKnightBH
-		case 991: // BlackKnightBBH
 			if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0) 
 			{
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, NULL, NULL, NULL);
@@ -2504,95 +2500,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
 				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
 			}
-			else if ((iValue == 0) && (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 989))
-			{ // BlackKnightHammer
-				iItemX = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x;
-				iItemY = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y;
-				delete m_pClientList[iClientH]->m_pItemList[iItemIndex];
-				m_pClientList[iClientH]->m_pItemList[iItemIndex] = NULL;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex] = new class CItem;
-				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x = iItemX;
-				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y = iItemY;
-				if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 990) == FALSE)
-				{
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
-					return;
-				}
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
-				iValue += 2;
-				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-				dwTemp = dwTemp & 0x0FFFFFFF;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
-				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
-				break;
-			}
-			else if ((iValue >= 6) && (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 990))  // BlackKnightBH
-			{
-				iItemX = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x;
-				iItemY = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y;
-				delete m_pClientList[iClientH]->m_pItemList[iItemIndex];
-				m_pClientList[iClientH]->m_pItemList[iItemIndex] = NULL;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex] = new class CItem;
-				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x = iItemX;
-				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y = iItemY;
-				if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 991) == FALSE)
-				{
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
-					return;
-				}
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
-				iValue += 2;
-				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-				dwTemp = dwTemp & 0x0FFFFFFF;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
-				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
-			}
-			else if ((iValue >= 12) && (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 991))  //BlackKnightBBH
-			{
-				iValue += 2;
-				if (iValue > 15) {
-					iValue = 15;
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor = 9;
-				}
-				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-				dwTemp = dwTemp & 0x0FFFFFFF;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
-				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
-			}
+			
 			else 
 			{
 				iValue += 2;
@@ -2690,55 +2598,197 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 		return;
 
 	case 3:
-		if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) != NULL) {
-			dwSWEType = (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) >> 20;
-			if (dwSWEType == 9) {
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, NULL, NULL, NULL);
+		switch (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum)
+		{
+		case 138: // DarkKnightFlameberge
+		case 139: // DarkKnightGiantSword
+		case 140: // BlackKnightTemple
+			if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0)
+			{
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, NULL, NULL, NULL);
 				return;
 			}
-		}
-		iSoX = iSoM = 0;
-		for (i = 0; i < DEF_MAXITEMS; i++)
-			if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
-				switch (m_pClientList[iClientH]->m_pItemList[i]->m_sIDnum) {
-				case 656: iSoX++; iSoxH = i; break;
-				case 657: iSoM++; iSomH = i; break;
+
+			if (iValue == 15)
+			{
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 1, NULL, NULL, NULL);
+				return;
+			}
+
+			sItemUpgrade = (iValue * (iValue + 6) / 8) + 2;
+			if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType != 0)
+			{
+				if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 != m_pClientList[iClientH]->m_sCharIDnum1) ||
+					(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 != m_pClientList[iClientH]->m_sCharIDnum2) ||
+					(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 != m_pClientList[iClientH]->m_sCharIDnum3)) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, NULL, NULL, NULL);
+					return;
 				}
 			}
-		if (iSoX > 0) {
-			if (bCheckIsItemUpgradeSuccess(iClientH, iItemIndex, iSoxH) == FALSE) {
+
+			if ((m_pClientList[iClientH]->m_iGizonItemUpgradeLeft - sItemUpgrade) < 0)
+			{
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, NULL, NULL, NULL);
+				return;
+			}
+
+			m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= sItemUpgrade;
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+
+			if ((iValue == 0) && (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 138))
+			{ // DarkKnightFlameberge
+				iItemX = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x;
+				iItemY = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y;
+				delete m_pClientList[iClientH]->m_pItemList[iItemIndex];
+				m_pClientList[iClientH]->m_pItemList[iItemIndex] = NULL;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex] = new class CItem;
+				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x = iItemX;
+				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y = iItemY;
+				if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 139) == FALSE)
+				{
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+					return;
+				}
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
+				iValue += 2;
+				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+				dwTemp = dwTemp & 0x0FFFFFFF;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
+				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
+				break;
+			}
+			else if ((iValue >= 6) && (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 139))  // DarkKnightGiantSword
+			{
+				iItemX = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x;
+				iItemY = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y;
+				delete m_pClientList[iClientH]->m_pItemList[iItemIndex];
+				m_pClientList[iClientH]->m_pItemList[iItemIndex] = NULL;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex] = new class CItem;
+				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x = iItemX;
+				m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y = iItemY;
+				if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 140) == FALSE)
+				{
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+					return;
+				}
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
+				iValue += 2;
+				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+				dwTemp = dwTemp & 0x0FFFFFFF;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
+				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
+			}
+			else if ((iValue >= 12) && (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 140))  //BlackKnightTemple
+			{
+				iValue += 2;
+				if (iValue > 15) {
+					iValue = 15;
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor = 9;
+				}
+				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+				dwTemp = dwTemp & 0x0FFFFFFF;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
-				iValue = (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-				if (iValue >= 1) ItemDepleteHandler(iClientH, iItemIndex, FALSE, TRUE);
-				ItemDepleteHandler(iClientH, iSoxH, FALSE, TRUE);
-				return;
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
+					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
+				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
 			}
-			if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00000001) != NULL) {
-				iValue++;
-				if (iValue > 10) {
-					iValue = 10;
+
+			else
+			{
+				iValue += 2;
+				if (iValue > 15) iValue = 15;
+				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+				dwTemp = dwTemp & 0x0FFFFFFF;
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
+			}
+			break;
+		
+		default:
+			if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) != NULL) {
+				dwSWEType = (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) >> 20;
+				if (dwSWEType == 9) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, NULL, NULL, NULL);
+					return;
+				}
+			}
+			iSoX = iSoM = 0;
+			for (i = 0; i < DEF_MAXITEMS; i++)
+				if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
+					switch (m_pClientList[iClientH]->m_pItemList[i]->m_sIDnum) {
+					case 656: iSoX++; iSoxH = i; break;
+					case 657: iSoM++; iSomH = i; break;
+					}
+				}
+			if (iSoX > 0) {
+				if (bCheckIsItemUpgradeSuccess(iClientH, iItemIndex, iSoxH) == FALSE) {
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+					iValue = (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
+					if (iValue >= 1) ItemDepleteHandler(iClientH, iItemIndex, FALSE, TRUE);
+					ItemDepleteHandler(iClientH, iSoxH, FALSE, TRUE);
+					return;
+				}
+				if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00000001) != NULL) {
+					iValue++;
+					if (iValue > 10) {
+						iValue = 10;
+					}
+					else {
+						dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+						dwTemp = dwTemp & 0x0FFFFFFF;
+						m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+						ItemDepleteHandler(iClientH, iSoxH, FALSE, TRUE);
+					}
 				}
 				else {
-					dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-					dwTemp = dwTemp & 0x0FFFFFFF;
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-					ItemDepleteHandler(iClientH, iSoxH, FALSE, TRUE);
+					iValue++;
+					if (iValue > 7) {
+						iValue = 7;
+					}
+					else {
+						dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+						dwTemp = dwTemp & 0x0FFFFFFF;
+						m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+						ItemDepleteHandler(iClientH, iSoxH, FALSE, TRUE);
+					}
 				}
 			}
-			else {
-				iValue++;
-				if (iValue > 7) {
-					iValue = 7;
-				}
-				else {
-					dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-					dwTemp = dwTemp & 0x0FFFFFFF;
-					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-					ItemDepleteHandler(iClientH, iSoxH, FALSE, TRUE);
-				}
-			}
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+			break;
 		}
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
 		return;
 
 	case 5:
@@ -3485,11 +3535,12 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 void CGame::GetDkSet(int iClientH)
 {
 	class CItem* pItem;
-	// centu - dkknight and dkwand
-	int dkM[] = { 706,707,708,710,709,714 };
-	int dkW[] = { 724,725,726,728,709,714 };
-	int dmM[] = { 711,712,713,913,709,714 };
-	int dmW[] = { 729,730,731,914,709,714 };
+	int dkM[] = {706,707,708,710,709};
+	int dkW[] = {724,725,726,728,709};
+	int dmM[] = {711,712,713,913,714};
+	int dmW[] = {729,730,731,914,714};
+	int daM[] = {134,135,136,137,138};
+	int daW[] = {143,144,145,146,138};
 	int iItemID, i, iEraseReq;
 	char cTxt[120];
 	DWORD  dwGoldCount = dwGetItemCount(iClientH, "Gold");
@@ -3509,30 +3560,38 @@ void CGame::GetDkSet(int iClientH)
 	}
 	SetItemCount(iClientH, "Gold", (dwGoldCount - m_iDKCost));
 	if (((strcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "cityhall_1") == 0) || (strcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, "cityhall_2") == 0))) {
-		for (i = 0; i < 6; i++)
+		for (i = 0; i < 5; i++)
 		{
 			pItem = new class CItem;
 			iItemID = -1;
 			if (m_pClientList[iClientH]->m_cSex == 1)
 			{
-				if (m_pClientList[iClientH]->m_iStr > m_pClientList[iClientH]->m_iInt)
+				if (m_pClientList[iClientH]->m_iClass == 1)
 				{
 					iItemID = dkM[i];
 				}
-				else
+				else if (m_pClientList[iClientH]->m_iClass == 2)
 				{
 					iItemID = dmM[i];
+				}
+				else if (m_pClientList[iClientH]->m_iClass == 3)
+				{
+					iItemID = daM[i];
 				}
 			}
 			else
 			{
-				if (m_pClientList[iClientH]->m_iStr > m_pClientList[iClientH]->m_iInt)
+				if (m_pClientList[iClientH]->m_iClass == 1)
 				{
 					iItemID = dkW[i];
 				}
-				else
+				else if (m_pClientList[iClientH]->m_iClass == 2)
 				{
 					iItemID = dmW[i];
+				}
+				else if (m_pClientList[iClientH]->m_iClass == 3)
+				{
+					iItemID = daW[i];
 				}
 			}
 			if (iItemID != -1) //if any error occures, dont crash character
@@ -7662,7 +7721,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 				return FALSE;
 			}
 			break;
-		case 15: // Chr
+		case 15: // Agi
 			if (m_pClientList[iClientH]->m_iCharisma < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue5) {
 				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
@@ -7787,8 +7846,8 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LEGGINGS] != -1) {
 			ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LEGGINGS], FALSE);
 		}
-		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS] != -1) {
-			ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS], FALSE);
+		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+			ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS], FALSE);
 		}
 		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BACK] != -1) {
 			ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BACK], FALSE);
@@ -7796,7 +7855,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 	}
 	else {
 		if (cEquipPos == DEF_EQUIPPOS_HEAD || cEquipPos == DEF_EQUIPPOS_BODY || cEquipPos == DEF_EQUIPPOS_ARMS ||
-			cEquipPos == DEF_EQUIPPOS_LEGGINGS || cEquipPos == DEF_EQUIPPOS_PANTS || cEquipPos == DEF_EQUIPPOS_BACK) {
+			cEquipPos == DEF_EQUIPPOS_LEGGINGS || cEquipPos == DEF_EQUIPPOS_BOOTS || cEquipPos == DEF_EQUIPPOS_BACK) {
 			if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RELEASEALL] != -1) {
 				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RELEASEALL], FALSE);
 			}
@@ -7823,7 +7882,8 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
-	case DEF_EQUIPPOS_PANTS:
+	//case DEF_EQUIPPOS_PANTS:
+	case DEF_EQUIPPOS_LEGGINGS:
 		sTemp = m_pClientList[iClientH]->m_sAppr3;
 		sTemp = sTemp & 0xF0FF;	// ¹ÙÁö Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
 		sTemp = sTemp | ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue) << 8); // Appr °ªÀ» ¼¼ÆÃ. 
@@ -7835,7 +7895,8 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
-	case DEF_EQUIPPOS_LEGGINGS:
+	//case DEF_EQUIPPOS_LEGGINGS:
+	case DEF_EQUIPPOS_BOOTS:
 		sTemp = m_pClientList[iClientH]->m_sAppr4;
 		sTemp = sTemp & 0x0FFF;	// ºÎÃ÷ Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
 		sTemp = sTemp | ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue) << 12); // Appr °ªÀ» ¼¼ÆÃ. 
@@ -7938,7 +7999,13 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		iTemp = iTemp & 0xFFFFFFF0;
 		sSpeed = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cSpeed);
 		// Str¿¡ µû¶ó ¹«±â ¼Óµµ¸¦ ÁÙÀÎ´Ù. 
-		sSpeed -= ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) / 13);
+		
+		// Centuu : full swing for archers
+		if (m_pClientList[iClientH]->m_iClass == 3)
+			sSpeed -= (m_pClientList[iClientH]->m_iCharisma / 13);
+		else
+			sSpeed -= ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) / 13);
+		
 		if (sSpeed < 0) sSpeed = 0;
 		iTemp = iTemp | (int)sSpeed;
 		m_pClientList[iClientH]->m_iStatus = iTemp;
@@ -8115,7 +8182,8 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, BOOL bNotice)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
-	case DEF_EQUIPPOS_PANTS:
+	//case DEF_EQUIPPOS_BOOTS:
+	case DEF_EQUIPPOS_LEGGINGS:
 		sTemp = m_pClientList[iClientH]->m_sAppr3;
 		sTemp = sTemp & 0xF0FF;	// °Ñ¿Ê Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
 		m_pClientList[iClientH]->m_sAppr3 = sTemp;
@@ -8125,7 +8193,8 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, BOOL bNotice)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
-	case DEF_EQUIPPOS_LEGGINGS:
+	//case DEF_EQUIPPOS_LEGGINGS:
+	case DEF_EQUIPPOS_BOOTS:
 		sTemp = m_pClientList[iClientH]->m_sAppr4;
 		sTemp = sTemp & 0x0FFF;	// °Ñ¿Ê Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
 		m_pClientList[iClientH]->m_sAppr4 = sTemp;
@@ -8636,7 +8705,7 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		break;
 
 	case 2:
-		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 
@@ -8676,7 +8745,7 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		}
 		break;
 
-	case 4:
+	case 4: 
 		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
@@ -8773,7 +8842,7 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 			}
 		}
 
-		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 
@@ -8794,7 +8863,7 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 		break;
 
 	case 8:
-		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 
@@ -8962,7 +9031,7 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 				ReleaseItemHandler(iTargetH, iTemp, TRUE);
 			}
 		}
-		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+		iTemp = m_pClientList[iTargetH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 		if ((iTemp != -1) && (m_pClientList[iTargetH]->m_pItemList[iTemp] != NULL)) {
 
 
@@ -8993,7 +9062,7 @@ char CGame::_cCheckHeroItemEquipped(int iClientH)
 	sHeroHelm = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_HEAD];
 	sHeroArmor = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 	sHeroHauberk = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
-	sHeroLeggings = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+	sHeroLeggings = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LEGGINGS];
 
 	if ((sHeroHelm < 0) || (sHeroLeggings < 0) || (sHeroArmor < 0) || (sHeroHauberk < 0)) return 0;
 
@@ -9041,6 +9110,8 @@ char CGame::_cCheckHeroItemEquipped(int iClientH)
 		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 418) &&
 		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 422) &&
 		(m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 426)) return 2;
+
+	// Centuu : UltimateHero
 
 	return 0;
 }
@@ -9564,10 +9635,10 @@ int CGame::iGetItemWeight(CItem* pItem, int iCount)
 	int iWeight;
 
 	// ¾ÆÀÌÅÛÀÇ ¼ö·®¿¡ µû¸¥ ¹«°Ô¸¦ °è»êÇÑ´Ù. GoldÀÎ °æ¿ì ¹«°Ô¸¦ 20ºÐÀÇ 1·Î º¯°æ 
-	iWeight = (pItem->m_wWeight);
+	iWeight = pItem->m_wWeight;
 	if (iCount < 0) iCount = 1;
 	iWeight = iWeight * iCount;
-	if (pItem->m_sIDnum == 90) iWeight = iWeight / 20;
+	if (pItem->m_sIDnum == 90) iWeight = 0; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
 	if (iWeight <= 0) iWeight = 1;
 
 	return iWeight;

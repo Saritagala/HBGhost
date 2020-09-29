@@ -366,11 +366,13 @@ int CGame::_iCalcSkillSSNpoint(int iLevel)
 
 	if (iLevel < 1) return 1;
 
-	if (iLevel <= 50)
+	/*if (iLevel <= 50)
 		iRet = iLevel;
 	else if (iLevel > 50) {
 		iRet = (iLevel * iLevel) / 10;
-	}
+	}*/
+
+	iRet = iLevel; // centu
 
 	return iRet;
 }
@@ -390,12 +392,14 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 0) return;
 
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
+	
 	m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], NULL, NULL);
 
 	iSSNpoint = m_iSkillSSNpoint[m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] + 1];
 
 	if ((m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) &&
-		(m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] > iSSNpoint)) {
+		(m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= iSSNpoint)) {
 
 		m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]++;
 
@@ -444,7 +448,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		case 10: // Axe-Attack
 		case 11: // Shield        	
 		case 14: // Hammer 
-		case 20: // Dual-Wielding
+		//case 20: // Dual-Wielding
 			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iAngelicDex) * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
@@ -501,8 +505,8 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] == 0) 
 		{
 			bCheckTotalSkillMasteryPoints(iClientH, sSkillIndex);
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], NULL, NULL);
-			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], NULL);
+			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], NULL, NULL);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], NULL);
 		}
 	}
 }
@@ -521,12 +525,14 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 0) return;
 	
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
+	
 	m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], NULL, NULL);
 
 	iSSNpoint = m_iSkillSSNpoint[m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] + 1];
 
 	if ((m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) &&
-		(m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] > iSSNpoint)) {
+		(m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= iSSNpoint)) {
 
 		// ½ºÅ³ÀÌ ¿Ã¶ú´Ù.
 		m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]++;
@@ -570,7 +576,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 		case 9:
 		case 10:
 		case 11:
-		case 20: // Dual-Wielding
+		//case 20: // Dual-Wielding
 			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iAngelicDex) * 2)) {
 				// Á¦ÇÑÄ¡º¸´Ù Ä¿Á³´Ù. ¹«È¿ÀÌ¹Ç·Î ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù.
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
@@ -642,8 +648,8 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 			bCheckTotalSkillMasteryPoints(iClientH, sSkillIndex);
 
 			// SkillÀÌ ¿Ã¶ú´Ù´Â °ÍÀ» Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾Ë·ÁÁØ´Ù.
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], NULL, NULL);
-			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], NULL);
+			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], NULL, NULL);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], NULL);
 		}
 	}
 }
@@ -723,7 +729,7 @@ int CGame::iCalculateUseSkillItemEffect(int iOwnerH, char cOwnerType, char cOwne
 	if (cOwnerSkill == 0) return 0;
 
 	// ½ºÅ³ÀÌ 100ÀÌ¶ó°í ÇØµµ °¡²û ³¬½Ã¸¦ ½ÇÆÐÇÏ°Ô ÇÏ±â À§ÇØ¼­ 1D105 
-	iResult = iDice(1, 105);
+	iResult = iDice(1, 100);
 	if (cOwnerSkill <= iResult)	return 0;  // ½ÇÆÐ´Ù.
 
 	// ¶¥¿¡¼­´Â ³¬½Ã°¡ ºÒ°¡´É 
@@ -923,21 +929,23 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 	if (m_pMapList[cMapIndex] == NULL) return;
 	if (m_pClientList[iClientH]->m_iAdminUserLevel == 0)
 	{
-		if ((m_pClientList[iClientH]->m_iStr > 100)
+		/*if ((m_pClientList[iClientH]->m_iStr > 100)
 			&& (m_pClientList[iClientH]->m_iInt > 49))
 		{
-			iTamingType = 2; // War
+			iTamingType = 1; // War
 		}
 		else if ((m_pClientList[iClientH]->m_iMag > 100)
 			&& (m_pClientList[iClientH]->m_iInt > 49))
 		{
-			iTamingType = 1; // Mage
+			iTamingType = 2; // Mage
 		}
 		else if ((m_pClientList[iClientH]->m_iCharisma > 100)
 			&& (m_pClientList[iClientH]->m_iInt > 49))
 		{
 			iTamingType = 3; // Archer
-		}
+		}*/
+
+		iTamingType = m_pClientList[iClientH]->m_iClass;
 	}
 	else iTamingType = 4; // GameMaster
 	iSkillLevel = (int)m_pClientList[iClientH]->m_cSkillMastery[iSkillNum];
@@ -968,7 +976,7 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 					case 78: iTamingLevel = 170; break;	// Minos 
 					}
 					switch (iTamingType) {
-					case 1: // Mage-GuildMaster				
+					case 2: // Mage				
 						if (iTamingLevel > 199) iTamingLevel = 199;
 						switch (m_pNpcList[sOwnerH]->m_sType) {
 						case 12:							// Stone
@@ -979,7 +987,7 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 						case 31: iTamingLevel = 170; break;	// DD
 						}
 						break;
-					case 2: // War-GuildMaster	
+					case 1: // War	
 						if (iTamingLevel > 197) iTamingLevel = 197;
 						switch (m_pNpcList[sOwnerH]->m_sType) {
 						case 18:							// Zombie 
@@ -1013,12 +1021,10 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 						// Now change npc side...
 						m_pNpcList[sOwnerH]->m_cOriginalSide = m_pNpcList[sOwnerH]->m_cSide;
 						switch (iTamingType) {
-						default:
-						case 0: // Default -> npc becomes neutral 	
 						case 4: // GameMaster
 							m_pNpcList[sOwnerH]->m_cSide = 0;
 							break;
-						case 1: // Mage -> npc becomes friendly 					
+						case 2: // Mage -> npc becomes friendly 					
 							switch (m_pNpcList[sOwnerH]->m_sType) {
 							case 12: // Stone
 							case 23: // Clay
@@ -1033,7 +1039,7 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 								break;
 							}
 							break;
-						case 2: // War	-> npc becomes friendly
+						case 1: // War	-> npc becomes friendly
 							switch (m_pNpcList[sOwnerH]->m_sType) {
 							case 18: // Zombie 
 							case 11: // Skel
@@ -1070,7 +1076,7 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 						// Increase skill if not easy Taming
 						if (iTamingLevel >= iSkillLevel)
 						{
-							CalculateSSN_SkillIndex(iClientH, 22, 1);
+							CalculateSSN_SkillIndex(iClientH, 22, iNbeTamed);
 						}
 					} // End of succes in taming 1 creature
 					break;
@@ -1086,11 +1092,13 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLUSINGEND, 1, NULL, NULL, NULL);
 		ZeroMemory(cTamedString, sizeof(cTamedString));
 		switch (iTamingType) {
-		case 2:	// War
+		case 1:	// War
 			wsprintf(cTamedString, "Undead turned: %d", iNbeTamed);
 			break;
-		case 1:	// Mage
+		case 2:	// Mage
 			wsprintf(cTamedString, "Magic things controled: %d", iNbeTamed);
+			break;
+		case 3: // Archer
 			break;
 		default: // GameMaster
 			wsprintf(cTamedString, "Creatures neutralised: %d", iNbeTamed);
@@ -1113,7 +1121,7 @@ void CGame::GetMagicAbilityHandler(int iClientH)
 	if (m_pClientList[iClientH]->m_cSkillMastery[4] != 0) return;
 
 	m_pClientList[iClientH]->m_cSkillMastery[4] = 20;
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, 4, m_pClientList[iClientH]->m_cSkillMastery[4], NULL, NULL);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, 4, m_pClientList[iClientH]->m_cSkillMastery[4], 0, NULL);
 	bCheckTotalSkillMasteryPoints(iClientH, 4);
 }
 
@@ -1329,8 +1337,8 @@ void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)
 					if (m_pClientList[iClientH]->m_iHitRatio < 0) m_pClientList[iClientH]->m_iHitRatio = 0;
 				}
 			}
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sDownSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sDownSkillIndex], NULL, NULL);
-			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sDownSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sDownSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sDownSkillIndex], NULL);
+			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sDownSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sDownSkillIndex], NULL, NULL);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, sDownSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sDownSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sDownSkillIndex], NULL);
 		}
 		else 
 		{

@@ -34,7 +34,7 @@ waypoint          =     9       226   252
 no-attack-area           = 1       89 36 97 44
 no-attack-area           = 2       143 28 151 36
 
-maximum-object		= 180
+maximum-object		= 200
 random-mob-generator	= 1  15
 
 //-----------------------Num-Type-RECT---------------Mob-MobNum

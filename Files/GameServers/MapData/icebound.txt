@@ -41,7 +41,7 @@ no-attack-area           = 1       258 258 272 264
 // DireBoar, Rudolf, Frost, Beholder, Ice Golem, Skell, Stone Golem, Frog, 
 // Wyverns & some rabbits 
 random-mob-generator	= 1  17
-maximum-object		= 500
+maximum-object		= 400
 
 //-----------------------Num-Type-RECT------------------Mob-MobNum
 //8 Tigerworms official pit (BigTigerworm harder to Kill)

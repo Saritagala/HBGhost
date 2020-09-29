@@ -1665,8 +1665,8 @@
 #define	NOTIFYMSG_SHOW_MAP1	"There isn't any map for this area.."
 
 
-#define	NOTIFYMSG_SKILL1	"Skill %s: +%d%%."
-#define	NOTIFYMSG_SKILL2	"Skill %s: -%d%%."
+#define	NOTIFYMSG_SKILL1	"Skill %s: Level +%d."
+#define	NOTIFYMSG_SKILL2	"Skill %s: Level -%d."
 
 
 #define	NOTIFYMSG_SKILL_TRAIN_SUCCESS1	"Skill(%s): You have learned a new ability! The ability level is %d%%."

@@ -29,7 +29,7 @@ waypoint          =     7       30    30
 waypoint          =     8       30    30
 waypoint          =     9       30    30
 
-maximum-object		= 400
+maximum-object		= 300
 fixed-dayornight-mode   = 1
 
 

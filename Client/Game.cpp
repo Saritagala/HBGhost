@@ -1747,6 +1747,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		iRet = m_pGSock->iSendMsg(cMsg, 15, cKey);
 		break;
 
+	case MSGID_REQUEST_SKILLPOINT:
 	case MSGID_REQUEST_RESTART:
 	case MSGID_REQUEST_TOPEK:
 	case MSGID_REQUEST_ONLINE:
@@ -2999,11 +3000,11 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					break;
 
 				case DEF_DYNAMICOBJECT_FISH:			// 2
-					{	char cTmpDOdir, cTmpDOframe;
+						char cTmpDOdir, cTmpDOframe;
 						cTmpDOdir   = m_Misc.cCalcDirection(cDynamicObjectData1, cDynamicObjectData2, cDynamicObjectData1 + cDynamicObjectData3, cDynamicObjectData2 + cDynamicObjectData4);
 						cTmpDOframe = ((cTmpDOdir-1) * 4) + (rand() % 4);
 						m_pSprite[DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT+0]->PutTransSprite2(ix + cDynamicObjectData1, iy + cDynamicObjectData2, cTmpDOframe, dwTime);
-					}
+					
 					break;
 
 				case DEF_DYNAMICOBJECT_MINERAL1:		// 4
@@ -4935,7 +4936,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iTemp = m_iHP;
 		iEntry++;
 		PutString(sX + 130, sY + 100 + (iEntry * 14), "HP Points:", RGB(255, 255, 255), FALSE, 1);
-		wsprintf(G_cTxt, "%d/%d", iTemp, (m_iVit * 4) + (m_iLevel * 4) + (m_iStr + m_iAngelicStr) + (m_iMag + m_iAngelicMag));
+		wsprintf(G_cTxt, "%d/%d", iTemp, (m_iVit * 3) + (m_iLevel * 2) + ((m_iStr + m_iAngelicStr) / 2));
 		PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 255, 0, 0);
 
 		// Mp
@@ -7413,9 +7414,9 @@ void CGame::CommonEventHandler(char * pData)
 	sV3 = *sp;
 	cp += 2;
 
-	sp  = (short *)cp;
+	/*sp  = (short *)cp;
 	sV4 = *sp;
-	cp += 2;
+	cp += 2;*/
 
 	switch (wEventType) {
 	case DEF_COMMONTYPE_ITEMDROP:
@@ -7433,10 +7434,17 @@ void CGame::CommonEventHandler(char * pData)
 		break;
 
 	case DEF_COMMONTYPE_SETITEM:
-		m_pMapData->bSetItem(sX, sY, sV1, sV2, (char)sV3, FALSE); // v1.4 color
+		//m_pMapData->bSetItem(sX, sY, sV1, sV2, (char)sV3, FALSE); // v1.4 color
+		dwp = (DWORD*)cp;
+		dwV4 = *dwp;
+		cp += 4;
+		m_pMapData->bSetItem(sX, sY, sV1, (char)sV3, dwV4, FALSE);
 		break;
 
 	case DEF_COMMONTYPE_MAGIC:
+		sp = (short*)cp;
+		sV4 = *sp;
+		cp += 2;
 		bAddNewEffect(sV3, sX, sY, sV1, sV2, 0, sV4);
 		break;
 
@@ -10630,7 +10638,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 
 	bInv = FALSE;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 73) bInvy = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11168,7 +11176,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11710,7 +11718,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 
 	bInv = FALSE;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInvy = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11935,7 +11943,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12181,7 +12189,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -13368,7 +13376,7 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) return FALSE;
+	if(_tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) return FALSE;
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -13511,11 +13519,6 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
 			break;
 
 		case 66: // Wyvern
-			iFrame = 7;
-			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (2 * 8);
-			bTrans = TRUE;
-			break;
-
 		case 73: // FireWyvern
 		case 94: // BlackWyv
 		case 95: // LighWyvern
@@ -13663,7 +13666,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66)	bInv = TRUE; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98)	bInv = TRUE; //Energy-Ball, Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -14339,7 +14342,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
  int iSkirtDraw = 0;
 
 	if(_tmp_sOwnerType == 67 || _tmp_sOwnerType == 68 || _tmp_sOwnerType == 69 || _tmp_sOwnerType == 81) return FALSE;
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -15157,7 +15160,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball, Wyvern
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
 		iShieldColor = 0;
@@ -15190,9 +15193,6 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 	// CLEROTH - Single-direction monsters
 	switch(_tmp_sOwnerType){
-	case 110: // Air Elemental
-		_tmp_cDir = 1; // North
-		break;
 	case 91: // Snoopy: Gate
 		if (_tmp_cDir <= 3) _tmp_cDir = 3;
 		else  _tmp_cDir = 5;
@@ -16468,7 +16468,7 @@ void CGame::LogResponseHandler(char * pData)
 		break;
 
 	case DEF_ENTERGAMERESTYPE_CONFIRM:
-		{	int iGameServerPort;
+			int iGameServerPort;
 			char cGameServerAddr[16];
 			ZeroMemory(cGameServerAddr, sizeof(cGameServerAddr));
 			cp = (pData + DEF_INDEX2_MSGTYPE + 2);
@@ -16483,7 +16483,7 @@ void CGame::LogResponseHandler(char * pData)
 			m_pGSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
 			m_pGSock->bConnect(m_cLogServerAddr, iGameServerPort, WM_USER_GAMESOCKETEVENT);
 			m_pGSock->bInitBufferSize(30000);
-		}
+		
 		break;
 
 	case DEF_ENTERGAMERESTYPE_REJECT:
@@ -16878,7 +16878,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 	int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
 	int iSkirtDraw = 0;
 
-	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66) bInv = TRUE; //Energy-Ball,Wyvern
+	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{
@@ -18712,33 +18712,33 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 	{
 		if ((msX > 410 + resx + addx) && (msX < 447 + resx + addx)) { // Character    
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(410 + resx + addx + 2, 434 + resy, 6, dwTime);
-			wsprintf(G_cTxt, "Character Menu");
-			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			wsprintf(G_cTxt, "Character");
+			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 447 + resx + addx) && (msX < 484 + resx + addx)) { // Inventory
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(447 + resx + addx + 1, 434 + resy, 7, dwTime);
 			wsprintf(G_cTxt, "Inventory");
-			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 484 + resx + addx) && (msX < 521 + resx + addx)) { // Magic
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(484 + resx + addx, 434 + resy, 8, dwTime);
-			wsprintf(G_cTxt, "Spell Book");
-			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			wsprintf(G_cTxt, "Magic Book");
+			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 521 + resx + addx) && (msX < 558 + resx + addx)) { // Skill
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(521 + resx + addx + 1, 434 + resy, 9, dwTime);
 			wsprintf(G_cTxt, "Skill List");
-			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 558 + resx + addx) && (msX < 595 + resx + addx)) { // History
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(558 + resx + addx, 434 + resy, 10, dwTime);
 			wsprintf(G_cTxt, "Chat History");
-			//PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
+			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 595 + resx + addx) && (msX < 631 + resx + addx)) { // System Menu
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(595 + resx + addx + 1, 434 + resy, 11, dwTime);
-			wsprintf(G_cTxt, "Options");
-			//PutString(msX - 20, msY - 20, G_cTxt, RGB(250, 250, 220));
+			wsprintf(G_cTxt, "Game Options");
+			PutString(msX - 20, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 	}
 
@@ -18971,10 +18971,7 @@ void CGame::DrawDialogBox_GaugePannel()
 #endif
 
 	// Health Gauge
-	//iMaxPoint = m_iVit * 3 + (m_iLevel) * 2 + ((m_iStr + m_iAngelicStr) / 2);
-
-	//Magn0S:: Changed HP Formula
-	iMaxPoint = (m_iVit * 4) + (m_iLevel * 4) + (m_iStr + m_iAngelicStr) + (m_iMag + m_iAngelicMag);
+	iMaxPoint = (m_iVit * 3) + (m_iLevel * 2) + ((m_iStr + m_iAngelicStr) / 2);
 
 	iBarWidth = 101 - (m_iHP * 101) / iMaxPoint;
 	if (iBarWidth < 0) iBarWidth = 0;
@@ -22071,13 +22068,13 @@ void CGame::DrawWhetherEffects()
 
 				if (m_bIsXmas == TRUE)
 				{
-					/*if (dY == 547)
+					if (dY == 547)
 					{
 						ix1[iNum] = dX;
 						iy2[iNum] = dY + (rand() % 5);
 						iFrame[iNum] = cTempFrame;
 						iNum++;
-					}*/
+					}
 					if (iNum >= MAXNUM) iNum = 0;
 				}
 			}
@@ -26578,8 +26575,10 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case VK_F8:
-		if (m_bIsDialogEnabled[15] == FALSE)
+		if (m_bIsDialogEnabled[15] == FALSE) {
+			bSendCommand(MSGID_REQUEST_SKILLPOINT);
 			EnableDialogBox(15, NULL, NULL, NULL);
+		}
 		else DisableDialogBox(15);
 		break;
 
@@ -27088,7 +27087,8 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 					int	_sLevel = m_pCharList[i]->m_sLevel;
 					wsprintf(G_cTxt, "%d", _sLevel);
 					PutString(sX + 138 + i * 109 + SCREENX, sY + 196 - 10 + SCREENY, G_cTxt, RGB(51, 0, 51)); //25,35,25
-					wsprintf(G_cTxt, "%d", m_pCharList[i]->m_iExp); //aca
+					//wsprintf(G_cTxt, "%d", m_pCharList[i]->m_iExp); //aca
+					DisplayCommaNumber_G_cTxt(m_pCharList[i]->m_iExp);
 					PutString(sX + 138 + i * 109 + SCREENX, sY + 211 - 10 + SCREENY, G_cTxt, RGB(51, 0, 51)); //25,35,25
 				}
 				iTemp2 = m_pCharList[i]->m_iYear * 1000000 + m_pCharList[i]->m_iMonth * 60000 + m_pCharList[i]->m_iDay * 1700 + m_pCharList[i]->m_iHour * 70 + m_pCharList[i]->m_iMinute;
@@ -29551,6 +29551,10 @@ NMH_LOOPBREAK2:;
 		NotifyMsg_ServerChange(pData);
 		break;
 
+	case DEF_NOTIFY_SKILLPOINT:
+		NotifyMsg_SkillPoint(pData);
+		break;
+
 	case DEF_NOTIFY_SKILL:
 		NotifyMsg_Skill(pData);
 		break;
@@ -31764,11 +31768,11 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	}
 
 	//50Cent - GM Effect sin shield
-	string st1 = pName;
+	/*string st1 = pName;
 	if (st1.find("[GM]") != string::npos)
 	{
 		m_pEffectSpr[45]->PutTransSprite(sX - 13, sY - 34, 0, m_dwCurTime);
-	}
+	}*/
 
 }
 
@@ -32458,13 +32462,13 @@ void CGame::DrawFlagHolder(short sX, short sY, DWORD dwTime)
 
 void CGame::DrawWanted(short sX, short sY, DWORD dwTime)
 {
-	if ((_tmp_iStatus & 0x80000) != 0) return;
-	
 	if ((_tmp_iStatus & 0x40000) != 0) {
-		if ((_tmp_iStatus & 0x10) != 0)
+		/*if ((_tmp_iStatus & 0x10) != 0)
 			m_pEffectSpr[105]->PutTransSprite(sX, sY - 80, 5, dwTime); // Wanted Skull
 		else
-			m_pEffectSpr[105]->PutSpriteFast(sX, sY - 80, 5, dwTime); // Wanted Skull
+			m_pEffectSpr[105]->PutSpriteFast(sX, sY - 80, 5, dwTime);*/ // Wanted Skull
+
+		m_pEffectSpr[45]->PutTransSprite(sX - 13, sY - 34, 0, dwTime);
 	}
 }
 
@@ -33986,6 +33990,13 @@ MOTION_COMMAND_PROCESS:;
 					m_iPrevMoveX = m_sPlayerX;
 					m_iPrevMoveY = m_sPlayerY;
 				}
+
+				// Centuu : auto pickup gold
+				if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
+				{
+					bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, NULL, NULL, NULL, NULL);
+					
+				}
 			}
 
 			if (m_cCommand == DEF_OBJECTDAMAGEMOVE)
@@ -34416,6 +34427,7 @@ void CGame::UpdateScreen_OnGame()
 				case '#':
 				case '$':
 				case '^':
+				case '%':
 					ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
 					m_cChatMsg[0] = m_cBackupChatMsg[0];
 #ifdef RES_HIGH
@@ -34593,7 +34605,7 @@ void CGame::UpdateScreen_OnGame()
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
-		{	wsprintf(G_cTxt, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
+		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			iEntry++;
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
@@ -34601,7 +34613,12 @@ void CGame::UpdateScreen_OnGame()
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1100) )
 		{	int	_wWeight = 0;
 			if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight%100) _wWeight = 1;
-			wsprintf( G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight/100 + _wWeight);
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+			else 
+				wsprintf( G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight/100 + _wWeight);
 			iEntry++;
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
@@ -34714,14 +34731,19 @@ void CGame::UpdateScreen_OnGame()
 			iLoc += 15;
 		}
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
-		{	wsprintf(G_cTxt, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
+		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1100) )
 		{	int	_wWeight = 0;
 			if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight%100) _wWeight = 1;
-			wsprintf( G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight/100 + _wWeight);
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+			else
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}

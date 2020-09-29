@@ -1167,6 +1167,9 @@ public:
     DWORD m_dwTimingCountTime;
     short m_sTiming;
 
+	int m_iSkillSSN[DEF_MAXSKILLTYPE]; // centu
+	void NotifyMsg_SkillPoint(char* pData);
+
 	char m_cMagicMastery[DEF_MAXMAGICTYPE];
 	unsigned char m_cSkillMastery[DEF_MAXSKILLTYPE]; // v1.4
 	char m_cWorldServerName[32];

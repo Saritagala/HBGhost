@@ -745,30 +745,36 @@ void CGame::NotifyMsg_ShowMap(char * pData)
 void CGame::NotifyMsg_Skill(char *pData)
 {
 	//WORD * wp; // centu - fix negative skills
-	short sSkillIndex, sValue, *sp;
+	short sSkillIndex, sValue, *sp, sValue2;
 	char * cp;
 	char cTxt[120];
 	int i;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
+	
 	sp = (short *)cp;
 	sSkillIndex = *sp;
 	cp += 2;
+
 	sp = (short *)cp;
 	sValue = *sp;
 	cp += 2;
+
+	sp = (short*)cp;
+	sValue2 = *sp;
+	cp += 2;
 	
-	/*_RemoveChatMsgListByObjectID(m_sPlayerObjectID);
+	_RemoveChatMsgListByObjectID(m_sPlayerObjectID);
 	if (m_pSkillCfgList[sSkillIndex]->m_iLevel < sValue)
 	{
 		wsprintf(cTxt, NOTIFYMSG_SKILL1, m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
 		AddEventList(cTxt, 10);
-		//PlaySound('E', 23, 0);
+		PlaySound('E', 23, 0);
 		for (i = 1; i < DEF_MAXCHATMSGS; i++)
 			if (m_pChatMsgList[i] == NULL)
 			{
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "%s +%d%%", m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
+				wsprintf(cTxt, "%s Level +%d", m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
 				m_pChatMsgList[i] = new class CMsg(20, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
 				if (m_pMapData->bSetChatMsgOwner(m_sPlayerObjectID, -10, -10, i) == FALSE)
@@ -782,12 +788,12 @@ void CGame::NotifyMsg_Skill(char *pData)
 	else if (m_pSkillCfgList[sSkillIndex]->m_iLevel > sValue) {
 		wsprintf(cTxt, NOTIFYMSG_SKILL2, m_pSkillCfgList[sSkillIndex]->m_cName, m_pSkillCfgList[sSkillIndex]->m_iLevel - sValue);
 		AddEventList(cTxt, 10);
-		//PlaySound('E', 24, 0);
+		PlaySound('E', 24, 0);
 		for (i = 1; i < DEF_MAXCHATMSGS; i++)
 			if (m_pChatMsgList[i] == NULL)
 			{
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "%s -%d%%", m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
+				wsprintf(cTxt, "%s Level -%d", m_pSkillCfgList[sSkillIndex]->m_cName, sValue - m_pSkillCfgList[sSkillIndex]->m_iLevel);
 				m_pChatMsgList[i] = new class CMsg(20, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
 				if (m_pMapData->bSetChatMsgOwner(m_sPlayerObjectID, -10, -10, i) == FALSE)
@@ -797,11 +803,29 @@ void CGame::NotifyMsg_Skill(char *pData)
 				}
 				break;
 			}
-	}*/
+	}
+	
 	m_pSkillCfgList[sSkillIndex]->m_iLevel = sValue;
 	m_cSkillMastery[sSkillIndex] = (unsigned char)sValue;
+	m_iSkillSSN[sSkillIndex] = sValue2;
 }
 
+void CGame::NotifyMsg_SkillPoint(char* pData)
+{
+	short sSkillIndex, * sp;
+	char* cp;
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	sp = (short*)cp;
+	sSkillIndex = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	m_iSkillSSN[sSkillIndex] = *sp;
+	cp += 2;
+
+}
 
 void CGame::NotifyMsg_SkillTrainSuccess(char * pData)
 {
@@ -8680,24 +8704,24 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 		iTotalLines = 0;
 		for (i = 0; i < DEF_MAXMENUITEMS; i++)
 			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
-		if (iTotalLines > 13) {
+		if (iTotalLines > 17) {
 			d1 = (double)m_stDialogBoxInfo[60].sView;
-			d2 = (double)(iTotalLines - 13);
+			d2 = (double)(iTotalLines - 17);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+			//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
 		}
 		else iPointerLoc = 0;
 
-		if (cLB != 0 && iTotalLines > 13)
+		if (cLB != 0 && iTotalLines > 17)
 		{
 			if ((iGetTopDialogBoxIndex() == 60))
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
 					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d2 = (double)(iTotalLines - 17);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
 				}
@@ -8709,10 +8733,10 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 			m_stDialogBoxInfo[60].sView = m_stDialogBoxInfo[60].sView - msZ / 60;
 			m_DInput.m_sZ = 0;
 		}
-		if (iTotalLines > 13 && m_stDialogBoxInfo[60].sView > iTotalLines - 13) m_stDialogBoxInfo[60].sView = iTotalLines - 13;
-		if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[60].sView = 0;
+		if (iTotalLines > 17 && m_stDialogBoxInfo[60].sView > iTotalLines - 17) m_stDialogBoxInfo[60].sView = iTotalLines - 17;
+		if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 17) m_stDialogBoxInfo[60].sView = 0;
 
-		for (i = 0; i < 13; i++)
+		for (i = 0; i < 17; i++)
 			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
@@ -8732,17 +8756,17 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 				}
 
 
-				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 15 + 35) && (msY <= sY + i * 15 + 49))
 				{
-					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR, iG, iB);
+					PutString2(sX + 25, sY + i * 15 + 35, cTemp, iR, iG, iB);
 				}
 				else
 				{
-					PutString2(sX + 25, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					PutString2(sX + 25, sY + i * 15 + 35, cTemp, iR / 2, iG / 2, iB / 2);
 				}
 			}
 
-		for (i = 0; i < 13; i++)
+		for (i = 0; i < 17; i++)
 			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
@@ -8767,13 +8791,13 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 					iR = 255;	iG = 255; iB = 255;
 				}
 
-				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 15 + 35) && (msY <= sY + i * 15 + 49))
 				{
-					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR, iG, iB);
+					PutString2(sX + 125, sY + i * 15 + 35, cTemp, iR, iG, iB);
 				}
 				else
 				{
-					PutString2(sX + 125, sY + i * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+					PutString2(sX + 125, sY + i * 15 + 35, cTemp, iR / 2, iG / 2, iB / 2);
 				}
 			}
 
@@ -8806,11 +8830,11 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	sX = m_stDialogBoxInfo[60].sX;
 	sY = m_stDialogBoxInfo[60].sY;
 
-		for (i = 0; i < 13; i++)
+		for (i = 0; i < 17; i++)
 		{
 			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
-				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 15 + 35) && (msY <= sY + i * 15 + 49))
 				{
 					ZeroMemory(cTemp, sizeof(cTemp));
 					wsprintf(cTemp, "/to %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName);
@@ -11208,7 +11232,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 			PutAlignedString(sX, sX + szX, sY + 95, "Event Maps will be possible to teleport", 55, 25, 25);//"5000Gold is required"
 			PutAlignedString(sX, sX + szX, sY + 110, "only if the Event is Open.", 55, 25, 25);//"to teleport to dungeon level 2."
 			//PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU72, 55, 25, 25);//"Would you like to teleport?"
-			PutString2(sX + 35, sY + 250, DRAW_DIALOGBOX_CITYHALL_MENU72_1, 55, 25, 25);//"Civilians cannot go some area."
+			//PutString2(sX + 35, sY + 250, DRAW_DIALOGBOX_CITYHALL_MENU72_1, 55, 25, 25);//"Civilians cannot go some area."
 			for (int i = 0; i<m_iTeleportMapCount; i++)
 			{
 				ZeroMemory(cTxt, sizeof(cTxt));
@@ -12928,7 +12952,7 @@ void CGame::DrawDialogBox_Party(short msX, short msY)
 		PutString(sX + 115, sY + 80, map, RGB(0, 0, 0));
 		PutString(sX + 180, sY + 80, coord, RGB(0, 0, 0));
 
-		PutString(sX + 25, sY + 90, "-----------------------------------------------------", RGB(0, 0, 0));
+		PutString(sX + 25, sY + 90, "-----------------------------------------", RGB(0, 0, 0));
 
 		iNth = 0;
 		for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
@@ -12944,7 +12968,7 @@ void CGame::DrawDialogBox_Party(short msX, short msY)
 			}
 
 		//Show Party Bonus! - ZeroEoyPnk
-		switch (m_iTotalPartyMember)
+		/*switch (m_iTotalPartyMember)
 		{
 		case 1:
 			PutAlignedString(sX, sX + szX, sY + 250, "Party Exp 100% | Party Ek x 10");
@@ -12970,7 +12994,7 @@ void CGame::DrawDialogBox_Party(short msX, short msY)
 		case 8:
 			PutAlignedString(sX, sX + szX, sY + 250, "Party Exp 100% | Party Ek x 5");
 			break;
-		}
+		}*/
 
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
@@ -14088,7 +14112,7 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
 	int  i, iTotalLines, iPointerLoc;
-	char cTemp[255], cTemp2[255];
+	char cTemp[255], cTemp2[255], cTemp3[255];
 	double d1, d2, d3;
 
 	sX = m_stDialogBoxInfo[15].sX;
@@ -14098,8 +14122,8 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 1); // Skill Dialog Title Bar
 
 	short limitX, limitY;
-	limitX = sX + m_stDialogBoxInfo[15].sSizeX;
-	limitY = sY + m_stDialogBoxInfo[15].sSizeY;
+	limitX = sX + m_stDialogBoxInfo[15].sSizeX + 20;
+	limitY = sY + m_stDialogBoxInfo[15].sSizeY + 20;
 
 	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
 	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
@@ -14107,6 +14131,10 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
 	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
 	PutString_SprFont2(sX + 115, sY + 5, "Skills", 240, 240, 240);
+
+	PutString(sX + 30, sY + 15 +15, "Name", RGB(0, 255, 0));
+	PutString(sX + 150, sY + 15 + 15, "Progress", RGB(0, 255, 0));
+	PutString(sX + 183+30+10, sY + 15 + 15, "Level", RGB(0, 255, 0));
 
 	switch (m_stDialogBoxInfo[15].cMode) {
 	case 0:
@@ -14120,19 +14148,31 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 				wsprintf(cTemp, "%s", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName);
 				m_Misc.ReplaceString(cTemp, '-', ' ');
 				ZeroMemory(cTemp2, sizeof(cTemp2));
-				wsprintf(cTemp2, "%3d%%", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel);
-				if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15)) && (msY <= sY + 44 + (x * 15)))
+				wsprintf(cTemp2, "%3d", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel);
+				
+				if (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel < 100) {
+					ZeroMemory(cTemp3, sizeof(cTemp3));
+					wsprintf(cTemp3, "%d/%d", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView], m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel + 1);
+				}
+				else
+				{
+					ZeroMemory(cTemp3, sizeof(cTemp3));
+					wsprintf(cTemp3, "%d/---", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+				}
+				if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 				{
 					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
 						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 					{
-						PutString(sX + 30, sY + 30 + (x * 15), cTemp, RGB(255, 255, 0));
-						PutString(sX + 183, sY + 30 + (x * 15), cTemp2, RGB(255, 255, 0));
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 0));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 0);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 0));
 					}
 					else
 					{
-						PutString(sX + 30, sY + 30 + (x * 15), cTemp, RGB(255, 255, 255));
-						PutString(sX + 183, sY + 30 + (x * 15), cTemp2, RGB(255, 255, 255));
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 255));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 255);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 255));
 					}
 				}
 				else
@@ -14140,19 +14180,22 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
 						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 					{
-						PutString(sX + 30, sY + 30 + (x * 15), cTemp, RGB(70, 130, 180));
-						PutString(sX + 183, sY + 30 + (x * 15), cTemp2, RGB(70, 130, 180));
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(70, 130, 180));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 70, 130, 180);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(70, 130, 180));
 					}
 					else
 					{
-						PutString(sX + 30, sY + 30 + (x * 15), cTemp, RGB(255, 255, 255));
-						PutString(sX + 183, sY + 30 + (x * 15), cTemp2, RGB(255, 255, 255));
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 255));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 255);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 255));
 					}
 				}
 
 				//if (m_iDownSkillIndex == (i + m_stDialogBoxInfo[15].sView))
 				//	m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutTransSpriteRGB(sX + 215, sY + 27 + (x * 15), 21, 50, 50, 50, m_dwTime);
 				//else m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutSpriteFast(sX + 215, sY + 27 + (x * 15), 20, m_dwTime);
+
 				x++;
 			}
 
@@ -16036,7 +16079,7 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != NULL))
 			{
 				if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
-				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15)) && (msY <= sY + 44 + (x * 15)))
+				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 				{
 					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
 						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
@@ -19224,24 +19267,6 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		if (shY > m_pMapData->m_sMapSizeY - 128) shY = m_pMapData->m_sMapSizeY - 128;
 		if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
 		else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
-
-		/*
-		if (m_iPartyStatus != NULL)
-		{
-			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
-			{
-				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
-					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
-						if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
-							m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
-						else
-							if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
-								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
-			}
-		}
-		else
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
-		*/
 		
 		if (m_bAresden)
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 38, m_dwCurTime);
@@ -19422,33 +19447,6 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		else m_pSprite[m_iMinMapIndex]->PutSpriteFastNoColorKey(sX, sY, m_iMinMapSquare, m_dwCurTime);
 		shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
 		shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
-		/*
-		if (m_iPartyStatus != NULL)
-		{
-			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
-			{
-				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
-				{
-					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
-					{
-						if (i > 1)
-							m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
-						else
-						{
-							shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
-							shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
-							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) == 0)
-								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
-							else
-								m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
-						}
-					}
-				}
-			}
-		}
-		else
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
-		*/
 
 		if (m_bAresden)
 			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
@@ -20614,7 +20612,7 @@ void CGame::StartBGM()
 		strcpy(cWavFileName, "music\\MainMenu.mp3");
 	}
 	else if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
-		if ((m_bIsXmas == TRUE) && (m_cWhetherEffectType >= 4)) strcpy(cWavFileName, "music\\Carol.wav");
+		if (m_bIsXmas == TRUE) strcpy(cWavFileName, "music\\Carol.wav");
 		else
 		{
 			if (memcmp(m_cCurLocation, "aresden", 7) == 0) strcpy(cWavFileName, "music\\aresden.wav");
@@ -21770,7 +21768,10 @@ void CGame::DlgBoxClick_IconPannel(short msX, short msY)
 	if ((526 + resx <= msX) && (552 + resx >= msX) && (434 + resi < msY) && (475 + resi > msY)) {
 		if (m_bIsDialogEnabled[15] == TRUE)
 			DisableDialogBox(15);
-		else EnableDialogBox(15, NULL, NULL, NULL);
+		else {
+			bSendCommand(MSGID_REQUEST_SKILLPOINT);
+			EnableDialogBox(15, NULL, NULL, NULL);
+		}
 		PlaySound('E', 14, 5);
 	}
 
