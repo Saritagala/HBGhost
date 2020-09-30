@@ -34610,15 +34610,29 @@ void CGame::UpdateScreen_OnGame()
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
-		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1100) )
-		{	int	_wWeight = 0;
-			if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight%100) _wWeight = 1;
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
-			else 
-				wsprintf( G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight/100 + _wWeight);
+		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
+		{	
+			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
+			case 10://"Available for above Str %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 11: // "Available for above Dex %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 12: // "Available for above Vit %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 13: // "Available for above Int %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 14: // "Available for above Mag %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 15: // "Available for above Agi %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			}
+			
 			iEntry++;
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
@@ -34661,17 +34675,7 @@ void CGame::UpdateScreen_OnGame()
 		}	}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
-		//m_DDraw.DrawShadowBox(msX, msY + 25, msX + (iLenSize * 8), msY + (iEntry * 15)+25);
 		
-	/*	wsprintf(G_cTxt, "len: %d", iLenSize);
-		PutString(msX+5, msY - 70, G_cTxt, RGB(255, 255, 255), FALSE, 1);
-		wsprintf(G_cTxt, "type: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectType);
-		PutString(msX + 5, msY - 50, G_cTxt, RGB(255, 255, 255), FALSE, 1);
-		wsprintf(G_cTxt, "effect1: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1);
-		PutString(msX + 5, msY - 30, G_cTxt, RGB(255, 255, 255), FALSE, 1);
-		wsprintf(G_cTxt, "effect2: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
-		PutString(msX + 5, msY - 10, G_cTxt, RGB(255, 255, 255), FALSE, 1);*/
-
 		if (iLenSize <= 15)
 			iLenSize = iLenSize * 7.0f;
 		else if (iLenSize <= 28)
@@ -34688,8 +34692,6 @@ void CGame::UpdateScreen_OnGame()
 		{	
 			if (m_bIsRare)
 				PutString(msX, msY + 25, cStr1, RGB(255, 232, 0), FALSE, 1);
-			//else if (m_bIsBallTradeItem)
-			//	PutAlignedString(fromX, toX, msY + 25, cStr1, 0, 201, 255);
 			else if (m_bIsFragile)
 				PutString(msX, msY + 25, cStr1, RGB(50, 255, 255), FALSE, 1);
 			else if (m_bIsSpecial)
@@ -34735,15 +34737,28 @@ void CGame::UpdateScreen_OnGame()
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}
-		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1100) )
-		{	int	_wWeight = 0;
-			if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight%100) _wWeight = 1;
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
-			else
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
+		{
+			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
+			case 10://"Available for above Str %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 11: // "Available for above Dex %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 12: // "Available for above Vit %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 13: // "Available for above Int %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 14: // "Available for above Mag %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			case 15: // "Available for above Agi %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+				break;
+			}
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}

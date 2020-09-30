@@ -11287,12 +11287,12 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		break;
 
 	case 13: //Magn0S:: Inform and Confirm to get dk set
-		if (m_iLevel < 180)
+		if (m_iLevel < 310)
 		{
-			PutAlignedString(sX, sX + szX, sY + 80, "Your level is too low to requesto DK Set.", 55, 25, 25);//"
+			PutAlignedString(sX, sX + szX, sY + 80, "Your level is too low to request DK Set.", 55, 25, 25);//"
 			//PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU19, 55, 25, 25);//"
 			PutAlignedString(sX, sX + szX, sY + 110, "To request DK Set, you must be", 55, 25, 25);//"
-			PutAlignedString(sX, sX + szX, sY + 125, "Level Max (180), and have 50.000 Gold", 55, 25, 25);//"
+			PutAlignedString(sX, sX + szX, sY + 125, "Level Max, and have 50.000 Gold", 55, 25, 25);//"
 			PutAlignedString(sX, sX + szX, sY + 140, "After it, you can come back here.", 55, 25, 25);//"
 			//PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU23, 55, 25, 25);//"
 			//PutAlignedString(sX, sX + szX, sY + 170, DRAW_DIALOGBOX_CITYHALL_MENU24, 55, 25, 25);//"
@@ -11309,7 +11309,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 			
 			PutAlignedString(sX, sX + szX, sY + 170, "By Clicking YES, you will receive", 55, 25, 25);//"
 			PutAlignedString(sX, sX + szX, sY + 200, "the default Armors of your class", 55, 25, 25);//"
-			PutAlignedString(sX, sX + szX, sY + 215, "(War / Mage)", 55, 25, 25);//"
+			PutAlignedString(sX, sX + szX, sY + 215, "(War / Mage / Archer)", 55, 25, 25);//"
 
 			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 19);
