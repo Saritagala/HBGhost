@@ -11616,7 +11616,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 	iDamage = (iDice(sV1, sV2) + sV3);
 	if (iDamage <= 0) iDamage = 0;
 
-	switch (cAttackerType)
+	/*switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -11627,7 +11627,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			}
 		}
 		break;
-	}
+	}*/
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:	
@@ -12729,7 +12729,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 
 	iPartyID = 0;
 
-	switch (cAttackerType)
+	/*switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -12740,7 +12740,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 		}
 		break;
-	}
+	}*/
 
 	// 공격자가 플레이어라면 Mag에 따른 보너스 대미지를 가산 
 	switch (cAttackerType) {
@@ -19881,7 +19881,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = NULL;
 	wWeaponType      = NULL;
 
-	switch (cAttackerType)
+	/*switch (cAttackerType)
 	{
 	case DEF_OWNERTYPE_PLAYER:
 		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
@@ -19892,7 +19892,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 		}
 		break;
-	}
+	}*/
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
