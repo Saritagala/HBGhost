@@ -21283,7 +21283,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Helm
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 110) && (msY <= sY + 125))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 403;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 404;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 405;
@@ -21295,7 +21295,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
  	 		PlaySound('E', 14, 5);
  		}
  		// Hero's Cap
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 407;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 408;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 409;
@@ -21307,7 +21307,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Armor
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 185) && (msY <= sY + 200))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 140) && (msY <= sY + 155))
  		{  	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 411;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 412;
  	 		if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 413;
@@ -21319,7 +21319,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Robe
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 215) && (msY <= sY + 230))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 415;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 416;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 417;
@@ -21331,7 +21331,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Hauberk
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 245) && (msY <= sY + 260))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 170) && (msY <= sY + 185))
   		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 419;
 	  		if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 420;
 	  		if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 421;
@@ -21343,7 +21343,7 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Leggings
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 275) && (msY <= sY + 290))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 185) && (msY <= sY + 200))
  		{  	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 423;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 424;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 425;
@@ -21354,6 +21354,19 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
+		// Hero's Hood
+		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 215))
+		{
+			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 392;
+			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 393;
+			if ((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 394;
+			if ((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 395;
+			ZeroMemory(m_cTakeHeroItemName, sizeof(m_cTakeHeroItemName));
+			memcpy(m_cTakeHeroItemName, "Hero's Hood (EK 150 - Contrib 20)", strlen("Hero's Hood (EK 150 - Contrib 20)"));
+			m_stDialogBoxInfo[13].cMode = 11;
+			m_stDialogBoxInfo[13].sV1 = iReqHeroItemID;
+			PlaySound('E', 14, 5);
+		}
  		break;
 
 	case 8:
@@ -34593,23 +34606,24 @@ void CGame::UpdateScreen_OnGame()
 		if (iLenSize < (int)strlen(cStr6)) iLenSize = (int)strlen(cStr6);
 
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-
 		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
 			&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "Bases DR: %d: - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
+			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
 			iEntry++;
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
 		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			iEntry++;
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
 		{	
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
@@ -34637,7 +34651,15 @@ void CGame::UpdateScreen_OnGame()
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
+		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
 		// Centuu - Class
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
 		{
 			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
@@ -34656,12 +34678,7 @@ void CGame::UpdateScreen_OnGame()
 		}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
-		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
-		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
-			iEntry++;
-		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (iEntry == 1)
 		{
 			//iEntry = 0;
@@ -34674,7 +34691,6 @@ void CGame::UpdateScreen_OnGame()
 				iEntry++;
 		}	}
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
 		
 		if (iLenSize <= 15)
 			iLenSize = iLenSize * 7.0f;
@@ -34723,20 +34739,23 @@ void CGame::UpdateScreen_OnGame()
 		{	PutString(msX, msY +25 +iLoc, cStr3, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
 			&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "Bases DR: %d: - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
+			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
 			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1); 
 			iLoc += 15;
 		}
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
 		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
 		{
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
@@ -34762,15 +34781,21 @@ void CGame::UpdateScreen_OnGame()
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}
-
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
+		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
+			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
+			iLoc += 15;
+		}
 		// Centuu - Class
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
 		{
 			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
 			{
 				wsprintf(G_cTxt, "Only for Warrior");
 			}
-			else if(m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
+			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
 			{
 				wsprintf(G_cTxt, "Only for Magician");
 			}
@@ -34785,12 +34810,7 @@ void CGame::UpdateScreen_OnGame()
 			else PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(255, 0, 0), FALSE, 1);
 			iLoc += 15;
 		}
-
-		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
-		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
-			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
-			iLoc += 15;
-		}
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if ( iLoc == 15 )
 		{	iLoc = 0;
 			for ( int iTmp = 0 ; iTmp < DEF_MAXITEMS ; iTmp++ )
@@ -34816,11 +34836,9 @@ void CGame::UpdateScreen_OnGame()
 	if (m_bIsCTFMode && iUpdateRet != 0) {
 		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 20, 56, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[0]);
-		PutString(10 + 10+1, 180 + 5 + 20+1, G_cTxt, RGB(0, 0, 0), FALSE, 1);
 		PutString(10 + 10, 180 + 5 + 20, G_cTxt, RGB(225, 225, 225), FALSE, 1);
 		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 45 + 20, 57, dwTime);
 		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
-		PutString(10 + 10+1, 180 + 45 + 5 + 20+1, G_cTxt, RGB(0, 0, 0), FALSE, 1);
 		PutString(10 + 10, 180 + 45 + 5 + 20, G_cTxt, RGB(225, 225, 225), FALSE, 1);
 	}
 
@@ -34843,23 +34861,18 @@ void CGame::UpdateScreen_OnGame()
 	//Snoopy adding Heldenian turret count:
 	if ((iUpdateRet != 0) && (m_bIsHeldenian) && (memcmp(m_cCurLocation, "BtField", 7) == 0))
 	{
+		m_DDraw.DrawShadowBox(5, 175, 210, 300, 0, true);
 		wsprintf(G_cTxt, "Aresden flags : %d", m_iHeldenianAresdenFlags);
-		PutString(10+1, 140 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
 		PutString(10, 140+20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine flags : %d", m_iHeldenianElvineFlags);
-		PutString(10+1, 160 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
 		PutString(10, 160 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Aresden death toll : %d", m_iHeldenianAresdenDead);
-		PutString(10+1, 180 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
 		PutString(10, 180 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine death toll : %d", m_iHeldenianElvineDead);
-		PutString(10+1, 200 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
 		PutString(10, 200 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Aresden rest building number : %d", m_iHeldenianAresdenLeftTower);
-		PutString(10+1, 220 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
 		PutString(10, 220 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine rest building number : %d", m_iHeldenianElvineLeftTower);
-		PutString(10+1, 240 + 20 + 20+1, G_cTxt, RGB(0, 0, 0));
 		PutString(10, 240 + 20 + 20, G_cTxt, RGB(255, 255, 255));
 	}
 
@@ -34930,31 +34943,6 @@ void CGame::UpdateScreen_OnGame()
 		return;
 	}
 
-	/*if (dwTime - dwEKNotifyTime < 10000)
-	{
-		switch (m_sPlayerType) {
-		case 1:
-		case 2:
-		case 3:
-			PlaySound('C', 21, 0);
-			break;
-
-		case 4:
-		case 5:
-		case 6:
-			PlaySound('C', 22, 0);
-			break;
-		}
-		PutString_SprFont3(355, 205, "ENEMY KILLED!", 200, 250, 2);
-		m_Misc.ReplaceString(cEKNotifySubject, '_', ' ');
-
-#ifdef RES_HIGH
-		PutString_SprFont3(400 - ((strlen(cEKNotifySubject) * 7) / 2), 220, cEKNotifySubject, 2, 200, 250);
-#else
-		PutString_SprFont3(320 - ((strlen(cEKNotifySubject) * 7) / 2), 215, cEKNotifySubject, 2, 200, 250);
-#endif	
-	}*/
-
 	if (m_bIsObserverMode == TRUE)
 	{
 		m_DDraw.PutPixel(msX, msY, 255, 255, 255);
@@ -34974,15 +34962,23 @@ void CGame::UpdateScreen_OnGame()
 		char cCol1[24], cCol2[24], cCol3[24], cCol4[24], cCol5[24];
 		int i, iEntry = 0, iRedEntry = 0, iBlueEntry = 0, iGreenEntry = 0, iYellowEntry = 0, iMaxEntries = 5;
 
-		if (m_bCtrlPressed) iMaxEntries = 15;
+		if (m_bCtrlPressed)
+		{
+			m_DDraw.DrawShadowBox(5, 175, 175, 425, 0, true);
+			iMaxEntries = 15;
+		}
+		else
+		{
+			m_DDraw.DrawShadowBox(5, 175, 175, 275, 0, true);
+		}
 
 		wsprintf(cCol1, "Name");
 		wsprintf(cCol2, "Kills");
 		wsprintf(cCol3, "Deaths");
 
-		PutAlignedString(110, 160, 160 + 20, cCol3, 192, 192, 192);
-		PutAlignedString(60, 110, 160 + 20, cCol2, 192, 192, 192);
-		PutAlignedString(10, 60, 160 + 20, cCol1, 192, 192, 192);
+		PutAlignedString(110+10, 160 + 10, 160 + 20, cCol3, 192, 192, 192);
+		PutAlignedString(60 + 10, 110 + 10, 160 + 20, cCol2, 192, 192, 192);
+		PutAlignedString(10 + 10, 60 + 10, 160 + 20, cCol1, 192, 192, 192);
 
 		for (i = 0; i < 200; i++)
 		{
@@ -34999,19 +34995,20 @@ void CGame::UpdateScreen_OnGame()
 					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
 					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
 					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
-					PutAlignedString(110, 160, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 204);
-					PutAlignedString(60, 110, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 204);
-					PutAlignedString(10, 60, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 204);
+					PutAlignedString(110 + 10, 160 + 10, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 204);
+					PutAlignedString(60 + 10, 110 + 10, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 204);
+					PutAlignedString(10 + 10, 60 + 10, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 204);
 				}
 				else
 				{
 					wsprintf(cCol1, "%s", m_stArenaPlayers[i].cCharName);
 					wsprintf(cCol2, "%i", m_stArenaPlayers[i].iKills);
 					wsprintf(cCol3, "%i", m_stArenaPlayers[i].iDeaths);
-					PutAlignedString(110, 160, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 255);
-					PutAlignedString(60, 110, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 255);
-					PutAlignedString(10, 60, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 255);
+					PutAlignedString(110 + 10, 160 + 10, 160 + (iEntry * 15) + 20, cCol3, 255, 255, 255);
+					PutAlignedString(60 + 10, 110 + 10, 160 + (iEntry * 15) + 20, cCol2, 255, 255, 255);
+					PutAlignedString(10 + 10, 60 + 10, 160 + (iEntry * 15) + 20, cCol1, 255, 255, 255);
 				}
+
 			}
 		}
 	}
@@ -35024,15 +35021,6 @@ void CGame::UpdateScreen_OnGame()
 			AddEventList("When you're Polymorphed you can't run!", 10);
 		}
 	}
-
-	// centu - al estar sobrecargado no puede correr !
-	/*if ((_iCalcTotalWeight() / 100) == (((m_iStr + m_iAngelicStr) * 5) + (m_iLevel) * 5)) {
-		if (m_bRunningMode) {
-			m_bRunningMode = FALSE;
-			AddEventList(NOTIFY_MSG_CONVERT_WALKING_MODE, 10);
-			AddEventList("You're carrying too much to run!", 10);
-		}
-	}*/
 
 	if (iUpdateRet == 0) m_sFrameCount++;
 	else m_sFrameCount += 256;
@@ -35101,40 +35089,31 @@ void CGame::UpdateScreen_OnGame()
 
 		if (strcmp(m_cMapName, "team") == 0) {
 			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
+			m_DDraw.DrawShadowBox(5, 175, 110, 280, 0, true);
 			wsprintf(G_cTxt, "Team");
-			PutString(10+1, 160 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(10, 160+20, G_cTxt, RGB(220, 200, 200));
 			wsprintf(G_cTxt, "Red");
-			PutString(10+1, 180 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(10, 180 + 20, G_cTxt, RGB(255, 0, 9));
 			wsprintf(G_cTxt, "Blue");
-			PutString(10+1, 200 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(10, 200 + 20, G_cTxt, RGB(61, 100, 255));
 			wsprintf(G_cTxt, "Green");
-			PutString(10+1, 220 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(10, 220 + 20, G_cTxt, RGB(51, 204, 0));
 			wsprintf(G_cTxt, "Yellow");
-			PutString(10+1, 240 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(10, 240 + 20, G_cTxt, RGB(255, 255, 0));
 
 			wsprintf(G_cTxt, "Kills");
-			PutString(70+1, 160 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(70, 160 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", redkills);
-			PutString(70+1, 180 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(70, 180 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", bluekills);
-			PutString(70+1, 200 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(70, 200 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", greenkills);
-			PutString(70+1, 220 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(70, 220 + 20, G_cTxt, RGB(220, 200, 200));
 
 			wsprintf(G_cTxt, "%d/200", yellowkills);
-			PutString(70+1, 240 + 20+1, G_cTxt, RGB(0, 0, 0));
 			PutString(70, 240 + 20, G_cTxt, RGB(220, 200, 200));
 		}
 
@@ -35253,22 +35232,6 @@ void CGame::DlgBoxClick_QuestList(short msX, short msY)
 			}
 		}
 	}
-
-/*	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
-
-	for (int i = 0; i <= 49; i++)
-	{
-		if (m_stQuestList[i].iNpcID > 0)
-		{
-			if ((msX > sX + 20) && (msX < sX + 230) && (msY > sY + 50 + (iEntry * 15)) && (msY < sY + 50 + (iEntry * 15) + 12))
-			{
-				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_TALKTONPC, NULL, 4, m_stQuestList[i].iQuestID, NULL, NULL);
-				DisableDialogBox(55);
-			}
-			iEntry++;
-		}
-	}*/
-
 }
 
 void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
@@ -35399,126 +35362,11 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				wsprintf(dane1, "%s", cMapName);
 				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 100);
 			}
-			}
+		}
 
 		break;
 	}
 
-	/*for (i = 0; i < 18; i++)
-		if (((i + m_stDialogBoxInfo[59].sView) < 50) && (m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID != NULL))
-		{
-			if ((msX >= sX + 20) && (msX <= sX + 380) && (msY >= sY + i * 15 + 50) && (msY <= sY + i * 15 + 62))
-			{
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cTxt, sizeof(cTxt));
-				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
-				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
-				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
-				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
-				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cMapName, sizeof(cMapName));
-				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
-				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 255);
-			}
-			else {
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cTxt, sizeof(cTxt));
-				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
-				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
-				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
-				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
-				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cMapName, sizeof(cMapName));
-				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
-				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (i * 15), dane1, 255, 255, 100);
-			}
-		}
-
-/*	for (int i = 0; i <= 18; i++)
-	{
-		if (m_stQuestList[i].iNpcID > 0)
-		{
-			if ((msX > sX + 20) && (msX < sX + 310) && (msY > sY + 50 + (iEntry * 15)) && (msY < sY + 50 + (iEntry * 15) + 12))
-			{
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cTxt, sizeof(cTxt));
-				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
-				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
-				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
-				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
-				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cMapName, sizeof(cMapName));
-				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
-				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (iEntry * 15), dane1, 255, 255, 255);
-			}
-			else
-			{
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cTxt, sizeof(cTxt));
-				GetNpcName(m_stQuestList[i].iNpcID, cTxt);
-				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iMaxCount);
-				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%d", m_stQuestList[i].iContribution);
-				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				wsprintf(dane1, "%s", m_stQuestList[i].cPrizeName);
-				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
-
-				ZeroMemory(dane1, sizeof(dane1));
-				ZeroMemory(cMapName, sizeof(cMapName));
-				GetOfficialMapName(m_stQuestList[i].cMapName, cMapName);
-				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 330, sX + 380, sY + 50 + (iEntry * 15), dane1, 255, 255, 100);
-			}
-
-		}
-	}*/
 }
 
 // VAMP - elemental armours change attunement

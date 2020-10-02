@@ -46,25 +46,19 @@ Item  = SeedBag(Ginseng)      11     0     30    14 90 0 0 0 0      1      0    
 
 
 
-
+Item = DecolorationPotion 11 0 17 0 0 0 0 0 0 1 0 6 58 100 1 -1 0 0 0 0 0 -1
 ;-------Name---------------Type--EPos--Effect--ETValue--------MaxLife--MFixC--Spr--SFrame--Price---Wgt--ApprV-Speed-LevelLimit
-
-Item = Dye(Indigo) 11 0 17 1 0 0 0 0 0 1 0 6 58 100 1 -1 0 0
-Item = Dye(Brown) 11 0 17 2 0 0 0 0 0 1 0 6 59 100 1 -1 0 0
-Item = Dye(Green) 11 0 17 5 0 0 0 0 0 1 0 6 62 100 1 -1 0 0
-Item = Dye(Gray) 11 0 17 6 0 0 0 0 0 1 0 6 63 100 1 -1 0 0
-Item = Dye(Violet) 11 0 17 9 0 0 0 0 0 1 0 6 66 100 1 -1 0 0
-Item = Dye(Blue) 11 0 17 10 0 0 0 0 0 1 0 6 67 100 1 -1 0 0
-Item = Dye(Tan) 11 0 17 11 0 0 0 0 0 1 0 6 68 100 1 -1 0 0
-Item = Dye(Khaki) 11 0 17 12 0 0 0 0 0 1 0 6 69 100 1 -1 0 0
-Item = Dye(Yellow) 11 0 17 13 0 0 0 0 0 1 0 6 70 100 1 -1 0 0
-Item = Dye(Red) 11 0 17 14 0 0 0 0 0 1 0 6 71 100 1 -1 0 0
-Item = DecolorationPotion 11 0 17 0 0 0 0 0 0 1 0 6 58 100 1 -1 0 0
-
-;Item  = BingoTicket(A1)       0    0    0     0 0 0 0 0 0        1      0      6  89     1000 1   -1     0     0
-;Item  = BingoTicket(A2)       0    0    0     0 0 0 0 0 0        1      0      6  89    10000 1   -1     0     0
-;Item  = BingoTicket(E1)       0    0    0     0 0 0 0 0 0        1      0      6  89     1000 1   -1     0     0
-;Item  = BingoTicket(E2)       0    0    0     0 0 0 0 0 0        1      0      6  89    10000 1   -1     0     0
+Item = Dye(Indigo) 11 0 17 1 0 0 0 0 0 1 0 6 58 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(CrimsonRed) 11 0 17 4 0 0 0 0 0 1 0 6 61 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Gold) 11 0 17 3 0 0 0 0 0 1 0 6 60 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Aqua) 11 0 17 7 0 0 0 0 0 1 0 6 64 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Pink) 11 0 17 8 0 0 0 0 0 1 0 6 65 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Violet) 11 0 17 9 0 0 0 0 0 1 0 6 66 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Blue) 11 0 17 10 0 0 0 0 0 1 0 6 67 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Khaki) 11 0 17 11 0 0 0 0 0 1 0 6 69 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Red) 11 0 17 14 0 0 0 0 0 1 0 6 71 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Green) 11 0 17 5 0 0 0 0 0 1 0 6 71 100 1 -1 0 0 0 0 0 -1 42
+Item = Dye(Black) 11 0 17 6 0 0 0 0 0 1 0 6 71 100 1 -1 0 0 0 0 0 -1 42
 
 Item  = Shoes                1     5     2     1  1 1  1 1 1   300     0      5    0      20      200    1     0      0      
 Item  = LongBoots            1     5     2     1  1 1  1 1 1   300     0      5    1     100      500    2     0      0      

@@ -3762,8 +3762,8 @@ int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 	case 3:
 		if ((cArmor == 8) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Warr elv M
 		if ((cArmor == 9) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Warr ares M
-		if ((cArmor == 14) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Archer Elvine M
-		if ((cArmor == 15) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Archer Aresden M
+		//if ((cArmor == 14) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Archer Elvine M
+		//if ((cArmor == 15) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Archer Aresden M
 		if ((cArmor == 13) && (cLeg == 7) && (cHat == 14) && (cBerk == 5)) return (1); // Warr God M
 		if ((cArmor == 10) && (cLeg == 5) && (cHat == 11) && (cBerk == 3)) return (2); // Mage elv M
 		if ((cArmor == 11) && (cLeg == 6) && (cHat == 12) && (cBerk == 4)) return (2); // Mage ares M
@@ -3773,9 +3773,9 @@ int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 	case 5:
 	case 6: // fixed
 		if ((cArmor == 9) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //War Elvine W
-		if ((cArmor == 15) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //Archer Elvine W
+		//if ((cArmor == 15) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //Archer Elvine W
 		if ((cArmor == 10) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //War Aresden W
-		if ((cArmor == 13) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //Archer Aresden W
+		//if ((cArmor == 13) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //Archer Aresden W
 		if ((cArmor == 14) && (cLeg == 8) && (cHat == 14) && (cBerk == 6)) return (1); //War Ultimate W
 		if ((cArmor == 11) && (cLeg == 6) && (cHat == 11) && (cBerk == 4)) return (2); //Mage Elvine W
 		if ((cArmor == 12) && (cLeg == 7) && (cHat == 12) && (cBerk == 5)) return (2); //Mage Aresden W
@@ -11124,7 +11124,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 	case 7:// 3.51 Cityhall Menu - Request Hero's Items - Diuuude
 		PutAlignedString(sX, sX + szX, sY + 60, DRAW_DIALOGBOX_CITYHALL_MENU46, 255, 255, 255);// Here are the Hero's Item aivable :
 		// Hero's Cape (EK 300)
-		if (m_iEnemyKillCount >= 0)
+		if (m_iEnemyKillCount >= 300)
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 95) && (msY < sY + 110))
 				PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU47, 255, 255, 255);// On mouse over Mode
@@ -11132,53 +11132,61 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU47, 65, 65, 65);// Disabled Mode
 		// Hero's Helm (EK 150 - Contrib 20)
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
+		{
+			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 110) && (msY < sY + 125))
+				PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 4, 0, 50);// Normal Mode
+		}
+		else PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 65, 65, 65);// Disabled Mode
+		// Hero's Cap (EK 100 - Contrib 20)
+		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 20))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 125) && (msY < sY + 140))
-				PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU48, 255, 255, 255);// On mouse over Mode
-			else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU48, 4, 0, 50);// Normal Mode
+				PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 4, 0, 50);// Normal Mode
 		}
-		else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU48, 65, 65, 65);// Disabled Mode
-		// Hero's Cap (EK 100 - Contrib 20)
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
+		else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 65, 65, 65);// Disabled Mode
+		// Hero's Armor (EK 300 - Contrib 30)
+		if ((m_iEnemyKillCount >= 300) && (m_iContribution >= 30))
+		{
+			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 140) && (msY < sY + 155))
+				PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 4, 0, 50);// Normal Mode
+		}
+		else PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 65, 65, 65);// Disabled Mode
+		// Hero's Robe (EK 200 - Contrib 20)
+		if ((m_iEnemyKillCount >= 200) && (m_iContribution >= 20))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 155) && (msY < sY + 170))
-				PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU49, 255, 255, 255);// On mouse over Mode
-			else PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU49, 4, 0, 50);// Normal Mode
+				PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU51, 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU51, 4, 0, 50);// Normal Mode
 		}
-		else PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU49, 65, 65, 65);// Disabled Mode
-		// Hero's Armor (EK 300 - Contrib 30)
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
+		else PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU51, 65, 65, 65);// Disabled Mode
+		// Hero's Hauberk (EK 100 - Contrib 10)
+		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 10))
+		{
+			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 170) && (msY < sY + 185))
+				PutAlignedString(sX, sX + szX, sY + 170, DRAW_DIALOGBOX_CITYHALL_MENU52, 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 170, DRAW_DIALOGBOX_CITYHALL_MENU52, 4, 0, 50);// Normal Mode
+		}
+		else PutAlignedString(sX, sX + szX, sY + 170, DRAW_DIALOGBOX_CITYHALL_MENU52, 65, 65, 65);// Disabled Mode
+		// Hero's Leggings (EK 150 - Contrib 15)
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 15))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 185) && (msY < sY + 200))
-				PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU50, 255, 255, 255);// On mouse over Mode
-			else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU50, 4, 0, 50);// Normal Mode
+				PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU53, 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU53, 4, 0, 50);// Normal Mode
 		}
-		else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU50, 65, 65, 65);// Disabled Mode
-		// Hero's Robe (EK 200 - Contrib 20)
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
+		else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU53, 65, 65, 65);// Disabled Mode
+		// Hero's Hood (EK 150 - Contrib 20)
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
 		{
-			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 215) && (msY < sY + 230))
-				PutAlignedString(sX, sX + szX, sY + 215, DRAW_DIALOGBOX_CITYHALL_MENU51, 255, 255, 255);// On mouse over Mode
-			else PutAlignedString(sX, sX + szX, sY + 215, DRAW_DIALOGBOX_CITYHALL_MENU51, 4, 0, 50);// Normal Mode
+			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 200) && (msY < sY + 215))
+				PutAlignedString(sX, sX + szX, sY + 200, "Hero's Hood (EK 150 - Contrib 20)", 255, 255, 255);// On mouse over Mode
+			else PutAlignedString(sX, sX + szX, sY + 200, "Hero's Hood (EK 150 - Contrib 20)", 4, 0, 50);// Normal Mode
 		}
-		else PutAlignedString(sX, sX + szX, sY + 215, DRAW_DIALOGBOX_CITYHALL_MENU51, 65, 65, 65);// Disabled Mode
-		// Hero's Hauberk (EK 100 - Contrib 10)
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
-		{
-			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 245) && (msY < sY + 260))
-				PutAlignedString(sX, sX + szX, sY + 245, DRAW_DIALOGBOX_CITYHALL_MENU52, 255, 255, 255);// On mouse over Mode
-			else PutAlignedString(sX, sX + szX, sY + 245, DRAW_DIALOGBOX_CITYHALL_MENU52, 4, 0, 50);// Normal Mode
-		}
-		else PutAlignedString(sX, sX + szX, sY + 245, DRAW_DIALOGBOX_CITYHALL_MENU52, 65, 65, 65);// Disabled Mode
-		// Hero's Leggings (EK 150 - Contrib 15)
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
-		{
-			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 275) && (msY < sY + 290))
-				PutAlignedString(sX, sX + szX, sY + 275, DRAW_DIALOGBOX_CITYHALL_MENU53, 255, 255, 255);// On mouse over Mode
-			else PutAlignedString(sX, sX + szX, sY + 275, DRAW_DIALOGBOX_CITYHALL_MENU53, 4, 0, 50);// Normal Mode
-		}
-		else PutAlignedString(sX, sX + szX, sY + 275, DRAW_DIALOGBOX_CITYHALL_MENU53, 65, 65, 65);// Disabled Mode
+		else PutAlignedString(sX, sX + szX, sY + 200, "Hero's Hood (EK 150 - Contrib 20)", 65, 65, 65);// Disabled Mode
 		break;
 
 	case 8: // cancel current quest?

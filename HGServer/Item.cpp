@@ -1432,8 +1432,8 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	WORD* wp;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	//if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
-	//if (m_pClientList[iClientH]->m_iContribution < 10) return;
+	if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
+	if (m_pClientList[iClientH]->m_iContribution < 10) return;
 	if (m_pClientList[iClientH]->m_cSide == 0) return;
 
 	if (_iGetItemSpaceLeft(iClientH) == 0) {
@@ -1444,7 +1444,7 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	//Prevents a crash if item dosent exist
 	if (m_pItemConfigList[iItemID] == NULL)  return;
 
-	/*switch (iItemID) {
+	switch (iItemID) {
 		// Hero Cape
 	case 400: //Aresden HeroCape
 	case 401: //Elvine HeroCape
@@ -1457,7 +1457,10 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	switch (m_pClientList[iClientH]->m_cSex) {
 	case 1:
 		switch (iItemID) {
-			// Hero Helm
+		// Hero Hood
+		case 392:
+		case 394:
+		// Hero Helm
 		case 403: //Aresden HeroHelm(M)
 		case 405: //Elvine HeroHelm(M)
 			if (m_pClientList[iClientH]->m_iEnemyKillCount < 150 || m_pClientList[iClientH]->m_iContribution < 200) return;
@@ -1506,6 +1509,9 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 
 	case 2:
 		switch (iItemID) {
+			// Hero Hood
+		case 393:
+		case 395:
 		case 404: //Aresden HeroHelm(W)
 		case 406: //Elvine HeroHelm(W)
 			if (m_pClientList[iClientH]->m_iEnemyKillCount < 150 || m_pClientList[iClientH]->m_iContribution < 200) return;
@@ -1547,7 +1553,7 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 			break;
 		}
 		break;
-	}*/
+	}
 
 	ZeroMemory(cItemName, sizeof(cItemName));
 	memcpy(cItemName, m_pItemConfigList[iItemID]->m_cName, 20);
@@ -1571,12 +1577,12 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 				pItem->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
 
 				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, NULL);
-				/*
+			
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
 				calcularTop15HB(iClientH);
 				// centu - manage contrib
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
-				*/
+				
 				if (iEraseReq == 1) delete pItem;
 
 				iCalcTotalWeight(iClientH);
@@ -8771,6 +8777,26 @@ char CGame::_cCheckHeroItemEquipped(int iClientH)
 	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor] == NULL) return 0;
 	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk] == NULL) return 0;
 
+	if ((m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 392) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 411) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 419) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 423)) return 1;
+
+	if ((m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 393) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 412) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 420) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 424)) return 1;
+
+	if ((m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 394) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 413) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 421) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 425)) return 1;
+
+	if ((m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 395) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 414) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 422) &&
+		(m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 426)) return 1;
+
 	if ((m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 403) &&
 		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 411) &&
 		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 419) &&
@@ -8810,8 +8836,6 @@ char CGame::_cCheckHeroItemEquipped(int iClientH)
 		(m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 418) &&
 		(m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 422) &&
 		(m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 426)) return 2;
-
-	// Centuu : UltimateHero
 
 	return 0;
 }
