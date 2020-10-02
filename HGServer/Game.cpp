@@ -9956,14 +9956,17 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 				// Slaughterer 
 				ApplyCombatKilledPenalty(iClientH, 12, bIsSAattacked);
 			}
-
-			wsprintf(G_cTxt, "%s killed %s", cAttackerName, m_pClientList[iClientH]->m_cCharName);
-			for (Killedi = 1; Killedi < DEF_MAXCLIENTS; Killedi++) {
+			char cTxt[128];
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%s killed %s", m_pClientList[iAttackerH]->m_cCharName, m_pClientList[iClientH]->m_cCharName);
+			for (Killedi = 0; Killedi < DEF_MAXCLIENTS; Killedi++) {
 				if (m_pClientList[Killedi] != NULL) {
-					SendNotifyMsg(NULL, Killedi, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, G_cTxt);
+					SendNotifyMsg(NULL, Killedi, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cTxt);
 				}
 			}
-			PutLogFileList(G_cTxt);
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%s(%s) killed %s(%s) in %s(%d,%d)", m_pClientList[iAttackerH]->m_cCharName, m_pClientList[iAttackerH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cMapName, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
+			PutPvPLogFileList(cTxt); // Centu : log pvp
 		}
 	}
 	else if (cAttackerType == DEF_OWNERTYPE_NPC) {
@@ -18168,7 +18171,7 @@ BOOL CGame::_bPKLog(int iAction,int iAttackerH , int iVictumH, char * pNPC)
 		default:
 			return FALSE;
 	}
-	PutPvPLogFileList(cTxt);
+	//PutPvPLogFileList(cTxt);
 	return TRUE ;
 }
 

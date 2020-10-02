@@ -497,7 +497,7 @@ void PutXSocketLogList(char * cMsg)
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cMsg);
 	strcat(cBuffer, "\n");
 
@@ -594,7 +594,7 @@ void PutLogFileList(char * cStr)
 	if (pFile == NULL) return;
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cStr);
 	strcat(cBuffer, "\n");
 	fwrite(cBuffer, 1, strlen(cBuffer), pFile);
@@ -613,7 +613,7 @@ void PutAdminLogFileList(char * cStr)
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cStr);
 	strcat(cBuffer, "\n");
 
@@ -633,7 +633,7 @@ void PutHackLogFileList(char * cStr)
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cStr);
 	strcat(cBuffer, "\n");
 
@@ -653,7 +653,7 @@ void PutPvPLogFileList(char * cStr)
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cStr);
 	strcat(cBuffer, "\n");
 
@@ -674,7 +674,7 @@ void PutItemLogFileList(char * cStr)
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cStr);
 	strcat(cBuffer, "\n");
 
@@ -694,7 +694,7 @@ void PutLogEventFileList(char * cStr)
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
 	GetLocalTime(&SysTime);
-	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cBuffer, "(%2d/%2d/%4d - %2d:%2d:%2d) - ", SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	strcat(cBuffer, cStr);
 	strcat(cBuffer, "\n");
 
