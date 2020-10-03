@@ -19264,7 +19264,6 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		m_DDraw.PutPixel(x + 2, y, 255, 255, 0);
 	};
 
-
 	if (m_bZoomMap)
 	{
 		shX = m_sPlayerX - 64;
@@ -19276,12 +19275,9 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		if (m_bDialogTrans) m_pSprite[m_iMaxMapIndex]->PutShiftTransSprite2(sX, sY, shX, shY, 0, m_dwCurTime);
 		else m_pSprite[m_iMaxMapIndex]->PutShiftSpriteFast(sX, sY, shX, shY, 0, m_dwCurTime);
 		
-		if (m_bAresden)
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 38, m_dwCurTime);
-		else
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
+		m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + m_sPlayerX, sY - shY + m_sPlayerY, 37, m_dwCurTime);
 
-		if (bShinning || m_bIsCTFMode)
+		if (bShinning || m_bIsCTFMode || m_bApocalypse)
 		{
 			for (auto& u : m_minimapblue.list)
 			{
@@ -19456,12 +19452,9 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 		shX = (m_sPlayerX * 128) / (m_pMapData->m_sMapSizeX);
 		shY = (m_sPlayerY * 128) / (m_pMapData->m_sMapSizeX);
 
-		if (m_bAresden)
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 38, m_dwCurTime);
-		else
-			m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
+		m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX + shX, sY + shY, 37, m_dwCurTime);
 
-		if (bShinning || m_bIsCTFMode)
+		if (bShinning || m_bIsCTFMode || m_bApocalypse)
 		{
 			for (auto& u : m_minimapblue.list) {
 				auto* p = &u;

@@ -1,0 +1,26 @@
+2020:10:02:17:05:26	Loc(BtField) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:02:17:05:38	Loc(BtField) IP(192.168.0.28) GM(Centuu[GM]):"/tp procella"
+2020:10:02:17:08:21	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem UltimateHood(M)"
+2020:10:02:17:08:21	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(UltimateHood(M))
+2020:10:02:17:08:28	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem UltimateArmor(M)"
+2020:10:02:17:08:28	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(UltimateArmor(M))
+2020:10:02:17:08:37	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem MagicWand(MS.20)"
+2020:10:02:17:08:41	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem MagicWand(MS20)"
+2020:10:02:17:08:41	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(MagicWand(MS20))
+2020:10:02:17:25:03	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem BlackKnightBow"
+2020:10:02:17:25:12	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem BlackArcherBow"
+2020:10:02:17:25:12	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(BlackArcherBow)
+2020:10:02:17:25:18	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow"
+2020:10:02:17:25:18	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)
+2020:10:02:17:25:19	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow"
+2020:10:02:17:25:19	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)
+2020:10:02:17:25:20	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow"
+2020:10:02:17:25:20	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)
+2020:10:02:17:25:21	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow"
+2020:10:02:17:25:21	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)
+2020:10:02:17:25:22	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow"
+2020:10:02:17:25:22	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)
+2020:10:02:17:25:23	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow"
+2020:10:02:17:25:23	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)
+2020:10:02:17:25:25	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Arrow 100"
+2020:10:02:17:25:25	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Arrow)

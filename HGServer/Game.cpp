@@ -26534,6 +26534,7 @@ void CGame::NpcBehavior_Move(int iNpcH)
 		m_pNpcList[iNpcH]->m_vY = m_pNpcList[iNpcH]->m_sY;
 	}
 	TargetSearch(iNpcH, &sTarget, &cTargetType);
+	minimap_update_apoc(iNpcH);
 	if (sTarget != NULL) {
 		if (m_pNpcList[iNpcH]->m_dwActionTime < 1000) {
 			if (iDice(1, 3) == 3) {

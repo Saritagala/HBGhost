@@ -112,6 +112,9 @@ public:
 
 private:
 
+	void minimap_clear_apoc(int client);
+	void minimap_update_apoc(int client);
+
 	void SetClass(int iClientH);
 	BOOL m_bHappyHour, m_bFuryHour;
 

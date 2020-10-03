@@ -763,6 +763,96 @@ void CGame::Open_EmptyMap_Gate(int MapIndex)
 	}
 }
 
+void CGame::minimap_clear_apoc(int client)
+{
+	auto p = m_pNpcList[client];
+	if (!p) return;
+
+	if (m_bIsApocalypseMode)
+	{
+		if (string(m_pMapList[p->m_cMapIndex]->m_cName) == "procella" ||
+			string(m_pMapList[p->m_cMapIndex]->m_cName) == "abaddon")
+		{
+			char cData[56];
+			DWORD* dwp;
+			WORD* wp;
+			char* cp;
+			int* ip;
+
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			*wp = MINIMAPRED_CLEAR;
+			
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				pi->m_pXSock->iSendMsg(cData, 10);
+			}
+		}
+	}
+}
+
+void CGame::minimap_update_apoc(int client)
+{
+	auto p = m_pNpcList[client];
+	if (!p) return;
+
+	if (m_bIsApocalypseMode)
+	{
+		if (string(m_pMapList[p->m_cMapIndex]->m_cName) == "procella" ||
+			string(m_pMapList[p->m_cMapIndex]->m_cName) == "abaddon")
+		{
+			char cData[56];
+			DWORD* dwp;
+			WORD* wp;
+			char* cp;
+			int* ip;
+			short* sp;
+
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			*wp = MINIMAPRED_UPDATE;
+			
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			sp = (short*)cp;
+			*sp = p->m_sX;
+			cp += 2;
+			
+			sp = (short*)cp;
+			*sp = p->m_sY;
+			cp += 2;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				pi->m_pXSock->iSendMsg(cData, 14);
+			}
+		}
+	}
+}
+
 //**************************************************************************************
 // SNOOPY: Revamped Apocalypse functions:
 //         GenerateApocalypseBoss 
@@ -790,7 +880,8 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 		case 73: strcpy(cNpcName, "Fire-Wyvern");break;
 		case 81: strcpy(cNpcName, "Abaddon");break;
 		case 99: strcpy(cNpcName, "Ghost-Abaddon");break;
-		default: strcpy(cNpcName, "Demon");break;
+		case 93: strcpy(cNpcName, "Black-Demon"); break;
+		default: strcpy(cNpcName, "Demon"); break;
 		}
 		ZeroMemory(cName, sizeof(cName));
 		wsprintf(cName, "XX%d", iNamingValue);
@@ -811,19 +902,19 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 			PutLogEventFileList(G_cTxt);
 		}
 		// Search npc ID
-		for (i5 = 1; i5 < DEF_MAXNPCS; i5++)
+		/*for (i5 = 1; i5 < DEF_MAXNPCS; i5++)
 		{
 			if ((m_pNpcList[i5] != NULL) && (memcmp(m_pNpcList[i5]->m_cName, cName, 5) == 0))
 			{
 				break;
 			}
-		}
+		}*/
 		// Show Spawns on minimap, and tell everybody on Apocalypse server.					
 		//DWORD wX = m_pNpcList[i5]->m_sX;
 		//DWORD wY = m_pNpcList[i5]->m_sX;
 		for (x = 1; x < DEF_MAXCLIENTS; x++)
-			if ((m_pClientList[x] != NULL)
-				&& (m_pClientList[x]->m_bIsInitComplete == TRUE))
+			if (m_pClientList[x] != NULL)
+				
 			{
 				/*if (memcmp(m_pMapList[MapIndex]->m_cName, m_pMapList[m_pClientList[x]->m_cMapIndex]->m_cName, strlen(m_pMapList[MapIndex]->m_cName)) == 0)
 				{

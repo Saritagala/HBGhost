@@ -14,7 +14,7 @@ R//ecallImpossible      = 1
 not-permanent-map		= 1
 
 //------------------------NpcID---RECT----------------------
-ApocalypseBossMob       = 73      49 186 70 207
+ApocalypseBossMob       = 93      49 186 70 207
 
 //------------------------RECT-----------------TargetMap---TargetCoord
 DynamicGateCoord		= 59 196 60 197        abaddon	   -1  -1

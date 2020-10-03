@@ -34834,27 +34834,28 @@ void CGame::UpdateScreen_OnGame()
 	}
 
 	if (m_bIsCTFMode && iUpdateRet != 0) {
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 20, 56, dwTime);
-		wsprintf(G_cTxt, "%d", m_cCFTEventCount[0]);
-		PutString(10 + 10, 180 + 5 + 20, G_cTxt, RGB(225, 225, 225), FALSE, 1);
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(10, 180 + 45 + 20, 57, dwTime);
-		wsprintf(G_cTxt, "%d", m_cCFTEventCount[1]);
-		PutString(10 + 10, 180 + 45 + 5 + 20, G_cTxt, RGB(225, 225, 225), FALSE, 1);
+		m_DDraw.DrawShadowBox(5, 180, 110, 270, 0, true);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 180 + 20, 56, dwTime);
+		wsprintf(G_cTxt, "Aresden: %d", m_cCFTEventCount[0]);
+		PutString(20 + 10, 180 + 5 + 20, G_cTxt, RGB(255, 0, 0), FALSE, 1);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 180 + 45 + 20, 57, dwTime);
+		wsprintf(G_cTxt, "Elvine: %d", m_cCFTEventCount[1]);
+		PutString(20 + 10, 180 + 45 + 5 + 20, G_cTxt, RGB(130, 130, 255), FALSE, 1);
 	}
 
 	//Magn0S:: Apocalypse info help
 	if ((m_bApocalypse) && (iUpdateRet != 0) && ((memcmp(m_cCurLocation, "procella", 8) == 0) || (memcmp(m_cCurLocation, "abaddon", 7) == 0)))
 	{
-		m_DDraw.DrawShadowBox(650, 142, 780, 190, 0, true);
-		PutString2(655, 150, "Apocalypse Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
+		m_DDraw.DrawShadowBox(5, 142, 135, 190, 0, true);
+		PutString2(30, 150, "Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
 
 		if (m_iTotalAliveObject > 0) {
-			PutString2(745, 150, "Closed", 255, 0, 0); //255,200,0); "ON", 0,255,0);
+			PutString2(70, 150, "Closed", 255, 0, 0); //255,200,0); "ON", 0,255,0);
 			wsprintf(G_cTxt, "Mobs Left: %d", m_iTotalAliveObject);
-			PutString2(680, 170, G_cTxt, 255, 200, 0);
+			PutString2(30, 170, G_cTxt, 255, 200, 0);
 		}
 		else {
-			PutString2(745, 150, "Open", 0, 255, 0);
+			PutString2(70, 150, "Opened", 0, 255, 0);
 		}
 	}
 

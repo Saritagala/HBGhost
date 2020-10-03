@@ -954,7 +954,7 @@ void CGame::DeleteNpc(int iNpcH)
 	// NamingValueë¥¼ ë¹„ìš°ê³  ë™ìž‘ì¤‘ì¸ ê°œì²´ ìˆ˜ë¥¼ ê°ì†Œì‹œí‚¨ë‹¤.
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->SetNamingValueEmpty(iNamingValue);
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iTotalActiveObject--;
-
+	minimap_clear_apoc(iNpcH);
 	if (m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iTotalActiveObject == 0)
 	{
 		if (m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iApocalypseMobGenType == 1)
@@ -1763,12 +1763,14 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			}
 
 			//Magn0S:: Multiplicador de Gold
-			//pItem->m_dwCount *= 10;
+			pItem->m_dwCount *= 10;
 		}
 		else {
 
 			switch (m_pNpcList[iNpcH]->m_sType) {
 			case 34: // Dummy
+			case 55: // Rabbit
+			case 56: //	Cat
 				return;
 			}
 			// 9000 default; the lower the greater the Weapon/Armor/Wand Drop
@@ -1793,7 +1795,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				case 5: iItemID = 92; break; // Big Red Potion
 				case 3: // Blue Potion
 				case 6: iItemID = 94; break; // Big Blue Potion
-				case 7: iItemID = 390; break; // Power Green Potion
+				case 7: iItemID = 1000; break; // Kloness Potion
 				case 8: 
 					switch (iDice(1, 3)) {
 						case 1: iItemID = 650; break; // Zemstone of Sacrifice
@@ -1819,8 +1821,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				case 10: // Slime
 				case 16: // Giant-Ant
 				case 22: // Amphis
-				case 55: // Rabbit
-				case 56: //	Cat
+				//case 55: // Rabbit
+				//case 56: //	Cat
 					iGenLevel = 1;
 					break;
 
@@ -1903,11 +1905,12 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 						//Nixu : aca se manejan los Drop..
 
-						case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
+						case 1: // Slime, Giant-Ant, Amphis
 							switch (iDice(1, 3)) {
 								case 1: iItemID = 1;  break; // Dagger
 								case 2: iItemID = 8;  break; // ShortSword
 								case 3: iItemID = 59; break; // LightAxe
+
 							}
 							break;
 
@@ -1950,13 +1953,16 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							break;
 
 						case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-							switch (iDice(1, 6)) {
+							switch (iDice(1, 9)) {
 								case 1: iItemID = 50;  break; // GreatSword
 								case 2: iItemID = 54;  break; // Flameberge
 								case 3: iItemID = 46;  break; // Claymore
 								case 4: iItemID = 31;  break; // Esterk
 								case 5: iItemID = 34;  break; // Rapier
 								case 6: iItemID = 617; break; // CompositeBow
+								case 7: iItemID = 1044; break; // PlateBow
+								case 8: iItemID = 1045; break; // KnightBow
+								case 9: iItemID = 1046; break; // GiantBow
 							}
 							break;
 
@@ -1970,7 +1976,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							break;
 
 						case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
-							switch (iDice(1, 7)) {
+							switch (iDice(1, 8)) {
 								case 1: iItemID = 50;  break; // GreatSword
 								case 2: iItemID = 54;  break; // Flameberge
 								case 3: iItemID = 560; break; // BattleAxe
@@ -1978,6 +1984,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 								case 5: iItemID = 34;  break; // Rapier
 								case 6: iItemID = 55;  break; // Flameberge+1
 								case 7: iItemID = 615; break; // GiantSword
+								case 8: iItemID = 1045; break; // KnightBow
 							}
 							break;
 
@@ -1998,7 +2005,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 								case 2: iItemID = 31;  break; // Esterk
 								case 3: iItemID = 34;  break; // Rapier
 								case 4: iItemID = 760; break; // Hammer
-								case 5: iItemID = 761; break; // GiantHammer
+								case 5: iItemID = 761; break; // BattleHammer
 							}
 							break;
 
@@ -2030,11 +2037,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					// 1.4% chance Valuable Drop 40% that drop is an Armor/Shield
 					switch (iGenLevel) {
 
-					case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
+					case 1: // Slime, Giant-Ant, Amphis
 					case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
-						switch (iDice(1, 2)) {
+						switch (iDice(1, 4)) {
 							case 1: iItemID = 79;  break; // WoodShield
-							case 2: iItemID = 81;  break; // TargeShield
+							case 2: iItemID = 80;  break; // LeatherShield
+							case 3: iItemID = 450; break; // Shoes
+							case 4: iItemID = 451; break; // LongBoots
 						}
 						break;
 
@@ -2053,15 +2062,21 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						break;
 
 					case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
-						switch (iDice(1, 3)) {
+						switch (iDice(1, 9)) {
 							case 1: iItemID = 455; break; // LeatherArmor(M)
 							case 2: iItemID = 475; break; // LeatherArmor(W)
 							case 3: iItemID = 84;  break; // IronShield
+							case 4: iItemID = 454; break; // Hauberk(M)
+							case 5: iItemID = 472; break; // Hauberk(W)
+							case 6: iItemID = 461; break; // ChainHose(M)
+							case 7: iItemID = 482; break; // ChainHose(W)
+							case 8: iItemID = 623; break; // Hood(M)
+							case 9: iItemID = 624; break; // Hood(W)
 						}
 						break;
 
 					case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-						switch (iDice(1, 17)) {
+						switch (iDice(1, 21)) {
 							case 1: iItemID = 456; break; // ChainMail(M)
 							case 2: iItemID = 476; break; // ChainMail(W)
 							case 3: iItemID = 458; break; // PlateMail(M)
@@ -2079,11 +2094,16 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							case 15: iItemID = 472; break; // Hauberk(W)
 							case 16: iItemID = 461; break; // ChainHose(M)
 							case 17: iItemID = 482; break; // ChainHose(W)
+							case 18: iItemID = 623; break; // Hood(M)
+							case 19: iItemID = 624; break; // Hood(W)
+							case 20: iItemID = 455; break; // LeatherArmor(M)
+							case 21: iItemID = 475; break; // LeatherArmor(W)
+
 						}
 						break;
 
 					case 7: // Liche, Frost
-						switch (iDice(1, 10)) {
+						switch (iDice(1, 12)) {
 							case 1: iItemID = 457; break; // ScaleMail(M)
 							case 2: iItemID = 477; break; // ScaleMail(W)
 							case 3: iItemID = 458; break; // PlateMail(M)
@@ -2094,6 +2114,9 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							case 8: iItemID = 602; break; // Helm(W)
 							case 9: iItemID = 601; break; // Full-Helm(M)
 							case 10: iItemID = 603; break; // Full-Helm(W)
+							case 11: iItemID = 623; break; // Hood(M)
+							case 12: iItemID = 624; break; // Hood(W)
+
 						}
 						break;
 
@@ -2104,7 +2127,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					// Centu - Mountain-Giant, Ettin, MasterMage-Orc, Giant-Lizard
 					case 9:
 					case 10:
-						switch (iDice(1, 17)) {
+						switch (iDice(1, 21)) {
 						case 1: iItemID = 456; break; // ChainMail(M)
 						case 2: iItemID = 476; break; // ChainMail(W)
 						case 3: iItemID = 458; break; // PlateMail(M)
@@ -2122,6 +2145,11 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 15: iItemID = 472; break; // Hauberk(W)
 						case 16: iItemID = 461; break; // ChainHose(M)
 						case 17: iItemID = 482; break; // ChainHose(W)
+						case 18: iItemID = 623; break; // Hood(M)
+						case 19: iItemID = 624; break; // Hood(W)
+						case 20: iItemID = 455; break; // LeatherArmor(M)
+						case 21: iItemID = 475; break; // LeatherArmor(W)
+
 						}
 						break;
 					}
