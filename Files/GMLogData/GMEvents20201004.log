@@ -34,3 +34,6 @@
 2020:10:04:12:27:25	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
 2020:10:04:12:27:30	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
 2020:10:04:12:27:34	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/tp aresden"
+2020:10:04:17:27:25	Loc(aresden) IP(192.168.100.2) GM(Centuu[GM]):"/who"
+2020:10:04:17:36:55	Loc(arebrk11) IP(192.168.100.2) PC(Archerita):"/who"
+2020:10:04:17:41:43	Loc(cityhall_2) IP(192.168.100.2) PC(Archerita):"/who"

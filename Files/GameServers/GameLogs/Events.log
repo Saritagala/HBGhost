@@ -405,3 +405,9 @@
 (2020:10: 1:12:22) - (*) Get HeroItem : Char(Centuu) Player-EK(8580) Player-Contr(8750) Hero Obtained(aHeroHauberk(W))
 (2020:10: 1:12:22) - (*) Get HeroItem : Char(Centuu) Player-EK(8430) Player-Contr(8600) Hero Obtained(aHeroLeggings(W))
 (2020:10: 1:12:22) - (*) Get HeroItem : Char(Centuu) Player-EK(8280) Player-Contr(8400) Hero Obtained(aHeroHood(W))
+( 4/10/2020 - 17:29:18) - (!)13 CharacterContent(Archerita) - Item(Dagger) Invalid item attribute2!
+( 4/10/2020 - 17:29:18) - (!) 14 CharacterContent(Archerita) - Item(Dagger) Invalid item attribute2!
+( 4/10/2020 - 17:29:18) - (!)13 CharacterContent(Archerita) - Item(RedPotion) Invalid item attribute2!
+( 4/10/2020 - 17:29:18) - (!) 14 CharacterContent(Archerita) - Item(RedPotion) Invalid item attribute2!
+( 4/10/2020 - 17:29:18) - (!)13 CharacterContent(Archerita) - Item(GreenPotion) Invalid item attribute2!
+( 4/10/2020 - 17:29:18) - (!) 14 CharacterContent(Archerita) - Item(GreenPotion) Invalid item attribute2!
