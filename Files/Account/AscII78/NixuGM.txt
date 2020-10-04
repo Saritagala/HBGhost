@@ -29,5 +29,5 @@ account-Answer   = Como
 account-created-by = 
 
 [CHARACTERS]
-account-character  = Nixu[GM]
+account-character  = NiXuGM
 

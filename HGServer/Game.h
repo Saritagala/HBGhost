@@ -112,6 +112,8 @@ public:
 
 private:
 
+	int iCityMaxHP[2], iCityHP[2];
+
 	void minimap_clear_apoc(int client);
 	void minimap_update_apoc(int client);
 

@@ -1,0 +1,36 @@
+2020:10:04:11:52:10	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:11:52:10	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:11:55:27	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:04:12:01:22	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:01:22	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:03:35	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:03:35	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:03:39	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/endcrusade"
+2020:10:04:12:03:39	(192.168.0.28) GM Order(Centuu[GM]): endcrusadetotalwar
+2020:10:04:12:03:45	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:03:45	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:03:50	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/tp cityhall_1"
+2020:10:04:12:04:06	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:04:06	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:04:19	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:04:19	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:05:24	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:05:24	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:14:11	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/begincrusade"
+2020:10:04:12:14:11	(192.168.0.28) GM Order(Centuu[GM]): begincrusadetotalwar
+2020:10:04:12:16:58	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"~"
+2020:10:04:12:16:59	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"%"
+2020:10:04:12:17:00	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"%"
+2020:10:04:12:17:01	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"%"
+2020:10:04:12:17:02	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"%"
+2020:10:04:12:17:03	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"%"
+2020:10:04:12:25:56	Loc(aresden) IP(192.168.0.28) GM(Centuu[GM]):"/tp middleland 264 305"
+2020:10:04:12:26:05	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/createitem PickAxe"
+2020:10:04:12:26:05	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(PickAxe)
+2020:10:04:12:27:09	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
+2020:10:04:12:27:13	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
+2020:10:04:12:27:16	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
+2020:10:04:12:27:21	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
+2020:10:04:12:27:25	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
+2020:10:04:12:27:30	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/summon MS-Elvine"
+2020:10:04:12:27:34	Loc(middleland) IP(192.168.0.28) GM(Centuu[GM]):"/tp aresden"

@@ -153,6 +153,8 @@ class CGame
 {
 public:
 
+	int iCityHP[2], iCityMaxHP[2];
+
 	class CItem* m_pItemConfigList[5000];
 	BOOL _bDecodeItemConfigFileContents(char* pFileName);
 

@@ -2208,6 +2208,11 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, NULL, NULL, NULL);
 	}
 
+	if (m_bIsCrusadeMode)
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CITYHP, iCityHP[0], iCityHP[1], NULL, NULL);
+	}
+
 	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
 	{
 		m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00040000;
@@ -22500,6 +22505,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30);
 		break;
 
+	
 	case DEF_NOTIFY_TEAMARENA:
 		sp = (short*)cp;
 		*sp = (short)sV1;
@@ -23753,6 +23759,18 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		cp += 4;
 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 20);
+		break;
+
+	case DEF_NOTIFY_CITYHP:
+		ip = (int*)cp;
+		*ip = (int)sV1;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = (int)sV2;
+		cp += 4;
+		
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
 		break;
 
 	case DEF_NOTIFY_CRUSADE:

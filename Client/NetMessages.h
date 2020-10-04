@@ -5,6 +5,8 @@
 #endif
 // NetMessages.h
 
+#define DEF_NOTIFY_CITYHP 0x1F33
+
 #define DEF_NOTIFY_SKILLPOINT 0x0B82
 #define MSGID_REQUEST_SKILLPOINT 0x002072
 

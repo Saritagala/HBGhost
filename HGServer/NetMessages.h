@@ -4,6 +4,8 @@
 #define DEF_VERSIONPLUSMODIFIER 0 // If the antihack was noy defined don't change any msgid
 #endif
 
+#define DEF_NOTIFY_CITYHP 0x1F33
+
 #define MINIMAPBLUE_CLEAR									0x1F34
 #define MINIMAPBLUE_UPDATE									0x1F35
 #define MINIMAPRED_CLEAR									0x1F36

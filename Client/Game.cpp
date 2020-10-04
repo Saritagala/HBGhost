@@ -18956,6 +18956,13 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 			m_sInv = 0;
 		}
 	}
+
+	if (m_bIsCrusadeMode)
+	{
+		m_DDraw.DrawShadowBox(5, 175, 90, 255, 0, true);
+		PutString2(20, 180, "Aresden:", 255, 0, 0);
+		PutString2(20, 220, "Elvine:", 130, 130, 255);
+	}
 }
 
 //New Gauge Pannel System ;D
@@ -19030,6 +19037,23 @@ void CGame::DrawDialogBox_GaugePannel()
 	if (iBarWidth > 35) iBarWidth = 35;
 	m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFastWidth(401, 558, 17, iBarWidth, m_dwCurTime, true);
 	iTemp = iHungerStatus;
+
+	if (m_bIsCrusadeMode)
+	{
+		// Aresden
+		m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(20, 200, 17, 59, m_dwCurTime, false);
+		iBarWidth = (iCityHP[0] * 59) / 52;
+		if (iBarWidth < 0) iBarWidth = 0;
+		if (iBarWidth > 59) iBarWidth = 59;
+		m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(20, 200, 16, iBarWidth, m_dwCurTime, false);
+
+		// Elvine
+		m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(20, 240, 17, 59, m_dwCurTime, false);
+		iBarWidth = (iCityHP[1] * 59) / 52;
+		if (iBarWidth < 0) iBarWidth = 0;
+		if (iBarWidth > 59) iBarWidth = 59;
+		m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(20, 240, 16, iBarWidth, m_dwCurTime, false);
+	}
 
 	if (m_bShowParty)
 	{
@@ -27936,6 +27960,19 @@ void CGame::NotifyMsgHandler(char * pData)
 		ip  = (int *)cp;
 		m_iHeldenianElvineDead = *ip;
 		cp+=4;
+
+		break;
+
+	case DEF_NOTIFY_CITYHP: 
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+		ip = (int*)cp;
+		iCityHP[0] = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iCityHP[1] = *ip;
+		cp += 4;
 
 		break;
 

@@ -195,6 +195,30 @@ void CGame::LocalStartCrusadeMode(DWORD dwCrusadeGUID)
 	dwCrusadeFinishTime = timeGetTime() + m_sCrusadeFinish * 60 * 1000;  // war will end   in 1h30
 	PutLogList("(!)Crusade Mode ON.");
 	_bCrusadeLog(DEF_CRUSADELOG_STARTCRUSADE, NULL, NULL, NULL);
+
+	// Centuu : city hp
+	iCityHP[0] = 0;
+	iCityHP[1] = 0;
+	for (i = 1; i <= m_pMapList[m_iAresdenMapIndex]->m_iTotalStrikePoints; i++)
+	{
+		if (m_pMapList[m_iAresdenMapIndex]->m_stStrikePoint[i].iHP > 0)
+		{
+			iCityHP[0] += m_pMapList[m_iAresdenMapIndex]->m_stStrikePoint[i].iHP;
+		}
+	}
+	for (i = 1; i <= m_pMapList[m_iElvineMapIndex]->m_iTotalStrikePoints; i++)
+	{
+		if (m_pMapList[m_iElvineMapIndex]->m_stStrikePoint[i].iHP > 0)
+		{
+			iCityHP[1] += m_pMapList[m_iElvineMapIndex]->m_stStrikePoint[i].iHP;
+		}
+	}
+	
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
+		if (m_pClientList[i] != NULL) {
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_CITYHP, iCityHP[0], iCityHP[1], NULL, NULL);
+		}
+	}
 }
 
 void CGame::_CreateCrusadeGUID(DWORD dwCrusadeGUID, int iWinnerSide)
@@ -480,7 +504,7 @@ void CGame::DoMeteorStrikeDamageHandler(int iMapIndex)
 			else iDamage = (m_pClientList[i]->m_iLevel) * 2 + iDice(1, 100);
 
 			if (m_pClientList[i]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 2) { //magic cut in half
-				iDamage = (iDamage / 2) - 2;
+				iDamage = (iDamage / 2);
 			}
 
 			if (m_pClientList[i]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 5) {
@@ -1172,6 +1196,37 @@ void CGame::CalcMeteorStrikeEffectHandler(int iMapIndex)
 		if (m_pMapList[iMapIndex]->m_stStrikePoint[i].iHP > 0) {
 			iActiveStructure++;
 			iStructureHP[i] = m_pMapList[iMapIndex]->m_stStrikePoint[i].iHP;
+		}
+	}
+	
+	// Centuu : city hp
+	if (iMapIndex == m_iAresdenMapIndex)
+	{
+		iCityHP[0] = 0;
+		for (i = 1; i <= m_pMapList[iMapIndex]->m_iTotalStrikePoints; i++)
+		{
+			if (m_pMapList[iMapIndex]->m_stStrikePoint[i].iHP > 0)
+			{
+				iCityHP[0] += m_pMapList[iMapIndex]->m_stStrikePoint[i].iHP;
+			}
+		}
+	}
+	else if (iMapIndex == m_iElvineMapIndex)
+	{
+		iCityHP[1] = 0;
+		for (i = 1; i <= m_pMapList[iMapIndex]->m_iTotalStrikePoints; i++)
+		{
+			if (m_pMapList[iMapIndex]->m_stStrikePoint[i].iHP > 0)
+			{
+				iCityHP[1] += m_pMapList[iMapIndex]->m_stStrikePoint[i].iHP;
+			}
+		}
+	}
+	for (i = 0; i < DEF_MAXCLIENTS; i++) 
+	{
+		if (m_pClientList[i] != NULL) 
+		{
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_CITYHP, iCityHP[0], iCityHP[1], NULL, NULL);
 		}
 	}
 	wsprintf(G_cTxt, "ActiveStructure:%d  MapIndex:%d AresdenMap:%d ElvineMap:%d", iActiveStructure, iMapIndex, m_iAresdenMapIndex, m_iElvineMapIndex);
