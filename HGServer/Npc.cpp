@@ -999,6 +999,8 @@ void CGame::DeleteNpc(int iNpcH)
 
 	}
 
+	BOOL IsFragile = FALSE;
+
 	// DelayEventë¥¼ ì‚­ì œ 
 	bRemoveFromDelayEventList(iNpcH, DEF_OWNERTYPE_NPC, NULL);
 	if ((m_pNpcList[iNpcH]->m_bIsSummoned == FALSE) && (m_pNpcList[iNpcH]->m_bIsUnsummoned == FALSE)) {
@@ -1014,7 +1016,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 11: // Skeleton
 			switch (iDice(1, 2)) {
 			case 1:if (iDice(1, 20) == 1) iItemID = 219; break; // SkeletonBones
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1022,7 +1024,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 12: // Stone-Golem
 			switch (iDice(1, 2)) {
 			case 1:	if (iDice(1, 30) == 1) iItemID = 221; break; // StoneGolemPiece
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1034,7 +1036,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 3:	if (iDice(1, 30) == 1) iItemID = 196; break; // CyclopsHeart
 			case 4:	if (iDice(1, 22) == 1) iItemID = 197; break; // CyclopsMeat
 			case 5:	if (iDice(1, 40) == 1) iItemID = 198; break; // CyclopsLeather
-			case 6:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 6:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1044,7 +1046,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 1:	if (iDice(1, 11) == 1) iItemID = 206; break; // OrcMeat
 			case 2:	if (iDice(1, 20) == 1) iItemID = 207; break; // OrcLeather
 			case 3:	if (iDice(1, 21) == 1) iItemID = 208; break; // OrcTeeth
-			case 4: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 4: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1053,7 +1055,7 @@ void CGame::DeleteNpc(int iNpcH)
 			switch (iDice(1, 3)) {
 			case 1:	if (iDice(1, 9) == 1) iItemID = 192; break; // AntLeg
 			case 2:	if (iDice(1, 10) == 1) iItemID = 193; break; // AntFeeler
-			case 3:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 3:	bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1064,7 +1066,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 20) == 1) iItemID = 216; break; // ScorpionMeat
 			case 3: if (iDice(1, 50) == 1) iItemID = 217; break; // ScorpionSting
 			case 4: if (iDice(1, 40) == 1) iItemID = 218; break; // ScorpionSkin
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1075,7 +1077,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 16) == 1) iItemID = 189; break; // SnakeSkin
 			case 3:	if (iDice(1, 16) == 1) iItemID = 190; break; // SnakeTeeth
 			case 4:	if (iDice(1, 17) == 1) iItemID = 191; break; // SnakeTongue
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1083,7 +1085,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 23: //Clay-Golem
 			switch (iDice(1, 2)) {
 			case 1: if (iDice(1, 30) == 1) iItemID = 205; break; // LumpofClay
-			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 2: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1097,7 +1099,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 4:	if (iDice(1, 36) == 1) iItemID = 202; break; // HelboundTeeth
 			case 5:	if (iDice(1, 36) == 1) iItemID = 203; break; // HelboundClaw
 			case 6:	if (iDice(1, 50) == 1) iItemID = 204; break; // HelboundTongue
-			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1108,7 +1110,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 23) == 1) iItemID = 223; break; // TrollMeat
 			case 3:	if (iDice(1, 25) == 1) iItemID = 224; break; // TrollLeather
 			case 4:	if (iDice(1, 27) == 1) iItemID = 225; break; // TrollClaw
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1121,7 +1123,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 4:	if (iDice(1, 25) == 1) iItemID = 212; break; // OgreLeather
 			case 5:	if (iDice(1, 28) == 1) iItemID = 213; break; // OgreTeeth
 			case 6:	if (iDice(1, 28) == 1) iItemID = 214; break; // OgreClaw
-			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 7: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1133,7 +1135,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 1000) == 123) iItemID = 542; break; // DemonMeat
 			case 3:	if (iDice(1, 200) == 123) iItemID = 543; break; // DemonLeather
 			case 4:	if (iDice(1, 300) == 123) iItemID = 540; break; // DemonEye
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1144,7 +1146,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 2:	if (iDice(1, 500) == 3) iItemID = 545; break; // UnicornHorn
 			case 3:	if (iDice(1, 100) == 3) iItemID = 546; break; // UnicornMeat
 			case 4:	if (iDice(1, 200) == 3) iItemID = 547; break; // UnicornLeather
-			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 5: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1158,7 +1160,7 @@ void CGame::DeleteNpc(int iNpcH)
 			case 5:	if (iDice(1, 28) == 3) iItemID = 552; break; // WerewolfTeeth
 			case 6:	if (iDice(1, 28) == 3) iItemID = 554; break; // WerewolfClaw
 			case 7:	if (iDice(1, 38) == 3) iItemID = 549; break; // WerewolfNail
-			case 8: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); break;
+			case 8: bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); IsFragile = TRUE; break;
 
 			}
 			break;
@@ -1182,7 +1184,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 30: //Liche
 		case 18: //Zombie
 			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); 
-			
+			IsFragile = TRUE;
 			break;
 
 		// new 05/10/2004
@@ -1205,6 +1207,7 @@ void CGame::DeleteNpc(int iNpcH)
 				iItemIDs,					// ¹Þ¾Æ¿Ã ¾ÆÀÌÅÛ Idµé
 				ItemPositions,				// ¾ÆÀÌÅÛµéÀÇ À§Ä¡
 				&iNumItem);					// ¾ÆÀÌÅÛÀÇ ÃÑ °¹¼ö
+			IsFragile = TRUE;
 			break;
 
 		case 81: // Abaddon
@@ -1220,6 +1223,7 @@ void CGame::DeleteNpc(int iNpcH)
 				iItemIDs,					// ¹Þ¾Æ¿Ã ¾ÆÀÌÅÛ Idµé
 				ItemPositions,				// ¾ÆÀÌÅÛµéÀÇ À§Ä¡
 				&iNumItem);
+			IsFragile = TRUE;
 			break;
 
 		}
@@ -1238,10 +1242,64 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem = NULL;
 				}
 				else {
-					if (iItemIDs[j] == 90 || iItemIDs[j] == 77) // Gold or Arrow
-						pItem->m_dwCount = iDice(10, 15000);
-					else
+					//if (iItemIDs[j] == 90 || iItemIDs[j] == 77) // Gold or Arrow
+					//	pItem->m_dwCount = iDice(10, 15000);
+					//else {
 						pItem->m_dwCount = dwCount;
+						
+						if (IsFragile) 
+						{
+							// Centuu : fragile items
+							pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
+							SYSTEMTIME SysTime;
+							GetLocalTime(&SysTime);
+
+							pItem->m_sNewEffect2 = SysTime.wDay + 15;
+							pItem->m_sNewEffect3 = SysTime.wMonth;
+							pItem->m_sNewEffect4 = SysTime.wYear;
+							if (SysTime.wMonth == 1 || SysTime.wMonth == 3 || SysTime.wMonth == 5 || SysTime.wMonth == 7 ||
+								SysTime.wMonth == 8 || SysTime.wMonth == 10 || SysTime.wMonth == 12)
+							{
+								if (pItem->m_sNewEffect2 > 31)
+								{
+									pItem->m_sNewEffect2 -= 31;
+									pItem->m_sNewEffect3++;
+								}
+							}
+							else if (SysTime.wMonth == 4 || SysTime.wMonth == 6 || SysTime.wMonth == 9 || SysTime.wMonth == 11)
+							{
+								if (pItem->m_sNewEffect2 > 30)
+								{
+									pItem->m_sNewEffect2 -= 30;
+									pItem->m_sNewEffect3++;
+								}
+							}
+							else if (SysTime.wMonth == 2)
+							{
+								if (isLeap(SysTime.wYear))
+								{
+									if (pItem->m_sNewEffect2 > 29)
+									{
+										pItem->m_sNewEffect2 -= 29;
+										pItem->m_sNewEffect3++;
+									}
+								}
+								else
+								{
+									if (pItem->m_sNewEffect2 > 28)
+									{
+										pItem->m_sNewEffect2 -= 28;
+										pItem->m_sNewEffect3++;
+									}
+								}
+							}
+							if (pItem->m_sNewEffect3 > 12)
+							{
+								pItem->m_sNewEffect3 = 1;
+								pItem->m_sNewEffect4++;
+							}
+						}
+					//}
 
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
@@ -1266,6 +1324,59 @@ void CGame::DeleteNpc(int iNpcH)
 			}
 			else {
 				pItem->m_dwCount = dwCount;
+
+				if (IsFragile)
+				{
+					// Centuu : fragile items
+					pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
+					SYSTEMTIME SysTime;
+					GetLocalTime(&SysTime);
+
+					pItem->m_sNewEffect2 = SysTime.wDay + 15;
+					pItem->m_sNewEffect3 = SysTime.wMonth;
+					pItem->m_sNewEffect4 = SysTime.wYear;
+					if (SysTime.wMonth == 1 || SysTime.wMonth == 3 || SysTime.wMonth == 5 || SysTime.wMonth == 7 ||
+						SysTime.wMonth == 8 || SysTime.wMonth == 10 || SysTime.wMonth == 12)
+					{
+						if (pItem->m_sNewEffect2 > 31)
+						{
+							pItem->m_sNewEffect2 -= 31;
+							pItem->m_sNewEffect3++;
+						}
+					}
+					else if (SysTime.wMonth == 4 || SysTime.wMonth == 6 || SysTime.wMonth == 9 || SysTime.wMonth == 11)
+					{
+						if (pItem->m_sNewEffect2 > 30)
+						{
+							pItem->m_sNewEffect2 -= 30;
+							pItem->m_sNewEffect3++;
+						}
+					}
+					else if (SysTime.wMonth == 2)
+					{
+						if (isLeap(SysTime.wYear))
+						{
+							if (pItem->m_sNewEffect2 > 29)
+							{
+								pItem->m_sNewEffect2 -= 29;
+								pItem->m_sNewEffect3++;
+							}
+						}
+						else
+						{
+							if (pItem->m_sNewEffect2 > 28)
+							{
+								pItem->m_sNewEffect2 -= 28;
+								pItem->m_sNewEffect3++;
+							}
+						}
+					}
+					if (pItem->m_sNewEffect3 > 12)
+					{
+						pItem->m_sNewEffect3 = 1;
+						pItem->m_sNewEffect4++;
+					}
+				}
 
 				pItem->m_sTouchEffectType = DEF_ITET_ID;
 				pItem->m_sTouchEffectValue1 = iDice(1, 100000);
@@ -1316,6 +1427,11 @@ void CGame::DeleteNpc(int iNpcH)
 
 	delete m_pNpcList[iNpcH];
 	m_pNpcList[iNpcH] = NULL;
+}
+
+BOOL CGame::isLeap(int y)
+{
+	return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);
 }
 
 int CGame::iGetFollowerNumber(short sOwnerH, char cOwnerType)

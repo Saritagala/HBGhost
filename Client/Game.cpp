@@ -34661,6 +34661,13 @@ void CGame::UpdateScreen_OnGame()
 		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
+			wsprintf(G_cTxt, "Can use until %2d/%2d/%4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+			iEntry++;
+		}
+		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
 		{	
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
@@ -34790,6 +34797,12 @@ void CGame::UpdateScreen_OnGame()
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
 		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
+			iLoc += 15;
+		}
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
+			wsprintf(G_cTxt, "Can use until %2d/%2d/%4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1);
 			iLoc += 15;
 		}
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));

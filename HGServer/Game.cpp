@@ -11624,27 +11624,19 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 	iDamage = (iDice(sV1, sV2) + sV3);
 	if (iDamage <= 0) iDamage = 0;
 
-	/*switch (cAttackerType)
-	{
-	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
-		{
-			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
-			{
-				if (m_pClientList[sAttackerH]->IsInsideTeam()) return;
-			}
-		}
-		break;
-	}*/
-
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:	
 		//LifeX Fix Admin Hit NPC
-		if ((m_pClientList[sAttackerH]->m_iAdminUserLevel == 2) || (m_pClientList[sAttackerH]->m_iAdminUserLevel == 3))
+		if ((m_bAdminSecurity == TRUE) && (m_pClientList[sAttackerH]->m_iAdminUserLevel > 0 && m_pClientList[sAttackerH]->m_iAdminUserLevel < 4))
 		{
-			SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot do any damage as a GM.");
+			//SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot do any damage as a GM.");
 			return;
 		}
+
+		if (m_pClientList[sAttackerH]->IsInsideTeam())
+		{
+			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
+		}	
 
 		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus == 2) iDamage += 4;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
@@ -12209,6 +12201,17 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
+		//LifeX Fix Admin Hit NPC
+		if ((m_bAdminSecurity == TRUE) && (m_pClientList[sAttackerH]->m_iAdminUserLevel > 0 && m_pClientList[sAttackerH]->m_iAdminUserLevel < 4))
+		{
+			//SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot do any damage as a GM.");
+			return;
+		}
+
+		if (m_pClientList[sAttackerH]->IsInsideTeam())
+		{
+			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
+		}
 		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus == 2) iDamage += 4;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
@@ -12736,19 +12739,6 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 	if (iDamage <= 0) iDamage = 0;
 
 	iPartyID = 0;
-
-	/*switch (cAttackerType)
-	{
-	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
-		{
-			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
-			{
-				if (m_pClientList[sAttackerH]->IsInsideTeam()) return;
-			}
-		}
-		break;
-	}*/
 
 	// 공격자가 플레이어라면 Mag에 따른 보너스 대미지를 가산 
 	switch (cAttackerType) {
@@ -16820,10 +16810,6 @@ void CGame::AdminOrder_CreateFragileItem(int iClientH, char* pData, DWORD dwMsgS
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Wrong Fragile item dates data.");
 			return;
 		}
-		/*if (dFDay < 1) && (dFDay > 31) {
-			G_pGame->SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Wrong Fragile item dates data.");
-			return;
-		}*/
 		pItem->m_sNewEffect2 = dFDay;
 		pItem->m_sNewEffect3 = dFMonth;
 		pItem->m_sNewEffect4 = dFYear;
@@ -19889,19 +19875,6 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = NULL;
 	wWeaponType      = NULL;
 
-	/*switch (cAttackerType)
-	{
-	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[sAttackerH] != NULL && m_pClientList[sTargetH] != NULL)
-		{
-			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam)
-			{
-				if (m_pClientList[sAttackerH]->IsInsideTeam()) return 0;
-			}
-		}
-		break;
-	}*/
-
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
 
@@ -19911,6 +19884,10 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		{
 			//SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot do any damage as a GM.");
 			return 0;
+		}
+		if (m_pClientList[sAttackerH]->IsInsideTeam())
+		{
+			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return 0;
 		}
 		if ((m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_bIsAttackEnabled == FALSE) && (m_pClientList[sAttackerH]->m_iAdminUserLevel == 0)) return 0;
 		
@@ -29552,7 +29529,7 @@ void CGame::CheckDestroyFragileItem(int iClientH)
 		item = m_pClientList[iClientH]->m_pItemList[i];
 		if (!item) continue;
 
-		if ((item->m_sNewEffect1 == 10) && (item->m_sNewEffect2 != 0)) { // Quebra somente itens de tempo.
+		if ((item->m_sNewEffect1 == DEF_FRAGILEITEM) && (item->m_sNewEffect2 != 0)) { // Quebra somente itens de tempo.
 			SYSTEMTIME SysTime;
 			GetLocalTime(&SysTime);
 

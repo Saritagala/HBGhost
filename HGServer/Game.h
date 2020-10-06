@@ -287,7 +287,7 @@ private:
 	BOOL _bNpcBehavior_ManaCollector(int iNpcH);
 	BOOL __bSetConstructionKit(int iMapIndex, int dX, int dY, int iType, int iTimeCost, int iClientH);
 
-
+	BOOL isLeap(int y);
 
 	// Acidx commands
 
