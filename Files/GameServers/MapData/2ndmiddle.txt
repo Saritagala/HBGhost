@@ -57,25 +57,25 @@ maximum-object		= 400
 spot-mob-generator	= 1   1    112 110 139 137	13	10
 spot-mob-generator	= 2   1    112 110 139 137	28	10
 
-//Scorpion
-spot-mob-generator	= 3   1     38 157  73 173	17	10
-spot-mob-generator	= 4   1     45  85  66 100	17	10
+//Unicorn
+spot-mob-generator	= 3   1     38 157  73 173	32	20
+spot-mob-generator	= 4   1     45  85  66 100	32	20
 
-//Skeleton
-spot-mob-generator	= 5   1     81 198 100 210	11	10
-spot-mob-generator	= 6   1    152  51 167  67	11	10
+//Beholder
+spot-mob-generator	= 5   1     81 198 100 210	53	10
+spot-mob-generator	= 6   1    152  51 167  67	53	10
 
-//Magic-Orc
-spot-mob-generator	= 7   1     47  38  63  57	14	10
-spot-mob-generator	= 8   1    167 179 185 200	14	10
+//Giant-Crayfish
+spot-mob-generator	= 7   1     47  38  63  57	74	10
+spot-mob-generator	= 8   1    167 179 185 200	74	10
 
-//Clay-Golem & Stone-Golem
-spot-mob-generator	= 9   1    192 107 217 122	23	10
-spot-mob-generator	= 10  1    192 144 218 162	12	10
+//Rudolph
+spot-mob-generator	= 9   1    192 107 217 122	61	20
+spot-mob-generator	= 10  1    192 144 218 162	61	20
 
-//Zombie
-spot-mob-generator	= 11  1    109  63 141  83	18	10
-spot-mob-generator	= 12  1    126 193 150 210	18	10
+//Troll
+spot-mob-generator	= 11  1    109  63 141  83	28	20
+spot-mob-generator	= 12  1    126 193 150 210	28	20
 
 
 [END-MAP-INFO]

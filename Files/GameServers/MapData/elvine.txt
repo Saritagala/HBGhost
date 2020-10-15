@@ -149,12 +149,12 @@ maximum-object		= 500
 npc-avoidrect           = 1  86 67 214 213
 
 //------------------------Num-Type-RECT---------------Mob-MobNum
-spot-mob-generator	= 1  1     148 29 166 47      33  25 //Werewolf Arriba Derecha
+spot-mob-generator	= 1  1     148 29 166 47      17  25 //Escorpions Arriba Derecha
 spot-mob-generator	= 2  1     123 28 138 44      11  30 //Skeleton Arriba Izquierda
 spot-mob-generator	= 3  1     46 56 62 71        18  50 //Zombies Arriba Izquierda
 spot-mob-generator	= 4  1     31 176 61 192      12  30 // Stone GolemIzquierda al medio superior
 spot-mob-generator	= 5  1     41 203 64 221      12  60 // Stone Golem Izquierda al medio inferior
-spot-mob-generator	= 6  1     122 234 149 256    29  30 // Ogre Abajo al Medio
+spot-mob-generator	= 6  1     122 234 149 256    10  30 // Slimes Abajo al Medio
 spot-mob-generator	= 8  1     234 201 254 223    54  30 // Ice Golem Abajo Derecha Superior
 
 

@@ -37,21 +37,22 @@ waypoint          =     8       149   249
 waypoint          =     9       239   243
 
 //------------------------Num-Type-waypoints--------------Mob-MobNum
-spot-mob-generator	= 1   1    24 20 221 48           48  40	// Stalker
-spot-mob-generator	= 2   1    30 202 228 226         48  40	// Stalker
-spot-mob-generator	= 3   1    44 82 107 124          60  50	// Plant
-spot-mob-generator	= 4   1    109 169 175 205        60  50	// Plant
-spot-mob-generator	= 5   1    179 29 212 109         76  60	// Tree
-spot-mob-generator	= 6   1    43 126 99 209          76  60	// Tree
+spot-mob-generator	= 1   1    24 20 221 48           70  40	// Barlog
+spot-mob-generator	= 2   1    30 202 228 226         30  40	// Liche
+spot-mob-generator	= 3   1    44 82 107 124          54  50	// DarkElf
+spot-mob-generator	= 4   1    109 169 175 205        53  50	// Beholder
+spot-mob-generator	= 5   1    179 29 212 109         79  60	// Nizie
+spot-mob-generator	= 6   1    43 126 99 209          63  60	// Frost
 spot-mob-generator	= 7   1    149 115 212 161        77  25	// MasterMage Orc
 spot-mob-generator	= 8   1    29 49 123 193          71  20	// Centaur
-spot-mob-generator	= 9   1    133 49 221 190         78  25	// Minaus
+spot-mob-generator	= 9   1    133 49 221 190         78  25	// Minotaurs
 spot-mob-generator	= 10  1    53 126 127 225         75  30	// Giant Lizard
+spot-mob-generator	= 11  1    1 1 200 200            31  10	// Demon
+spot-mob-generator	= 11  1    1 1 200 200            52  10	// Gagoyle	
 
 //-No-Attack-Area----------Num-----RECT-------------
 no-attack-area          = 1       30 24 38 32
 // Pits totals = 400 (may introduce some variable nb in pits)
-maximum-object		= 250
-
+maximum-object		= 420
 
 [END-MAP-INFO]
