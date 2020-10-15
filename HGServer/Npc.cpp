@@ -1247,7 +1247,8 @@ void CGame::DeleteNpc(int iNpcH)
 					//else {
 						pItem->m_dwCount = dwCount;
 						
-						if (IsFragile) 
+						string st1 = pItem->m_cName;
+						if (IsFragile && iDice(1,100) <= 70 && st1.find("Manual") == string::npos)
 						{
 							// Centuu : fragile items
 							pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
@@ -1325,7 +1326,8 @@ void CGame::DeleteNpc(int iNpcH)
 			else {
 				pItem->m_dwCount = dwCount;
 
-				if (IsFragile)
+				string st1 = pItem->m_cName;
+				if (IsFragile && iDice(1, 100) <= 70 && st1.find("Manual") == string::npos)
 				{
 					// Centuu : fragile items
 					pItem->m_sNewEffect1 = DEF_FRAGILEITEM;

@@ -2229,11 +2229,11 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	}
 
 	// centu - rep limit
-	if (m_pClientList[iClientH]->m_iRating < -2000)
-		m_pClientList[iClientH]->m_iRating = -2000;
+	if (m_pClientList[iClientH]->m_iRating < -5000)
+		m_pClientList[iClientH]->m_iRating = -5000;
 
-	if (m_pClientList[iClientH]->m_iRating > 2000)
-		m_pClientList[iClientH]->m_iRating = 2000;
+	if (m_pClientList[iClientH]->m_iRating > 5000)
+		m_pClientList[iClientH]->m_iRating = 5000;
 
 	if ((m_pClientList[iClientH]->m_cSide == 1) &&
 		(memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cLocationName, "elvine", 6) == 0) &&
@@ -11038,37 +11038,6 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 	// Log the EK (killed by enemy)
 	_bPKLog(DEF_PKLOG_BYENERMY,iAttackerH,iClientH,NULL) ;
 
-	// MORLA2.2 - EK y REP segun Rango
-	
-		/*if(((m_pClientList[iClientH]->m_iMaxEK >= 200) && (m_pClientList[iClientH]->m_iRating < 40 )) || ((m_pClientList[iClientH]->m_iMaxEK < 300) && (m_pClientList[iClientH]->m_iRating >= 30 )))
-		{	iRangoAttacker = 2;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 300) && (m_pClientList[iClientH]->m_iRating < 50 )) || ((m_pClientList[iClientH]->m_iMaxEK < 400) && (m_pClientList[iClientH]->m_iRating >= 40 )))
-		{	iRangoAttacker = 3;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 400) && (m_pClientList[iClientH]->m_iRating < 60 )) || ((m_pClientList[iClientH]->m_iMaxEK < 500) && (m_pClientList[iClientH]->m_iRating >= 50 )))
-		{	iRangoAttacker = 4;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 500) && (m_pClientList[iClientH]->m_iRating < 70 )) || ((m_pClientList[iClientH]->m_iMaxEK < 600) && (m_pClientList[iClientH]->m_iRating >= 60 )))
-		{	iRangoAttacker = 5;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 600) && (m_pClientList[iClientH]->m_iRating < 80 )) || ((m_pClientList[iClientH]->m_iMaxEK < 700) && (m_pClientList[iClientH]->m_iRating >= 70 )))
-		{	iRangoAttacker = 6;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 700) && (m_pClientList[iClientH]->m_iRating < 90 )) || ((m_pClientList[iClientH]->m_iMaxEK < 800) && (m_pClientList[iClientH]->m_iRating >= 80 )))
-		{	iRangoAttacker = 7;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 800) && (m_pClientList[iClientH]->m_iRating < 100 )) || ((m_pClientList[iClientH]->m_iMaxEK < 900) && (m_pClientList[iClientH]->m_iRating >= 90 )))
-		{	iRangoAttacker = 8;
-		}
-		else if(((m_pClientList[iClientH]->m_iMaxEK >= 900) && (m_pClientList[iClientH]->m_iRating < 200 )) || ((m_pClientList[iClientH]->m_iMaxEK < 1000) && (m_pClientList[iClientH]->m_iRating >= 100 )))
-		{	iRangoAttacker = 9;
-		}
-		else if( (m_pClientList[iClientH]->m_iMaxEK >= 1000) &&  (m_pClientList[iClientH]->m_iRating >= 200 ))
-		{	iRangoAttacker = 10;
-		}*/
-	
-
 	if (m_pClientList[iAttackerH]->m_iPKCount == 0) {
 		// Ã€Ã»Ã€Â» Ã€Ã¢Ã€Âº Â»Ã§Â¶Ã·Ã€ÃŒ PKÂ¸Ã© Â¾Ã†Â¹Â«Â·Â± ÂµÃ¦Ã€ÃŒ Â¾Ã¸Â´Ã™.
 	
@@ -11673,7 +11642,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
-							if (m_pClientList[sTargetH]->m_iRating <= 0) {
+							if (m_pClientList[sTargetH]->m_iRating < 0) {
 								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 								iDamage += iRepDamage;
 							}
@@ -11686,8 +11655,10 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 859) { // NecklaceOfKloness  
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
-							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
-							iDamage += iRepDamage;
+							if (m_pClientList[sTargetH]->m_iRating < 0) {
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
+								iDamage += iRepDamage;
+							}
 						}
 					}
 				}
@@ -12245,7 +12216,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
-							if (m_pClientList[sTargetH]->m_iRating <= 0) {
+							if (m_pClientList[sTargetH]->m_iRating < 0) {
 								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
 								iDamage += iRepDamage;
 							}
@@ -12258,8 +12229,10 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 859) { // NecklaceOfKloness  
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
-							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
-							iDamage += iRepDamage;
+							if (m_pClientList[sTargetH]->m_iRating < 0) {
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
+								iDamage += iRepDamage;
+							}
 						}
 					}
 				}
@@ -14747,11 +14720,11 @@ void CGame::SetPlayerReputation(int iClientH, char * pMsg, char cValue, DWORD dw
 						m_pClientList[i]->m_iRating += m_iRatingAdjust;
 					
 					// centu - rep limit
-					if (m_pClientList[i]->m_iRating < -2000)
-						m_pClientList[i]->m_iRating = -2000;
+					if (m_pClientList[i]->m_iRating < -5000)
+						m_pClientList[i]->m_iRating = -5000;
 
-					if (m_pClientList[i]->m_iRating > 2000)
-						m_pClientList[i]->m_iRating = 2000;
+					if (m_pClientList[i]->m_iRating > 5000)
+						m_pClientList[i]->m_iRating = 5000;
 
 					// Æò°¡¸¦ ³»·ÈÀ¸¹Ç·Î ½Ã°£ °£°ÝÀ» Àç ÇÒ´ç. 
 					m_pClientList[iClientH]->m_iTimeLeft_Rating = 20*60;
@@ -20074,7 +20047,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] == NULL) return 0;
-						if (m_pClientList[sTargetH]->m_iRating <= 0) {
+						if (m_pClientList[sTargetH]->m_iRating < 0) {
 							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
 							iAP_SM += iRepDamage;
 							iAP_L += iRepDamage;
@@ -20170,7 +20143,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] == NULL) return 0;
-						if (m_pClientList[sTargetH]->m_iRating <= 0) {
+						if (m_pClientList[sTargetH]->m_iRating < 0) {
 							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
 							iAP_SM += iRepDamage;
 							iAP_L += iRepDamage;
@@ -20184,9 +20157,11 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 859) { // NecklaceOfKloness  
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] == NULL) return 0;
-						iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
-						iAP_SM += iRepDamage;
-						iAP_L += iRepDamage;
+						if (m_pClientList[sTargetH]->m_iRating < 0) {
+							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
+							iAP_SM += iRepDamage;
+							iAP_L += iRepDamage;
+						}
 					}
 				}
 			}
@@ -24958,8 +24933,8 @@ void CGame::AdminOrder_BanIP(int iClientH, char *pData, DWORD dwMsgSize)
 			wsprintf(G_cTxt,"<%d> Client IP Banned: (%s)", i, cIPtoBan);
 			PutLogList(G_cTxt);
 				//modifys cfg file
-				fprintf(pFile, "banned-ip = %s", cIPtoBan);
-				fprintf(pFile, "\n");
+				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
+				fprintf(pFile, "");
 				fclose(pFile);
 			//updates BannedList.cfg on the server
 			LocalUpdateConfigs(3);
@@ -25172,8 +25147,7 @@ void CGame::ParseCommand(char * pMsg)
 				wsprintf(G_cTxt,"<%d> Client IP Banned: (%s)", i, cIPtoBan);
 				PutLogList(G_cTxt);
 				//modifys cfg file
-				fprintf(pFile, "banned-ip = %s", cIPtoBan);
-				fprintf(pFile, "\n");
+				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
 				fclose(pFile);
 				//updates BannedList.cfg on the server
 				LocalUpdateConfigs(3);
@@ -28174,7 +28148,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 					ShowClientMsg(iClientH, cMsg);
 					wsprintf(G_cTxt, "<%d> Client IP Banned: (%s)", i, cIPtoBan);
 					PutLogList(G_cTxt);
-					fprintf(pFile, "\nbanned-ip = %s", cIPtoBan);
+					fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
 					fclose(pFile);
 					LocalUpdateConfigs(3);
 					DeleteClient(i, TRUE, TRUE);

@@ -11246,9 +11246,38 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				GetOfficialMapName(m_stTeleportList[i].mapname, cTxt);
 				wsprintf(G_cTxt, DRAW_DIALOGBOX_CITYHALL_MENU77, cTxt, m_stTeleportList[i].iCost);
-				if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 130 + i * 15) && (msY <= sY + 144 + i * 15))
-					PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 255, 255, 255);
-				else PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 250, 250, 0);
+				
+				if (string(m_stTeleportList[i].mapname) == "fightzone1")
+				{
+					if (!bDeathmatch)
+					{
+						PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 255, 0, 0);
+					}
+					else
+					{
+						if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 130 + i * 15) && (msY <= sY + 144 + i * 15))
+							PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 255, 255, 255);
+						else PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 250, 250, 0);
+					}
+				}
+				else if (string(m_stTeleportList[i].mapname) == "team")
+				{
+					if (!_team_arena)
+					{
+						PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 255, 0, 0);
+					}
+					else
+					{
+						if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 130 + i * 15) && (msY <= sY + 144 + i * 15))
+							PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 255, 255, 255);
+						else PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 250, 250, 0);
+					}
+				}
+				else {
+					if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 130 + i * 15) && (msY <= sY + 144 + i * 15))
+						PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 255, 255, 255);
+					else PutAlignedString(sX, sX + szX, sY + 130 + i * 15, G_cTxt, 250, 250, 0);
+				}
 			}
 		}
 		else if (m_iTeleportMapCount == -1)
