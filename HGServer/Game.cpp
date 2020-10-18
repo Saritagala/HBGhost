@@ -7549,7 +7549,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			AdminOrder_SummonDemon(iClientH);
 			
 		}
-
+		
 		else if (memcmp(cp, "/summonplayer ", 14) == 0) {
 			AdminOrder_SummonPlayer(iClientH, cp, dwMsgSize - 21);
 			
@@ -20265,6 +20265,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 
 		if (m_pClientList[sTargetH] == NULL) return 0;
 		if (m_pClientList[sTargetH]->m_bIsKilled == TRUE) return 0;
+		
 		if ((m_pClientList[sTargetH]->m_iStatus & 0x400000) != 0) return 0;
 
 		if ((cAttackerType == DEF_OWNERTYPE_PLAYER) && (m_bIsCrusadeMode == FALSE) && 
@@ -20549,12 +20550,21 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 						iCalcTotalWeight(sAttackerH);
 					}
 				}
-				if (cProtect == 1) return 0;
+				if (cProtect == 1)
+				{
+					iAP_SM = iAP_SM / 2;
+					iAP_L = iAP_L / 2;
+					//return 0;	
+				}
 			}
 			else {
 				switch (cProtect) {
 				case 1:
-					if (bNormalMissileAttack) iTargetDefenseRatio += 50;//return 0;
+					if (bNormalMissileAttack) {
+						iAP_SM = iAP_SM / 2;
+						iAP_L = iAP_L / 2;
+						//return 0;
+					}
 					break;
 				case 3: iTargetDefenseRatio += 40;  break;
 				case 4: iTargetDefenseRatio += 100; break;
@@ -21099,7 +21109,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				if ((cAttackerType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH] != NULL)) {
 				if (m_pClientList[sAttackerH]->bShowDmg) {
 					ZeroMemory(cDamageMod, sizeof(cDamageMod));
-				//	//Magn0S:: Change the showdmg style, now show where is ur hit location.
+					//Magn0S:: Change the showdmg style, now show where is ur hit location.
 					switch (iHitPoint) {
 						case 1:
 							wsprintf(cDamageMod ,"You did %d Damage to %s (PLATE)", iAP_SM, m_pClientList[sTargetH]->m_cCharName);

@@ -9362,7 +9362,7 @@ int CGame::iGetItemWeight(CItem* pItem, int iCount)
 	iWeight = pItem->m_wWeight;
 	if (iCount < 0) iCount = 1;
 	iWeight = iWeight * iCount;
-	if (pItem->m_sIDnum == 90) iWeight = 0; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
+	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77) iWeight = 0; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
 	if (iWeight <= 0) iWeight = 1;
 
 	return iWeight;

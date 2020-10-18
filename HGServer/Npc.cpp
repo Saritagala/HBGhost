@@ -1242,9 +1242,9 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem = NULL;
 				}
 				else {
-					//if (iItemIDs[j] == 90 || iItemIDs[j] == 77) // Gold or Arrow
-					//	pItem->m_dwCount = iDice(10, 15000);
-					//else {
+					if (iItemIDs[j] == 90 || iItemIDs[j] == 77) // Gold or Arrow
+						pItem->m_dwCount = iDice(10, 15000);
+					else {
 						pItem->m_dwCount = dwCount;
 						
 						string st1 = pItem->m_cName;
@@ -1300,7 +1300,7 @@ void CGame::DeleteNpc(int iNpcH)
 								pItem->m_sNewEffect4++;
 							}
 						}
-					//}
+					}
 
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);

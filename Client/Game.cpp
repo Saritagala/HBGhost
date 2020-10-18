@@ -4173,6 +4173,11 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "MHHauberk1", DEF_SPRID_BERK_M + 15*3, 12, TRUE);
 			MakeSprite( "MHHauberk2", DEF_SPRID_BERK_M + 15*4, 12, TRUE);
 			MakeSprite("GodHauberk", DEF_SPRID_BERK_M + 15 * 5, 12, TRUE);
+
+			// centu - ghost set
+			MakeSprite("MGodRobe", DEF_SPRID_BODYARMOR_M + 15 * 12, 12, TRUE);
+			MakeSprite("MGodPlate", DEF_SPRID_BODYARMOR_M + 15 * 13, 12, TRUE);
+			MakeSprite("MGodHauberk", DEF_SPRID_BERK_M + 15 * 6, 11, TRUE);
 			m_cLoading = 56;
 		}
 		break;
@@ -4186,6 +4191,10 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite("GodLeggings", DEF_SPRID_LEGG_M + 15 * 7, 12, TRUE); // hero
 			MakeSprite( "MShoes",	DEF_SPRID_BOOT_M + 15*1, 12, TRUE);
 			MakeSprite( "MLBoots",	DEF_SPRID_BOOT_M + 15*2, 12, TRUE);
+			
+			// centu - ghost set
+			MakeSprite("MGodLeg", DEF_SPRID_LEGG_M + 15 * 7, 12, TRUE); 
+			
 			m_hPakFile = CreateFile("sprites\\Msw.pak", GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 			if( m_hPakFile != INVALID_HANDLE_VALUE ) {
 				for (i = 0; i < 56; i++) m_pSprite[DEF_SPRID_WEAPON_M + i + 64*1] = new class CSprite(m_hPakFile, &m_DDraw, "Msw", i + 56*0, TRUE);
@@ -4240,7 +4249,10 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			// Bows 40 41 below
 			MakeSprite( "MDirectBow",	DEF_SPRID_WEAPON_M + 64*42, 56, TRUE);
 			MakeSprite( "MFireBow",		DEF_SPRID_WEAPON_M + 64*43, 56, TRUE);
-			MakeFunSprite("Hammer2M", DEF_SPRID_WEAPON_M + 64 * 59, 56, TRUE); //Kloness Hammer
+			MakeFunSprite("Hammer2M",	DEF_SPRID_WEAPON_M + 64*59, 56, TRUE); //Kloness Hammer
+			MakeSprite("Axe1M",		DEF_SPRID_WEAPON_M + 64*60, 56, TRUE); //New Axe
+
+			MakeSprite("Bow1M", DEF_SPRID_WEAPON_M + 64 * 44, 56, TRUE);
 			m_cLoading = 68;
 		}
 		break;
@@ -4291,6 +4303,10 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "NMHelm2", DEF_SPRID_HEAD_M + 15*6, 12, TRUE);
 			MakeSprite( "NMHelm3", DEF_SPRID_HEAD_M + 15*7, 12, TRUE);
 			MakeSprite( "NMHelm4", DEF_SPRID_HEAD_M + 15*8, 12, TRUE);
+
+			// centu - ghost set
+			MakeSprite("MGodCap",	DEF_SPRID_HEAD_M + 15 * 13, 12, TRUE);
+			MakeSprite("MGodHelm",	DEF_SPRID_HEAD_M + 15 * 14, 12, TRUE);
 			m_cLoading = 76;
 		}
 		break;
@@ -4355,6 +4371,12 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "WLeggings",	DEF_SPRID_LEGG_W + 15*5, 12, TRUE);
 			MakeSprite( "WShoes",	DEF_SPRID_BOOT_W + 15*1, 12, TRUE);
 			MakeSprite( "WLBoots",  DEF_SPRID_BOOT_W + 15*2, 12, TRUE);
+
+			// centu - ghost set
+			MakeSprite("WGodRobe",		DEF_SPRID_BODYARMOR_W + 15 * 13, 12, TRUE);
+			MakeSprite("WGodPlate",		DEF_SPRID_BODYARMOR_W + 15 * 14, 13, TRUE);
+			MakeSprite("WGodHauberk",	DEF_SPRID_BERK_W + 15 * 6, 12, TRUE);
+			MakeSprite("WGodLeg",		DEF_SPRID_LEGG_W + 15 * 8, 12, TRUE); 
 			m_cLoading = 84;
 		}
 		break;
@@ -4409,7 +4431,10 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			// bows 40 41 below
 			MakeSprite( "WDirectBow",	DEF_SPRID_WEAPON_W + 64*42, 56, TRUE);
 			MakeSprite( "WFireBow",		DEF_SPRID_WEAPON_W + 64*43, 56, TRUE);
-			MakeFunSprite("Hammer2W", DEF_SPRID_WEAPON_W + 64 * 59, 56, TRUE); //Kloness Hammer
+			MakeFunSprite("Hammer2W",	DEF_SPRID_WEAPON_W + 64*59, 56, TRUE); //Kloness Hammer
+			MakeSprite("Axe1W",		DEF_SPRID_WEAPON_W + 64*60, 56, TRUE); //New Axe
+
+			MakeSprite("Bow1W", DEF_SPRID_WEAPON_W + 64 * 44, 56, TRUE);
 			m_cLoading = 92;
 		}
 		break;

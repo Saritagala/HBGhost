@@ -1,0 +1,59 @@
+2020:10:18:00:03:11	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:18:00:03:25	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"LOL"
+2020:10:18:00:03:32	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"I'NOT THE "
+2020:10:18:00:03:39	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"not the SAME"
+2020:10:18:00:03:44	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"SAME WHAT?"
+2020:10:18:00:03:52	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"ITEM-EQUIPhmm"
+2020:10:18:00:03:57	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"hmmmmmmmmmmmmmmm"
+2020:10:18:00:04:04	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"wait"
+2020:10:18:00:04:09	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem UltimateHauberk(M)"
+2020:10:18:00:04:09	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(UltimateHauberk(M))
+2020:10:18:00:04:28	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostHauberk(M)"
+2020:10:18:00:04:28	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostHauberk(M))
+2020:10:18:00:04:38	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostArmor(M)"
+2020:10:18:00:04:38	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostArmor(M))
+2020:10:18:00:04:47	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostHelm(M)"
+2020:10:18:00:04:47	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostHelm(M))
+2020:10:18:00:04:55	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostLeggings(M)"
+2020:10:18:00:04:55	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostLeggings(M))
+2020:10:18:00:05:08	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"wtf"
+2020:10:18:00:05:11	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"jajajja"
+2020:10:18:00:05:18	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"i think its "
+2020:10:18:00:05:19	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"hmmmm"
+2020:10:18:00:05:24	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"let me check here"
+2020:10:18:00:05:27	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"brb"
+2020:10:18:00:05:30	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"ok"
+2020:10:18:00:10:50	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:18:00:12:47	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:18:00:14:12	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:18:00:14:39	Loc(procella) IP(192.168.0.28) GM(Centuu[GM]):"/tp cityhall_2"
+2020:10:18:00:16:01	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem UltimateArmor(M)"
+2020:10:18:00:16:01	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(UltimateArmor(M))
+2020:10:18:00:16:06	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem UltimateHelm(M)"
+2020:10:18:00:16:06	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(UltimateHelm(M))
+2020:10:18:00:16:12	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem UltimateLeggings(M)"
+2020:10:18:00:16:12	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(UltimateLeggings(M))
+2020:10:18:00:44:56	Loc(elvine) IP(192.168.0.28) GM(Centuu[GM]):"/createitem DarkElfBow"
+2020:10:18:00:44:56	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(DarkElfBow)
+2020:10:18:00:45:31	Loc(elvine) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Fire-Bow"
+2020:10:18:00:45:31	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Fire-Bow)
+2020:10:18:00:45:45	Loc(elvine) IP(192.168.0.28) GM(Centuu[GM]):"/createitem Direction-Bow"
+2020:10:18:00:45:45	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(Direction-Bow)
+2020:10:18:00:46:49	Loc(elvine) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:18:01:00:40	Loc(elvine) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
+2020:10:18:01:00:51	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem KlonessBow"
+2020:10:18:01:00:51	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(KlonessBow)
+2020:10:18:01:01:19	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostArmor(M)"
+2020:10:18:01:01:19	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostArmor(M))
+2020:10:18:01:01:24	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostHelm(M)"
+2020:10:18:01:01:24	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostHelm(M))
+2020:10:18:01:01:31	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostHauberk(M)"
+2020:10:18:01:01:31	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostHauberk(M))
+2020:10:18:01:01:36	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostLeggings"
+2020:10:18:01:01:39	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostLeggings(M)"
+2020:10:18:01:01:39	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostLeggings(M))
+2020:10:18:01:08:28	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostRobe(M)"
+2020:10:18:01:08:28	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostRobe(M))
+2020:10:18:01:08:35	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/createitem GhostHat(M)"
+2020:10:18:01:08:35	(192.168.0.28) GM Order(Centuu[GM]): Create ItemName(GhostHat(M))
+2020:10:18:01:11:41	Loc(cityhall_2) IP(192.168.0.28) GM(Centuu[GM]):"/setinvi 0"
