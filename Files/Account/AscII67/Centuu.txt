@@ -29,5 +29,6 @@ account-Answer   = Perro
 account-created-by = 
 
 [CHARACTERS]
+account-character  = Porotex
 account-character  = Centuu[GM]
 

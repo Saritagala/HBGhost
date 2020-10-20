@@ -1315,7 +1315,7 @@ public:
 	void NotifyMapRestrictions(char* pData);
 	bool bMapTP = true, bMapParty = true, bMapIllusion = false, bMapActivate = true, bMapInvi = true, bMapAMP = true;
 	bool bMapRegens = true, bMapHideEnemy = false, bMapBonusDmg = false, bMapEquip = true;
-	bool bNpcMap = true, m_bShowTrees = true, bShowEventInfo = true;
+	bool m_bShowTrees = true, bShowEventInfo = true;
 
 	void MakeFunSprite(char* FileName, short sStart, short sCount, bool bAlphaEffect);
 	void MakeFunTileSpr(char* FileName, short sStart, short sCount, bool bAlphaEffect);

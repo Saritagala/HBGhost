@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/10/11/19/26)  IP(98.231.101.206)
+
+[NAME]
+
+account-name     = fishie
+
+[PASSWORD]
+
+account-password = ghoster
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 18
+
+account-change-password = 2020 10 11
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = smashinghb@gmail.com
+account-Quiz     = aoiuehgniveoqan
+account-Answer   = qwoieghnvoqev 
+account-created-by = 
+
+[CHARACTERS]
+account-character  = DTF
+account-character  = Hallabit
+

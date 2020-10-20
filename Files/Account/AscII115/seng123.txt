@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/10/9/4/8)  IP(175.138.194.151)
+
+[NAME]
+
+account-name     = seng123
+
+[PASSWORD]
+
+account-password = 3856602
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 16
+
+account-change-password = 2020 10 9
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = sd@yahoo.com
+account-Quiz     = 363
+account-Answer   = qws3
+account-created-by = 
+
+[CHARACTERS]
+account-character  = GiVeMeLoVe
+

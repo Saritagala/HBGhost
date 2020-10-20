@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/10/12/21/43)  IP(189.26.31.36)
+
+[NAME]
+
+account-name     = nichetti
+
+[PASSWORD]
+
+account-password = q1w2e3r4
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 19
+
+account-change-password = 2020 10 12
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = gilmarzito@hotmail.com
+account-Quiz     = que
+account-Answer   = um
+account-created-by = 
+
+[CHARACTERS]
+account-character  = NERO
+

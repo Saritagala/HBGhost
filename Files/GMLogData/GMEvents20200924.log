@@ -1,7 +1,0 @@
-2020:09:24:15:08:04	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/enableadmincommand 2257516364627831 "
-2020:09:24:15:08:12	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem TamingManual"
-2020:09:24:15:08:12	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(TamingManual)
-2020:09:24:15:08:27	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/createitem TamingManual"
-2020:09:24:15:08:27	(192.168.100.2) GM Order(Nixu[GM]): Create ItemName(TamingManual)
-2020:09:24:15:38:28	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/who"
-2020:09:24:15:38:33	Loc(cityhall_1) IP(192.168.100.2) GM(Nixu[GM]):"/enableadmincommand 2257516364627831 "

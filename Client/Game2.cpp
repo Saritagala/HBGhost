@@ -16976,6 +16976,8 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
 	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
 
+	int iReqStat, iQuantStat;
+
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	cp++;
@@ -17083,6 +17085,14 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	iClass = *ip;
 	cp += 4;
 
+	ip = (int*)cp;
+	iReqStat = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iQuantStat = *ip;
+	cp += 4;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17165,6 +17175,9 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 
 			m_pItemList[i]->m_iClass = iClass; // Centuu - class
 
+			m_pItemList[i]->m_iReqStat = iReqStat; // Centuu - class
+			m_pItemList[i]->m_iQuantStat = iQuantStat; // Centuu - class
+
 			_bCheckBuildItemStatus();
 
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -17193,6 +17206,8 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	//Magn0S:: Add
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
 	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
+
+	int iReqStat, iQuantStat;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -17298,6 +17313,13 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	iClass = *ip;
 	cp += 4;
 
+	ip = (int*)cp;
+	iReqStat = *ip;
+	cp += 4;
+	ip = (int*)cp;
+	iQuantStat = *ip;
+	cp += 4;
+	
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
 	GetItemName(cName, NULL, cStr1, cStr2, cStr3);
@@ -17367,6 +17389,9 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 			m_pItemList[i]->m_iClass = iClass;
+
+			m_pItemList[i]->m_iReqStat = iReqStat;
+			m_pItemList[i]->m_iQuantStat = iQuantStat;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -17444,7 +17469,7 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	//Magn0S::
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
 	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
-	int* ip, iClass;
+	int* ip, iClass, iReqStat, iQuantStat;
 
 	//cp = (pData + DEF_INDEX2_MSGTYPE + 2);
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -17563,6 +17588,13 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	iClass = *ip;
 	cp += 4;
 
+	ip = (int*)cp;
+	iReqStat = *ip;
+	cp += 4;
+	ip = (int*)cp;
+	iQuantStat = *ip;
+	cp += 4;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17602,6 +17634,9 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 		m_pBankList[cIndex]->m_sItemEffectType = sItemEffectType;
 		m_pBankList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
 		m_pBankList[cIndex]->m_iClass = iClass;
+
+		m_pBankList[cIndex]->m_iReqStat = iReqStat;
+		m_pBankList[cIndex]->m_iQuantStat = iQuantStat;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -19373,106 +19408,6 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			m_dwMonsterEventTime = 0;
 			m_sMonsterID = 0;
 		}
-
-		if (bNpcMap) {
-			// centuu - mostrar pits en mapa CHICO
-			// Nixu - acomodado de Pits
-			if (m_cMapIndex == 11) { // Aresden
-				// Ogre Abajo Medio Derecha
-				if (141 >= shX && 141 <= shX + 128 && 240 >= shY && 240 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 29, m_dwCurTime);
-				// Esqueleton Abajo Derecha
-				if (253 >= shX && 253 <= shX + 128 && 203 >= shY && 203 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 11, m_dwCurTime);
-				//Stone Golem Izquierda
-				if (43 >= shX && 43 <= shX + 128 && 182 >= shY && 182 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 182 - shY, 12, m_dwCurTime);
-				//Zombies
-				if (122 >= shX && 122 <= shX + 128 && 50 >= shY && 50 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 50 - shY, 18, m_dwCurTime);
-				// Dark Elf Abajo Medio
-				if (203 >= shX && 203 <= shX + 128 && 236 >= shY && 236 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 54, m_dwCurTime);
-				// Werewolf Arriba
-				if (102 >= shX && 102 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 102 - shX, sY + 36 - shY, 33, m_dwCurTime);
-
-			}
-			else if (m_cMapIndex == 3) { // Elvine
-
-				// Werewolf Arriba
-				if (154 >= shX && 154 <= shX + 128 && 38 >= shY && 38 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 154 - shX, sY + 38 - shY, 33, m_dwCurTime);
-				// Skeleton Arriba
-				if (127 >= shX && 127 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 127 - shX, sY + 36 - shY, 11, m_dwCurTime);
-				//Zombies Izquierda Arriba
-				if (54 >= shX && 54 <= shX + 128 && 65 >= shY && 65 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 54 - shX, sY + 65 - shY, 18, m_dwCurTime);
-				//Ogre Abajo
-				if (135 >= shX && 135 <= shX + 128 && 248 >= shY && 248 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 29, m_dwCurTime);
-				// Dark Elf Derecha Inferior
-				if (240 >= shX && 240 <= shX + 128 && 214 >= shY && 214 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 54, m_dwCurTime);
-
-				// Snake
-				if (48 >= shX && 48 <= shX + 128 && 202 >= shY && 202 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 12, m_dwCurTime);
-
-			}
-
-			else if (m_cMapIndex == 4) { // Middleland
-
-				// Werewolf 
-				if (227 >= shX && 227 <= shX + 128 && 419 >= shY && 419 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 227 - shX, sY + 419 - shY, 33, m_dwCurTime);
-				// Ogre
-				if (251 >= shX && 251 <= shX + 128 && 274 >= shY && 274 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 251 - shX, sY + 274 - shY, 29, m_dwCurTime);
-				//Ogre
-				if (240 >= shX && 240 <= shX + 128 && 197 >= shY && 197 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 197 - shY, 29, m_dwCurTime);
-				//Ettin
-				if (435 >= shX && 435 <= shX + 128 && 378 >= shY && 378 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 435 - shX, sY + 378 - shY, 59, m_dwCurTime);
-				// Ettin
-				if (420 >= shX && 420 <= shX + 128 && 150 >= shY && 150 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 420 - shX, sY + 150 - shY, 59, m_dwCurTime);
-				// Demons
-				if (466 >= shX && 466 <= shX + 128 && 314 >= shY && 314 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 466 - shX, sY + 314 - shY, 31, m_dwCurTime);
-				//Demons
-				if (56 >= shX && 56 <= shX + 128 && 215 >= shY && 215 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 56 - shX, sY + 215 - shY, 31, m_dwCurTime);
-
-			}
-			else if (m_cMapIndex == 24) { // Icebound
-
-				// Ice Golem
-				if (190 >= shX && 190 <= shX + 128 && 224 >= shY && 224 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 190 - shX, sY + 224 - shY, 65, m_dwCurTime);
-				// Ice Golem
-				//if (220 >= shX && 220 <= shX + 128 && 251 >= shY && 251 <= shY + 128)
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 220 - shX, sY + 251 - shY, 65, m_dwCurTime);
-				//Frost
-				if (199 >= shX && 199 <= shX + 128 && 37 >= shY && 37 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 199 - shX, sY + 37 - shY, 63, m_dwCurTime);
-				//Nizzie
-				if (137 >= shX && 137 <= shX + 128 && 57 >= shY && 57 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 137 - shX, sY + 57 - shY, 79, m_dwCurTime);
-				// Wyvern
-				if (43 >= shX && 43 <= shX + 128 && 35 >= shY && 35 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 35 - shY, 66, m_dwCurTime);
-				//Ice Golem
-				if (222 >= shX && 222 <= shX + 128 && 139 >= shY && 139 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 222 - shX, sY + 139 - shY, 65, m_dwCurTime);
-
-			}
-
-
-		}
-
 	}
 	else // Sans zoom
 	{
@@ -19594,73 +19529,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			m_sMonsterID = 0;
 		}
 
-		if (bNpcMap) {
-			// centuu - mostrar pits en mapa GRANDE
-			//Nixu - Acomodado de Pits
-			if (m_cMapIndex == 11) { // Aresden
-				// Ogre Abajo Medio 
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
-				//Esqueleton Abajo Derecha
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
-				//Stone Golem Izquierda
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((182 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
-				// Zombies Arriba Derecha
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((50 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
-				// Dark elf Abajo Medio Derecha
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
-				// Werewolf Arriba Izquierda
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((102 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-			}
-			else if (m_cMapIndex == 3) { // Elvine
-				// Wereolf Arriba Derecha
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-				//Skeleton Arriba Izquierda
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((127 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
-				// Zombies Arriba Izquierda
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((54 * 128) / m_pMapData->m_sMapSizeX), sY + ((65 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
-				// Ogre Abajo Medio
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
-				// Dark Elf Abajo Derecho
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
-				// Stone Golem Abajo Izquierda
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
-
-			}
-			else if (m_cMapIndex == 4) { // Middleland
-				// Wereolf
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((227 * 128) / m_pMapData->m_sMapSizeX), sY + ((419 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-				//Ogre
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((251 * 128) / m_pMapData->m_sMapSizeX), sY + ((274 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
-				//Ogre
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((197 * 128) / m_pMapData->m_sMapSizeX), 29, m_dwCurTime);
-				//Werewolf
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((187 * 128) / m_pMapData->m_sMapSizeX), sY + ((93 * 128) / m_pMapData->m_sMapSizeX), 33, m_dwCurTime);
-				// Ettin
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((435 * 128) / m_pMapData->m_sMapSizeX), sY + ((378 * 128) / m_pMapData->m_sMapSizeX), 59, m_dwCurTime);
-				// Ettin
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((420 * 128) / m_pMapData->m_sMapSizeX), sY + ((150 * 128) / m_pMapData->m_sMapSizeX), 59, m_dwCurTime);
-				//Demons
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((466 * 128) / m_pMapData->m_sMapSizeX), sY + ((314 * 128) / m_pMapData->m_sMapSizeX), 31, m_dwCurTime);
-				//Demons
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((56 * 128) / m_pMapData->m_sMapSizeX), sY + ((215 * 128) / m_pMapData->m_sMapSizeX), 31, m_dwCurTime);
-
-			}
-
-			else if (m_cMapIndex == 24) { // Icebound
-				// Ice Golem
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((190 * 128) / m_pMapData->m_sMapSizeX), sY + ((224 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
-				// Frost
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((199 * 128) / m_pMapData->m_sMapSizeX), sY + ((37 * 128) / m_pMapData->m_sMapSizeX), 63, m_dwCurTime);
-				// Nizzie
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((137 * 128) / m_pMapData->m_sMapSizeX), sY + ((57 * 128) / m_pMapData->m_sMapSizeX), 79, m_dwCurTime);
-				// Wyvern
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((35 * 128) / m_pMapData->m_sMapSizeX), 66, m_dwCurTime);
-				//Ice Golem
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((222 * 128) / m_pMapData->m_sMapSizeX), sY + ((139 * 128) / m_pMapData->m_sMapSizeX), 65, m_dwCurTime);
-
-
-			}
-		}
+		
 	}
 	if (cLB != 0) return;
 	if (msX >= sX && msX < sX + szY && msY >= sY && msY < sY + szY)
@@ -20433,6 +20302,13 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i]->m_iClass = *ip;
 		cp += 4;
 
+		ip = (int*)cp;
+		m_pItemList[i]->m_iReqStat = *ip;
+		cp += 4;
+		ip = (int*)cp;
+		m_pItemList[i]->m_iQuantStat = *ip;
+		cp += 4;
+
 		m_cItemOrder[i] = i;
 		// Snoopy: Add Angelic Stats
 		if ((m_pItemList[i]->m_cItemType == 1)
@@ -20574,6 +20450,14 @@ void CGame::InitItemList(char * pData)
 
 		ip = (int*)cp;
 		m_pBankList[i]->m_iClass = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_pBankList[i]->m_iReqStat = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_pBankList[i]->m_iQuantStat = *ip;
 		cp += 4;
 
 	}
@@ -21978,10 +21862,6 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
-			if (bNpcMap) bNpcMap = false; else bNpcMap = true;
-
-		iNext += 1;
-		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 			if (m_bShowEmblems) m_bShowEmblems = FALSE; else m_bShowEmblems = TRUE;
 
 		iNext += 1;
@@ -22387,16 +22267,6 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Events Info", 19, 104, 169);
 
 		if (bShowEventInfo) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
-		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
-
-		iNext += 1;
-		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
-		{
-			PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 255, 255, 255);
-		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC in Map Guide", 19, 104, 169);
-
-		if (bNpcMap) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 
 		iNext += 1;

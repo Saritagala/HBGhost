@@ -132,6 +132,7 @@ public:
 	short m_sNewEffect1, m_sNewEffect2, m_sNewEffect3, m_sNewEffect4;
 
 	int m_iClass;
+	int m_iReqStat, m_iQuantStat;
 };
 
 #endif // !defined(AFX_ITEM_H__211A1360_91B9_11D2_B143_00001C7030A6__INCLUDED_)

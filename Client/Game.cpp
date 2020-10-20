@@ -1175,11 +1175,6 @@ void CGame::SaveGameConfigFile()
 	strcat(cFn2, cBuffer);
 	strcat(cFn2, "\n");
 
-	strcat(cFn2, "show-ncp-map = ");
-	wsprintf(cBuffer, "%d", (int)bNpcMap);
-	strcat(cFn2, cBuffer);
-	strcat(cFn2, "\n");
-
 	strcat(cFn2, "detail-mode = ");
 	wsprintf(cBuffer, "%d", (int)m_cDetailLevel);
 	strcat(cFn2, cBuffer);
@@ -1307,10 +1302,6 @@ BOOL CGame::bReadGameConfigFile(char* cFn)
 					cReadMode = 0;
 					break;
 				case 16:
-					bNpcMap = (bool)atoi(token);
-					cReadMode = 0;
-					break;
-				case 17:
 					m_bGrid = (BOOL)atoi(token);
 					cReadMode = 0;
 					break;
@@ -1334,8 +1325,7 @@ BOOL CGame::bReadGameConfigFile(char* cFn)
 				if (memcmp(token, "show-trees", 10) == 0)			cReadMode = 13;
 				if (memcmp(token, "show-party", 10) == 0)			cReadMode = 14;
 				if (memcmp(token, "show-events", 11) == 0)			cReadMode = 15;
-				if (memcmp(token, "show-npc-map", 12) == 0)			cReadMode = 16;
-				if (memcmp(token, "show-grid", 9) == 0)				cReadMode = 17;
+				if (memcmp(token, "show-grid", 9) == 0)				cReadMode = 16;
 			}
 			token = pStrTok->pGet();
 		}
@@ -7329,7 +7319,7 @@ void CGame::NotifyMsg_ForceDisconn(char *pData)
 	m_bForceDisconn = TRUE;
 	if (m_bIsProgramActive)
 	{
-		if (m_cLogOutCount < 0 || m_cLogOutCount > 6) m_cLogOutCount = 6;
+		if (m_cLogOutCount < 0 || m_cLogOutCount > 11) m_cLogOutCount = 11;
 		AddEventList(NOTIFYMSG_FORCE_DISCONN1, 10);
 	}
 	else
@@ -31527,7 +31517,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 #ifdef _DEBUG
 			m_cLogOutCount = 1;
 #else
-			m_cLogOutCount = 6;
+			m_cLogOutCount = 11;
 #endif
 		else {
 			m_cLogOutCount = -1;
@@ -34695,26 +34685,9 @@ void CGame::UpdateScreen_OnGame()
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
 		{	
-			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
-			case 10://"Available for above Str %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 11: // "Available for above Dex %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 12: // "Available for above Vit %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 13: // "Available for above Int %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 14: // "Available for above Mag %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 15: // "Available for above Agi %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			}
+			int	_wWeight = 0;
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+			wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
 			
 			iEntry++;
 		}
@@ -34833,26 +34806,35 @@ void CGame::UpdateScreen_OnGame()
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
 		{
-			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
-			case 10://"Available for above Str %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 11: // "Available for above Dex %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 12: // "Available for above Vit %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 13: // "Available for above Int %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 14: // "Available for above Mag %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
-			case 15: // "Available for above Agi %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
-				break;
+			/*if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_FULLBODY ||
+				m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD) {
+				switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue4) {
+				case 10://"Available for above Str %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+					break;
+				case 11: // "Available for above Dex %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+					break;
+				case 12: // "Available for above Vit %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+					break;
+				case 13: // "Available for above Int %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+					break;
+				case 14: // "Available for above Mag %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+					break;
+				case 15: // "Available for above Agi %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue5);
+					break;
+				}
 			}
+			else //if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_RHAND || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND)
+			{*/
+				int	_wWeight = 0;
+				if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+			//}
 			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), FALSE, 1);
 			iLoc += 15;
 		}

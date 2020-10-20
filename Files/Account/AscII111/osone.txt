@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/10/4/6/30)  IP(60.49.98.4)
+
+[NAME]
+
+account-name     = osone
+
+[PASSWORD]
+
+account-password = osone88
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 11
+
+account-change-password = 2020 10 4
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = wkc198498@yahoo.com
+account-Quiz     = dog_name
+account-Answer   = wangwang
+account-created-by = 
+
+[CHARACTERS]
+account-character  = SR4
+

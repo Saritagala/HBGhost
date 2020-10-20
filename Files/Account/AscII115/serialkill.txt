@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/10/10/20/19)  IP(71.193.18.14)
+
+[NAME]
+
+account-name     = serialkill
+
+[PASSWORD]
+
+account-password = holyshit12
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 17
+
+account-change-password = 2020 10 10
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = shakeybs@outlook.com
+account-Quiz     = none
+account-Answer   = nowhere
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Shakey
+

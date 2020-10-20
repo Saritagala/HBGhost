@@ -1948,6 +1948,14 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		ip = (int*)cp;
 		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iClass;
 		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iQuantStat;
+		cp += 4;
 	}
 	iTotalItemB = 0;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++)
@@ -2064,6 +2072,14 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		ip = (int*)cp;
 		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iClass;
 		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iQuantStat;
+		cp += 4;
 	}
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
@@ -2078,7 +2094,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 
 	//iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA*44 + iTotalItemB*43 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	//Magn0S:: Added new variables / Centuu - added class
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA * 72 + iTotalItemB * 71 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA * 72+8 + iTotalItemB * 71+8 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:

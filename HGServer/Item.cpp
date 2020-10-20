@@ -73,6 +73,9 @@ CItem::CItem()
 
 	m_iClass = 0;
 
+	m_iReqStat = 0;
+	m_iQuantStat = 0;
+
 	bEkSale = false;
 	bContrbSale = false;
 	bCoinSale = false;
@@ -4307,7 +4310,15 @@ BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			*ip = pItem->m_iClass;
 			cp += 4;
 
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 28);
+			ip = (int*)cp;
+			*ip = pItem->m_iReqStat;
+			cp += 4;
+
+			ip = (int*)cp;
+			*ip = pItem->m_iQuantStat;
+			cp += 4;
+
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 28 + 8);
 			switch (iRet) {
 			case DEF_XSOCKEVENT_QUENEFULL:
 			case DEF_XSOCKEVENT_SOCKETERROR:
@@ -4461,7 +4472,15 @@ BOOL CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			*ip = pItem->m_iClass;
 			cp += 4;
 
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 28);
+			ip = (int*)cp;
+			*ip = pItem->m_iReqStat;
+			cp += 4;
+
+			ip = (int*)cp;
+			*ip = pItem->m_iQuantStat;
+			cp += 4;
+
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 55 + 28 + 8);
 			switch (iRet) {
 			case DEF_XSOCKEVENT_QUENEFULL:
 			case DEF_XSOCKEVENT_SOCKETERROR:
@@ -6431,6 +6450,38 @@ BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 						m_pItemConfigList[iItemConfigListIndex]->m_iClass = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iClass = iTemp;
 					
+					cReadModeB = 31;
+					break;
+
+				case 31:
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Req. Stat");
+						delete[] pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = 0;
+					else m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = iTemp;
+
+					cReadModeB = 32;
+					break;
+
+				case 32:
+					if (_bGetIsStringIsNumber(token) == FALSE) {
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Quant. Stat");
+						delete[] pContents;
+						delete pStrTok;
+						return FALSE;
+					}
+
+					iTemp = atoi(token);
+					if (iTemp < 0)
+						m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = 0;
+					else m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = iTemp;
+
 					cReadModeA = 0;
 					cReadModeB = 0;
 					break;
@@ -6528,6 +6579,9 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
 				pItem->m_sNewEffect4 = m_pItemConfigList[i]->m_sNewEffect4;
 
 				pItem->m_iClass = m_pItemConfigList[i]->m_iClass;
+
+				pItem->m_iReqStat = m_pItemConfigList[i]->m_iReqStat;
+				pItem->m_iQuantStat = m_pItemConfigList[i]->m_iQuantStat;
 				return TRUE;
 			}
 		}
@@ -6591,6 +6645,10 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, int iItemID)
 				pItem->m_sNewEffect4 = m_pItemConfigList[i]->m_sNewEffect4;
 
 				pItem->m_iClass = m_pItemConfigList[i]->m_iClass;
+
+				pItem->m_iReqStat = m_pItemConfigList[i]->m_iReqStat;
+				pItem->m_iQuantStat = m_pItemConfigList[i]->m_iQuantStat;
+
 				return TRUE;
 			}
 		}
@@ -6733,12 +6791,20 @@ BOOL CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		*ip = pItem->m_iClass;
 		cp += 4;
 
+		ip = (int*)cp;
+		*ip = pItem->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = pItem->m_iQuantStat;
+		cp += 4;
+
 		if (iEraseReq == 1) {
 			delete pItem;
 			pItem = NULL;
 		}
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 81); //Original = 53
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 81+8); //Original = 53
 
 		return TRUE;
 	}
@@ -6891,7 +6957,15 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*ip = pItem->m_iClass;
 		cp += 4;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 81); // 53
+		ip = (int*)cp;
+		*ip = pItem->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = pItem->m_iQuantStat;
+		cp += 4;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 81+8); // 53
 		break;
 
 	case DEF_NOTIFY_ITEMPURCHASED:
@@ -6997,7 +7071,15 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*ip = pItem->m_iClass;
 		cp += 4;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 78); // 48
+		ip = (int*)cp;
+		*ip = pItem->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = pItem->m_iQuantStat;
+		cp += 4;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 78+8); // 48
 		break;
 
 	case DEF_NOTIFY_CANNOTCARRYMOREITEM:
@@ -7035,7 +7117,7 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 	if ((iAmount != -1) && (iAmount < 0)) return;
 
-	if (m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
+	if (_drop_inhib || m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
 		return;
 
 	// Amount°¡ -1ÀÌ°í ¼Ò¸ðÇ°ÀÌ¸é ¼ö·®ÀÇ ÀüºÎ¸¦ ¶³¾î¶ß¸°´Ù.
@@ -7429,6 +7511,66 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 			break;
 		case 15: // Agi
 			if (m_pClientList[iClientH]->m_iCharisma < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue5) {
+				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
+				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[cEquipPos], TRUE);
+				return FALSE;
+			}
+			break;
+		}
+	}
+
+	// Centuu - Req. Stat for weapons
+	if ((cEquipPos == DEF_EQUIPPOS_TWOHAND) || (cEquipPos == DEF_EQUIPPOS_RHAND) || (cEquipPos == DEF_EQUIPPOS_LHAND)) {
+		switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iReqStat) {
+		case 1: // Str Á¦ÇÑ 
+			if ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
+				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[cEquipPos], TRUE);
+				return FALSE;
+			}
+			break;
+		case 2: // Dex
+			if ((m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iAngelicDex) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
+				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[cEquipPos], TRUE);
+				return FALSE;
+			}
+			break;
+		case 3: // Vit
+			if (m_pClientList[iClientH]->m_iVit < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
+				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[cEquipPos], TRUE);
+				return FALSE;
+			}
+			break;
+		case 4: // Int
+			if ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
+				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[cEquipPos], TRUE);
+				return FALSE;
+			}
+			break;
+		case 5: // Mag
+			if ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
+				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
+				ReleaseItemHandler(iClientH, m_pClientList[iClientH]->m_sItemEquipmentStatus[cEquipPos], TRUE);
+				return FALSE;
+			}
+			break;
+		case 6: // Agi
+			if (m_pClientList[iClientH]->m_iCharisma < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
 				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
 				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
@@ -8187,7 +8329,7 @@ void CGame::_PenaltyItemDrop(int iClientH, int iTotal, BOOL bIsSAattacked)
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 
 	// kazin
-	if (_drop_inhib || m_pClientList[iClientH]->IsInMap("team"))
+	if (_drop_inhib || m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
 		return;
 
 	// SNOOPY: Lucky effect will prevent drops,  even of a ZEM.
@@ -9433,6 +9575,10 @@ BOOL CGame::bCopyItemContents(CItem* pCopy, CItem* pOriginal)
 	pCopy->m_sNewEffect4 = pOriginal->m_sNewEffect4;
 
 	pCopy->m_iClass = pOriginal->m_iClass;
+
+
+	pCopy->m_iReqStat = pOriginal->m_iReqStat;
+	pCopy->m_iQuantStat = pOriginal->m_iQuantStat;
 
 	return TRUE;
 }

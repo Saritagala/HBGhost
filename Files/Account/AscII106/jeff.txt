@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/10/5/6/35)  IP(14.192.209.97)
+
+[NAME]
+
+account-name     = jeff
+
+[PASSWORD]
+
+account-password = 12341234
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 12
+
+account-change-password = 2020 10 5
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = 1234@gmail.com
+account-Quiz     = 12341234
+account-Answer   = 12341234
+account-created-by = 
+
+[CHARACTERS]
+account-character  = J
+

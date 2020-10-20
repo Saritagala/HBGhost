@@ -1,5 +1,0 @@
-2020:07:03:15:43:25	Loc(icebound) IP(10.0.0.104) GM(GM1):"/tp elvine"
-2020:07:03:23:41:35	Loc(elvine) IP(10.0.0.104) GM(GM1):"/fragile KlonessBlade 2 04 07 2020"
-2020:07:03:23:41:36	GM Order(GM1): Created Fragile Item - Name:(KlonessBlade)
-2020:07:03:23:43:16	Loc(cityhall_2) IP(10.0.0.104) GM(GM1):"/setcont GM1 5000"
-2020:07:03:23:43:20	Loc(cityhall_2) IP(10.0.0.104) GM(GM1):"/setcont GM1 5000"

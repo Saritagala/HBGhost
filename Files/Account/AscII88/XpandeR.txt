@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/10/4/17/45)  IP(181.46.79.56)
+
+[NAME]
+
+account-name     = XpandeR
+
+[PASSWORD]
+
+account-password = 1540752690
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 10 11
+
+account-change-password = 2020 10 4
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = j@gmail.com
+account-Quiz     = hola
+account-Answer   = hola
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Cele
+

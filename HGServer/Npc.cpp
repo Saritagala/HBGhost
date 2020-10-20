@@ -3730,7 +3730,7 @@ void CGame::MobGenerator()
 	bool bIsGuard;
 
 	if (m_bOnExitProcess == TRUE) return;
-
+	
 	for (i = 0; i < DEF_MAXMAPS; i++) {
 
 		if (m_pMapList[i] != NULL) {
