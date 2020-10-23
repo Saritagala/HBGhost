@@ -153,6 +153,8 @@ class CGame
 {
 public:
 
+	short cStr, cVit, cDex, cInt, cMag, cChar;
+
 	int iCityHP[2], iCityMaxHP[2];
 
 	class CItem* m_pItemConfigList[5000];

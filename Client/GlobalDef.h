@@ -27,8 +27,8 @@
 #define DEF_UPPERVERSION2		1
 #define DEF_LOWERVERSION2		0
 
-//#define DEF_SERVER_IP			"192.168.0.28"
-#define DEF_SERVER_IP			"192.168.100.2" // Host IP
+#define DEF_SERVER_IP			"192.168.0.28"
+//#define DEF_SERVER_IP			"192.168.100.2" // Host IP
 							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port
 

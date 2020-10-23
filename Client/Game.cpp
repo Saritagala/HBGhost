@@ -2426,18 +2426,39 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 
 	case MSGID_STATECHANGEPOINT:
 		// Diuuude
-		dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 		*dwp = dwMsgID;
-		wp  = (WORD *)(cMsg + DEF_INDEX2_MSGTYPE);
+
+		wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 		*wp = NULL;
-		cp = (char *)(cMsg + DEF_INDEX2_MSGTYPE + 2);
-		*cp = cStateChange1;
-		cp++;
-		*cp = cStateChange2;
-		cp++;
-		*cp = cStateChange3;
-		cp++;
-		iRet = m_pGSock->iSendMsg(cMsg, 12);
+
+		cp = (char*)(cMsg + DEF_INDEX2_MSGTYPE + 2);
+
+		sp = (short*)cp;
+		*sp = cStr;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = cVit;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = cDex;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = cInt;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = cMag;
+		cp += 2;
+
+		sp = (short*)cp;
+		*sp = cChar;
+		cp += 2;
+
+		iRet = m_pGSock->iSendMsg(cMsg, 18);
 		break;
 
 	default:
@@ -7479,6 +7500,8 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	m_iAngelicDex = 0;
 	m_iAngelicInt = 0;
 	m_iAngelicMag = 0;
+
+	cStr = cVit = cDex = cInt = cMag = cChar = 0;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ip   = (int *)cp;

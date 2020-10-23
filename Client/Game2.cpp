@@ -3455,6 +3455,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
 	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
+
+	PutAlignedString(sX, sX + szX, sY + 235, "1 Stat Point = 1 Majestic Point", 65, 0, 0);
 }
 
 
@@ -3471,273 +3473,298 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		return; // centu - when having an angel, do nothing
 	}
 
-	if ((cStateChange1 != 0) || (cStateChange2 != 0) || (cStateChange3 != 0)){
+	//if ((cStateChange1 != 0) || (cStateChange2 != 0) || (cStateChange3 != 0)){
 		// Strength UP - Diuuude
-		if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 127) && (msY <= sY + 133) && (m_cLU_Str < 0))
-		{
-			if (cStateChange1 == DEF_STR)
-			{
-				cStateChange1 = 0;
-				m_cLU_Str++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange2 == DEF_STR)
-			{
-				cStateChange2 = 0;
-				m_cLU_Str++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange3 == DEF_STR)
-			{
-				cStateChange3 = 0;
-				m_cLU_Str++;
-				m_iLU_Point--;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Vitality UP - Diuuude
-		if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 146) && (msY <= sY + 152) && (m_cLU_Vit < 0)) {
-			if (cStateChange1 == DEF_VIT)
-			{
-				cStateChange1 = 0;
-				m_cLU_Vit++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange2 == DEF_VIT)
-			{
-				cStateChange2 = 0;
-				m_cLU_Vit++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange3 == DEF_VIT)
-			{
-				cStateChange3 = 0;
-				m_cLU_Vit++;
-				m_iLU_Point--;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Dexterity UP - Diuuude
-		if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 165) && (msY <= sY + 171) && (m_cLU_Dex < 0)) {
-			if (cStateChange1 == DEF_DEX){
-				cStateChange1 = 0;
-				m_cLU_Dex++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange2 == DEF_DEX){
-				cStateChange2 = 0;
-				m_cLU_Dex++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange3 == DEF_DEX){
-				cStateChange3 = 0;
-				m_cLU_Dex++;
-				m_iLU_Point--;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Intelligence UP - Diuuude
-		if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 184) && (msY <= sY + 190) && (m_cLU_Int < 0)) {
-			if (cStateChange1 == DEF_INT){
-				cStateChange1 = 0;
-				m_cLU_Int++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange2 == DEF_INT){
-				cStateChange2 = 0;
-				m_cLU_Int++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange3 == DEF_INT){
-				cStateChange3 = 0;
-				m_cLU_Int++;
-				m_iLU_Point--;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Magic UP - Diuuude
-		if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 203) && (msY <= sY + 209) && (m_cLU_Mag < 0)) {
-			if (cStateChange1 == DEF_MAG){
-				cStateChange1 = 0;
-				m_cLU_Mag++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange2 == DEF_MAG){
-				cStateChange2 = 0;
-				m_cLU_Mag++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange3 == DEF_MAG){
-				cStateChange3 = 0;
-				m_cLU_Mag++;
-				m_iLU_Point--;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Charisma UP - Diuuude
-		if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 222) && (msY <= sY + 228) && (m_cLU_Char < 0)) {
-			if (cStateChange1 == DEF_CHR){
-				cStateChange1 = 0;
-				m_cLU_Char++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange2 == DEF_CHR){
-				cStateChange2 = 0;
-				m_cLU_Char++;
-				m_iLU_Point--;
-			}
-			else if (cStateChange3 == DEF_CHR){
-				cStateChange3 = 0;
-				m_cLU_Char++;
-				m_iLU_Point--;
-			}
-			PlaySound('E', 14, 5);
-		}
-	}
-
-	if ((cStateChange1 == 0) || (cStateChange2 == 0) || (cStateChange3 == 0) && (m_iGizonItemUpgradeLeft > 0))
-	{	// Strength DOWN - Diuuude
-		if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133) && (m_iStr > 10))
-		{
-			if (cStateChange1 == 0)
-			{
-				cStateChange1 = DEF_STR;
-				m_cLU_Str--;
-				m_iLU_Point++;
-			}
-			else if (cStateChange2 == 0)
-			{
-				cStateChange2 = DEF_STR;
-				m_cLU_Str--;
-				m_iLU_Point++;
-			}
-			else
-			{
-				cStateChange3 = DEF_STR;
-				m_cLU_Str--;
-				m_iLU_Point++;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Vitality DOWN - Diuuude
-		if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152) && (m_iVit > 10)) {
-			if (cStateChange1 == 0){
-				cStateChange1 = DEF_VIT;
-				m_cLU_Vit--;
-				m_iLU_Point++;
-			}
-			else if (cStateChange2 == 0){
-				cStateChange2 = DEF_VIT;
-				m_cLU_Vit--;
-				m_iLU_Point++;
-			}
-			else{
-				cStateChange3 = DEF_VIT;
-				m_cLU_Vit--;
-				m_iLU_Point++;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Dexterity DOWN - Diuuude
-		if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171) && (m_iDex > 10)) {
-			if (cStateChange1 == 0){
-				cStateChange1 = DEF_DEX;
-				m_cLU_Dex--;
-				m_iLU_Point++;
-			}
-			else if (cStateChange2 == 0){
-				cStateChange2 = DEF_DEX;
-				m_cLU_Dex--;
-				m_iLU_Point++;
-			}
-			else{
-				cStateChange3 = DEF_DEX;
-				m_cLU_Dex--;
-				m_iLU_Point++;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Intelligence DOWN - Diuuude
-		if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190) && (m_iInt > 10))
-		{
-			if (cStateChange1 == 0)
-			{
-				cStateChange1 = DEF_INT;
-				m_cLU_Int--;
-				m_iLU_Point++;
-			}
-			else if (cStateChange2 == 0)
-			{
-				cStateChange2 = DEF_INT;
-				m_cLU_Int--;
-				m_iLU_Point++;
-			}
-			else
-			{
-				cStateChange3 = DEF_INT;
-				m_cLU_Int--;
-				m_iLU_Point++;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Magic DOWN - Diuuude
-		if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209) && (m_iMag > 10)) {
-			if (cStateChange1 == 0){
-				cStateChange1 = DEF_MAG;
-				m_cLU_Mag--;
-				m_iLU_Point++;
-			}
-			else if (cStateChange2 == 0){
-				cStateChange2 = DEF_MAG;
-				m_cLU_Mag--;
-				m_iLU_Point++;
-			}
-			else{
-				cStateChange3 = DEF_MAG;
-				m_cLU_Mag--;
-				m_iLU_Point++;
-			}
-			PlaySound('E', 14, 5);
-		}
-
-		// Charisma DOWN - Diuuude
-		if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228) && (m_iCharisma > 10)) {
-			if (cStateChange1 == 0){
-				cStateChange1 = DEF_CHR;
-				m_cLU_Char--;
-				m_iLU_Point++;
-			}
-			else if (cStateChange2 == 0){
-				cStateChange2 = DEF_CHR;
-				m_cLU_Char--;
-				m_iLU_Point++;
-			}
-			else{
-				cStateChange3 = DEF_CHR;
-				m_cLU_Char--;
-				m_iLU_Point++;
-			}
-			PlaySound('E', 14, 5);
-		}
-	}
-	else
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 127) && (msY <= sY + 133) && (m_cLU_Str < 0))
 	{
-		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-		{	// Send command to HG - Diuuude
-			bSendCommand(MSGID_STATECHANGEPOINT, NULL, NULL, NULL, NULL, NULL, NULL);
-			DisableDialogBox(42);
-			PlaySound('E', 14, 5);
+		/*if (cStateChange1 == DEF_STR)
+		{
+			cStateChange1 = 0;
+			m_cLU_Str++;
+			m_iLU_Point--;
 		}
+		else if (cStateChange2 == DEF_STR)
+		{
+			cStateChange2 = 0;
+			m_cLU_Str++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange3 == DEF_STR)
+		{
+			cStateChange3 = 0;
+			m_cLU_Str++;
+			m_iLU_Point--;
+		}*/
+		m_cLU_Str++;
+		cStr--;
+		PlaySound('E', 14, 5);
 	}
+
+	// Vitality UP - Diuuude
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 146) && (msY <= sY + 152) && (m_cLU_Vit < 0)) {
+		/*if (cStateChange1 == DEF_VIT)
+		{
+			cStateChange1 = 0;
+			m_cLU_Vit++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange2 == DEF_VIT)
+		{
+			cStateChange2 = 0;
+			m_cLU_Vit++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange3 == DEF_VIT)
+		{
+			cStateChange3 = 0;
+			m_cLU_Vit++;
+			m_iLU_Point--;
+		}*/
+		m_cLU_Vit++;
+		cVit--;
+		PlaySound('E', 14, 5);
+	}
+
+	// Dexterity UP - Diuuude
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 165) && (msY <= sY + 171) && (m_cLU_Dex < 0)) {
+		/*if (cStateChange1 == DEF_DEX){
+			cStateChange1 = 0;
+			m_cLU_Dex++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange2 == DEF_DEX){
+			cStateChange2 = 0;
+			m_cLU_Dex++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange3 == DEF_DEX){
+			cStateChange3 = 0;
+			m_cLU_Dex++;
+			m_iLU_Point--;
+		}*/
+		m_cLU_Dex++;
+		cDex--;
+		PlaySound('E', 14, 5);
+	}
+
+	// Intelligence UP - Diuuude
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 184) && (msY <= sY + 190) && (m_cLU_Int < 0)) {
+		/*if (cStateChange1 == DEF_INT){
+			cStateChange1 = 0;
+			m_cLU_Int++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange2 == DEF_INT){
+			cStateChange2 = 0;
+			m_cLU_Int++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange3 == DEF_INT){
+			cStateChange3 = 0;
+			m_cLU_Int++;
+			m_iLU_Point--;
+		}*/
+		m_cLU_Int++;
+		cInt--;
+		PlaySound('E', 14, 5);
+	}
+
+	// Magic UP - Diuuude
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 203) && (msY <= sY + 209) && (m_cLU_Mag < 0)) {
+		/*if (cStateChange1 == DEF_MAG){
+			cStateChange1 = 0;
+			m_cLU_Mag++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange2 == DEF_MAG){
+			cStateChange2 = 0;
+			m_cLU_Mag++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange3 == DEF_MAG){
+			cStateChange3 = 0;
+			m_cLU_Mag++;
+			m_iLU_Point--;
+		}*/
+		m_cLU_Mag++;
+		cMag--;
+		PlaySound('E', 14, 5);
+	}
+
+	// Charisma UP - Diuuude
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 222) && (msY <= sY + 228) && (m_cLU_Char < 0)) {
+		/*if (cStateChange1 == DEF_CHR){
+			cStateChange1 = 0;
+			m_cLU_Char++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange2 == DEF_CHR){
+			cStateChange2 = 0;
+			m_cLU_Char++;
+			m_iLU_Point--;
+		}
+		else if (cStateChange3 == DEF_CHR){
+			cStateChange3 = 0;
+			m_cLU_Char++;
+			m_iLU_Point--;
+		}*/
+		m_cLU_Char++;
+		cChar--;
+		PlaySound('E', 14, 5);
+	}
+	//}
+
+	/*if ((cStateChange1 == 0) || (cStateChange2 == 0) || (cStateChange3 == 0) && (m_iGizonItemUpgradeLeft > 0))
+	{*/	// Strength DOWN - Diuuude
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133) && (m_iStr > 10))
+	{
+		/*if (cStateChange1 == 0)
+		{
+			cStateChange1 = DEF_STR;
+			m_cLU_Str--;
+			m_iLU_Point++;
+		}
+		else if (cStateChange2 == 0)
+		{
+			cStateChange2 = DEF_STR;
+			m_cLU_Str--;
+			m_iLU_Point++;
+		}
+		else
+		{
+			cStateChange3 = DEF_STR;
+			m_cLU_Str--;
+			m_iLU_Point++;
+		}*/
+		m_cLU_Str--;
+		cStr++;
+		PlaySound('E', 14, 5);
+	}
+
+	// Vitality DOWN - Diuuude
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152) && (m_iVit > 10)) {
+		/*if (cStateChange1 == 0){
+			cStateChange1 = DEF_VIT;
+			m_cLU_Vit--;
+			m_iLU_Point++;
+		}
+		else if (cStateChange2 == 0){
+			cStateChange2 = DEF_VIT;
+			m_cLU_Vit--;
+			m_iLU_Point++;
+		}
+		else{
+			cStateChange3 = DEF_VIT;
+			m_cLU_Vit--;
+			m_iLU_Point++;
+		}*/
+		m_cLU_Vit--;
+		cVit++;
+		PlaySound('E', 14, 5);
+	}
+
+	// Dexterity DOWN - Diuuude
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171) && (m_iDex > 10)) {
+		/*if (cStateChange1 == 0){
+			cStateChange1 = DEF_DEX;
+			m_cLU_Dex--;
+			m_iLU_Point++;
+		}
+		else if (cStateChange2 == 0){
+			cStateChange2 = DEF_DEX;
+			m_cLU_Dex--;
+			m_iLU_Point++;
+		}
+		else{
+			cStateChange3 = DEF_DEX;
+			m_cLU_Dex--;
+			m_iLU_Point++;
+		}*/
+		m_cLU_Dex--;
+		cDex++;
+		PlaySound('E', 14, 5);
+	}
+
+	// Intelligence DOWN - Diuuude
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190) && (m_iInt > 10))
+	{
+		/*if (cStateChange1 == 0)
+		{
+			cStateChange1 = DEF_INT;
+			m_cLU_Int--;
+			m_iLU_Point++;
+		}
+		else if (cStateChange2 == 0)
+		{
+			cStateChange2 = DEF_INT;
+			m_cLU_Int--;
+			m_iLU_Point++;
+		}
+		else
+		{
+			cStateChange3 = DEF_INT;
+			m_cLU_Int--;
+			m_iLU_Point++;
+		}*/
+		m_cLU_Int--;
+		cInt++;
+		PlaySound('E', 14, 5);
+	}
+
+	// Magic DOWN - Diuuude
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209) && (m_iMag > 10)) {
+		/*if (cStateChange1 == 0){
+			cStateChange1 = DEF_MAG;
+			m_cLU_Mag--;
+			m_iLU_Point++;
+		}
+		else if (cStateChange2 == 0){
+			cStateChange2 = DEF_MAG;
+			m_cLU_Mag--;
+			m_iLU_Point++;
+		}
+		else{
+			cStateChange3 = DEF_MAG;
+			m_cLU_Mag--;
+			m_iLU_Point++;
+		}*/
+		m_cLU_Mag--;
+		cMag++;
+		PlaySound('E', 14, 5);
+	}
+
+	// Charisma DOWN - Diuuude
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228) && (m_iCharisma > 10)) {
+		/*if (cStateChange1 == 0){
+			cStateChange1 = DEF_CHR;
+			m_cLU_Char--;
+			m_iLU_Point++;
+		}
+		else if (cStateChange2 == 0){
+			cStateChange2 = DEF_CHR;
+			m_cLU_Char--;
+			m_iLU_Point++;
+		}
+		else{
+			cStateChange3 = DEF_CHR;
+			m_cLU_Char--;
+			m_iLU_Point++;
+		}*/
+		m_cLU_Char--;
+		cChar++;
+		PlaySound('E', 14, 5);
+	}
+	/*}
+	else
+	{*/
+	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+	{	// Send command to HG - Diuuude
+		bSendCommand(MSGID_STATECHANGEPOINT, NULL, NULL, NULL, NULL, NULL, NULL);
+		cStr = cVit = cDex = cInt = cMag = cChar = 0;
+		DisableDialogBox(42);
+		PlaySound('E', 14, 5);
+	}
+	//}
 	if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
 		DisableDialogBox(42);
 		PlaySound('E', 14, 5);
@@ -17085,14 +17112,6 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	iClass = *ip;
 	cp += 4;
 
-	ip = (int*)cp;
-	iReqStat = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iQuantStat = *ip;
-	cp += 4;
-
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17174,9 +17193,6 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 			m_pItemList[i]->m_iClass = iClass; // Centuu - class
-
-			m_pItemList[i]->m_iReqStat = iReqStat; // Centuu - class
-			m_pItemList[i]->m_iQuantStat = iQuantStat; // Centuu - class
 
 			_bCheckBuildItemStatus();
 
@@ -17312,13 +17328,6 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	ip = (int*)cp;
 	iClass = *ip;
 	cp += 4;
-
-	ip = (int*)cp;
-	iReqStat = *ip;
-	cp += 4;
-	ip = (int*)cp;
-	iQuantStat = *ip;
-	cp += 4;
 	
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
@@ -17389,9 +17398,6 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 			m_pItemList[i]->m_iClass = iClass;
-
-			m_pItemList[i]->m_iReqStat = iReqStat;
-			m_pItemList[i]->m_iQuantStat = iQuantStat;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -17588,13 +17594,6 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	iClass = *ip;
 	cp += 4;
 
-	ip = (int*)cp;
-	iReqStat = *ip;
-	cp += 4;
-	ip = (int*)cp;
-	iQuantStat = *ip;
-	cp += 4;
-
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17634,9 +17633,6 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 		m_pBankList[cIndex]->m_sItemEffectType = sItemEffectType;
 		m_pBankList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
 		m_pBankList[cIndex]->m_iClass = iClass;
-
-		m_pBankList[cIndex]->m_iReqStat = iReqStat;
-		m_pBankList[cIndex]->m_iQuantStat = iQuantStat;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -20302,13 +20298,6 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i]->m_iClass = *ip;
 		cp += 4;
 
-		ip = (int*)cp;
-		m_pItemList[i]->m_iReqStat = *ip;
-		cp += 4;
-		ip = (int*)cp;
-		m_pItemList[i]->m_iQuantStat = *ip;
-		cp += 4;
-
 		m_cItemOrder[i] = i;
 		// Snoopy: Add Angelic Stats
 		if ((m_pItemList[i]->m_cItemType == 1)
@@ -20450,14 +20439,6 @@ void CGame::InitItemList(char * pData)
 
 		ip = (int*)cp;
 		m_pBankList[i]->m_iClass = *ip;
-		cp += 4;
-
-		ip = (int*)cp;
-		m_pBankList[i]->m_iReqStat = *ip;
-		cp += 4;
-
-		ip = (int*)cp;
-		m_pBankList[i]->m_iQuantStat = *ip;
 		cp += 4;
 
 	}

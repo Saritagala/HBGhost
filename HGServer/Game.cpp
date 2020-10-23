@@ -1948,14 +1948,6 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		ip = (int*)cp;
 		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iClass;
 		cp += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iReqStat;
-		cp += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iQuantStat;
-		cp += 4;
 	}
 	iTotalItemB = 0;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++)
@@ -2072,14 +2064,6 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		ip = (int*)cp;
 		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iClass;
 		cp += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iReqStat;
-		cp += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iQuantStat;
-		cp += 4;
 	}
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
@@ -2094,7 +2078,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 
 	//iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA*44 + iTotalItemB*43 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	//Magn0S:: Added new variables / Centuu - added class
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA * 72+8 + iTotalItemB * 71+8 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA * 72 + iTotalItemB * 71 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -10456,101 +10440,91 @@ int CGame::iGetLevelExp(int iLevel)
 //	return value :: void
 //  date		 :: [2003-04-14]    stupid koreans
 /////////////////////////////////////////////////////////////////////////////////////
-void CGame::StateChangeHandler(int iClientH, char * pData, DWORD dwMsgSize)
-{char * cp, cStateChange1, cStateChange2, cStateChange3;
- char cStr, cVit, cDex, cInt, cMag, cChar;
- int iOldStr, iOldVit, iOldDex, iOldInt, iOldMag, iOldChar;	
+void CGame::StateChangeHandler(int iClientH, char* pData, DWORD dwMsgSize)
+{
+	char* cp;
+	short* sp, cStr, cVit, cDex, cInt, cMag, cChar;
+
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0) return;
+
 	cStr = cVit = cDex = cInt = cMag = cChar = 0;
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	cStateChange1 = *cp;
-	cp++;
-	cStateChange2 = *cp;
-	cp++;
-	cStateChange3 = *cp;
-	cp++;
-	iOldStr	= m_pClientList[iClientH]->m_iStr;
-	iOldVit	= m_pClientList[iClientH]->m_iVit;
-	iOldDex = m_pClientList[iClientH]->m_iDex;
-	iOldInt = m_pClientList[iClientH]->m_iInt;
-	iOldMag = m_pClientList[iClientH]->m_iMag;
-	iOldChar = m_pClientList[iClientH]->m_iCharisma;	
-		
-	if(!bChangeState(cStateChange1,&cStr,&cVit,&cDex,&cInt,&cMag,&cChar))
-	{	// SNOOPY: Stats order was wrong here !
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	sp = (short*)cp;
+	cStr = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	cVit = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	cDex = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	cInt = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	cMag = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	cChar = *sp;
+	cp += 2;
+
+	if (m_pClientList[iClientH]->m_iStr - cStr < 10)
+	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if(!bChangeState(cStateChange2,&cStr,&cVit,&cDex,&cInt,&cMag,&cChar))
-	{	// SNOOPY: Stats order was wrong here !
+	if (m_pClientList[iClientH]->m_iVit - cVit < 10)
+	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if(!bChangeState(cStateChange3,&cStr,&cVit,&cDex,&cInt,&cMag,&cChar))
-	{	// SNOOPY: Stats order was wrong here !
+	if (m_pClientList[iClientH]->m_iDex - cDex < 10)
+	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	/*if(m_pClientList[iClientH]->m_iGuildRank == 0 )
-	{	if(m_pClientList[iClientH]->m_iCharisma - cChar < 20)
-		{	// gm cn't drop charisma below 20
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
-			return;
-	}	}
-	if(iOldStr +iOldVit	+iOldDex +iOldInt +iOldMag +iOldChar != ((m_iPlayerMaxLevel-1)*3 + 70))
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
-		return;
-	}*/
-	if(cStr < 0 || cVit < 0 || cDex < 0 || cInt < 0 || cMag < 0 || cChar < 0
-		|| cStr + cVit + cDex + cInt + cMag + cChar != 3)
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+	if (m_pClientList[iClientH]->m_iInt - cInt < 10)
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if ((m_pClientList[iClientH]->m_iStr - cStr > m_sCharStatLimit - 11) 
-		 || (m_pClientList[iClientH]->m_iStr - cStr < 10)) 
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+	if (m_pClientList[iClientH]->m_iMag - cMag < 10)
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if ((m_pClientList[iClientH]->m_iVit - cVit > m_sCharStatLimit - 11)
-		 || (m_pClientList[iClientH]->m_iVit - cVit < 10)) 
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+	if (m_pClientList[iClientH]->m_iCharisma - cChar < 10)
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if ((m_pClientList[iClientH]->m_iDex - cDex > m_sCharStatLimit - 11)
-		 || (m_pClientList[iClientH]->m_iDex - cDex < 10)) 
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
-		return;
-	}
-	if ((m_pClientList[iClientH]->m_iInt - cInt > m_sCharStatLimit - 11)
-		 || (m_pClientList[iClientH]->m_iInt - cInt < 10)) 
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
-		return;
-	}
-	if ((m_pClientList[iClientH]->m_iMag - cMag > m_sCharStatLimit - 11)
-		 || (m_pClientList[iClientH]->m_iMag - cMag < 10)) 
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
-		return;
-	}
-	if ((m_pClientList[iClientH]->m_iCharisma - cChar > m_sCharStatLimit - 11)
-		 || (m_pClientList[iClientH]->m_iCharisma - cChar < 10)) 
-	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
-		return;
-	}
-	m_pClientList[iClientH]->m_iLU_Pool += 3;
-	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft--;
-	m_pClientList[iClientH]->m_iStr  -= cStr;
-	m_pClientList[iClientH]->m_iVit  -= cVit;
-	m_pClientList[iClientH]->m_iDex  -= cDex;
-	m_pClientList[iClientH]->m_iInt  -= cInt;
-	m_pClientList[iClientH]->m_iMag  -= cMag;
+
+	m_pClientList[iClientH]->m_iLU_Pool += (cStr + cVit + cDex + cInt + cMag + cChar);
+	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= (cStr + cVit + cDex + cInt + cMag + cChar);
+
+	m_pClientList[iClientH]->m_iStr -= cStr;
+	m_pClientList[iClientH]->m_iVit -= cVit;
+	m_pClientList[iClientH]->m_iDex -= cDex;
+	m_pClientList[iClientH]->m_iInt -= cInt;
+	m_pClientList[iClientH]->m_iMag -= cMag;
 	m_pClientList[iClientH]->m_iCharisma -= cChar;
+
 	if (cInt > 0) bCheckMagicInt(iClientH);
+
 	// Snoopy: Check max values here or character will be considered as hacker if reducing mana or vit
 	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS, NULL, NULL, NULL, NULL);
 }
