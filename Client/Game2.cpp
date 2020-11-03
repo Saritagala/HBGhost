@@ -4023,12 +4023,16 @@ void CGame::DrawDialogBox_CMDHallMenu(short msX, short msY)
 		else PutAlignedString(sX, sX + szX, sY + 95, "Hire a soldier", 4, 0, 50);
 
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 120) && (msY < sY + 145))
-			PutAlignedString(sX, sX + szX, sY + 120, "Taking Flags", 255, 255, 255);
-		else PutAlignedString(sX, sX + szX, sY + 120, "Taking Flags", 4, 0, 50);
+			PutAlignedString(sX, sX + szX, sY + 120, "Take a Flag", 255, 255, 255);
+		else PutAlignedString(sX, sX + szX, sY + 120, "Take a Flag", 4, 0, 50);
 		// Angels
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 145) && (msY < sY + 170))
 			PutAlignedString(sX, sX + szX, sY + 145, "Receive a Tutelary Angel", 255, 255, 255);
 		else PutAlignedString(sX, sX + szX, sY + 145, "Receive a Tutelary Angel", 4, 0, 50);
+
+		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 170) && (msY < sY + 195))
+			PutAlignedString(sX, sX + szX, sY + 170, "Change Class", 255, 255, 255);
+		else PutAlignedString(sX, sX + szX, sY + 170, "Change Class", 4, 0, 50);
 		break;
 
 	case 1: // TP diag
@@ -4151,6 +4155,30 @@ void CGame::DrawDialogBox_CMDHallMenu(short msX, short msY)
 		else PutAlignedString(sX, sX + szX, sY + 250, "Tutelary Angel (MAG) will be handed out.", 250, 250, 0);
 
 		break;
+
+	case 5:
+		PutAlignedString(sX, sX + szX, sY + 45, "500 majestic points will be deducted", 4, 0, 50);
+		PutAlignedString(sX, sX + szX, sY + 80, "upon changing class.", 4, 0, 50);
+		PutAlignedString(sX, sX + szX, sY + 105, "Would you like to continue?", 4, 0, 50);
+		wsprintf(G_cTxt, DRAW_DIALOGBOX_ITEMUPGRADE11, m_iGizonItemUpgradeLeft);// "Item upgrade point : %d"
+		PutAlignedString(sX, sX + szX, sY + 140, G_cTxt, 0, 0, 0);
+
+		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 175) && (msY < sY + 200)
+			&& (m_iGizonItemUpgradeLeft > 499))
+			PutAlignedString(sX, sX + szX, sY + 175, "Warrior", 255, 255, 255);
+		else PutAlignedString(sX, sX + szX, sY + 175, "Warrior", 250, 250, 0);
+
+		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 200) && (msY < sY + 225)
+			&& (m_iGizonItemUpgradeLeft > 499))
+			PutAlignedString(sX, sX + szX, sY + 200, "Magician", 255, 255, 255);
+		else PutAlignedString(sX, sX + szX, sY + 200, "Magician", 250, 250, 0);
+
+		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 225) && (msY < sY + 250)
+			&& (m_iGizonItemUpgradeLeft > 499))
+			PutAlignedString(sX, sX + szX, sY + 225, "Archer", 255, 255, 255);
+		else PutAlignedString(sX, sX + szX, sY + 225, "Archer1", 250, 250, 0);
+
+		break;
 	}
 }
 
@@ -4191,6 +4219,12 @@ void CGame::DlgBoxClick_CMDHallMenu(short msX, short msY)
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 145) && (msY < sY + 170))
 		{
 			m_stDialogBoxInfo[51].cMode = 4; // Flag Diag
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 170) && (msY < sY + 195))
+		{
+			m_stDialogBoxInfo[51].cMode = 5; // Flag Diag
 			PlaySound('E', 14, 5);
 		}
 		break;
@@ -4281,6 +4315,29 @@ void CGame::DlgBoxClick_CMDHallMenu(short msX, short msY)
 			&& (m_iGizonItemUpgradeLeft >= 5))
 		{
 			bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 4, NULL, NULL, "Gail", NULL);
+			PlaySound('E', 14, 5);
+		}
+
+		break;
+
+	case 5:
+
+		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 175) && (msY <= sY + 200)
+			&& (m_iGizonItemUpgradeLeft >= 500))
+		{
+			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 1, NULL, NULL, "Gail", NULL);
+			PlaySound('E', 14, 5);
+		}
+		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 225)
+			&& (m_iGizonItemUpgradeLeft >= 500))
+		{
+			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 2, NULL, NULL, "Gail", NULL);
+			PlaySound('E', 14, 5);
+		}
+		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 225) && (msY <= sY + 250)
+			&& (m_iGizonItemUpgradeLeft >= 500))
+		{
+			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 3, NULL, NULL, "Gail", NULL);
 			PlaySound('E', 14, 5);
 		}
 

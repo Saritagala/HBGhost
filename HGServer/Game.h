@@ -370,6 +370,7 @@ private:
 
 	void SetAngelFlag(short sOwnerH, char cOwnerType, int iStatus, int iTemp);
 	void GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize);
+	void ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize);
 
 	void ReqCreateCraftingHandler(int iClientH, char* pData);
 

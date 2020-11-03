@@ -1723,6 +1723,7 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
         iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
         break;
 
+	case DEF_REQUEST_CHANGE_CLASS:
 	case DEF_REQUEST_ANGEL:	// to Game Server
 		dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
 		*dwp = dwMsgID;

@@ -3183,21 +3183,11 @@ void CGame::CheckClientResponseTime()
 								sTemp = m_pClientList[i]->m_sAppr4;
 								sTemp = sTemp & 0xFFFB;
 							}
-							if (m_pClientList[i]->m_sAppr4 != sTemp) // has changed
-							{
-								m_pClientList[i]->m_sAppr4 = sTemp;
-								SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
-							}
 						}
 						else
 						{
 							sTemp = m_pClientList[i]->m_sAppr4;
 							sTemp = sTemp & 0xFFFB;
-						}
-						if (m_pClientList[i]->m_sAppr4 != sTemp) // has changed
-						{
-							m_pClientList[i]->m_sAppr4 = sTemp;
-							SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 						}
 					}
 					else
@@ -9002,6 +8992,10 @@ DWORD * dwp, dwTimeRcv;
 
 			case DEF_REQUEST_ANGEL: // Angels by Snoopy...
 				GetAngelHandler(iClientH, pData, dwMsgSize);
+				break;
+
+			case DEF_REQUEST_CHANGE_CLASS:
+				ChangeClassHandler(iClientH, pData, dwMsgSize);
 				break;
 
 			case MSGID_REQUEST_LEAVEARENA:
@@ -17495,6 +17489,7 @@ void CGame::RequestChangePlayMode(int iClientH)
 		SendNotifyMsg(NULL,iClientH,DEF_NOTIFY_CHANGEPLAYMODE,NULL,NULL,NULL,m_pClientList[iClientH]->m_cLocation);
 		SendEventToNearClient_TypeA(iClientH,DEF_OWNERTYPE_PLAYER,MSGID_EVENT_MOTION,100,NULL,NULL,NULL);
 	}
+	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
 }
 
 void CGame::RequestRango(int iClientH, int iObjectID)
@@ -18464,7 +18459,7 @@ void CGame::bReadScheduleConfigFile(char *pFn)
 					switch (cReadModeB) {
 					case 1:
 						if (iIndex >= DEF_MAXSCHEDULE) {
-							PutLogList("(!) WARNING! Too many Candu Fury schedule!");
+							PutLogList("(!) WARNING! Too many Candy Fury schedule!");
 							return;
 						}
 						m_stCandyFurySchedule[iIndex].iDay = atoi(token);

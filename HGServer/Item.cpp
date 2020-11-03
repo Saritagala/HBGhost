@@ -1764,6 +1764,31 @@ void CGame::GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	}
 }
 
+void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
+{
+	char* cp, cTmpName[5];
+	int   iClass,* ip;
+	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft < 500) return;
+	
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	ZeroMemory(cTmpName, sizeof(cTmpName));
+	strcpy(cTmpName, cp);
+	cp += 5;
+	ip = (int*)cp;
+	iClass = (int)*ip; // 0x00 l a i
+	cp += 4;
+	m_pClientList[iClientH]->m_iClass = iClass;
+	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 500;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+	switch (iClass) {
+	case 1: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Warrior!"); break;
+	case 2: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!"); break;
+	case 3: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now an Archer!"); break;
+	}
+}
+
 /*********************************************************************************************************************
 **  void CGame::SetExchangeItem(int iClientH, int iItemIndex, int iAmount)											**
 **  DESCRIPTION			:: set exchange item																		**
