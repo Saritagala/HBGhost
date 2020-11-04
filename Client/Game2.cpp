@@ -4164,19 +4164,19 @@ void CGame::DrawDialogBox_CMDHallMenu(short msX, short msY)
 		PutAlignedString(sX, sX + szX, sY + 140, G_cTxt, 0, 0, 0);
 
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 175) && (msY < sY + 200)
-			&& (m_iGizonItemUpgradeLeft > 499))
+			&& (m_iGizonItemUpgradeLeft > 499) && (m_iClass != 1))
 			PutAlignedString(sX, sX + szX, sY + 175, "Warrior", 255, 255, 255);
 		else PutAlignedString(sX, sX + szX, sY + 175, "Warrior", 250, 250, 0);
 
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 200) && (msY < sY + 225)
-			&& (m_iGizonItemUpgradeLeft > 499))
+			&& (m_iGizonItemUpgradeLeft > 499) && (m_iClass != 2))
 			PutAlignedString(sX, sX + szX, sY + 200, "Magician", 255, 255, 255);
 		else PutAlignedString(sX, sX + szX, sY + 200, "Magician", 250, 250, 0);
 
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 225) && (msY < sY + 250)
-			&& (m_iGizonItemUpgradeLeft > 499))
+			&& (m_iGizonItemUpgradeLeft > 499) && (m_iClass != 3))
 			PutAlignedString(sX, sX + szX, sY + 225, "Archer", 255, 255, 255);
-		else PutAlignedString(sX, sX + szX, sY + 225, "Archer1", 250, 250, 0);
+		else PutAlignedString(sX, sX + szX, sY + 225, "Archer", 250, 250, 0);
 
 		break;
 	}
@@ -4323,19 +4323,19 @@ void CGame::DlgBoxClick_CMDHallMenu(short msX, short msY)
 	case 5:
 
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 175) && (msY <= sY + 200)
-			&& (m_iGizonItemUpgradeLeft >= 500))
+			&& (m_iGizonItemUpgradeLeft >= 500) && (m_iClass != 1))
 		{
 			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 1, NULL, NULL, "Gail", NULL);
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 225)
-			&& (m_iGizonItemUpgradeLeft >= 500))
+			&& (m_iGizonItemUpgradeLeft >= 500) && (m_iClass != 2))
 		{
 			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 2, NULL, NULL, "Gail", NULL);
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 225) && (msY <= sY + 250)
-			&& (m_iGizonItemUpgradeLeft >= 500))
+			&& (m_iGizonItemUpgradeLeft >= 500) && (m_iClass != 3))
 		{
 			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 3, NULL, NULL, "Gail", NULL);
 			PlaySound('E', 14, 5);
@@ -17169,6 +17169,13 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	iClass = *ip;
 	cp += 4;
 
+	ip = (int*)cp;
+	iReqStat = *ip;
+	cp += 4;
+	ip = (int*)cp;
+	iQuantStat = *ip;
+	cp += 4;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17250,6 +17257,9 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 			m_pItemList[i]->m_iClass = iClass; // Centuu - class
+
+			m_pItemList[i]->m_iReqStat = iReqStat; // Centuu - class
+			m_pItemList[i]->m_iQuantStat = iQuantStat; // Centuu - class
 
 			_bCheckBuildItemStatus();
 
@@ -17385,6 +17395,13 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	ip = (int*)cp;
 	iClass = *ip;
 	cp += 4;
+
+	ip = (int*)cp;
+	iReqStat = *ip;
+	cp += 4;
+	ip = (int*)cp;
+	iQuantStat = *ip;
+	cp += 4;
 	
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
@@ -17455,6 +17472,9 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 			m_pItemList[i]->m_wMaxLifeSpan = wMaxLifeSpan;
 
 			m_pItemList[i]->m_iClass = iClass;
+
+			m_pItemList[i]->m_iReqStat = iReqStat;
+			m_pItemList[i]->m_iQuantStat = iQuantStat;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -17651,6 +17671,13 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	iClass = *ip;
 	cp += 4;
 
+	ip = (int*)cp;
+	iReqStat = *ip;
+	cp += 4;
+	ip = (int*)cp;
+	iQuantStat = *ip;
+	cp += 4;
+
 	char cStr1[64], cStr2[64], cStr3[64];
 	//GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3);
 	GetItemName(cName, dwAttribute, cStr1, cStr2, cStr3, sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4);
@@ -17690,6 +17717,9 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 		m_pBankList[cIndex]->m_sItemEffectType = sItemEffectType;
 		m_pBankList[cIndex]->m_wMaxLifeSpan = wMaxLifeSpan;
 		m_pBankList[cIndex]->m_iClass = iClass;
+
+		m_pBankList[cIndex]->m_iReqStat = iReqStat;
+		m_pBankList[cIndex]->m_iQuantStat = iQuantStat;
 
 		ZeroMemory(cTxt, sizeof(cTxt));
 		if (dwCount == 1) wsprintf(cTxt, NOTIFYMSG_ITEMTOBANK3, cStr1);
@@ -20355,6 +20385,13 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i]->m_iClass = *ip;
 		cp += 4;
 
+		ip = (int*)cp;
+		m_pItemList[i]->m_iReqStat = *ip;
+		cp += 4;
+		ip = (int*)cp;
+		m_pItemList[i]->m_iQuantStat = *ip;
+		cp += 4;
+
 		m_cItemOrder[i] = i;
 		// Snoopy: Add Angelic Stats
 		if ((m_pItemList[i]->m_cItemType == 1)
@@ -20496,6 +20533,13 @@ void CGame::InitItemList(char * pData)
 
 		ip = (int*)cp;
 		m_pBankList[i]->m_iClass = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_pBankList[i]->m_iReqStat = *ip;
+		cp += 4;
+		ip = (int*)cp;
+		m_pBankList[i]->m_iQuantStat = *ip;
 		cp += 4;
 
 	}

@@ -1948,6 +1948,14 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		ip = (int*)cp;
 		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iClass;
 		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemList[i]->m_iQuantStat;
+		cp += 4;
 	}
 	iTotalItemB = 0;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++)
@@ -2064,6 +2072,14 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 		ip = (int*)cp;
 		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iClass;
 		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iReqStat;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_pItemInBankList[i]->m_iQuantStat;
+		cp += 4;
 	}
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
@@ -2078,7 +2094,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 
 	//iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA*44 + iTotalItemB*43 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	//Magn0S:: Added new variables / Centuu - added class
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 6 + 1 + iTotalItemA * 72 + iTotalItemB * 71 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 7 + iTotalItemA * 80 + iTotalItemB * 79 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -29767,5 +29783,29 @@ void CGame::SetClass(int iClientH)
 	else if (m_pClientList[iClientH]->m_iCharisma == 14)
 	{
 		m_pClientList[iClientH]->m_iClass = 3; // Archer
+	}
+}
+
+void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
+{
+	char* cp, cTmpName[5];
+	int   iClass, * ip;
+	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft < 500) return;
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	ZeroMemory(cTmpName, sizeof(cTmpName));
+	strcpy(cTmpName, cp);
+	cp += 5;
+	ip = (int*)cp;
+	iClass = *ip; // 0x00 l a i
+	cp += 4;
+	m_pClientList[iClientH]->m_iClass = iClass;
+	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 500;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+	switch (iClass) {
+	case 1: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Warrior!"); break;
+	case 2: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!"); break;
+	case 3: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now an Archer!"); break;
 	}
 }
