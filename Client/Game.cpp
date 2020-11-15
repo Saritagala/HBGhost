@@ -4884,6 +4884,8 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 	sY = m_stDialogBoxInfo[1].sY;
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 0, FALSE, m_bDialogTrans);
 
+	PutString_SprFont2(sX + 105, sY + 5, "Character", 240, 240, 240);
+
 	ZeroMemory(G_cTxt, sizeof(G_cTxt));
 	strcpy(G_cTxt, m_cPlayerName);
 	strcat(G_cTxt, " : ");
@@ -4897,9 +4899,8 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 	ZeroMemory(cTxt2, sizeof(cTxt2));
 	wsprintf(cTxt2, DRAW_DIALOGBOX_CHARACTER2, m_iContribution);
 	strcat(G_cTxt, cTxt2);
-	PutAlignedString(sX + 24, sX + 252, sY + 52, G_cTxt, 45, 20, 20);
+	PutAlignedString(sX + 24, sX + 252, sY + 52, G_cTxt, 4, 0, 50);
 	ZeroMemory(G_cTxt, sizeof(G_cTxt));
-
 	if (m_bCitizen == FALSE)
 	{
 		strcpy(G_cTxt, DRAW_DIALOGBOX_CHARACTER7); // "Traveller"
@@ -4920,106 +4921,122 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		}
 		if (m_iGuildRank >= 0)
 		{
-			strcat(G_cTxt, "(");
+			strcat(G_cTxt, " (");
 			strcat(G_cTxt, m_cGuildName);
 			if (m_iGuildRank == 0) strcat(G_cTxt, DEF_MSG_GUILDMASTER1);
 			else strcat(G_cTxt, DEF_MSG_GUILDSMAN1); // " Guildsman)"
 		}
 	}
 
-	PutAlignedString(sX, sX + 275, sY + 69, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX, sX + 275, sY + 69, G_cTxt, 4, 0, 50);
+
+	ZeroMemory(G_cTxt, sizeof(G_cTxt));
+	strcpy(G_cTxt, "Class : ");
+	if (m_iClass == 1)
+		strcat(G_cTxt, "Warrior");
+	else if (m_iClass == 2)
+		strcat(G_cTxt, "Magician");
+	else if (m_iClass == 3)
+		strcat(G_cTxt, "Archer");
+
+	strcat(G_cTxt, " - ");
+	ZeroMemory(cTxt2, sizeof(cTxt2));
+	wsprintf(cTxt2, "Coins : %d", m_iCoinPoints);
+	strcat(G_cTxt, cTxt2);
+
+	PutAlignedString(sX, sX + 275, sY + 85, G_cTxt, 255, 255, 0);
 
 	int iTemp;
 	// Level
 	wsprintf(G_cTxt, "%d", m_iLevel);
-	PutAlignedString(sX + 180, sX + 250, sY + 106, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 106, G_cTxt, 4, 0, 50);
 	// Exp
 	//wsprintf(G_cTxt, "%d", m_iExp);
 	DisplayCommaNumber_G_cTxt(m_iExp);
-	PutAlignedString(sX + 180, sX + 250, sY + 125, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 125, G_cTxt, 4, 0, 50);
 	// Next.Exp
 	//wsprintf(G_cTxt, "%d", iGetLevelExp(m_iLevel + 1));
 	DisplayCommaNumber_G_cTxt(iGetLevelExp(m_iLevel + 1));
-	PutAlignedString(sX + 180, sX + 250, sY + 142, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 142, G_cTxt, 4, 0, 50);
 
 	// Hp
 	iTemp = m_iHP;
 	wsprintf(G_cTxt, "%d/%d", iTemp, m_iVit * 3 + m_iLevel * 2 + (m_iStr + m_iAngelicStr) / 2);
-	PutAlignedString(sX + 180, sX + 250, sY + 173, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 173, G_cTxt, 4, 0, 50);
 
 	// Mp
 	iTemp = m_iMP;
 	wsprintf(G_cTxt, "%d/%d", iTemp, (m_iMag + m_iAngelicMag) * 2 + m_iLevel * 2 + (m_iInt + m_iAngelicInt) / 2);
-	PutAlignedString(sX + 180, sX + 250, sY + 191, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 191, G_cTxt, 4, 0, 50);
 
 	// Sp
 	iTemp = m_iSP;
 	wsprintf(G_cTxt, "%d/%d", iTemp, m_iLevel * 2 + (m_iStr + m_iAngelicStr) * 2);
-	PutAlignedString(sX + 180, sX + 250, sY + 208, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 208, G_cTxt, 4, 0, 50);
 
 	// Max.Load
 	wsprintf(G_cTxt, "%d/%d", (_iCalcTotalWeight() / 100), ((m_iStr + m_iAngelicStr) * 5 + m_iLevel * 5));
-	PutAlignedString(sX + 180, sX + 250, sY + 240, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 240, G_cTxt, 4, 0, 50);
 
 	// Enemy Kills
 	wsprintf(G_cTxt, "%d/%d", m_iEnemyKillCount, m_iMaxEK);
-	PutAlignedString(sX + 180, sX + 250, sY + 257, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 180, sX + 250, sY + 257, G_cTxt, 4, 0, 50);
 
 	// Str
 	if (m_iAngelicStr == 0)
 	{
 		wsprintf(G_cTxt, "%d", m_iStr);
-		PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 45, 25, 25);
+		PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 4, 0, 50);
 	}
 	else
 	{
 		wsprintf(G_cTxt, "%d", m_iStr + m_iAngelicStr);
-		PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 0, 0, 192);
+		PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 0, 255, 0);
 	}
 
 	// Vit
 	wsprintf(G_cTxt, "%d", m_iVit);
-	PutAlignedString(sX + 218, sX + 251, sY + 285, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 218, sX + 251, sY + 285, G_cTxt, 4, 0, 50);
 
 	// Dex
 	if (m_iAngelicDex == 0)
 	{
 		wsprintf(G_cTxt, "%d", m_iDex);
-		PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 45, 25, 25);
+		PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 4, 0, 50);
 	}
 	else
 	{
 		wsprintf(G_cTxt, "%d", m_iDex + m_iAngelicDex);
-		PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 0, 0, 192);
+		PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 0, 255, 0);
 	}
 
 	// Int
 	if (m_iAngelicInt == 0)
 	{
 		wsprintf(G_cTxt, "%d", m_iInt);
-		PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 45, 25, 25);
+		PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 4, 0, 50);
 	}
 	else
 	{
 		wsprintf(G_cTxt, "%d", m_iInt + m_iAngelicInt);
-		PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 0, 0, 192);
+		PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 0, 255, 0);
 	}
 
 	// Mag
 	if (m_iAngelicMag == 0)
 	{
 		wsprintf(G_cTxt, "%d", m_iMag);
-		PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 45, 25, 25);
+		PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 4, 0, 50);
 	}
 	else
 	{
 		wsprintf(G_cTxt, "%d", m_iMag + m_iAngelicMag);
-		PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 0, 0, 192);
+		PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 0, 255, 0);
 	}
 
 	// Chr
 	wsprintf(G_cTxt, "%d", m_iCharisma);
-	PutAlignedString(sX + 218, sX + 251, sY + 302, G_cTxt, 45, 25, 25);
+	PutAlignedString(sX + 218, sX + 251, sY + 302, G_cTxt, 4, 0, 50);
 
 	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++)
 		cEquipPoiStatus[i] = -1;
@@ -6002,8 +6019,8 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	case 8: strcpy(cTxt, DRAW_DIALOGBOX_MAGIC9);  break;//"Circle Nine"
 	case 9: strcpy(cTxt, DRAW_DIALOGBOX_MAGIC10); break;//"Circle Ten"
 	}
-	PutAlignedString(sX + 3, sX + 256, sY + 50, cTxt);
-	PutAlignedString(sX + 4, sX + 257, sY + 50, cTxt);
+	PutAlignedString(sX + 3, sX + 256, sY + 50, cTxt, 0,255,0);
+	//PutAlignedString(sX + 4, sX + 257, sY + 50, cTxt, 0,255,0);
 	iCPivot = m_stDialogBoxInfo[3].sView * 10;
 	iYloc = 0;
 
@@ -6032,9 +6049,9 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 						PutString(sX + 30, sY + 73 + iYloc, cTxt, RGB(255, 255, 255));
 						PutString(sX + 31, sY + 73 + iYloc, cTxt, RGB(255, 255, 255));
 					}
-					else PutString_SprFont(sX + 30, sY + 70 + iYloc, cTxt, 250, 250, 250);
+					else PutString_SprFont2(sX + 30, sY + 70 + iYloc, cTxt, 255, 255, 255);
 					wsprintf(cMana, "%3d", iManaCost);
-					PutString_SprFont(sX + 206, sY + 70 + iYloc, cMana, 250, 250, 250);
+					PutString_SprFont2(sX + 206, sY + 70 + iYloc, cMana, 255, 255, 255);
 				}
 				else
 				{
@@ -6043,9 +6060,9 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 						PutString(sX + 30, sY + 73 + iYloc, cTxt, RGB(8, 0, 66));
 						PutString(sX + 31, sY + 73 + iYloc, cTxt, RGB(8, 0, 66));
 					}
-					else PutString_SprFont(sX + 30, sY + 70 + iYloc, cTxt, 1, 1, 8);
+					else PutString_SprFont2(sX + 30, sY + 70 + iYloc, cTxt, 19, 104, 169);
 					wsprintf(cMana, "%3d", iManaCost);
-					PutString_SprFont(sX + 206, sY + 70 + iYloc, cMana, 1, 1, 8);
+					PutString_SprFont2(sX + 206, sY + 70 + iYloc, cMana, 19, 104, 169);
 				}
 
 			iYloc += 18;
@@ -6054,11 +6071,11 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	}
 
 	if (iYloc == 0) {
-		PutAlignedString(sX + 3, sX + 256, sY + 100, DRAW_DIALOGBOX_MAGIC11);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 115, DRAW_DIALOGBOX_MAGIC12);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 130, DRAW_DIALOGBOX_MAGIC13);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 145, DRAW_DIALOGBOX_MAGIC14);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 160, DRAW_DIALOGBOX_MAGIC15);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 100, DRAW_DIALOGBOX_MAGIC11, 0,255,0);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 115, DRAW_DIALOGBOX_MAGIC12, 0, 255, 0);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 130, DRAW_DIALOGBOX_MAGIC13, 0, 255, 0);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 145, DRAW_DIALOGBOX_MAGIC14, 0, 255, 0);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 160, DRAW_DIALOGBOX_MAGIC15, 0, 255, 0);//"
 	}
 
 	m_pSprite[DEF_SPRID_INTERFACE_SPRFONTS]->PutSpriteFast(sX + 30, sY + 250, 19, dwTime);
@@ -6130,8 +6147,8 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 	wsprintf(cTxt, DRAW_DIALOGBOX_MAGIC16, iResult);//"
-	PutAlignedString(sX, sX + 256, sY + 267, cTxt);
-	PutAlignedString(sX + 1, sX + 257, sY + 267, cTxt);
+	PutAlignedString(sX, sX + 256, sY + 267, cTxt, 0, 255, 0);
+	//PutAlignedString(sX + 1, sX + 257, sY + 267, cTxt);
 
 	// v2.15
 	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 285) && (msY <= sY + 285 + DEF_BTNSZY))
@@ -17895,7 +17912,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 
 	if (m_bIsCrusadeMode)
 	{
-		m_DDraw.DrawShadowBox(5, 175, 90, 255, 0, true);
+		//m_DDraw.DrawShadowBox(5, 175, 90, 255, 0, true);
 		PutString2(20, 180, "Aresden:", 255, 0, 0);
 		PutString2(20, 220, "Elvine:", 130, 130, 255);
 	}
@@ -18061,12 +18078,12 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	if (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView] != NULL) {
 		if (m_bDialogTrans == FALSE) { // v2.173
 			switch (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg[0]) {
-			case '_': PutAlignedString(sX +24, sX +236, sY + 50 +i*13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg+1), 255,255,255); break;
+			case '_': PutAlignedString(sX +24, sX +236, sY + 50 +i*13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg+1), 4, 0, 50); break;
 			case ';': PutAlignedString(sX +24, sX +236, sY + 50 +i*13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg+1), 4, 0, 50); break;
-			default: PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 45,25,25); break;
+			default: PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50); break;
 			}
 		}
-		else PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 0,0,0);
+		else PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50);
 	}
 
 	if (cLB != 0 && iTotalLines > 17) {
@@ -18393,16 +18410,18 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 
 	for (i = 0; i < 8; i++)
 		if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != NULL) {
-			switch (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime) {
-			case 0:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 230); break;
-			case 1:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
-			case 2:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 130, 130); break;
-			case 3:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 130, 255); break;
-			case 4:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
-			case 10: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 180, 255, 180); break;
-			case 20: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 150, 150, 170); break;
+				switch (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_dwTime) {
+				case 0:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 230); break;
+				case 1:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 200, 130); break;
+				case 2:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 130, 130); break;
+				case 3:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 130, 130, 255); break;
+				case 4:  PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 230, 230, 130); break;
+				case 10: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 180, 255, 180); break;
+				case CHAT_GM: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 255, 184, 0); break;
+				case CHAT_MARKET: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 50, 255, 255); break;
+				case 20: PutString2(sX + 25, sY + 127 - i * 13, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg, 150, 150, 170); break;
+				}
 			}
-		}
 
 	if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
 	{
@@ -18427,7 +18446,7 @@ void CGame::DlgBoxClick_Chat(short msX, short msY)
 	sX = m_stDialogBoxInfo[10].sX;
 	sY = m_stDialogBoxInfo[10].sY;
 
-	if ((msX >= sX + 10) && (msX <= sX + 25) && (msY >= sY + 25) && (msY <= sY + 39)) {
+	/*if ((msX >= sX + 10) && (msX <= sX + 25) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 0;
 		chatmode = 99;
 		PlaySound('E', 14, 5);
@@ -18473,7 +18492,7 @@ void CGame::DlgBoxClick_Chat(short msX, short msY)
 		m_stDialogBoxInfo[10].cMode = 1; //GM
 		chatmode = CHAT_GM;
 		PlaySound('E', 14, 5);
-	}
+	}*/
 
 	/*if ((msX >= sX + 365) && (msX <= sX + 400) && (msY >= sY + 25) && (msY <= sY + 39)) {
 		m_stDialogBoxInfo[10].cMode = 0; //All
@@ -22330,13 +22349,13 @@ void CGame::NoticementHandler(char * pData)
 		if (pFile == NULL) return;
 		fwrite(cp, strlen(cp), 1, pFile);
 		fclose(pFile);
-		//m_stDialogBoxInfo[18].sX  =  20;
-		//m_stDialogBoxInfo[18].sY  =  65;
-		//EnableDialogBox(18, 1000, NULL, NULL);
+		m_stDialogBoxInfo[18].sX  =  20;
+		m_stDialogBoxInfo[18].sY  =  65;
+		EnableDialogBox(18, 1000, NULL, NULL);
 		break;
 	}
 	AddEventList("Press Ctrl+H for help.", 10);
-	//if (m_iLevel < 42) EnableDialogBox(35, NULL, NULL, NULL);
+	if (m_iLevel == 1) EnableDialogBox(35, NULL, NULL, NULL);
 
 }
 
@@ -23330,10 +23349,10 @@ void CGame::UpdateScreen_OnConnecting()
 	PutString_SprFont(172 + 35 + SCREENX, 190 + SCREENY, G_cTxt, 7,0,0);
 
 	if ((dwTime - m_dwTime) > 7000)
-	{	PutAlignedString(180 + SCREENX, 463 + SCREENX, 195+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTING1);//"Press ESC key during long time of no"
-		PutAlignedString(180 + SCREENX, 463 + SCREENX, 195+45 + SCREENY, UPDATE_SCREEN_ON_CONNECTING2);//"connection and return to the main menu."
+	{	PutAlignedString(180 + SCREENX, 463 + SCREENX, 195+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTING1, 4, 0, 50);//"Press ESC key during long time of no"
+		PutAlignedString(180 + SCREENX, 463 + SCREENX, 195+45 + SCREENY, UPDATE_SCREEN_ON_CONNECTING2, 4, 0, 50);//"connection and return to the main menu."
 	}
-	else PutAlignedString(180 + SCREENX, 463 + SCREENX, 195+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTING3);//"  Connecting to server. Please wait..."
+	else PutAlignedString(180 + SCREENX, 463 + SCREENX, 195+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTING3, 4, 0, 50);//"  Connecting to server. Please wait..."
 
 	DrawVersion();
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
@@ -23376,10 +23395,10 @@ void CGame::UpdateScreen_OnWaitInitData()
 	wsprintf(G_cTxt,"Waiting for response... %dsec", (dwTime - m_dwTime)/1000);
 	PutString_SprFont(172+ 44 + SCREENX, 190 + SCREENY, G_cTxt, 7,0,0);
 	if ((dwTime - m_dwTime) > 7000) {
-		PutAlignedString(174 + SCREENX, 467 + SCREENX, 190+30 + SCREENY, UPDATE_SCREEN_ON_WAIT_INIT_DATA1);//"Press ESC key during long time of no"
-		PutAlignedString(174 + SCREENX, 467 + SCREENX, 190+45 + SCREENY, UPDATE_SCREEN_ON_WAIT_INIT_DATA2);//"connection and return to the main menu."
+		PutAlignedString(174 + SCREENX, 467 + SCREENX, 190+30 + SCREENY, UPDATE_SCREEN_ON_WAIT_INIT_DATA1, 4, 0, 50);//"Press ESC key during long time of no"
+		PutAlignedString(174 + SCREENX, 467 + SCREENX, 190+45 + SCREENY, UPDATE_SCREEN_ON_WAIT_INIT_DATA2, 4, 0, 50);//"connection and return to the main menu."
 	}
-	else PutAlignedString(174 + SCREENX, 467 + SCREENX, 195+30 + SCREENY, UPDATE_SCREEN_ON_WAIT_INIT_DATA3);//  Connecting to server. Please wait..."
+	else PutAlignedString(174 + SCREENX, 467 + SCREENX, 195+30 + SCREENY, UPDATE_SCREEN_ON_WAIT_INIT_DATA3, 4, 0, 50);//  Connecting to server. Please wait..."
 
 	DrawVersion();
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
@@ -23404,7 +23423,7 @@ void CGame::UpdateScreen_OnConnectionLost()
 	m_DDraw.ClearBackB4();
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX,125 + SCREENY,2);
 	PutString_SprFont(172 + 54 + SCREENX, 180 + SCREENY, "Connection Lost!", 7,0,0);
-	PutString(172+50 + SCREENX, 180+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTION_LOST, RGB(0,0,0));//"
+	PutString(172+50 + SCREENX, 180+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTION_LOST, RGB(4, 0, 50));//"
 	DrawVersion();
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
 	m_pSprite[DEF_SPRID_MOUSECURSOR]->PutSpriteFast(msX, msY, 0, dwTime);
@@ -25309,9 +25328,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 
 	case VK_F9:
 		if (m_bIsDialogEnabled[10] == FALSE)
-			if (chatmode == 99)
-			EnableDialogBox(10, 0, NULL, NULL);
-			else EnableDialogBox(10, 1, NULL, NULL);
+			EnableDialogBox(10, NULL, NULL, NULL);
 		else DisableDialogBox(10);
 		break;
 
@@ -25985,10 +26002,10 @@ void CGame::UpdateScreen_OnWaitingResponse()
 
 	if ((dwTime - m_dwTime) > 7000)
 	{
-		PutAlignedString(180 + SCREENX, 463 + SCREENX, 195 + 30 + SCREENY, UPDATE_SCREEN_ON_WATING_RESPONSE1);
-		PutAlignedString(180 + SCREENX, 463 + SCREENX, 195 + 45 + SCREENY, UPDATE_SCREEN_ON_WATING_RESPONSE2);
+		PutAlignedString(180 + SCREENX, 463 + SCREENX, 195 + 30 + SCREENY, UPDATE_SCREEN_ON_WATING_RESPONSE1, 4, 0, 50);
+		PutAlignedString(180 + SCREENX, 463 + SCREENX, 195 + 45 + SCREENY, UPDATE_SCREEN_ON_WATING_RESPONSE2, 4, 0, 50);
 	}
-	else PutAlignedString(180 + SCREENX, 463 + SCREENX, 195 + 30 + SCREENY, UPDATE_SCREEN_ON_WATING_RESPONSE3);
+	else PutAlignedString(180 + SCREENX, 463 + SCREENX, 195 + 30 + SCREENY, UPDATE_SCREEN_ON_WATING_RESPONSE3, 4, 0, 50);
 
 	DrawVersion();
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
@@ -32649,7 +32666,7 @@ MOTION_COMMAND_PROCESS:;
 				if (m_pChatMsgList[i] == NULL)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, "-%dHp!", m_sDamageMoveAmount);
+					wsprintf(cTxt, "-%dHp", m_sDamageMoveAmount);
 
 					int iFontType;
 					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 120))        iFontType = 21;
@@ -33590,7 +33607,7 @@ void CGame::UpdateScreen_OnGame()
 	}
 
 	if (m_bIsCTFMode && iUpdateRet != 0) {
-		m_DDraw.DrawShadowBox(5, 180, 110, 270, 0, true);
+		//m_DDraw.DrawShadowBox(5, 180, 110, 270, 0, true);
 		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 180 + 20, 56, dwTime);
 		wsprintf(G_cTxt, "Aresden: %d", m_cCFTEventCount[0]);
 		PutString(20 + 10, 180 + 5 + 20, G_cTxt, RGB(255, 0, 0), FALSE, 1);
@@ -33602,7 +33619,7 @@ void CGame::UpdateScreen_OnGame()
 	//Magn0S:: Apocalypse info help
 	if ((m_bApocalypse) && (iUpdateRet != 0) && ((memcmp(m_cCurLocation, "procella", 8) == 0) || (memcmp(m_cCurLocation, "abaddon", 7) == 0)))
 	{
-		m_DDraw.DrawShadowBox(5, 142, 135, 190, 0, true);
+		//m_DDraw.DrawShadowBox(5, 142, 135, 190, 0, true);
 		PutString2(30, 150, "Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
 
 		if (m_iTotalAliveObject > 0) {
@@ -33618,7 +33635,7 @@ void CGame::UpdateScreen_OnGame()
 	//Snoopy adding Heldenian turret count:
 	if ((iUpdateRet != 0) && (m_bIsHeldenian) && (memcmp(m_cCurLocation, "BtField", 7) == 0))
 	{
-		m_DDraw.DrawShadowBox(5, 175, 210, 300, 0, true);
+		//m_DDraw.DrawShadowBox(5, 175, 210, 300, 0, true);
 		wsprintf(G_cTxt, "Aresden flags : %d", m_iHeldenianAresdenFlags);
 		PutString(10, 140+20 + 20, G_cTxt, RGB(255, 255, 255));
 		wsprintf(G_cTxt, "Elvine flags : %d", m_iHeldenianElvineFlags);
@@ -33721,12 +33738,12 @@ void CGame::UpdateScreen_OnGame()
 
 		if (m_bCtrlPressed)
 		{
-			m_DDraw.DrawShadowBox(5, 175, 175, 425, 0, true);
+			//m_DDraw.DrawShadowBox(5, 175, 175, 425, 0, true);
 			iMaxEntries = 15;
 		}
 		else
 		{
-			m_DDraw.DrawShadowBox(5, 175, 175, 275, 0, true);
+			//m_DDraw.DrawShadowBox(5, 175, 175, 275, 0, true);
 		}
 
 		wsprintf(cCol1, "Name");
@@ -33846,7 +33863,7 @@ void CGame::UpdateScreen_OnGame()
 
 		if (strcmp(m_cMapName, "team") == 0) {
 			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
-			m_DDraw.DrawShadowBox(5, 175, 110, 280, 0, true);
+			//m_DDraw.DrawShadowBox(5, 175, 110, 280, 0, true);
 			wsprintf(G_cTxt, "Team");
 			PutString(10, 160+20, G_cTxt, RGB(220, 200, 200));
 			wsprintf(G_cTxt, "Red");
