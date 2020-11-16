@@ -21370,10 +21370,11 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 				case 3:
 					_LoadShopMenuContents(4); // Coins Trade
 					break;
-				default: //_LoadShopMenuContents(0); // Eks Trade 
+				default: 
+					_LoadShopMenuContents(0); // Eks Trade 
 					break;
 				}
-				m_stDialogBoxInfo[57].sV1 = iNewShop;
+				m_stDialogBoxInfo[57].sV1 = 1;
 				m_stDialogBoxInfo[57].cMode = 0;
 				m_stDialogBoxInfo[57].sView = 0;
 				m_stDialogBoxInfo[57].bFlag = TRUE;

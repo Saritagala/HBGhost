@@ -9226,9 +9226,6 @@ void CGame::_LoadShopMenuContents(char cType)
 	strcat(cFileName, cTemp);
 	strcat(cFileName, ".txt");
 
-	for (int i = 0; i < DEF_MAXMENUITEMS; i++)
-		m_pItemForSaleList[i] = NULL;
-
 	hFile = CreateFile(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
 	dwFileSize = GetFileSize(hFile, NULL);
 	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
@@ -9238,6 +9235,9 @@ void CGame::_LoadShopMenuContents(char cType)
 		pBuffer = new char[dwFileSize+1];
 		ZeroMemory(pBuffer, dwFileSize+1);
 		fread(pBuffer, dwFileSize, 1, pFile);
+		
+		for (int i = 0; i < DEF_MAXMENUITEMS; i++)
+			m_pItemForSaleList[i] = NULL;
 
 		__bDecodeContentsAndBuildItemForSaleList(pBuffer);
 		delete[] pBuffer;
