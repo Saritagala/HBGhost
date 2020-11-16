@@ -33355,27 +33355,27 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
 			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
 			iEntry++;
+			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
+		
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
 		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
 			iEntry++;
+			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
+		
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
 			wsprintf(G_cTxt, "Can use until %2d/%2d/%4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
 			iEntry++;
+			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
+		
 		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) &&
 			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BACK) &&
 			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER))
+			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER) && m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 0)
 		{
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
@@ -33402,25 +33402,14 @@ void CGame::UpdateScreen_OnGame()
 			iEntry++;
 			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
-
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight>=1000) )
-		{	
-			int	_wWeight = 0;
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
-			wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
-			
-			iEntry++;
-		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
+		
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if  (((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite == 16) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame == 39)) || (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE))
 		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
 			iEntry++;
+			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-
+		
 		// Centuu - Class
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
@@ -33438,8 +33427,8 @@ void CGame::UpdateScreen_OnGame()
 				wsprintf(G_cTxt, "Only for Archer.");
 			}
 			iEntry++;
+			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (iEntry == 1)
@@ -33452,8 +33441,9 @@ void CGame::UpdateScreen_OnGame()
 			if (iEntry2 > 1) {
 				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iEntry2);
 				iEntry++;
-		}	}
-		if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+			}
+			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+		}
 		
 		if (iLenSize <= 15)
 			iLenSize = iLenSize * 7.0f;
@@ -33527,7 +33517,7 @@ void CGame::UpdateScreen_OnGame()
 		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) && 
 			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BACK) &&
 			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER))
+			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER) && m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 0)
 		{
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
