@@ -8146,20 +8146,20 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		}
 
 
-		for (i = 0; i < 13; i++)
+		for (i = 0; i < 13; i++) {
 			if (((i + m_stDialogBoxInfo[57].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView] != NULL))
 			{
 				iDiscountRatio = 0;
-				/*dTmp1 = (double)iDiscountRatio;
+				dTmp1 = (double)iDiscountRatio;
 				dTmp2 = dTmp1 / 100.0f;
 				dTmp1 = (double)m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice;
 				dTmp3 = dTmp1 * dTmp2;
-				iDiscountCost = (int)dTmp3;*/
+				iDiscountCost = (int)dTmp3;
 				iCost = (int)(m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice);
 
-				//if (iCost < (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2))
-				//	iCost = (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2) - 1;
-				
+				if (iCost < (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2))
+					iCost = (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2) - 1;
+
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, "%6d", iCost);
 				if (iCost != 0) {
@@ -8189,7 +8189,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 					}
 				}
 			}
-
+		}
 		break;
 
 	default:
@@ -8210,7 +8210,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		PutString(sX + 91, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 
 		iDiscountRatio = 0;
-		/*dTmp1 = (double)iDiscountRatio;
+		dTmp1 = (double)iDiscountRatio;
 		dTmp2 = dTmp1 / 100.0f;
 		dTmp1 = (double)m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice;
 		dTmp3 = dTmp1 * dTmp2;
@@ -8219,9 +8219,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		iCost = iCost - iDiscountCost;
 
 		if (iCost < (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2))
-			iCost = (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2) - 1;*/
-
-		iCost = (int)(m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice);
+			iCost = (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2) - 1;
 
 		wsprintf(cTemp, "%d Points", iCost);
 		//": %d Points"
@@ -8513,7 +8511,7 @@ void CGame::DlgBoxClick_Shop2(short msX, short msY)
 
 	switch (m_stDialogBoxInfo[57].cMode) {
 	case 0:
-		for (i = 0; i < 13; i++)
+		for (i = 0; i < 13; i++) {
 			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79)) {
 				if (_iGetTotalItemNum() >= 50) {
 					AddEventList(DLGBOX_CLICK_SHOP1, 10);//"You cannot buy anything because your bag is full."
@@ -8525,6 +8523,7 @@ void CGame::DlgBoxClick_Shop2(short msX, short msY)
 					m_stDialogBoxInfo[57].cMode = m_stDialogBoxInfo[57].sView + i + 1;
 				return;
 			}
+		}
 		break;
 
 	default:
