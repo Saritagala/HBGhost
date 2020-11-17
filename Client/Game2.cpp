@@ -17376,7 +17376,22 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
 	GetItemName(cName, NULL, cStr1, cStr2, cStr3);
-	wsprintf(cTxt, NOTIFYMSG_ITEMPURCHASED, cStr1, wCost);
+
+	switch (iNewShop) {
+	case 1:
+		wsprintf(cTxt, NOTIFYMSG_ITEMPURCHASED_EK, cStr1, wCost);
+		break;
+	case 2:
+		wsprintf(cTxt, NOTIFYMSG_ITEMPURCHASED_CONTRIB, cStr1, wCost);
+		break;
+	case 3:
+		wsprintf(cTxt, NOTIFYMSG_ITEMPURCHASED_COIN, cStr1, wCost);
+		break;
+	default:
+		wsprintf(cTxt, NOTIFYMSG_ITEMPURCHASED, cStr1, wCost);
+		break;
+	}
+	
 	AddEventList(cTxt, 10);
 
 	if ((cItemType == DEF_ITEMTYPE_CONSUME) || (cItemType == DEF_ITEMTYPE_ARROW))
@@ -20893,6 +20908,7 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 			case NULL:
 				break;
 			default:
+				iNewShop = 0;
 				_LoadShopMenuContents(cType);
 				m_stDialogBoxInfo[11].sV1 = cType;
 				m_stDialogBoxInfo[11].cMode = 0;

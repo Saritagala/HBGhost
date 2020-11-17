@@ -1543,7 +1543,10 @@
 #define	NOTIFYMSG_ITEMOBTAINED2	"You got %s."
 
 
-#define	NOTIFYMSG_ITEMPURCHASED	"You bought %s with %d Gold."
+#define	NOTIFYMSG_ITEMPURCHASED			"You bought %s with %d Gold."
+#define	NOTIFYMSG_ITEMPURCHASED_EK		"You bought %s with %d EKs."
+#define	NOTIFYMSG_ITEMPURCHASED_CONTRIB	"You bought %s with %d Contrib."
+#define	NOTIFYMSG_ITEMPURCHASED_COIN	"You bought %s with %d Coins."
 
 #define	NOTIFYMSG_ITEMREPAIRED1	"Item %s: repaired."
 
