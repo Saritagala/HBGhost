@@ -268,6 +268,9 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 {
 	int i, x, iTotalip = 0;
 	class XSocket * pTmpSock;
+	char cIPtoBan[21];
+	FILE* pFile;
+
 	if ((m_bIsGateSockAvailable == FALSE)  || (m_bIsLogSockAvailable == FALSE)   || 
 		(m_bIsItemAvailable == FALSE)      || (m_bIsNpcAvailable == FALSE)       || 
 		(m_bIsMagicAvailable == FALSE)     || (m_bIsSkillAvailable == FALSE)     || 
@@ -275,43 +278,68 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 		(m_bIsQuestAvailable == FALSE)     || (m_bIsBuildItemAvailable == FALSE) || 
 		(m_bIsGameStarted == FALSE))
 		goto CLOSE_ANYWAY;
-	for (i = 1; i < DEF_MAXCLIENTS; i++)
-		if (m_pClientList[i] == NULL) {	
+	for (i = 1; i < DEF_MAXCLIENTS; i++) {
+		if (m_pClientList[i] == NULL) {
 			m_pClientList[i] = new class CClient(m_hWnd);
 			bAddClientShortCut(i);
-			m_pClientList[i]->m_dwSPTime = m_pClientList[i]->m_dwMPTime = m_pClientList[i]->m_dwHPTime = 
-				m_pClientList[i]->m_dwAutoSaveTime = m_pClientList[i]->m_dwTime = m_pClientList[i]->m_dwHungerTime = 
-					m_pClientList[i]->m_dwExpStockTime = m_pClientList[i]->m_dwRecentAttackTime = 
-						m_pClientList[i]->m_dwAutoExpTime = m_pClientList[i]->m_dwSpeedHackCheckTime = timeGetTime();
-			pXSock->bAccept(m_pClientList[i]->m_pXSock, WM_ONCLIENTSOCKETEVENT + i); 
+			m_pClientList[i]->m_dwSPTime = m_pClientList[i]->m_dwMPTime = m_pClientList[i]->m_dwHPTime =
+				m_pClientList[i]->m_dwAutoSaveTime = m_pClientList[i]->m_dwTime = m_pClientList[i]->m_dwHungerTime =
+				m_pClientList[i]->m_dwExpStockTime = m_pClientList[i]->m_dwRecentAttackTime =
+				m_pClientList[i]->m_dwAutoExpTime = m_pClientList[i]->m_dwSpeedHackCheckTime = timeGetTime();
+			pXSock->bAccept(m_pClientList[i]->m_pXSock, WM_ONCLIENTSOCKETEVENT + i);
 			ZeroMemory(m_pClientList[i]->m_cIPaddress, sizeof(m_pClientList[i]->m_cIPaddress));
 			m_pClientList[i]->m_pXSock->iGetPeerAddress(m_pClientList[i]->m_cIPaddress);
 #ifdef ANTI_HAX
-			//centu: Anti-Downer
-			for (x = 1; x < DEF_MAXCLIENTS; x++) 
-			if(m_pClientList[x] != NULL) { 
-				if(strcmp(m_pClientList[x]->m_cIPaddress, m_pClientList[i]->m_cIPaddress) == 0) iTotalip++; 
-			} 
-			if(iTotalip > 10) {
-				delete m_pClientList[i]; 
-				m_pClientList[i] = NULL; 
-				return FALSE; 
-			} 
-			if(strlen(m_pClientList[i]->m_cIPaddress) < 10) { 
-				delete m_pClientList[i]; 
-				m_pClientList[i] = NULL; 
-				return FALSE; 
+			for (int v = 0; v < DEF_MAXBANNED; v++)
+			{
+				if (strcmp(m_stBannedList[v].m_cBannedIPaddress, m_pClientList[i]->m_cIPaddress) == 0)
+				{
+					delete m_pClientList[i];
+					m_pClientList[i] = NULL;
+					RemoveClientShortCut(i);
+					return FALSE;
+				}
 			}
+			//centu: Anti-Downer
+			for (x = 1; x < DEF_MAXCLIENTS; x++) {
+				if (m_pClientList[x] != NULL) {
+					if (strcmp(m_pClientList[x]->m_cIPaddress, m_pClientList[i]->m_cIPaddress) == 0) iTotalip++;
+				}
+			}
+			if (iTotalip > 9) {
+				ZeroMemory(cIPtoBan, sizeof(cIPtoBan));
+				strcpy(cIPtoBan, m_pClientList[i]->m_cIPaddress);
+				//opens cfg file
+				pFile = fopen("GameConfigs\\BannedList.cfg", "a");
+				//shows log
+				wsprintf(G_cTxt, "<%d> Client IP Banned: (%s)", i, cIPtoBan);
+				PutLogList(G_cTxt);
+				//modifys cfg file
+				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
+				fclose(pFile);
+				//updates BannedList.cfg on the server
+				LocalUpdateConfigs(3);
+				delete m_pClientList[i];
+				m_pClientList[i] = NULL;
+				RemoveClientShortCut(i);
+				return FALSE;
+			}
+			/*if(strlen(m_pClientList[i]->m_cIPaddress) < 10) {
+				delete m_pClientList[i];
+				m_pClientList[i] = NULL;
+				return FALSE;
+			}*/
 #endif
-			wsprintf(G_cTxt,"<%d> Client connected: (%s)", i, m_pClientList[i]->m_cIPaddress);
+			wsprintf(G_cTxt, "<%d> Client connected: (%s)", i, m_pClientList[i]->m_cIPaddress);
 			PutLogList(G_cTxt);
 			m_iTotalClients++;
-			if (m_iTotalClients > m_iMaxClients) { 
+			if (m_iTotalClients > m_iMaxClients) {
 				m_iMaxClients = m_iTotalClients;
-				
+
 			}
 			return TRUE;
 		}
+	}
 CLOSE_ANYWAY:;
 	/****MODIFICATION****/
 	PutLogList("(!) bAccept->CLOSE_ANYWAY");
@@ -9044,6 +9072,7 @@ DWORD * dwp, dwTimeRcv;
                         m_iTotalClients--;
                         delete m_pClientList[iClientH];
                         m_pClientList[iClientH] = NULL;
+						RemoveClientShortCut(iClientH);
                     }
                     break;
 				}
@@ -19596,7 +19625,7 @@ BOOL CGame::bReadBannedListConfigFile(char *pFn)
 							return TRUE;
 						}
 						len = strlen(token);
-						if(len > 20) len = 20;
+						if(len > 21) len = 21;
 						ZeroMemory(m_stBannedList[iIndex].m_cBannedIPaddress, sizeof(m_stBannedList[iIndex].m_cBannedIPaddress));
 						memcpy(m_stBannedList[iIndex].m_cBannedIPaddress, token, strlen(token));
 						iIndex++;
@@ -21613,23 +21642,26 @@ CAE_SKIPDAMAGEMOVE2:;
 			break;
 		}
 
-		if (cAttackerType == DEF_OWNERTYPE_PLAYER) 
-		{	if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)
-				 sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
+		if (cAttackerType == DEF_OWNERTYPE_PLAYER)
+		{
+			if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)
+				sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 			else sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
-// SNOOPY: ADDED support for Dual-Wielding on 4th Combo Attack
-			// And add MainGauche Attack on succesfull 4th combo Attacks
+			// SNOOPY: ADDED support for Dual-Wielding on 4th Combo Attack
+						// And add MainGauche Attack on succesfull 4th combo Attacks
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
 			if ((bMainGaucheAttack == FALSE) // No 2nd MainGauche Attack
 				&& (sItemIndex != -1)
 				&& (m_pClientList[sAttackerH]->m_iComboAttackCount == 4)
-				&& (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {				
+				&& (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
 				iWeaponSkill = _iGetWeaponSkillType(sAttackerH);
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 10) // MainGauche
-					&& ((iWeaponSkill==7)||(iWeaponSkill==9)) // Only SS or Fencers					
-					/*&& (iDice(1,120) < m_pClientList[sAttackerH]->m_cSkillMastery[20])*/ )// Dual-Wielding skill					 
-				{	iExp += iCalculateAttackEffect(sTargetH, cTargetType, sAttackerH, DEF_OWNERTYPE_PLAYER, tdX, tdY, 2, FALSE, FALSE, FALSE, TRUE);				
-			}	}			
+					&& ((iWeaponSkill == 7) || (iWeaponSkill == 9)) // Only SS or Fencers					
+					/*&& (iDice(1,120) < m_pClientList[sAttackerH]->m_cSkillMastery[20])*/)// Dual-Wielding skill					 
+				{
+					iExp += iCalculateAttackEffect(sTargetH, cTargetType, sAttackerH, DEF_OWNERTYPE_PLAYER, tdX, tdY, 2, FALSE, FALSE, FALSE, TRUE);
+				}
+			}
 			//SNOOPY: Increase Dual-Wielding Skill if appropriate
 			if (bMainGaucheAttack == TRUE) {
 				/*CalculateSSN_SkillIndex(sAttackerH, 20, 1);
@@ -21640,48 +21672,62 @@ CAE_SKIPDAMAGEMOVE2:;
 						 CalculateSSN_SkillIndex(sAttackerH, 20, iDice(1, iKilledDice));
 					else CalculateSSN_SkillIndex(sAttackerH, 20, iDice(1, ((int)(iKilledDice/2))));
 				}*/
-			}else // Else compute normal weapons skill increase
-			// Compute skill increase
-			if ((sWeaponIndex != -1) && (bArrowUse != TRUE)) {
-				// No skill increase if bArrowUse
-				if (   (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL) 
-					&& (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sIDnum != 231) )  //  Not for PickAxe
-				{	if (bKilled == FALSE)
-						CalculateSSN_ItemIndex(sAttackerH, sWeaponIndex, 1);
-					else 
-					{	if (m_pClientList[sAttackerH]->m_iHP <= 3)
-							 CalculateSSN_ItemIndex(sAttackerH, sWeaponIndex, iDice(1, iKilledDice)*2);
-						else CalculateSSN_ItemIndex(sAttackerH, sWeaponIndex, iDice(1, iKilledDice));
-				}	}
-				// Weapon's wep life off
-				if (   (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL) 
-					&& (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wMaxLifeSpan != 0) ) 
-				{	iWepLifeOff = 1;
-					if (((wWeaponType >= 1) && (wWeaponType < 40)) || ((wWeaponType > 55) && (wWeaponType <= 60)))
-					{	switch (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cWhetherStatus) {
-						case 0:	break;
-						case 1:	if (iDice(1,3) == 1) iWepLifeOff++; break;
-						case 2:	if (iDice(1,2) == 1) iWepLifeOff += iDice(1,2); break;
-						case 3:	if (iDice(1,2) == 1) iWepLifeOff += iDice(1,3); break;
-						}
-					}
-					if (m_pClientList[sAttackerH]->m_cSide != 0) {
-						if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan < iWepLifeOff)
-							m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan = 0;
+			}
+			else // Else compute normal weapons skill increase
+		   // Compute skill increase
+			{
+				if ((sWeaponIndex != -1) && (bArrowUse != TRUE)) {
+					// No skill increase if bArrowUse
+					if ((m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL)
+						&& (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sIDnum != 231))  //  Not for PickAxe
+					{
+						if (bKilled == FALSE)
+							CalculateSSN_ItemIndex(sAttackerH, sWeaponIndex, 1);
 						else
 						{
-							m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan -= iWepLifeOff;
-							SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CURLIFESPAN, sWeaponIndex, m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan, NULL, NULL);
+							if (m_pClientList[sAttackerH]->m_iHP <= 3)
+								CalculateSSN_ItemIndex(sAttackerH, sWeaponIndex, iDice(1, iKilledDice) * 2);
+							else CalculateSSN_ItemIndex(sAttackerH, sWeaponIndex, iDice(1, iKilledDice));
 						}
 					}
-					if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan <= 0) {
-						SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_ITEMLIFESPANEND, m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_cEquipPos, sWeaponIndex, NULL, NULL);
-						ReleaseItemHandler(sAttackerH, sWeaponIndex, TRUE);
-				}	}
-			}else 
-			{	if (wWeaponType == 0)  // Open-Hand Skill increase
-				{	CalculateSSN_SkillIndex(sAttackerH, 5, 1);
-		}	}	}
+					// Weapon's wep life off
+					if ((m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL)
+						&& (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wMaxLifeSpan != 0))
+					{
+						iWepLifeOff = 1;
+						if (((wWeaponType >= 1) && (wWeaponType < 40)) || ((wWeaponType > 55) && (wWeaponType <= 60)))
+						{
+							switch (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cWhetherStatus) {
+							case 0:	break;
+							case 1:	if (iDice(1, 3) == 1) iWepLifeOff++; break;
+							case 2:	if (iDice(1, 2) == 1) iWepLifeOff += iDice(1, 2); break;
+							case 3:	if (iDice(1, 2) == 1) iWepLifeOff += iDice(1, 3); break;
+							}
+						}
+						if (m_pClientList[sAttackerH]->m_cSide != 0) {
+							if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan < iWepLifeOff)
+								m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan = 0;
+							else
+							{
+								m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan -= iWepLifeOff;
+								SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CURLIFESPAN, sWeaponIndex, m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan, NULL, NULL);
+							}
+						}
+						if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_wCurLifeSpan <= 0) {
+							SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_ITEMLIFESPANEND, m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_cEquipPos, sWeaponIndex, NULL, NULL);
+							ReleaseItemHandler(sAttackerH, sWeaponIndex, TRUE);
+						}
+					}
+				}
+				else
+				{
+					if (wWeaponType == 0)  // Open-Hand Skill increase
+					{
+						CalculateSSN_SkillIndex(sAttackerH, 5, 1);
+					}
+				}
+			}
+		}
 	}else  // Missing the target !
 	{	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {	//bMainGaucheAttack
 			m_pClientList[sAttackerH]->m_iComboAttackCount = 0;
@@ -21775,7 +21821,6 @@ BOOL CGame::_bCheckCharacterData(int iClientH)
 		if ((strlen(m_stBannedList[i].m_cBannedIPaddress)) == (strlen(m_pClientList[iClientH]->m_cIPaddress))) {
 			if(memcmp(m_stBannedList[i].m_cBannedIPaddress, m_pClientList[iClientH]->m_cIPaddress, strlen(m_pClientList[iClientH]->m_cIPaddress)) == 0){
 				wsprintf(G_cTxt,"Client Rejected: Banned: (%s)", m_pClientList[iClientH]->m_cIPaddress);
-				PutLogList(G_cTxt);
 				PutLogList(G_cTxt);
 				return FALSE;
 			}
@@ -23939,7 +23984,7 @@ void CGame::bCheckLevelUp(int iClientH)
 			}
 			
 			//Magn0S:: Add Gold per lvl up to help new players
-			/* if (m_pClientList[iClientH]->m_iLevel < 50)
+			if (m_pClientList[iClientH]->m_iLevel < 50)
 			{
 				pItem = new class CItem;
 				if(_bInitItemAttr(pItem, 90) == FALSE)
@@ -23952,11 +23997,11 @@ void CGame::bCheckLevelUp(int iClientH)
 					bAddItem(iClientH, pItem, NULL);
 				}
 			}
-			*/
+
 			// centu - max hp,mp,sp when level up
-			if (m_pClientList[iClientH]->m_iHP < iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
+			/*if (m_pClientList[iClientH]->m_iHP < iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 			if (m_pClientList[iClientH]->m_iMP < iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
-			if (m_pClientList[iClientH]->m_iSP < iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+			if (m_pClientList[iClientH]->m_iSP < iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);*/
 
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_LEVELUP, NULL, NULL, NULL, NULL);
 			m_pClientList[iClientH]->m_iNextLevelExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel + 1];
@@ -24121,8 +24166,8 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[ DEF_MAGICTYPE_CONFUSE ], NULL, NULL);
 		SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 		bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-		//m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
-		//m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+		m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
+		m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 		return;
 	}
 	else {
@@ -24175,8 +24220,8 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 			SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);	
 			bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE, FALSE);
-			//m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
-			//m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+			m_pClientList[iClientH]->m_bIsOnServerChange = TRUE;
+			m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 
 			m_pClientList[iClientH]->m_iDGKills = 0;
 			m_pClientList[iClientH]->m_iDGDeaths = 0;
@@ -24207,8 +24252,8 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_CONFUSE, m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_CONFUSE], NULL, NULL);
 				SetSlateFlag(iClientH, DEF_NOTIFY_SLATECLEAR, FALSE);
 				bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA_REPLY, iClientH, FALSE);
-				//m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
-				//m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
+				m_pClientList[iClientH]->m_bIsOnServerChange   = TRUE;
+				m_pClientList[iClientH]->m_bIsOnWaitingProcess = TRUE;
 				return;
 			}		
 			m_pClientList[iClientH]->m_sX   = dX;
@@ -24704,7 +24749,7 @@ void CGame::RequestRestartHandler(int iClientH)
 			ZeroMemory(cTmpMap, sizeof(cTmpMap));
 			strcpy(cTmpMap, m_pClientList[iClientH]->m_cMapName);
 			RequestTeleportHandler(iClientH, "2   ", cTmpMap, -1, -1);
-			RefreshPartyStatus(iClientH);
+			//RefreshPartyStatus(iClientH);
 		}
 	}
 }
@@ -24945,7 +24990,6 @@ void CGame::AdminOrder_BanIP(int iClientH, char *pData, DWORD dwMsgSize)
 			PutLogList(G_cTxt);
 				//modifys cfg file
 				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
-				fprintf(pFile, "");
 				fclose(pFile);
 			//updates BannedList.cfg on the server
 			LocalUpdateConfigs(3);
@@ -25083,125 +25127,125 @@ void CGame::AFKChecker()
     }    }    }*/
 }
 
-void CGame::ParseCommand(char * pMsg) 
-{ 
- char   seps[] = "= \t\n"; 
- char   * token, * token2; 
- class  CStrTok * pStrTok; 
- char buff[100]; 
- BOOL bFlag; 
- char znak[1]; 
- char ss[100];
- int i; 
- char * p = ss; 
- char cIPtoBan[21];
- FILE * pFile;
-
-	if (pMsg == NULL) return; 
-
-	pStrTok = new class CStrTok(pMsg, seps); 
-	token = pStrTok->pGet(); 
-	token2 = pStrTok->pGet(); 
-
-	bFlag = FALSE; 
-
-	if (memcmp(pMsg, "/ascii ", 7) == 0) { 
-		bFlag = TRUE; 
-		memcpy(znak, token, 1); 
-		wsprintf(buff, "AscII%d/%s.txt", znak[0], token); 
-		PutLogList(buff); 
-	} 
-
-	else if (memcmp(pMsg, "/say ", 5) == 0) { 
-		bFlag = TRUE;   
-		ZeroMemory(ss, 100); 
-		memcpy(ss, pMsg, strlen(pMsg)); 
-		ss[0] = ' '; 
-		ss[1] = ' '; 
-		ss[2] = ' '; 
-		ss[3] = ' '; 
-		while(isspace(*p) && (*p)) p++; 
-		memmove(ss, p, strlen(p)+1); 
-		wsprintf(ss, " %s", ss);  
-		for (i = 1; i < DEF_MAXCLIENTS; i++) { 
-			if (m_pClientList[i] != NULL) { 
-				ShowClientMsg(i, ss); 
-			} 
-		}  
-		wsprintf(buff, "(!) '%s'.", ss); 
-		PutLogList(buff); 
-	} 
-
-	else if (memcmp(pMsg, "/disc", 5) == 0) 
-	{ 
-		bFlag = TRUE;
-		_iForcePlayerDisconect(DEF_MAXCLIENTS); 
-	}
-
-	else if (memcmp(pMsg, "/ban ", 5) == 0) { 
-		bFlag = TRUE;   
-		ZeroMemory(ss, 100); 
-		memcpy(ss, pMsg, strlen(pMsg)); 
-		ss[0] = ' '; 
-		ss[1] = ' '; 
-		ss[2] = ' '; 
-		ss[3] = ' '; 
-		while(isspace(*p) && (*p)) p++; 
-		memmove(ss, p, strlen(p)+1); 
-		ZeroMemory(cIPtoBan, sizeof(cIPtoBan));
-		for (i = 0; i < DEF_MAXCLIENTS; i++) {
-			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, ss, strlen(ss)) == 0)) {
-				strcpy(cIPtoBan, m_pClientList[i]->m_cIPaddress);
-				//opens cfg file
-				pFile = fopen("GameConfigs\\BannedList.cfg", "a");
-				//shows log
-				wsprintf(G_cTxt,"<%d> Client IP Banned: (%s)", i, cIPtoBan);
-				PutLogList(G_cTxt);
-				//modifys cfg file
-				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
-				fclose(pFile);
-				//updates BannedList.cfg on the server
-				LocalUpdateConfigs(3);
-				//disconnects player, and he can't connect again.. :)
-				DeleteClient(i, TRUE, TRUE);
-			}
-		}
-	} 
-
-	else if (memcmp(pMsg, "/bum ", 5) == 0) { 
-		/*bFlag = TRUE;   
-		ZeroMemory(ss, 100); 
-		memcpy(ss, pMsg, strlen(pMsg)); 
-		ss[0] = ' '; 
-		ss[1] = ' '; 
-		ss[2] = ' '; 
-		ss[3] = ' '; 
-		while(isspace(*p) && (*p)) p++; 
-		memmove(ss, p, strlen(p)+1); 
-		for (i = 0; i < DEF_MAXCLIENTS; i++) {
-			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, ss, strlen(ss)) == 0)) {
-				// piss off his pc
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_MORLEARPJ, NULL, NULL, NULL, NULL);
-				DeleteClient(i, TRUE, TRUE);
-			}
-		}*/
-	} 
-
-	//Mang0S:: Add new commands
-	else if (memcmp(pMsg, "/updatefiles", 12) == 0)
-	{
-		bFlag = TRUE;
-		bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
-		bReadSettingsConfigFile("GameConfigs\\Settings.cfg");
-		bReadAdminListConfigFile("GameConfigs\\AdminList.cfg");
-		bReadBannedListConfigFile("GameConfigs\\BannedList.cfg");
-		bReadAdminSetConfigFile("GameConfigs\\AdminSettings.cfg");
-	}
-
-	if ((!bFlag) || (pMsg != NULL)) { 
-		return;
-	} 
-}
+//void CGame::ParseCommand(char * pMsg) 
+//{ 
+// char   seps[] = "= \t\n"; 
+// char   * token, * token2; 
+// class  CStrTok * pStrTok; 
+// char buff[100]; 
+// BOOL bFlag; 
+// char znak[1]; 
+// char ss[100];
+// int i; 
+// char * p = ss; 
+// char cIPtoBan[21];
+// FILE * pFile;
+//
+//	if (pMsg == NULL) return; 
+//
+//	pStrTok = new class CStrTok(pMsg, seps); 
+//	token = pStrTok->pGet(); 
+//	token2 = pStrTok->pGet(); 
+//
+//	bFlag = FALSE; 
+//
+//	if (memcmp(pMsg, "/ascii ", 7) == 0) { 
+//		bFlag = TRUE; 
+//		memcpy(znak, token, 1); 
+//		wsprintf(buff, "AscII%d/%s.txt", znak[0], token); 
+//		PutLogList(buff); 
+//	} 
+//
+//	else if (memcmp(pMsg, "/say ", 5) == 0) { 
+//		bFlag = TRUE;   
+//		ZeroMemory(ss, 100); 
+//		memcpy(ss, pMsg, strlen(pMsg)); 
+//		ss[0] = ' '; 
+//		ss[1] = ' '; 
+//		ss[2] = ' '; 
+//		ss[3] = ' '; 
+//		while(isspace(*p) && (*p)) p++; 
+//		memmove(ss, p, strlen(p)+1); 
+//		wsprintf(ss, " %s", ss);  
+//		for (i = 1; i < DEF_MAXCLIENTS; i++) { 
+//			if (m_pClientList[i] != NULL) { 
+//				ShowClientMsg(i, ss); 
+//			} 
+//		}  
+//		wsprintf(buff, "(!) '%s'.", ss); 
+//		PutLogList(buff); 
+//	} 
+//
+//	else if (memcmp(pMsg, "/disc", 5) == 0) 
+//	{ 
+//		bFlag = TRUE;
+//		_iForcePlayerDisconect(DEF_MAXCLIENTS); 
+//	}
+//
+//	else if (memcmp(pMsg, "/ban ", 5) == 0) { 
+//		bFlag = TRUE;   
+//		ZeroMemory(ss, 100); 
+//		memcpy(ss, pMsg, strlen(pMsg)); 
+//		ss[0] = ' '; 
+//		ss[1] = ' '; 
+//		ss[2] = ' '; 
+//		ss[3] = ' '; 
+//		while(isspace(*p) && (*p)) p++; 
+//		memmove(ss, p, strlen(p)+1); 
+//		ZeroMemory(cIPtoBan, sizeof(cIPtoBan));
+//		for (i = 0; i < DEF_MAXCLIENTS; i++) {
+//			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, ss, strlen(ss)) == 0)) {
+//				strcpy(cIPtoBan, m_pClientList[i]->m_cIPaddress);
+//				//opens cfg file
+//				pFile = fopen("GameConfigs\\BannedList.cfg", "a");
+//				//shows log
+//				wsprintf(G_cTxt,"<%d> Client IP Banned: (%s)", i, cIPtoBan);
+//				PutLogList(G_cTxt);
+//				//modifys cfg file
+//				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
+//				fclose(pFile);
+//				//updates BannedList.cfg on the server
+//				LocalUpdateConfigs(3);
+//				//disconnects player, and he can't connect again.. :)
+//				DeleteClient(i, TRUE, TRUE);
+//			}
+//		}
+//	} 
+//
+//	else if (memcmp(pMsg, "/bum ", 5) == 0) { 
+//		/*bFlag = TRUE;   
+//		ZeroMemory(ss, 100); 
+//		memcpy(ss, pMsg, strlen(pMsg)); 
+//		ss[0] = ' '; 
+//		ss[1] = ' '; 
+//		ss[2] = ' '; 
+//		ss[3] = ' '; 
+//		while(isspace(*p) && (*p)) p++; 
+//		memmove(ss, p, strlen(p)+1); 
+//		for (i = 0; i < DEF_MAXCLIENTS; i++) {
+//			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, ss, strlen(ss)) == 0)) {
+//				// piss off his pc
+//				SendNotifyMsg(NULL, i, DEF_NOTIFY_MORLEARPJ, NULL, NULL, NULL, NULL);
+//				DeleteClient(i, TRUE, TRUE);
+//			}
+//		}*/
+//	} 
+//
+//	//Mang0S:: Add new commands
+//	else if (memcmp(pMsg, "/updatefiles", 12) == 0)
+//	{
+//		bFlag = TRUE;
+//		bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
+//		bReadSettingsConfigFile("GameConfigs\\Settings.cfg");
+//		bReadAdminListConfigFile("GameConfigs\\AdminList.cfg");
+//		bReadBannedListConfigFile("GameConfigs\\BannedList.cfg");
+//		bReadAdminSetConfigFile("GameConfigs\\AdminSettings.cfg");
+//	}
+//
+//	if ((!bFlag) || (pMsg != NULL)) { 
+//		return;
+//	} 
+//}
 
 
 //LifeX Fix Revive 14/10/2019

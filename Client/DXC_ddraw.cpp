@@ -86,7 +86,7 @@ BOOL DXC_ddraw::bInit(HWND hWnd)
 		memset( (VOID *)&ddsd, 0, sizeof(ddsd) );
 		ddsd.dwSize = sizeof( ddsd );
 		ddsd.dwFlags = DDSD_CAPS | DDSD_BACKBUFFERCOUNT;
-		ddsd.dwBackBufferCount = 2; // Centu - Era 1. Drazz, Triple Buffer
+		ddsd.dwBackBufferCount = 1;
 		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
 		
 		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, NULL);
@@ -304,7 +304,7 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 		memset( (VOID *)&ddsd, 0, sizeof(ddsd) );
 		ddsd.dwSize = sizeof( ddsd );
 		ddsd.dwFlags = DDSD_CAPS | DDSD_BACKBUFFERCOUNT;
-		ddsd.dwBackBufferCount = 2;//2 v1.3
+		ddsd.dwBackBufferCount = 1;//2 v1.3
 		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
 		
 		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, NULL);

