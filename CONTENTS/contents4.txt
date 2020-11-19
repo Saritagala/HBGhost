@@ -1,11 +1,18 @@
 ;-------Name----------------Type--EPos--Effect--ETValue--------MaxLife--MFixC--Spr--SFrame--Price--Wgt--ApprV-Speed--L.Lmt 
-Item = ZemstoneofSacrifice 0 0 26 0 0 0 0 0 0 3 0 16 39 3 5000 -1 0 0
-Item = StoneOfXelima 0 0 0 0 0 0 0 0 0 3 0 6 128 4 4000 -1 0 0
-Item = StoneOfMerien 0 0 0 0 0 0 0 0 0 3 0 6 129 4 4000 -1 0 0
+Item = ZemstoneofSacrifice 0 0 26 0 0 0 0 0 0 3 0 16 39 100 5000 -1 0 0 0 0 0 -1 0 0 0 0 0 0 0 0
+Item = StoneOfXelima 0 0 0 0 0 0 0 0 0 3 0 6 128 100 4000 -1 0 0 0 0 0 -1 31 0 0 0 0 0 0 0
+Item = StoneOfMerien 0 0 0 0 0 0 0 0 0 3 0 6 129 100 4000 -1 0 0 0 0 0 -1 31 0 0 0 0 0 0 0
 
 Item  = -		      0     0     0     0  0 0  0 0 0   0       0      0    0     0       0       0     0      0
   
-Item = RingofDemonpower 1 10 14 3 4 0 0 0 0 300 0 16 28 10 500 -1 0 0
-Item = RingofGrandMage 1 10 14 6 3 0 0 0 0 300 0 16 32 10 500 -1 0 0
+Item = RingofDemonpower 1 10 14 3 4 0 0 0 0 300 0 16 28 1500 500 -1 0 0 0 0 0 -1 46 0 0 0 0 1 0 0
+Item = RingofGrandMage 1 10 14 6 3 0 0 0 0 300 0 16 32 1500 500 -1 0 0 0 0 0 -1 46 0 0 0 0 2 0 0
 
 Item  = -		      0     0     0     0  0 0  0 0 0   0       0      0    0     0       0       0     0      0
+
+Item = HuntSword 1 9 1 1 1 1 7 15 12 3000 0 1 21 2000 40000 19 15 0 0 0 0 8 1 4 0 0 0 1 1 130
+
+Item  = -		      0     0     0     0  0 0  0 0 0   0       0      0    0     0       0       0     0      0
+
+Item = SexChangePotion 7 0 12 4 0 0 0 0 0 1 0 6 5 500 100 -1 0 0 0 0 0 -1 21 0 -1 -1 -1 0 0 0
+
