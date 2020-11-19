@@ -77,6 +77,8 @@ public:
 	HFONT m_hFontInUse;
 
 	BOOL m_init;
+
+	bool IsWin2();
 };
 
 #endif // !defined(AFX_DXC_DDRAW_H__C52EBA83_6D9E_11D2_A8E6_00001C7030A6__INCLUDED_)

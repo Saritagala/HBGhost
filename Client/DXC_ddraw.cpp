@@ -53,6 +53,22 @@ DXC_ddraw::~DXC_ddraw()
 	if (m_lpDD4 != NULL) m_lpDD4->Release();
 }
 
+bool DXC_ddraw::IsWin2()
+{
+	OSVERSIONINFO osvi;
+
+	ZeroMemory(&osvi, sizeof(OSVERSIONINFO));
+	osvi.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+
+	GetVersionEx(&osvi);
+	if ((osvi.dwMajorVersion == 6 && osvi.dwMinorVersion >= 2) ||
+		(osvi.dwMajorVersion == 10 && osvi.dwMinorVersion >= 0)) {
+
+		return true;
+	}
+	return false;
+}
+
 BOOL DXC_ddraw::bInit(HWND hWnd)
 {
  HRESULT        ddVal;
@@ -65,8 +81,13 @@ BOOL DXC_ddraw::bInit(HWND hWnd)
 	SetRect(&m_rcClipArea, 0,0, 640, 480);
 #endif
 
-	//ddVal = DirectDrawCreateEx(NULL, (VOID**)&m_lpDD4, IID_IDirectDraw7, NULL);
-	ddVal = DirectDrawCreateEx((GUID*)DDCREATE_EMULATIONONLY, (VOID**)&m_lpDD4, IID_IDirectDraw7, NULL); // sleeq
+	if (IsWin2()) {
+		ddVal = DirectDrawCreateEx((GUID*)DDCREATE_EMULATIONONLY, (VOID**)&m_lpDD4, IID_IDirectDraw7, NULL); // sleeq
+	}
+	else {
+		ddVal = DirectDrawCreateEx(NULL, (VOID**)&m_lpDD4, IID_IDirectDraw7, NULL);
+	}
+	
 
 	if (ddVal != DD_OK) return FALSE;
 
@@ -210,8 +231,8 @@ HRESULT DXC_ddraw::iFlip()
 
 		ddVal = m_lpBackB4flip->BltFast( 0, 0, m_lpBackB4, &m_rcFlipping, DDBLTFAST_NOCOLORKEY); 
 		
-		ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_NOVSYNC); // fps fix - farjat
-
+		//ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_NOVSYNC); // fps fix - farjat
+		ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_WAIT);
 	}
 	else
 	{

@@ -3419,7 +3419,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 	char* cp, cItemName[21], cData[100];
 	short* sp;
 	DWORD* dwp, dwItemCount;
-	WORD* wp, wTempPrice;
+	WORD* wp;
 	int   i, iRet, iEraseReq, iCost;
 
 	iCost = 0;
@@ -3453,7 +3453,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Enemy Kill Points to purchase this item.");
 					return;
 				}
-				iCost = (int)((float)(pItem->m_wEkPrice));
+				iCost = pItem->m_wEkPrice;
 				break;
 			case 2:
 				if (pItem->bContrbSale == false) {
@@ -3466,7 +3466,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Contribution Points to purchase this item.");
 					return;
 				}
-				iCost = (int)((float)(pItem->m_wContribPrice));
+				iCost = pItem->m_wContribPrice;
 				break;
 			case 3:
 				if (pItem->bCoinSale == false) {
@@ -3479,7 +3479,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Coins to purchase this item.");
 					return;
 				}
-				iCost = (int)((float)(pItem->m_wCoinPrice));
+				iCost = pItem->m_wCoinPrice;
 				break;
 			default:
 				return;
@@ -3489,24 +3489,22 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE) {
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
 
-				wTempPrice = iCost;
-
-				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, wTempPrice);
+				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, iCost);
 
 				if (iEraseReq == 1) delete pItem;
 
 				switch (iPurchase) {
 				case 1:
-					m_pClientList[iClientH]->m_iEnemyKillCount -= pItem->m_wEkPrice;
+					m_pClientList[iClientH]->m_iEnemyKillCount -= iCost;
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
 					calcularTop15HB(iClientH);
 					break;
 				case 2:
-					m_pClientList[iClientH]->m_iContribution -= pItem->m_wContribPrice;
+					m_pClientList[iClientH]->m_iContribution -= iCost;
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 					break;
 				case 3:
-					m_pClientList[iClientH]->m_iCoinPoints -= pItem->m_wCoinPrice;
+					m_pClientList[iClientH]->m_iCoinPoints -= iCost;
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_COINPOINTS, m_pClientList[iClientH]->m_iCoinPoints, NULL, NULL, NULL);
 					break;
 				default:
@@ -5259,12 +5257,12 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
 
 				//wTempPrice = (iCost - iDiscountCost);
-				wTempPrice = iCost;
-				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, wTempPrice);
+				//wTempPrice = iCost;
+				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, iCost);
 
 				if (iEraseReq == 1) delete pItem;
 
-				iGoldWeight = SetItemCount(iClientH, "Gold", dwGoldCount - wTempPrice);
+				iGoldWeight = SetItemCount(iClientH, "Gold", dwGoldCount - (DWORD)iCost);
 				iCalcTotalWeight(iClientH);
 			}
 			else
@@ -7013,8 +7011,8 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*cp = pItem->m_cItemColor;
 		cp++;
 
-		dwp = (DWORD*)cp;
-		*dwp = iV1;
+		ip = (int*)cp;
+		*ip = iV1;
 		cp += 4;
 
 		//------------------------------------

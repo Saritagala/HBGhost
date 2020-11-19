@@ -312,10 +312,11 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 				//opens cfg file
 				pFile = fopen("GameConfigs\\BannedList.cfg", "a");
 				//shows log
-				wsprintf(G_cTxt, "<%d> Client IP Banned: (%s)", i, cIPtoBan);
+				wsprintf(G_cTxt, "<%d> IP Banned: (%s)", i, cIPtoBan);
 				PutLogList(G_cTxt);
 				//modifys cfg file
-				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
+				fprintf(pFile, "banned-ip = %s", cIPtoBan);
+				fprintf(pFile, "\n");
 				fclose(pFile);
 				//updates BannedList.cfg on the server
 				LocalUpdateConfigs(3);
@@ -2247,9 +2248,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 
 	//Magn0S:: Update NPC's Info on Apoc
 	if ((m_pClientList[iClientH]->m_bIsOnApocMap == TRUE) && (m_bIsApocalypseMode)) {
-		int iMonsterCount;
-		iMonsterCount = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_iTotalAliveObject;
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, NULL, NULL, NULL);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MONSTERCOUNTAPOC, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_iTotalAliveObject, NULL, NULL, NULL);
 	}
 
 	if (m_bIsCrusadeMode)
@@ -2486,7 +2485,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	//50Cent - Critical Count Login Fix
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
 
-	// centu - sends max stats to client, and receive it when log in
+	// centu - sends max stats to client, when log in
 	SendNotifyMsg(NULL, iClientH, DEF_MAX_STATS, m_sCharStatLimit - 11, NULL, NULL, NULL);
 	
 	// SNOOPY: Send gate positions if applicable.
@@ -2872,7 +2871,7 @@ void CGame::OnTimer(char cType)
 		CheckDynamicObjectList();
 		DynamicObjectEffectProcessor();
 		NoticeHandler();
-		SpecialEventHandler();
+		//SpecialEventHandler();
 		
 		if (m_bIsCTFEvent || bDeathmatch || c_team->bteam || bShinning || _drop_inhib || _candy_boost ||
 			_revelation || _city_teleport || m_bHappyHour || m_bFuryHour)
@@ -5276,7 +5275,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				cReadModeA = 0;
 				break;
 
-				case 44:
+			case 44:
 				// AdminUserLevel
 				if (_bGetIsStringIsNumber(token) == FALSE) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName); 
@@ -5287,8 +5286,8 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				}
 				m_pClientList[iClientH]->m_iAdminUserLevel = 0; //Default it to 0
 				if (atoi(token) > 0) {
-				for (i = 0; i < DEF_MAXADMINS; i++) {
-					if(strlen(m_stAdminList[i].m_cGMName) == 0) break; //No more GM's on list
+					for (i = 0; i < DEF_MAXADMINS; i++) {
+						if(strlen(m_stAdminList[i].m_cGMName) == 0) break; //No more GM's on list
 						if ((strlen(m_stAdminList[i].m_cGMName)) == (strlen(m_pClientList[iClientH]->m_cCharName))) {
 							if(memcmp(m_stAdminList[i].m_cGMName,m_pClientList[iClientH]->m_cCharName,strlen(m_pClientList[iClientH]->m_cCharName)) == 0){
 								m_pClientList[iClientH]->m_iAdminUserLevel = atoi(token);
@@ -7605,7 +7604,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		}
 
 		else if (memcmp(cp, "/polymorph ", 11) == 0) {
-			AdminOrder_Polymorph(iClientH, cp, dwMsgSize - 21);
+			//AdminOrder_Polymorph(iClientH, cp, dwMsgSize - 21);
 			
 		}
 
@@ -8002,7 +8001,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		}
 
 		else if (memcmp(cp, "/banpj ", 7) == 0) { // MORLA - 2.12 Cagar pc del player
-			//AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
+			AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
 			
 		}
 
@@ -8386,7 +8385,6 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 			else{
 				if ((sAbsX > 1) || (sAbsY > 1)) wType = 0;
 			}
-			//if ((sAbsX > 1) || (sAbsY > 1)) wType = 0;
 		}
 		else{
 			cDir = m_Misc.cGetNextMoveDir(sX, sY, dX, dY);
@@ -9897,7 +9895,15 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 			m_pClientList[iAttackerH]->m_iDGKills++;
 
 			m_pClientList[iAttackerH]->m_iEnemyKillCount += 5;
-			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLREWARD, iClientH, NULL, NULL, NULL);
+			if (m_pClientList[iAttackerH]->m_iEnemyKillCount > m_pClientList[iAttackerH]->m_iMaxEK)
+			{
+				m_pClientList[iAttackerH]->m_iMaxEK = m_pClientList[iAttackerH]->m_iEnemyKillCount;
+			}
+
+			//SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLREWARD, iClientH, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iAttackerH]->m_iEnemyKillCount, m_pClientList[iAttackerH]->m_iMaxEK, NULL, NULL);
+
+			calcularTop15HB(iAttackerH);
 
 			RequestArenaStatus(iClientH, true);
 			RequestArenaStatus(iAttackerH, true);
@@ -14335,7 +14341,7 @@ void CGame::ToggleWhisperPlayer(int iClientH, char * pMsg, DWORD dwMsgSize)
 			if (i == iClientH) {
 				delete pStrTok;
 				// Whisper self XenX
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You shouldnt talk to yourself!");
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You shouldn't talk to yourself!");
 				return;
 			}
 			m_pClientList[iClientH]->m_iWhisperPlayerIndex = i;
@@ -15777,7 +15783,7 @@ void CGame::LocalSavePlayerData(int iClientH)
  char * pData, * cp, cFn[256], cDir[256], cTxt[256], cCharDir[256];
  int    iSize;
  FILE * pFile;
- SYSTEMTIME SysTime;
+ //SYSTEMTIME SysTime;
 
 	// ·Î±× ¼­¹ö·ÎÀÇ ¿¬°áÀÌ Á¾·áµÇ¾î ÀÓ½Ã·Î °ÔÀÓ¼­¹ö ³»ÀÇ Æú´õ¿¡ ÀúÀåÇÑ´Ù. 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -15789,26 +15795,24 @@ void CGame::LocalSavePlayerData(int iClientH)
 	cp = (char *)(pData);
 	iSize = _iComposePlayerDataFileContents(iClientH, cp);
 
-	GetLocalTime(&SysTime);
-	ZeroMemory(cCharDir, sizeof(cDir));
-	wsprintf(cCharDir, "Character_%d_%d_%d_%d", SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+	//GetLocalTime(&SysTime);
+	//ZeroMemory(cCharDir, sizeof(cDir));
+	//wsprintf(cCharDir, "Character_%d_%d_%d_%d", SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
 
-	ZeroMemory(cDir, sizeof(cDir));
+	//ZeroMemory(cDir, sizeof(cDir));
 	ZeroMemory(cFn, sizeof(cFn));
-	strcat(cFn,cCharDir);
-	strcat(cFn,"\\");
-	strcat(cFn,"\\");					  
+	strcat(cFn,"..\\Character");
+	strcat(cFn,"\\");			  
 	wsprintf(cTxt, "AscII%d", (unsigned char)m_pClientList[iClientH]->m_cCharName[0]);
 	strcat(cFn, cTxt);
-	strcpy(cDir, cFn);
-	strcat(cFn,"\\");
+	//strcpy(cDir, cFn);
 	strcat(cFn,"\\");					  
 	strcat(cFn, m_pClientList[iClientH]->m_cCharName);
 	strcat(cFn, ".txt");
 
 	// µð·ºÅä¸®¸¦ ¸¸µç´Ù.
-	_mkdir(cCharDir);
-	_mkdir(cDir);
+	//_mkdir(cCharDir);
+	//_mkdir(cDir);
 
 	if (iSize == 0) {
 		PutLogList("(!) Character data body empty: Cannot create & save temporal player data file.");
@@ -16005,7 +16009,7 @@ void CGame::OnSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam)
  int iLogSockH, iRet;
 
 	iTmp = (WM_ONLOGSOCKETEVENT + 1);
-	iLogSockH = message - iTmp;
+	iLogSockH = (int)(message - iTmp);
 	
 	if (m_pSubLogSock[iLogSockH] == NULL) return;
 
@@ -16563,6 +16567,8 @@ void CGame::AdminOrder_EnableAdminCommand(int iClientH, char *pData, DWORD dwMsg
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((dwMsgSize)	<= 0) return;
 
+	if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) return;
+
 	ZeroMemory(cBuff, sizeof(cBuff));
 	memcpy(cBuff, pData, dwMsgSize);
 	pStrTok = new class CStrTok(cBuff, seps);
@@ -16576,10 +16582,6 @@ void CGame::AdminOrder_EnableAdminCommand(int iClientH, char *pData, DWORD dwMsg
 		if (strcmp(token, m_cSecurityNumber) == 0) {
 			m_pClientList[iClientH]->m_bIsAdminCommandEnabled = TRUE;
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Admin commands ENABLED!");
-		}
-		else {
-			wsprintf(G_cTxt, "(%s) Player(%s) attempts to access /enableadmincommand with %s", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, token);
-			PutHackLogFileList(G_cTxt);
 		}
 	}
 }
@@ -17496,19 +17498,19 @@ void CGame::RemoveClientShortCut(int iClientH)
 {
  int i;
 
-	for (i = 0; i < DEF_MAXCLIENTS+1; i++)
-	if (m_iClientShortCut[i] == iClientH) {
-		m_iClientShortCut[i] = 0;
-		goto RCSC_LOOPBREAK;
-	}
+	 for (i = 0; i < DEF_MAXCLIENTS + 1; i++) {
+		 if (m_iClientShortCut[i] == iClientH) {
+			 m_iClientShortCut[i] = 0;
+			 break;
+		 }
+	 }
 
-RCSC_LOOPBREAK:;
-
-	for (i = 0; i < DEF_MAXCLIENTS; i++)
-	if ((m_iClientShortCut[i] == 0) && (m_iClientShortCut[i+1] != 0)) {
-		m_iClientShortCut[i] = m_iClientShortCut[i+1];
-		m_iClientShortCut[i+1] = 0;
-	}
+	 for (i = 0; i < DEF_MAXCLIENTS; i++) {
+		 if ((m_iClientShortCut[i] == 0) && (m_iClientShortCut[i + 1] != 0)) {
+			 m_iClientShortCut[i] = m_iClientShortCut[i + 1];
+			 m_iClientShortCut[i + 1] = 0;
+		 }
+	 }
 }
 
 void CGame::RequestChangePlayMode(int iClientH)
@@ -17534,7 +17536,8 @@ void CGame::RequestChangePlayMode(int iClientH)
 		SendNotifyMsg(NULL,iClientH,DEF_NOTIFY_CHANGEPLAYMODE,NULL,NULL,NULL,m_pClientList[iClientH]->m_cLocation);
 		SendEventToNearClient_TypeA(iClientH,DEF_OWNERTYPE_PLAYER,MSGID_EVENT_MOTION,100,NULL,NULL,NULL);
 	}
-	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
+	//bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
+	LocalSavePlayerData(iClientH);
 }
 
 void CGame::RequestRango(int iClientH, int iObjectID)
@@ -18073,7 +18076,8 @@ void CGame::ForceChangePlayMode(int iClientH)
 	SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 	
 	//DeleteClient(iClientH, TRUE, TRUE);
-	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
+	//bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
+	LocalSavePlayerData(iClientH);
 }
 
 // v2.15 2002-5-21
@@ -24989,7 +24993,8 @@ void CGame::AdminOrder_BanIP(int iClientH, char *pData, DWORD dwMsgSize)
 			wsprintf(G_cTxt,"<%d> Client IP Banned: (%s)", i, cIPtoBan);
 			PutLogList(G_cTxt);
 				//modifys cfg file
-				fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
+				fprintf(pFile, "banned-ip = %s", cIPtoBan);
+				fprintf(pFile, "\n");
 				fclose(pFile);
 			//updates BannedList.cfg on the server
 			LocalUpdateConfigs(3);
@@ -25011,7 +25016,7 @@ void CGame::AdminOrder_BanPj(int iClientH, char* pData, DWORD dwMsgSize) // MORL
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((dwMsgSize)	<= 0) return;
 
-	if (m_pClientList[iClientH]->m_iAdminUserLevel < 3) return;
+	if (m_pClientList[iClientH]->m_iAdminUserLevel < 7) return;
 
 	ZeroMemory(cPlayerName, sizeof(cPlayerName));
 	ZeroMemory(cBuff, sizeof(cBuff));
@@ -27561,18 +27566,18 @@ BOOL CGame::bDecodeTeleportList(char *pFn)
 
         delete cp;
 	delete pStrTok;
-
+	fclose(pFile);
+	}
 	if ((cReadModeA != 0) || (cReadModeB != 0) || (iTeleportConfigListIndex < 0) || (iTeleportConfigListIndex >= DEF_MAXTELEPORTLIST)) {
 		PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file contents error!");
 		return FALSE;
 	}
 
-        if (pFile != NULL) fclose(pFile);
+
 	wsprintf(cTxt, "(!) TELEPORT-LIST(Total:%d) configuration - success!", iTeleportConfigListIndex);
 	PutLogList(cTxt);
 
 	return TRUE;
-}
 }
 
 void CGame::RequestTeleportListHandler(int iClientH, char* pData, DWORD dwMsgSize)
@@ -27886,7 +27891,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 
 	switch (iOption1) {
 	case 1:
-		LearnAllMagics(iClientH);
+		//LearnAllMagics(iClientH);
 		break;
 
 	case 2: // GM Order = Enable Attacks
@@ -28203,7 +28208,8 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 					ShowClientMsg(iClientH, cMsg);
 					wsprintf(G_cTxt, "<%d> Client IP Banned: (%s)", i, cIPtoBan);
 					PutLogList(G_cTxt);
-					fprintf(pFile, "banned-ip = %s\n", cIPtoBan);
+					fprintf(pFile, "banned-ip = %s", cIPtoBan);
+					fprintf(pFile, "\n");
 					fclose(pFile);
 					LocalUpdateConfigs(3);
 					DeleteClient(i, TRUE, TRUE);
@@ -28532,7 +28538,7 @@ void CGame::AdminOrder_AddGM(int iClientH, char* pData, DWORD dwMsgSize)
 			wsprintf(G_cTxt, "<%d> Added new GM: (%s)", i, cNickName);
 			PutLogList(G_cTxt);
 			//modifys cfg file
-			fprintf(pFile, "\nverified-admin = %s", cNickName);
+			fprintf(pFile, "verified-admin = %s", cNickName);
 			fprintf(pFile, "\n");
 			fclose(pFile);
 			//updates AdminList.cfg on the server
@@ -29094,6 +29100,11 @@ void CGame::ManageFuryHour()
 
 void CGame::minimap_clear(int client)
 {
+	char cData[56];
+	DWORD* dwp;
+	WORD* wp;
+	char* cp;
+	int* ip;
 	auto p = m_pClientList[client];
 	if (!p) return;
 
@@ -29106,12 +29117,6 @@ void CGame::minimap_clear(int client)
 			p->IsInMap("middled1n") ||
 			p->IsInMap("icebound"))
 		{
-			char cData[56];
-			DWORD* dwp;
-			WORD* wp;
-			char* cp;
-			int* ip;
-
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
@@ -29169,12 +29174,6 @@ void CGame::minimap_clear(int client)
 			p->IsInMap("middled1n") ||
 			p->IsInMap("icebound"))
 		{
-			char cData[56];
-			DWORD* dwp;
-			WORD* wp;
-			char* cp;
-			int* ip;
-
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
@@ -29207,6 +29206,12 @@ void CGame::minimap_clear(int client)
 
 void CGame::minimap_update(int client)
 {
+	char cData[56];
+	DWORD* dwp;
+	WORD* wp;
+	char* cp;
+	int* ip;
+	short* sp;
 	auto p = m_pClientList[client];
 	if (!p) return;
 
@@ -29219,13 +29224,6 @@ void CGame::minimap_update(int client)
 			p->IsInMap("middled1n") ||
 			p->IsInMap("icebound"))
 		{
-			char cData[56];
-			DWORD* dwp;
-			WORD* wp;
-			char* cp;
-			int* ip;
-			short* sp;
-
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
@@ -29290,13 +29288,6 @@ void CGame::minimap_update(int client)
 			p->IsInMap("middled1n") ||
 			p->IsInMap("icebound"))
 		{
-			char cData[56];
-			DWORD* dwp;
-			WORD* wp;
-			char* cp;
-			int* ip;
-			short* sp;
-
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);

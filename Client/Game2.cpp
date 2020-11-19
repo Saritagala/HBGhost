@@ -8149,19 +8149,19 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		for (i = 0; i < 13; i++) {
 			if (((i + m_stDialogBoxInfo[57].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView] != NULL))
 			{
-				iDiscountRatio = 0;
+				/*iDiscountRatio = 0;
 				dTmp1 = (double)iDiscountRatio;
 				dTmp2 = dTmp1 / 100.0f;
 				dTmp1 = (double)m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice;
 				dTmp3 = dTmp1 * dTmp2;
-				iDiscountCost = (int)dTmp3;
-				iCost = (int)(m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice);
+				iDiscountCost = (int)dTmp3;*/
+				iCost = m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice;
 
-				if (iCost < (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2))
-					iCost = (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2) - 1;
+				/*if (iCost < (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2))
+					iCost = (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice / 2) - 1;*/
 
 				ZeroMemory(cTemp, sizeof(cTemp));
-				wsprintf(cTemp, "%6d", iCost);
+				wsprintf(cTemp, "%d", iCost);
 				if (iCost != 0) {
 					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
 						PutAlignedString(sX + 148, sX + 260, sY + i * 18 + 65, cTemp, 255, 255, 255);
@@ -8209,17 +8209,19 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		PutString(sX + 90, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 		PutString(sX + 91, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 
-		iDiscountRatio = 0;
+		/*iDiscountRatio = 0;
 		dTmp1 = (double)iDiscountRatio;
 		dTmp2 = dTmp1 / 100.0f;
 		dTmp1 = (double)m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice;
 		dTmp3 = dTmp1 * dTmp2;
-		iDiscountCost = (int)dTmp3;
-		iCost = (int)(m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice * ((100 + m_cDiscount) / 100.0f));
-		iCost = iCost - iDiscountCost;
+		iDiscountCost = (int)dTmp3;*/
+		//iCost = (int)(m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice * ((100 + m_cDiscount) / 100.0f));
+		//iCost = iCost - iDiscountCost;
 
-		if (iCost < (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2))
-			iCost = (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2) - 1;
+		iCost = m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice;
+
+		/*if (iCost < (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2))
+			iCost = (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice / 2) - 1;*/
 
 		wsprintf(cTemp, "%d Points", iCost);
 		//": %d Points"
@@ -15059,7 +15061,7 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	SYSTEMTIME SysTime;
 	GetLocalTime(&SysTime);
 	ZeroMemory(G_cTxt, sizeof(G_cTxt));
-	wsprintf(G_cTxt, "%2d:%2d:%2d", SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
+	wsprintf(G_cTxt, "%.2d:%.2d:%.2d", SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 	PutString(sX + 23, sY + 204, G_cTxt, RGB(255, 255, 0));
 	
 
@@ -17248,9 +17250,9 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	short * sp;
 	DWORD * dwp;
 	WORD  * wp;
-	int i, j, *ip, iClass;
+	int i, j, *ip, iClass, wCost;
 
-	DWORD dwCount, wCost;
+	DWORD dwCount;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	BOOL  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
@@ -17309,8 +17311,8 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	cItemColor = *cp; // v1.4
 	cp++;
 
-	dwp = (DWORD *)cp;
-	wCost = *dwp;
+	ip = (int *)cp;
+	wCost = *ip;
 	cp += 4;
 
 	sp = (short*)cp;

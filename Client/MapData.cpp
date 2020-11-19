@@ -1130,7 +1130,7 @@ void CMapData::ShiftMapData(char cDir)
 	switch (cDir) {
 #ifdef RES_HIGH
 	//Magn0S saving Centuu
-	case 1: //arriba ok
+	/*case 1: //arriba ok
 		for (iy = 0; iy < 20-1; iy++)
 			for (ix = 0; ix < 26; ix++)
 				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
@@ -1178,6 +1178,59 @@ void CMapData::ShiftMapData(char cDir)
 	case 8: //arriba izquierda ok
 		for (iy = 0; iy < 20-1; iy++)
 			for (ix = 0; ix < 26-1; ix++)
+				memcpy(&m_pTmpData[10 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX--;
+		m_sPivotY--;
+		break;*/
+
+	case 1:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotY--;
+		break;
+	case 2:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[10 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX++;
+		m_sPivotY--;
+		break;
+	case 3:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[10 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX++;
+		break;
+	case 4:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[10 + ix - 3][11 + iy - 2], sizeof(class CTile));
+		m_sPivotX++;
+		m_sPivotY++;
+		break;
+	case 5:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][11 + iy - 2], sizeof(class CTile));
+		m_sPivotY++;
+		break;
+	case 6:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[10 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][11 + iy - 2], sizeof(class CTile));
+		m_sPivotX--;
+		m_sPivotY++;
+		break;
+	case 7:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
+				memcpy(&m_pTmpData[10 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX--;
+		break;
+	case 8:
+		for (ix = 0; ix < 26; ix++)
+			for (iy = 0; iy < 20; iy++)
 				memcpy(&m_pTmpData[10 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
 		m_sPivotX--;
 		m_sPivotY--;
