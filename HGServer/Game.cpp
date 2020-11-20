@@ -1646,7 +1646,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	int* ip, i, iTotalItemA, iTotalItemB, iSize, iRet;
 	SYSTEMTIME SysTime;
 	char* pBuffer = NULL;
-	int iMapSide, iMapSide2;
+	int iMapSide;
 	BOOL bIsItemListNull;
 	POINT TempItemPosList[DEF_MAXITEMS];
 	bool* bp;
@@ -3416,8 +3416,6 @@ bool CGame::SpecialWeapon_DS(int iClientH)
 
 void CGame::CalcExpStock(int iClientH)
 {
-	BOOL bIsLevelUp;
-	class CItem* pItem;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -7564,7 +7562,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		}
 
 		else if (memcmp(cp, "/createfish ", 12) == 0) {
-			AdminOrder_CreateFish(iClientH, cp, dwMsgSize - 21);
+			//AdminOrder_CreateFish(iClientH, cp, dwMsgSize - 21);
 			
 		}
 
@@ -7671,13 +7669,6 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-#ifdef TEXTOUT
-		else if (memcmp(cp, "/textout", 8) == 0) {
-			TextOut2();
-			ShowClientMsg(iClientH, "Hello World");
-			
-		}
-#endif
 		
 		else if (memcmp(cp, "/endcrusade", 11) == 0) {
 			if (m_pClientList[iClientH]->m_iAdminUserLevel > 2) {
@@ -8000,7 +7991,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-		else if (memcmp(cp, "/banpj ", 7) == 0) { // MORLA - 2.12 Cagar pc del player
+		else if (memcmp(cp, "/bum ", 5) == 0) { // MORLA - 2.12 Cagar pc del player
 			AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
 			
 		}
@@ -8512,12 +8503,6 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 								sType = 96;
 								SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_MAGIC, m_pClientList[iClientH]->m_cMapIndex, sX, sY, dX, dY, (sType + 100), m_pClientList[iClientH]->m_sType);
 								break;
-							}
-							// Critical Attack - Mass-Magic-Missile Aura
-							if (wType >= 20)
-							{
-								sType = 82;
-								SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_MAGIC, m_pClientList[iClientH]->m_cMapIndex, sX, sY, sX, sY, (sType + 100), m_pClientList[iClientH]->m_sType);
 							}
 
 							// Centuu - magic items frozen
@@ -9458,7 +9443,7 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		break;
 	
 	case DEF_COMMONTYPE_REQ_GETFISHTHISTIME:
-		ReqGetFishThisTimeHandler(iClientH);
+		//ReqGetFishThisTimeHandler(iClientH);
 		break;
 	
 	case DEF_COMMONTYPE_REQ_REPAIRITEMCONFIRM:
@@ -9756,8 +9741,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
  short sAttackerWeapon;
  int   * ip, i, iExH;
  BOOL  bIsSAattacked = FALSE;
- char KilledMessage1[45], KilledMessage2[45], KilledMessage3[45], KilledMessage4[45], KilledMessage5[45], KilledMessage6[45];
- int Killedi, KMRand;
+ int Killedi;
 	
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -15780,7 +15764,7 @@ BOOL CGame::bOnClose()
 
 void CGame::LocalSavePlayerData(int iClientH)
 {
- char * pData, * cp, cFn[256], cDir[256], cTxt[256], cCharDir[256];
+ char * pData, * cp, cFn[256], cTxt[256];
  int    iSize;
  FILE * pFile;
  //SYSTEMTIME SysTime;
@@ -15838,7 +15822,7 @@ void CGame::LocalSavePlayerData(int iClientH)
 void CGame::CheckFireBluring(char cMapIndex, int sX, int sY)
 {
  int ix, iy, iItemNum;
-  short sSpr, sSprFrame, sItemID;
+  short sItemID;
  char  cItemColor;
  class CItem * pItem;
  DWORD dwItemAttr;
@@ -16560,7 +16544,7 @@ void CGame::RequestCheckAccountPasswordHandler(char *pData, DWORD dwMsgSize)
 
 void CGame::AdminOrder_EnableAdminCommand(int iClientH, char *pData, DWORD dwMsgSize)
 {
- char   * token, cBuff[256], len;
+ char   * token, cBuff[256];
  char   seps[] = "= \t\n";
  class  CStrTok * pStrTok;
 
@@ -16589,14 +16573,13 @@ void CGame::AdminOrder_EnableAdminCommand(int iClientH, char *pData, DWORD dwMsg
 void CGame::AdminOrder_CreateItem(int iClientH, char *pData, DWORD dwMsgSize)
 {
  char   seps[] = "= \t\n";
- char   * cp, * token, cBuff[256], cItemName[256], cData[256], cTemp[256], cAttribute[256], cValue[256];
+ char   * token, cBuff[256], cItemName[256], cData[256], cTemp[256], cAttribute[256], cValue[256];
  SYSTEMTIME SysTime;
  class  CStrTok * pStrTok;
  class  CItem * pItem;
- short  * sp;
- int    iRet, iTemp, iEraseReq, iValue;
- DWORD * dwp;
- WORD  * wp, wTemp;
+ int    iTemp, iEraseReq, iValue;
+
+ WORD  wTemp;
  double dV1, dV2, dV3;
  
 	// if the client doesnt exist than no effect.
@@ -16747,7 +16730,7 @@ void CGame::AdminOrder_CreateItem(int iClientH, char *pData, DWORD dwMsgSize)
 void CGame::AdminOrder_CreateFragileItem(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	char   seps[] = "= \t\n";
-	char* token, cBuff[256], cItemName[256], cTemp[256];
+	char* token, cBuff[256], cItemName[256];
 	class  CStrTok* pStrTok;
 	class  CItem* pItem;
 	int  iEraseReq;
@@ -19417,7 +19400,7 @@ void CGame::AdminOrder_Pushplayer(int iClientH, char * pData, DWORD dwMsgSize)
 	//Teleports a Defined Player to Defined Destination
 	// /push playername mapname sX dX
  char   seps[] = "= \t\n";
- char   * token, cBuff[256], cMapName[21], cName[11], cTargetName[11];
+ char   * token, cBuff[256], cMapName[21], cTargetName[11];
  class  CStrTok * pStrTok;
  int dX, dY;
   int i, j;
@@ -19664,7 +19647,7 @@ void CGame::AdminOrder_CleanMap(int iClientH, char * pData, DWORD dwMsgSize)
 	BOOL bFlag = FALSE;	//Used to check if we are on the map we wanna clear
 	int i;
 	CItem *pItem;
-	short sRemainItemSprite, sRemainItemSpriteFrame, dX, dY, sRemainItemID;
+	short dX, dY, sRemainItemID;
 	char cRemainItemColor, len;
 	DWORD dwRemainItemAttr;
 
@@ -24031,7 +24014,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
  WORD  * wp;
  char  * cp, cDestMapName[11], cDir, cMapIndex, cPoints;
  short * sp, sX, sY, sSummonPoints, sV1, aX, aY;
- int   * ip, i, iRet, iSize, iDestX, iDestY, iExH, iMapSide, iTemp, iTemp2, iMapside, iMapside2, iQuestNumber, iQuestType, j;
+ int   * ip, i, iRet, iSize, iDestX, iDestY, iExH, iMapSide, iTemp, iTemp2, iMapside, iQuestNumber, iQuestType, j;
  BOOL    bRet, bIsLockedMapNotify;
  SYSTEMTIME SysTime;
 
@@ -25257,7 +25240,7 @@ void CGame::AFKChecker()
 void CGame::AdminOrder_Revive(int iClientH, char * pData, DWORD dwMsgSize)
 {
 	char   seps[] = "= \t\n";
-	char   * token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11];
+	char   * token, cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11];
 	class  CStrTok * pStrTok;
 	register int i;
 	int sAttackerWeapon, sDamage, sHP;
@@ -25853,11 +25836,11 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 	if (m_bNpcItemConfig == TRUE) {
 
 		class    CNpcItem	CTempNpcItem;
-		int    iResult;
+		
 		int    iNpcIndex;
 		int    iNumNpcitem;
 		int    iIndex;
-		int    iDiceValue;
+		
 		int		iItemID = 0;
 		int		iNum = 0;
 		BOOL	bFirstDice = FALSE, bSecondDice = FALSE;
@@ -26112,7 +26095,7 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 **********************************************************************************************************************/
 int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char* pData)
 {
-	register int* ip, ix, iy, iSize, iTileExists, iIndex;
+	register int* ip, ix, iy, iSize, iTileExists;
 	class CTile/** pTileSrc,*/ * pTile;
 	unsigned char ucHeader;
 	short* sp, * pTotal;
@@ -27230,7 +27213,7 @@ void CGame::_CreateTopPlayers() // MORLA 2.4 - Guarda el archivo TopPlayers
 
 void CGame::ordenarTop15HB(int iClientH) // MORLA 2.4 - Calcular si tiene mas Deaths
 {
-	int aux1, p, q, i;
+	int aux1, p, q;
 	char aux3[11];
 
 	for (p = 1; p <= 14; p++)
@@ -27288,16 +27271,11 @@ void CGame::calcularTop15HB(int iClientH) // MORLA 2.4 - Calcular si tiene mas D
 
 void CGame::PlayerCommandCheckAdmins(int iClientH)
 {//An Acidx Production - Last Updated:Aug.29.2006
-	char  cNotifyMessage[256], cNotifyMessage2[256], cGMName[12];
+	char  cNotifyMessage[256];
 	int i, x;
-	WORD* wp;
-	char* cp;
-	char cBuff[256];
-	cGMName[12];
 	ZeroMemory(cNotifyMessage, sizeof(cNotifyMessage));
-	ZeroMemory(cNotifyMessage2, sizeof(cNotifyMessage2));
 	x = 0;
-	for (i = 0; i < DEF_MAXCLIENTS; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
 		if (m_pClientList[i] != NULL) {
 			if (m_pClientList[i]->m_iAdminUserLevel > 1) {
 				wsprintf(cNotifyMessage, "Active Admin: %s", m_pClientList[i]->m_cCharName);
@@ -27305,8 +27283,9 @@ void CGame::PlayerCommandCheckAdmins(int iClientH)
 				x++;
 			}
 		}
-	wsprintf(cNotifyMessage2, "%i Admins Are Online", x);
-	SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cNotifyMessage2);
+	}
+	wsprintf(cNotifyMessage, "%i Admins Are Online", x);
+	SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cNotifyMessage);
 }
 
 //Magn0S:: Added Teleport List
@@ -28930,11 +28909,9 @@ void CGame::RequestSetTrapHandler(int iClientH, char* pData)
 
 void CGame::NotifyEvents()
 {
-	short* sps;
 	DWORD* dwp;
 	WORD* wp;
 	char* cp;
-	int* ip;
 	bool* bp;
 
 	auto pBuffer = new char[DEF_MSGBUFFERSIZE + 1];
@@ -29328,11 +29305,9 @@ void CGame::minimap_update(int client)
 //Magn0S:: Set Map Restriction notification
 void CGame::NotifyMapRestrictions(int iClientH, bool bNotify)
 {
-	short* sps;
 	DWORD* dwp;
 	WORD* wp;
 	char* cp;
-	int* ip;
 	bool* bp;
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -29442,9 +29417,9 @@ void CGame::NotifyMapRestrictions(int iClientH, bool bNotify)
 // Capture the Flag
 void CGame::UpdateEventStatus()
 {
-	char* cp, cData[255], cTotal = 0, * pTotal;
+	char* cp, cData[255], cTotal = 0;
 	int iSize = 0, i, iRet;
-	short* sp;
+	
 	DWORD* dwp;
 	WORD* wp;
 
@@ -29589,12 +29564,10 @@ void CGame::LearnAllMagics(int iClientH)
 //Magn0S:: Set Map Restriction notification
 void CGame::NotifyPlayerAttributes(int iClientH)
 {
-	short* sps;
 	DWORD* dwp;
 	WORD* wp;
 	char* cp;
 	int* ip, i;
-	bool* bp;
 	i = 0;
 
 	auto player = m_pClientList[iClientH];

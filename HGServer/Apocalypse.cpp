@@ -864,7 +864,7 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 {
 	if (m_pMapList[MapIndex]->m_iTotalActiveObject != 0) return;
 	char cName[21], cNpcName[21], cNpcWaypoint[11];
-	int x, i5;
+	int x;
 	int iNamingValue;
 	ZeroMemory(cNpcWaypoint, sizeof(cNpcWaypoint));
 
