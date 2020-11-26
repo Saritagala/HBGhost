@@ -102,7 +102,7 @@ unsigned __stdcall ThreadProc(void* ch)
 }
 
 LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
-{	char cWhat[100];
+{	
 	switch (message) {
 
 	case WM_COMMAND: 

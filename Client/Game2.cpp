@@ -8273,7 +8273,7 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		//": %d Points"
 		PutString(sX + 140, sY + 98, cTemp, RGB(45, 25, 25));
 
-		//iTemp = m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100;
+		iTemp = m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100;
 		//wsprintf(cTemp, DRAW_DIALOGBOX_SHOP8, iTemp);
 		//": %d Stone"
 		//PutString(sX + 140, sY + 113, cTemp, RGB(45, 25, 25));
@@ -8323,6 +8323,65 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // *Your STR should be at least %d to use this item."
 			//	bFlagRedShown = TRUE;
 			//}
+			switch (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iReqStat) {
+			case 1://"Available for above Str %d"
+				if (m_iStr < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP15, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 2: // "Available for above Dex %d"
+				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP16, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+				if (m_iDex < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 3: // "Available for above Vit %d"
+				if (m_iVit < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP17, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 4: // "Available for above Int %d"
+				if (m_iInt < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP18, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 5: // "Available for above Mag %d"
+				if (m_iMag < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP19, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 6: // "Available for above Chr %d"
+				if (m_iCharisma < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP20, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+
+			default:
+				break;
+			}
 			break;
 
 		case DEF_EQUIPPOS_LHAND:
@@ -8338,6 +8397,65 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
 			//	bFlagRedShown = TRUE;
 			//}
+			switch (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iReqStat) {
+			case 1://"Available for above Str %d"
+				if (m_iStr < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP15, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 2: // "Available for above Dex %d"
+				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP16, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+				if (m_iDex < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 3: // "Available for above Vit %d"
+				if (m_iVit < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP17, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 4: // "Available for above Int %d"
+				if (m_iInt < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP18, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 5: // "Available for above Mag %d"
+				if (m_iMag < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP19, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 6: // "Available for above Chr %d"
+				if (m_iCharisma < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP20, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+
+			default:
+				break;
+			}
 			break;
 
 		case DEF_EQUIPPOS_HEAD:
@@ -13972,7 +14090,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 		//": %d Gold"
 		PutString(sX + 140, sY + 98, cTemp, RGB(45, 25, 25));
 
-		//iTemp = m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100;
+		iTemp = m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100;
 		//wsprintf(cTemp, DRAW_DIALOGBOX_SHOP8, iTemp);
 		//": %d Stone"
 		//PutString(sX + 140, sY + 113, cTemp, RGB(45, 25, 25));
@@ -14022,6 +14140,65 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // *Your STR should be at least %d to use this item."
 			//	bFlagRedShown = TRUE;
 			//}
+			switch (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iReqStat) {
+			case 1://"Available for above Str %d"
+				if (m_iStr < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP15, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 2: // "Available for above Dex %d"
+				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP16, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+				if (m_iDex < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 3: // "Available for above Vit %d"
+				if (m_iVit < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP17, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 4: // "Available for above Int %d"
+				if (m_iInt < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP18, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 5: // "Available for above Mag %d"
+				if (m_iMag < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP19, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 6: // "Available for above Chr %d"
+				if (m_iCharisma < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP20, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+
+			default:
+				break;
+			}
 			break;
 
 		case DEF_EQUIPPOS_LHAND:
@@ -14037,6 +14214,65 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
 			//	bFlagRedShown = TRUE;
 			//}
+			switch (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iReqStat) {
+			case 1://"Available for above Str %d"
+				if (m_iStr < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP15, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 2: // "Available for above Dex %d"
+				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP16, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+				if (m_iDex < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 3: // "Available for above Vit %d"
+				if (m_iVit < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP17, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 4: // "Available for above Int %d"
+				if (m_iInt < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP18, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 5: // "Available for above Mag %d"
+				if (m_iMag < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP19, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+			case 6: // "Available for above Chr %d"
+				if (m_iCharisma < m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat)
+				{
+					wsprintf(cTemp, DRAW_DIALOGBOX_SHOP20, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_iQuantStat);
+					PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+					PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+					bFlagRedShown = TRUE;
+				}
+				break;
+
+			default:
+				break;
+			}
 			break;
 
 		case DEF_EQUIPPOS_HEAD:
@@ -14332,57 +14568,9 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					}
 				}
 
-				//if (m_iDownSkillIndex == (i + m_stDialogBoxInfo[15].sView))
-				//	m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutTransSpriteRGB(sX + 215, sY + 27 + (x * 15), 21, 50, 50, 50, m_dwTime);
-				//else m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutSpriteFast(sX + 215, sY + 27 + (x * 15), 20, m_dwTime);
-
 				x++;
 			}
 
-		/*
-		iTotalLines = 0;
-		for (i = 0; i < DEF_MAXSKILLTYPE; i++)
-			if (m_pSkillCfgList[i] != NULL) iTotalLines++;
-
-		if (iTotalLines > 17)
-		{
-			d1 = (double)m_stDialogBoxInfo[15].sView;
-			d2 = (double)(iTotalLines - 17);
-			d3 = (274.0f * d1) / d2;
-			iPointerLoc = (int)d3;
-		}
-		else iPointerLoc = 0;
-		if (iTotalLines > 17)
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 1);
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
-		}
-
-		if (cLB != 0 && iTotalLines > 17)
-		{
-			if ((iGetTopDialogBoxIndex() == 15))
-			{
-				if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 30) && (msY <= sY + 320))
-				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 17);
-					d3 = (d1 * d2) / 274.0f;
-					iPointerLoc = (int)(d3 + 0.5f);
-					if (iPointerLoc > iTotalLines - 17) iPointerLoc = iTotalLines - 17;
-					m_stDialogBoxInfo[15].sView = iPointerLoc;
-				}
-			}
-		}
-		else m_stDialogBoxInfo[15].bIsScrollSelected = FALSE;
-		if (iGetTopDialogBoxIndex() == 15 && msZ != 0)
-		{
-			if (msZ > 0) m_stDialogBoxInfo[15].sView--;
-			if (msZ < 0) m_stDialogBoxInfo[15].sView++;
-			m_DInput.m_sZ = 0;
-		}
-		if (m_stDialogBoxInfo[15].sView < 0) m_stDialogBoxInfo[15].sView = 0;
-		if (iTotalLines > 17 && m_stDialogBoxInfo[15].sView > iTotalLines - 17) m_stDialogBoxInfo[15].sView = iTotalLines - 17;
-		*/
 		break;
 	}
 }

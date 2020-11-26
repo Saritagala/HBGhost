@@ -26957,6 +26957,11 @@ void CGame::NotifyMsgHandler(char * pData)
 			wsprintf(cTxt, "Item upgrade is possible! Points: %d", m_iGizonItemUpgradeLeft);// "Level up!!! Level %d!"
 			AddEventList(cTxt, 10);
 			break;
+		case 11:
+		case 12:
+		case 13:
+			m_iClass = *ip - 10;
+			break;
 		}
 		cp += 4;
 		break;

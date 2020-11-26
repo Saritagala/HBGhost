@@ -374,7 +374,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 	short  sAttackerWeapon;
 	int* ip, i, iQuestIndex, iConstructionPoint, iWarContribution, iMapIndex, j;
 	double dTmp1, dTmp2, dTmp3;
-	char* cp, cData[120], cQuestRemain, cTargetName[21];
+	char* cp, cData[120], cTargetName[21];
 	int iExp;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
@@ -3003,11 +3003,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		class    CNpcItem	CTempNpcItem;
 		int    iResult;
 		int    iNpcIndex;
-		int    iNumNpcitem;
-		int    iIndex;
-		int    iDiceValue;
 
-		int iProb;
 		BOOL	bFirstDice = FALSE, bSecondDice = FALSE;
 
 		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {

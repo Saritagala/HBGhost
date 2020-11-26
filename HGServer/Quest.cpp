@@ -455,7 +455,7 @@ int CGame::__iSearchForQuest(int iClientH, int iWho, int* pQuestType, int* pMode
 // New 14/05/2004
 void CGame::QuestAcceptedHandler(int iClientH)
 {
-	int iIndex, cQuestRemain, i;
+	int iIndex, i;
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -513,7 +513,7 @@ void CGame::QuestAcceptedHandler(int iClientH)
 
 void CGame::_SendQuestContents(int iClientH)
 {
-	int iWho, iIndex, iQuestType, iContribution, iTargetType, iTargetCount, iX, iY, iRange, iQuestCompleted, i, cQuestRemain, iAmount;
+	int iWho, iIndex, iQuestType, iContribution, iTargetType, iTargetCount, iX, iY, iRange, iQuestCompleted, i, iAmount;
 	char cTargetName[21];
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -608,7 +608,7 @@ void CGame::_CheckQuestEnvironment(int iClientH)
 
 BOOL CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 {
-	int iQuestIndex, i;
+	int iQuestIndex;
 	char cTargetName[21];
 
 	if (m_pClientList[iClientH] == NULL) return FALSE;
@@ -660,9 +660,8 @@ BOOL CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 
 int CGame::_iTalkToNpcResult_Cityhall(int iClientH, int* pQuestType, int* pMode, int* pRewardType, int* pRewardAmount, int* pContribution, char* pTargetName, int* pTargetType, int* pTargetCount, int* pX, int* pY, int* pRange)
 {
-	int iQuest, iEraseReq, i;
-	class CItem* pItem;
-	int iExp;
+	int iQuest;
+	
 
 	// Return Code
 	// -1  : ÇöÀç ÀÓ¹« ¼öÇàÁß
@@ -793,14 +792,12 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == TRUE) return;
 
 	char* cp, cData[5000];
-	int  iRet, i;
+	int  iRet;
 	DWORD* dwp;
 	WORD* wp;
 	int* listCount;
 	int* ip;
 
-	int iEraseReq, iExp;
-	class CItem* pItem;
 
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 

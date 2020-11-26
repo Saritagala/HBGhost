@@ -26133,7 +26133,7 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 		}
 		
 		//pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
-		pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + sX + ix + (sY + iy) * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+		pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX + ix) + (sY + iy) * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 
 		//If player not same side and is invied (Beholder Hack)
 		// there is another person on the tiles, and the owner is not the player
@@ -29771,7 +29771,7 @@ void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	cp += 4;
 	m_pClientList[iClientH]->m_iClass = iClass;
 	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 500;
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, iClass + 10, NULL, NULL);
 	switch (iClass) {
 	case 1: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Warrior!"); break;
 	case 2: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!"); break;

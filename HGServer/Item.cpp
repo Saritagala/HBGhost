@@ -1427,12 +1427,9 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 //Hero Code by Zabuza - fixed by Centu
 void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 {
-	int   i, iNum, iRet, iEraseReq;
-	char* cp, cData[256], cItemName[21];
+	int   i, iNum, iEraseReq;
+	char cItemName[21];
 	class CItem* pItem;
-	DWORD* dwp;
-	short* sp;
-	WORD* wp;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
@@ -1672,7 +1669,7 @@ void CGame::GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	int   iAngel, iItemNbe;
 	class CItem* pItem;
 	int   iRet, iEraseReq;
-	short* sp;
+	
 	WORD* wp;
 	int* ip;
 	DWORD* dwp;
@@ -3416,8 +3413,8 @@ void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum, int iPurchase)
 {
 	class CItem* pItem;
-	char* cp, cItemName[21], cData[100];
-	short* sp;
+	char cItemName[21], cData[100];
+	
 	DWORD* dwp, dwItemCount;
 	WORD* wp;
 	int   i, iRet, iEraseReq, iCost;
@@ -4684,11 +4681,11 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 	short sRemainLife;
 	int   iPrice;
 	double d1, d2, d3;
-	char* cp, cItemName[21], cData[120], cItemCategory;
+	char cItemName[21], cData[120], cItemCategory;
 	DWORD* dwp, dwMul1, dwMul2, dwSWEType, dwSWEValue, dwAddPrice1, dwAddPrice2;
 	WORD* wp;
 	int    iEraseReq, iRet;
-	short* sp;
+	
 	BOOL   bNeutral;
 
 
@@ -5154,12 +5151,11 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 {
 	class CItem* pItem;
 	char* cp, cItemName[21], cData[100];
-	short* sp;
-	DWORD* dwp, dwGoldCount, dwItemCount, wTempPrice;
+	
+	DWORD* dwp, dwGoldCount, dwItemCount;
 	WORD* wp;
 	int   i, iRet, iEraseReq, iGoldWeight;
-	int   iCost, iCost2, iDiscountRatio, iDiscountCost;
-	double dTmp1, dTmp2, dTmp3;
+	int   iCost;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -5293,8 +5289,8 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, WORD wObjectID, char* pItemName)
 {
 	int iRet, iEraseReq;
-	short* sp, sOwnerH;
-	char* cp, cOwnerType, cData[100], cCharName[21];
+	short sOwnerH;
+	char cOwnerType, cData[100], cCharName[21];
 	DWORD* dwp;
 	WORD* wp;
 	class CItem* pItem;
@@ -5810,7 +5806,6 @@ int CGame::SetItemCount(int iClientH, int iItemIndex, DWORD dwCount)
 void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 {
 	int i, iRet;
-	short* sp;
 	char cItemID[4], ctr[4];
 	char* cp, cSlateColour, cData[120];
 	BOOL bIsSlatePresent = FALSE;
@@ -7253,8 +7248,7 @@ int CGame::iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char 
 {
 	DWORD* dwp, dwRemainItemAttr;
 	WORD* wp;
-	char* cp;
-	short* sp, sRemainItemSprite, sRemainItemSpriteFrame, sRemainItemID;
+	short sRemainItemID;
 	char  cRemainItemColor, cData[100];
 	int   iRet, iEraseReq;
 	class CItem* pItem;
@@ -8347,12 +8341,10 @@ PID_DROP:;
 
 void CGame::GetRewardMoneyHandler(int iClientH)
 {
-	int iRet, iEraseReq, iWeightLeft, iRewardGoldLeft;
-	DWORD* dwp;
-	WORD* wp;
-	char* cp, cData[100], cItemName[21];
+	int iEraseReq, iWeightLeft, iRewardGoldLeft;
+
+	char cItemName[21];
 	class CItem* pItem;
-	short* sp;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;

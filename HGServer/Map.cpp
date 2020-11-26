@@ -3010,7 +3010,7 @@ void CGame::ClearMap()
 {
 	int i, k, j, m;
 	class CItem* pItem;
-	short sRemainItemSprite, sRemainItemSpriteFrame, sRemainItemID;
+	short sRemainItemID;
 	char cRemainItemColor;
 	DWORD dwRemainItemAttr;
 	for (m = 0; m < DEF_MAXMAPS; m++)
@@ -3055,7 +3055,7 @@ void CGame::ClearMap()
 int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 {
 	register int* ip, ix, iy, iSize, iTileExists;
-	class CTile* pTileSrc, * pTile;
+	class CTile/** pTileSrc, */* pTile;
 	unsigned char ucHeader;
 	short* sp, * pTotal;
 	int iTemp, iTemp2;
@@ -3068,12 +3068,13 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 	cp = (char*)(pData + 2);
 	iSize = 2;
 	iTileExists = 0;
-	pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+	//pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 	// centu - 800x600
 	for (iy = 0; iy < 19; iy++)
 		for (ix = 0; ix < 25; ix++) {
 			//if (((sX + ix) == 100) && ((sY + iy) == 100)) sX = sX;
-			pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+			//pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+			pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX + ix) + (sY + iy) * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 
 			//If player not same side and is invied (Beholder Hack)
 			/*if ((m_pClientList[pTile->m_sOwner] != NULL) && (pTile->m_sOwner != iClientH))
