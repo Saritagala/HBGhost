@@ -3509,6 +3509,11 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		return; // centu - when having an angel, do nothing
 	}
 
+	if ((cStr + cVit + cDex + cInt + cMag + cChar) > m_iGizonItemUpgradeLeft)
+	{
+		return;
+	}
+
 	//if ((cStateChange1 != 0) || (cStateChange2 != 0) || (cStateChange3 != 0)){
 		// Strength UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 127) && (msY <= sY + 133) && (m_cLU_Str < 0))
