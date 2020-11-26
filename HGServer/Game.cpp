@@ -2258,12 +2258,13 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 
 	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
 	{
+		AutoSkill(iClientH);
+		LearnAllMagics(iClientH);
 		m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00040000;
 	}
 
 	if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
-		//AutoSkill(iClientH);
 		SetClass(iClientH);
 	}
 	// new
@@ -24792,7 +24793,6 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 
 	if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
-		//AutoSkill(iClientH);
 		SetClass(iClientH);
 	}
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {
@@ -26095,7 +26095,7 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 **********************************************************************************************************************/
 int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char* pData)
 {
-	register int* ip, ix, iy, iSize, iTileExists;
+	int* ip, ix, iy, iSize, iTileExists;
 	class CTile/** pTileSrc,*/ * pTile;
 	unsigned char ucHeader;
 	short* sp, * pTotal;
@@ -26118,16 +26118,16 @@ int CGame::iComposeMoveMapData(short sX, short sY, int iClientH, char cDir, char
 		if ((ix == -1) || (iy == -1)) break;
 		iIndex++;*/
 
-	for (iy = 0; iy < 20; iy++)
-	for (ix = 0; ix < 26; ix++) {
+	for (iy = 0; iy < 19; iy++)
+	for (ix = 0; ix < 25; ix++) {
 		switch (cDir) {
 			//case 0: break;
 			case 1: if (!(iy <= 0)) continue; break;
-			case 2: if (!(iy <= 0 || ix >= 26 - 1)) continue; break;
-			case 3: if (!(ix >= 26 - 1)) continue; break;
-			case 4: if (!(ix >= 26 - 1 || iy >= 20 - 1)) continue; break;
-			case 5: if (!(iy >= 20 - 1)) continue; break;
-			case 6: if (!(ix <= 0 || iy >= 20 - 1)) continue; break;
+			case 2: if (!(iy <= 0 || ix >= 25 - 1)) continue; break;
+			case 3: if (!(ix >= 25 - 1)) continue; break;
+			case 4: if (!(ix >= 25 - 1 || iy >= 19 - 1)) continue; break;
+			case 5: if (!(iy >= 19 - 1)) continue; break;
+			case 6: if (!(ix <= 0 || iy >= 19 - 1)) continue; break;
 			case 7: if (!(ix <= 0)) continue; break;
 			case 8: if (!(ix <= 0 || iy <= 0)) continue; break;
 		}
@@ -26865,46 +26865,7 @@ void CGame::bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char 
 			SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_cEquipPos, iArmorType, NULL, NULL);
 		}
 	}
-	/*if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH]->m_sUsingWeaponSkill == 14) && (iHammerChance == 100)) {
-		if (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wMaxLifeSpan <= 3500) {
-			iHammerChance = iDice(6, (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wMaxLifeSpan - m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan));
-		}
-		else {
-			iHammerChance = iDice(3, (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wMaxLifeSpan - m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan));
-		}
-		if ((((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 31) ||
-			(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 32) ||
-			(((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4) == 59)) {
-			iItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
-			if ((iItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[iItemIndex] != NULL)) {
-				if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 762) { // GiantBattleHammer
-					iHammerChance /= 4;
-				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 843) { // BarbarianHammer
-					iHammerChance /= 2;
-				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 854) { // KlonessHammer
-					iHammerChance /= 6;
-				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[iItemIndex]->m_sIDnum == 1038) { // StripBarbarian
-					iHammerChance /= 8;
-				}
-			}
-			else {
-				iHammerChance /= 2;
-			}
-			switch (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_sIDnum) {
-			case 621:
-			case 622:
-				iHammerChance = 0;
-				break;
-			}
-			if (m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_wCurLifeSpan >= iHammerChance) {
-				ReleaseItemHandler(sTargetH, iArmorType, TRUE);
-				SendNotifyMsg(NULL, sTargetH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[sTargetH]->m_pItemList[iArmorType]->m_cEquipPos, iArmorType, NULL, NULL);
-			}
-		}
-	}*/
+	
 }
 
 // Wanted System

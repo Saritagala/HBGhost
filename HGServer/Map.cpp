@@ -3070,8 +3070,8 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 	iTileExists = 0;
 	pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 	// centu - 800x600
-	for (iy = 0; iy < 20; iy++)
-		for (ix = 0; ix < 26; ix++) {
+	for (iy = 0; iy < 19; iy++)
+		for (ix = 0; ix < 25; ix++) {
 			//if (((sX + ix) == 100) && ((sY + iy) == 100)) sX = sX;
 			pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
 

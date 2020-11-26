@@ -25826,13 +25826,13 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 				{
 					m_pEffectSpr[0]->PutTransSprite(sX + 157 + i * 109 + SCREENX, sY + 138 + SCREENY, 1, dwTime);
 					DrawObject_OnMove_ForMenu(0, 0, sX + 157 + i * 109 + SCREENX, sY + 138 + SCREENY, FALSE, dwTime, 0, 0);
-					PutString(sX + 112 + i * 109 + SCREENX, sY + 179 - 9 + SCREENY, m_pCharList[i]->m_cName, RGB(51, 0, 51));//25,35,25
+					PutString(sX + 112 + i * 109 + SCREENX, sY + 179 - 9 + SCREENY, m_pCharList[i]->m_cName, RGB(4, 0, 50));//25,35,25
 					int	_sLevel = m_pCharList[i]->m_sLevel;
 					wsprintf(G_cTxt, "%d", _sLevel);
-					PutString(sX + 138 + i * 109 + SCREENX, sY + 196 - 10 + SCREENY, G_cTxt, RGB(51, 0, 51)); //25,35,25
+					PutString(sX + 138 + i * 109 + SCREENX, sY + 196 - 10 + SCREENY, G_cTxt, RGB(4, 0, 50)); //25,35,25
 					//wsprintf(G_cTxt, "%d", m_pCharList[i]->m_iExp); //aca
 					DisplayCommaNumber_G_cTxt(m_pCharList[i]->m_iExp);
-					PutString(sX + 138 + i * 109 + SCREENX, sY + 211 - 10 + SCREENY, G_cTxt, RGB(51, 0, 51)); //25,35,25
+					PutString(sX + 138 + i * 109 + SCREENX, sY + 211 - 10 + SCREENY, G_cTxt, RGB(4, 0, 50)); //25,35,25
 				}
 				iTemp2 = m_pCharList[i]->m_iYear * 1000000 + m_pCharList[i]->m_iMonth * 60000 + m_pCharList[i]->m_iDay * 1700 + m_pCharList[i]->m_iHour * 70 + m_pCharList[i]->m_iMinute;
 				if (iTemp1 < iTemp2)

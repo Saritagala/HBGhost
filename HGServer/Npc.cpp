@@ -1228,6 +1228,13 @@ void CGame::DeleteNpc(int iNpcH)
 
 		}
 
+		if (iItemID < 0) 
+		{
+			delete m_pNpcList[iNpcH];
+			m_pNpcList[iNpcH] = NULL;
+			return;
+		}
+
 		dwCount = 1;
 		if (iNumItem > 0) {
 			GetLocalTime(&SysTime);
@@ -1859,10 +1866,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		// 35% Drop 60% of that is gold
 		// 35% Chance of drop (35/100)
 		if (iDice(1, 10000) <= m_iGoldRate) { // Centuu : Agregado para controlar el drop de oro.
-			switch (iDice(1, 2)) {
-			case 1: iItemID = 90; break; // Gold: (35/100) * (60/100) = 21%
-			case 2: iItemID = 77; break; // Arrow
-			}
+			iItemID = 90; // Gold: (35/100) * (60/100) = 21%
+			
 			// If a non-existing itemID is given create no item 
 			pItem = new class CItem;
 			if (_bInitItemAttr(pItem, iItemID) == FALSE) {
@@ -1881,7 +1886,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			}
 
 			//Magn0S:: Multiplicador de Gold
-			pItem->m_dwCount *= 10;
+			//pItem->m_dwCount *= 10;
 		}
 		else {
 
@@ -2979,6 +2984,7 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 
 		delete pStrTok;
 		delete[] cp;
+		fclose(pFile);
 	}
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		PutLogList("(!!!) CRITICAL ERROR! NPCITEM configuration file contents error!");
@@ -3032,13 +3038,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 				PutLogList(G_cTxt);
 
 			}
-			else {
-				switch (iDice(1, 2))
-				{
-					case 1: iItemID = 90; break;
-					case 2: iItemID = 77; break;
-				}
-			}
+			else iItemID = -1;
 			break;
 
 		case 2:
@@ -5806,8 +5806,8 @@ bool CGame::bDecodeDropManagerFile(char* pFn)
 			token = pStrTok->pGet();
 		}
 		delete[] cp;
+		fclose(pFile);
 	}
-	if (pFile) fclose(pFile);
 
 	return true;
 }

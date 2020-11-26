@@ -1184,53 +1184,53 @@ void CMapData::ShiftMapData(char cDir)
 		break;*/
 
 	case 1:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
 		m_sPivotY--;
 		break;
 	case 2:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[10 + ix - 3][10 + iy - 2], sizeof(class CTile));
 		m_sPivotX++;
 		m_sPivotY--;
 		break;
 	case 3:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[10 + ix - 3][10 + iy - 2], sizeof(class CTile));
 		m_sPivotX++;
 		break;
 	case 4:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[10 + ix - 3][11 + iy - 2], sizeof(class CTile));
 		m_sPivotX++;
 		m_sPivotY++;
 		break;
 	case 5:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][11 + iy - 2], sizeof(class CTile));
 		m_sPivotY++;
 		break;
 	case 6:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[10 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][11 + iy - 2], sizeof(class CTile));
 		m_sPivotX--;
 		m_sPivotY++;
 		break;
 	case 7:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[10 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
 		m_sPivotX--;
 		break;
 	case 8:
-		for (ix = 0; ix < 26; ix++)
-			for (iy = 0; iy < 20; iy++)
+		for (ix = 0; ix < 25; ix++)
+			for (iy = 0; iy < 19; iy++)
 				memcpy(&m_pTmpData[10 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
 		m_sPivotX--;
 		m_sPivotY--;
@@ -2177,8 +2177,8 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					m_dwFrameCheckTime = dwRealTime;
 				}
 				if (m_pData[dX][dY].m_cOwnerFrame > m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sMaxFrame)
-				{	if (   (m_sRectX <= dX) && ((m_sRectX + 26) >= dX)
-						&& (m_sRectY <= dY) && ((m_sRectY + 20) >= dY))
+				{	if (   (m_sRectX <= dX) && ((m_sRectX + 25) >= dX)
+						&& (m_sRectY <= dY) && ((m_sRectY + 19) >= dY))
 						// (!) Ower -> DeadOwner 004971AB
 					{	if (m_pData[dX][dY].m_cOwnerAction == DEF_OBJECTDYING) //10
 						{	m_pData[dX][dY].m_wDeadObjectID        = m_pData[dX][dY].m_wObjectID;

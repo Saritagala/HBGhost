@@ -82,9 +82,9 @@ unsigned __stdcall ThreadProc(void* ch)
 		{
 			if (G_pGame->m_pMapList[a] != NULL)
 			{
-				for (register int iy = 0; iy < G_pGame->m_pMapList[a]->m_sSizeY; iy++)
+				for (int iy = 0; iy < G_pGame->m_pMapList[a]->m_sSizeY; iy++)
 				{
-					for (register int ix = 0; ix < G_pGame->m_pMapList[a]->m_sSizeX; ix++)
+					for (int ix = 0; ix < G_pGame->m_pMapList[a]->m_sSizeX; ix++)
 					{
 						pTile = (class CTile*)(G_pGame->m_pMapList[a]->m_pTile + ix + iy * G_pGame->m_pMapList[a]->m_sSizeY);
 						if ((pTile != NULL) && (pTile->m_sOwner != NULL) && (pTile->m_cOwnerClass == NULL))

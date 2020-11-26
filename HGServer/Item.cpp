@@ -8458,15 +8458,9 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 	int iTemp;
 
 	if (m_pClientList[iAttackerH] == NULL) return;
+	if (m_pClientList[iTargetH] == NULL) return;
 
-	switch (cOwnerType) {
-	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[iTargetH] == NULL) return;
-		break;
-
-	case DEF_OWNERTYPE_NPC:
-		return;
-	}
+	if (iAttackerH == iTargetH) return;
 
 	if (m_pClientList[iAttackerH]->m_cSide == m_pClientList[iTargetH]->m_cSide) return;
 

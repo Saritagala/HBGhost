@@ -3200,11 +3200,52 @@ void CGame::ItemEquipHandler(char cItemID)
 		AddEventList(BITEMDROP_CHARACTER1, 10); //"The item is exhausted. Fix it to use it."
 		return;
 	}
-	if (m_pItemList[cItemID]->m_wWeight / 100 > (m_iStr + m_iAngelicStr))
-	{
-		AddEventList(BITEMDROP_CHARACTER2, 10);
-		return;
+
+	switch (m_pItemList[cItemID]->m_iReqStat) {
+	case 1://"Available for above Str %d"
+		if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
+		{
+			AddEventList("You need more STR to equip this item.", 10);
+			return;
+		}
+		break;
+	case 2: // "Available for above Dex %d"
+		if (m_iDex < m_pItemList[cItemID]->m_iQuantStat)
+		{
+			AddEventList("You need more DEX to equip this item.", 10);
+			return;
+		}
+		break;
+	case 3: // "Available for above Vit %d"
+		if (m_iVit < m_pItemList[cItemID]->m_iQuantStat)
+		{
+			AddEventList("You need more VIT to equip this item.", 10);
+			return;
+		}
+		break;
+	case 4: // "Available for above Int %d"
+		if (m_iInt < m_pItemList[cItemID]->m_iQuantStat)
+		{
+			AddEventList("You need more INT to equip this item.", 10);
+			return;
+		}
+		break;
+	case 5: // "Available for above Mag %d"
+		if (m_iMag < m_pItemList[cItemID]->m_iQuantStat)
+		{
+			AddEventList("You need more MAG to equip this item.", 10);
+			return;
+		}
+		break;
+	case 6: // "Available for above Chr %d"
+		if (m_iCharisma < m_pItemList[cItemID]->m_iQuantStat)
+		{
+			AddEventList("You need more AGI to equip this item.", 10);
+			return;
+		}
+		break;
 	}
+
 	if (((m_pItemList[cItemID]->m_dwAttribute & 0x00000001) == 0) && (m_pItemList[cItemID]->m_sLevelLimit > m_iLevel))
 	{
 		AddEventList(BITEMDROP_CHARACTER4, 10);
@@ -3354,8 +3395,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	{
 		PutString(sX + 162, sY + 125, cTxt, RGB(25, 35, 25));
 	}
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 127, 6, dwTime);
+	/*if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133))
+		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 127, 6, dwTime);*/
 
 	// Vitality
 	PutString(sX + 24, sY + 144, DRAW_DIALOGBOX_LEVELUP_SETTING5, RGB(5, 5, 5));
@@ -3371,8 +3412,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	{
 		PutString(sX + 162, sY + 144, cTxt, RGB(25, 35, 25));
 	}
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 146, 6, dwTime);
+	/*if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152))
+		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 146, 6, dwTime);*/
 
 	// Dexterity
 	PutString(sX + 24, sY + 163, DRAW_DIALOGBOX_LEVELUP_SETTING6, RGB(5, 5, 5));
@@ -3388,8 +3429,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	{
 		PutString(sX + 162, sY + 163, cTxt, RGB(25, 35, 25));
 	}
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 165, 6, dwTime);
+	/*if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171))
+		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 165, 6, dwTime);*/
 
 	// Intelligence
 	PutString(sX + 24, sY + 182, DRAW_DIALOGBOX_LEVELUP_SETTING7, RGB(5, 5, 5));
@@ -3405,8 +3446,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	{
 		PutString(sX + 162, sY + 182, cTxt, RGB(25, 35, 25));
 	}
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 184, 6, dwTime);
+	/*if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190))
+		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 184, 6, dwTime);*/
 
 	// Magic
 	PutString(sX + 24, sY + 201, DRAW_DIALOGBOX_LEVELUP_SETTING8, RGB(5, 5, 5));
@@ -3422,8 +3463,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	{
 		PutString(sX + 162, sY + 201, cTxt, RGB(25, 35, 25));
 	}
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 203, 6, dwTime);
+	/*if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209))
+		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 203, 6, dwTime);*/
 
 	// Charisma
 	//PutString(sX + 24, sY + 220, DRAW_DIALOGBOX_LEVELUP_SETTING9, RGB(5, 5, 5));
@@ -3440,8 +3481,8 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	{
 		PutString(sX + 162, sY + 220, cTxt, RGB(25, 35, 25));
 	}
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 222, 6, dwTime);
+	/*if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228))
+		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 210, sY + 222, 6, dwTime);*/
 
 	if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 17);
@@ -4479,7 +4520,7 @@ void CGame::DrawDialogBox_FriendList(short msX, short msY)//43
 			PutString_SprFont2(sX + 25, (sY + 45 + (14 * 16)) + 20, "Add", 19, 104, 169);
 		}
 		if (m_iFriendIndex != -1) {
-			PutString(sX + 25, sY + 45 + (m_iFriendIndex * 16), m_cFriends[m_iFriendIndex - 1], RGB(255, 255, 0));
+			PutString(sX + 25, sY + 30 + (m_iFriendIndex * 16), m_cFriends[m_iFriendIndex - 1], RGB(255, 255, 0));
 			m_stDialogBoxInfo[43].sV1 = m_iFriendIndex - 1;
 			//wsprintf(cTxt, "%s", m_cFriends[m_iFriendIndex - 1]);
 			m_iFriendIndex2 = m_iFriendIndex - 1;
@@ -4517,8 +4558,8 @@ void CGame::DlgBoxClick_FriendList(short msX, short msY) // 43 - drajwer
 	szX = m_stDialogBoxInfo[43].sSizeX;
 	szY = m_stDialogBoxInfo[43].sSizeY;
 
-	if ((msX > sX + 25) && (msX < sX + szX - 25) && (msY > sY + 45 + 16) && (msY < sY + 45 + (13 * 16))) {
-		tmp = (msY - sY - 45 - 16) / 16;
+	if ((msX > sX + 25) && (msX < sX + szX - 25) && (msY > sY + 30 + 16) && (msY < sY + 30 + (13 * 16))) {
+		tmp = (msY - sY - 30 - 16) / 16;
 		tmp++;
 		if (strcmp(m_cFriends[tmp - 1], " ") != 0) { //izzit not empty?
 			m_iFriendIndex = tmp;
@@ -8227,10 +8268,10 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		//": %d Points"
 		PutString(sX + 140, sY + 98, cTemp, RGB(45, 25, 25));
 
-		iTemp = m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100;
-		wsprintf(cTemp, DRAW_DIALOGBOX_SHOP8, iTemp);
+		//iTemp = m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100;
+		//wsprintf(cTemp, DRAW_DIALOGBOX_SHOP8, iTemp);
 		//": %d Stone"
-		PutString(sX + 140, sY + 113, cTemp, RGB(45, 25, 25));
+		//PutString(sX + 140, sY + 113, cTemp, RGB(45, 25, 25));
 
 		switch (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_cEquipPos) {
 		case DEF_EQUIPPOS_RHAND:
@@ -8270,13 +8311,13 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			else wsprintf(cTemp, ": %d(%d ~ %d)", m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_cSpeed, iTemp, m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_cSpeed * 13);
 			PutString(sX + 140, sY + 175, cTemp, RGB(45, 25, 25));
 
-			if ((m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100) > m_iStr)
-			{
-				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100));
-				PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
-				PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // *Your STR should be at least %d to use this item."
-				bFlagRedShown = TRUE;
-			}
+			//if ((m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100) > m_iStr)
+			//{
+			//	wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100));
+			//	PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
+			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // *Your STR should be at least %d to use this item."
+			//	bFlagRedShown = TRUE;
+			//}
 			break;
 
 		case DEF_EQUIPPOS_LHAND:
@@ -8285,13 +8326,13 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			PutString(sX + 91, sY + 145, cTemp, RGB(40, 10, 10));
 			wsprintf(cTemp, ": +%d%", m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_sItemEffectValue1);
 			PutString(sX + 140, sY + 145, cTemp, RGB(45, 25, 25));
-			if ((m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100) > m_iStr)
-			{
-				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100));
-				PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
-				PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
-				bFlagRedShown = TRUE;
-			}
+			//if ((m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100) > m_iStr)
+			//{
+			//	wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100));
+			//	PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+			//	bFlagRedShown = TRUE;
+			//}
 			break;
 
 		case DEF_EQUIPPOS_HEAD:
@@ -8394,14 +8435,14 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			default:
 				break;
 			}
-			if ((m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100) > m_iStr)
-			{
-				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100));
-				PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
-				PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
-				bFlagRedShown = TRUE;
-			}
-			else if (bFlagStatLow == TRUE) // Means some stat is too low
+			//if ((m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100) > m_iStr)
+			//{
+			//	wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wWeight / 100));
+			//	PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
+			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+			//	bFlagRedShown = TRUE;
+			//}
+			if (bFlagStatLow == TRUE) // Means some stat is too low
 			{
 				//strcpy(cTemp, DRAW_DIALOGBOX_SHOP21); // "(Warning!) Your stat is too low for this item."
 				//PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
@@ -9954,7 +9995,7 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 						wsprintf(G_cTxt, "%s: %d", DRAW_DIALOGBOX_SHOP24, m_pBankList[i]->m_sLevelLimit);
 						PutAlignedString(sX + 70, sX + szX, sY + iLoc, G_cTxt, 150, 150, 150);
 					}
-					if ((m_pBankList[i]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pBankList[i]->m_wWeight >= 1100))
+					/*if ((m_pBankList[i]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pBankList[i]->m_wWeight >= 1100))
 					{
 						iLoc += 15;
 						int _wWeight = 0;
@@ -9962,7 +10003,7 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 							_wWeight = 1;
 						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, (m_pBankList[i]->m_wWeight / 100) + _wWeight);
 						PutAlignedString(sX + 70, sX + szX, sY + iLoc, G_cTxt, 150, 150, 150);
-					}
+					}*/
 					cItemColor = m_pBankList[i]->m_cItemColor;
 					if (cItemColor == 0)
 					{
@@ -10065,7 +10106,7 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 						PutAlignedString(sX + 70, sX + szX, sY + iLoc, G_cTxt, 150, 150, 150);
 					}
 
-					if ((m_pBankList[i + m_stDialogBoxInfo[58].sView]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pBankList[i + m_stDialogBoxInfo[58].sView]->m_wWeight >= 1100))
+					/*if ((m_pBankList[i + m_stDialogBoxInfo[58].sView]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pBankList[i + m_stDialogBoxInfo[58].sView]->m_wWeight >= 1100))
 					{
 						iLoc += 15;
 						int		_wWeight = 0;
@@ -10073,7 +10114,7 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pBankList[i + m_stDialogBoxInfo[58].sView]->m_wWeight / 100 + _wWeight);
 
 						PutAlignedString(sX + 70, sX + szX, sY + iLoc, G_cTxt, 150, 150, 150);
-					}
+					}*/
 
 					cItemColor = m_pBankList[i + m_stDialogBoxInfo[58].sView]->m_cItemColor;
 					if (cItemColor == 0)
@@ -13926,10 +13967,10 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 		//": %d Gold"
 		PutString(sX + 140, sY + 98, cTemp, RGB(45, 25, 25));
 
-		iTemp = m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100;
-		wsprintf(cTemp, DRAW_DIALOGBOX_SHOP8, iTemp);
+		//iTemp = m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100;
+		//wsprintf(cTemp, DRAW_DIALOGBOX_SHOP8, iTemp);
 		//": %d Stone"
-		PutString(sX + 140, sY + 113, cTemp, RGB(45, 25, 25));
+		//PutString(sX + 140, sY + 113, cTemp, RGB(45, 25, 25));
 
 		switch (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_cEquipPos) {
 		case DEF_EQUIPPOS_RHAND:
@@ -13969,13 +14010,13 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			else wsprintf(cTemp, ": %d(%d ~ %d)", m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_cSpeed, iTemp, m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_cSpeed * 13);
 			PutString(sX + 140, sY + 175, cTemp, RGB(45, 25, 25));
 
-			if ((m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100) > m_iStr)
-			{
-				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100));
-				PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
-				PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // *Your STR should be at least %d to use this item."
-				bFlagRedShown = TRUE;
-			}
+			//if ((m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100) > m_iStr)
+			//{
+			//	wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100));
+			//	PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
+			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // *Your STR should be at least %d to use this item."
+			//	bFlagRedShown = TRUE;
+			//}
 			break;
 
 		case DEF_EQUIPPOS_LHAND:
@@ -13984,13 +14025,13 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			PutString(sX + 91, sY + 145, cTemp, RGB(40, 10, 10));
 			wsprintf(cTemp, ": +%d%", m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_sItemEffectValue1);
 			PutString(sX + 140, sY + 145, cTemp, RGB(45, 25, 25));
-			if ((m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100) > m_iStr)
-			{
-				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100));
-				PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
-				PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
-				bFlagRedShown = TRUE;
-			}
+			//if ((m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100) > m_iStr)
+			//{
+			//	wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100));
+			//	PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25);
+			//	bFlagRedShown = TRUE;
+			//}
 			break;
 
 		case DEF_EQUIPPOS_HEAD:
@@ -14093,14 +14134,14 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			default:
 				break;
 			}
-			if ((m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100) > m_iStr)
-			{
-				wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100));
-				PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
-				PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
-				bFlagRedShown = TRUE;
-			}
-			else if (bFlagStatLow == TRUE) // Means some stat is too low
+			//if ((m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100) > m_iStr)
+			//{
+			//	wsprintf(cTemp, DRAW_DIALOGBOX_SHOP11, (m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wWeight / 100));
+			//	PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
+			//	PutAlignedString(sX + 26, sX + 241, sY + 258, cTemp, 195, 25, 25); // "*Your STR should be at least %d to use this item."
+			//	bFlagRedShown = TRUE;
+			//}
+			if (bFlagStatLow == TRUE) // Means some stat is too low
 			{
 				//strcpy(cTemp, DRAW_DIALOGBOX_SHOP21); // "(Warning!) Your stat is too low for this item."
 				//PutAlignedString(sX + 25, sX + 240, sY + 258, cTemp, 195, 25, 25);
@@ -14251,7 +14292,7 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 				else
 				{
 					ZeroMemory(cTemp3, sizeof(cTemp3));
-					wsprintf(cTemp3, "%d/---", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+					wsprintf(cTemp3, " ");
 				}
 				if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 				{
@@ -15068,7 +15109,7 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	//Grid - by luqah
 	PutString(sX + 136, sY + 180, "Grid", RGB(255, 255, 0));
 	
-	if (m_bGrid) PutString(sX + 3 + 120 + 88, sY + 180, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 255));
+	if (m_bGrid) PutString(sX + 3 + 120 + 88, sY + 180, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
 	else PutString(sX + 3 + 120 + 87, sY + 180, DRAW_DIALOGBOX_SYSMENU_OFF, RGB(255, 0, 0));
 
 

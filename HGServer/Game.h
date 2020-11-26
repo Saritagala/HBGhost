@@ -218,7 +218,6 @@ private:
 	void ManualStartHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize);
 	void ManualEndHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize);
 
-
 	BOOL _bCheckCharacterData(int iClientH);
 	BOOL _bDecodeNpcItemConfigFileContents(char* cFn);
 	void GlobalUpdateConfigs(char cConfigType);
