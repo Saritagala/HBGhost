@@ -11627,7 +11627,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
 		}	
 
-		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus == 2) iDamage += 4;
+		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -12203,7 +12203,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 		{
 			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
 		}
-		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus == 2) iDamage += 4;
+		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -12772,8 +12772,8 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 		}
 
-		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus == 2) {
-			iDamage += 4;
+		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
+			iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		}
 
 		wWeaponType = ((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4);
@@ -17520,8 +17520,8 @@ void CGame::RequestChangePlayMode(int iClientH)
 		SendNotifyMsg(NULL,iClientH,DEF_NOTIFY_CHANGEPLAYMODE,NULL,NULL,NULL,m_pClientList[iClientH]->m_cLocation);
 		SendEventToNearClient_TypeA(iClientH,DEF_OWNERTYPE_PLAYER,MSGID_EVENT_MOTION,100,NULL,NULL,NULL);
 	}
-	//bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
-	LocalSavePlayerData(iClientH);
+	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
+	//LocalSavePlayerData(iClientH);
 }
 
 void CGame::RequestRango(int iClientH, int iObjectID)
@@ -18060,8 +18060,8 @@ void CGame::ForceChangePlayMode(int iClientH)
 	SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 	
 	//DeleteClient(iClientH, TRUE, TRUE);
-	//bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
-	LocalSavePlayerData(iClientH);
+	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, TRUE);
+	//LocalSavePlayerData(iClientH);
 }
 
 // v2.15 2002-5-21
@@ -20047,7 +20047,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 			}
 
-			if (m_pClientList[sAttackerH]->m_cHeroArmourBonus == 1) {
+			if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
 				iAttackerHitRatio += 100;
 				iAP_SM += 5;
 				iAP_L += 5;

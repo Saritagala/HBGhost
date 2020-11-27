@@ -80,6 +80,9 @@ public:
 
 	int m_iReqStat, m_iQuantStat;
 	int m_iClass;
+
+	BOOL m_bIsHero;
+	int m_iHeroBonus;
 };
 
 /*

@@ -2899,10 +2899,25 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
 			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
 
+			string st1 = m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName;
 			if (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroSword", 9) == 0 ||
 				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroWand", 8) == 0)
 			{
 				PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, "Required: 20.000 EKs");
+			}
+			else if (st1.find("aHero") != string::npos || st1.find("eHero") != string::npos)
+			{
+				PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, "Required: 30.000 EKs");
+			}
+			else if (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "AresdenHeroCape", 15) == 0 ||
+				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "ElvineHeroCape", 14) == 0)
+			{
+				PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, "Required: 30 EKs & 50 Contrib.");
+			}
+			else if (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "AresdenHeroCape+1", 17) == 0 ||
+				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "ElvineHeroCape+1", 16) == 0)
+			{
+				PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, "Required: 3.000 EKs & 200 Contrib.");
 			}
 
 			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))

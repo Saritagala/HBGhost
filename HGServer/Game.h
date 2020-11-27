@@ -236,7 +236,7 @@ private:
 	void SetHeroFlag(short sOwnerH, char cOwnerType, BOOL bStatus);
 	void SetInhibitionCastingFlag(short sOwnerH, char cOwnerType, BOOL bStatus);
 	void bCalculateEnduranceDecrement(short sTargetH, short sAttackerH, char cTargetType, int iArmorType);
-	char _cCheckHeroItemEquipped(int iClientH);
+	int _cCheckHeroItemEquipped(int iClientH);
 	BOOL bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, int iItemEffectValue2, int iClientH);
 	void _CheckFarmingAction(short sAttackerH, short sTargetH, BOOL bType);
 
@@ -906,8 +906,6 @@ private:
 		int  dX, dY;				// 설치되는 맵상의 위치
 
 	} m_stCrusadeStructures[DEF_MAXCRUSADESTRUCTURES];
-
-
 
 	int m_iCollectedMana[3];
 	int m_iAresdenMana, m_iElvineMana;

@@ -58,7 +58,7 @@ public:
 	int m_iRecentWalkTime;
 	int m_iRecentRunTime;
 	short m_sV1;
-	char m_cHeroArmourBonus;
+	int m_cHeroArmourBonus;
 	int   m_iAlterItemDropIndex;
 	int bCreateNewParty();
 

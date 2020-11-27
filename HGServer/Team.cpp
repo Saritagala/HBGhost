@@ -329,7 +329,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 {
 	auto g = G_pGame;
 	char   seps[] = "= \t\n";
-	char* cp, cItemName[256], cData[256];
+	char* cp, cData[256];
 	class  CStrTok* pStrTok;
 	class  CItem* pItem;
 	short* sp;
@@ -340,12 +340,9 @@ void Team::CreateCape(int client, char* itemname, char color)
 	auto p = g->m_pClientList[client];
 	if (!p) return;
 
-	ZeroMemory(cItemName, sizeof(cItemName));
-	strcpy(cItemName, itemname);
-
 	pItem = new class CItem;
 
-	if (g->_bInitItemAttr(pItem, cItemName) == FALSE) {
+	if (g->_bInitItemAttr(pItem, itemname) == FALSE) {
 		delete pItem;
 		return;
 	}
@@ -444,7 +441,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 {
 	auto g = G_pGame;
 	char   seps[] = "= \t\n";
-	char* cp, cItemName[256], cData[256];
+	char* cp, cData[256];
 	class  CStrTok* pStrTok;
 	class  CItem* pItem;
 	short* sp;
@@ -455,12 +452,9 @@ void Team::CreateBoots(int client, char* itemname, char color)
 	auto p = g->m_pClientList[client];
 	if (!p) return;
 
-	ZeroMemory(cItemName, sizeof(cItemName));
-	strcpy(cItemName, itemname);
-
 	pItem = new class CItem;
 
-	if (g->_bInitItemAttr(pItem, cItemName) == FALSE) {
+	if (g->_bInitItemAttr(pItem, itemname) == FALSE) {
 		delete pItem;
 		return;
 	}
