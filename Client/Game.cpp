@@ -9916,7 +9916,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			case 81: // Abaddon
 			case 91: // Gate
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -10029,7 +10029,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			case 81: // Abaddon
 			case 91: // Gate
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -10507,7 +10507,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 			case 91: // Gate
 			//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -10886,7 +10886,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 		case 91: // Gate
 			//Magn0S:: New Mobs.
 		case 92: // Eternal Dragon
-		case 93: // BlackDemon
+		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -11112,7 +11112,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 		case 91: // Gate
 			//Magn0S:: New Mobs.
 		case 92: // Eternal Dragon
-		case 93: // BlackDemon
+		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -11508,7 +11508,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 91: // Gate
 					//Magn0S:: New Mobs.
 				case 92: // Eternal Dragon
-				case 93: // BlackDemon
+				//case 93: // BlackDemon
 				case 94: // BlackWyv
 				case 95: // LighWyvern
 				case 96: // PoisonWyvern
@@ -11619,7 +11619,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 91: // Gate
 					//Magn0S:: New Mobs.
 				case 92: // Eternal Dragon
-				case 93: // BlackDemon
+				//case 93: // BlackDemon
 				case 94: // BlackWyv
 				case 95: // LighWyvern
 				case 96: // PoisonWyvern
@@ -11866,7 +11866,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 91: // Gate
 					//Magn0S:: New Mobs.
 				case 92: // Eternal Dragon
-				case 93: // BlackDemon
+				//case 93: // BlackDemon
 				case 94: // BlackWyv
 				case 95: // LighWyvern
 				case 96: // PoisonWyvern
@@ -12292,7 +12292,7 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 		case 91: // Gate
 			//Magn0S:: New Mobs.
 		case 92: // Eternal Dragon
-		case 93: // BlackDemon
+		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -13030,7 +13030,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -13165,7 +13165,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 81: // Abaddon
 			case 91: // Gate
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -13572,7 +13572,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -13685,7 +13685,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -14015,7 +14015,7 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		case 91: // Gate
 			//Magn0S:: New Mobs.
 		case 92: // Eternal Dragon
-		case 93: // BlackDemon
+		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -14105,7 +14105,7 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		case 91: // Gate
 			//Magn0S:: New Mobs.
 		case 92: // Eternal Dragon
-		case 93: // BlackDemon
+		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -14452,7 +14452,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -14589,7 +14589,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -16107,7 +16107,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern
@@ -16274,7 +16274,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			case 91: // Gate
 				//Magn0S:: New Mobs.
 			case 92: // Eternal Dragon
-			case 93: // BlackDemon
+			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
 			case 96: // PoisonWyvern

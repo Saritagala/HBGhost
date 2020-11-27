@@ -9584,14 +9584,33 @@ void CGame::ArmorLifeDecrement(int iAttackerH, int iTargetH, char cOwnerType, in
 int CGame::_cCheckHeroItemEquipped(int iClientH)
 {
 	int iBonus = 0;
+	short sHeroLeggings, sHeroHauberk, sHeroArmor, sHeroHelm;
 
-	if (m_pClientList[iClientH] == NULL) return -1;
+	if (m_pClientList[iClientH] == NULL) return 0;
 
-	for (int i = 1; i < 5; i++)
-	{
-		if (m_pClientList[iClientH]->m_pItemList[i] == NULL) continue;
-		if (m_pClientList[iClientH]->m_pItemList[i]->m_bIsHero) iBonus += m_pClientList[iClientH]->m_pItemList[i]->m_iHeroBonus;
-	}
+	sHeroHelm = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_HEAD];
+	sHeroArmor = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
+	sHeroHauberk = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
+	sHeroLeggings = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LEGGINGS];
+
+	if ((sHeroHelm < 0) || (sHeroLeggings < 0) || (sHeroArmor < 0) || (sHeroHauberk < 0)) return 0;
+
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHelm] == NULL) return 0;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroLeggings] == NULL) return 0;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor] == NULL) return 0;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk] == NULL) return 0;
+
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_bIsHero)
+		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_iHeroBonus;
+
+	if (m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_bIsHero)
+		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_iHeroBonus;
+
+	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_bIsHero)
+		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_iHeroBonus;
+
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_bIsHero)
+		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_iHeroBonus;
 
 	return iBonus;
 }
