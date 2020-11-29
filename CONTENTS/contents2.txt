@@ -75,7 +75,6 @@ Item  = ArcheryManual         3     0     9     6 20 0 0 0 0    0       0       
 Item  = ShortBow              1     9     3     0 0 0  0 0 0    500     0       2    0       100    800   40   4       0  
 Item  = LongBow               1     9     3     0 0 0  0 0 0    800     0       2    1       200   1200   41   5       0   
 Item  = CompositeBow          1     9     3     1 6 0  1 6 0   1200     0       2    2      3000   4000   41   5      70
-Item  = Fire-Bow    	      1     9     3     2 5 0  2 5 0   1400      0	2    5     6000  7000   43     6    70 
 Item  = Direction-Bow         1     9     3     2 6 0  2 6 0   1500      0	2    4     7000  10000   42     8    70
 Item  = 10Arrows              6     0     0     1 4 0  1 4 0    0       0       6    10       10    100   -1   3       0
 Item  = 100Arrows             6     0     0     1 4 0  1 4 0    0       0       6    10      100    1000  -1   3       0

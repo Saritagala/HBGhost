@@ -59,17 +59,17 @@ magic = 77   Illusion-Movement               130    350    1         4 5 6      
 magic = 80   Illusion                        143    150    1         4 5 6      1
 magic = 81   Meteor-Strike                   60     200    1         4 5 6      1
 magic = 82   Mass-Magic-Missile              160    250    1         4 5 6      1
-magic = 83   Inhibition-Casting              180    450    1         4 5 6      1
+magic = 83   Inhibition-Casting              180    450    1         4 5 6      0
 magic = 90   Mass-Illusion                   200    280    1         4 5 6      1
 magic = 91   Blizzard                        220    200    1         4 5 6      1
 magic = 92   Fiery-Shock-Wave                280    450    -1        4 5 6      0
 magic = 93   Mass-Blizzard                   320    320    -1        4 5 6      0
 magic = 94   Resurrection                    200    0      -1        4 5 6      0
-magic = 95   Mass-Illusion-Movement          200    450    1         4 5 6      1
-magic = 96   Earth-Shock-Wave                240    350    1         4 5 6      1
-magic = 97   Fury-Of-Thor                    480    500    1         4 5 6      1
-magic = 98   Strike-of-the-Ghosts            500    500    1         4 5 6      1
-magic = 99   Call-Of-The-Gods                400    500    1        4 5 6      0
+magic = 95   Mass-Illusion-Movement          200    450     1         4 5 6      1
+magic = 96   Earth-Shock-Wave                240    350     1         4 5 6      1
+magic = 97   Fury-Of-Thor                    480    500    -1         4 5 6      0
+magic = 98   Strike-of-the-Ghosts            500    500    -1         4 5 6      0
+magic = 99   Call-Of-The-Gods                400    500    -1        4 5 6       0
 
 
 //-----Num-Name-----------------ManaCost--ReqInt--Cost-----------OnMenu
