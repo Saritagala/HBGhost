@@ -2939,7 +2939,7 @@ void CGame::OnTimer(char cType)
 	}
 	
 	if ((dwTime - m_dwWhetherTime) > 20000) {
-		//WeatherProcessor();
+		WeatherProcessor();
 		//SendThunders();
 		m_dwWhetherTime = dwTime;
 	}
@@ -7885,7 +7885,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		{
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_TOTALUSERS, NULL, NULL, NULL, NULL);
 			//Magn0S:: Put as same as /online
-			char cMsg[120];
+			/*char cMsg[120];
 			int iAres = 0, iElv = 0, iTrav = 0, iGM = 0;
 			for (int i = 1; i < DEF_MAXCLIENTS; i++) {
 				if (m_pClientList[i] != NULL) {
@@ -7900,7 +7900,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			}
 			ZeroMemory(cMsg, sizeof(cMsg));
 			wsprintf(cMsg, "Ares: %d | Elv: %d | Trav: %d | GM: %d", iAres, iElv, iTrav, iGM);
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cMsg);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cMsg);*/
 			
 		}
 		
@@ -20520,14 +20520,14 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		}
 	}
 
-	/*if ((wWeaponType >= 40) && (wWeaponType < 55)) {
+	if ((wWeaponType >= 40) && (wWeaponType < 55)) {
 		switch (m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cWhetherStatus) {
 		case 0:	break;
 		case 1:	iAttackerHitRatio -= (iAttackerHitRatio / 20); break;
 		case 2:	iAttackerHitRatio -= (iAttackerHitRatio / 10); break;
 		case 3:	iAttackerHitRatio -= (iAttackerHitRatio / 4);  break;
 		}
-	}*/
+	}
 
 	if (iAttackerHitRatio < 0)   iAttackerHitRatio = 0;    
 	switch (cTargetType) {
@@ -23429,6 +23429,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
 		break;
 
+	case DEF_NOTIFY_HEROBONUS:
 	case DEF_MAX_STATS: //LifeX Fix Bytes Accuracy 01/01
 	case DEF_NOTIFY_HELPFAILED:
 	case DEF_NOTIFY_CRAFTING_FAIL:	//reversed by Snoopy: 0x0BF1:

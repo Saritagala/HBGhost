@@ -1088,7 +1088,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	m_pClientList[iClientH]->m_iAddHP += iShieldHPrec;
 	m_pClientList[iClientH]->m_iAddSP += iShieldSPrec;
 	m_pClientList[iClientH]->m_iAddMP += iShieldMPrec;
-	m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
+	//m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
+	m_pClientList[iClientH]->m_cHeroArmourBonus = 0;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HEROBONUS, m_pClientList[iClientH]->m_cHeroArmourBonus, NULL, NULL, NULL);
 
 	// Snoopy: Bonus for Angels	
 	m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_iAngelicDex;

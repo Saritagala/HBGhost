@@ -4607,7 +4607,7 @@ void CGame::OnTimer()
 		if ((dwTime - m_dwCheckPingTime) > 5000)
 		{
 			m_dwCheckPingTime = dwTime;
-			bSendCommand(MSGID_REQUEST_PING, NULL, NULL, NULL, NULL, NULL, NULL);
+			//bSendCommand(MSGID_REQUEST_PING, NULL, NULL, NULL, NULL, NULL, NULL);
 		}
 
 		if ((dwTime - m_dwCheckChatTime) > 2000)
@@ -5806,30 +5806,21 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsWater);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Plate PA.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iArmorPA);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsEarth);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Hauberk PA.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iBerkPA);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Light Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsAir);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iHelmPA);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
@@ -5837,10 +5828,26 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d%%", m_iHelmPA);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Hauberk PA.:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d%%", m_iBerkPA);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Plate PA.:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d%%", m_iArmorPA);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iLeggsPA);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//=====================================================================
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Hero Damage Bonus:", 255, 255, 255);
+		wsprintf(G_cTxt, "+%d", m_iHeroBonus);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		break;
 	}
 }
@@ -7040,7 +7047,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = -(((m_sViewPointX / 32) + 12) - sX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 192: // VAMP: Fiery-Shock-Wave
@@ -7095,7 +7102,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 2, sDist, lPan);
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 7: // Magic Missile Explosion
@@ -7216,7 +7223,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 20:
@@ -7256,7 +7263,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist*2);
+			SetCameraShakingEffect(sDist*2);
 			break;
 
 		case 31: // Mass-Fire-Strike (called 3 times)
@@ -7281,7 +7288,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 32: //
@@ -7315,7 +7322,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 35: // Snoopy: rajout (pour Mass Magic-Missile)
@@ -7339,7 +7346,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist*2);
+			SetCameraShakingEffect(sDist*2);
 			break;
 
 		case 36: // Snoopy: Rajout (pour Mass Magic-Missile)
@@ -7363,7 +7370,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(320 - (sX - m_sViewPointX))*1000;
 #endif
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 40: //
@@ -7464,7 +7471,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = ((sX - m_sViewPointX)-320)*30;
 #endif
-			//if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
+			if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
 			PlaySound('E', 47, sDist, lPan);
 			break;
 
@@ -7583,7 +7590,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = -(((m_sViewPointX / 32) + 12) - sX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist, 2);
+			SetCameraShakingEffect(sDist, 2);
 			break;
 
 		case 62: //
@@ -7631,7 +7638,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = -(((m_sViewPointX / 32) + 12) - sX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist, 2);
+			SetCameraShakingEffect(sDist, 2);
 			break;
 
 		case 67: // Crusade's MS fire + smoke ?
@@ -7715,7 +7722,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 72: // Blizzard
@@ -7738,7 +7745,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			lPan = ((sX - m_sViewPointX)-320)*30;
 #endif
-			//if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
+			if ((rand()%4) == 1) SetCameraShakingEffect(sDist);
 			PlaySound('E', 47, sDist, lPan);
 			break;
 
@@ -7759,12 +7766,12 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 		case 75: //ice golem
 		case 76: //ice golem
 		case 77: //ice golem
-			/*m_pEffectList[i]->m_mX     = sX;
+			m_pEffectList[i]->m_mX     = sX;
 			m_pEffectList[i]->m_mY     = sY;
 			m_pEffectList[i]->m_dX = dX;
 			m_pEffectList[i]->m_dY = dY;
 			m_pEffectList[i]->m_cMaxFrame   = 16;
-			m_pEffectList[i]->m_dwFrameTime = 40;*/
+			m_pEffectList[i]->m_dwFrameTime = 40;
 			break;
 
 		case 80: // Snoopy: rajoué, implémenté en dernier ds la v351
@@ -7783,7 +7790,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 
 		case 81: //  Snoopy: Rajout (StormBlade)
@@ -7942,9 +7949,9 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 		case 138: // Tremor.
 			lPan = -(((m_sViewPointX / 32) + 12) - dX)*1000;
 			PlaySound('E', 4, sDist, lPan);
-			//SetCameraShakingEffect(sDist, 2);
+			SetCameraShakingEffect(sDist, 2);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			/*bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
+			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
@@ -7957,7 +7964,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);*/
+			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			m_pEffectList[i]->m_cMaxFrame   = 2;
 			m_pEffectList[i]->m_dwFrameTime = 10;
 			break;
@@ -8044,7 +8051,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			lPan = -(((m_sViewPointX / 32) + 12) - dX)*1000;
 			PlaySound('E', 4, sDist, lPan);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			/*bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
+			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
@@ -8057,7 +8064,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
-			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);*/
+			bAddNewEffect(14, dX*32 + (rand() % 120) - 60, dY*32 + (rand() % 80) - 40, NULL, NULL, 0, 0);
 			m_pEffectList[i]->m_cMaxFrame   = 1;
 			m_pEffectList[i]->m_dwFrameTime = 10;
 			break;
@@ -8198,7 +8205,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
 			sDist = sDist / 32;
-			//SetCameraShakingEffect(sDist);
+			SetCameraShakingEffect(sDist);
 			break;
 		case 200: //
 		case 201: //
@@ -9252,7 +9259,7 @@ void CGame::DrawEffectLights()
 			m_pEffectSpr[75]->PutTransSprite(dX, dY+35, m_pEffectList[i]->m_cFrame, dwTime);
 			break;
 
-		/*case 75: // Icegolem
+		case 75: // Icegolem
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 			m_pEffectSpr[76]->PutTransSprite25(dX+m_pEffectList[i]->m_dX*m_pEffectList[i]->m_cFrame, dY+m_pEffectList[i]->m_dY*m_pEffectList[i]->m_cFrame, m_pEffectList[i]->m_cFrame, dwTime);
@@ -9268,7 +9275,7 @@ void CGame::DrawEffectLights()
 			dX  = (m_pEffectList[i]->m_mX)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_mY)  - m_sViewPointY;
 			m_pEffectSpr[78]->PutTransSprite25(dX+m_pEffectList[i]->m_dX*m_pEffectList[i]->m_cFrame, dY+m_pEffectList[i]->m_dY*m_pEffectList[i]->m_cFrame, m_pEffectList[i]->m_cFrame, dwTime);
-			break;*/
+			break;
 
 		case 150: // Berserk : Cirlcle 6 magic
 			dX  = (m_pEffectList[i]->m_dX*32)  - m_sViewPointX;
@@ -10152,7 +10159,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX, sY, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel((_tmp_cDir - 1), sX+20, sY-20, _tmp_cFrame%8, dwTime);
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX, sY, dwTime); // Wanted System
+		DrawGM(sX, sY, dwTime);
 		
 		DrawFlagHolder(sX, sY, dwTime);
 
@@ -10728,7 +10735,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 			m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX+dx, sY+dy, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel(8+(_tmp_cDir - 1), sX+dx+20, sY+dy-20, _tmp_cFrame%8, dwTime);
 		CheckActiveAura2(sX+dx, sY+dy, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
+		DrawGM(sX + dx, sY + dy, dwTime); 
 		
 		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
@@ -10966,7 +10973,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 			m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX, sY, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel(32+(_tmp_cDir - 1), sX+20, sY-20, _tmp_cFrame%16, dwTime);
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX, sY, dwTime); // Wanted System
+		DrawGM(sX, sY, dwTime); 
 		
 		DrawFlagHolder(sX, sY, dwTime);
 
@@ -11209,7 +11216,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 			m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX, sY, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel(40+(_tmp_cDir - 1), sX+20, sY-20, _tmp_cFrame%4, dwTime);
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX, sY, dwTime); // Wanted System
+		DrawGM(sX, sY, dwTime); 
 		
 		DrawFlagHolder(sX, sY, dwTime);
 
@@ -11738,7 +11745,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX, sY, cFrame, 0, -5, -5, dwTime);
 			DrawAngel(16+(_tmp_cDir - 1), sX+20, sY-20, cFrame%4, dwTime);
 			CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
-			DrawWanted(sX, sY, dwTime); // Wanted System
+			DrawGM(sX, sY, dwTime); 
 			
 			DrawFlagHolder(sX, sY, dwTime);
 
@@ -11986,7 +11993,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSpriteRGB(sX, sY, cFrame, 0, -5, -5, dwTime);
 			DrawAngel(16+(_tmp_cDir - 1), sX+20, sY-20, cFrame%4, dwTime);
 			CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
-			DrawWanted(sX, sY, dwTime); // Wanted System
+			DrawGM(sX, sY, dwTime); 
 			
 			DrawFlagHolder(sX, sY, dwTime);
 		}
@@ -12998,13 +13005,13 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 		case 2: m_pEffectSpr[27]->PutTransSprite(sX+dx, sY+dy, _tmp_iEffectFrame, dwTime); break; // Special Ability: Protect Effect
 	}	}
 
-	/*if( _tmp_sOwnerType == 65 ) // IceGolem
+	if( _tmp_sOwnerType == 65 ) // IceGolem
 	{	switch( rand()%3 ) {
 		case 0:	m_pEffectSpr[76]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime); break;
 		case 1:	m_pEffectSpr[77]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime); break;
 		case 2:	m_pEffectSpr[78]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime); break;
 		}
-	}*/
+	}
 	if (bTrans == FALSE)
 	{	CheckActiveAura(sX+dx, sY+dy, dwTime, _tmp_sOwnerType);
 		if (_cDrawingOrder[_tmp_cDir] == 1)
@@ -13313,7 +13320,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX+dx, sY+dy, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel(40+(_tmp_cDir - 1), sX+dx+20, sY+dy-20, _tmp_cFrame%4, dwTime);
 		CheckActiveAura2(sX+dx, sY+dy, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
+		DrawGM(sX + dx, sY + dy, dwTime); 
 		
 		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
@@ -13805,7 +13812,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			m_pSprite[iBodyIndex + (_tmp_cDir -1)]->PutTransSpriteRGB(sX+dx, sY+dy, cFrame, 0, -5, -5, dwTime);
 		DrawAngel(16+(_tmp_cDir - 1), sX+dx+20, sY+dy-20, cFrame%4, dwTime);
 		CheckActiveAura2(sX+dx, sY+dy, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
+		DrawGM(sX + dx, sY + dy, dwTime); 
 		
 		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
@@ -14746,7 +14753,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSpriteRGB(sX, sY, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel(40+(_tmp_cDir - 1), sX+20, sY-20, _tmp_cFrame%4, dwTime);
 		CheckActiveAura2(sX, sY, dwTime,  _tmp_sOwnerType);
-		DrawWanted(sX, sY, dwTime); // Wanted System
+		DrawGM(sX, sY, dwTime); 
 		
 		DrawFlagHolder(sX, sY, dwTime);
 
@@ -16456,7 +16463,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSpriteRGB(sX + dx, sY + dy, _tmp_cFrame, 0, -5, -5, dwTime);
 		DrawAngel(40 + (_tmp_cDir - 1), sX + dx + 20, sY + dy - 20, _tmp_cFrame % 4, dwTime);
 		CheckActiveAura2(sX + dx, sY + dy, dwTime, _tmp_sOwnerType);
-		DrawWanted(sX + dx, sY + dy, dwTime); // Wanted System
+		DrawGM(sX + dx, sY + dy, dwTime); 
 		
 		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
@@ -16663,8 +16670,8 @@ void CGame::InitDataResponseHandler(char * pData)
 	case 1:	m_bIsXmas = FALSE; break;
 	case 2: m_bIsXmas = FALSE; break;
 	case 3: // Snoopy Special night with chrismas bulbs
-		//if (m_cWhetherStatus >3) m_bIsXmas = TRUE;
-		//else m_bIsXmas = FALSE;
+		if (m_cWhetherStatus >3) m_bIsXmas = TRUE;
+		else m_bIsXmas = FALSE;
 		G_cSpriteAlphaDegree = 2;
 		break;
 	}
@@ -20922,7 +20929,7 @@ void CGame::DrawWhetherEffects()
 
 				m_pEffectSpr[11]->PutTransSprite(dX, dY, cTempFrame, dwTime);
 
-				if (m_bIsXmas == TRUE)
+				/*if (m_bIsXmas == TRUE)
 				{
 					if (dY == 547)
 					{
@@ -20932,7 +20939,7 @@ void CGame::DrawWhetherEffects()
 						iNum++;
 					}
 					if (iNum >= MAXNUM) iNum = 0;
-				}
+				}*/
 			}
 		}
 		if (m_bIsXmas == TRUE)
@@ -20988,8 +20995,8 @@ void CGame::WhetherObjectFrameCounter()
 				}
 				else
 				{
-					m_stWhetherObject[i].sX = (m_pMapData->m_sPivotX * 32) + ((rand() % 940) - 200) + 300; // 300
-					m_stWhetherObject[i].sY = (m_pMapData->m_sPivotY * 32) + ((rand() % 800) - 600) + 240; // 240
+					m_stWhetherObject[i].sX = (m_pMapData->m_sPivotX * 32) + ((rand() % 940) - 200) + 300; 
+					m_stWhetherObject[i].sY = (m_pMapData->m_sPivotY * 32) + ((rand() % 800) - 600) + 240; 
 					m_stWhetherObject[i].cStep = -1 * (rand() % 10);
 				}
 			}
@@ -21037,7 +21044,7 @@ void CGame::WhetherObjectFrameCounter()
 				else
 				{
 					m_stWhetherObject[i].sX = (m_pMapData->m_sPivotX * 32) + ((rand() % 940) - 200) + 300;
-					m_stWhetherObject[i].sY = (m_pMapData->m_sPivotY * 32) + ((rand() % 800) - 600) + 600;
+					m_stWhetherObject[i].sY = (m_pMapData->m_sPivotY * 32) + ((rand() % 800) - 600) + 240;
 					m_stWhetherObject[i].cStep = -1 * (rand() % 10);
 					m_stWhetherObject[i].sBX = 0;
 				}
@@ -26780,6 +26787,14 @@ void CGame::NotifyMsgHandler(char * pData)
 
 		break;
 
+	case DEF_NOTIFY_HEROBONUS:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+		ip = (int*)cp;
+		m_iHeroBonus = *ip;
+		cp += 4;
+		break;
+
 	case DEF_NOTIFY_CITYHP: 
 		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -31010,10 +31025,19 @@ BOOL CGame::bCheckLocalChatCommand(char * pMsg)
 	    AddEventList(BCHECK_LOCAL_CHAT_COMMAND6, 10);// Enable to listen to whispers."
 		return TRUE;
 	}
-	else if (memcmp(cBuff, "/showframes", 6) == 0)
+	else if (memcmp(cBuff, "/showframes", 11) == 0)
 	{	if (m_bShowFPS)
 			m_bShowFPS = FALSE;
 		else m_bShowFPS = TRUE;
+		return TRUE;
+	}
+	else if (memcmp(cBuff, "/showping", 9) == 0)
+	{
+		bSendCommand(MSGID_REQUEST_PING, NULL, NULL, NULL, NULL, NULL, NULL);
+		if (m_iPing > 0) {
+			wsprintf(cTxt, "Ping: %.3d ms", m_iPing);
+			AddEventList(cTxt, 10);
+		}
 		return TRUE;
 	}
 	else if (memcmp(cBuff, "/quest", 6) == 0)
@@ -31332,7 +31356,7 @@ void CGame::DrawFlagHolder(short sX, short sY, DWORD dwTime)
 	}
 }
 
-void CGame::DrawWanted(short sX, short sY, DWORD dwTime)
+void CGame::DrawGM(short sX, short sY, DWORD dwTime)
 {
 	if ((_tmp_iStatus & 0x40000) != 0) {
 		/*if ((_tmp_iStatus & 0x10) != 0)
@@ -33369,12 +33393,12 @@ void CGame::UpdateScreen_OnGame()
 		DrawEffectLights();
 		DrawObjects(sPivotX, sPivotY, sDivX, sDivY, sModX, sModY, msX, msY);
 		DrawEffects();
-		//DrawWhetherEffects();
+		DrawWhetherEffects();
 		DrawChatMsgs(-100, 0, 800, 600);
-		//WhetherObjectFrameCounter();
+		WhetherObjectFrameCounter();
 	}
 
-	/*if (m_cMapIndex == 26)	//Snoopy: Add Apocalypse map effect (fires in inferniaA)
+	if (m_cMapIndex == 26)	//Snoopy: Add Apocalypse map effect (fires in inferniaA)
 	{
 		m_pEffectSpr[89]->PutTransSprite(1296 - m_sViewPointX, 1283 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
 		m_pEffectSpr[89]->PutTransSprite(1520 - m_sViewPointX, 1123 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
@@ -33388,7 +33412,7 @@ void CGame::UpdateScreen_OnGame()
 		m_pEffectSpr[89]->PutTransSprite(944 - m_sViewPointX, 3881 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
 		m_pEffectSpr[89]->PutTransSprite(1325 - m_sViewPointX, 4137 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
 		m_pEffectSpr[89]->PutTransSprite(1648 - m_sViewPointX, 3913 - m_sViewPointY, _tmp_iEffectFrame % 12, 0);
-	}*/
+	}
 
 	//Snoopy: Add Apocalypse Gate and apocalypse map effects (if no Gate, m_iGatePositX will be -1...
 	if ((m_iGatePositX >= m_sViewPointX / 32) && (m_iGatePositX <= m_sViewPointX / 32 + 50) // 20
@@ -33707,7 +33731,7 @@ void CGame::UpdateScreen_OnGame()
 	if (m_cMapIndex == 25)
 	{
 #ifdef RES_HIGH
-		//bAddNewEffect(13, m_sViewPointX + rand() % 800, m_sViewPointY + rand() % 600, 0, 0, -1 * (rand() % 80), 1);
+		bAddNewEffect(13, m_sViewPointX + rand() % 800, m_sViewPointY + rand() % 600, 0, 0, -1 * (rand() % 80), 1);
 #else
 		bAddNewEffect(13, m_sViewPointX + rand() % 640, m_sViewPointY + rand() % 480, 0, 0, -1 * (rand() % 80), 1);
 #endif
@@ -33715,27 +33739,27 @@ void CGame::UpdateScreen_OnGame()
 
 	if (m_bIsCTFMode && iUpdateRet != 0) {
 		//m_DDraw.DrawShadowBox(5, 180, 110, 270, 0, true);
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 180 + 20, 56, dwTime);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 160 + 20, 56, dwTime);
 		wsprintf(G_cTxt, "Aresden: %d", m_cCFTEventCount[0]);
-		PutString(20 + 10, 180 + 5 + 20, G_cTxt, RGB(255, 0, 0), FALSE, 1);
-		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 180 + 45 + 20, 57, dwTime);
+		PutString(20 + 10, 160 + 5 + 20, G_cTxt, RGB(255, 0, 0), FALSE, 1);
+		m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(20, 160 + 45 + 20, 57, dwTime);
 		wsprintf(G_cTxt, "Elvine: %d", m_cCFTEventCount[1]);
-		PutString(20 + 10, 180 + 45 + 5 + 20, G_cTxt, RGB(130, 130, 255), FALSE, 1);
+		PutString(20 + 10, 160 + 45 + 5 + 20, G_cTxt, RGB(130, 130, 255), FALSE, 1);
 	}
 
 	//Magn0S:: Apocalypse info help
 	if ((m_bApocalypse) && (iUpdateRet != 0) && ((memcmp(m_cCurLocation, "procella", 8) == 0) || (memcmp(m_cCurLocation, "abaddon", 7) == 0)))
 	{
 		//m_DDraw.DrawShadowBox(5, 142, 135, 190, 0, true);
-		PutString2(30, 150, "Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
+		PutString2(30, 180, "Gate:", 55, 255, 255); //255,200,0); "ON", 0,255,0);
 
 		if (m_iTotalAliveObject > 0) {
-			PutString2(70, 150, "Closed", 255, 0, 0); //255,200,0); "ON", 0,255,0);
+			PutString2(70, 180, "Closed", 255, 0, 0); //255,200,0); "ON", 0,255,0);
 			wsprintf(G_cTxt, "Mobs Left: %d", m_iTotalAliveObject);
-			PutString2(30, 170, G_cTxt, 255, 200, 0);
+			PutString2(30, 190, G_cTxt, 255, 200, 0);
 		}
 		else {
-			PutString2(70, 150, "Opened", 0, 255, 0);
+			PutString2(70, 180, "Opened", 0, 255, 0);
 		}
 	}
 
@@ -33848,10 +33872,6 @@ void CGame::UpdateScreen_OnGame()
 			//m_DDraw.DrawShadowBox(5, 175, 175, 425, 0, true);
 			iMaxEntries = 15;
 		}
-		else
-		{
-			//m_DDraw.DrawShadowBox(5, 175, 175, 275, 0, true);
-		}
 
 		wsprintf(cCol1, "Name");
 		wsprintf(cCol2, "Kills");
@@ -33955,17 +33975,14 @@ void CGame::UpdateScreen_OnGame()
 	{
 		if (m_bShowFPS)
 		{
-			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
-			PutString(10 + 1, 560 + 1, G_cTxt, RGB(0, 0, 0));
-			PutString(10, 560, G_cTxt, RGB(255, 255, 255));
-			
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
+			PutString(10, 160, G_cTxt, RGB(255, 255, 255));
+			
+			/*ZeroMemory(G_cTxt, sizeof(G_cTxt));
 			wsprintf(G_cTxt, "Ping : %.3d", m_iPing);
 			PutString(10 + 1, 575 + 1, G_cTxt, RGB(0, 0, 0));
-			PutString(10, 575, G_cTxt, RGB(255, 255, 255));
-			
-			ZeroMemory(G_cTxt, sizeof(G_cTxt));
-
+			PutString(10, 575, G_cTxt, RGB(255, 255, 255));*/
 		}
 
 		if (strcmp(m_cMapName, "team") == 0) {
