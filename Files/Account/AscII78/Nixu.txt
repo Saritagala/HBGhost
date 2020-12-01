@@ -29,5 +29,6 @@ account-Answer   = a
 account-created-by = 
 
 [CHARACTERS]
+account-character  = Warsito
 account-character  = Archerita
 
