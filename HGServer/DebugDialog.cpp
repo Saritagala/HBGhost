@@ -1,7 +1,7 @@
 #include "DebugDialog.h"
 #include "resource.h"
 
-#pragma warning( disable: 4018 4996)
+#pragma warning( disable: 4996 4018)
 /*
 warning C4018: '<' : signed/unsigned mismatch
 */

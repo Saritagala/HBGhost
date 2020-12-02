@@ -17,7 +17,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -389,6 +389,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 	RemoveFromTarget(iNpcH, DEF_OWNERTYPE_NPC);
 	ReleaseFollowMode(iNpcH);
 
+	minimap_clear_apoc(iNpcH);
+
 	m_pNpcList[iNpcH]->m_cFollowOwnerType = NULL; // Snoopy's add
 	m_pNpcList[iNpcH]->m_iFollowOwnerIndex = NULL; // Snoopy's add
 
@@ -428,7 +430,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 			DWORD dwTime = timeGetTime();
 			dwTime += 1000 * 60 * 5; 
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
-				, 0, iMapIndex, 0, 0, 0, 0, 0);
+				, 0, m_pNpcList[iNpcH]->m_cMapIndex, 0, 0, 0, 0, 0);
 
 			/*for (i = 1; i < DEF_MAXCLIENTS; i++) {
 				if (m_pClientList[i] != NULL) {
@@ -954,7 +956,7 @@ void CGame::DeleteNpc(int iNpcH)
 	// NamingValueë¥¼ ë¹„ìš°ê³  ë™ìž‘ì¤‘ì¸ ê°œì²´ ìˆ˜ë¥¼ ê°ì†Œì‹œí‚¨ë‹¤.
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->SetNamingValueEmpty(iNamingValue);
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iTotalActiveObject--;
-	minimap_clear_apoc(iNpcH);
+	
 	if (m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iTotalActiveObject == 0)
 	{
 		if (m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iApocalypseMobGenType == 1)
@@ -1244,14 +1246,12 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem = new class CItem;
 				}
 				if (_bInitItemAttr(pItem, iItemIDs[j]) == FALSE ||
-					m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bGetIsMoveAllowedTile(ItemPositions[j].x, ItemPositions[j].y) == FALSE) {
+					m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bGetIsMoveAllowedTile((short)ItemPositions[j].x, (short)ItemPositions[j].y) == FALSE) {
 					delete pItem;
 					pItem = NULL;
 				}
 				else {
-					if (iItemIDs[j] == 90 || iItemIDs[j] == 77) // Gold or Arrow
-						pItem->m_dwCount = iDice(10, 15000);
-					else {
+					
 						pItem->m_dwCount = dwCount;
 						
 						string st1 = pItem->m_cName;
@@ -1307,13 +1307,13 @@ void CGame::DeleteNpc(int iNpcH)
 								pItem->m_sNewEffect4++;
 							}
 						}
-					}
+					
 
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue3 = (short)timeGetTime();
-					m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem(ItemPositions[j].x, ItemPositions[j].y, pItem);
+					m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem((short)ItemPositions[j].x, (short)ItemPositions[j].y, pItem);
 					
 					//SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 					//	ItemPositions[j].x, ItemPositions[j].y, pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);
@@ -4978,8 +4978,8 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 				else {
 					for (j = 0; j <= 30; j++) {
 						// SNOOPY: Why -15 ?
-						sX = (rand() % (m_pMapList[iMapIndex]->m_sSizeX - 50)) + 25;//15
-						sY = (rand() % (m_pMapList[iMapIndex]->m_sSizeY - 50)) + 25;//15
+						sX = (rand() % (m_pMapList[iMapIndex]->m_sSizeX - 50)) + 15;
+						sY = (rand() % (m_pMapList[iMapIndex]->m_sSizeY - 50)) + 15;
 						bFlag = TRUE;
 						for (k = 0; k < DEF_MAXMGAR; k++)
 							if (m_pMapList[iMapIndex]->m_rcMobGenAvoidRect[k].left != -1) {
@@ -5161,7 +5161,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 			case 4:
 			case 5:
 			case 6:
-				m_pNpcList[i]->m_sAppr2 = 0xF000;
+				m_pNpcList[i]->m_sAppr2 = (short)0xF000;
 				m_pNpcList[i]->m_sAppr2 = m_pNpcList[i]->m_sAppr2 | ((rand() % 13) << 4);
 				m_pNpcList[i]->m_sAppr2 = m_pNpcList[i]->m_sAppr2 | (rand() % 9);
 				break;
@@ -5232,7 +5232,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 			case 38: // MS-Aresden/MS-Elvine
 			case 39: // DT-Aresden/DT-Elvine
 			case 42: // ManaStone
-				m_pMapList[iMapIndex]->bAddCrusadeStructureInfo(m_pNpcList[i]->m_sType, sX, sY, m_pNpcList[i]->m_cSide);
+				m_pMapList[iMapIndex]->bAddCrusadeStructureInfo((char)m_pNpcList[i]->m_sType, sX, sY, m_pNpcList[i]->m_cSide);
 				break;
 
 			case 64:

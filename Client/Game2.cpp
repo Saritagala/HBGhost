@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "lan_eng.h"
 
+extern HWND	G_hWnd;
+
 // This msg is sent by server when lvl-up
 void CGame::NotifyMsg_LevelUp(char * pData)
 {
@@ -2965,21 +2967,6 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 	}
 }
 
-LONG CGame::GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
-{
-	HKEY hkey;
-	LONG retval = RegOpenKeyEx(key, subkey, 0, KEY_QUERY_VALUE, &hkey);
-	if (retval == ERROR_SUCCESS)
-	{
-		long datasize = MAX_PATH;
-		TCHAR data[MAX_PATH];
-		RegQueryValue(hkey, NULL, data, &datasize);
-		lstrcpy(retdata, data);
-		RegCloseKey(hkey);
-	}
-	return retval;
-}
-
 // num : 1 - F1, 2 - F2, 3 - F3
 void CGame::UseShortCut(int num)
 {
@@ -3210,55 +3197,69 @@ void CGame::ItemEquipHandler(char cItemID)
 		AddEventList(BITEMDROP_CHARACTER3, 10);//"The item is not available."
 		return;
 	}
-	if (m_pItemList[cItemID]->m_wCurLifeSpan == 0)
+	if (m_pItemList[cItemID]->m_wCurLifeSpan <= 0)
 	{
 		AddEventList(BITEMDROP_CHARACTER1, 10); //"The item is exhausted. Fix it to use it."
 		return;
 	}
 
-	switch (m_pItemList[cItemID]->m_iReqStat) {
-	case 1://"Available for above Str %d"
-		if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
+	if (m_pItemList[cItemID]->m_iClass != 0)
+	{
+		if (m_pItemList[cItemID]->m_iClass != m_iClass)
 		{
-			AddEventList("You need more STR to equip this item.", 10);
+			AddEventList("This item is not for your Class.", 10); //"The item is exhausted. Fix it to use it."
 			return;
 		}
-		break;
-	case 2: // "Available for above Dex %d"
-		if (m_iDex < m_pItemList[cItemID]->m_iQuantStat)
-		{
-			AddEventList("You need more DEX to equip this item.", 10);
-			return;
+	}
+
+	if (m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_NECK &&
+		m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER && m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS &&
+		m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_BACK && m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER)
+	{
+		switch (m_pItemList[cItemID]->m_iReqStat) {
+		case 1://"Available for above Str %d"
+			if (m_iStr+m_iAngelicStr < m_pItemList[cItemID]->m_iQuantStat)
+			{
+				AddEventList("You need more STR to equip this item.", 10);
+				return;
+			}
+			break;
+		case 2: // "Available for above Dex %d"
+			if (m_iDex + m_iAngelicDex < m_pItemList[cItemID]->m_iQuantStat)
+			{
+				AddEventList("You need more DEX to equip this item.", 10);
+				return;
+			}
+			break;
+		case 3: // "Available for above Vit %d"
+			if (m_iVit < m_pItemList[cItemID]->m_iQuantStat)
+			{
+				AddEventList("You need more VIT to equip this item.", 10);
+				return;
+			}
+			break;
+		case 4: // "Available for above Int %d"
+			if (m_iInt + m_iAngelicInt < m_pItemList[cItemID]->m_iQuantStat)
+			{
+				AddEventList("You need more INT to equip this item.", 10);
+				return;
+			}
+			break;
+		case 5: // "Available for above Mag %d"
+			if (m_iMag + m_iAngelicMag < m_pItemList[cItemID]->m_iQuantStat)
+			{
+				AddEventList("You need more MAG to equip this item.", 10);
+				return;
+			}
+			break;
+		case 6: // "Available for above Chr %d"
+			if (m_iCharisma < m_pItemList[cItemID]->m_iQuantStat)
+			{
+				AddEventList("You need more AGI to equip this item.", 10);
+				return;
+			}
+			break;
 		}
-		break;
-	case 3: // "Available for above Vit %d"
-		if (m_iVit < m_pItemList[cItemID]->m_iQuantStat)
-		{
-			AddEventList("You need more VIT to equip this item.", 10);
-			return;
-		}
-		break;
-	case 4: // "Available for above Int %d"
-		if (m_iInt < m_pItemList[cItemID]->m_iQuantStat)
-		{
-			AddEventList("You need more INT to equip this item.", 10);
-			return;
-		}
-		break;
-	case 5: // "Available for above Mag %d"
-		if (m_iMag < m_pItemList[cItemID]->m_iQuantStat)
-		{
-			AddEventList("You need more MAG to equip this item.", 10);
-			return;
-		}
-		break;
-	case 6: // "Available for above Chr %d"
-		if (m_iCharisma < m_pItemList[cItemID]->m_iQuantStat)
-		{
-			AddEventList("You need more AGI to equip this item.", 10);
-			return;
-		}
-		break;
 	}
 
 	if (((m_pItemList[cItemID]->m_dwAttribute & 0x00000001) == 0) && (m_pItemList[cItemID]->m_sLevelLimit > m_iLevel))
@@ -6395,9 +6396,9 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		break;
 
 		case 40:
-			for (i = 0; i < 13; i++)
+			for (i = 0; i < 17; i++)
 			{
-				if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+				if (((i + m_stDialogBoxInfo[56].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
 				{
 					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
 					{
@@ -6418,10 +6419,10 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			{
 				if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
 				{
-					for (i = 0; i < DEF_MAXMENUITEMS; i++)
+					for (i = 0; i < 500; i++)
 						if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
 
-					for (i = 0; i < DEF_MAXMENUITEMS; i++)
+					for (i = 0; i < 500; i++)
 						if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
 
 					bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -6433,9 +6434,9 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			break;
 
 		case 42: // centu
-			for (i = 0; i < 13; i++)
+			for (i = 0; i < 17; i++)
 			{
-				if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+				if (((i + m_stDialogBoxInfo[56].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
 				{
 					if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 18 + 65) && (msY <= sY + i * 18 + 79))
 					{
@@ -6456,10 +6457,10 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			{
 				if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
 				{
-					for (i = 0; i < DEF_MAXMENUITEMS; i++)
+					for (i = 0; i < 500; i++)
 						if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
 
-					for (i = 0; i < DEF_MAXMENUITEMS; i++)
+					for (i = 0; i < 500; i++)
 						if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
 
 					bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -6508,9 +6509,9 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 	char cTmpCName[11];
 	char cTmpGName[21];
 
-	for (int j = 0; j < DEF_MAXMENUITEMS; j++)
+	for (int j = 0; j < 500; j++)
 	{
-		for (int k = j; k < DEF_MAXMENUITEMS - 1; k++)
+		for (int k = j; k < 500 - 1; k++)
 		{
 			if (m_pOnlineUsersList[j] != NULL && m_pOnlineUsersList[k] != NULL)
 			{
@@ -7846,11 +7847,11 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, "Select a player to manipulate this character.", 255, 255, 255);
 
 		iTotalLines = 0;
-		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+		for (i = 0; i < 500; i++)
 			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
-		if (iTotalLines > 13) {
+		if (iTotalLines > 17) {
 			d1 = (double)m_stDialogBoxInfo[56].sView;
-			d2 = (double)(iTotalLines - 13);
+			d2 = (double)(iTotalLines - 17);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -7858,14 +7859,14 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		}
 		else iPointerLoc = 0;
 
-		if (cLB != 0 && iTotalLines > 13)
+		if (cLB != 0 && iTotalLines > 17)
 		{
 			if ((iGetTopDialogBoxIndex() == 56))
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
 					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d2 = (double)(iTotalLines - 17);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[56].sView = (int)(d3 + 0.5f);
 				}
@@ -7877,11 +7878,11 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 			m_stDialogBoxInfo[56].sView = m_stDialogBoxInfo[56].sView - msZ / 60;
 			m_DInput.m_sZ = 0;
 		}
-		if (iTotalLines > 13 && m_stDialogBoxInfo[56].sView > iTotalLines - 13) m_stDialogBoxInfo[56].sView = iTotalLines - 13;
-		if (m_stDialogBoxInfo[56].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[56].sView = 0;
+		if (iTotalLines > 17 && m_stDialogBoxInfo[56].sView > iTotalLines - 17) m_stDialogBoxInfo[56].sView = iTotalLines - 17;
+		if (m_stDialogBoxInfo[56].sView < 0 || iTotalLines < 17) m_stDialogBoxInfo[56].sView = 0;
 
-		for (i = 0; i < 13; i++)
-			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+		for (i = 0; i < 17; i++)
+			if (((i + m_stDialogBoxInfo[56].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cName, cStr2, cStr3);
@@ -7910,8 +7911,8 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 				}
 			}
 
-		for (i = 0; i < 13; i++)
-			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+		for (i = 0; i < 17; i++)
+			if (((i + m_stDialogBoxInfo[56].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cGuildName, cStr2, cStr3);
@@ -7965,11 +7966,11 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, "Select a player to teleport.", 255, 255, 255);
 
 		iTotalLines = 0;
-		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+		for (i = 0; i < 500; i++)
 			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
-		if (iTotalLines > 13) {
+		if (iTotalLines > 17) {
 			d1 = (double)m_stDialogBoxInfo[56].sView;
-			d2 = (double)(iTotalLines - 13);
+			d2 = (double)(iTotalLines - 17);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -7977,14 +7978,14 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		}
 		else iPointerLoc = 0;
 
-		if (cLB != 0 && iTotalLines > 13)
+		if (cLB != 0 && iTotalLines > 17)
 		{
 			if ((iGetTopDialogBoxIndex() == 56))
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
 					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d2 = (double)(iTotalLines - 17);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[56].sView = (int)(d3 + 0.5f);
 				}
@@ -7996,11 +7997,11 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 			m_stDialogBoxInfo[56].sView = m_stDialogBoxInfo[56].sView - msZ / 60;
 			m_DInput.m_sZ = 0;
 		}
-		if (iTotalLines > 13 && m_stDialogBoxInfo[56].sView > iTotalLines - 13) m_stDialogBoxInfo[56].sView = iTotalLines - 13;
-		if (m_stDialogBoxInfo[56].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[56].sView = 0;
+		if (iTotalLines > 17 && m_stDialogBoxInfo[56].sView > iTotalLines - 17) m_stDialogBoxInfo[56].sView = iTotalLines - 17;
+		if (m_stDialogBoxInfo[56].sView < 0 || iTotalLines < 17) m_stDialogBoxInfo[56].sView = 0;
 
-		for (i = 0; i < 13; i++)
-			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+		for (i = 0; i < 17; i++)
+			if (((i + m_stDialogBoxInfo[56].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cName, cStr2, cStr3);
@@ -8029,8 +8030,8 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 				}
 			}
 
-		for (i = 0; i < 13; i++)
-			if (((i + m_stDialogBoxInfo[56].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
+		for (i = 0; i < 17; i++)
+			if (((i + m_stDialogBoxInfo[56].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[56].sView]->m_cGuildName, cStr2, cStr3);
@@ -8706,9 +8707,9 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 	char cTmpCName[11];
 	char cTmpGName[21];
 
-	for (int j = 0; j<DEF_MAXMENUITEMS; j++)
+	for (int j = 0; j<500; j++)
 	{
-		for (int k = j; k<DEF_MAXMENUITEMS - 1; k++)
+		for (int k = j; k<500 - 1; k++)
 		{
 			if (m_pOnlineUsersList[j] != NULL && m_pOnlineUsersList[k] != NULL)
 			{
@@ -8741,7 +8742,7 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 	switch (m_stDialogBoxInfo[60].cMode) {
 	case 0:
 		iTotalLines = 0;
-		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+		for (i = 0; i < 500; i++)
 			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
 		if (iTotalLines > 17) {
 			d1 = (double)m_stDialogBoxInfo[60].sView;
@@ -8776,7 +8777,7 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 		if (m_stDialogBoxInfo[60].sView < 0 || iTotalLines < 17) m_stDialogBoxInfo[60].sView = 0;
 
 		for (i = 0; i < 17; i++)
-			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+			if (((i + m_stDialogBoxInfo[60].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cName, cStr2, cStr3);
@@ -8806,7 +8807,7 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 			}
 
 		for (i = 0; i < 17; i++)
-			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+			if (((i + m_stDialogBoxInfo[60].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView]->m_cGuildName, cStr2, cStr3);
@@ -8871,7 +8872,7 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 
 		for (i = 0; i < 17; i++)
 		{
-			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
+			if (((i + m_stDialogBoxInfo[60].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != NULL))
 			{
 				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + i * 15 + 35) && (msY <= sY + i * 15 + 49))
 				{
@@ -8886,10 +8887,10 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	{
 		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
 		{
-			for (i = 0; i < DEF_MAXMENUITEMS; i++)
+			for (i = 0; i < 500; i++)
 				if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
 
-			for (i = 0; i < DEF_MAXMENUITEMS; i++)
+			for (i = 0; i < 500; i++)
 				if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
 
 			bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
@@ -8906,7 +8907,7 @@ void CGame::ResponseOnlines(char * pData)
 	char * cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	int j;
-	for (j = 0; j < DEF_MAXMENUITEMS; j++)
+	for (j = 0; j < 500; j++)
 	{
 		if (m_pOnlineUsersList[j] != NULL)
 		{
@@ -10339,7 +10340,7 @@ void CGame::InitGameSettings()
 	}
 
 	// VAMP - online users list
-	for (i = 0; i < DEF_MAXMENUITEMS; i++) {
+	for (i = 0; i < 500; i++) {
 		if (m_pOnlineUsersList[i] != NULL) delete m_pOnlineUsersList[i];
 		m_pOnlineUsersList[i] = NULL;
 	}
@@ -13207,105 +13208,78 @@ void CGame::DrawDialogBox_Quest(int msX, int msY)
 	//m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 	//m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
-	iNext = 45;
+	iNext = 0;
 
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 2);
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 4);
 
 	//m_DDraw.DrawShadowBox(toX, toY, limitX, toY+25, 0, true);
 	//m_DDraw.DrawShadowBox(toX, toY, limitX, toY+25, 0, true);
-	//PutString_SprFont2(sX + 105, sY + 5, "Quest", 240, 240, 240);
+	//PutString_SprFont2(sX + 105, sY + 5, "Quests", 240, 240, 240);
 
 	switch (m_stDialogBoxInfo[28].cMode) {
 	case 0:	//Magn0S:: Multi Quest
-		for (i = 0; i < DEF_MAXQUEST; i++) {
-			if (m_stQuest[i].sQuestType != NULL) {
-
-				ZeroMemory(cTemp, sizeof(cTemp));
-				switch (m_stQuest[2].sWho) {
-				case 1:
-				case 2:
-				case 3: break;
-				case 4: strcpy(cTemp, NPC_NAME_CITYHALL_OFFICER); break;
-				case 5:
-				case 6:
-				case 7: break;
-				}
-				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, DRAW_DIALOGBOX_QUEST5, cTemp); // "Client: %s"
-				PutString2(sX + 20, sY + iNext + (iEntry * 32), cTxt, 255, 200, 0);
-
-				if (m_stQuest[i].bIsQuestCompleted) {
-					if ((msX > sX + 170) && (msX < sX + 240) && (msY > sY + iNext + (iEntry * 32)) && (msY < sY + iNext + (iEntry * 32) + 15))
-						PutString2(sX + 180, sY + iNext + (iEntry * 32), "Claim Prize", 210, 255, 0);
-					else PutString2(sX + 180, sY + iNext + (iEntry * 32), "Claim Prize", 0, 255, 0);
-				}
-				else {
-					if ((msX > sX + 170) && (msX < sX + 240) && (msY > sY + iNext + (iEntry * 32)) && (msY < sY + iNext + (iEntry * 32) + 15))
-						PutString2(sX + 175, sY + iNext + (iEntry * 32), "Cancel Quest", 255, 0, 0);
-					else PutString2(sX + 175, sY + iNext + (iEntry * 32), "Cancel Quest", 255, 255, 255);
-				}
-				iNext += 15;
-
-				//PutString(sX + 15, sY + iNext + (i*32), "Objective:", RGB(210, 255, 0));
-				//iNext += 15;
-
-				if (m_stQuest[i].sX != 0) {
+		for (i = 0; i < DEF_MAXQUEST; i++)
+		{
+			if (m_stQuest[i].sQuestType != NULL)
+			{
+				if (m_stQuest[i].sX != 0)
+				{
 					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, "Observe: %d,%d /%d", m_stQuest[1].sX, m_stQuest[i].sY, m_stQuest[i].sRange);
-					PutString2(sX + 20, sY + iNext + (i * 32), cTxt, 55, 255, 255);
-					if (m_stQuest[i].bIsQuestCompleted)
-						PutString2(sX + 20, sY + iNext + (iEntry * 32), "Quest completed.", 255, 0, 0);
+					wsprintf(cTxt, "Observe: %d,%d /%d", m_stQuest[i].sX, m_stQuest[i].sY, m_stQuest[i].sRange);
+					PutString2(sX + 20, sY + 30+ iNext, cTxt, 55, 255, 255);
+					if (m_stQuest[i].bIsQuestCompleted) PutString2(sX + 20, sY + 45 + iNext, "Quest completed.", 255, 0, 0);
 				}
-				else {
+				else
+				{
 					ZeroMemory(cTxt2, sizeof(cTxt2));
 					GetOfficialMapName(m_stQuest[i].cTargetName, cTxt2);
-					//PutString2(sX + 20, sY + iNext + (i * 30), cTxt2, 255, 255, 255);
-					//iNext += 13;
-
 					ZeroMemory(cTemp, sizeof(cTemp));
 					GetNpcName(m_stQuest[i].sTargetType, cTemp);
 					ZeroMemory(cTxt, sizeof(cTxt));
 					wsprintf(cTxt, "Kill %d %s on %s", m_stQuest[i].sTargetCount, cTemp, cTxt2);
-					//PutString2(sX + 20, sY + iNext + (i * 32), cTxt, 1, 1, 255);
-					PutString(sX + 30, sY + iNext + (iEntry * 32), cTxt, RGB(50, 170, 255), FALSE, 1);
-					iNext += 15;
-
-					//PutString2(sX + 20, sY + iNext + (i * 32), "Prize: ", 255, 50, 255);
-					if (m_stQuest[i].iRewardType > 0) {
+					PutString(sX + 20, sY + 30 + iNext, cTxt, RGB(50, 170, 255), FALSE, 1);
+					if (m_stQuest[i].iRewardType > 0)
+					{
 						ZeroMemory(cStr1, sizeof(cStr1));
 						GetItemName(m_stQuest[i].cPrizeName, NULL, cStr1, cStr2, cStr3);
 						ZeroMemory(cTxt5, sizeof(cTxt5));
 						wsprintf(cTxt5, "Prize: Contrib: %d  | Item: %s", m_stQuest[i].sContribution, cStr1);
-						PutString(sX + 20, sY + iNext + (iEntry * 32), cTxt5, RGB(255, 255, 255), FALSE, 1);
+						PutString(sX + 20, sY + 45 + iNext, cTxt5, RGB(255, 255, 255), FALSE, 1);
 					}
-					else {
+					else
+					{
 						ZeroMemory(cTxt5, sizeof(cTxt5));
 						wsprintf(cTxt5, "Prize: Contribution: %d", m_stQuest[i].sContribution);
-						PutString(sX + 20, sY + iNext + (iEntry * 32), cTxt5, RGB(255, 255, 255), FALSE, 1);
+						PutString(sX + 20, sY + 45 + iNext, cTxt5, RGB(255, 255, 255), FALSE, 1);
 					}
-
-					//DrawLine2(toX, sY + iNext + (iEntry*32)+5, limitX, sY + iNext + (iEntry*32)+5, 255, 255, 255);
-
-					iEntry++;
 				}
+				if (m_stQuest[i].bIsQuestCompleted)
+				{
+					if ((msX > sX + 20) && (msX < sX + 90) && (msY > sY + 60 + iNext) && (msY < sY + 60 + iNext + 15))
+						PutString2(sX + 20, sY + 60 + iNext, "Claim Prize", 210, 255, 0);
+					else PutString2(sX + 20, sY + 60 + iNext, "Claim Prize", 0, 255, 0);
+				}
+				else
+				{
+					if ((msX > sX + 20) && (msX < sX + 90) && (msY > sY + 60 + iNext) && (msY < sY + 60 + iNext + 15))
+						PutString2(sX + 20, sY + 60 + iNext, "Cancel Quest", 255, 0, 0);
+					else PutString2(sX + 20, sY + 60 + iNext, "Cancel Quest", 255, 255, 255);
+				}
+				iNext += 50;
 			}
 		}
-
-		ZeroMemory(cTxt4, sizeof(cTxt4));
-		wsprintf(cTxt4, "Active Quest: %d/%d", iEntry, DEF_MAXQUEST);
-		PutAlignedString(sX, sX + szX, sY + 28, cTxt4, 255, 255, 255);
-
-
-		if ((msX > sX + 150) && (msX < sX + 250) && (msY > sY + 310) && (msY < sY + 325)) {
+		if ((msX > sX + 135) && (msX < sX + 235) && (msY > sY + 305) && (msY < sY + 320)) 
+		{
 			if (!m_bQuestHelper)
-				PutString2(sX + 150, sY + 310, "Quest Helper: ON", 0, 255, 0);
-			else PutString2(sX + 150, sY + 310, "Quest Helper: OFF", 255, 0, 0);
+				PutString2(sX + 135, sY + 305, "Quest Helper: ON", 0, 255, 0);
+			else PutString2(sX + 135, sY + 305, "Quest Helper: OFF", 255, 0, 0);
 		}
-		else {
+		else 
+		{
 			if (!m_bQuestHelper)
-				PutString2(sX + 150, sY + 310, "Quest Helper: OFF", 255, 0, 0);
-			else PutString2(sX + 150, sY + 310, "Quest Helper: ON", 0, 255, 0);
+				PutString2(sX + 135, sY + 305, "Quest Helper: OFF", 255, 0, 0);
+			else PutString2(sX + 135, sY + 305, "Quest Helper: ON", 0, 255, 0);
 		}
 		break;
 
@@ -13316,123 +13290,67 @@ void CGame::DrawDialogBox_Quest(int msX, int msY)
 			break;
 
 		case 1:	//  Hunt
-			/*if (m_stQuest[2].bIsQuestCompleted == FALSE)
-				PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_QUEST2, 55, 25, 25); // "You are on a monster conquering quest."
-			else PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_QUEST3, 55, 25, 25); // "You accomplished the monster conquering quest."
-
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, "Rest Monster : %d", m_stQuest[2].sCurrentCount); // Snoopy: "Rest Monster : %s"
-			PutAlignedString(sX, sX + szX, sY + 50 + 20, cTxt, 55, 25, 25);  // m_stQuest.sCurrentCount
-
-			ZeroMemory(cTemp, sizeof(cTemp));
-			switch (m_stQuest[2].sWho) {
-			case 1:
-			case 2:
-			case 3: break;
-			case 4: strcpy(cTemp, NPC_NAME_CITYHALL_OFFICER); break;
-			case 5:
-			case 6:
-			case 7: break;
-			}
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, DRAW_DIALOGBOX_QUEST5, cTemp); // "Client: %s"
-			PutAlignedString(sX, sX + szX, sY + 50 + 45, cTxt, 55, 25, 25);
-
-			ZeroMemory(cTemp, sizeof(cTemp));
-			GetNpcName(m_stQuest[2].sTargetType, cTemp);
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, NPC_TALK_HANDLER16, m_stQuest[2].sTargetCount, cTemp);
-			PutAlignedString(sX, sX + szX, sY + 50 + 60, cTxt, 55, 25, 25);
-
-			ZeroMemory(cTxt, sizeof(cTxt));
-			if (memcmp(m_stQuest[2].cTargetName, "NONE", 4) == 0)
-			{
-				strcpy(cTxt, DRAW_DIALOGBOX_QUEST31); // "Location : Anywhere"
-				PutAlignedString(sX, sX + szX, sY + 50 + 75, cTxt, 55, 25, 25);
-			}
-			else
-			{
-				ZeroMemory(cTemp, sizeof(cTemp));
-				GetOfficialMapName(m_stQuest[2].cTargetName, cTemp);
-				wsprintf(cTxt, DRAW_DIALOGBOX_QUEST32, cTemp); // "Map : %s"
-				PutAlignedString(sX, sX + szX, sY + 50 + 75, cTxt, 55, 25, 25);
-
-				if (m_stQuest[2].sX != 0) {
-					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, DRAW_DIALOGBOX_QUEST33, m_stQuest[2].sX, m_stQuest[2].sY, m_stQuest[2].sRange); // "Position: %d, %d Range: %d block"
-					PutAlignedString(sX, sX + szX, sY + 50 + 90, cTxt, 55, 25, 25);
-				}
-			}
-
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, DRAW_DIALOGBOX_QUEST34, m_stQuest[2].sContribution); // "Contribution: %d"
-			PutAlignedString(sX, sX + szX, sY + 50 + 105, cTxt, 55, 25, 25);*/
+			
 			break;
 
 		case 7: //
-			if (m_stQuest[2].bIsQuestCompleted == FALSE)
-				PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_QUEST26, 55, 25, 25);
-			else PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_QUEST27, 55, 25, 25);
+			//if (m_stQuest[2].bIsQuestCompleted == FALSE)
+			//	PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_QUEST26, 55, 25, 25);
+			//else PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_QUEST27, 55, 25, 25);
 
-			ZeroMemory(cTemp, sizeof(cTemp));
-			switch (m_stQuest[2].sWho) {
-			case 1:
-			case 2:
-			case 3: break;
-			case 4: strcpy(cTemp, NPC_NAME_CITYHALL_OFFICER); break;
-			case 5:
-			case 6:
-			case 7: break;
-			}
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, DRAW_DIALOGBOX_QUEST29, cTemp);
-			PutAlignedString(sX, sX + szX, sY + 50 + 45, cTxt, 55, 25, 25);
+			//ZeroMemory(cTemp, sizeof(cTemp));
+			//switch (m_stQuest[2].sWho) {
+			//case 1:
+			//case 2:
+			//case 3: break;
+			//case 4: strcpy(cTemp, NPC_NAME_CITYHALL_OFFICER); break;
+			//case 5:
+			//case 6:
+			//case 7: break;
+			//}
+			//ZeroMemory(cTxt, sizeof(cTxt));
+			//wsprintf(cTxt, DRAW_DIALOGBOX_QUEST29, cTemp);
+			//PutAlignedString(sX, sX + szX, sY + 50 + 45, cTxt, 55, 25, 25);
 
-			PutAlignedString(sX, sX + szX, sY + 50 + 60, DRAW_DIALOGBOX_QUEST30, 55, 25, 25);
+			//PutAlignedString(sX, sX + szX, sY + 50 + 60, DRAW_DIALOGBOX_QUEST30, 55, 25, 25);
 
-			ZeroMemory(cTxt, sizeof(cTxt));
-			if (memcmp(m_stQuest[2].cTargetName, "NONE", 4) == 0) {
-				strcpy(cTxt, DRAW_DIALOGBOX_QUEST31);
-				PutAlignedString(sX, sX + szX, sY + 50 + 75, cTxt, 55, 25, 25);
-			}
-			else {
-				ZeroMemory(cTemp, sizeof(cTemp));
-				GetOfficialMapName(m_stQuest[2].cTargetName, cTemp);
-				wsprintf(cTxt, DRAW_DIALOGBOX_QUEST32, cTemp);
-				PutAlignedString(sX, sX + szX, sY + 50 + 75, cTxt, 55, 25, 25);
+			//ZeroMemory(cTxt, sizeof(cTxt));
+			//if (memcmp(m_stQuest[2].cTargetName, "NONE", 4) == 0) {
+			//	strcpy(cTxt, DRAW_DIALOGBOX_QUEST31);
+			//	PutAlignedString(sX, sX + szX, sY + 50 + 75, cTxt, 55, 25, 25);
+			//}
+			//else {
+			//	ZeroMemory(cTemp, sizeof(cTemp));
+			//	GetOfficialMapName(m_stQuest[2].cTargetName, cTemp);
+			//	wsprintf(cTxt, DRAW_DIALOGBOX_QUEST32, cTemp);
+			//	PutAlignedString(sX, sX + szX, sY + 50 + 75, cTxt, 55, 25, 25);
 
-				if (m_stQuest[2].sX != 0) {
-					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, DRAW_DIALOGBOX_QUEST33, m_stQuest[2].sX, m_stQuest[2].sY, m_stQuest[2].sRange);
-					PutAlignedString(sX, sX + szX, sY + 50 + 90, cTxt, 55, 25, 25);
-				}
-			}
+			//	if (m_stQuest[2].sX != 0) {
+			//		ZeroMemory(cTxt, sizeof(cTxt));
+			//		wsprintf(cTxt, DRAW_DIALOGBOX_QUEST33, m_stQuest[2].sX, m_stQuest[2].sY, m_stQuest[2].sRange);
+			//		PutAlignedString(sX, sX + szX, sY + 50 + 90, cTxt, 55, 25, 25);
+			//	}
+			//}
 
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, DRAW_DIALOGBOX_QUEST34, m_stQuest[2].sContribution);//" %dPoint"
-			PutAlignedString(sX, sX + szX, sY + 50 + 105, cTxt, 55, 25, 25);
+			//ZeroMemory(cTxt, sizeof(cTxt));
+			//wsprintf(cTxt, DRAW_DIALOGBOX_QUEST34, m_stQuest[2].sContribution);//" %dPoint"
+			//PutAlignedString(sX, sX + szX, sY + 50 + 105, cTxt, 55, 25, 25);
 			break;
 		}
 		break;
 
 	case 2: // Cancel Quest
-		//PutAlignedString(sX, sX + szX, sY + 50 + 115 - 30, DRAW_DIALOGBOX_QUEST35, 255, 255, 255);
 		PutString(sX + 60, sY + 50 + 115 -30, DRAW_DIALOGBOX_QUEST35, RGB(210, 255, 0), FALSE, 1);
 
-		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))
-			PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 2);
-		else PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 200);
+		if ((msX > sX + 210) && (msX < sX + 245) && (msY > sY + 305) && (msY < sY + 320))
+			PutString_SprFont3(sX + 210, sY + 305, "Back", 200, 250, 2);
+		else PutString_SprFont3(sX + 210, sY + 305, "Back", 200, 250, 200);
 		break;
 
 	case 3: // No Quests
 		PutString(sX + 60, sY + 50 + 115 - 30, DRAW_DIALOGBOX_QUEST1, RGB(210, 255, 0), FALSE, 1);
-	//	PutAlignedString(sX, sX + szX, sY + 50 + 115 - 30, DRAW_DIALOGBOX_QUEST1, 55, 25, 25); // " You are not on a quest."
 		break;
 	}
-
-	/*if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);*/
 }
 
 //50Cent - Quest Helper
@@ -14095,67 +14013,37 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
 	int  i, iTotalLines, iPointerLoc;
-	char cTemp[255], cTemp2[255], cTemp3[255];
+	char cTemp[255], cTemp2[255];
 	double d1, d2, d3;
 
 	sX = m_stDialogBoxInfo[15].sX;
 	sY = m_stDialogBoxInfo[15].sY;
 
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 0); // Normal Dialog
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 1); // Skill Dialog Title Bar
-
-	short limitX, limitY;
-	limitX = sX + m_stDialogBoxInfo[15].sSizeX + 20;
-	limitY = sY + m_stDialogBoxInfo[15].sSizeY + 20;
-
-	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-
-	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-	PutString_SprFont2(sX + 115, sY + 5, "Skills", 240, 240, 240);
-
-	PutString(sX + 30, sY + 15 +15, "Name", RGB(0, 255, 0));
-	PutString(sX + 150, sY + 15 + 15, "Progress", RGB(0, 255, 0));
-	PutString(sX + 183+30+10, sY + 15 + 15, "Level", RGB(0, 255, 0));
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0); // Normal Dialog
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 1); // Skill Dialog Title Bar
 
 	switch (m_stDialogBoxInfo[15].cMode) {
 	case 0:
-		int x = 0;
-		for (i = 0; i < 24; i++)
+		for (i = 0; i < 17; i++)
 			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != NULL))
 			{
-				if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
-
 				ZeroMemory(cTemp, sizeof(cTemp));
 				wsprintf(cTemp, "%s", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName);
 				m_Misc.ReplaceString(cTemp, '-', ' ');
 				ZeroMemory(cTemp2, sizeof(cTemp2));
-				wsprintf(cTemp2, "%3d", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel);
-				
-				if (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel < 100) {
-					ZeroMemory(cTemp3, sizeof(cTemp3));
-					wsprintf(cTemp3, "%d/%d", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView], m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel + 1);
-				}
-				else
-				{
-					ZeroMemory(cTemp3, sizeof(cTemp3));
-					wsprintf(cTemp3, " ");
-				}
-				if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
+				wsprintf(cTemp2, "%3d%%", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel);
+				if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
 				{
 					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
 						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 					{
-						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 0));
-						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 0);
-						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 0));
+						PutString(sX + 30, sY + 45 + i * 15, cTemp, RGB(255, 255, 255));
+						PutString(sX + 183, sY + 45 + i * 15, cTemp2, RGB(255, 255, 255));
 					}
 					else
 					{
-						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 255));
-						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 255);
-						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 255));
+						PutString(sX + 30, sY + 45 + i * 15, cTemp, RGB(5, 5, 5));
+						PutString(sX + 183, sY + 45 + i * 15, cTemp2, RGB(5, 5, 5));
 					}
 				}
 				else
@@ -14163,21 +14051,63 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
 						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 					{
-						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(70, 130, 180));
-						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 70, 130, 180);
-						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(70, 130, 180));
+						PutString(sX + 30, sY + 45 + i * 15, cTemp, RGB(34, 30, 120));
+						PutString(sX + 183, sY + 45 + i * 15, cTemp2, RGB(34, 30, 120));
 					}
 					else
 					{
-						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 255));
-						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 255);
-						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 255));
+						PutString(sX + 30, sY + 45 + i * 15, cTemp, RGB(5, 5, 5));
+						PutString(sX + 183, sY + 45 + i * 15, cTemp2, RGB(5, 5, 5));
 					}
 				}
 
-				x++;
+				if (m_iDownSkillIndex == (i + m_stDialogBoxInfo[15].sView))
+					m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutTransSpriteRGB(sX + 215, sY + 47 + i * 15, 21, 50, 50, 50, m_dwTime);
+				else m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutSpriteFast(sX + 215, sY + 47 + i * 15, 20, m_dwTime);
 			}
 
+		iTotalLines = 0;
+		for (i = 0; i < DEF_MAXSKILLTYPE; i++)
+			if (m_pSkillCfgList[i] != NULL) iTotalLines++;
+
+		if (iTotalLines > 17)
+		{
+			d1 = (double)m_stDialogBoxInfo[15].sView;
+			d2 = (double)(iTotalLines - 17);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)d3;
+		}
+		else iPointerLoc = 0;
+		if (iTotalLines > 17)
+		{
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 242, sY + iPointerLoc + 35, 7);
+		}
+
+		if (cLB != 0 && iTotalLines > 17)
+		{
+			if ((iGetTopDialogBoxIndex() == 15))
+			{
+				if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 30) && (msY <= sY + 320))
+				{
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 17);
+					d3 = (d1 * d2) / 274.0f;
+					iPointerLoc = (int)(d3 + 0.5f);
+					if (iPointerLoc > iTotalLines - 17) iPointerLoc = iTotalLines - 17;
+					m_stDialogBoxInfo[15].sView = iPointerLoc;
+				}
+			}
+		}
+		else m_stDialogBoxInfo[15].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 15 && msZ != 0)
+		{
+			if (msZ > 0) m_stDialogBoxInfo[15].sView--;
+			if (msZ < 0) m_stDialogBoxInfo[15].sView++;
+			m_DInput.m_sZ = 0;
+		}
+		if (m_stDialogBoxInfo[15].sView < 0) m_stDialogBoxInfo[15].sView = 0;
+		if (iTotalLines > 17 && m_stDialogBoxInfo[15].sView > iTotalLines - 17) m_stDialogBoxInfo[15].sView = iTotalLines - 17;
 		break;
 	}
 }
@@ -16008,12 +15938,10 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 	case -1:
 		break;
 	case 0:
-		int x = 0;
-		for (i = 0; i < 24; i++)
+		for (i = 0; i < 17; i++)
 			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != NULL))
 			{
-				if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
-				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
+				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
 				{
 					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
 						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
@@ -16043,7 +15971,7 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 						}
 					}
 				}
-				/*else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
+				else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
 				{
 					if (m_stDialogBoxInfo[15].bFlag == FALSE)
 					{
@@ -16051,8 +15979,7 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 						PlaySound('E', 14, 5);
 						m_stDialogBoxInfo[15].bFlag = TRUE;
 					}
-				}*/
-				x++;
+				}
 			}
 		break;
 	}
@@ -19447,8 +19374,8 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 	{
 		if (sY > 273) shY = sY - 17;
 		else shY = sY + szY + 4;
-		if (m_bZoomMap) PutString(sX, shY, DEF_MSG_GUIDEMAP_MIN, RGB(200, 200, 120));//"(-)
-		else PutString(sX, shY, DEF_MSG_GUIDEMAP_MAX, RGB(200, 200, 120));//"(+)
+		if (m_bZoomMap) PutString(sX, shY, "(-) Zoom out", RGB(200, 200, 120));//"(-)
+		else PutString(sX, shY, "(+) Zoom in", RGB(200, 200, 120));//"(+)
 
 		if (m_bZoomMap)
 		{
@@ -19466,7 +19393,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			shX = (msX - sX) * m_pMapData->m_sMapSizeX / 128;
 			shY = (msY - sY) * m_pMapData->m_sMapSizeX / 128;
 		}
-		wsprintf(G_cTxt, "%d, %d", shX, shY);
+		wsprintf(G_cTxt, "(%d, %d)", shX, shY);
 		if (m_cMapIndex == 11) // Aresden: Fixed by Snoopy for v3.51 maps
 		{
 			if (shX > 46 && shX < 66 && shY > 107 && shY < 127) strcpy(G_cTxt, DEF_MSG_MAPNAME_MAGICTOWER);
@@ -22778,7 +22705,7 @@ void CGame::ResetValues()
 	m_iShieldPA = 0;
 
 	// VAMP - arena
-	for (int i = 0; i < 200; i++)
+	for (int i = 0; i < 500; i++)
 	{
 		//m_stArenaPlayers[i].iTeam = 0;
 		m_stArenaPlayers[i].iKills = 0;
@@ -22899,4 +22826,101 @@ void CGame::NotifyPlayerAttributes(char* pData)
 	cp += 4;
 	//-------------------------------------------
 
+}
+
+LONG CGame::GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata)
+{
+	HKEY hkey;
+	LONG retval = RegOpenKeyEx(key, subkey, 0, KEY_QUERY_VALUE, &hkey);
+	if (retval == ERROR_SUCCESS)
+	{
+		long datasize = MAX_PATH;
+		TCHAR data[MAX_PATH];
+		RegQueryValue(hkey, NULL, data, &datasize);
+		lstrcpy(retdata, data);
+		RegCloseKey(hkey);
+	}
+	return retval;
+}
+
+void CGame::GoHomepage()
+{
+	LPCTSTR	url;
+	switch (sWebID) {
+	case 1: // Update List
+		url = "http://www.helbreathghost.com/monsters.html";
+		break;
+	case 2: // Drop List
+		url = "http://www.helbreathghost.com/monsters.html";
+		break;
+	case 3: // Weapons
+		url = "http://www.helbreathghost.com/weapons.html";
+		break;
+	case 4: // Armors
+		url = "http://www.helbreathghost.com/armors.html";
+		break;
+	case 5: // Ball Points
+		
+		break;
+	case 6: // Maps Online
+		url = "http://www.helbreathghost.com/maps.html";
+		break;
+	case 7: // Jemels
+		url = "http://www.helbreathghost.com/jewels.html";
+		break;
+	case 8: // Rings
+		url = "http://www.helbreathghost.com/rings.html";
+		break;
+	case 9: // Necks
+		url = "http://www.helbreathghost.com/necks.html";
+		break;
+	case 10: // Magics
+		url = "http://www.helbreathghost.com/magics.html";
+		break;
+	case 11: // Discord
+		url = "https://discord.gg/mvF5f25";
+		break;
+	case 12: // The Crusade
+		url = "http://www.helbreathghost.com/crusade.html";
+		break;
+	case 13: // Staff
+		url = "http://www.helbreathghost.com/staff.html";
+		break;
+
+	default:
+		url = "http://www.helbreath.fun";
+		break;
+	}
+
+	int		showcmd = SW_SHOW;
+	char	key[MAX_PATH + MAX_PATH];
+	SendMessage(G_hWnd, WM_ACTIVATEAPP, 0, 0);
+	// First try ShellExecute()
+	HINSTANCE result = ShellExecute(NULL, "open", url, NULL, NULL, showcmd);
+
+	// If it failed, get the .htm regkey and lookup the program
+	if ((UINT)result <= HINSTANCE_ERROR)
+	{
+		if (GetRegKey(HKEY_CLASSES_ROOT, ".htm", key) == ERROR_SUCCESS)
+		{
+			lstrcat(key, "\\shell\\open\\command");
+
+			if (GetRegKey(HKEY_CLASSES_ROOT, key, key) == ERROR_SUCCESS)
+			{
+				char* pos;
+				pos = strstr(key, "\"%1\"");
+				if (pos == NULL)					// No quotes found
+				{
+					pos = strstr(key, "%1");			// Check for %1, without quotes
+					if (pos == NULL)				// No parameter at all...
+						pos = key + lstrlen(key) - 1;
+					else *pos = '\0';				// Remove the parameter
+				}
+				else    *pos = '\0';				// Remove the parameter
+				lstrcat(pos, " ");
+				lstrcat(pos, url);
+				result = (HINSTANCE)WinExec(key, showcmd);
+			}
+		}
+	}
 }

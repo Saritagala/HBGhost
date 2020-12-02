@@ -7,7 +7,7 @@
 
 #if _MSC_VER >= 1000
 #pragma once
-#pragma warning( disable: 4700 4305 4309)
+//#pragma warning( disable: 4700 4305 4309)
 /*
 warning C4305: '=' : truncation from 'const int' to 'short'
 warning C4309: '=' : truncation of constant value
@@ -1145,15 +1145,15 @@ private:
 	// 	Heldenian
 	BOOL	m_bIsHeldenianMode;			// Event has started	-> can TP on maps
 	BOOL	m_bHeldenianWarInitiated;	// War has begun		-> can Fight 
-	char	m_cHeldenianType;			// Type 1: (BtField) 
+	short	m_cHeldenianType;			// Type 1: (BtField) 
 										// Type 2: (Casttle siege) Previous winner will defend.
-	char    m_sLastHeldenianWinner;		// Last war result, allows to TP on BtField out off war time
+	short    m_sLastHeldenianWinner;		// Last war result, allows to TP on BtField out off war time
 										// Tells defender for next Type 2 Heldenian
-	char	m_cHeldenianWinner;			// If victory before Event timeOut, tell who wins
+	short	m_cHeldenianWinner;			// If victory before Event timeOut, tell who wins
 	DWORD	m_dwHeldenianGUID;			// identify this event
 	DWORD	m_dwHeldenianWarStartTime;	// 15min delay to start the real war
 	DWORD	m_dwHeldenianFinishTime;	// 1h30 after, finish the event and compute result...	
-	char	m_cHeldenianFirstDestroyedTowerWinner;
+	short	m_cHeldenianFirstDestroyedTowerWinner;
 	int m_iHeldenianAresdenDead, m_iHeldenianElvineDead;
 	int m_iHeldenianAresdenFlags, m_iHeldenianElvineFlags;
 	int m_iHeldenianAresdenLeftTower, m_iHeldenianElvineLeftTower;
@@ -1192,7 +1192,7 @@ private:
 
 	// centu - settings
 	int m_iClearMapTime, m_iGoldRate, m_iGuildCost;
-	float m_iExpSetting;
+	int m_iExpSetting;
 
 	bool  m_bNpcItemConfig;
 

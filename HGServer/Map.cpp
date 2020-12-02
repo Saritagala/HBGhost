@@ -17,7 +17,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -953,7 +953,7 @@ BOOL CMap::bApocalypseGate()
 {
  class CTile * pTile;
  int i, LR, TB;
- char cLeft, cTop, cRight, cBottom;
+ LONG cLeft, cTop, cRight, cBottom;
 
 	for (i = 0; i < m_iTotalDynamicGate; i++) {
 		cLeft	= m_rcDynamicGateRect[i].left;
@@ -4099,8 +4099,8 @@ void CGame::GetMapInitialPoint(int iMapIndex, short* pX, short* pY, char* pPlaye
 		i = 0;
 	else i = iDice(1, iTotalPoint) - 1;
 
-	*pX = pList[i].x;
-	*pY = pList[i].y;
+	*pX = (short)pList[i].x;
+	*pY = (short)pList[i].y;
 }
 
 int CGame::iGetMapLocationSide(char* pMapName)

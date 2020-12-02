@@ -12,7 +12,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996)
 
 Crusade::Crusade()
 {
@@ -856,7 +856,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 		wsprintf(G_cTxt, "Accessing crusade teleport: (%s) Player: (%s) - setting teleport location when crusade is disabled.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		DeleteClient(iClientH, TRUE, TRUE);
+		//DeleteClient(iClientH, TRUE, TRUE);
 		return;
 	}
 
@@ -865,7 +865,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 		wsprintf(G_cTxt, "Accessing crusade teleport: (%s) Player: (%s) - teleporting when not in a guild",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		DeleteClient(iClientH, TRUE, TRUE);
+		//DeleteClient(iClientH, TRUE, TRUE);
 		return;
 	}
 
@@ -965,7 +965,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 		wsprintf(G_cTxt, "Accessing Crusade Set Teleport:(%s) Player: (%s) - setting point when not a crusade.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		DeleteClient(iClientH, TRUE, TRUE);
+		//DeleteClient(iClientH, TRUE, TRUE);
 		return;
 	}
 
@@ -974,7 +974,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 		wsprintf(G_cTxt, "Accessing Crusade Set Teleport: (%s) Player: (%s) - setting point when not a guildmaster.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		DeleteClient(iClientH, TRUE, TRUE);
+		//DeleteClient(iClientH, TRUE, TRUE);
 		return;
 	}
 

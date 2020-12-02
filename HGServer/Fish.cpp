@@ -4,7 +4,7 @@
 
 #include "Fish.h"
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

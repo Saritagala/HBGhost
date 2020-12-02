@@ -11,7 +11,5 @@ MMRESULT _StartTimer(DWORD dwTime);
 
 void _StopTimer(MMRESULT timerid);
 void CPSocketConnet() ;
-LONG GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata);
-void GoHomepage();
 
 bool IsWin();

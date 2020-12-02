@@ -16,7 +16,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996 4018)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

@@ -21,7 +21,7 @@ void PutAdminLogFileList(char * cStr);
 void PutHackLogFileList(char * cStr);
 void PutPvPLogFileList(char * cStr);
 
-#pragma warning (disable : 4996 4477)
+#pragma warning (disable : 4996)
 
 // --------------------------------------------------------------
 
@@ -314,7 +314,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	// Install SEH
 	SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)lpTopLevelExceptionFilter);
-	sprintf( szAppClass, "GameServer%d", hInstance);
+	sprintf( szAppClass, "GameServer%d", (int)hInstance);
 	if (!InitApplication( hInstance))		return (FALSE);
     if (!InitInstance(hInstance, nCmdShow)) return (FALSE);
 	

@@ -16,7 +16,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996 4018)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -250,7 +250,7 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 	if (m_bIsHeldenianMode == TRUE) return;
 	if (m_bIsApocalypseMode == TRUE) return;
 
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
 
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	cp += 30;

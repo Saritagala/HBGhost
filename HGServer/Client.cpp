@@ -8,7 +8,7 @@
 using namespace std;
 extern class Team* c_team;
 
-#pragma warning (disable : 4996 4244)
+#pragma warning (disable : 4996)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -317,8 +317,10 @@ CClient::CClient(HWND hWnd)
 
 	//50Cent - Repair All
     totalItemRepair = 0;
-    for(i = 0; i < DEF_MAXITEMS; i++)
-        m_stRepairAll[i].index = m_stRepairAll[i].price = 0;
+	for (i = 0; i < DEF_MAXITEMS; i++) {
+		m_stRepairAll[i].index = NULL;
+		m_stRepairAll[i].price = 0;
+	}
 
 	//Magn0S:: New Variables
 	m_iCoinPoints = 0;

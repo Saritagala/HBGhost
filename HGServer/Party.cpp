@@ -12,7 +12,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996)
 
 Party::Party()
 {}
@@ -39,9 +39,9 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 	int i;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
-		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
 		return;
 	}
 
@@ -332,7 +332,7 @@ void CGame::PartyOperationResult_Create(int iClientH, char* pName, int iResult, 
 	if (strcmp(m_pClientList[iClientH]->m_cCharName, pName) != 0) return;
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
-		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
 		return;
 	}
 
@@ -411,7 +411,7 @@ void CGame::PartyOperationResult_Join(int iClientH, char* pName, int iResult, in
 	if (m_pClientList[iClientH] == NULL) return;
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
-		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
 		return;
 	}
 
@@ -587,10 +587,10 @@ void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_NULL) return;
 	if ((dwMsgSize) <= 0) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 4)) return;
+	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
-		SendNotifyMsg(NULL, i, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
 		return;
 	}
 

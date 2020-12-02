@@ -12,7 +12,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 6011 6001 4244 4018 6385 6386 26451 6054 4267 6053 6031)
+#pragma warning (disable : 4996 4018)
 
 Heldenian::Heldenian()
 {
@@ -234,7 +234,7 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE)
 			{
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
-				if (m_pClientList[iClientH]->m_iEnemyKillCount > 10)
+				if (m_pClientList[iClientH]->m_iEnemyKillCount >= 10)
 				{
 					iEKNum = 10;
 					m_pClientList[iClientH]->m_iEnemyKillCount -= 10;
@@ -1360,7 +1360,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 						{
 							dX = m_pMapList[x]->m_stHeldenianTower[i].dX;
 							dY = m_pMapList[x]->m_stHeldenianTower[i].dY;
-							cSide = m_sLastHeldenianWinner;
+							cSide = (char)m_sLastHeldenianWinner;
 							ZeroMemory(cTmp, sizeof(cTmp));
 							if ((m_pMapList[x]->m_stHeldenianTower[i].sTypeID == 87) && (cSide == 1)) strcpy(cTmp, "CT-Aresden");
 							if ((m_pMapList[x]->m_stHeldenianTower[i].sTypeID == 87) && (cSide == 2)) strcpy(cTmp, "CT-Elvine");
@@ -1405,12 +1405,12 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							ZeroMemory(cTmp, sizeof(cTmp));
 							if (m_sLastHeldenianWinner == 1) strcpy(cTmp, "gate-a");
 							else							 strcpy(cTmp, "gate-e");
-							cSide = m_sLastHeldenianWinner;
+							cSide = (char)m_sLastHeldenianWinner;
 							ZeroMemory(cName, sizeof(cName));
 							wsprintf(cName, "XX%d", iNamingValue);
 							cName[0] = 95;
 							cName[1] = i + 65;
-							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, NULL, NULL, m_sLastHeldenianWinner, FALSE, TRUE, FALSE, TRUE, NULL);
+							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, NULL, NULL, (char)m_sLastHeldenianWinner, FALSE, TRUE, FALSE, TRUE, NULL);
 							if (bRet == FALSE)
 							{
 								m_pMapList[x]->SetNamingValueEmpty(iNamingValue);
@@ -1571,7 +1571,7 @@ void CGame::CheckHeldenianResultCalculation(int iClientH)
 			dV2 = (double)m_pClientList[iClientH]->m_iExp;
 			dV3 = (double)m_pClientList[iClientH]->m_iWarContribution * 1.2f;
 			dV1 = dV2 + dV3;
-			GetExp(iClientH, dV1);
+			GetExp(iClientH, (int)dV1);
 		}
 		else {
 			GetExp(iClientH, (m_pClientList[iClientH]->m_iWarContribution / 5));
@@ -2038,7 +2038,7 @@ void CGame::bReadHeldenianGUIDFile(char* cFn)
 			{
 				switch (cReadMode) {
 				case 1:
-					m_dwHeldenianGUID = _atoi64(token);
+					m_dwHeldenianGUID = (DWORD)atoi(token);
 					cReadMode = 0;
 					break;
 				case 2:

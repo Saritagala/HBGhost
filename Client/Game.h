@@ -778,9 +778,6 @@ public:
 	BOOL __bDecodeBuildItemContents(char * pBuffer);
 	int _iGetBankItemCount();
 	int _iGetTotalItemNum();
-	LONG GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata);
-	void GoHomepage();
-	void GoForumpage();
 	void StartBGM();
 
 	void NotifyMsg_ItemTrade(char * pData);
@@ -801,6 +798,10 @@ public:
 	void DrawAngel(int iSprite, short sX, short sY, char cFrame, DWORD dwTime);
 
 	void DrawPartyStatus(DWORD dwTime);
+
+	LONG GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata);
+	void GoHomepage();
+	short sWebID;
 
 	//MORLA 2.10 - Top 15 Server
 	int iHBTOPk[16];
@@ -1228,7 +1229,7 @@ public:
 	int   m_iContributionPrice;
 
 		// VAMP - online users list
-	class OnlineUser * m_pOnlineUsersList[DEF_MAXMENUITEMS];
+	class OnlineUser * m_pOnlineUsersList[500];
 	void ResponseOnlines(char * pData);
 	char m_cTakeHeroItemName[100]; //Drajwer - hero item str
 
@@ -1260,7 +1261,7 @@ public:
 		int iKills;
 		int iDeaths;
 		char cCharName[12];
-	} m_stArenaPlayers[200];
+	} m_stArenaPlayers[500];
 
 	void SortArenaPlayers();
 	void DlgBoxClick_ArenaRestart(short msX, short msY);
@@ -1268,7 +1269,7 @@ public:
 
 	struct {
 		char cCharName[12];
-	} m_stOnlineGuild[200];
+	} m_stOnlineGuild[500];
 
 	void DrawDialogBox_ChangeCity(short msX, short msY);
 	void DlgBoxClick_ChangeCity(short msX, short msY);

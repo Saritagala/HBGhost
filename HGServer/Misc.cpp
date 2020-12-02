@@ -4,7 +4,7 @@
 
 #include "Misc.h"
 
-#pragma warning (disable : 4996 6269)
+#pragma warning (disable : 4996)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction

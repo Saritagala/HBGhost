@@ -7,7 +7,7 @@
 #include "Game.h"
 #include "winmain.h"
 
-#pragma warning (disable : 4996 4244 4018)
+#pragma warning (disable : 4996 4018)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -427,13 +427,13 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 	m_pSndBuffer[0] = cKey;
 
 	wp  = (WORD *)(m_pSndBuffer + 1);
-	*wp = dwSize + 3;
+	*wp = (WORD)dwSize + 3;
 
 	memcpy((char*)(m_pSndBuffer + 3), cData, dwSize);
 	if (cKey != NULL) { //Encryption
 		for (i = 0; i < dwSize; i++) {
 			m_pSndBuffer[3 + i] += (i ^ cKey);
-			m_pSndBuffer[3 + i] = m_pSndBuffer[3 + i] ^ (cKey ^ (dwSize - i));
+			m_pSndBuffer[3 + i] = m_pSndBuffer[3 + i] ^ (cKey ^ ((char)dwSize - i));
 		}
 	}
 	//change starts
@@ -558,7 +558,7 @@ char * XSocket::pGetRcvDataPointer(DWORD * pMsgSize, char * pKey)
 	// v.14 : m_pSndBuffer +3 부터 dwSize까지 cKey가 0이 아니라면 암호화를 푼다.
 	if (cKey != NULL) {//Encryption
 		for (i = 0; i < dwSize; i++) {
-			m_pRcvBuffer[3+i]  = m_pRcvBuffer[3+i] ^ (cKey ^ (dwSize - i));
+			m_pRcvBuffer[3+i]  = m_pRcvBuffer[3+i] ^ (cKey ^ ((char)dwSize - i));
 			m_pRcvBuffer[3+i] -= (i ^ cKey);
 		}
 	}
