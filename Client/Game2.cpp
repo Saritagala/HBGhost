@@ -4654,7 +4654,6 @@ void CGame::LoadFriendList()
 	fclose(f);
 }
 
-#ifdef DEF_ANTI_HACK
 /*********************************************************************************************************************
 **  void CGame::CheckProcesses()	( Snoopy )																		**
 **  description			: 	Check if forbiden precesses running (1st, evident function)								**
@@ -4672,7 +4671,7 @@ BOOL CGame::CheckProcesses()
 	do
 	{
 		Ufoundprocess = _strupr(uProcess.szExeFile);
-		/*if (strcmp(Ufoundprocess, "SPEEDERXP.EXE") == 0)	 bFound = TRUE;
+		if (strcmp(Ufoundprocess, "SPEEDERXP.EXE") == 0)	 bFound = TRUE;
 		if (strcmp(Ufoundprocess, "WpeSpy.dll") == 0)	 bFound = TRUE;
 		if (strcmp(Ufoundprocess, "WpeSpy.DLL") == 0)	 bFound = TRUE;
 		if (strcmp(Ufoundprocess, "SetPriv.DLL") == 0)	 bFound = TRUE;
@@ -4907,7 +4906,7 @@ BOOL CGame::CheckProcesses()
 		if (strcmp(Ufoundprocess, "WPE PRO - MODIFIED.EXE") == 0)	bFound = TRUE;
 		if (strcmp(Ufoundprocess, "CMD.EXE") == 0)	bFound = TRUE;
 		if (strcmp(Ufoundprocess, "powershell.EXE") == 0)	bFound = TRUE;
-		if (strcmp(Ufoundprocess, "powershell_ise.EXE") == 0)	bFound = TRUE;*/
+		if (strcmp(Ufoundprocess, "powershell_ise.EXE") == 0)	bFound = TRUE;
 		r = Process32Next(hSnapShot, &uProcess);
 	} while (r);
 	CloseHandle(hSnapShot);
@@ -4921,7 +4920,6 @@ BOOL CGame::CheckProcesses()
 	//m_bHackMoveBlocked = bFound;
 	return bFound;
 }
-#endif
 
 
 bool CGame::bCheckItemEquiped(char itemName[])

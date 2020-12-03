@@ -83,6 +83,8 @@
 #define DEF_ITEMLOG_USE					32
 #define DEF_ITEMLOG_UPGRADEPOINT		31
 
+#define	DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM		50 //bstaff
+
 #define DEF_MAXDUPITEMID				100
 
 #define DEF_MAXGUILDS					1000 // 동시에 접속할 수 있는 길드수 

@@ -254,6 +254,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 			case DEF_ITEMEFFECTTYPE_ATTACK:
 			case DEF_ITEMEFFECTTYPE_ATTACK_ARROW:
 			case DEF_ITEMEFFECTTYPE_DEFENSE:
+			case DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM:
 				m_pClientList[iClientH]->m_iHitRatio_ItemEffect_SM += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffectValue1;
 				m_pClientList[iClientH]->m_iHitRatio_ItemEffect_L += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffectValue2;
 				break;
@@ -284,6 +285,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 			case DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE:
 			case DEF_ITEMEFFECTTYPE_ATTACK_MAXHPDOWN:
 			case DEF_ITEMEFFECTTYPE_ATTACK:
+			case DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM:
 				m_pClientList[iClientH]->m_cAttackDiceThrow_SM = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 				m_pClientList[iClientH]->m_cAttackDiceRange_SM = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
 				m_pClientList[iClientH]->m_cAttackBonus_SM = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
@@ -455,6 +457,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					break;
 
 				case DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE:
+				case DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM:
 					// SNOOPY: For wands, ignore m_sItemEffectValue4/5/6 for damage{
 					m_pClientList[iClientH]->m_cAttackDiceThrow_L = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 					m_pClientList[iClientH]->m_cAttackDiceRange_L = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
@@ -8286,6 +8289,14 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		}
 	}
 
+	//Magn0S:: Update to put SelfSafe for bmages.
+	if ((cEquipPos == DEF_EQUIPPOS_TWOHAND) || (cEquipPos == DEF_EQUIPPOS_RHAND)) {
+		m_pClientList[iClientH]->m_bIsSelfSafe = FALSE;
+		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM) {
+			m_pClientList[iClientH]->m_bIsSelfSafe = TRUE;
+		}
+	}
+
 	if (cEquipPos == DEF_EQUIPPOS_TWOHAND) {
 		// StunSB / StormBringer
 		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 1037 || m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845) {
@@ -8647,6 +8658,12 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, BOOL bNotice)
 	if (m_pClientList[iClientH]->m_bIsItemEquipped[sItemIndex] == FALSE) return;
 
 	cEquipPos = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos;
+	//Magn0S:: Update to put SelfSafe for bmages.
+	if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM) {
+		if (m_pClientList[iClientH]->m_bIsSelfSafe == TRUE)
+			m_pClientList[iClientH]->m_bIsSelfSafe = TRUE;
+		else m_pClientList[iClientH]->m_bIsSelfSafe = FALSE;
+	}
 	if (cEquipPos == DEF_EQUIPPOS_RHAND) {
 		if (m_pClientList[iClientH]->m_pItemList[sItemIndex] != NULL) {
 			if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {

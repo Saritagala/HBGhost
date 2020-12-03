@@ -42,6 +42,7 @@ CClient::CClient(HWND hWnd)
 	m_iRewardGold = 0;
 	m_iCurWeightLoad = 0;
 	m_bIsSafeAttackMode  = FALSE;
+	m_bIsSelfSafe = FALSE;
 	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++) {
 		m_sItemEquipmentStatus[i] = -1;
 	}

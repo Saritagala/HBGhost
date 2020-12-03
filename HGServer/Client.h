@@ -41,6 +41,8 @@ public:
 	bool IsInsideTeam();
 	bool IsTeamPlayer();
 
+	bool m_bIsSelfSafe;
+
 	int iteam, stoptime;
 
 	void Send(int h, WORD msg, DWORD sV1 = 0, DWORD sV2 = 0, DWORD sV3 = 0,

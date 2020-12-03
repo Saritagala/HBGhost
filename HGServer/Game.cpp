@@ -1652,7 +1652,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	short* sp, sSummonPoints;
 	DWORD* dwp;
 	WORD* wp;
-	char* cp, cPlayerName[11], cTxt[120], cPoints;
+	char* cp, cPlayerName[11], cTxt[120];
 	int* ip, i, iTotalItemA, iTotalItemB, iSize, iRet;
 	SYSTEMTIME SysTime;
 	char* pBuffer = NULL;
@@ -2231,19 +2231,9 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	*ip = m_pClientList[iClientH]->m_iHP;
 	cp += 4;
 
-	// new
-	if (m_pClientList[iClientH]->m_pIsProcessingAllowed == TRUE) {
-		cPoints = 0;
-		if ((m_pClientList[iClientH]->m_cSide != m_sLastHeldenianWinner) && (m_sLastHeldenianWinner != 0)) {
-			cPoints = 100;
-		}
-	}
-	*cp = cPoints;
-	cp++;
-
 	// centu - 800x600
 	iSize = iComposeInitMapData(m_pClientList[iClientH]->m_sX - 12, m_pClientList[iClientH]->m_sY - 9, iClientH, cp);
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 66 + iSize); // SephirotH fix - 66 - Centuu: 85?
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 65 + iSize); // SephirotH fix - 66 - Centuu: 85?
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -8420,7 +8410,104 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 				}
 				else sItemIndex = -1;
 
-				if (sItemIndex != -1) {
+				if (sItemIndex != -1 && m_pClientList[iClientH]->m_pItemList[sItemIndex] != NULL) {
+					//Magn0S:: Battle Staffs coded by Magn0S
+					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM) {
+						short sType;
+						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1) {
+						case 0: // Normal BStaffs
+							if (wType >= 20) {
+								sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+								BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 1);
+							}
+							else {
+								sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+								BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 0);
+							}
+							break;
+
+						case 1: // Triple Attacks
+							switch (cDir) {
+							case 1: // Cima / Baixo
+							case 5:
+								if (wType >= 20) {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX + 1, dY, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX - 1, dY, sType, TRUE, 1);
+								}
+								else {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX + 1, dY, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX - 1, dY, sType, TRUE, 0);
+								}
+								break;
+
+							case 2: // Diagonais
+							case 6:
+								if (wType >= 20) {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX + 1, dY + 1, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX - 1, dY - 1, sType, TRUE, 1);
+								}
+								else {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX + 1, dY + 1, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX - 1, dY - 1, sType, TRUE, 0);
+								}
+								break;
+
+							case 3: // Frente / Atras
+							case 7:
+								if (wType >= 20) {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX, dY + 1, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX, dY - 1, sType, TRUE, 1);
+								}
+								else {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX, dY + 1, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX, dY - 1, sType, TRUE, 0);
+								}
+								break;
+
+							case 4: // Diagonais
+							case 8:
+								if (wType >= 20) {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX - 1, dY + 1, sType, TRUE, 1);
+									BattleMageMagicHandler(iClientH, dX + 1, dY - 1, sType, TRUE, 1);
+								}
+								else {
+									sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+									BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX - 1, dY + 1, sType, TRUE, 0);
+									BattleMageMagicHandler(iClientH, dX + 1, dY - 1, sType, TRUE, 0);
+								}
+								break;
+
+							}
+							break;
+
+						default:
+							if (wType >= 20) {
+								sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
+								BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 1);
+							}
+							else {
+								sType = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+								BattleMageMagicHandler(iClientH, dX, dY, sType, TRUE, 0);
+							}
+							break;
+						}
+					}
+					//-----
 					if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) != NULL) {
 						dwType1 = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) >> 20;
 						dwValue1 = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x000F0000) >> 16;
@@ -9560,7 +9647,7 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		break;
 
 	case DEF_COMMONTYPE_REQ_GETOCCUPYFIGHTZONETICKET:
-		GetFightzoneTicketHandler(iClientH);
+		//GetFightzoneTicketHandler(iClientH);
 		break;
 
 	// Upgrade Item
@@ -9573,7 +9660,7 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		break;
 
 	case DEF_COMMONTYPE_REQRANGO:
-		RequestRango(iClientH, iV1);
+		//RequestRango(iClientH, iV1);
 		break;
 
 	//50Cent - HP Bar
@@ -9764,6 +9851,8 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 	m_pClientList[iClientH]->m_bIsKilled = TRUE;
 	// HP는 0이다.
 	m_pClientList[iClientH]->m_iHP = 0;
+	m_pClientList[iClientH]->m_iDeaths++; // MORLA 2.2 - Le suma una muerte al pj
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[iClientH]->m_iDeaths, NULL, NULL);
 
 	if (m_pClientList[iClientH]->m_cMagicEffectStatus[ DEF_MAGICTYPE_HOLDOBJECT ] != 0)
 	{
@@ -11111,7 +11200,7 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 			}
 			calcularTop15HB(iAttackerH);
 			
-			m_pClientList[iClientH]->m_iDeaths++; // MORLA 2.2 - Le suma una muerte al pj
+			
 			// Wanted System
 			/*switch (m_pClientList[iAttackerH]->m_iWantedLevel) {
 			case 0:
@@ -11251,7 +11340,7 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 			}*/
 			SendNotifyMsg(NULL, iAttackerH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iAttackerH]->m_iEnemyKillCount, m_pClientList[iAttackerH]->m_iMaxEK, NULL, NULL);
 			//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, m_pClientList[iClientH]->m_iDeaths, NULL, NULL);
+			
 
 		}
 
@@ -11784,6 +11873,10 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 					return;
 				}
 			}
+			//Magn0S:: Put self safe for bmages.
+			if ((m_pClientList[sAttackerH]->m_bIsSelfSafe == TRUE) && (m_pClientList[sTargetH] == m_pClientList[sAttackerH]))
+				return;
+
 			if (m_pMapList[m_pClientList[sTargetH]->m_cMapIndex]->iGetAttribute(m_pClientList[sTargetH]->m_sX, m_pClientList[sTargetH]->m_sY, 0x00000005) != 0) return;
 		}
 
@@ -12355,6 +12448,10 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 					return;
 				}
 			}
+			//Magn0S:: Put self safe for bmages.
+			if ((m_pClientList[sAttackerH]->m_bIsSelfSafe == TRUE) && (m_pClientList[sTargetH] == m_pClientList[sAttackerH]))
+				return;
+
 			if (m_pMapList[m_pClientList[sTargetH]->m_cMapIndex]->iGetAttribute(m_pClientList[sTargetH]->m_sX, m_pClientList[sTargetH]->m_sY, 0x00000005) != 0) return;
 		}
 
@@ -12860,6 +12957,10 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 					return;
 				}
 			}
+
+			//Magn0S:: Put self safe for bmages.
+			if ((m_pClientList[sAttackerH]->m_bIsSelfSafe == TRUE) && (m_pClientList[sTargetH] == m_pClientList[sAttackerH]))
+				return;
 
 			// 마법 보호 혹은 안전 영역이라면 공격 성공 못함 
 			if (m_pMapList[m_pClientList[sTargetH]->m_cMapIndex]->iGetAttribute(m_pClientList[sTargetH]->m_sX, m_pClientList[sTargetH]->m_sY, 0x00000005) != 0) return;
@@ -13416,7 +13517,7 @@ void CGame::OnKeyUp(WPARAM wParam, LPARAM lParam)
 	
 	case VK_F6:
 		if (m_bF1pressed == TRUE) {
-			PutLogList("(!) Send server shutdown announcement1...");
+			PutLogList("(!) Send server shutdown announcement 1...");
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
 			if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE)) {
 				SendNotifyMsg(NULL, i, DEF_NOTIFY_SERVERSHUTDOWN, 1, NULL, NULL, NULL);
@@ -13426,7 +13527,7 @@ void CGame::OnKeyUp(WPARAM wParam, LPARAM lParam)
 
 	case VK_F7:
 		if (m_bF1pressed == TRUE) {
-			PutLogList("(!) Send server shutdown announcement2...");
+			PutLogList("(!) Send server shutdown announcement 2...");
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
 			if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE)) {
 				SendNotifyMsg(NULL, i, DEF_NOTIFY_SERVERSHUTDOWN, 2, NULL, NULL, NULL);
@@ -19911,6 +20012,20 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		
 		if ((m_pClientList[sAttackerH]->m_sAppr2 & 0xF000) == 0) return 0;
 
+		//Magn0S:: Battle Staffs coded by Magn0S
+		if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND] != -1) {
+			sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
+		}
+		else if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
+			sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
+		}
+		else sWeaponIndex = -1;
+
+		if ((sWeaponIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL)) {
+			if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MAGICITEM)
+				return 0;
+		}
+
 		iAP_SM = 0;
 		iAP_L  = 0;
 
@@ -20213,7 +20328,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				bIsAttackerBerserk = TRUE;
 			else bIsAttackerBerserk = FALSE;
 
-			if ((bArrowUse != TRUE) && (m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
+			if (/*(bArrowUse != TRUE) && */(m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
 
 				dTmp1 = (double)iAP_SM;
 				dTmp2 = (double)(m_pClientList[sAttackerH]->m_iLevel);
@@ -20342,6 +20457,9 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 				else return 0;
 			}
+			//Magn0S:: Put self safe for bmages.
+			if ((m_pClientList[sAttackerH]->m_bIsSelfSafe == TRUE) && (m_pClientList[sTargetH] == m_pClientList[sAttackerH]))
+				return 0;
 		} 
 
 		iTargetDefenseRatio += m_pClientList[sTargetH]->m_iAddDR;
@@ -20599,11 +20717,11 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			else {
 				switch (cProtect) {
 				case 1:
-					if (bNormalMissileAttack) {
-						iAP_SM = iAP_SM / 2;
-						iAP_L = iAP_L / 2;
+					//if (bNormalMissileAttack) {
+					//	iAP_SM = iAP_SM / 2;
+					//	iAP_L = iAP_L / 2;
 						//return 0;
-					}
+					//}
 					break;
 				case 3: iTargetDefenseRatio += 40;  break;
 				case 4: iTargetDefenseRatio += 100; break;
@@ -24767,7 +24885,7 @@ void CGame::RequestRestartHandler(int iClientH)
 
 void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 {
- char  * cp, cName[11], cData[256], cTxt[256], cGuildStatus, cPoints = 0;
+ char  * cp, cName[11], cData[256], cTxt[256], cGuildStatus;
  DWORD * dwp;
  WORD  * wp;
  int iRet, iTemp, iTemp2, i, iQuestType, iQuestNumber, j;
@@ -24864,13 +24982,6 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 					}
 				}
 			}
-		}
-	}
-	// new - handles cPoints
-	if (m_pClientList[iClientH]->m_pIsProcessingAllowed == TRUE) {
-		cPoints = 0;
-		if ((m_pClientList[iClientH]->m_cSide != m_sLastHeldenianWinner) && (m_sLastHeldenianWinner != 0)) {
-			cPoints = 100;
 		}
 	}
 	if (m_pClientList[iClientH] == NULL) {

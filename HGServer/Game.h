@@ -225,6 +225,7 @@ private:
 	void GlobalEndHeldenianMode();
 	void LocalEndHeldenianMode(DWORD dwHeldenianGUID, int iWinner);
 
+	void BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect, int iV1);
 
 	void RemoveEventNpc(int iNpcH);
 	void RemoveOccupyFlags(int iMapIndex);

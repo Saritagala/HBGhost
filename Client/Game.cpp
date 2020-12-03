@@ -4271,6 +4271,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "Mstaff1",		DEF_SPRID_WEAPON_M + 64*35, 56, TRUE);// Staff
 			MakeSprite( "Mstaff2",		DEF_SPRID_WEAPON_M + 64*36, 56, TRUE);
 			MakeSprite( "MStaff3",		DEF_SPRID_WEAPON_M + 64*37, 56, TRUE);
+			MakeSprite("Mstaff4",		DEF_SPRID_WEAPON_M + 64 * 51, 56, TRUE);// VAMP - Fire Battlestaff
 			MakeSprite( "MReMagicWand", DEF_SPRID_WEAPON_M + 64*38, 56, TRUE);
 			MakeSprite( "MKlonessWand", DEF_SPRID_WEAPON_M + 64*39, 56, TRUE);
 			// Bows 40 41 below
@@ -4453,6 +4454,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "Wstaff1",		DEF_SPRID_WEAPON_W + 64*35, 56, TRUE);// Staff
 			MakeSprite( "Wstaff2",		DEF_SPRID_WEAPON_W + 64*36, 56, TRUE);
 			MakeSprite( "WStaff3",		DEF_SPRID_WEAPON_W + 64*37, 56, TRUE);
+			MakeSprite("Wstaff4", DEF_SPRID_WEAPON_W + 64 * 51, 56, TRUE);// VAMP - Fire Battlestaff
 			MakeSprite( "WKlonessWand", DEF_SPRID_WEAPON_W + 64*39, 56, TRUE);
 			MakeSprite( "WReMagicWand", DEF_SPRID_WEAPON_W + 64*38, 56, TRUE);
 			// bows 40 41 below
@@ -21708,12 +21710,23 @@ int CGame::_iGetAttackType()
 	}else if (((wWeaponType >= 30) && (wWeaponType < 33)) ||  ((wWeaponType >= 55) && (wWeaponType < 60)))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[14] >= 100)) return 26;
 		else return 1;		// Hammers
-	}else if ((wWeaponType >= 34) && (wWeaponType < 40))
+	}
+	else if ((wWeaponType >= 50) && (wWeaponType < 54))
+	{
+		if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[21] >= 100)) return 28;
+		else return 6;		// Battle staffs <<<< NEW
+	}
+	else if (wWeaponType == 40)
+	{
+		if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[6] >= 100)) return 29;
+		else return 7;		// Short Bows <<<< NEW
+	}
+	else if ((wWeaponType >= 34) && (wWeaponType < 40))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[21] >= 100)) return 27;
 		else return 1;		// Wands
-	}else if ((wWeaponType >= 40) && (wWeaponType < 55))
+	}else if ((wWeaponType >= 41) && (wWeaponType < 50))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[6] >= 100)) return 25;
-		else return 2;		// Bows
+		else return 2;		// Long Bows <<<< NEW
 	}else if ((wWeaponType == 29) || (wWeaponType == 33))
 	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE) && (m_cSkillMastery[8] >= 100)) return 23;
 		else return 1;		// LS
@@ -21736,9 +21749,15 @@ int CGame::_iGetWeaponSkillType()
 	{	return 10; // Axe (20..28)
 	}else if (((wWeaponType >= 30) && (wWeaponType < 33)) || ((wWeaponType >= 55) && (wWeaponType < 60)))
 	{	return 14; // Hammer (30,31,32)
-	}else if ((wWeaponType >= 34) && (wWeaponType < 40))
-	{	return 21; // Wand
-	}else if ((wWeaponType >= 40) && (wWeaponType < 55))
+	}
+	else if ((wWeaponType >= 34) && (wWeaponType < 40))
+	{
+		return 21; // Wand
+	}
+	else if ((wWeaponType >= 50) && (wWeaponType < 54))
+	{
+		return 21; // Battle staffs
+	}else if ((wWeaponType >= 40) && (wWeaponType < 50))
 	{	return 6;  // Bow
 	}else if ((wWeaponType == 29) || (wWeaponType == 33))
 	{	return 8;  // LS LightingBlade || BlackShadow
@@ -32205,6 +32224,20 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							break;
 						case 21: // Wand
 							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)) {
+								m_cCommand = DEF_OBJECTATTACK; // Crit without battle staff
+								m_sCommX = m_sMCX;
+								m_sCommY = m_sMCY;
+								wType = _iGetAttackType();
+							}
+							else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)
+								&& (_iGetAttackType() == 28)) { // Crit with battle staff
+								m_cCommand = DEF_OBJECTATTACK;
+								m_sCommX = m_sMCX;
+								m_sCommY = m_sMCY;
+								wType = _iGetAttackType();
+							}
+							else if ((absX <= 3) && (absY <= 3) && (m_bSuperAttackMode == FALSE)
+								&& (_iGetAttackType() == 6)) { // Normal Hit with battle staff
 								m_cCommand = DEF_OBJECTATTACK;
 								m_sCommX = m_sMCX;
 								m_sCommY = m_sMCY;
@@ -32624,6 +32657,24 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 										m_sCommY = m_sMCY;
 										wType = _iGetAttackType();
 									}
+									else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)
+										&& (_iGetAttackType() == 28)) { // Crit with Battle staff
+										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
+											m_cCommand = DEF_OBJECTATTACKMOVE;
+										else m_cCommand = DEF_OBJECTATTACK;
+										m_sCommX = m_sMCX;
+										m_sCommY = m_sMCY;
+										wType = _iGetAttackType();
+									}
+									else if ((absX <= 3) && (absY <= 3) && (m_bSuperAttackMode == FALSE)
+										&& (_iGetAttackType() == 6)) { // Normal hit with Battle Staff
+										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
+											m_cCommand = DEF_OBJECTATTACKMOVE;
+										else m_cCommand = DEF_OBJECTATTACK;
+										m_sCommX = m_sMCX;
+										m_sCommY = m_sMCY;
+										wType = _iGetAttackType();
+									}
 									else {
 										if ((m_bShiftPressed || m_bRunningMode) && (m_iSP > 0) &&
 											(m_sPlayerType >= 1) && (m_sPlayerType <= 6))
@@ -32768,12 +32819,12 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						}
 						break;
 					case 21: //
-						if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)) {
+						/*if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)) {
 							m_cCommand = DEF_OBJECTATTACK;
 							m_sCommX = m_sMCX;
 							m_sCommY = m_sMCY;
 							wType = _iGetAttackType();
-						}
+						}*/
 						break;
 					}
 				}
@@ -32879,6 +32930,20 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								break;
 							case 21: // wand
 								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)) {
+									m_cCommand = DEF_OBJECTATTACK;
+									m_sCommX = m_sMCX;
+									m_sCommY = m_sMCY;
+									wType = _iGetAttackType();
+								}
+								else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == TRUE)
+									&& (_iGetAttackType() == 28)) {
+									m_cCommand = DEF_OBJECTATTACK;
+									m_sCommX = m_sMCX;
+									m_sCommY = m_sMCY;
+									wType = _iGetAttackType();
+								}
+								else if ((absX <= 2) && (absY <= 2) && (m_bSuperAttackMode == FALSE)
+									&& (_iGetAttackType() == 6)) {
 									m_cCommand = DEF_OBJECTATTACK;
 									m_sCommX = m_sMCX;
 									m_sCommY = m_sMCY;
