@@ -9385,13 +9385,14 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 	}
 
 	//Magn0S:: Add item descriptions
+	ZeroMemory(cDescri1, sizeof(cDescri1));
 	switch(pItem->m_sItemEffectType) {
 		case DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE:
-			wsprintf(cDescri1, GET_ITEM_NAME44, pItem->m_sItemEffectValue4);	break;
+			wsprintf(cDescri1, GET_ITEM_NAME44, pItem->m_sItemEffectValue4);	
+			break;
 
 		case DEF_ITEMEFFECTTYPE_ADDEFFECT:
 			switch (pItem->m_sItemEffectValue1) {
-			ZeroMemory(cDescri1, sizeof(cDescri1));
 			case 1:	wsprintf(cDescri1, GET_ITEM_NAME30, pItem->m_sItemEffectValue2); break;
 			case 2:	wsprintf(cDescri1, GET_ITEM_NAME44, pItem->m_sItemEffectValue2); break;
 			case 3:	wsprintf(cDescri1, GET_ITEM_NAME45, pItem->m_sItemEffectValue2); break;
@@ -9408,12 +9409,14 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 			case 14: wsprintf(cDescri1, GET_ITEM_NAME25, pItem->m_sItemEffectValue2); break;
 			case 15: wsprintf(cDescri1, GET_ITEM_NAME46, pItem->m_sItemEffectValue2); break;
 			}
+			break;
 
 		//default:
 		//	break;
 
-			strcat(pStr4, cDescri1);
-		}
+			
+	}
+	strcat(pStr4, cDescri1);
 	//--------------------------------------------------------------------------------------------------
 
 	dwValue3 = (pItem->m_dwAttribute & 0xF0000000) >> 28;
@@ -9444,8 +9447,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 	int i;
 	char cTxt[256], cTxt2[256], cName[51];
 	DWORD dwType1, dwType2, dwValue1, dwValue2, dwValue3;
-	//50Cent Item Description
-	char cStr5[256];
+
 
 	m_bIsSpecial = FALSE;
 	m_bIsRare = false;
@@ -9454,8 +9456,6 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 	ZeroMemory(pStr1, sizeof(pStr1));
 	ZeroMemory(pStr2, sizeof(pStr2));
 	ZeroMemory(pStr3, sizeof(pStr3));
-
-	ZeroMemory(cStr5, sizeof(cStr5));
 
 	strcpy(cName, cItemName);
 	for (i = 0; i < DEF_MAXITEMNAMES; i++) {
