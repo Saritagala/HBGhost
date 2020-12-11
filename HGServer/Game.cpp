@@ -1652,7 +1652,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	short* sp, sSummonPoints;
 	DWORD* dwp;
 	WORD* wp;
-	char* cp, cPlayerName[11], cTxt[120];
+	char* cp, cPlayerName[11], cTxt[120], cPoints;
 	int* ip, i, iTotalItemA, iTotalItemB, iSize, iRet;
 	SYSTEMTIME SysTime;
 	char* pBuffer = NULL;
@@ -2231,9 +2231,19 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	*ip = m_pClientList[iClientH]->m_iHP;
 	cp += 4;
 
+	// new
+	if (m_pClientList[iClientH]->m_pIsProcessingAllowed == TRUE) {
+		cPoints = 0;
+		if ((m_pClientList[iClientH]->m_cSide != m_sLastHeldenianWinner) && (m_sLastHeldenianWinner != 0)) {
+			cPoints = 100;
+		}
+	}
+	*cp = cPoints;
+	cp++;
+
 	// centu - 800x600
 	iSize = iComposeInitMapData(m_pClientList[iClientH]->m_sX - 12, m_pClientList[iClientH]->m_sY - 9, iClientH, cp);
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 65 + iSize); // SephirotH fix - 66 - Centuu: 85?
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 66 + iSize); // SephirotH fix - 66 - Centuu: 85?
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -7942,7 +7952,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 		else if (memcmp(cp, "/updatefiles", 12) == 0) {
 			if (m_pClientList[iClientH]->m_iAdminUserLevel >= 3) {
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Server are updating .cfg files.");
-				bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
+				//bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
 				bReadSettingsConfigFile("GameConfigs\\Settings.cfg");
 				bReadAdminListConfigFile("GameConfigs\\AdminList.cfg");
 				bReadBannedListConfigFile("GameConfigs\\BannedList.cfg");
@@ -18815,7 +18825,7 @@ void CGame::OnStartGameSignal()
 	if (m_pMapList[i] != NULL) 
 		__bReadMapInfo(i);
 	
-	bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
+	//bDecodeDropManagerFile("GameConfigs\\DropManager.cfg");
 	bReadCrusadeStructureConfigFile("GameConfigs\\Crusade.cfg");
 	_LinkStrikePointMapIndex();
 	bReadScheduleConfigFile("GameConfigs\\Schedule.cfg");
@@ -24154,13 +24164,12 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
  char  * pBuffer, cTempMapName[21];
  DWORD * dwp;
  WORD  * wp;
- char  * cp, cDestMapName[11], cDir, cMapIndex, cPoints;
+ char  * cp, cDestMapName[11], cDir, cMapIndex, cPoints = 0;
  short * sp, sX, sY, sSummonPoints, sV1, aX, aY;
  int   * ip, i, iRet, iSize, iDestX, iDestY, iExH, iMapSide, iTemp, iTemp2, iQuestNumber, iQuestType, j;
  BOOL    bRet, bIsLockedMapNotify;
  SYSTEMTIME SysTime;
 
-	cPoints = 0;
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
@@ -24403,8 +24412,8 @@ RTH_NEXTSTEP:;
 	iTemp = iTemp | (iTemp2 << 28);
 	m_pClientList[iClientH]->m_iStatus = iTemp;
 	
-	if ((m_pClientList[iClientH]->m_pIsProcessingAllowed == TRUE) && 
-		(m_sLastHeldenianWinner != m_pClientList[iClientH]->m_cSide) && 
+	if ((m_pClientList[iClientH]->m_pIsProcessingAllowed == TRUE) &&
+		(m_sLastHeldenianWinner != m_pClientList[iClientH]->m_cSide) &&
 		(m_sLastHeldenianWinner != 0)) {
 		cPoints = 100;
 	}
@@ -24510,7 +24519,7 @@ RTH_NEXTSTEP:;
 //65
 	*cp = cPoints;
 	cp++;
-//66
+	//66
 	// centu - 800x600
 	iSize = iComposeInitMapData(m_pClientList[iClientH]->m_sX - 12, m_pClientList[iClientH]->m_sY - 9, iClientH, cp);
 	cp += iSize;
@@ -24885,7 +24894,7 @@ void CGame::RequestRestartHandler(int iClientH)
 
 void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 {
- char  * cp, cName[11], cData[256], cTxt[256], cGuildStatus;
+ char  * cp, cName[11], cData[256], cTxt[256], cGuildStatus, cPoints = 0;
  DWORD * dwp;
  WORD  * wp;
  int iRet, iTemp, iTemp2, i, iQuestType, iQuestNumber, j;
@@ -24982,6 +24991,13 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 					}
 				}
 			}
+		}
+	}
+	// new - handles cPoints
+	if (m_pClientList[iClientH]->m_pIsProcessingAllowed == TRUE) {
+		cPoints = 0;
+		if ((m_pClientList[iClientH]->m_cSide != m_sLastHeldenianWinner) && (m_sLastHeldenianWinner != 0)) {
+			cPoints = 100;
 		}
 	}
 	if (m_pClientList[iClientH] == NULL) {
