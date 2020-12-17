@@ -29076,7 +29076,7 @@ void CGame::NotifyEvents()
 		if (!m_pClientList[iClientH])
 			continue;
 
-		auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 12);
+		auto iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 14);
 		switch (iRet) {
 		case DEF_XSOCKEVENT_QUENEFULL:
 		case DEF_XSOCKEVENT_SOCKETERROR:
