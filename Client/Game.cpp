@@ -310,8 +310,6 @@ CGame::CGame()
 	m_stDialogBoxInfo[28].sSizeX = 258;
 	m_stDialogBoxInfo[28].sSizeY = 339;
 
-	//29
-
 	//Icon Pannel
 #ifdef RES_HIGH
 	m_stDialogBoxInfo[30].sX = 0;
@@ -4767,7 +4765,9 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
 			case 35:
 				DlgBoxClick_Help(msX, msY);
 				break;
-
+			case 44:
+				DlgBoxClick_Enchanting(msX, msY);
+				break;
 			case 36:
 				DlgBoxClick_Commander(msX, msY);
 				break;
@@ -5907,6 +5907,10 @@ BOOL CGame::_bCheckDraggingItemRelease(short msX, short msY)
 
 					case 34:
 						bItemDrop_ItemUpgrade();
+						break;
+
+					case 44:
+						bItemDrop_Enchanting();
 						break;
 
 					case 40:
@@ -18827,6 +18831,44 @@ void CGame::DlgBoxClick_ItemUpgrade(int msX, int msY)
 	}
 }
 
+void CGame::DlgBoxClick_Enchanting(int msX, int msY)
+{
+	short sX, sY;
+	int i, iSoX, iSoM;
+	sX = m_stDialogBoxInfo[44].sX;
+	sY = m_stDialogBoxInfo[44].sY;
+	switch (m_stDialogBoxInfo[44].cMode) {
+	case 1:	// Upgrade Majestic, items in the window
+		if ((m_stDialogBoxInfo[44].sV1 != -1) && (msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{
+			PlaySound('E', 14, 5);
+			PlaySound('E', 44, 0);
+			m_stDialogBoxInfo[44].cMode = 2;
+			m_stDialogBoxInfo[44].dwV1 = timeGetTime();
+		}
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{	// Cancel
+			PlaySound('E', 14, 5);
+			DisableDialogBox(44);
+		}
+		break;
+
+	case 3: // sucess
+	case 4: // Not possible
+	case 7: // Lost item
+	case 8: // Failed
+	case 9: // Failed
+	case 10:// Failed
+	case 12:// 12 Need stone!
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{	// OK
+			PlaySound('E', 14, 5);
+			DisableDialogBox(44);
+		}
+		break;
+	}
+}
+
 
 void CGame::DlgBoxClick_SellList(short msX, short msY)
 {int i, x;
@@ -27307,10 +27349,18 @@ void CGame::NotifyMsgHandler(char * pData)
 		{	if (m_bIsDialogEnabled[34] == TRUE)
 			{	m_stDialogBoxInfo[34].cMode = 4;// Failed
 			}
+			else if (m_bIsDialogEnabled[44] == TRUE)
+			{
+				m_stDialogBoxInfo[44].cMode = 4;// Failed
+			}
 			PlaySound('E', 24, 5);
 		}else
 		{	if (m_bIsDialogEnabled[34] == TRUE)
 			{	m_stDialogBoxInfo[34].cMode = 3; // Success
+			}
+			else if (m_bIsDialogEnabled[44] == TRUE)
+			{
+				m_stDialogBoxInfo[44].cMode = 3; // Success
 			}
 			PlaySound('E', 23, 5);
 			switch (m_sPlayerType) {
@@ -29972,6 +30022,11 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			else if (m_bIsDialogEnabled[34])
 			{	// centu - upgrade
 				bItemDrop_ItemUpgrade();
+				return;
+			}
+			else if (m_bIsDialogEnabled[44])
+			{	// centu - enchanting
+				bItemDrop_Enchanting();
 				return;
 			}
 

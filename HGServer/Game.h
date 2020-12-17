@@ -684,7 +684,7 @@ private:
 	BOOL bCheckIsItemUpgradeSuccess(int iClientH, int iItemIndex, int iSomH, BOOL bBonus = FALSE);
 	void RequestItemUpgradeHandler(int iClientH, int iItemIndex);
 
-
+	void RequestItemEnchantHandler(int iClientH, int iItemIndex);
 
 	//Party Codes
 	void RequestCreatePartyHandler(int iClientH);

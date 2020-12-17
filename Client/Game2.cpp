@@ -2967,6 +2967,191 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 	}
 }
 
+void CGame::DrawDialogBox_Enchanting(int msX, int msY)
+{
+	int i, sX, sY;
+	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
+	DWORD dwTime = timeGetTime();
+
+	sX = m_stDialogBoxInfo[44].sX;
+	sY = m_stDialogBoxInfo[44].sY;
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 5);
+
+	switch (m_stDialogBoxInfo[44].cMode) {
+	case 1://Gizon box Drag item needed to be upgraded"
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME7, sX, sY, 3);
+		PutAlignedString(sX + 24, sX + 248, sY + 20 + 30, "Drag item needed to be enchanted"); // Drag item needed to be upgraded"
+		PutAlignedString(sX + 24, sX + 248, sY + 20 + 45, "from the inventory. Then press"); // "from the inventory. Then press"
+		PutAlignedString(sX + 24, sX + 248, sY + 20 + 60, "'Upgrade' button."); // 'Upgrade' button."
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
+		if (m_stDialogBoxInfo[44].sV1 != -1)
+		{
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME7, sX, sY, 3);
+			i = m_stDialogBoxInfo[44].sV1;
+			cItemColor = m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cItemColor;
+			if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], dwTime);
+			}
+			else
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
+			}
+			ZeroMemory(cStr1, sizeof(cStr1));
+			ZeroMemory(cStr2, sizeof(cStr2));
+			ZeroMemory(cStr3, sizeof(cStr3));
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
+			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
+			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
+			
+			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 47);
+			else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
+			
+		}
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
+		// Cancel
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 17);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 16);
+		break;
+
+	case 2: // in progress
+		PutAlignedString(sX + 24, sX + 248, sY + 55 + 30 + 282 - 117 - 170, "Item enchanting is in process now.");
+		PutAlignedString(sX + 24, sX + 248, sY + 55 + 45 + 282 - 117 - 170, DRAW_DIALOGBOX_ITEMUPGRADE6);
+		if (m_stDialogBoxInfo[44].sV1 != -1)
+		{
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME7, sX, sY, 3);
+			i = m_stDialogBoxInfo[44].sV1;
+			cItemColor = m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cItemColor;
+			if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182
+					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], dwTime);
+			}
+			else
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182
+					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
+			}
+			if ((rand() % 5) == 0) m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutTransSprite25(sX + 134, sY + 182, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, dwTime);
+			ZeroMemory(cStr1, sizeof(cStr1));
+			ZeroMemory(cStr2, sizeof(cStr2));
+			ZeroMemory(cStr3, sizeof(cStr3));
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
+			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
+			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
+		}
+		if (((dwTime - m_stDialogBoxInfo[44].dwV1) / 1000 > 4) && (m_stDialogBoxInfo[44].dwV1 != NULL))
+		{
+			m_stDialogBoxInfo[44].dwV1 = NULL;
+			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_ENCHANTITEM, NULL, m_stDialogBoxInfo[44].sV1, NULL, NULL, NULL);
+		}
+		break;
+
+	case 3: // Congratulations
+		PutAlignedString(sX + 24, sX + 248, sY + 55 + 30 + 282 - 117 - 170, "Congratulation! item enchant");//"Congratulation! item upgrade"
+		PutAlignedString(sX + 24, sX + 248, sY + 55 + 45 + 282 - 117 - 170, "has been succeeded.");//"has been succeeded."
+		if (m_stDialogBoxInfo[44].sV1 != -1)
+		{
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME7, sX, sY, 3);
+			i = m_stDialogBoxInfo[44].sV1;
+			cItemColor = m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cItemColor;
+			if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182
+					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], dwTime);
+			}
+			else
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182
+					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
+			}
+			ZeroMemory(cStr1, sizeof(cStr1));
+			ZeroMemory(cStr2, sizeof(cStr2));
+			ZeroMemory(cStr3, sizeof(cStr3));
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
+			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
+			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
+		}
+		// OK
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
+		break;
+
+	case 4: // Failed
+		PutAlignedString(sX + 24, sX + 248, sY + 55 + 30 + 282 - 117 - 170, "Item enchant has failed.");//"Item upgrade has failed."
+		if ((m_stDialogBoxInfo[44].sV1 != -1) && (m_pItemList[m_stDialogBoxInfo[44].sV1] == NULL))
+		{
+			PlaySound('E', 24, 0, 0);
+			m_stDialogBoxInfo[44].cMode = 7;
+			return;
+		}
+		if (m_stDialogBoxInfo[44].sV1 != -1)
+		{
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME7, sX, sY, 3);
+			i = m_stDialogBoxInfo[44].sV1;
+			cItemColor = m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cItemColor;
+			if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+				|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182
+					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0], dwTime);
+			}
+			else
+			{
+				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182
+					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
+			}
+			ZeroMemory(cStr1, sizeof(cStr1));
+			ZeroMemory(cStr2, sizeof(cStr2));
+			ZeroMemory(cStr3, sizeof(cStr3));
+			ZeroMemory(cStr3, sizeof(cStr4));
+			ZeroMemory(cStr3, sizeof(cStr5));
+			ZeroMemory(cStr3, sizeof(cStr6));
+			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1);
+			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2);
+			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3);
+		}
+
+		// OK
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
+		break;
+
+	case 9: // impossible
+		PutAlignedString(sX + 24, sX + 248, sY + 20 + 130, "Enchanting the item is not possible.");//"Upgrading the item is not possible."
+		// OK
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
+		break;
+	}
+}
+
 // num : 1 - F1, 2 - F2, 3 - F3
 void CGame::UseShortCut(int num)
 {
@@ -12897,8 +13082,8 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 	case 7: // Learn all magics
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 5);
 		
-			PutString(sX + 28, sY + 25, "Wizard", RGB(45, 25, 25));
-			PutString(sX + 27, sY + 24, "Wizard", RGB(255, 255, 255));
+		PutString(sX + 28, sY + 25, "Wizard", RGB(45, 25, 25));
+		PutString(sX + 27, sY + 24, "Wizard", RGB(255, 255, 255));
 
 		if ((msX > sX + 25) && (msX < sX + 100) && (msY > sY + 55) && (msY < sY + 70))
 		{
@@ -12909,6 +13094,17 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 		{
 			PutString(sX + 28, sY + 55, "Buy Magic", RGB(4, 0, 50));
 			PutString(sX + 29, sY + 55, "Buy Magic", RGB(4, 0, 50));
+		}
+
+		if ((msX > sX + 125) && (msX < sX + 200) && (msY > sY + 55) && (msY < sY + 70))
+		{
+			PutString(sX + 128, sY + 55, "Enchanting", RGB(255, 255, 255));//"Talk"
+			PutString(sX + 129, sY + 55, "Enchanting", RGB(255, 255, 255));
+		}
+		else
+		{
+			PutString(sX + 128, sY + 55, "Enchanting", RGB(4, 0, 50));
+			PutString(sX + 129, sY + 55, "Enchanting", RGB(4, 0, 50));
 		}
 		break;
 	}
@@ -15078,6 +15274,24 @@ void CGame::bItemDrop_ItemUpgrade()
 	}
 }
 
+void CGame::bItemDrop_Enchanting()
+{
+	char cItemID;
+	cItemID = (char)m_stMCursor.sSelectedObjectID;
+	if (m_bIsItemDisabled[cItemID] == TRUE) return;
+	if (m_cCommand < 0) return;
+	if (m_pItemList[cItemID]->m_cEquipPos == DEF_EQUIPPOS_NONE) return;
+
+	switch (m_stDialogBoxInfo[44].cMode) {
+	case 1:
+		m_bIsItemDisabled[m_stDialogBoxInfo[44].sV1] = FALSE;
+		m_stDialogBoxInfo[44].sV1 = cItemID;
+		m_bIsItemDisabled[cItemID] = TRUE;
+		PlaySound('E', 29, 0);
+		break;
+	}
+}
+
 void CGame::bItemDrop_Bank(short msX, short msY)
 {
 	m_stDialogBoxInfo[39].sV1 = m_stMCursor.sSelectedObjectID;
@@ -15839,6 +16053,15 @@ void CGame::DlgBoxClick_NpcActionQuery(short msX, short msY)
 		if ((msX > sX + 25) && (msX < sX + 100) && (msY > sY + 55) && (msY < sY + 70))
 		{
 			EnableDialogBox(16, 0, NULL, NULL);
+			DisableDialogBox(20);
+			PlaySound('E', 14, 5);
+		}
+
+		if ((msX > sX + 125) && (msX < sX + 200) && (msY > sY + 55) && (msY < sY + 70))
+		{
+			// Centuu : Enchanting
+			EnableDialogBox(44, 0, NULL, NULL);
+			DisableDialogBox(20);
 			PlaySound('E', 14, 5);
 		}
 		break;
@@ -19595,6 +19818,9 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 			case 43:
 				DrawDialogBox_FriendList(msX, msY); //drajwer: friendlist
 				break;
+			case 44:
+				DrawDialogBox_Enchanting(msX, msY);
+				break;
 			case 45: // kamal
 				DrawDialogBox_SetTrap(msX, msY);
 				break;
@@ -19800,6 +20026,7 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 					case 38:
 					case 40:
 					case 50: // resur
+					case 44:
 						// NPC
 					case 45: // kamal
 					case 67:
@@ -20985,6 +21212,17 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 		}
 		break;
 
+	case 44:
+		if (m_bIsDialogEnabled[44] == FALSE)
+		{
+			m_stDialogBoxInfo[44].cMode = 1;
+			m_stDialogBoxInfo[44].sV2 = -1;
+			m_stDialogBoxInfo[44].sV3 = -1;
+			m_stDialogBoxInfo[44].sV1 = -1;
+			m_stDialogBoxInfo[44].dwV1 = NULL;
+		}
+		break;
+
 	case 34:
 		if (m_bIsDialogEnabled[34] == FALSE)
 		{
@@ -20992,7 +21230,7 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 			m_stDialogBoxInfo[34].sV1 = -1;
 			m_stDialogBoxInfo[34].dwV1 = NULL;
 		}
-		else if (m_bIsDialogEnabled[34] == FALSE)
+		else //if (m_bIsDialogEnabled[34] == FALSE)
 		{
 			int iSoX, iSoM;
 			iSoX = iSoM = 0;
@@ -21381,6 +21619,11 @@ void CGame::DisableDialogBox(int iBoxID)
 			m_stSellItemList[i].iIndex = -1;
 			m_stSellItemList[i].iAmount = 0;
 		}
+		break;
+
+	case 44:
+		if (m_stDialogBoxInfo[44].sV1 != -1)
+			m_bIsItemDisabled[m_stDialogBoxInfo[44].sV1] = FALSE;
 		break;
 
 	case 34:

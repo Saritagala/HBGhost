@@ -1844,7 +1844,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	int   iGenLevel, iResult, iItemID;
 	DWORD dwType, dwValue;
 	double dTmp1, dTmp2, dTmp3;
-	short sMagicLevel = 0;
 	short sElement;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
@@ -1862,7 +1861,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	}
 
 	// 6500 default; the lower the greater the Weapon/Armor/Wand Drop
-	if (iDice(1, 10000) <= m_iPrimaryDropRate) {
+	if (iDice(1, 10000) >= m_iPrimaryDropRate) {
 		// 35% Drop 60% of that is gold
 		// 35% Chance of drop (35/100)
 		if (iDice(1, 10000) <= m_iGoldRate) { // Centuu : Agregado para controlar el drop de oro.
@@ -1924,7 +1923,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 1: iItemID = 650; break; // Zemstone of Sacrifice
 						case 2: iItemID = 656; break; // Xelima Stone
 						case 3: iItemID = 657; break; // Merien Stone
-						
 					}
 					break;
 
@@ -2319,56 +2317,24 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						dwType = ITEMSTAT_ANCIENT;
 						cColor = 8;
 					}
-					// Magic Weapons - Drops Improvement
-					/*else if ((iResult >= m_iAttrWeaponDrop[7]) && (iResult <= m_iAttrWeaponDrop[8])) {
-						dwType = ITEMSTAT_MAGIC; // Magic
-						cColor = 10; // Black Color
-					}*/
-					// End of Magic Weapons
 
 					pItem->m_cItemColor = cColor;
 
-					// Magic Weapons - Set the Spell Effect on Dropped Item
-					/*if (dwType == 15) {
-						iResult = iDice(1, 30060);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-						else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
-						else if ((iResult >= 30000) && (iResult < 30025))  dwValue = 14; // Mass-Magic-Missile
-						else if ((iResult >= 30025) && (iResult < 30045))  dwValue = 15; // Blizzard
-						else if ((iResult >= 30045) && (iResult <= 30060))  dwValue = 16; // Earth-Shock-Wave
-						else dwValue = 1;
-						sMagicLevel = 1;
-					}
-					else {*/
-						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-						else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
-						else dwValue = 1; // v2.03 906
-						sMagicLevel = 0;
-					//}
-					// End of Magic Weapons 
+					iResult = iDice(1, 30000);
+					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+					else dwValue = 1; // v2.03 906
 
 					switch (dwType) {
 					case ITEMSTAT_CRITICAL: // 
@@ -2383,44 +2349,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					case ITEMSTAT_STRONG: // Min +14%					
 						if (dwValue <= 2) dwValue = 2;
 						break;
-						// Magic Weapons - Better Stats for Strong NPC killed
-					/*case ITEMSTAT_MAGIC:
-						switch (iGenLevel) {
-						case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
-							if (dwValue > 4) dwValue = 4;
-							if (dwValue < 1) dwValue = 1;
-							break;
-						case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
-							if (dwValue > 6) dwValue = 6;
-							if (dwValue < 3) dwValue = 3;
-							break;
-						case 3: // Stone-Golem, Clay-Golem
-							if (dwValue > 7) dwValue = 7;
-							if (dwValue < 4) dwValue = 4;
-							break;
-						case 4: // Hellbound, Rudolph
-							if (dwValue > 8) dwValue = 8;
-							if (dwValue < 5) dwValue = 5;
-							break;
-						case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
-							if (dwValue > 10) dwValue = 10;
-							if (dwValue < 7) dwValue = 7;
-							break;
-						case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-							if (dwValue > 12) dwValue = 12;
-							if (dwValue < 9) dwValue = 9;
-							break;
-						case 7: // Liche, Frost
-							if (dwValue > 13) dwValue = 13;
-							if (dwValue < 10) dwValue = 10;
-							break;
-						case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
-							if (dwValue > 16) dwValue = 16;
-							if (dwValue < 13) dwValue = 13;
-							break;
-						}
-						break;*/
-						// End of Magic Weapons
 					}
 					// Max 7
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
@@ -2432,7 +2360,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// Rare Drop 40%
-					if (iDice(1, 10000) >= m_iRareDropRate) {
+					if (iDice(1, 10000) <= m_iRareDropRate) {
 						//  Hit Prob(50%),  CAD(35%),  Gold(10%), Exp(5%)
 						iResult = iDice(1, 10000);
 						if ((iResult >= 1) && (iResult <= 4999))       dwType = ITEMSTAT2_HITPROB;
@@ -2440,47 +2368,21 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if ((iResult >= 8500) && (iResult <= 9499)) dwType = ITEMSTAT2_GOLD;
 						else if ((iResult >= 9500) && (iResult <= 10000)) dwType = ITEMSTAT2_EXP;
 
-						// Magic Weapons - Set the Spell Effect on Dropped Item
-						/*if (dwType == 15) {
-							iResult = iDice(1, 30060);
-							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-							else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-							else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-							else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-							else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-							else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-							else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-							else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-							else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-							else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
-							else if ((iResult >= 30000) && (iResult < 30025))  dwValue = 14; // Mass-Magic-Missile
-							else if ((iResult >= 30025) && (iResult < 30045))  dwValue = 15; // Blizzard
-							else if ((iResult >= 30045) && (iResult <= 30060))  dwValue = 16; // Earth-Shock-Wave
-							else dwValue = 1;
-							sMagicLevel = 1;
-						}
-						else {*/
-							iResult = iDice(1, 30000);
-							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-							else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-							else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-							else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-							else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-							else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-							else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-							else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-							else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-							else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
-							else dwValue = 1; // v2.03 906
-							sMagicLevel = 0;
-						//}
-						// End of Magic Weapons 
+						iResult = iDice(1, 30000);
+						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+						else dwValue = 1; // v2.03 906
 
 						switch (dwType) {
 						case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
@@ -2496,45 +2398,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							dwValue = 5;
 							break;
 						}
-
-						// Magic Weapons - Better Stats for Strong NPC Killed
-						/*if (sMagicLevel > 0) {
-							switch (iGenLevel) {
-							case 1: // Slime, Giant-Ant, Amphis, Rabbit, Cat
-								if (dwValue > 2) dwValue = 2;
-								if (dwValue < 1) dwValue = 1;
-								break;
-							case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
-								if (dwValue > 3) dwValue = 3;
-								if (dwValue < 1) dwValue = 1;
-								break;
-							case 3: // Stone-Golem, Clay-Golem
-								if (dwValue > 4) dwValue = 4;
-								if (dwValue < 2) dwValue = 2;
-								break;
-							case 4: // Hellbound, Rudolph
-								if (dwValue > 5) dwValue = 5;
-								if (dwValue < 2) dwValue = 2;
-								break;
-							case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
-								if (dwValue > 7) dwValue = 7;
-								if (dwValue < 3) dwValue = 3;
-								break;
-							case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-								if (dwValue > 9) dwValue = 9;
-								if (dwValue < 5) dwValue = 5;
-								break;
-							case 7: // Liche, Frost
-								if (dwValue > 10) dwValue = 10;
-								if (dwValue < 6) dwValue = 6;
-								break;
-							case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
-								if (dwValue > 15) dwValue = 15;
-								if (dwValue < 9) dwValue = 9;
-								break;
-							}
-						}*/
-						// End of Magic Weapons
 
 						// Demais stats max é 7 (para mobs fracos iGenLevel)
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
@@ -2553,19 +2416,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_cItemColor = cColor;
 
 					iResult = iDice(1, 30000);
-					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-					else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
+					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
 					else dwValue = 1;
 
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
@@ -2575,7 +2438,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-					if (iDice(1, 10000) >= m_iRareDropRate) {
+					if (iDice(1, 10000) <= m_iRareDropRate) {
 						iResult = iDice(1, 10000);
 						if ((iResult >= 1) && (iResult <= 4999))      dwType = ITEMSTAT2_HITPROB;
 						else if ((iResult >= 5000) && (iResult <= 8499)) dwType = ITEMSTAT2_CAD;
@@ -2583,19 +2446,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if ((iResult >= 9500) && (iResult <= 10000)) dwType = ITEMSTAT2_EXP;
 
 						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-						else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
+						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
 						else dwValue = 1;
 
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
@@ -2630,19 +2493,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					else if ((iResult >= 9555) && (iResult <= 10000)) dwType = ITEMSTAT_CRITICAL2; 
 
 					iResult = iDice(1, 30000);
-					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-					else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
+					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
 					else dwValue = 1;
 
 					switch (dwType) {
@@ -2669,7 +2532,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// 40%
-					if (iDice(1, 10000) >= m_iRareDropRate) {
+					if (iDice(1, 10000) <= m_iRareDropRate) {
 
 						// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
 						iResult = iDice(1, 10000);
@@ -2690,19 +2553,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							dwType = ITEMSTAT2_NONE;
 
 						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-						else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
+						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
 						else dwValue = 1;
 
 						switch (dwType) {
@@ -2721,9 +2584,9 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							else if ((iResult >= 5500) && (iResult < 6500)) sElement = 3;  //Fire 10%
 							else if ((iResult >= 6500) && (iResult < 9250)) sElement = 4;  //Water 27%
 							else if ((iResult >= 9250) && (iResult < 9625)) sElement = 5;  //Holy 04%
-							else if ((iResult >= 9625) && (iResult < 10000)) sElement = 6;  //Unnholy 04%
-							else if ((iResult >= 10000) && (iResult < 10200)) sElement = 7;  //Untunned 02%
-							else sElement = 0;
+							else if ((iResult >= 9625) && (iResult < 10000)) sElement = 6;  //Unholy 04%
+							else if ((iResult >= 10000) && (iResult <= 10200)) sElement = 7;  //Unatunned 02%
+							else sElement = 7;
 
 							pItem->m_sNewEffect1 = sElement;
 							break;

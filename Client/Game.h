@@ -153,6 +153,9 @@ class CGame
 {
 public:
 
+	void DrawDialogBox_Enchanting(int msX, int msY);
+	void DlgBoxClick_Enchanting(int msX, int msY);
+
 	short cStr, cVit, cDex, cInt, cMag, cChar;
 
 	int iCityHP[2], iCityMaxHP[2];
@@ -289,6 +292,7 @@ public:
 	void bItemDrop_Character();
 	void bItemDrop_Inventory(short msX, short msY);
 	void bItemDrop_ItemUpgrade();
+	void bItemDrop_Enchanting();
 	void bItemDrop_SellList(short msX, short msY);
 	void bItemDrop_ExchangeDialog(short msX, short msY);
 	void bItemDrop_Bank(short msX, short msY);

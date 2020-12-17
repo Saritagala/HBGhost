@@ -9665,6 +9665,10 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		RequestItemUpgradeHandler(iClientH,iV1);
 		break;
 
+	case DEF_COMMONTYPE_ENCHANTITEM:
+		RequestItemEnchantHandler(iClientH, iV1);
+		break;
+
 	case DEF_COMMONTYPE_REQGUILDNAME:
 		RequestGuildNameHandler(iClientH, iV1, iV2);
 		break;

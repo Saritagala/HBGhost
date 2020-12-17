@@ -17,6 +17,8 @@
 
 #define DEF_NOTIFY_TOP15HB                                                     0x0F26
 
+#define DEF_COMMONTYPE_ENCHANTITEM					0x0A65
+
 #define DEF_NOTIFY_UPGRADEHEROCAPE 0x0BC0
 
 #define DEF_NOTIFY_EVENT				0x0BFC
