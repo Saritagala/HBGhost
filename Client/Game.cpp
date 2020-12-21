@@ -31885,7 +31885,8 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 			if ((m_cCommand == DEF_OBJECTMOVE) || (m_cCommand == DEF_OBJECTRUN)) goto MOTION_COMMAND_PROCESS;
 			return;
 		}
-		if (cLB == 0) {
+		else //if (cLB == 0) 
+		{
 			switch (m_stMCursor.cSelectedObjectType) {
 			case DEF_SELECTEDOBJTYPE_DLGBOX:
 				if ((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_DLGBOX) &&

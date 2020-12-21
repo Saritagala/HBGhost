@@ -2837,7 +2837,9 @@ void CGame::OnTimer(char cType)
 	NpcProcess();
 	MsgProcess();
 	c_team->TeamTimer();
-	if ((dwTime - m_dwGameTime2) > 3000) {
+
+	// Centuu - 3000 -> 1000
+	if ((dwTime - m_dwGameTime2) > 1000) {
 		CheckClientResponseTime();
 		SendMsgToGateServer(MSGID_GAMESERVERALIVE, NULL, NULL);
 		CheckDayOrNightMode();
@@ -2923,7 +2925,8 @@ void CGame::OnTimer(char cType)
 		m_dwCleanTime = dwTime;
 	}
 
-	if ((dwTime - m_dwGameTime4) > 600) { // time millisecond = *60*10*10
+	// Centuu - 600 -> 1000
+	if ((dwTime - m_dwGameTime4) > 1000) { // time millisecond = *60*10*10
 		MobGenerator();
 
 		m_dwGameTime4 = dwTime;
@@ -3271,7 +3274,7 @@ void CGame::CheckClientResponseTime()
 						}
 					}
 				}
-				m_pClientList[i]->m_iSpecialAbilityTime -= 3;
+				m_pClientList[i]->m_iSpecialAbilityTime--;
 				if (m_pClientList[i]->m_iSpecialAbilityTime < 0) m_pClientList[i]->m_iSpecialAbilityTime = 0;
 				if (m_pClientList[i]->m_bIsSpecialAbilityEnabled == TRUE) {
 					if (((dwTime - m_pClientList[i]->m_dwSpecialAbilityStartTime)/1000) > m_pClientList[i]->m_iSpecialAbilityLastSec) {
@@ -3284,14 +3287,14 @@ void CGame::CheckClientResponseTime()
 						SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 					}
 				}
-				m_pClientList[i]->m_iLockedMapTime -= 3;
+				m_pClientList[i]->m_iLockedMapTime--;
 				if (m_pClientList[i]->m_iLockedMapTime < 0) {
 					m_pClientList[i]->m_iLockedMapTime = 0;
 					ZeroMemory(m_pClientList[i]->m_cLockedMapName, sizeof(m_pClientList[i]->m_cLockedMapName));
 					strcpy(m_pClientList[i]->m_cLockedMapName, "NONE");
 				}
 				// changed to include ImpossibleZone recall
-				m_pClientList[i]->m_iDeadPenaltyTime -= 3;
+				m_pClientList[i]->m_iDeadPenaltyTime--;
 				if (m_pClientList[i]->m_iDeadPenaltyTime < 0) m_pClientList[i]->m_iDeadPenaltyTime = 0;	
 				if (m_pClientList[i]->m_bIsWarLocation == TRUE) {
 					if (m_pClientList[i]->m_bIsInsideEnemyBuilding == TRUE) {
@@ -8198,7 +8201,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 							bSendMsgToLS(MSGID_GAMEMASTERLOG,iClientH, FALSE,cTemp);
 						}
 						break;
-						case 3:
+					case 3:
 						if (m_pClientList[m_pClientList[iClientH]->m_iWhisperPlayerIndex]->m_iAdminUserLevel > 0){
 							ZeroMemory(cTemp,sizeof(cTemp));
 							wsprintf(cTemp,"GM Whisper   (%s):\"%s\"\tto GM(%s)",m_pClientList[iClientH]->m_cCharName, pData+21, m_pClientList[iClientH]->m_cWhisperPlayerName);
@@ -9256,7 +9259,7 @@ DWORD * dwp, dwTimeRcv;
 				break;
 
 			case MSGID_REQUEST_FIGHTZONE_RESERVE:
-				//FightzoneReserveHandler(iClientH, pData, dwMsgSize);
+				FightzoneReserveHandler(iClientH, pData, dwMsgSize);
 				break;
 
 			case MSGID_LEVELUPSETTINGS:
@@ -9551,7 +9554,7 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		break;
 	
 	case DEF_COMMONTYPE_REQ_GETFISHTHISTIME:
-		//ReqGetFishThisTimeHandler(iClientH);
+		ReqGetFishThisTimeHandler(iClientH);
 		break;
 	
 	case DEF_COMMONTYPE_REQ_REPAIRITEMCONFIRM:
@@ -9657,7 +9660,7 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		break;
 
 	case DEF_COMMONTYPE_REQ_GETOCCUPYFIGHTZONETICKET:
-		//GetFightzoneTicketHandler(iClientH);
+		GetFightzoneTicketHandler(iClientH);
 		break;
 
 	// Upgrade Item
@@ -10744,7 +10747,7 @@ void CGame::LevelUpSettingsHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 	if ( (cStr + cVit + cDex + cInt + cMag + cChar) > m_pClientList[iClientH]->m_iLU_Pool) { // -3
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_FAILED, NULL, NULL, NULL, NULL);
-			return;
+		return;
 	}
 
 	// Level-Up Setting°ª¿¡ ¿À·ù°¡ ÀÖ´ÂÁö °Ë»çÇÑ´Ù.
@@ -11442,8 +11445,8 @@ int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, cha
 			case 6:	dwLastTime = dwLastTime - (dwLastTime / 2);		  break;
 			default:break;
 			}
-			if (dwLastTime == NULL) dwLastTime = 1000;
 		}
+		else dwLastTime = 1000;
 		break;
 
 	// SNOOPY: Increased duration if snow whether
@@ -11460,8 +11463,8 @@ int CGame::iAddDynamicObjectList(short sOwner, char cOwnerType, short sType, cha
 			case 6:	dwLastTime = dwLastTime *4;		  break;
 			default:break;
 			}
-			if (dwLastTime == NULL) dwLastTime = 1000;
 		}
+		else dwLastTime = 1000;
 		break;
 	
 	case DEF_DYNAMICOBJECT_FISHOBJECT:
@@ -13550,56 +13553,56 @@ void CGame::OnKeyUp(WPARAM wParam, LPARAM lParam)
 		break;
 
 	case VK_F9:
-		if ((m_bF1pressed == TRUE)) {
+		/*if ((m_bF1pressed == TRUE)) {
 			PutLogList("(!!!) Resume Crusade Mode...");
 			LocalStartCrusadeMode(NULL);
-		}
+		}*/
 		break;
 
 	case VK_F11:
-		if ((m_bF1pressed == TRUE)) {
+		/*if ((m_bF1pressed == TRUE)) {
 			PutLogList("(!!!) ManualEndCrusadeMode: side 0");
 			ManualEndCrusadeMode(0);
-		}
+		}*/
 		break;
 
 	
 	case VK_1:
 	case VK_4:
-		if ((m_bF1pressed == TRUE)) {
+		/*if ((m_bF1pressed == TRUE)) {
 			GlobalUpdateConfigs(1);
-		}
+		}*/
 		break;
 
 
 	case VK_2:
-		if ((m_bF1pressed == TRUE)) {
+		/*if ((m_bF1pressed == TRUE)) {
 			GlobalUpdateConfigs(2);
-		}
+		}*/
 		break;
 
 	case VK_3:
-		if ((m_bF1pressed == TRUE)) {
+		/*if ((m_bF1pressed == TRUE)) {
 			GlobalUpdateConfigs(3);
-		}
+		}*/
 		break;
 
 
 		//Crusade Testcode
 	case VK_HOME:
-		if ((m_bF1pressed == TRUE)) {
+		/*if ((m_bF1pressed == TRUE)) {
 			GlobalStartCrusadeMode();
-		}
+		}*/
 		break;
 
 	case VK_INSERT:
-		_GrandMagicLaunchMsgSend(1, 1);
-		MeteorStrikeMsgHandler(1);
+		/*_GrandMagicLaunchMsgSend(1, 1);
+		MeteorStrikeMsgHandler(1);*/
 		break;
 
 	case VK_DELETE:
-		_GrandMagicLaunchMsgSend(1, 2);
-		MeteorStrikeMsgHandler(2);
+		/*_GrandMagicLaunchMsgSend(1, 2);
+		MeteorStrikeMsgHandler(2);*/
 		break;
 	}
 }

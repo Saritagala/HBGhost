@@ -13098,13 +13098,13 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 
 		if ((msX > sX + 125) && (msX < sX + 200) && (msY > sY + 55) && (msY < sY + 70))
 		{
-			PutString(sX + 128, sY + 55, "Enchanting", RGB(255, 255, 255));//"Talk"
-			PutString(sX + 129, sY + 55, "Enchanting", RGB(255, 255, 255));
+			PutString(sX + 128, sY + 55, "Enchant", RGB(255, 255, 255));//"Talk"
+			PutString(sX + 129, sY + 55, "Enchant", RGB(255, 255, 255));
 		}
 		else
 		{
-			PutString(sX + 128, sY + 55, "Enchanting", RGB(4, 0, 50));
-			PutString(sX + 129, sY + 55, "Enchanting", RGB(4, 0, 50));
+			PutString(sX + 128, sY + 55, "Enchant", RGB(4, 0, 50));
+			PutString(sX + 129, sY + 55, "Enchant", RGB(4, 0, 50));
 		}
 		break;
 	}
@@ -21225,12 +21225,6 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 
 	case 34:
 		if (m_bIsDialogEnabled[34] == FALSE)
-		{
-			m_stDialogBoxInfo[34].cMode = cType;
-			m_stDialogBoxInfo[34].sV1 = -1;
-			m_stDialogBoxInfo[34].dwV1 = NULL;
-		}
-		else //if (m_bIsDialogEnabled[34] == FALSE)
 		{
 			int iSoX, iSoM;
 			iSoX = iSoM = 0;
