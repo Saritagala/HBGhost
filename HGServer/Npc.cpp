@@ -2027,54 +2027,63 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						//Nixu : aca se manejan los Drop..
 
 						case 1: // Slime, Giant-Ant, Amphis
-							switch (iDice(1, 3)) {
+							switch (iDice(1, 5)) {
 								case 1: iItemID = 1;  break; // Dagger
 								case 2: iItemID = 8;  break; // ShortSword
 								case 3: iItemID = 59; break; // LightAxe
-
+								case 4: iItemID = 316;  break; // SilverNecklace
+								case 5: iItemID = 332;  break; // SilverRing
 							}
 							break;
 
 						case 2: // Skeleton, Orc, Orc-Mage, Scorpion, Zombie
-							switch (iDice(1, 6)) {
+							switch (iDice(1, 8)) {
 								case 1: iItemID = 12;  break; // MainGauche
 								case 2: iItemID = 15;  break; // Gradius
 								case 3: iItemID = 65;  break; // SexonAxe
 								case 4: iItemID = 62;  break; // Tomahoc
 								case 5: iItemID = 23;  break; // Sabre
 								case 6: iItemID = 31;  break; // Esterk
+								case 7: iItemID = 316;  break; // SilverNecklace
+								case 8: iItemID = 332;  break; // SilverRing
 							}
 							break;
 
 						case 3: // Stone-Golem, Clay-Golem
-							switch (iDice(1, 4)) {
+							switch (iDice(1, 6)) {
 								case 1: iItemID = 17;  break; // LongSword
 								case 2: iItemID = 68;  break; // DoubleAxe
 								case 3: iItemID = 23;  break; // Sabre
 								case 4: iItemID = 31;  break; // Esterk
+								case 5: iItemID = 316;  break; // SilverNecklace
+								case 6: iItemID = 332;  break; // SilverRing
 							}
 							break;
 
 						case 4: // Hellbound, Rudolph
-							switch (iDice(1, 5)) {
+							switch (iDice(1, 7)) {
 								case 1: iItemID = 23;  break; // Sabre
 								case 2: iItemID = 25;  break; // Scimitar
 								case 3: iItemID = 28;  break; // Falchion
 								case 4: iItemID = 31;  break; // Esterk
 								case 5: iItemID = 34;  break; // Rapier
+								case 6: iItemID = 316;  break; // SilverNecklace
+								case 7: iItemID = 332;  break; // SilverRing
 							}
 							break;
 
 						case 5: // Cyclops, Troll, Beholder, Cannibal-Plant, DireBoar
-							switch (iDice(1, 3)) {
+							switch (iDice(1, 5)) {
 								case 1: iItemID = 31;  break; // Esterk
 								case 2: iItemID = 34;  break; // Rapier
 								case 3: iItemID = 71;  break; // WarAxe
+								case 4: iItemID = 315;  break; // GoldNecklace
+								case 5: iItemID = 331;  break; // GoldRing
 							}
 							break;
 
 						case 6: // Orge, WereWolf, Stalker, Dark-Elf, Ice-Golem
-							switch (iDice(1, 9)) {
+							switch (iDice(1, 11)) {
 								case 1: iItemID = 50;  break; // GreatSword
 								case 2: iItemID = 54;  break; // Flameberge
 								case 3: iItemID = 46;  break; // Claymore
@@ -2084,20 +2093,24 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 								case 7: iItemID = 1044; break; // PlateBow
 								case 8: iItemID = 1045; break; // KnightBow
 								case 9: iItemID = 1046; break; // GiantBow
+								case 10: iItemID = 315;  break; // GoldNecklace
+								case 11: iItemID = 331;  break; // GoldRing
 							}
 							break;
 
 						case 7: // Liche, Frost
-							switch (iDice(1, 4)) {
+							switch (iDice(1, 6)) {
 								case 1: iItemID = 50;  break; // GreatSword
 								case 2: iItemID = 54;  break; // Flameberge
 								case 3: iItemID = 31;  break; // Esterk
 								case 4: iItemID = 34;  break; // Rapier
+								case 5: iItemID = 316;  break; // SilverNecklace
+								case 6: iItemID = 332;  break; // SilverRing
 							}
 							break;
 
 						case 8: // Demon, Unicorn, Hellclaw, Tigerworm, Gagoyle
-							switch (iDice(1, 8)) {
+							switch (iDice(1, 10)) {
 								case 1: iItemID = 50;  break; // GreatSword
 								case 2: iItemID = 54;  break; // Flameberge
 								case 3: iItemID = 560; break; // BattleAxe
@@ -2106,27 +2119,33 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 								case 6: iItemID = 55;  break; // Flameberge+1
 								case 7: iItemID = 615; break; // GiantSword
 								case 8: iItemID = 1045; break; // KnightBow
+								case 9: iItemID = 315;  break; // GoldNecklace
+								case 10: iItemID = 331;  break; // GoldRing
 							}
 							break;
 
 						case 9: // MountainGiant
-							switch (iDice(1, 6)) {
+							switch (iDice(1, 8)) {
 								case 1: iItemID = 23;  break; // Sabre
 								case 2: iItemID = 25;  break; // Scimitar
 								case 3: iItemID = 28;  break; // Falchion
 								case 4: iItemID = 31;  break; // Esterk
 								case 5: iItemID = 34;  break; // Rapier
 								case 6: iItemID = 760; break; // Hammer
+								case 7: iItemID = 316;  break; // SilverNecklace
+								case 8: iItemID = 332;  break; // SilverRing
 							}
 							break;
 
 						case 10: // Ettin
-							switch (iDice(1, 5)) {
+							switch (iDice(1, 7)) {
 								case 1: iItemID = 46;  break; // Claymore
 								case 2: iItemID = 31;  break; // Esterk
 								case 3: iItemID = 34;  break; // Rapier
 								case 4: iItemID = 760; break; // Hammer
 								case 5: iItemID = 761; break; // BattleHammer
+								case 6: iItemID = 315;  break; // GoldNecklace
+								case 7: iItemID = 331;  break; // GoldRing
 							}
 							break;
 
@@ -2284,7 +2303,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 				//Magn0S:: Begin to update Drop Management from .cfg file
 				if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK || pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_ARROW) {
-					iResult = iDice(1, 10000); //11500
+					iResult = iDice(1, 10000); 
 					if ((iResult >= 1) && (iResult <= 299)) {
 						dwType = ITEMSTAT_LIGHT;
 						cColor = 2;
@@ -2389,13 +2408,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							if (dwValue <= 3) dwValue = 3;
 							break;
 						case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
-							if (dwValue > 7) dwValue = 7;
+							//if (dwValue > 7) dwValue = 7;
 							break;
 						case ITEMSTAT2_EXP: // Exp  +20%
-							dwValue = 2;
+							//dwValue = 2;
 							break;
 						case ITEMSTAT2_GOLD: // Gold +50%
-							dwValue = 5;
+							//dwValue = 5;
 							break;
 						}
 
@@ -2405,6 +2424,101 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						dwType = dwType << 12;
 						dwValue = dwValue << 8;
 
+						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
+					}
+				}
+				else if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_BIJOUTERIE) { // necks & rings
+					iResult = iDice(1, 10000);
+					if ((iResult >= 1) && (iResult <= 2999))  dwType = ITEMSTAT_MANACONV;
+					else if ((iResult >= 3000) && (iResult <= 5999)) dwType = ITEMSTAT_CRITICAL;
+					else if ((iResult >= 6000) && (iResult <= 7999)) dwType = ITEMSTAT_CRITICAL2;
+					else if ((iResult >= 8000) && (iResult <= 10000)) dwType = ITEMSTAT_CASTPROB;
+
+					iResult = iDice(1, 30000);
+					if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+					else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+					else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+					else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+					else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+					else dwValue = 1;
+
+					switch (dwType) {
+					case ITEMSTAT_CRITICAL: // 
+						if (dwValue <= 5) dwValue = 5;
+						break;
+					case ITEMSTAT_MANACONV:
+					case ITEMSTAT_CRITICAL2:
+						/*dwValue = (dwValue + 1) / 2;
+						if (dwValue < 1) dwValue = 1;*/
+						if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
+						break;
+					}
+					// Max = 7
+					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
+
+					pItem->m_dwAttribute = NULL;
+					dwType = dwType << 20;
+					dwValue = dwValue << 16;
+					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
+
+					// 40%
+					if (iDice(1, 10000) <= m_iRareDropRate) {
+
+						// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
+						iResult = iDice(1, 10000);
+						if ((iResult >= 1) && (iResult <= 2999))       dwType = ITEMSTAT2_HITPROB;
+						else if ((iResult >= 3000) && (iResult <= 3999)) dwType = ITEMSTAT2_CAD;
+						else if ((iResult >= 4000) && (iResult <= 4999)) dwType = ITEMSTAT2_GOLD;
+						else if ((iResult >= 5000) && (iResult <= 6999)) dwType = ITEMSTAT2_EXP;
+						else if ((iResult >= 7000) && (iResult <= 7999))  dwType = ITEMSTAT2_SPREC;	// 16
+						else if ((iResult >= 8000) && (iResult <= 8999))  dwType = ITEMSTAT2_HPREC;	// 23
+						else if ((iResult >= 9000) && (iResult <= 10000))  dwType = ITEMSTAT2_MPREC;	// 23 
+
+
+						iResult = iDice(1, 30000);
+						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
+						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
+						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
+						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
+						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
+						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
+						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
+						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
+						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+						else dwValue = 1;
+
+						switch (dwType) {
+						case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
+							if (dwValue <= 3) dwValue = 3;
+							break;
+						case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
+							//if (dwValue > 7) dwValue = 7;
+							break;
+						case ITEMSTAT2_EXP: // Exp  +20%
+							//dwValue = 2;
+							break;
+						case ITEMSTAT2_GOLD: // Gold +50%
+							//dwValue = 5;
+							break;
+						}
+
+						// Max = 7
+						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
+
+						dwType = dwType << 12;
+						dwValue = dwValue << 8;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 					}
 				}
@@ -2468,13 +2582,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							if (dwValue <= 3) dwValue = 3;
 							break;
 						case ITEMSTAT2_CAD: // Cad vai de +1 at� +7
-							if (dwValue > 7) dwValue = 7;
+							//if (dwValue > 7) dwValue = 7;
 							break;
 						case ITEMSTAT2_EXP: // Exp set +20%
-							dwValue = 2;
+							//dwValue = 2;
 							break;
 						case ITEMSTAT2_GOLD: // Gold Set +50%
-							dwValue = 5;
+							//dwValue = 5;
 							break;
 						}
 
@@ -2518,8 +2632,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 					case ITEMSTAT_MANACONV:
 					case ITEMSTAT_CRITICAL2:
-						dwValue = (dwValue + 1) / 2;
-						if (dwValue < 1) dwValue = 1;
+						/*dwValue = (dwValue + 1) / 2;
+						if (dwValue < 1) dwValue = 1;*/
 						if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
 						break;
 					}
@@ -2915,54 +3029,6 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		int iResult;
 		// NPC를 삭제할때 특수 아이템을 발생시킬 것인지의 여부를 계산한다. 
 
-		switch (sNpcType) {
-		case 49: // Hellclaw 
-			iResult = iDice(1, 20100);
-			if ((iResult >= 1) && (iResult <= 5000)) iItemID = 308;		    // MagicNecklace(MS10)
-			else if ((iResult > 5000) && (iResult <= 10000)) iItemID = 259;	// MagicWand(M.Shield)
-			else if ((iResult > 10000) && (iResult <= 13000))  iItemID = 337;  // RubyRing
-			else if ((iResult > 13000) && (iResult <= 15000))  iItemID = 335;  // EmeraldRing
-			else if ((iResult > 15000) && (iResult <= 17500))  iItemID = 300;  // MagicNecklace(RM10)
-			else if ((iResult > 17500) && (iResult <= 18750))  iItemID = 311;  // MagicNecklace(DF+10)
-			else if ((iResult > 18750) && (iResult <= 19000))  iItemID = 305;  // MagicNecklace(DM+1)
-			else if ((iResult > 19000) && (iResult <= 19700))  iItemID = 634;  // RingofWizard
-			else if ((iResult > 19700) && (iResult <= 19844))  iItemID = 635;  // RingofMage
-			else if ((iResult > 19844) && (iResult <= 19922))  iItemID = 643;  // KnecklaceOfIceEle	
-			else if ((iResult > 19922) && (iResult <= 19961))  iItemID = 640;  // KnecklaceOfSufferent
-			else if ((iResult > 19961) && (iResult <= 19981))  iItemID = 637;  // KnecklaceOfLightPro
-			else if ((iResult > 19981) && (iResult <= 19991))  iItemID = 620;  // MerienShield	
-			else if ((iResult > 19991) && (iResult <= 19996))  iItemID = 644;  // KnecklaceOfAirEle	
-			else if ((iResult > 19996) && (iResult <= 19999))  iItemID = 614;  // SwordofIceElemental	
-			else if ((iResult > 19999) && (iResult <= 20000))  iItemID = 636;	// RingofGrandMage
-			else if ((iResult > 20001) && (iResult <= 20100))  iItemID = 280; // Pandora's Box
-			return TRUE;
-
-		case 50: // Tigerworm
-			iResult = iDice(1, 10050);
-			if ((iResult >= 1) && (iResult <= 4999)) {
-				if (iDice(1, 2) == 1)
-					iItemID = 311;  // MagicNecklace(DF+10)
-				else iItemID = 305;  // MagicNecklace(DM+1)
-			}
-			else if ((iResult > 5000) && (iResult <= 7499))  iItemID = 614;  // SwordofIceElemental	
-			else if ((iResult > 7500) && (iResult <= 8749))  iItemID = 290;  // Flameberge+3(LLF)
-			else if ((iResult > 8750) && (iResult <= 9374))  iItemID = 633;  // RingofDemonpower
-			else if ((iResult > 9375) && (iResult <= 9687))  iItemID = 492;  // BloodRapier		
-			else if ((iResult > 9688) && (iResult <= 9843))  iItemID = 490;  // BloodSword		
-			else if ((iResult > 9844) && (iResult <= 9921))  iItemID = 491;  // BloodAxe		
-			else if ((iResult > 9922) && (iResult <= 9960))  iItemID = 291;  // MagicWand(MS30-LLF)	
-			else if ((iResult > 9961) && (iResult <= 9980))  iItemID = 630;  // RingoftheXelima	
-			else if ((iResult > 9981) && (iResult <= 9990))  iItemID = 612;  // XelimaRapier	
-			else if ((iResult > 9991) && (iResult <= 9996))  iItemID = 610;  // XelimaBlade	
-			else if ((iResult > 9996) && (iResult <= 9998))  iItemID = 611;  // XelimaAxe	
-			else if ((iResult > 9999) && (iResult <= 10000)) iItemID = 631;  // RingoftheAbaddon
-			else if ((iResult > 10001) && (iResult <= 10050)) iItemID = 631;  // Pandora's Box
-			return TRUE;
-
-		default:
-			break;
-		}
-
 		if (iDice(1, 45) == 13) {
 			switch (sNpcType) {
 			case 11: if (iDice(1, 550) != 11) return FALSE; 	  // Skeleton   2 * 100	
@@ -2994,8 +3060,48 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		}
 		else return FALSE;
 
-
 		switch (sNpcType) {
+		case 49: // Hellclaw 
+			iResult = iDice(1, 20000);
+			if ((iResult >= 1) && (iResult <= 5000)) iItemID = 308;		    // MagicNecklace(MS10)
+			else if ((iResult > 5000) && (iResult <= 10000)) iItemID = 259;	// MagicWand(M.Shield)
+			else if ((iResult > 10000) && (iResult <= 13000))  iItemID = 337;  // RubyRing
+			else if ((iResult > 13000) && (iResult <= 15000))  iItemID = 335;  // EmeraldRing
+			else if ((iResult > 15000) && (iResult <= 17500))  iItemID = 300;  // MagicNecklace(RM10)
+			else if ((iResult > 17500) && (iResult <= 18750))  iItemID = 311;  // MagicNecklace(DF+10)
+			else if ((iResult > 18750) && (iResult <= 19000))  iItemID = 305;  // MagicNecklace(DM+1)
+			else if ((iResult > 19000) && (iResult <= 19700))  iItemID = 634;  // RingofWizard
+			else if ((iResult > 19700) && (iResult <= 19844))  iItemID = 635;  // RingofMage
+			else if ((iResult > 19844) && (iResult <= 19922))  iItemID = 643;  // KnecklaceOfIceEle	
+			else if ((iResult > 19922) && (iResult <= 19961))  iItemID = 640;  // KnecklaceOfSufferent
+			else if ((iResult > 19961) && (iResult <= 19981))  iItemID = 637;  // KnecklaceOfLightPro
+			else if ((iResult > 19981) && (iResult <= 19991))  iItemID = 620;  // MerienShield	
+			else if ((iResult > 19991) && (iResult <= 19996))  iItemID = 644;  // KnecklaceOfAirEle	
+			else if ((iResult > 19996) && (iResult <= 19999))  iItemID = 614;  // SwordofIceElemental	
+			else if ((iResult > 19999) && (iResult <= 20000))  iItemID = 636;	// RingofGrandMage
+			return TRUE;
+
+		case 50: // Tigerworm
+			iResult = iDice(1, 10000);
+			if ((iResult >= 1) && (iResult <= 4999)) {
+				if (iDice(1, 2) == 1)
+					iItemID = 311;  // MagicNecklace(DF+10)
+				else iItemID = 305;  // MagicNecklace(DM+1)
+			}
+			else if ((iResult > 5000) && (iResult <= 7499))  iItemID = 614;  // SwordofIceElemental	
+			else if ((iResult > 7500) && (iResult <= 8749))  iItemID = 290;  // Flameberge+3(LLF)
+			else if ((iResult > 8750) && (iResult <= 9374))  iItemID = 633;  // RingofDemonpower
+			else if ((iResult > 9375) && (iResult <= 9687))  iItemID = 492;  // BloodRapier		
+			else if ((iResult > 9688) && (iResult <= 9843))  iItemID = 490;  // BloodSword		
+			else if ((iResult > 9844) && (iResult <= 9921))  iItemID = 491;  // BloodAxe		
+			else if ((iResult > 9922) && (iResult <= 9960))  iItemID = 291;  // MagicWand(MS30-LLF)	
+			else if ((iResult > 9961) && (iResult <= 9980))  iItemID = 630;  // RingoftheXelima	
+			else if ((iResult > 9981) && (iResult <= 9990))  iItemID = 612;  // XelimaRapier	
+			else if ((iResult > 9991) && (iResult <= 9996))  iItemID = 610;  // XelimaBlade	
+			else if ((iResult > 9996) && (iResult <= 9998))  iItemID = 611;  // XelimaAxe	
+			else if ((iResult > 9999) && (iResult <= 10000)) iItemID = 631;  // RingoftheAbaddon
+			return TRUE;
+
 		case 11: // Skeleton
 		case 17: // Scorpoin
 		case 14: // Orc
@@ -3010,7 +3116,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 6: if (iDice(1, 15) == 3) iItemID = 634; break; // RingofWizard
 			case 7: if (iDice(1, 25) == 3) iItemID = 635; break; // RingofMage
 			}
-			break;
+			return TRUE;
 
 		case 13: // Cyclops
 		case 27: // Hellhound
@@ -3024,7 +3130,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 6: if (iDice(1, 30) == 13) iItemID = 637; break; // KnecklaceOfLightPro
 			case 7: if (iDice(1, 30) == 13) iItemID = 638; break; // KnecklaceOfFirePro
 			}
-			break;
+			return TRUE;
 
 		case 18: // Zombie
 		case 22: // Amphis
@@ -3034,7 +3140,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 3: if (iDice(1, 40) == 13) iItemID = 641; break; // KnecklaceOfMedusa
 			case 4: if (iDice(1, 30) == 13) iItemID = 640; break; // KnecklaceOfSufferent
 			}
-			break;
+			return TRUE;
 
 		case 12: // Stone-Golem
 			switch (iDice(1, 5)) {
@@ -3044,7 +3150,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 4: if (iDice(1, 20) == 11) iItemID = 644; break; // KnecklaceOfAirEle
 			case 5: if (iDice(1, 20) == 11) iItemID = 647; break; // KnecklaceOfStoneGolem
 			}
-			break;
+			return TRUE;
 
 		case 23: // Clay-Golem
 			switch (iDice(1, 4)) {
@@ -3053,18 +3159,17 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 3: if (iDice(1, 40) == 13) iItemID = 622; break; // MerienPlateMail(W)
 			case 4: if (iDice(1, 20) == 11) iItemID = 644; break; // KnecklaceOfAirEle
 			}
-			break;
+			return TRUE;
 
 		case 32: // Unicorn
-			switch (iDice(1, 6)) {
+			switch (iDice(1, 5)) {
 			case 1: if (iDice(1, 40) == 13) iItemID = 620; break; // MerienShield	
 			case 2: if (iDice(1, 40) == 13) iItemID = 621; break; // MerienPlateMail(M)
 			case 3: if (iDice(1, 40) == 13) iItemID = 622; break; // MerienPlateMail(W)
 			case 4: if (iDice(1, 20) == 11) iItemID = 644; break; // KnecklaceOfAirEle
 			case 5: if (iDice(1, 20) == 11) iItemID = 848; break; // Lighting Blade
-			case 6: iItemID = 280; break; // Pandora's Box
 			}
-			break;
+			return TRUE;
 
 		case 33: // WereWolf
 		case 48: // Stalker
@@ -3072,7 +3177,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 1: if (iDice(1, 30) == 3) iItemID = 290; break; // Flameberge+3(LLF)
 			case 2: iItemID = 292; break; // GoldenAxe(LLF)
 			}
-			break;
+			return TRUE;
 
 		case 30: // Liche
 			switch (iDice(1, 8)) {
@@ -3085,10 +3190,10 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 7: if (iDice(1, 30) == 3) iItemID = 636; break; // RingofGrandMage
 			case 8: if (iDice(1, 30) == 3) iItemID = 734; break; // RingOfArcmage
 			}
-			break;
+			return TRUE;
 
 		case 31: // Demon 
-			switch (iDice(1, 9)) {
+			switch (iDice(1, 8)) {
 			case 1: if (iDice(1, 30) == 3) iItemID = 382; break; // BloodyShockW.Manual
 			case 2: iItemID = 491; break; // BloodAxe
 			case 3: if (iDice(1, 10) == 3) iItemID = 490; break; // BloodSword
@@ -3097,12 +3202,11 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 6: if (iDice(1, 30) == 3) iItemID = 633; break; // RingofDemonpower
 			case 7: if (iDice(1, 10) == 3) iItemID = 645; break; // KnecklaceOfEfreet
 			case 8: if (iDice(1, 20) == 3) iItemID = 616; break; // DemonSlayer
-			case 9: iItemID = 280; break; // Pandora's Box
 			}
-			break;
+			return TRUE;
 
 		case 52: // Gagoyle
-			switch (iDice(1, 13)) {
+			switch (iDice(1, 12)) {
 			case 1: if (iDice(1, 30) == 3) iItemID = 382; break; // BloodyShockW.Manual	
 			case 2: if (iDice(1, 20) == 3) iItemID = 610; break; // XelimaBlade	
 			case 3: if (iDice(1, 20) == 3) iItemID = 611; break; // XelimaAxe	
@@ -3115,45 +3219,42 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			case 10: break; // RingOfDragonpower
 			case 11: if (iDice(1, 40) == 3) iItemID = 20; break; // Excalibur
 			case 12: break; // The_Devastator
-			case 13: iItemID = 280; break; // Pandora's Box
 			}
-			break;
+			return TRUE;
 
 		case 53: // Beholder
 			if (iDice(1, 20) == 11) iItemID = 646;  // KnecklaceOfBeholder
-			break;
+			return TRUE;
 
 
 		case 54: // Dark-Elf
 			if (iDice(1, 20) == 11) iItemID = 618;  // DarkElfBow
-			break;
+			return TRUE;
 
 
 		case 63: // Frost
 			if (iDice(1, 40) == 11) iItemID = 845;  // StormBringer
-			break;
+			return TRUE;
 
 
 		case 79: // Nizie
 			if (iDice(1, 20) == 11) iItemID = 845;  // StormBringer	
-			break;
+			return TRUE;
 
 
 		case 70: // Barlog
 			if (iDice(1, 40) == 11) iItemID = 846;  // The_Devastator
-			break;
+			return TRUE;
 
 
 		case 71: // Centaurus
 			if (iDice(1, 20) == 11) iItemID = 848;  // Lighting Blade
-			break;
+			return TRUE;
 
 
 		}
 
-		if (iItemID == 0)
-			return FALSE;
-		else return TRUE;
+		return FALSE;
 	}
 }
 

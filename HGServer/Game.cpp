@@ -229,7 +229,7 @@ CGame::CGame(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	m_bNpcItemConfig = TRUE;
+	m_bNpcItemConfig = FALSE;
 	m_iNotifyCleanMap = TRUE;
 
 	m_iExpSetting = 0;
@@ -9010,11 +9010,11 @@ DWORD * dwp, dwTimeRcv;
 				}
 
 				// centu - leer NpcItem.cfg 
-				if (_bDecodeNpcItemConfigFileContents("GameConfigs\\NpcItem.cfg") == FALSE)
+				/*if (_bDecodeNpcItemConfigFileContents("GameConfigs\\NpcItem.cfg") == FALSE)
 				{
 					PutLogList(" ");
 					PutLogList("(!!!) STOPPED! NpcItem configuration error.");
-				}
+				}*/
 				break;
 
 			case MSGID_RESPONSE_PLAYERDATA:
@@ -26089,6 +26089,8 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 
 			switch (sNpcType)
 			{
+			case 98: // Illusion-Wyvern
+			case 95: // Light-Wyvern
 			case 66: // Wyvern...stupid koreans - Centu: not 69 !
 				// ÃÖ»ó±Þ
 				switch (iDice(1, 4)) {
@@ -26112,6 +26114,8 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 				}
 				break;
 
+			case 92: // Eternal-Dragon
+			case 94: // Black-Wyvern
 			case 73: // Fire-Wyvern
 				// ÃÖ»ó±Þ
 				switch (iDice(1, 7)) {

@@ -3810,7 +3810,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 			break;
 		}
 		// Max 7
-		if (dwValue > 7) dwValue = 7;
+		//if (dwValue > 7) dwValue = 7;
 
 		// Main
 		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = NULL;
@@ -3857,7 +3857,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		}
 
 		// Demais stats max é 7 (para mobs fracos iGenLevel)
-		if (dwValue > 7) dwValue = 7;
+		//if (dwValue > 7) dwValue = 7;
 
 		dwType = dwType << 12;
 		dwValue = dwValue << 8;
@@ -3887,7 +3887,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		else if ((iResult >= 29970 / 2) && (iResult <= 30000 / 2))  dwValue = 13; // 68/29348 = 0.1%
 		else dwValue = 1;
 
-		if (dwValue > 7) dwValue = 7;
+		//if (dwValue > 7) dwValue = 7;
 
 		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = NULL;
 		dwType = dwType << 20;
@@ -3916,7 +3916,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		else if ((iResult >= 29970 / 2) && (iResult <= 30000 / 2))  dwValue = 13; // 68/29348 = 0.1%
 		else dwValue = 1;
 
-		if (dwValue > 7) dwValue = 7;
+		//if (dwValue > 7) dwValue = 7;
 
 		switch (dwType) {
 		case ITEMSTAT2_HITPROB: // Hit Prob Min +21%
@@ -3977,7 +3977,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 			break;
 		}
 		// Max = 7
-		if (dwValue > 7) dwValue = 7;
+		//if (dwValue > 7) dwValue = 7;
 
 		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = NULL;
 		dwType = dwType << 20;
@@ -3987,7 +3987,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
 		iResult = iDice(1, 1000);
 		if ((iResult >= 1) && (iResult <= 99))       dwType = ITEMSTAT2_DEF;	// 10
-		else if ((iResult >= 100) && (iResult <= 399))  dwType = ITEMSTAT2_PSNRES;		// 12
+		else if ((iResult >= 100) && (iResult <= 399))  dwType = ITEMSTAT2_PSNRES;	// 12
 		else if ((iResult >= 400) && (iResult <= 549))  dwType = ITEMSTAT2_SPREC;	// 16
 		else if ((iResult >= 550) && (iResult <= 649))  dwType = ITEMSTAT2_HPREC;	// 23
 		else if ((iResult >= 650) && (iResult <= 749))  dwType = ITEMSTAT2_MPREC;	// 23 
@@ -4036,7 +4036,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 
 		}
 		// Max = 7
-		if (dwValue > 7) dwValue = 7;
+		//if (dwValue > 7) dwValue = 7;
 
 		dwType = dwType << 12;
 		dwValue = dwValue << 8;

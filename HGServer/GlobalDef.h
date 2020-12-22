@@ -239,6 +239,8 @@
 #define DEF_ITEMEFFECTTYPE_WEAPONDYE		41 // WeaponDye
 #define DEF_ITEMEFFECTTYPE_ATTUNE			42
 
+#define DEF_ITEMEFFECTTYPE_BIJOUTERIE	45 // bijouterie
+
 //Magn0S:: Added---------------------------------------------------------------
 #define DEF_MAXMAGICALABS		80
 #define DEF_MAXPHYSICALABS		80
