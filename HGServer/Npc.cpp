@@ -1251,8 +1251,10 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem = NULL;
 				}
 				else {
-					
-						pItem->m_dwCount = dwCount;
+						if (iItemIDs[j] == 90)
+							pItem->m_dwCount = iDice(10, 10500);
+						else
+							pItem->m_dwCount = dwCount;
 						
 						string st1 = pItem->m_cName;
 						if (IsFragile && iDice(1,100) <= 70 && st1.find("Manual") == string::npos)

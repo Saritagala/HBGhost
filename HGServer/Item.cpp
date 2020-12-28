@@ -4373,8 +4373,12 @@ void CGame::RequestRepairAllItemsHandler(int iClientH)
 
 	m_pClientList[iClientH]->totalItemRepair = 0;
 
-	for (i = 0; i < DEF_MAXITEMS; i++)
-		if (m_pClientList[iClientH]->m_pItemList[i] != NULL)
+	for (i = 0; i < DEF_MAXITEMS; i++){
+		if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
+			//Magn0S:: Cant repair fragile item type 2
+			if (m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1 == DEF_FRAGILEITEM) {
+				continue;
+			}
 			if (((m_pClientList[iClientH]->m_pItemList[i]->m_cCategory >= 1) && (m_pClientList[iClientH]->m_pItemList[i]->m_cCategory <= 12)) ||
 				((m_pClientList[iClientH]->m_pItemList[i]->m_cCategory >= 43) && (m_pClientList[iClientH]->m_pItemList[i]->m_cCategory <= 50)))
 			{
@@ -4398,6 +4402,8 @@ void CGame::RequestRepairAllItemsHandler(int iClientH)
 				m_pClientList[iClientH]->m_stRepairAll[m_pClientList[iClientH]->totalItemRepair].price = price;
 				m_pClientList[iClientH]->totalItemRepair++;
 			}
+		}
+	}
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPAIRALLPRICES, NULL, NULL, NULL, NULL);
 }
 
@@ -4407,8 +4413,9 @@ void CGame::RequestRepairAllItemsDeleteHandler(int iClientH, int index)
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 
-	for (i = index; i < m_pClientList[iClientH]->totalItemRepair; i++)
+	for (i = index; i < m_pClientList[iClientH]->totalItemRepair; i++) {
 		m_pClientList[iClientH]->m_stRepairAll[i] = m_pClientList[iClientH]->m_stRepairAll[i + 1];
+	}
 	m_pClientList[iClientH]->totalItemRepair--;
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPAIRALLPRICES, NULL, NULL, NULL, NULL);
 }
@@ -4424,8 +4431,9 @@ void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if (m_pClientList[iClientH]->m_pIsProcessingAllowed == FALSE) return;
 
-	for (i = 0; i < m_pClientList[iClientH]->totalItemRepair; i++)
+	for (i = 0; i < m_pClientList[iClientH]->totalItemRepair; i++) {
 		totalPrice += m_pClientList[iClientH]->m_stRepairAll[i].price;
+	}
 
 	if (dwGetItemCount(iClientH, "Gold") < (DWORD)totalPrice)
 	{
@@ -4452,8 +4460,14 @@ void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 	{
 		for (i = 0; i < m_pClientList[iClientH]->totalItemRepair; i++)
 		{
-			m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_wCurLifeSpan = m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_wMaxLifeSpan;
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMREPAIRED, m_pClientList[iClientH]->m_stRepairAll[i].index, m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_wCurLifeSpan, NULL, NULL);
+			//Magn0S:: Cant repair fragile item type 2
+			if (m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index] != NULL) {
+				if (m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_sNewEffect1 == DEF_FRAGILEITEM) {
+					continue;
+				}
+				m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_wCurLifeSpan = m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_wMaxLifeSpan;
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMREPAIRED, m_pClientList[iClientH]->m_stRepairAll[i].index, m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_stRepairAll[i].index]->m_wCurLifeSpan, NULL, NULL);
+			}
 		}
 		iCalcTotalWeight(SetItemCount(iClientH, "Gold", dwGetItemCount(iClientH, "Gold") - totalPrice));
 	}
@@ -5988,8 +6002,8 @@ void CGame::ReqRepairItemHandler(int iClientH, char cItemID, char cRepairWhom, c
 	if (m_pClientList[iClientH]->m_pItemList[cItemID] == NULL) return;
 
 	//Magn0S:: Cant repair fragile item type 2
-	if ((m_pClientList[iClientH]->m_pItemList[cItemID]->m_sNewEffect1 == DEF_FRAGILEITEM) && (m_pClientList[iClientH]->m_pItemList[cItemID]->m_sNewEffect2 == 0)) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You can't repair this kind of Fragile Item.");
+	if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_sNewEffect1 == DEF_FRAGILEITEM) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You can't repair Fragile Item.");
 		return;
 	}
 
@@ -6077,8 +6091,8 @@ void CGame::ReqRepairItemCofirmHandler(int iClientH, char cItemID, char* pString
 	if (m_pClientList[iClientH]->m_pItemList[cItemID] == NULL) return;
 
 	//Magn0S:: Cant repair fragile item type 2
-	if ((m_pClientList[iClientH]->m_pItemList[cItemID]->m_sNewEffect1 == DEF_FRAGILEITEM) && (m_pClientList[iClientH]->m_pItemList[cItemID]->m_sNewEffect2 == 0)) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You can't repair this kind of Fragile Item.");
+	if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_sNewEffect1 == DEF_FRAGILEITEM) {
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You can't repair Fragile Item.");
 		return;
 	}
 

@@ -25646,7 +25646,11 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case VK_F11:
-		m_bDialogTrans = !m_bDialogTrans;
+		//m_bDialogTrans = !m_bDialogTrans;
+		if (m_bZoomMap)
+			m_bZoomMap = FALSE;
+		else
+			m_bZoomMap = TRUE;
 		break;
 
 	case VK_F12:
