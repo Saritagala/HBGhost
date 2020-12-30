@@ -75,6 +75,7 @@
     <ClInclude Include="CharInfo.h" />
     <ClInclude Include="Cint.h" />
     <ClInclude Include="CNTREVNT.H" />
+    <ClInclude Include="CRCdemo.h" />
     <ClInclude Include="Curse.h" />
     <ClInclude Include="DDRAW.H" />
     <ClInclude Include="DINPUT.H" />
@@ -114,6 +115,7 @@
   <ItemGroup>
     <ClCompile Include="BuildItem.cpp" />
     <ClCompile Include="CharInfo.cpp" />
+    <ClCompile Include="CRCdemo.cpp" />
     <ClCompile Include="Curse.cpp" />
     <ClCompile Include="DXC_ddraw.cpp" />
     <ClCompile Include="DXC_dinput.cpp" />

@@ -15,7 +15,7 @@
 #define DEF_MAXNPCS					15000 //LifeX Fix Mobs Respawn Limit 01/01
 #define DEF_MAXITEMTYPES			5000
 #define DEF_CLIENTTIMEOUT			10000
-#define DEF_SPUPTIME				7000 //10000 //LifeX Regen Time to 10 sec 01/01
+#define DEF_SPUPTIME				10000 //10000 //LifeX Regen Time to 10 sec 01/01
 #define DEF_POISONTIME				12000
 #define DEF_HPUPTIME				12000 //LifeX Regen Time to 10 sec 01/01
 #define DEF_MPUPTIME				10000 //LifeX Regen Time to 10 sec 01/01

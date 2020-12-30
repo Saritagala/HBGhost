@@ -117,6 +117,7 @@
     <ClInclude Include="SpriteID.h" />
     <ClInclude Include="Winmain.h" />
     <ClInclude Include="MP3.h" />
+    <ClInclude Include="CRCdemo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="YWSound.cpp">
@@ -196,6 +197,7 @@
     <ClCompile Include="Wmain.cpp" />
     <ClCompile Include="MP3.cpp" />
     <ClCompile Include="Game2.cpp" />
+    <ClCompile Include="CRCdemo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="AIcon.ico">

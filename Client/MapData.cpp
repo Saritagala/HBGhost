@@ -3300,9 +3300,6 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							break;
 
 						case 81: // Snoopy: Abaddon
-							if ( (m_pData[dX][dY].m_cOwnerFrame == 1) ) m_pGame->PlaySound('M', 138, sDist, lPan);
-							break;
-
 						case 92: // VAMP - eternal dragon
 							if ((m_pData[dX][dY].m_cOwnerFrame == 1)) m_pGame->PlaySound('M', 138, sDist, lPan);
 							break;

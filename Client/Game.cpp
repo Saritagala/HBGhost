@@ -95,7 +95,7 @@ CGame::CGame()
 	for (i = 0; i < 4; i++) m_pCharList[i] = NULL;
 	// Snoopy: Fixed here
 	//Magn0S:: Increased Max Dialogs
-	for (i = 0; i < MAXDIALOGBOX; i++) m_cDialogBoxOrder[i] = NULL;
+	for (i = 0; i < 61; i++) m_cDialogBoxOrder[i] = NULL;
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) m_pMagicCfgList[i] = NULL;
 
@@ -469,10 +469,10 @@ CGame::CGame()
 	m_stDialogBoxInfo[58].sV1 = 13;
 
 	// Magn0S:: Quest List - 59
-	m_stDialogBoxInfo[59].sX = 337 + SCREENX;
-	m_stDialogBoxInfo[59].sY = 57 + SCREENY;
-	m_stDialogBoxInfo[59].sSizeX = 364;
-	m_stDialogBoxInfo[59].sSizeY = 162;
+	m_stDialogBoxInfo[59].sX = 60 + SCREENX;
+	m_stDialogBoxInfo[59].sY = 50 + SCREENY;
+	m_stDialogBoxInfo[59].sSizeX = 258;
+	m_stDialogBoxInfo[59].sSizeY = 339;
 	iNewShop = 0;
 
 	// VAMP - Online Users List
@@ -676,8 +676,8 @@ BOOL CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 	m_sPlayerType = 2;
 	m_cPlayerTurn = 0;
 	// Snoopy: fixed here / Magn0S:: Increased max dialog boxes.
-	m_cDialogBoxOrder[MAXDIALOGBOX - 1] = 29;
-	m_cDialogBoxOrder[MAXDIALOGBOX - 2] = 30;
+	m_cDialogBoxOrder[60] = 29;
+	m_cDialogBoxOrder[59] = 30;
 
 	m_cMenuDir    = 4;
 	m_cMenuDirCnt = 0;
@@ -2090,7 +2090,8 @@ BOOL CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		cp = (char *)(cMsg + DEF_INDEX2_MSGTYPE + 2);
 		dwp = (DWORD *)cp;
 
-		*dwp = dwTime;
+		//*dwp = dwTime;
+		*dwp = (DWORD)iV1;
 
 		cp += 4;
 		iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
@@ -4586,11 +4587,13 @@ void CGame::OnTimer()
 
 	if (m_cGameMode != DEF_GAMEMODE_ONLOADING) {
 
-		if ((dwTime - m_dwCheckSprTime) > 8000)
+		if (((dwTime - m_dwCheckSprTime) > 6150) && (m_dwCheckSprTime != 0)) // 8000
 		{	m_dwCheckSprTime = dwTime;
 			if( m_bIsProgramActive ) ReleaseUnusedSprites();
-			if ((m_pGSock != NULL) && (m_pGSock->m_bIsAvailable == TRUE))
-				bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL, NULL, NULL);
+			if ((m_pGSock != NULL) && (m_pGSock->m_bIsAvailable == TRUE)) {
+				//bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL, NULL, NULL);
+				bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, NULL, dwTime, NULL, NULL, NULL);
+			}
 		}
 	}
 
@@ -4662,11 +4665,11 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
  char         cDlgID;
 	m_DInput.m_sZ = 0;
 	// Snoopy: 41->61
-	for (i = 0; i < MAXDIALOGBOX; i++)
+	for (i = 0; i < 61; i++)
 	// Snoopy: 40->60
-	if (m_cDialogBoxOrder[MAXDIALOGBOX-1 - i] != NULL) {
+	if (m_cDialogBoxOrder[60 - i] != NULL) {
 	// Snoopy: 40->60
-		cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX-1 - i];
+		cDlgID = m_cDialogBoxOrder[60 - i];
 		if ((m_stDialogBoxInfo[cDlgID].sX < msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX) &&
 			(m_stDialogBoxInfo[cDlgID].sY < msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY) )
 		{	switch (cDlgID) {
@@ -4844,11 +4847,11 @@ BOOL CGame::_bCheckDlgBoxDoubleClick(short msX, short msY)
 	int i;
 	char cDlgID;
 	//Snoopy: 41->61
-	for (i = 0; i < MAXDIALOGBOX; i++)
+	for (i = 0; i < 61; i++)
 	//Snoopy: 40->60
-	if (m_cDialogBoxOrder[MAXDIALOGBOX-1 - i] != NULL) {
+	if (m_cDialogBoxOrder[60 - i] != NULL) {
 	//Snoopy: 40->60
-		cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX-1 - i];
+		cDlgID = m_cDialogBoxOrder[60 - i];
 		if ((m_stDialogBoxInfo[cDlgID].sX < msX)	&& ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX) &&
 			(m_stDialogBoxInfo[cDlgID].sY < msY)	&& ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY) ) {
 			switch (cDlgID) {
@@ -5867,11 +5870,11 @@ BOOL CGame::_bCheckDraggingItemRelease(short msX, short msY)
 
 	
 	//Snoopy: 41->61
-	for (i = 0; i < MAXDIALOGBOX; i++)
+	for (i = 0; i < 61; i++)
 		//Snoopy: 40->60
-		if (m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i] != NULL) {
+		if (m_cDialogBoxOrder[60 - i] != NULL) {
 			//Snoopy: 40->60
-			cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i];
+			cDlgID = m_cDialogBoxOrder[60 - i];
 				if ((m_stDialogBoxInfo[cDlgID].sX < msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX)
 					&& (m_stDialogBoxInfo[cDlgID].sY < msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY))
 				{
@@ -9704,7 +9707,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 
 	bInv = FALSE;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -9927,7 +9930,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			
 			case 81: // Abaddon
 			case 91: // Gate
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -10040,7 +10043,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 			
 			case 81: // Abaddon
 			case 91: // Gate
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -10242,7 +10245,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -10518,7 +10521,7 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 			case 81: // Abaddon
 			case 91: // Gate
 			//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -10624,7 +10627,15 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 		{	switch (_tmp_sOwnerType) { // Pas d'ombre pour ces mobs
 			case 10: // Slime
 			case 35: // Energy Sphere
-			
+			//Magn0S:: New Mobs.
+			//case 92: // Eternal Dragon
+			//case 93: // BlackDemon
+			case 94: // BlackWyv
+			case 95: // LighWyvern
+			case 96: // PoisonWyvern
+			case 97: // HeavenWyvern
+			case 98: // IllusionWyvern
+			//case 99: // Ghost-Abaddon
 			case 81: // Abaddon
 			case 91: // Gate
 				break;
@@ -10784,7 +10795,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 
 	bInv = FALSE;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -10897,7 +10908,7 @@ BOOL   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, BOOL bT
 		case 81: // Abaddon
 		case 91: // Gate
 			//Magn0S:: New Mobs.
-		case 92: // Eternal Dragon
+		//case 92: // Eternal Dragon
 		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
@@ -11009,7 +11020,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11123,7 +11134,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 		case 81: // Abaddon
 		case 91: // Gate
 			//Magn0S:: New Mobs.
-		case 92: // Eternal Dragon
+		//case 92: // Eternal Dragon
 		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
@@ -11255,7 +11266,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11519,7 +11530,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 81: // Abaddon
 				case 91: // Gate
 					//Magn0S:: New Mobs.
-				case 92: // Eternal Dragon
+				//case 92: // Eternal Dragon
 				//case 93: // BlackDemon
 				case 94: // BlackWyv
 				case 95: // LighWyvern
@@ -11630,7 +11641,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 81: // Abaddon
 				case 91: // Gate
 					//Magn0S:: New Mobs.
-				case 92: // Eternal Dragon
+				//case 92: // Eternal Dragon
 				//case 93: // BlackDemon
 				case 94: // BlackWyv
 				case 95: // LighWyvern
@@ -11770,7 +11781,15 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				switch (_tmp_sOwnerType) { // Pas d'ombre pour ces mobs
 				case 10: // Slime
 				case 35: // Energy Sphere
-				
+				//Magn0S:: New Mobs.
+				//case 92: // Eternal Dragon
+				//case 93: // BlackDemon
+				case 94: // BlackWyv
+				case 95: // LighWyvern
+				case 96: // PoisonWyvern
+				case 97: // HeavenWyvern
+				case 98: // IllusionWyvern
+				//case 99: // Ghost-Abaddon
 				case 81: // Abaddon
 				case 91: // Gate
 					break;
@@ -11877,7 +11896,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 				case 81: // Abaddon
 				case 91: // Gate
 					//Magn0S:: New Mobs.
-				case 92: // Eternal Dragon
+				//case 92: // Eternal Dragon
 				//case 93: // BlackDemon
 				case 94: // BlackWyv
 				case 95: // LighWyvern
@@ -12303,7 +12322,7 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 		case 81: // Abaddon
 		case 91: // Gate
 			//Magn0S:: New Mobs.
-		case 92: // Eternal Dragon
+		//case 92: // Eternal Dragon
 		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
@@ -12341,8 +12360,12 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 			case 7: m_pEffectSpr[146]->PutTransSprite70(sX, sY, cFrame, dwTime); break;
 			case 8: m_pEffectSpr[147]->PutTransSprite70(sX, sY, cFrame, dwTime); break;
 			}
-		}else if( _tmp_sOwnerType == 66 ) m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
-		else if( _tmp_sOwnerType == 73 )
+		}
+		else if (_tmp_sOwnerType == 66 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98)
+		{
+			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
+		}
+		/*else if( _tmp_sOwnerType == 73 )
 		{	m_pSprite[33]->PutTransSprite(sX, sY, cFrame, dwTime);
 			switch (_tmp_cDir) {
 			case 1: m_pEffectSpr[141]->PutTransSprite70(sX, sY, cFrame+8, dwTime); break; // Abbadon qui meurt
@@ -12354,7 +12377,8 @@ BOOL CGame::DrawObject_OnDying(int indexX, int indexY, int sX, int sY, BOOL bTra
 			case 7: m_pEffectSpr[147]->PutTransSprite70(sX, sY, cFrame+8, dwTime); break;
 			case 8: m_pEffectSpr[141]->PutTransSprite70(sX, sY, cFrame+8, dwTime); break; //due to buggy Sprite nb
 			}
-		}else
+		}*/
+		else
 		{	if ((_tmp_iStatus & 0x40) != 0)
 				 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutSpriteRGB(sX, sY, cFrame, m_wR[10] -m_wR[0]/2, m_wG[10] -m_wG[0]/2, m_wB[10] -m_wB[0]/2, dwTime);
 			else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutSpriteFast(sX, sY, cFrame, dwTime);
@@ -12442,7 +12466,7 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) return FALSE;
+	if(_tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) return FALSE;
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12597,10 +12621,15 @@ BOOL   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, BOOL bTr
 			break;
 
 		case 81: // Abaddon
-		case 92: // Eternal Dragon
 			iFrame = 0;
 			iBodyIndex =  DEF_SPRID_MOB  +  (_tmp_sOwnerType - 10 )*8*7 + (3 * 8);
 			bTrans = TRUE; // Prevents showing hugly corpse
+			break;
+
+		case 92: // Eternal Dragon
+			iFrame = 0;
+			iBodyIndex = DEF_SPRID_MOB + (_tmp_sOwnerType - 10) * 8 * 7 + (3 * 8);
+			//bTrans = TRUE; // Prevents showing hugly corpse
 			break;
 
 		case 51: // CP
@@ -12732,7 +12761,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98)	bInv = TRUE; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98)	bInv = TRUE; //Energy-Ball, Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -13041,7 +13070,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -13176,7 +13205,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			
 			case 81: // Abaddon
 			case 91: // Gate
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -13408,7 +13437,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
  int iSkirtDraw = 0;
 
 	if(_tmp_sOwnerType == 67 || _tmp_sOwnerType == 68 || _tmp_sOwnerType == 69 || _tmp_sOwnerType == 81) return FALSE;
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -13583,7 +13612,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -13696,7 +13725,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -14026,7 +14055,7 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		case 81: // Abaddon
 		case 91: // Gate
 			//Magn0S:: New Mobs.
-		case 92: // Eternal Dragon
+		//case 92: // Eternal Dragon
 		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
@@ -14116,7 +14145,7 @@ BOOL CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, BO
 		case 81: // Abaddon
 		case 91: // Gate
 			//Magn0S:: New Mobs.
-		case 92: // Eternal Dragon
+		//case 92: // Eternal Dragon
 		//case 93: // BlackDemon
 		case 94: // BlackWyv
 		case 95: // LighWyvern
@@ -14226,7 +14255,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball, Wyvern
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
 		iShieldColor = 0;
@@ -14463,7 +14492,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -14600,7 +14629,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -15944,7 +15973,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 	int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
 	int iSkirtDraw = 0;
 
-	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 92 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
+	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = TRUE; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{
@@ -16118,7 +16147,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -16285,7 +16314,7 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 			case 81: // Abaddon
 			case 91: // Gate
 				//Magn0S:: New Mobs.
-			case 92: // Eternal Dragon
+			//case 92: // Eternal Dragon
 			//case 93: // BlackDemon
 			case 94: // BlackWyv
 			case 95: // LighWyvern
@@ -18097,7 +18126,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		{
 			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
 
-			char cCol1[24], cCol2[24], cCol3[24];
+			char cCol1[11], cCol2[11], cCol3[11];
 
 			m_DDraw.DrawShadowBox(5, 175, 175, 425, 0, true);
 
@@ -19256,9 +19285,10 @@ void CGame::DrawDialogBox_Inventory(int msX, int msY)
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_INVENTORY2, sX, sY, 0);
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{		
-		uTotalItem++;
+		
 		if ((m_cItemOrder[i] != -1) && (m_pItemList[m_cItemOrder[i]] != NULL))
 		{
+			uTotalItem++;
 			if (((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_ITEM)
 				&& (m_stMCursor.sSelectedObjectID == m_cItemOrder[i])) || (m_bIsItemEquipped[m_cItemOrder[i]] == TRUE))
 			{
@@ -19335,7 +19365,7 @@ void CGame::DrawDialogBox_Inventory(int msX, int msY)
 	}
 	// WaReS
 	wsprintf(G_cTxt, "%d/%d", uTotalItem, DEF_MAXITEMS);
-    //PutString2(sX + 185, sY + 5, G_cTxt, 0,255,0);
+    PutString2(sX + 185, sY + 5, G_cTxt, 0,255,0);
 }
 
 
@@ -22659,6 +22689,8 @@ void CGame::NoticementHandler(char * pData)
 		m_stDialogBoxInfo[18].sX  =  20;
 		m_stDialogBoxInfo[18].sY  =  65;
 		EnableDialogBox(18, 1000, NULL, NULL);
+		DisableDialogBox(9);
+		EnableDialogBox(9, 0, 0, 0);
 		break;
 	}
 	AddEventList("Press Ctrl+H for help.", 10);
@@ -25284,7 +25316,19 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 65://'A'
-		
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus))
+		{
+			if (m_bForceAttack)
+			{
+				m_bForceAttack = FALSE;
+				AddEventList(DEF_MSG_FORCEATTACK_OFF, 10);
+			}
+			else
+			{
+				m_bForceAttack = TRUE;
+				AddEventList(DEF_MSG_FORCEATTACK_ON, 10);
+			}
+		}
 		break;
 
 	case 71: //Magn0S:: Player Panel 'G'
@@ -32568,7 +32612,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 
 						default: // Other mobs
 							if (_iGetFOE(iObjectStatus) >= 0) break;
-							if ((sObjectType >= 1) && (sObjectType <= 6)) break;
+							if ((sObjectType >= 1) && (sObjectType <= 6) && (m_bForceAttack == FALSE)) break;
 							absX = abs(m_sPlayerX - m_sMCX);
 							absY = abs(m_sPlayerY - m_sMCY);
 							if ((absX <= 1) && (absY <= 1))
@@ -32906,7 +32950,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 
 					default: // All "normal mobs"
 						if (_iGetFOE(iObjectStatus) >= 0) break;
-						if ((sObjectType >= 1) && (sObjectType <= 6)) break;
+						if ((sObjectType >= 1) && (sObjectType <= 6) && (m_bForceAttack == FALSE)) break;
 						if ((absX <= 1) && (absY <= 1))
 						{
 							wType = _iGetAttackType();
@@ -34284,28 +34328,27 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 	sY = m_stDialogBoxInfo[59].sY;
 	char dane1[120], cTxt[50], cMapName[25];
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 4, FALSE, m_bDialogTrans);
-	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 22, FALSE, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0); // Normal Dialog
+	PutString_SprFont2(sX + 105, sY + 5, "Quest List", 240, 240, 240);
 
-	PutString(sX + 35, sY + 30, "Monster", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 110, sY + 30, "Kill", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 150, sY + 30, "Contrib.", RGB(255, 255, 255), FALSE, 1);
+	PutString(sX + 35+10, sY + 30, "Monster", RGB(255, 255, 255), FALSE, 1);
+	//PutString(sX + 110, sY + 30, "Kill", RGB(255, 255, 255), FALSE, 1);
+	//PutString(sX + 150, sY + 30, "Contrib.", RGB(255, 255, 255), FALSE, 1);
 	//PutString(sX + 250, sY + 30, "Item Name", RGB(255, 255, 255), FALSE, 1);
-	PutString(sX + 250, sY + 30, "Map", RGB(255, 255, 255), FALSE, 1);
+	PutString(sX + 250-60, sY + 30, "Map", RGB(255, 255, 255), FALSE, 1);
 
-	for (i = 0; i < 7; i++)
-	{
+	for (i = 0; i < 17; i++) {
 		if (((i + m_stDialogBoxInfo[59].sView) < 50) && (m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID != NULL))
 		{
-			if ((msX >= sX + 20) && (msX <= sX + 380) && (msY >= sY + i * 15 + 50) && (msY <= sY + i * 15 + 62))
+			if ((msX >= sX + 20) && (msX <= sX + 280) && (msY >= sY + i * 15 + 50) && (msY <= sY + i * 15 + 62))
 			{
 				ZeroMemory(dane1, sizeof(dane1));
 				ZeroMemory(cTxt, sizeof(cTxt));
 				GetNpcName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID, cTxt);
 				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 255);
+				PutAlignedString2(sX + 5 + 10, sX + 100+10, sY + 50 + (i * 15), dane1, 255, 255, 255);
 
-				ZeroMemory(dane1, sizeof(dane1));
+				/*ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iMaxCount);
 				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 255);
 
@@ -34313,7 +34356,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iContribution);
 				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 255);
 
-				/*ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%s", m_stQuestList[i + m_stDialogBoxInfo[59].sView].cPrizeName);
 				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 255);*/
 
@@ -34321,16 +34364,16 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				ZeroMemory(cMapName, sizeof(cMapName));
 				GetOfficialMapName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].cMapName, cMapName);
 				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 255);
+				PutAlignedString2(sX + 200 - 60, sX + 320 - 60, sY + 50 + (i * 15), dane1, 255, 255, 255);
 			}
 			else {
 				ZeroMemory(dane1, sizeof(dane1));
 				ZeroMemory(cTxt, sizeof(cTxt));
 				GetNpcName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID, cTxt);
 				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5, sX + 100, sY + 50 + (i * 15), dane1, 255, 255, 100);
+				PutAlignedString2(sX + 5 + 10, sX + 100+10, sY + 50 + (i * 15), dane1, 255, 255, 100);
 
-				ZeroMemory(dane1, sizeof(dane1));
+				/*ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iMaxCount);
 				PutAlignedString2(sX + 90, sX + 130, sY + 50 + (i * 15), dane1, 255, 255, 100);
 
@@ -34338,7 +34381,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iContribution);
 				PutAlignedString2(sX + 140, sX + 190, sY + 50 + (i * 15), dane1, 255, 255, 100);
 
-				/*ZeroMemory(dane1, sizeof(dane1));
+				ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%s", m_stQuestList[i + m_stDialogBoxInfo[59].sView].cPrizeName);
 				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 100);*/
 
@@ -34346,7 +34389,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				ZeroMemory(cMapName, sizeof(cMapName));
 				GetOfficialMapName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].cMapName, cMapName);
 				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 200, sX + 320, sY + 50 + (i * 15), dane1, 255, 255, 100);
+				PutAlignedString2(sX + 200 - 60, sX + 320 - 60, sY + 50 + (i * 15), dane1, 255, 255, 100);
 			}
 		}
 	}
@@ -34355,30 +34398,31 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 	for (i = 0; i < 50; i++)
 		if (m_stQuestList[i].iQuestID != NULL) iTotalLines++;
 
-	if (iTotalLines > 7)
+	if (iTotalLines > 17)
 	{
-		d1 = (double)m_stDialogBoxInfo[15].sView;
-		d2 = (double)(iTotalLines - 7);
+		d1 = (double)m_stDialogBoxInfo[59].sView;
+		d2 = (double)(iTotalLines - 17);
 		d3 = (274.0f * d1) / d2;
 		iPointerLoc = (int)d3;
 	}
 	else iPointerLoc = 0;
-	if (iTotalLines > 7)
+	if (iTotalLines > 17)
 	{
-		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 346, sY + 33 + iPointerLoc, 7);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 242, sY + iPointerLoc + 35, 7);
 	}
 
-	if (cLB != 0 && iTotalLines > 7)
+	if (cLB != 0 && iTotalLines > 17)
 	{
 		if ((iGetTopDialogBoxIndex() == 59))
 		{
 			if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 30) && (msY <= sY + 320))
 			{
 				d1 = (double)(msY - (sY + 35));
-				d2 = (double)(iTotalLines - 7);
+				d2 = (double)(iTotalLines - 17);
 				d3 = (d1 * d2) / 274.0f;
 				iPointerLoc = (int)(d3 + 0.5f);
-				if (iPointerLoc > iTotalLines - 7) iPointerLoc = iTotalLines - 17;
+				if (iPointerLoc > iTotalLines - 17) iPointerLoc = iTotalLines - 17;
 				m_stDialogBoxInfo[59].sView = iPointerLoc;
 			}
 		}
@@ -34391,7 +34435,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 		m_DInput.m_sZ = 0;
 	}
 	if (m_stDialogBoxInfo[59].sView < 0) m_stDialogBoxInfo[59].sView = 0;
-	if (iTotalLines > 7 && m_stDialogBoxInfo[59].sView > iTotalLines - 7) m_stDialogBoxInfo[59].sView = iTotalLines - 7;
+	if (iTotalLines > 17 && m_stDialogBoxInfo[59].sView > iTotalLines - 17) m_stDialogBoxInfo[59].sView = iTotalLines - 17;
 }
 
 // VAMP - elemental armours change attunement

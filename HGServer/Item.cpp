@@ -7570,7 +7570,7 @@ BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 34:
 					if (_bGetIsStringIsNumber(token) == FALSE) {
-						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Is Hero");
+						PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - Hero Bonus");
 						delete[] pContents;
 						delete pStrTok;
 						return FALSE;

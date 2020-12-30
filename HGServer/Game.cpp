@@ -1408,7 +1408,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 			else {
 				*cp = 0;
 				if (m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar == 0) {
-					m_pClientList[iClientH]->m_iSP--;
+					//m_pClientList[iClientH]->m_iSP--;
 					*cp = 1;
 				}
 				if (m_pClientList[iClientH]->m_iSP < 0) {
@@ -10247,17 +10247,8 @@ void CGame::TimeStaminarPointsUp(int iClientH)
 			dV1 = (dV3 / 100.0f)*dV2;
 			iTotal += (int)dV1;
 		}
-	
-		//Magn0S:: Changed SP Recover in low level to help new players.
-		if (m_pClientList[iClientH]->m_iLevel <= 80) {
-			iTotal += 50; //Original 15
-		} else if ( m_pClientList[iClientH]->m_iLevel <= 120) {
-			iTotal += 35; //Original 10
-		}  else if ( m_pClientList[iClientH]->m_iLevel <= 160) { 
-			iTotal += 25; //Original 5
-		}
 
-		m_pClientList[iClientH]->m_iSP += iTotal;
+		m_pClientList[iClientH]->m_iSP += iTotal+75;
 		if (m_pClientList[iClientH]->m_iSP > iMaxSP) 
 			m_pClientList[iClientH]->m_iSP = iMaxSP;
 
@@ -16993,11 +16984,12 @@ void CGame::CheckConnectionHandler(int iClientH, char *pData)
 	dwp = (DWORD *)cp;
 	dwTimeRcv = *dwp;
 
-	if (m_pClientList[iClientH] == NULL) return;
-
 #ifdef ANTI_HAX
 	CheckDenialServiceAttack(iClientH, dwTimeRcv);
 #endif
+
+	if (m_pClientList[iClientH] == NULL) return;
+
 	if (m_pClientList[iClientH]->m_dwInitCCTimeRcv == NULL) {
 		m_pClientList[iClientH]->m_dwInitCCTimeRcv = dwTimeRcv;
 		m_pClientList[iClientH]->m_dwInitCCTime = dwTime;
@@ -25219,11 +25211,11 @@ void CGame::PlayerOrder_ChangeCity(int iClientH, BOOL bChange)
 			switch (m_pClientList[iClientH]->m_cSide) {
 			case 1:
 				strcpy(m_pClientList[iClientH]->m_cLocation, "elvine");
-				SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You changed you nation to Elvine.");
+				SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You've changed your nation to Elvine.");
 				break;
 			case 2:
 				strcpy(m_pClientList[iClientH]->m_cLocation, "aresden");
-				SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You changed you nation to Aresden.");
+				SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You've changed your nation to Aresden.");
 				break;
 			}
 			/*if (memcmp(m_pClientList[iClientH]->m_cLocation, "aresden", 7) == 0 ||

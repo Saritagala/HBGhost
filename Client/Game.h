@@ -153,6 +153,8 @@ class CGame
 {
 public:
 
+	BOOL m_bForceAttack;
+
 	void DrawDialogBox_Enchanting(int msX, int msY);
 	void DlgBoxClick_Enchanting(int msX, int msY);
 
@@ -839,9 +841,9 @@ public:
 		char  cStr[32], cStr2[32], cStr3[32], cStr4[32];
 		char  cMode;
 		BOOL  bIsScrollSelected;
-	} m_stDialogBoxInfo[MAXDIALOGBOX];	 // Snoopy passé à 61 (origine 41, Alastor 60), j'ai mis +20 car plus pratique. - Magn0S:: Increased max dialog box
-	char m_cDialogBoxOrder[MAXDIALOGBOX];
-	CInt m_bIsDialogEnabled[MAXDIALOGBOX];//was BOOL
+	} m_stDialogBoxInfo[61];	 // Snoopy passé à 61 (origine 41, Alastor 60), j'ai mis +20 car plus pratique. - Magn0S:: Increased max dialog box
+	char m_cDialogBoxOrder[61];
+	CInt m_bIsDialogEnabled[61];//was BOOL
 //Snoopy=>>>>>>>>>>>>>>>>>>>>>
 	struct {
 		int   sV1, sV2, sV3, sV4, sV5, sV6, sV7, sItemID;

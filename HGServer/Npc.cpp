@@ -3031,6 +3031,55 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		int iResult;
 		// NPC를 삭제할때 특수 아이템을 발생시킬 것인지의 여부를 계산한다. 
 
+		switch (sNpcType) {
+		case 49: // Hellclaw 
+			switch (iDice(1, 18)) {
+			case 1: iItemID = 610; break; // XelimaBlade
+			case 2: iItemID = 611; break; // XelimaAxe
+			case 3: iItemID = 612; break; // XelimaRapier
+			case 4: iItemID = 620; break; // MerienShield
+			case 5: iItemID = 622; break; // MerienPlateMailW
+			case 6: iItemID = 621; break; // MerienPlateMailM
+			case 7: iItemID = 642; break; // KnecklaceOfIcePro
+			case 8: iItemID = 640; break; // KnecklaceOfSufferent
+			case 9: iItemID = 637; break; // KnecklaceOfLightPro
+			case 10: iItemID = 614; break; // SwordofIceElemental
+			case 11: iItemID = 634; break; // RingofWizard
+			case 12: iItemID = 635; break; // RingofMage
+			case 13: iItemID = 335; break; // EmeraldRing
+			case 14: iItemID = 311; break; // MagicNecklace(DF+10)
+			case 15: iItemID = 300; break; // MagicNecklace(RM10)
+			case 16: iItemID = 337; break; // RubyRing
+			case 17: iItemID = 308; break; // MagicNecklace(MS10)
+			case 18: iItemID = 259; break; // MagicWand(M.Shield)
+			}
+			break;
+
+		case 50: // Tigerworm
+			switch (iDice(1, 19)) {
+			case 1: iItemID = 610; break; // XelimaBlade
+			case 2: iItemID = 611; break; // XelimaAxe
+			case 3: iItemID = 612; break; // XelimaRapier
+			case 4: iItemID = 620; break; // MerienShield
+			case 5: iItemID = 622; break; // MerienPlateMailW
+			case 6: iItemID = 621; break; // MerienPlateMailM
+			case 7: iItemID = 642; break; // KnecklaceOfIcePro
+			case 8: iItemID = 640; break; // KnecklaceOfSufferent
+			case 9: iItemID = 637; break; // KnecklaceOfLightPro
+			case 10: iItemID = 614; break; // SwordofIceElemental
+			case 11: iItemID = 634; break; // RingofWizard
+			case 12: iItemID = 635; break; // RingofMage
+			case 13: iItemID = 335; break; // EmeraldRing
+			case 14: iItemID = 311; break; // MagicNecklace(DF+10)
+			case 15: iItemID = 300; break; // MagicNecklace(RM10)
+			case 16: iItemID = 337; break; // RubyRing
+			case 17: iItemID = 308; break; // MagicNecklace(MS10)
+			case 18: iItemID = 259; break; // MagicWand(M.Shield)
+			case 19: iItemID = 1037; break; // StunSB
+			}
+			break;
+		}
+
 		if (iDice(1, 45) == 13) {
 			switch (sNpcType) {
 			case 11: if (iDice(1, 550) != 11) return FALSE; 	  // Skeleton   2 * 100	
@@ -3063,46 +3112,6 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		else return FALSE;
 
 		switch (sNpcType) {
-		case 49: // Hellclaw 
-			iResult = iDice(1, 20000);
-			if ((iResult >= 1) && (iResult <= 5000)) iItemID = 308;		    // MagicNecklace(MS10)
-			else if ((iResult > 5000) && (iResult <= 10000)) iItemID = 259;	// MagicWand(M.Shield)
-			else if ((iResult > 10000) && (iResult <= 13000))  iItemID = 337;  // RubyRing
-			else if ((iResult > 13000) && (iResult <= 15000))  iItemID = 335;  // EmeraldRing
-			else if ((iResult > 15000) && (iResult <= 17500))  iItemID = 300;  // MagicNecklace(RM10)
-			else if ((iResult > 17500) && (iResult <= 18750))  iItemID = 311;  // MagicNecklace(DF+10)
-			else if ((iResult > 18750) && (iResult <= 19000))  iItemID = 305;  // MagicNecklace(DM+1)
-			else if ((iResult > 19000) && (iResult <= 19700))  iItemID = 634;  // RingofWizard
-			else if ((iResult > 19700) && (iResult <= 19844))  iItemID = 635;  // RingofMage
-			else if ((iResult > 19844) && (iResult <= 19922))  iItemID = 643;  // KnecklaceOfIceEle	
-			else if ((iResult > 19922) && (iResult <= 19961))  iItemID = 640;  // KnecklaceOfSufferent
-			else if ((iResult > 19961) && (iResult <= 19981))  iItemID = 637;  // KnecklaceOfLightPro
-			else if ((iResult > 19981) && (iResult <= 19991))  iItemID = 620;  // MerienShield	
-			else if ((iResult > 19991) && (iResult <= 19996))  iItemID = 644;  // KnecklaceOfAirEle	
-			else if ((iResult > 19996) && (iResult <= 19999))  iItemID = 614;  // SwordofIceElemental	
-			else if ((iResult > 19999) && (iResult <= 20000))  iItemID = 636;	// RingofGrandMage
-			return TRUE;
-
-		case 50: // Tigerworm
-			iResult = iDice(1, 10000);
-			if ((iResult >= 1) && (iResult <= 4999)) {
-				if (iDice(1, 2) == 1)
-					iItemID = 311;  // MagicNecklace(DF+10)
-				else iItemID = 305;  // MagicNecklace(DM+1)
-			}
-			else if ((iResult > 5000) && (iResult <= 7499))  iItemID = 614;  // SwordofIceElemental	
-			else if ((iResult > 7500) && (iResult <= 8749))  iItemID = 290;  // Flameberge+3(LLF)
-			else if ((iResult > 8750) && (iResult <= 9374))  iItemID = 633;  // RingofDemonpower
-			else if ((iResult > 9375) && (iResult <= 9687))  iItemID = 492;  // BloodRapier		
-			else if ((iResult > 9688) && (iResult <= 9843))  iItemID = 490;  // BloodSword		
-			else if ((iResult > 9844) && (iResult <= 9921))  iItemID = 491;  // BloodAxe		
-			else if ((iResult > 9922) && (iResult <= 9960))  iItemID = 291;  // MagicWand(MS30-LLF)	
-			else if ((iResult > 9961) && (iResult <= 9980))  iItemID = 630;  // RingoftheXelima	
-			else if ((iResult > 9981) && (iResult <= 9990))  iItemID = 612;  // XelimaRapier	
-			else if ((iResult > 9991) && (iResult <= 9996))  iItemID = 610;  // XelimaBlade	
-			else if ((iResult > 9996) && (iResult <= 9998))  iItemID = 611;  // XelimaAxe	
-			else if ((iResult > 9999) && (iResult <= 10000)) iItemID = 631;  // RingoftheAbaddon
-			return TRUE;
 
 		case 11: // Skeleton
 		case 17: // Scorpoin

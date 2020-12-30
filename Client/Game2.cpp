@@ -401,12 +401,11 @@ void CGame::NotifyMsg_MagicStudySuccess(char * pData)
 
 void CGame::NotifyMsg_MP(char * pData)
 {
-	DWORD * dwp;
-	int iPrevMP;
+	int iPrevMP, *ip;
 	char cTxt[120];
 	iPrevMP = m_iMP;
-	dwp = (DWORD *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	m_iMP = (int)*dwp;
+	ip = (int *)(pData + DEF_INDEX2_MSGTYPE + 2);
+	m_iMP = *ip;
 	if (abs(m_iMP - iPrevMP) < 10) return;
 	if (m_iMP > iPrevMP)
 	{
@@ -866,11 +865,10 @@ void CGame::NotifyMsg_SkillUsingEnd(char * pData)
 
 void CGame::NotifyMsg_SP(char * pData)
 {
-	DWORD * dwp;
-	int iPrevSP;
+	int iPrevSP, *ip;
 	iPrevSP = m_iSP;
-	dwp = (DWORD *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	m_iSP = (int)*dwp;
+	ip = (int *)(pData + DEF_INDEX2_MSGTYPE + 2);
+	m_iSP = *ip;
 	if (abs(m_iSP - iPrevSP) < 10) return;
 	if (m_iSP > iPrevSP)
 	{
@@ -887,10 +885,10 @@ void CGame::NotifyMsg_SP(char * pData)
 
 void CGame::NotifyMsg_TotalUsers(char * pData)
 {
-	WORD *wp;
+	int* ip;
 
-	wp = (WORD *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	m_iTotalUsers = (int)*wp;
+	ip = (int *)(pData + DEF_INDEX2_MSGTYPE + 2);
+	m_iTotalUsers = *ip;
 
 	wsprintf(G_cTxt, NOTIFYMSG_TOTAL_USER1, m_iTotalUsers);
 	AddEventList(G_cTxt, 10);
@@ -10403,6 +10401,8 @@ void CGame::InitGameSettings()
 	m_sZerk = m_sInv = m_sPfm = m_sPfa = m_sShield = 0;
 	bZerk = bInv = bPfm = bPfa = bShield = false;
 
+	m_bForceAttack = FALSE;
+
 	m_bShowParty = TRUE; // vamp - party info
 	m_bShowEmblems = true;
 
@@ -10470,11 +10470,11 @@ void CGame::InitGameSettings()
 		ZeroMemory(m_stGuildName[i].cGuildName, sizeof(m_stGuildName[i].cGuildName));
 	}
 	//Snoopy: 61
-	for (i = 0; i < MAXDIALOGBOX; i++)
+	for (i = 0; i < 61; i++)
 		m_bIsDialogEnabled[i] = FALSE;
 
 	//Snoopy: 58 because 2 last ones alreaddy defined / Magn0S Increased dialog boxes
-	for (i = 0; i < MAXDIALOGBOX - 2; i++)
+	for (i = 0; i < 58; i++)
 		m_cDialogBoxOrder[i] = NULL;
 
 	for (i = 0; i < DEF_MAXEFFECTS; i++) {
@@ -16820,14 +16820,12 @@ void CGame::NotifyMsg_GlobalAttackMode(char *pData)
 
 void CGame::NotifyMsg_HP(char * pData) //LifeX Fix HP Regen Bugs MP 01/01
 {
-	DWORD * dwp;
-	int iPrevHP;
+	int iPrevHP, *ip;
 	char cTxt[120];
-	int iPrevMP;
 
 	iPrevHP = m_iHP;
-	dwp = (DWORD *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	m_iHP = (int)*dwp;
+	ip = (int *)(pData + DEF_INDEX2_MSGTYPE + 2);
+	m_iHP = *ip;
 
 	if (m_iHP > iPrevHP)
 	{
@@ -19688,7 +19686,7 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 	if (m_bIsObserverMode == TRUE) return;
 	m_DInput.m_sZ = 0;
 	//Snoopy: 41->61
-	for (i = 0; i < MAXDIALOGBOX; i++)
+	for (i = 0; i < 61; i++)
 		if (m_cDialogBoxOrder[i] != NULL)
 		{
 			switch (m_cDialogBoxOrder[i]) {
@@ -19973,11 +19971,11 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 	DWORD		  dwTime = m_dwCurTime;
 	if (cButtonSide == 1) {
 		// Snoopy: 41->61
-		for (i = 0; i < MAXDIALOGBOX; i++)
+		for (i = 0; i < 61; i++)
 			// Snoopy: 40->60
-			if (m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i] != NULL) 	// Snoopy: 40->60
+			if (m_cDialogBoxOrder[60 - i] != NULL) 	// Snoopy: 40->60
 			{
-				cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i];
+				cDlgID = m_cDialogBoxOrder[60 - i];
 				if ((m_stDialogBoxInfo[cDlgID].sX <= msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) >= msX) &&
 					(m_stDialogBoxInfo[cDlgID].sY <= msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) >= msY))
 				{
@@ -20211,11 +20209,11 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 	{
 		if ((dwTime - m_dwDialogCloseTime) < 300) return 0;
 		// Snoopy: 40->60
-		for (i = 0; i < MAXDIALOGBOX; i++)
+		for (i = 0; i < 61; i++)
 			// Snoopy: 40->60
-			if (m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i] != NULL) {
+			if (m_cDialogBoxOrder[60 - i] != NULL) {
 				// Snoopy: 40->60
-				cDlgID = m_cDialogBoxOrder[MAXDIALOGBOX - 1 - i];
+				cDlgID = m_cDialogBoxOrder[60 - i];
 				if ((m_stDialogBoxInfo[cDlgID].sX < msX) && ((m_stDialogBoxInfo[cDlgID].sX + m_stDialogBoxInfo[cDlgID].sSizeX) > msX) &&
 					(m_stDialogBoxInfo[cDlgID].sY < msY) && ((m_stDialogBoxInfo[cDlgID].sY + m_stDialogBoxInfo[cDlgID].sSizeY) > msY))
 				{
@@ -21445,16 +21443,16 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 	m_bIsDialogEnabled[iBoxID] = TRUE;
 	if (pString != NULL) strcpy(m_stDialogBoxInfo[iBoxID].cStr, pString);
 	//Snoopy: 39->59
-	for (i = 0; i < MAXDIALOGBOX - 2; i++)
+	for (i = 0; i < 59; i++)
 		if (m_cDialogBoxOrder[i] == iBoxID) m_cDialogBoxOrder[i] = NULL;
 	//Snoopy: 39->59
-	for (i = 0; i < MAXDIALOGBOX - 2; i++)
+	for (i = 0; i < 59; i++)
 		if ((m_cDialogBoxOrder[i - 1] == NULL) && (m_cDialogBoxOrder[i] != NULL)) {
 			m_cDialogBoxOrder[i - 1] = m_cDialogBoxOrder[i];
 			m_cDialogBoxOrder[i] = NULL;
 		}
 	//Snoopy: 39->59
-	for (i = 0; i < MAXDIALOGBOX - 2; i++)
+	for (i = 0; i < 59; i++)
 		if (m_cDialogBoxOrder[i] == NULL) {
 			m_cDialogBoxOrder[i] = iBoxID;
 			return;
@@ -21662,12 +21660,12 @@ void CGame::DisableDialogBox(int iBoxID)
 
 	m_bIsDialogEnabled[iBoxID] = FALSE;
 	// Snoopy: 39->59
-	for (i = 0; i < MAXDIALOGBOX - 2; i++)
+	for (i = 0; i < 59; i++)
 		if (m_cDialogBoxOrder[i] == iBoxID)
 			m_cDialogBoxOrder[i] = NULL;
 
 	// Snoopy: 39->59
-	for (i = 1; i < MAXDIALOGBOX - 2; i++)
+	for (i = 1; i < 59; i++)
 		if ((m_cDialogBoxOrder[i - 1] == NULL) && (m_cDialogBoxOrder[i] != NULL))
 		{
 			m_cDialogBoxOrder[i - 1] = m_cDialogBoxOrder[i];
@@ -21679,7 +21677,7 @@ int CGame::iGetTopDialogBoxIndex()
 {
 	int i;
 	//Snoopy: 38->58
-	for (i = MAXDIALOGBOX - 3; i >= 0; i--)
+	for (i = 58; i >= 0; i--)
 		if (m_cDialogBoxOrder[i] != NULL)
 			return m_cDialogBoxOrder[i];
 
