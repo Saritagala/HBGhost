@@ -266,6 +266,8 @@ public:
 	char cStateChange2;
 	char cStateChange3;
 
+	int iPrevGizon = 0;
+
 	int m_iTeleportMapCount;
 	void ResponseTeleportList(char * pData);
 	void ResponseChargedTeleport(char * pData);

@@ -19229,6 +19229,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 		if (   (m_iGizonItemUpgradeLeft >0) && (m_iLU_Point <= 0)
 			&& (m_cLU_Str == 0)&&(m_cLU_Vit == 0)&&(m_cLU_Dex == 0)&&(m_cLU_Int == 0)&&(m_cLU_Mag == 0)&&(m_cLU_Char == 0))
 		{	DisableDialogBox(12);
+			iPrevGizon = m_iGizonItemUpgradeLeft;
 			EnableDialogBox(42, 0, 0, 0);
 	}	}
 }

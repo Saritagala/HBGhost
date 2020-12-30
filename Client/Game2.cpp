@@ -3708,11 +3708,6 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		return; // centu - when having an angel, do nothing
 	}
 
-	if ((cStr + cVit + cDex + cInt + cMag + cChar) > m_iGizonItemUpgradeLeft)
-	{
-		return;
-	}
-
 	//if ((cStateChange1 != 0) || (cStateChange2 != 0) || (cStateChange3 != 0)){
 		// Strength UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 127) && (msY <= sY + 133) && (m_cLU_Str < 0))
@@ -3737,6 +3732,7 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Str++;
 		cStr--;
+		m_iGizonItemUpgradeLeft++;
 		PlaySound('E', 14, 5);
 	}
 
@@ -3762,6 +3758,7 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Vit++;
 		cVit--;
+		m_iGizonItemUpgradeLeft++;
 		PlaySound('E', 14, 5);
 	}
 
@@ -3784,6 +3781,7 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Dex++;
 		cDex--;
+		m_iGizonItemUpgradeLeft++;
 		PlaySound('E', 14, 5);
 	}
 
@@ -3806,6 +3804,7 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Int++;
 		cInt--;
+		m_iGizonItemUpgradeLeft++;
 		PlaySound('E', 14, 5);
 	}
 
@@ -3828,6 +3827,7 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Mag++;
 		cMag--;
+		m_iGizonItemUpgradeLeft++;
 		PlaySound('E', 14, 5);
 	}
 
@@ -3850,13 +3850,14 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Char++;
 		cChar--;
+		m_iGizonItemUpgradeLeft++;
 		PlaySound('E', 14, 5);
 	}
 	//}
 
 	/*if ((cStateChange1 == 0) || (cStateChange2 == 0) || (cStateChange3 == 0) && (m_iGizonItemUpgradeLeft > 0))
 	{*/	// Strength DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133) && (m_iStr > 10))
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133) && (m_iStr > 10) && (m_iGizonItemUpgradeLeft > 0))
 	{
 		/*if (cStateChange1 == 0)
 		{
@@ -3878,11 +3879,12 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Str--;
 		cStr++;
+		m_iGizonItemUpgradeLeft--;
 		PlaySound('E', 14, 5);
 	}
 
 	// Vitality DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152) && (m_iVit > 10)) {
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152) && (m_iVit > 10) && (m_iGizonItemUpgradeLeft > 0)) {
 		/*if (cStateChange1 == 0){
 			cStateChange1 = DEF_VIT;
 			m_cLU_Vit--;
@@ -3900,11 +3902,12 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Vit--;
 		cVit++;
+		m_iGizonItemUpgradeLeft--;
 		PlaySound('E', 14, 5);
 	}
 
 	// Dexterity DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171) && (m_iDex > 10)) {
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171) && (m_iDex > 10) && (m_iGizonItemUpgradeLeft > 0)) {
 		/*if (cStateChange1 == 0){
 			cStateChange1 = DEF_DEX;
 			m_cLU_Dex--;
@@ -3922,11 +3925,12 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Dex--;
 		cDex++;
+		m_iGizonItemUpgradeLeft--;
 		PlaySound('E', 14, 5);
 	}
 
 	// Intelligence DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190) && (m_iInt > 10))
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190) && (m_iInt > 10) && (m_iGizonItemUpgradeLeft > 0))
 	{
 		/*if (cStateChange1 == 0)
 		{
@@ -3948,11 +3952,12 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Int--;
 		cInt++;
+		m_iGizonItemUpgradeLeft--;
 		PlaySound('E', 14, 5);
 	}
 
 	// Magic DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209) && (m_iMag > 10)) {
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209) && (m_iMag > 10) && (m_iGizonItemUpgradeLeft > 0)) {
 		/*if (cStateChange1 == 0){
 			cStateChange1 = DEF_MAG;
 			m_cLU_Mag--;
@@ -3970,11 +3975,12 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Mag--;
 		cMag++;
+		m_iGizonItemUpgradeLeft--;
 		PlaySound('E', 14, 5);
 	}
 
 	// Charisma DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228) && (m_iCharisma > 10)) {
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228) && (m_iCharisma > 10) && (m_iGizonItemUpgradeLeft > 0)) {
 		/*if (cStateChange1 == 0){
 			cStateChange1 = DEF_CHR;
 			m_cLU_Char--;
@@ -3992,6 +3998,7 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 		}*/
 		m_cLU_Char--;
 		cChar++;
+		m_iGizonItemUpgradeLeft--;
 		PlaySound('E', 14, 5);
 	}
 	/*}
@@ -4001,11 +4008,14 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 	{	// Send command to HG - Diuuude
 		bSendCommand(MSGID_STATECHANGEPOINT, NULL, NULL, NULL, NULL, NULL, NULL);
 		cStr = cVit = cDex = cInt = cMag = cChar = 0;
+		iPrevGizon = 0;
 		DisableDialogBox(42);
 		PlaySound('E', 14, 5);
 	}
 	//}
 	if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
+		cStr = cVit = cDex = cInt = cMag = cChar = 0;
+		m_iGizonItemUpgradeLeft = iPrevGizon;
 		DisableDialogBox(42);
 		PlaySound('E', 14, 5);
 	}
