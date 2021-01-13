@@ -4402,7 +4402,7 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			// centu - ghost set
 			MakeSprite("WGodRobe",		DEF_SPRID_BODYARMOR_W + 15 * 13, 12, TRUE);
 			MakeSprite("WGodPlate",		DEF_SPRID_BODYARMOR_W + 15 * 14, 13, TRUE);
-			MakeSprite("WGodHauberk",	DEF_SPRID_BERK_W + 15 * 6, 12, TRUE);
+			MakeSprite("WGodHauberk",	DEF_SPRID_BERK_W + 15 * 6, 11, TRUE);
 			MakeSprite("WGodLeg",		DEF_SPRID_LEGG_W + 15 * 8, 12, TRUE); 
 			m_cLoading = 84;
 		}
@@ -22960,7 +22960,7 @@ void CGame::DrawDialogBox_Map()
 		tY  = (int)dV3 +dY;
 
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, sX +tX, sY +tY, 43);
-		wsprintf(G_cTxt, "%d,%d", m_sPlayerX, m_sPlayerY);
+		wsprintf(G_cTxt, "(%d,%d)", m_sPlayerX, m_sPlayerY);
 		PutString_SprFont3(sX + 10 +tX -5, sY + 10 + tY -6, G_cTxt, m_wR[13]*4, m_wG[13]*4, m_wB[13]*4, FALSE, 2);
 		break;
    	}
@@ -23190,9 +23190,9 @@ void CGame::NotifyMsg_TimeChange(char * pData)
 	case 1:	m_bIsXmas = FALSE; PlaySound('E', 32, 0); break;
 	case 2: m_bIsXmas = FALSE; PlaySound('E', 31, 0); break;
 	case 3: // Snoopy Special night with chrismas bulbs
-		/*if (m_cWhetherEffectType >3) m_bIsXmas = TRUE;
+		if (m_cWhetherEffectType >3) m_bIsXmas = TRUE;
 		else m_bIsXmas = FALSE;
-		PlaySound('E', 31, 0);*/
+		PlaySound('E', 31, 0);
 		G_cSpriteAlphaDegree = 2;
 		break;
 	}
@@ -34395,35 +34395,37 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 		}
 	}
 
-	int iTotalLines = 0;
+	// Centuu - scroll bug
+	/*int iTotalLines = 0;
 	for (i = 0; i < 50; i++)
 		if (m_stQuestList[i].iQuestID != NULL) iTotalLines++;
 
-	if (iTotalLines > 17)
+	int iMaxLines = 17;
+	if (iTotalLines > iMaxLines)
 	{
 		d1 = (double)m_stDialogBoxInfo[59].sView;
-		d2 = (double)(iTotalLines - 17);
+		d2 = (double)(iTotalLines - iMaxLines);
 		d3 = (274.0f * d1) / d2;
 		iPointerLoc = (int)d3;
 	}
 	else iPointerLoc = 0;
-	if (iTotalLines > 17)
+	if (iTotalLines > iMaxLines)
 	{
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 242, sY + iPointerLoc + 35, 7);
 	}
 
-	if (cLB != 0 && iTotalLines > 17)
+	if (cLB != 0 && iTotalLines > iMaxLines)
 	{
 		if ((iGetTopDialogBoxIndex() == 59))
 		{
 			if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 30) && (msY <= sY + 320))
 			{
 				d1 = (double)(msY - (sY + 35));
-				d2 = (double)(iTotalLines - 17);
+				d2 = (double)(iTotalLines - iMaxLines);
 				d3 = (d1 * d2) / 274.0f;
 				iPointerLoc = (int)(d3 + 0.5f);
-				if (iPointerLoc > iTotalLines - 17) iPointerLoc = iTotalLines - 17;
+				if (iPointerLoc > iTotalLines - iMaxLines) iPointerLoc = iTotalLines - iMaxLines;
 				m_stDialogBoxInfo[59].sView = iPointerLoc;
 			}
 		}
@@ -34436,7 +34438,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 		m_DInput.m_sZ = 0;
 	}
 	if (m_stDialogBoxInfo[59].sView < 0) m_stDialogBoxInfo[59].sView = 0;
-	if (iTotalLines > 17 && m_stDialogBoxInfo[59].sView > iTotalLines - 17) m_stDialogBoxInfo[59].sView = iTotalLines - 17;
+	if (iTotalLines > iMaxLines && m_stDialogBoxInfo[59].sView > iTotalLines - iMaxLines) m_stDialogBoxInfo[59].sView = iTotalLines - iMaxLines;*/
 }
 
 // VAMP - elemental armours change attunement

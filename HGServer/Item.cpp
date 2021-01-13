@@ -4205,8 +4205,10 @@ BOOL CGame::iUpgradeHeroCapeRequirements(int iClientH, int iItemIndex)
 	if ((i == DEF_MAXITEMS) || (iStoneNumber == 0)) return FALSE;
 	if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], iAfterItemID) == FALSE) return FALSE;
 	m_pClientList[iClientH]->m_iEnemyKillCount -= iRequiredEnemyKills;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
 	calcularTop15HB(iClientH);
 	m_pClientList[iClientH]->m_iContribution -= iRequiredContribution;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 	if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
 		ItemDepleteHandler(iClientH, i, FALSE, TRUE);
 		return TRUE;
@@ -4355,6 +4357,7 @@ BOOL CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
 	if ((i == DEF_MAXITEMS) || (iStoneNumber == 0)) return FALSE;
 	if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], iAfterItemID) == FALSE) return FALSE;
 	m_pClientList[iClientH]->m_iEnemyKillCount -= iRequiredEnemyKills;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
 	calcularTop15HB(iClientH);
 	if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
 		ItemDepleteHandler(iClientH, i, FALSE, TRUE);

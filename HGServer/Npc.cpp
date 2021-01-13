@@ -1660,7 +1660,7 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 				case -1:
 				case -2:
 				case -3:
-				case -4: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, abs(iQuestNum) + 100, NULL, NULL, NULL, NULL); break;
+				case -4: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, 104, NULL, NULL, NULL, NULL); break;
 				case -5: break;
 				}
 			}

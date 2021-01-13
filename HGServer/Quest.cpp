@@ -897,7 +897,7 @@ class CItem* pItem;
 	if (m_pClientList[iClientH]->m_iQuest[iQuest] != NULL) {
 		if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]] == NULL)
 		{
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, abs(-4) + 100, NULL, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, 104, NULL, NULL, NULL, NULL);
 		}
 		else if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]]->m_iFrom == 4)
 		{
@@ -927,6 +927,7 @@ class CItem* pItem;
 							pItem = NULL;
 						}
 						m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]]->m_iContribution;
+						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, m_pClientList[iClientH]->m_iQuestRewardAmount[iQuest],
 							m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[iQuest]]->m_cName, m_pClientList[iClientH]->m_iContribution);
 
@@ -953,7 +954,7 @@ class CItem* pItem;
 					GetExp(iClientH, m_pClientList[iClientH]->m_iQuestRewardAmount[iQuest]);
 
 					m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]]->m_iContribution;
-
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, m_pClientList[iClientH]->m_iQuestRewardAmount[iQuest],
 						"Exp", m_pClientList[iClientH]->m_iContribution);
 
@@ -971,6 +972,7 @@ class CItem* pItem;
 					GetExp(iClientH, iExp);
 
 					m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]]->m_iContribution;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, iExp,
 						"Exp", m_pClientList[iClientH]->m_iContribution);
@@ -983,6 +985,7 @@ class CItem* pItem;
 				else
 				{
 					m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]]->m_iContribution;
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
 
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, 0,
 						"                     ", m_pClientList[iClientH]->m_iContribution);
@@ -995,9 +998,9 @@ class CItem* pItem;
 			}
 			else
 			{
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, abs(-1) + 100, NULL, NULL, NULL, NULL);
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, 101, NULL, NULL, NULL, NULL);
 			}
 		}
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, abs(-4) + 100, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, 104, NULL, NULL, NULL, NULL);
 	}
 }

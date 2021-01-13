@@ -11734,7 +11734,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
 		}	
 
-		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
+		//if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -12314,7 +12314,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 		{
 			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
 		}
-		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
+		//if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -12887,9 +12887,9 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 		}
 
-		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
+		/*if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
 			iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
-		}
+		}*/
 
 		wWeaponType = ((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4);
 		if (wWeaponType == 34) {
@@ -19984,6 +19984,8 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = NULL;
 	wWeaponType      = NULL;
 
+	int iValue;
+
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
 
@@ -20050,50 +20052,6 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 
 		cAttackerSide = m_pClientList[sAttackerH]->m_cSide;
 
-		// SNOOPY Added a 2nd attack if character has a MainGauche.
-		if (bMainGaucheAttack)
-		{	sSkillUsed = 20;
-			iAttackerHitRatio = m_pClientList[sAttackerH]->m_iHitRatio/* + m_pClientList[sAttackerH]->m_cSkillMastery[20]*/;			
-			if ( iAttackerHitRatio < 1 ) iAttackerHitRatio = 1;
-			// Compute damage
-			iAP_SM = iDice(1, 6);
-			iAP_L  = iDice(1, 8);
-			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
-			if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) != NULL) 
-			{	int dwSWEType  = (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00F00000) >> 20;  
-				int dwSWEValue = (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x000F0000) >> 16;
-				// CriticalDamage && Poison Damage will have no effect on armors & MainGauche
-				switch (dwSWEType) {
-				case 7: // Sharp
-					iAP_SM = iDice(1, 7);
-					iAP_L  = iDice(1, 9);				
-					break;
-				case 9: // Ancient
-					iAP_SM = iDice(1, 8);
-					iAP_L  = iDice(1, 10);
-					break;				
-			}	}
-
-			dTmp1 = (double)iAP_SM;
-			if (m_pClientList[sAttackerH]->m_iStr <= 0)
-				 dTmp2 = 1.0f;
-			else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr);
-
-			dTmp2 = dTmp2 / 5.0f;
-			dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
-			iAP_SM = (int)(dTmp3 +0.5f);
-
-			dTmp1 = (double)iAP_L;
-			if (m_pClientList[sAttackerH]->m_iStr <= 0)
-				 dTmp2 = 1.0f;
-			else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr);
-
-			dTmp2 = dTmp2 / 5.0f;
-			dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
-			iAP_L = (int)(dTmp3 +0.5f);
-		}
-		else {
-
 			if (wWeaponType == 0) {
 				iAP_SM = iAP_L = iDice(1, ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) / 12));
 				if (iAP_SM <= 0) iAP_SM = 1;
@@ -20155,9 +20113,8 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 				iAP_L = (int)(dTmp3 + 0.5f);
 
-				// Centuu : STR -> DEX
-				iAP_SM += iDice(1, ((m_pClientList[sAttackerH]->m_iDex + m_pClientList[sAttackerH]->m_iAngelicDex) / 10));
-				iAP_L += iDice(1, ((m_pClientList[sAttackerH]->m_iDex + m_pClientList[sAttackerH]->m_iAngelicDex) / 10));
+				//iAP_SM += iDice(1, ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) / 10));
+				//iAP_L += iDice(1, ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) / 10));
 
 			}
 
@@ -20180,11 +20137,11 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 			}
 
-			if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
+			/*if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
 				iAttackerHitRatio += 100;
 				iAP_SM += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 				iAP_L += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
-			}
+			}*/
 
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -20337,9 +20294,9 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				bIsAttackerBerserk = TRUE;
 			else bIsAttackerBerserk = FALSE;
 
-			if (/*(bArrowUse != TRUE) && */(m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
+			if (/*(bArrowUse != TRUE) &&*/ (m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
 
-				dTmp1 = (double)iAP_SM;
+				/*dTmp1 = (double)iAP_SM;
 				dTmp2 = (double)(m_pClientList[sAttackerH]->m_iLevel);
 				dTmp3 = dTmp2 / 100.0f;
 				dTmp2 = dTmp1 * dTmp3;
@@ -20361,24 +20318,27 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				case 14:  iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5); iAttackerHitRatio += 20; break;
 				case 21:  iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5); iAttackerHitRatio += 50; break;
 				default: break;
-				}
+
+				}*/
+
+				iAP_SM *= 2; iAP_L *= 2;
 				iAttackerHitRatio += 100 + m_pClientList[sAttackerH]->m_iCustomItemValue_Attack;
 			}
 			if (bIsDash == TRUE) {
 				iAttackerHitRatio += 20;
-				switch (m_pClientList[sAttackerH]->m_sUsingWeaponSkill) {
+				/*switch (m_pClientList[sAttackerH]->m_sUsingWeaponSkill) {
 				case 8:  iAP_SM += (iAP_SM / 10); iAP_L += (iAP_L / 10); break;
 				case 10: iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5);break;
 				case 14: iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5);break;
 				default: break;
-				}
+				}*/
 			}
 			iAttackerHP = m_pClientList[sAttackerH]->m_iHP;
 			iAttackerHitRatio += m_pClientList[sAttackerH]->m_iAddAR;
 			sAtkX = m_pClientList[sAttackerH]->m_sX;
 			sAtkY = m_pClientList[sAttackerH]->m_sY;
 			iPartyID = m_pClientList[sAttackerH]->m_iPartyID;
-		}
+		
 		break;
 
 	case DEF_OWNERTYPE_NPC:
@@ -21786,32 +21746,16 @@ CAE_SKIPDAMAGEMOVE2:;
 			// SNOOPY: ADDED support for Dual-Wielding on 4th Combo Attack
 						// And add MainGauche Attack on succesfull 4th combo Attacks
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
-			if ((bMainGaucheAttack == FALSE) // No 2nd MainGauche Attack
-				&& (sItemIndex != -1)
+			if ((sItemIndex != -1)
 				&& (m_pClientList[sAttackerH]->m_iComboAttackCount == 4)
 				&& (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
 				iWeaponSkill = _iGetWeaponSkillType(sAttackerH);
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 10) // MainGauche
-					&& ((iWeaponSkill == 7) || (iWeaponSkill == 9)) // Only SS or Fencers					
-					/*&& (iDice(1,120) < m_pClientList[sAttackerH]->m_cSkillMastery[20])*/)// Dual-Wielding skill					 
+					&& ((iWeaponSkill == 7) || (iWeaponSkill == 9))) // Only SS or Fencers										 
 				{
 					iExp += iCalculateAttackEffect(sTargetH, cTargetType, sAttackerH, DEF_OWNERTYPE_PLAYER, tdX, tdY, 2, FALSE, FALSE, FALSE, TRUE);
 				}
 			}
-			//SNOOPY: Increase Dual-Wielding Skill if appropriate
-			if (bMainGaucheAttack == TRUE) {
-				/*CalculateSSN_SkillIndex(sAttackerH, 20, 1);
-				if (bKilled == FALSE)
-					CalculateSSN_SkillIndex(sAttackerH, 20, 1);
-				else {
-					if (m_pClientList[sAttackerH]->m_iHP <= 3)
-						 CalculateSSN_SkillIndex(sAttackerH, 20, iDice(1, iKilledDice));
-					else CalculateSSN_SkillIndex(sAttackerH, 20, iDice(1, ((int)(iKilledDice/2))));
-				}*/
-			}
-			else // Else compute normal weapons skill increase
-		   // Compute skill increase
-			{
 				if ((sWeaponIndex != -1) && (bArrowUse != TRUE)) {
 					// No skill increase if bArrowUse
 					if ((m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex] != NULL)
@@ -21862,20 +21806,18 @@ CAE_SKIPDAMAGEMOVE2:;
 						CalculateSSN_SkillIndex(sAttackerH, 5, 1);
 					}
 				}
-			}
+			
 		}
 	}else  // Missing the target !
-	{	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {	//bMainGaucheAttack
+	{	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
 			m_pClientList[sAttackerH]->m_iComboAttackCount = 0;
 			//SNOOPY: Adding MainGauche Attack
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
-			if ((bMainGaucheAttack == FALSE) // Not if alreaddy a MainGauche Attack
-				&& (sItemIndex != -1)
+			if ((sItemIndex != -1)
 				&& (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {				
 				iWeaponSkill = _iGetWeaponSkillType(sAttackerH);
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 10) // MainGauche
-					&& ((iWeaponSkill == 7)||(iWeaponSkill == 9)) // Only SS or Fencers					
-					/*&& (iDice(1,100) < m_pClientList[sAttackerH]->m_cSkillMastery[20])*/ )// Dual-Wielding skill					 
+					&& ((iWeaponSkill == 7)||(iWeaponSkill == 9))) // Only SS or Fencers									 
 				{	iExp = iCalculateAttackEffect(sTargetH, cTargetType, sAttackerH, DEF_OWNERTYPE_PLAYER, tdX, tdY, 2, FALSE, FALSE, FALSE, TRUE);
 	}	}	}	}
 	return iExp;
