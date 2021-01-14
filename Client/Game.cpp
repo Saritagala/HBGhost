@@ -27443,6 +27443,9 @@ void CGame::NotifyMsgHandler(char * pData)
 		case 3:
 			m_stDialogBoxInfo[34].cMode = 10 ; // Failed
 			break ;
+		case 4:
+			m_stDialogBoxInfo[44].cMode = 4;// Failed
+			break;
 		}
 		break;
 
