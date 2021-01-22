@@ -1265,7 +1265,7 @@ void CGame::AutoSkill(int iClientH)
 		m_pClientList[iClientH]->m_cSkillMastery[i] = 100;
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, i, m_pClientList[iClientH]->m_cSkillMastery[i], NULL, NULL);
 	}
-	m_pClientList[iClientH]->m_cMagicMastery[12] = TRUE;
+	//m_pClientList[iClientH]->m_cMagicMastery[12] = TRUE;
 }
 
 void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)

@@ -4949,10 +4949,10 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		else if (m_iClass == 3)
 			strcat(G_cTxt, "Archer");
 
-		strcat(G_cTxt, " - ");
+		/*strcat(G_cTxt, " - ");
 		ZeroMemory(cTxt2, sizeof(cTxt2));
 		wsprintf(cTxt2, "Coins : %d", m_iCoinPoints);
-		strcat(G_cTxt, cTxt2);
+		strcat(G_cTxt, cTxt2);*/
 
 		PutAlignedString(sX, sX + 275, sY + 85, G_cTxt, 255, 255, 0);
 
@@ -4971,21 +4971,21 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 		// Hp
 		iTemp = m_iHP;
-		wsprintf(G_cTxt, "%d/%d", iTemp, m_iVit * 3 + m_iLevel * 2 + (m_iStr + m_iAngelicStr) / 2);
+		wsprintf(G_cTxt, "%d/%d", iTemp, m_iVit * 3 + m_iLevel * 2 + (m_iStr) / 2);
 		PutAlignedString(sX + 180, sX + 250, sY + 173, G_cTxt, 4, 0, 50);
 
 		// Mp
 		iTemp = m_iMP;
-		wsprintf(G_cTxt, "%d/%d", iTemp, (m_iMag + m_iAngelicMag) * 2 + m_iLevel * 2 + (m_iInt + m_iAngelicInt) / 2);
+		wsprintf(G_cTxt, "%d/%d", iTemp, (m_iMag) * 2 + m_iLevel * 2 + (m_iInt) / 2);
 		PutAlignedString(sX + 180, sX + 250, sY + 191, G_cTxt, 4, 0, 50);
 
 		// Sp
 		iTemp = m_iSP;
-		wsprintf(G_cTxt, "%d/%d", iTemp, m_iLevel * 2 + (m_iStr + m_iAngelicStr) * 2);
+		wsprintf(G_cTxt, "%d/%d", iTemp, m_iLevel * 2 + (m_iStr) * 2);
 		PutAlignedString(sX + 180, sX + 250, sY + 208, G_cTxt, 4, 0, 50);
 
 		// Max.Load
-		wsprintf(G_cTxt, "%d/%d", (_iCalcTotalWeight() / 100), ((m_iStr + m_iAngelicStr) * 5 + m_iLevel * 5));
+		wsprintf(G_cTxt, "%d/%d", (_iCalcTotalWeight() / 100), ((m_iStr) * 5 + m_iLevel * 5));
 		PutAlignedString(sX + 180, sX + 250, sY + 240, G_cTxt, 4, 0, 50);
 
 		// Enemy Kills
@@ -4993,57 +4993,25 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutAlignedString(sX + 180, sX + 250, sY + 257, G_cTxt, 4, 0, 50);
 
 		// Str
-		if (m_iAngelicStr == 0)
-		{
-			wsprintf(G_cTxt, "%d", m_iStr);
-			PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 4, 0, 50);
-		}
-		else
-		{
-			wsprintf(G_cTxt, "%d", m_iStr + m_iAngelicStr);
-			PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 0, 255, 0);
-		}
+		wsprintf(G_cTxt, "%d", m_iStr);
+		PutAlignedString(sX + 48, sX + 82, sY + 285, G_cTxt, 4, 0, 50);
 
 		// Vit
 		wsprintf(G_cTxt, "%d", m_iVit);
 		PutAlignedString(sX + 218, sX + 251, sY + 285, G_cTxt, 4, 0, 50);
 
 		// Dex
-		if (m_iAngelicDex == 0)
-		{
-			wsprintf(G_cTxt, "%d", m_iDex);
-			PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 4, 0, 50);
-		}
-		else
-		{
-			wsprintf(G_cTxt, "%d", m_iDex + m_iAngelicDex);
-			PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 0, 255, 0);
-		}
+		wsprintf(G_cTxt, "%d", m_iDex);
+		PutAlignedString(sX + 48, sX + 82, sY + 302, G_cTxt, 4, 0, 50);
 
 		// Int
-		if (m_iAngelicInt == 0)
-		{
-			wsprintf(G_cTxt, "%d", m_iInt);
-			PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 4, 0, 50);
-		}
-		else
-		{
-			wsprintf(G_cTxt, "%d", m_iInt + m_iAngelicInt);
-			PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 0, 255, 0);
-		}
+		wsprintf(G_cTxt, "%d", m_iInt);
+		PutAlignedString(sX + 135, sX + 167, sY + 285, G_cTxt, 4, 0, 50);
 
 		// Mag
-		if (m_iAngelicMag == 0)
-		{
-			wsprintf(G_cTxt, "%d", m_iMag);
-			PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 4, 0, 50);
-		}
-		else
-		{
-			wsprintf(G_cTxt, "%d", m_iMag + m_iAngelicMag);
-			PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 0, 255, 0);
-		}
-
+		wsprintf(G_cTxt, "%d", m_iMag);
+		PutAlignedString(sX + 135, sX + 167, sY + 302, G_cTxt, 4, 0, 50);
+		
 		// Chr
 		wsprintf(G_cTxt, "%d", m_iCharisma);
 		PutAlignedString(sX + 218, sX + 251, sY + 302, G_cTxt, 4, 0, 50);
@@ -5831,7 +5799,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsFire);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		iNext += 1;
+		/*iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iHelmPA);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
@@ -5846,11 +5814,25 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iLeggsPA);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Phy. Abs.:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d%%", m_iHelmPA+ m_iBerkPA+ m_iArmorPA+ m_iLeggsPA);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Hero Damage Bonus:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d", m_iHeroBonus);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Reputation:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iRating);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Coins:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iCoinPoints);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		break;
 	}
@@ -6217,7 +6199,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	dV3 = (double)_tmp_iMCProb[sMagicCircle];
 	dV1 = dV2 * dV3;
 	iResult = (int)dV1;
-	if ((m_iInt + m_iAngelicInt) > 50) iResult += ((m_iInt + m_iAngelicInt) - 50) / 2;
+	if ((m_iInt) > 50) iResult += ((m_iInt) - 50) / 2;
 	sLevelMagic = (m_iLevel / 10);
 	if (sMagicCircle != sLevelMagic)
 	{
@@ -6525,11 +6507,6 @@ void CGame::InitPlayerCharacteristics(char * pData)
  char * cp;
  WORD * wp;
  bool* bp;
-	// Snoopy: Angels
-	m_iAngelicStr = 0;
-	m_iAngelicDex = 0;
-	m_iAngelicInt = 0;
-	m_iAngelicMag = 0;
 
 	cStr = cVit = cDex = cInt = cMag = cChar = 0;
 
@@ -16797,6 +16774,7 @@ void CGame::InitDataResponseHandler(char * pData)
 			CloseHandle(hFile);
 		}
 		bSendCommand(MSGID_REQUEST_NOTICEMENT, NULL, NULL, (int)dwFileSize, NULL, NULL, NULL);
+		SetTopMsg("¡Welcome to Helbreath Ghost!", 10);
 	}
 
 	
@@ -18206,7 +18184,7 @@ void CGame::DrawDialogBox_GaugePannel()
 #endif
 
 	// Health Gauge
-	iMaxPoint = (m_iVit * 3) + (m_iLevel * 2) + ((m_iStr + m_iAngelicStr) / 2);
+	iMaxPoint = (m_iVit * 3) + (m_iLevel * 2) + ((m_iStr) / 2);
 
 	iBarWidth = 101 - (m_iHP * 101) / iMaxPoint;
 	if (iBarWidth < 0) iBarWidth = 0;
@@ -18224,7 +18202,7 @@ void CGame::DrawDialogBox_GaugePannel()
 		PutString_SprNum(80 + resx, 441 + resy, G_cTxt, 255, 255, 255);
 	}
 	// Mana Gauge
-	iMaxPoint = ((m_iMag + m_iAngelicMag) * 2) + (m_iLevel) * 2 + ((m_iInt + m_iAngelicInt) / 2);
+	iMaxPoint = ((m_iMag) * 2) + (m_iLevel) * 2 + ((m_iInt) / 2);
 	iBarWidth = 101 - (m_iMP * 101) / iMaxPoint;
 	if (iBarWidth < 0) iBarWidth = 0;
 	if (iBarWidth > 101) iBarWidth = 101;
@@ -18235,7 +18213,7 @@ void CGame::DrawDialogBox_GaugePannel()
 	PutString_SprNum(80 + resx, 463 + resy, G_cTxt, 255, 255, 255);
 
 	// Stamina Gauge
-	iMaxPoint = ((m_iStr + m_iAngelicStr) * 2) + (m_iLevel) * 2;
+	iMaxPoint = ((m_iStr) * 2) + (m_iLevel) * 2;
 	iBarWidth = 167 - (m_iSP * 167) / iMaxPoint;
 	if (iBarWidth < 0) iBarWidth = 0;
 	if (iBarWidth > 167) iBarWidth = 167;
@@ -18356,9 +18334,30 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	if (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView] != NULL) {
 		if (m_bDialogTrans == FALSE) { // v2.173
 			switch (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg[0]) {
-			case '_': PutAlignedString(sX +24, sX +236, sY + 50 +i*13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg+1), 4, 0, 50); break;
-			case ';': PutAlignedString(sX +24, sX +236, sY + 50 +i*13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg+1), 4, 0, 50); break;
-			default: PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50); break;
+				// White
+			case '_': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 255, 255); break;
+				// Dark Blue
+			case ';': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 4, 0, 50); break;
+				// Red
+			case ':': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 0, 0); break;
+				// Yellow
+			case '/': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 250, 250, 0); break;
+				// Lime
+			case '£': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 0, 255, 0); break;
+				// Green
+			case '#': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 0, 200, 0); break;
+				// Blue
+			case '!': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 0, 0, 255); break;
+				// Magenta
+			case '?': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 0, 255); break;
+				// Pink
+			case ',': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 155, 255); break;
+				// Gray
+			case '$': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 155, 155, 155); break;
+				// Orange
+			case '^': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 205, 0); break;
+				// Default Color
+			default: PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 45, 25, 25); break;
 			}
 		}
 		else PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50);
@@ -27334,6 +27333,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		break;
 
 	case DEF_NOTIFY_GIZONEITEMCHANGE: // 0x0BA5
+	case DEF_NOTIFY_UPGRADEHEROCAPE: // 0x0BC0
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		sp  = (short *)cp;
 		sV1 = *sp;
@@ -27379,7 +27379,6 @@ void CGame::NotifyMsgHandler(char * pData)
 		break;
 
 	case DEF_NOTIFY_ITEMATTRIBUTECHANGE: // 0x0BA3
-	case DEF_NOTIFY_UPGRADEHEROCAPE: // 0x0BC0
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		sp  = (short *)cp;
 		sV1 = *sp;
@@ -27431,7 +27430,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		sp  = (short *)cp;
 		sV1 = *sp;
 		cp += 2;
-		if (m_bIsDialogEnabled[34] == FALSE) return ;
+		//if (m_bIsDialogEnabled[34] == FALSE || m_bIsDialogEnabled[44] == FALSE) return;
 		PlaySound('E', 24, 5);
 		switch(sV1){
 		case 1:
@@ -27443,8 +27442,8 @@ void CGame::NotifyMsgHandler(char * pData)
 		case 3:
 			m_stDialogBoxInfo[34].cMode = 10 ; // Failed
 			break ;
-		case 4:
-			m_stDialogBoxInfo[44].cMode = 4;// Failed
+		case 9:
+			m_stDialogBoxInfo[44].cMode = 9;// Failed
 			break;
 		}
 		break;
@@ -29915,28 +29914,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
 			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);
 			else PlaySound('E', 29, 0);
-			// Remove Angelic Stats
-			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos >= 11)
-				&& (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == 1))
-			{
-				char cItemID = m_stMCursor.sSelectedObjectID;
-				if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
-				{
-					m_iAngelicStr = 0;
-				}
-				else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
-				{
-					m_iAngelicDex = 0;
-				}
-				else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
-				{
-					m_iAngelicInt = 0;
-				}
-				else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
-				{
-					m_iAngelicMag = 0;
-				}
-			}
+			
 			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, NULL, m_stMCursor.sSelectedObjectID, NULL, NULL, NULL);
 			m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] = FALSE;
 			m_sItemEquipmentStatus[m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos] = -1;
@@ -33147,9 +33125,9 @@ MOTION_COMMAND_PROCESS:;
 					wsprintf(cTxt, "-%dHp", m_sDamageMoveAmount);
 
 					int iFontType;
-					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 120))        iFontType = 21;
-					else if ((m_sDamageMoveAmount >= 120) && (m_sDamageMoveAmount < 300)) iFontType = 22;
-					else if (m_sDamageMoveAmount >= 300 || m_sDamageMoveAmount < 0) iFontType = 23;
+					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 20))        iFontType = 21;
+					else if ((m_sDamageMoveAmount >= 20) && (m_sDamageMoveAmount < 50)) iFontType = 22;
+					else if (m_sDamageMoveAmount >= 50 || m_sDamageMoveAmount < 0) iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;

@@ -1053,8 +1053,6 @@ public:
 
 	int m_iLevel, m_iStr, m_iInt, m_iVit, m_iDex, m_iMag, m_iCharisma, m_iContribution;
 	int m_iExp;
-	// Snoopy: Added Angels
-	int m_iAngelicStr, m_iAngelicInt, m_iAngelicDex, m_iAngelicMag;
 
 	//50Cent - HP Bar
 	BOOL Mandando;
@@ -1345,7 +1343,7 @@ public:
 	void NotifyPlayerAttributes(char* pData);
 	int m_iTotalDR, m_iHitRatio, m_iTotalMR, m_iAddHP, m_iAddMP, m_iManaSaveRatio, m_iAddAbsPD, m_iAddAbsMD, m_iAddAbsAir, m_iAddAbsEarth, m_iAddAbsFire;
 	int	m_iAddAbsWater, m_iAddPhysicalDamage, m_iAddMagicalDamage, m_iArmorPA, m_iLeggsPA;
-	int m_iHeroBonus;
+	int m_iHeroBonus = 0;
 	int	m_iBerkPA, m_iHelmPA, m_iCapePA, m_iShieldPA;
 	short sServerTime = 0;
 	bool bServerTime = false;

@@ -1367,9 +1367,9 @@ void CGame::MotionEventHandler(char* pData)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				wsprintf(cTxt, "-%dHp!", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
-				else if ((iDamage >= 120) && (iDamage < 300)) iFontType = 22;
-				else if (iDamage >= 300 || iDamage < 0)    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
+				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
+				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1400,9 +1400,9 @@ void CGame::MotionEventHandler(char* pData)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				wsprintf(cTxt, "-%dHp", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 120))        iFontType = 21;
-				else if ((iDamage >= 120) && (iDamage < 300)) iFontType = 22;
-				else if (iDamage >= 300 || iDamage < 0)    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
+				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
+				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -2627,7 +2627,6 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME7, sX, sY, 3);
 			iValue = (m_pItemList[m_stDialogBoxInfo[34].sV1]->m_dwAttribute & 0xF0000000) >> 28;
-			iValue = iValue * (iValue + 6) / 8 + 2;
 			if ((m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cEquipPos >= 11)
 				&& (m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cItemType == 1))
 			{
@@ -2636,21 +2635,21 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 					|| (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "AngelicPandent(INT)", 19) == 0)
 					|| (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "AngelicPandent(MAG)", 19) == 0))
 				{
-					iValue = (m_pItemList[m_stDialogBoxInfo[34].sV1]->m_dwAttribute & 0xF0000000) >> 28;
 					switch (iValue) {
-					case 0:	iValue = 10; break;
-					case 1: iValue = 11; break;
-					case 2: iValue = 13; break;
-					case 3: iValue = 16; break;
-					case 4: iValue = 20; break;
-					case 5: iValue = 25; break;
-					case 6: iValue = 31; break;
-					case 7: iValue = 38; break;
-					case 8: iValue = 46; break;
-					case 9: iValue = 55; break;
+					case 0:	iValue = 10*2; break;
+					case 1: iValue = 11*2; break;
+					case 2: iValue = 13*2; break;
+					case 3: iValue = 16*2; break;
+					case 4: iValue = 20*2; break;
+					case 5: iValue = 25*2; break;
+					case 6: iValue = 31*2; break;
+					case 7: iValue = 38*2; break;
+					case 8: iValue = 46*2; break;
+					case 9: iValue = 55*2; break;
 					}
 				}
 			}
+			else iValue = iValue * (iValue + 6) / 8 + 2;
 			wsprintf(G_cTxt, DRAW_DIALOGBOX_ITEMUPGRADE12, iValue); //"Needed upgrade point : %d"
 			if (m_iGizonItemUpgradeLeft < iValue)
 				PutAlignedString(sX + 24, sX + 248, sY + 115, G_cTxt, 195, 25, 25);
@@ -3326,28 +3325,6 @@ void CGame::ReleaseEquipHandler(char cEquipPos)
 {
 	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	if (m_sItemEquipmentStatus[cEquipPos] < 0) return;
-	// Remove Angelic Stats
-	if ((cEquipPos >= 11)
-		&& (m_pItemList[m_sItemEquipmentStatus[cEquipPos]]->m_cItemType == 1))
-	{
-		char cItemID = m_sItemEquipmentStatus[cEquipPos];
-		if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
-		{
-			m_iAngelicStr = 0;
-		}
-		else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
-		{
-			m_iAngelicDex = 0;
-		}
-		else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
-		{
-			m_iAngelicInt = 0;
-		}
-		else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
-		{
-			m_iAngelicMag = 0;
-		}
-	}
 
 	GetItemName(m_pItemList[m_sItemEquipmentStatus[cEquipPos]], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);
@@ -3401,14 +3378,14 @@ void CGame::ItemEquipHandler(char cItemID)
 	{
 		switch (m_pItemList[cItemID]->m_iReqStat) {
 		case 1://"Available for above Str %d"
-			if (m_iStr+m_iAngelicStr < m_pItemList[cItemID]->m_iQuantStat)
+			if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
 			{
 				AddEventList("You need more STR to equip this item.", 10);
 				return;
 			}
 			break;
 		case 2: // "Available for above Dex %d"
-			if (m_iDex + m_iAngelicDex < m_pItemList[cItemID]->m_iQuantStat)
+			if (m_iDex < m_pItemList[cItemID]->m_iQuantStat)
 			{
 				AddEventList("You need more DEX to equip this item.", 10);
 				return;
@@ -3422,14 +3399,14 @@ void CGame::ItemEquipHandler(char cItemID)
 			}
 			break;
 		case 4: // "Available for above Int %d"
-			if (m_iInt + m_iAngelicInt < m_pItemList[cItemID]->m_iQuantStat)
+			if (m_iInt < m_pItemList[cItemID]->m_iQuantStat)
 			{
 				AddEventList("You need more INT to equip this item.", 10);
 				return;
 			}
 			break;
 		case 5: // "Available for above Mag %d"
-			if (m_iMag + m_iAngelicMag < m_pItemList[cItemID]->m_iQuantStat)
+			if (m_iMag < m_pItemList[cItemID]->m_iQuantStat)
 			{
 				AddEventList("You need more MAG to equip this item.", 10);
 				return;
@@ -3511,33 +3488,6 @@ void CGame::ItemEquipHandler(char cItemID)
 
 	m_sItemEquipmentStatus[m_pItemList[cItemID]->m_cEquipPos] = cItemID;
 	m_bIsItemEquipped[cItemID] = TRUE;
-
-	// Add Angelic Stats
-	if ((m_pItemList[cItemID]->m_cItemType == 1)
-		&& (m_pItemList[cItemID]->m_cEquipPos >= 11))
-	{
-		int iAngelValue = 0;
-		if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
-		{
-			iAngelValue = (m_pItemList[cItemID]->m_dwAttribute & 0xF0000000) >> 28;
-			m_iAngelicStr = 1 + iAngelValue;
-		}
-		else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
-		{
-			iAngelValue = (m_pItemList[cItemID]->m_dwAttribute & 0xF0000000) >> 28;
-			m_iAngelicDex = 1 + iAngelValue;
-		}
-		else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
-		{
-			iAngelValue = (m_pItemList[cItemID]->m_dwAttribute & 0xF0000000) >> 28;
-			m_iAngelicInt = 1 + iAngelValue;
-		}
-		else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
-		{
-			iAngelValue = (m_pItemList[cItemID]->m_dwAttribute & 0xF0000000) >> 28;
-			m_iAngelicMag = 1 + iAngelValue;
-		}
-	}
 
 	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
@@ -3702,11 +3652,6 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 
 	sX = m_stDialogBoxInfo[42].sX;
 	sY = m_stDialogBoxInfo[42].sY;
-
-	if (m_iAngelicStr > 0 || m_iAngelicDex > 0 || m_iAngelicMag > 0 || m_iAngelicInt > 0)
-	{
-		return; // centu - when having an angel, do nothing
-	}
 
 	//if ((cStateChange1 != 0) || (cStateChange2 != 0) || (cStateChange3 != 0)){
 		// Strength UP - Diuuude
@@ -9615,22 +9560,48 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 	dwValue3 = (pItem->m_dwAttribute & 0xF0000000) >> 28;
 	if (dwValue3 > 0)
 	{
-		if (pStr1[strlen(pStr1) - 2] == '+')
+		if (memcmp(pItem->m_cName, "AngelicPandent(STR)", 19) == 0)
 		{
-			dwValue3 = atoi((char*)(pStr1 + strlen(pStr1) - 1)) + dwValue3;
-			ZeroMemory(cTxt, sizeof(cTxt));
-			memcpy(cTxt, pStr1, strlen(pStr1) - 2);
-			ZeroMemory(cTxt2, sizeof(cTxt2));
-			wsprintf(cTxt2, "%s+%d", cTxt, dwValue3);
-			ZeroMemory(pStr1, sizeof(pStr1));
-			strcpy(pStr1, cTxt2);
+			wsprintf(cTxt2, "+%d Physical Damage", dwValue3);
+			ZeroMemory(pStr4, sizeof(pStr4));
+			strcpy(pStr4, cTxt2);
 		}
-		else
+		else if (memcmp(pItem->m_cName, "AngelicPandent(DEX)", 19) == 0)
 		{
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, "+%d", dwValue3);
-			strcat(pStr1, cTxt);
+			wsprintf(cTxt2, "+%d Defense Ratio", dwValue3);
+			ZeroMemory(pStr4, sizeof(pStr4));
+			strcpy(pStr4, cTxt2);
 		}
+		else if (memcmp(pItem->m_cName, "AngelicPandent(INT)", 19) == 0)
+		{
+			wsprintf(cTxt2, "+%d Magic Resistance", dwValue3);
+			ZeroMemory(pStr4, sizeof(pStr4));
+			strcpy(pStr4, cTxt2);
+		}
+		else if (memcmp(pItem->m_cName, "AngelicPandent(MAG)", 19) == 0)
+		{
+			wsprintf(cTxt2, "+%d Magical Damage", dwValue3);
+			ZeroMemory(pStr4, sizeof(pStr4));
+			strcpy(pStr4, cTxt2);
+		}
+		
+			if (pStr1[strlen(pStr1) - 2] == '+')
+			{
+				dwValue3 = atoi((char*)(pStr1 + strlen(pStr1) - 1)) + dwValue3;
+				ZeroMemory(cTxt, sizeof(cTxt));
+				memcpy(cTxt, pStr1, strlen(pStr1) - 2);
+				ZeroMemory(cTxt2, sizeof(cTxt2));
+				wsprintf(cTxt2, "%s+%d", cTxt, dwValue3);
+				ZeroMemory(pStr1, sizeof(pStr1));
+				strcpy(pStr1, cTxt2);
+			}
+			else
+			{
+				ZeroMemory(cTxt, sizeof(cTxt));
+				wsprintf(cTxt, "+%d", dwValue3);
+				strcat(pStr1, cTxt);
+			}
+		
 	}
 }
 
@@ -9848,21 +9819,22 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 	if (dwValue3 > 0)
 	{
 		if (pStr1[strlen(pStr1) - 2] == '+')
-		{
-			dwValue3 = atoi((char *)(pStr1 + strlen(pStr1) - 1)) + dwValue3;
-			ZeroMemory(cTxt, sizeof(cTxt));
-			memcpy(cTxt, pStr1, strlen(pStr1) - 2);
-			ZeroMemory(cTxt2, sizeof(cTxt2));
-			wsprintf(cTxt2, "%s+%d", cTxt, dwValue3);
-			ZeroMemory(pStr1, sizeof(pStr1));
-			strcpy(pStr1, cTxt2);
+			{
+				dwValue3 = atoi((char*)(pStr1 + strlen(pStr1) - 1)) + dwValue3;
+				ZeroMemory(cTxt, sizeof(cTxt));
+				memcpy(cTxt, pStr1, strlen(pStr1) - 2);
+				ZeroMemory(cTxt2, sizeof(cTxt2));
+				wsprintf(cTxt2, "%s+%d", cTxt, dwValue3);
+				ZeroMemory(pStr1, sizeof(pStr1));
+				strcpy(pStr1, cTxt2);
+			}
+			else
+			{
+				ZeroMemory(cTxt, sizeof(cTxt));
+				wsprintf(cTxt, "+%d", dwValue3);
+				strcat(pStr1, cTxt);
 		}
-		else
-		{
-			ZeroMemory(cTxt, sizeof(cTxt));
-			wsprintf(cTxt, "+%d", dwValue3);
-			strcat(pStr1, cTxt);
-		}
+		
 	}
 }
 
@@ -11154,12 +11126,6 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 		PutAlignedString(sX, sX + szX, sY + 250, DRAW_DIALOGBOX_LEVELUP_SETTING20, 65, 0, 0);
 		wsprintf(G_cTxt, DRAW_DIALOGBOX_LEVELUP_SETTING21, DEF_STATS_LIMIT);
 		PutAlignedString(sX, sX + szX, sY + 265, G_cTxt, 65, 0, 0);
-	}
-	// centu - prevent conflict when changing stats with angels on
-	else if (m_iAngelicStr > 0 || m_iAngelicDex > 0 || m_iAngelicMag > 0 || m_iAngelicInt > 0)
-	{
-		PutAlignedString(sX, sX + szX, sY + 235, "You must take off your Tutelary Angel", 65, 0, 0);
-		PutAlignedString(sX, sX + szX, sY + 250, "to perform a stats change.", 65, 0, 0);
 	}
 }
 
@@ -15173,28 +15139,7 @@ void CGame::bItemDrop_Inventory(short msX, short msY)
 		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
 		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);
 		else PlaySound('E', 29, 0);
-		// Remove Angelic Stats
-		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos >= 11)
-			&& (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == 1))
-		{
-			char cItemID = m_stMCursor.sSelectedObjectID;
-			if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
-			{
-				m_iAngelicStr = 0;
-			}
-			else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
-			{
-				m_iAngelicDex = 0;
-			}
-			else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
-			{
-				m_iAngelicInt = 0;
-			}
-			else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
-			{
-				m_iAngelicMag = 0;
-			}
-		}
+		
 		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, NULL, m_stMCursor.sSelectedObjectID, NULL, NULL, NULL);
 		m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] = FALSE;
 		m_sItemEquipmentStatus[m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos] = -1;
@@ -20381,32 +20326,7 @@ void CGame::InitItemList(char * pData)
 		cp += 4;
 
 		m_cItemOrder[i] = i;
-		// Snoopy: Add Angelic Stats
-		if ((m_pItemList[i]->m_cItemType == 1)
-			&& (m_bIsItemEquipped[i] == TRUE)
-			&& (m_pItemList[i]->m_cEquipPos >= 11))
-		{
-			if (memcmp(m_pItemList[i]->m_cName, "AngelicPandent(STR)", 19) == 0)
-			{
-				iAngelValue = (m_pItemList[i]->m_dwAttribute & 0xF0000000) >> 28;
-				m_iAngelicStr = 1 + iAngelValue;
-			}
-			else if (memcmp(m_pItemList[i]->m_cName, "AngelicPandent(DEX)", 19) == 0)
-			{
-				iAngelValue = (m_pItemList[i]->m_dwAttribute & 0xF0000000) >> 28;
-				m_iAngelicDex = 1 + iAngelValue;
-			}
-			else if (memcmp(m_pItemList[i]->m_cName, "AngelicPandent(INT)", 19) == 0)
-			{
-				iAngelValue = (m_pItemList[i]->m_dwAttribute & 0xF0000000) >> 28;
-				m_iAngelicInt = 1 + iAngelValue;
-			}
-			else if (memcmp(m_pItemList[i]->m_cName, "AngelicPandent(MAG)", 19) == 0)
-			{
-				iAngelValue = (m_pItemList[i]->m_dwAttribute & 0xF0000000) >> 28;
-				m_iAngelicMag = 1 + iAngelValue;
-			}
-		}
+		
 	}
 
 	cTotalItems = *cp;

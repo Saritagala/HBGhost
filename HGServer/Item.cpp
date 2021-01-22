@@ -132,8 +132,6 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	short  sTemp;
 	int iShieldHPrec, iShieldSPrec, iShieldMPrec, iTotalAngelicstatas;
 
-	iTotalAngelicstatas = m_pClientList[iClientH]->m_iAngelicStr + (16 * m_pClientList[iClientH]->m_iAngelicInt) + (256 * m_pClientList[iClientH]->m_iAngelicDex) + (16 * 256 * m_pClientList[iClientH]->m_iAngelicMag);
-
 	iShieldHPrec = iShieldSPrec = iShieldMPrec = 0;
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -608,27 +606,27 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					// ******* Angel Code - Begin ******* //   
 				case 16: // Angel STR//AngelicPandent(STR)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iAngelicStr = iTemp + 1;
+					m_pClientList[iClientH]->m_iAngelicStr = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 1, iTemp);
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
+					//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
 					break;
 				case 17: // Angel DEX //AngelicPandent(DEX)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iAngelicDex = iTemp + 1;
+					m_pClientList[iClientH]->m_iAngelicDex = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 2, iTemp);
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
+					//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
 					break;
 				case 18: // Angel INT//AngelicPandent(INT)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iAngelicInt = iTemp + 1;
+					m_pClientList[iClientH]->m_iAngelicInt = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 3, iTemp);
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
+					//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
 					break;
 				case 19: // Angel MAG//AngelicPandent(MAG)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iAngelicMag = iTemp + 1;
+					m_pClientList[iClientH]->m_iAngelicMag = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 4, iTemp);
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
+					//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
 					break;
 				}
 				if (cEquipPos == DEF_EQUIPPOS_BACK)
@@ -1093,10 +1091,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	m_pClientList[iClientH]->m_iAddMP += iShieldMPrec;
 	//m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
 	m_pClientList[iClientH]->m_cHeroArmourBonus = 0;
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HEROBONUS, m_pClientList[iClientH]->m_cHeroArmourBonus, NULL, NULL, NULL);
-
+	
 	// Snoopy: Bonus for Angels	
+	m_pClientList[iClientH]->m_iAddMR += m_pClientList[iClientH]->m_iAngelicInt;
 	m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_iAngelicDex;
+	m_pClientList[iClientH]->m_iAddMagicalDamage += m_pClientList[iClientH]->m_iAngelicMag;
+	m_pClientList[iClientH]->m_iAddPhysicalDamage += m_pClientList[iClientH]->m_iAngelicStr;
 
 	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
@@ -1117,12 +1117,6 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] = DEF_MAXPHYSICALABS;
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > DEF_MAXPHYSICALABS)						// Shield  max 60
 		m_pClientList[iClientH]->m_iDamageAbsorption_Shield = DEF_MAXPHYSICALABS;
-
-	// Ne dire aux clients que si ca a chang�.
-	if (iTotalAngelicstatas != (m_pClientList[iClientH]->m_iAngelicStr + (16 * m_pClientList[iClientH]->m_iAngelicInt) + (256 * m_pClientList[iClientH]->m_iAngelicDex) + (16 * 256 * m_pClientList[iClientH]->m_iAngelicMag)))
-	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_SUCCESS, NULL, NULL, NULL, NULL);
-	}
 
 	NotifyPlayerAttributes(iClientH);
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARMOURVALUES, NULL, NULL, NULL, NULL);
@@ -1441,8 +1435,8 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	class CItem* pItem;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
-	if (m_pClientList[iClientH]->m_iContribution < 10) return;
+	//if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
+	//if (m_pClientList[iClientH]->m_iContribution < 10) return;
 	if (m_pClientList[iClientH]->m_cSide == 0) return;
 
 	if (_iGetItemSpaceLeft(iClientH) == 0) {
@@ -2958,16 +2952,16 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 					return;
 				}
 				switch (iValue) {
-					case 0: sItemUpgrade = 10; break;
-					case 1: sItemUpgrade = 11; break;
-					case 2: sItemUpgrade = 13; break;
-					case 3: sItemUpgrade = 16; break;
-					case 4: sItemUpgrade = 20; break;
-					case 5: sItemUpgrade = 25; break;
-					case 6: sItemUpgrade = 31; break;
-					case 7: sItemUpgrade = 38; break;
-					case 8: sItemUpgrade = 46; break;
-					case 9: sItemUpgrade = 55; break;
+					case 0: sItemUpgrade = 10*2; break;
+					case 1: sItemUpgrade = 11*2; break;
+					case 2: sItemUpgrade = 13*2; break;
+					case 3: sItemUpgrade = 16*2; break;
+					case 4: sItemUpgrade = 20*2; break;
+					case 5: sItemUpgrade = 25*2; break;
+					case 6: sItemUpgrade = 31*2; break;
+					case 7: sItemUpgrade = 38*2; break;
+					case 8: sItemUpgrade = 46*2; break;
+					case 9: sItemUpgrade = 55*2; break;
 				}
 				if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 != m_pClientList[iClientH]->m_sCharIDnum1)
 					|| (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 != m_pClientList[iClientH]->m_sCharIDnum2)
@@ -3736,15 +3730,24 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 {
 	DWORD dwType, dwValue;
 	char cColor;
-	int iResult, iSkillLevel = m_pClientList[iClientH]->m_cSkillMastery[20]; 
+	int iResult, iSkillLevel = (int)m_pClientList[iClientH]->m_cSkillMastery[20]; 
 	short sElement;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((iItemIndex < 0) || (iItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[iItemIndex] == NULL) return;
 	
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute == NULL) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 4, NULL, NULL, NULL);
+	if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) == NULL && // 1st
+		(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x0000F000) == NULL) { // 2nd
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 9, NULL, NULL, NULL);
+		return;
+	}
+
+	if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 == m_pClientList[iClientH]->m_sCharIDnum1)
+		&& (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 == m_pClientList[iClientH]->m_sCharIDnum2)
+		&& (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 == m_pClientList[iClientH]->m_sCharIDnum3))
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 9, NULL, NULL, NULL);
 		return;
 	}
 
@@ -4140,7 +4143,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 	}
 	else
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 4, NULL, NULL, NULL);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 9, NULL, NULL, NULL);
 		return;
 	}
 
@@ -4999,7 +5002,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 			//Magn0S:: Add to avoid consume Manual without necessery Int
 			iV2 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
 			
-			if (iV2 > (m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt)) {
+			if (iV2 > (m_pClientList[iClientH]->m_iInt)) {
 				
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot learn this magic. Int too low.");
 				return;
@@ -8667,7 +8670,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		(cEquipPos != DEF_EQUIPPOS_NECK)) {
 		switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iReqStat) {
 		case 1: // Str Á¦ÇÑ 
-			if ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+			if ((m_pClientList[iClientH]->m_iStr) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
 				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
 				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
@@ -8676,7 +8679,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 			}
 			break;
 		case 2: // Dex
-			if ((m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iAngelicDex) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+			if ((m_pClientList[iClientH]->m_iDex) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
 				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
 				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
@@ -8694,7 +8697,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 			}
 			break;
 		case 4: // Int
-			if ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+			if ((m_pClientList[iClientH]->m_iInt) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
 				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
 				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
@@ -8703,7 +8706,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 			}
 			break;
 		case 5: // Mag
-			if ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
+			if ((m_pClientList[iClientH]->m_iMag) < m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) {
 				// Å¬¶óÀÌ¾ðÆ® »ó¿¡¼­´Â Âø¿ëµÈ »óÅÂÀÌ¹Ç·Î ¹þ°Ü¾ß ÇÑ´Ù. Âø¿ëÀÌ ÇØÁ¦µÈ´Ù.
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos, sItemIndex, NULL, NULL);
 				// ÇØ´ç Âø¿ë ºÎÀ§ÀÇ ¾ÆÀÌÅÛÈ¿°ú¸¦ Á¦°Å.
@@ -8738,7 +8741,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		}
 		// Centuu : Fixed las armas Blood by KaoZureS
 		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 490) { // Sword
-			if (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr < 131) {
+			if (m_pClientList[iClientH]->m_iStr < 131) {
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, NULL, NULL);
 				ReleaseItemHandler(iClientH, sItemIndex, TRUE);
 				return FALSE;
@@ -8754,14 +8757,14 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 	{
 		// Resurrection wand(MS.10) or Resurrection wand(MS.20)
 		if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {
-			if (((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) > 99) && ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) > 99) && (m_pClientList[iClientH]->m_iSpecialAbilityTime < 1)) {
+			if (((m_pClientList[iClientH]->m_iInt) > 99) && ((m_pClientList[iClientH]->m_iMag) > 99) && (m_pClientList[iClientH]->m_iSpecialAbilityTime < 1)) {
 				m_pClientList[iClientH]->m_cMagicMastery[94] = TRUE;
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_RESUR_ON, NULL, NULL, NULL, NULL);
 			}
 		}
 		// Centuu : Fixed las armas Blood by KaoZureS
 		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 491) { // Axe
-			if (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr < 61) {
+			if (m_pClientList[iClientH]->m_iStr < 61) {
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, NULL, NULL);
 				ReleaseItemHandler(iClientH, sItemIndex, TRUE);
 				return FALSE;
@@ -8773,7 +8776,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		}
 		// Centuu : Fixed las armas Blood by KaoZureS
 		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 492) { // Rapier
-			if (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr < 11) {
+			if (m_pClientList[iClientH]->m_iStr < 11) {
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, NULL, NULL);
 				ReleaseItemHandler(iClientH, sItemIndex, TRUE);
 				return FALSE;
@@ -8974,7 +8977,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		if (m_pClientList[iClientH]->m_iClass == 3)
 			sSpeed -= (m_pClientList[iClientH]->m_iCharisma / 13);
 		else
-			sSpeed -= ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) / 13);
+			sSpeed -= ((m_pClientList[iClientH]->m_iStr) / 13);
 		if (sSpeed < 0) sSpeed = 0;
 		iTemp = iTemp | (int)sSpeed;
 		m_pClientList[iClientH]->m_iStatus = iTemp;
@@ -9003,7 +9006,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 		if (m_pClientList[iClientH]->m_iClass == 3)
 			sSpeed -= (m_pClientList[iClientH]->m_iCharisma / 13);
 		else
-			sSpeed -= ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) / 13);
+			sSpeed -= ((m_pClientList[iClientH]->m_iStr) / 13);
 		
 		if (sSpeed < 0) sSpeed = 0;
 		iTemp = iTemp | (int)sSpeed;
@@ -9609,7 +9612,7 @@ int CGame::_iCalcMaxLoad(int iClientH)
 {
 	if (m_pClientList[iClientH] == NULL) return 0;
 
-	return (((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) * 500) + ((m_pClientList[iClientH]->m_iLevel) * 500));
+	return (((m_pClientList[iClientH]->m_iStr) * 500) + ((m_pClientList[iClientH]->m_iLevel) * 500));
 }
 
 BOOL CGame::bCheckAndConvertPlusWeaponItem(int iClientH, int iItemIndex)
@@ -10075,6 +10078,7 @@ int CGame::_cCheckHeroItemEquipped(int iClientH)
 	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_bIsHero)
 		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_iHeroBonus;
 
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HEROBONUS, iBonus, NULL, NULL, NULL);
 	return iBonus;
 }
 

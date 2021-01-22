@@ -3267,7 +3267,7 @@ void CGame::CheckClientResponseTime()
 					sItemIndex = m_pClientList[i]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 					if (sItemIndex != -1) {
 						if ((m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {
-							if(((m_pClientList[i]->m_iInt+m_pClientList[i]->m_iAngelicInt) > 99) && ((m_pClientList[i]->m_iMag+m_pClientList[i]->m_iAngelicMag) > 99)){
+							if(((m_pClientList[i]->m_iInt) > 99) && ((m_pClientList[i]->m_iMag) > 99)){
 								m_pClientList[i]->m_cMagicMastery[94] = TRUE;
 								SendNotifyMsg(NULL, i, DEF_NOTIFY_RESUR_ON, NULL, NULL, NULL, NULL);
 							}
@@ -10205,7 +10205,7 @@ void CGame::TimeManaPointsUp(int iClientH)
 
 	iMaxMP = iGetMaxMP(iClientH);// v1.4
 	if (m_pClientList[iClientH]->m_iMP < iMaxMP) {
-		iTotal = iDice(1, (m_pClientList[iClientH]->m_iMag+m_pClientList[iClientH]->m_iAngelicMag));
+		iTotal = iDice(1, (m_pClientList[iClientH]->m_iMag));
 		if (m_pClientList[iClientH]->m_iAddMP != 0) {
 			dV2 = (double)iTotal;
 			dV3 = (double)m_pClientList[iClientH]->m_iAddMP;
@@ -11734,7 +11734,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
 		}	
 
-		//if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
+		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -11795,9 +11795,9 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 		if ((m_bIsCrusadeMode == FALSE) && (m_pClientList[sAttackerH]->m_bIsPlayerCivil == TRUE) && (cTargetType == DEF_OWNERTYPE_PLAYER)) return;
 
 		dTmp1 = (double)iDamage;
-		if ((m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag) <= 0)
+		if ((m_pClientList[sAttackerH]->m_iMag) <= 0)
 			 dTmp2 = 1.0f;
-		else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag);	
+		else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iMag);	
 		dTmp2 = dTmp2 / 3.3f;
 		dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 		iDamage = (int)(dTmp3 +0.5f);
@@ -12314,7 +12314,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 		{
 			if (m_pClientList[sAttackerH]->iteam == m_pClientList[sTargetH]->iteam) return;
 		}
-		//if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
+		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 		if ((m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] == -1) || (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] == -1)) {
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -12373,9 +12373,9 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 		if ((m_bIsCrusadeMode == FALSE) && (m_pClientList[sAttackerH]->m_bIsPlayerCivil == TRUE) && (cTargetType == DEF_OWNERTYPE_PLAYER)) return;
 
 		dTmp1 = (double)iDamage;
-		if ((m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag) <= 0)
+		if ((m_pClientList[sAttackerH]->m_iMag) <= 0)
 			 dTmp2 = 1.0f;
-		else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag);	
+		else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iMag);	
 		dTmp2 = dTmp2 / 3.3f;
 		dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 		iDamage = (int)(dTmp3 +0.5f);
@@ -12853,9 +12853,9 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 	case DEF_OWNERTYPE_PLAYER:
 
 		dTmp1 = (double)iDamage;
-		if ((m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag) <= 0)
+		if ((m_pClientList[sAttackerH]->m_iMag) <= 0)
 			 dTmp2 = 1.0f;
-		else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag);
+		else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iMag);
 			
 		dTmp2 = dTmp2 / 3.3f;
 		dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
@@ -12887,9 +12887,9 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			}
 		}
 
-		/*if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
+		if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
 			iDamage += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
-		}*/
+		}
 
 		wWeaponType = ((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4);
 		if (wWeaponType == 34) {
@@ -16081,7 +16081,7 @@ int CGame::iGetMaxHP(int iClientH, BOOL bBloodEffect)
 {
 	int iRet;
 	if (m_pClientList[iClientH] == NULL) return 0;
-	iRet = (3*m_pClientList[iClientH]->m_iVit) + (2 * m_pClientList[iClientH]->m_iLevel) + ((m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr)/2);
+	iRet = (3*m_pClientList[iClientH]->m_iVit) + (2 * m_pClientList[iClientH]->m_iLevel) + ((m_pClientList[iClientH]->m_iStr)/2);
 
 	if ((bBloodEffect == TRUE) && (m_pClientList[iClientH]->m_iSideEffect_MaxHPdown != 0))
 		iRet -= (iRet/m_pClientList[iClientH]->m_iSideEffect_MaxHPdown);
@@ -16094,7 +16094,7 @@ int CGame::iGetMaxMP(int iClientH)
 
 	if (m_pClientList[iClientH] == NULL) return 0;
 
-	return (2*(m_pClientList[iClientH]->m_iMag+m_pClientList[iClientH]->m_iAngelicMag)) + (2 * (m_pClientList[iClientH]->m_iLevel)) + ((m_pClientList[iClientH]->m_iInt+m_pClientList[iClientH]->m_iAngelicInt)/2);
+	return (2*(m_pClientList[iClientH]->m_iMag)) + (2 * (m_pClientList[iClientH]->m_iLevel)) + ((m_pClientList[iClientH]->m_iInt)/2);
 
 }
 
@@ -16103,7 +16103,7 @@ int CGame::iGetMaxSP(int iClientH)
 
 	if (m_pClientList[iClientH] == NULL) return 0;
 
-	return (2*(m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr)) + (2*(m_pClientList[iClientH]->m_iLevel));
+	return (2*(m_pClientList[iClientH]->m_iStr)) + (2*(m_pClientList[iClientH]->m_iLevel));
 	
 }
 
@@ -17809,22 +17809,14 @@ void CGame::MultiplicadorExp(int Client, int Exp)
 {
 	if (m_pClientList[Client] == NULL) return;
 
-		if		(m_pClientList[Client]->m_iLevel < 50)		Exp *= m_iExpSetting;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 50 && 
-				 m_pClientList[Client]->m_iLevel < 100)		Exp *= m_iExpSetting-1;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 100 && 
-				 m_pClientList[Client]->m_iLevel < 150)		Exp *= m_iExpSetting-2;
+		if		(m_pClientList[Client]->m_iLevel >= 1 && 
+				 m_pClientList[Client]->m_iLevel < 150)		Exp *= m_iExpSetting*10;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 150 &&
-				 m_pClientList[Client]->m_iLevel < 200)		Exp *= m_iExpSetting-3;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 200 &&
-				 m_pClientList[Client]->m_iLevel < 250)		Exp *= m_iExpSetting-4;
+				 m_pClientList[Client]->m_iLevel < 250)		Exp *= m_iExpSetting*5;
 
 		else if	(m_pClientList[Client]->m_iLevel >= 250 &&
-				 m_pClientList[Client]->m_iLevel <= 310)	Exp *= m_iExpSetting-5;
+				 m_pClientList[Client]->m_iLevel <= 310)	Exp *= m_iExpSetting;
 
 		else if	(m_pClientList[Client]->m_iLevel > 310)	Exp = 1;	
 	
@@ -19465,7 +19457,7 @@ void CGame::AdminOrder_CheckRep(int iClientH, char *pData,DWORD dwMsgSize)
 	ZeroMemory(cRepMessage, sizeof(cRepMessage));
 	if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) {
 		wsprintf(cRepMessage, " You have %d reputation points.", m_pClientList[iClientH]->m_iRating);
-		SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cRepMessage);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cRepMessage);
 	} 
 	else {
 		if ((dwMsgSize)	<= 0) return;
@@ -20053,7 +20045,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		cAttackerSide = m_pClientList[sAttackerH]->m_cSide;
 
 			if (wWeaponType == 0) {
-				iAP_SM = iAP_L = iDice(1, ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) / 12));
+				iAP_SM = iAP_L = iDice(1, ((m_pClientList[sAttackerH]->m_iStr) / 12));
 				if (iAP_SM <= 0) iAP_SM = 1;
 				if (iAP_L <= 0) iAP_L = 1;
 				iAttackerHitRatio = m_pClientList[sAttackerH]->m_iHitRatio + m_pClientList[sAttackerH]->m_cSkillMastery[5];
@@ -20070,18 +20062,18 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				iAttackerHitRatio = m_pClientList[sAttackerH]->m_iHitRatio;
 
 				dTmp1 = (double)iAP_SM;
-				if ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) <= 0)
+				if ((m_pClientList[sAttackerH]->m_iStr) <= 0)
 					dTmp2 = 1.0f;
-				else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr);
+				else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iStr);
 
 				dTmp2 = dTmp2 / 5.0f;
 				dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 				iAP_SM = (int)(dTmp3 + 0.5f);
 
 				dTmp1 = (double)iAP_L;
-				if ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) <= 0)
+				if ((m_pClientList[sAttackerH]->m_iStr) <= 0)
 					dTmp2 = 1.0f;
-				else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr);
+				else dTmp2 = (double)(m_pClientList[sAttackerH]->m_iStr);
 
 				dTmp2 = dTmp2 / 5.0f;
 				dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
@@ -20137,11 +20129,11 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 			}
 
-			/*if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
+			if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
 				iAttackerHitRatio += 100;
 				iAP_SM += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 				iAP_L += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
-			}*/
+			}
 
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
@@ -20623,8 +20615,8 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	}
 
 	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
-		if ((m_pClientList[sAttackerH]->m_iDex+m_pClientList[sAttackerH]->m_iAngelicDex) > 50) {
-			iAttackerHitRatio += ((m_pClientList[sAttackerH]->m_iDex+m_pClientList[sAttackerH]->m_iAngelicDex) - 50); 	
+		if ((m_pClientList[sAttackerH]->m_iDex) > 50) {
+			iAttackerHitRatio += ((m_pClientList[sAttackerH]->m_iDex) - 50); 	
 		}
 	}
 
@@ -21211,7 +21203,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 								iWeaponDamage = (double)dwValue2*7;
 								iInitial_AP_SM = (double)iAP_SM;
 								
-								iMagDamage = (m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag)/20;
+								iMagDamage = (m_pClientList[sAttackerH]->m_iMag)/20;
 								iTotalMagicDamage = (double)((iInitial_AP_SM/100.0f)*(iWeaponDamage/100.0f))+iMagDamage;
 								
 								if (m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT] == 2) 
@@ -21526,7 +21518,7 @@ CAE_SKIPDAMAGEMOVE:;
 						if(m_pClientList[sAttackerH]->m_iMP >= sManaCost){
 							iWeaponDamage = (double)dwValue2*7;
 							iInitial_AP_SM = (double)iDamage;
-							iMagDamage = (m_pClientList[sAttackerH]->m_iMag+m_pClientList[sAttackerH]->m_iAngelicMag)/20;
+							iMagDamage = (m_pClientList[sAttackerH]->m_iMag)/20;
 							iTotalMagicDamage = ((iInitial_AP_SM/100.0f)*(iWeaponDamage+100.0f))+iMagDamage;
 							iDamage = (int)iTotalMagicDamage;
 							m_pClientList[sAttackerH]->m_iMP -= sManaCost;
@@ -21828,8 +21820,8 @@ BOOL CGame::_bCheckCharacterData(int iClientH)
  int i;
  int iTotalPoints;
 
-	if (((m_pClientList[iClientH]->m_iStr+m_pClientList[iClientH]->m_iAngelicStr) > m_sCharStatLimit) || (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit-11) || ((m_pClientList[iClientH]->m_iDex+m_pClientList[iClientH]->m_iAngelicDex) > m_sCharStatLimit) ||
-        ((m_pClientList[iClientH]->m_iMag+m_pClientList[iClientH]->m_iAngelicMag) > m_sCharStatLimit) || ((m_pClientList[iClientH]->m_iInt+m_pClientList[iClientH]->m_iAngelicInt) > m_sCharStatLimit) || (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit-11)) {
+	if (((m_pClientList[iClientH]->m_iStr) > m_sCharStatLimit) || (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit) || ((m_pClientList[iClientH]->m_iDex) > m_sCharStatLimit) ||
+        ((m_pClientList[iClientH]->m_iMag) > m_sCharStatLimit) || ((m_pClientList[iClientH]->m_iInt) > m_sCharStatLimit) || (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit)) {
 		wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) stat points are greater then server accepts.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);
@@ -29599,7 +29591,7 @@ void CGame::LearnAllMagics(int iClientH)
 	{
 		if ((m_pMagicConfigList[i] != NULL) && (m_pMagicConfigList[i]->m_iGoldCost > 0) &&
 			(m_pClientList[iClientH]->m_cMagicMastery[i] == 0) &&
-			(m_pMagicConfigList[i]->m_sIntLimit <= (m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt))) {
+			(m_pMagicConfigList[i]->m_sIntLimit <= (m_pClientList[iClientH]->m_iInt))) {
 			m_pClientList[iClientH]->m_cMagicMastery[i] = 1;
 		}
 	}
