@@ -6720,7 +6720,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 					if ((m_pClientList[iClientH]->m_iGuildRank == -1) &&
 						(memcmp(m_pClientList[iClientH]->m_cLocation, "NONE", 4) != 0) &&
 						(memcmp(m_pClientList[iClientH]->m_cLocation, m_pClientList[sOwnerH]->m_cLocation, 10) == 0) &&
-						(m_pClientList[sOwnerH]->m_iGuildRank == 0)) {
+						(m_pClientList[sOwnerH]->m_iGuildRank == 0 || m_pClientList[sOwnerH]->m_iGuildRank == 1)) {
 						SendNotifyMsg(iClientH, sOwnerH, DEF_NOTIFY_QUERY_JOINGUILDREQPERMISSION, NULL, NULL, NULL, NULL);
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIVEITEMFIN_ERASEITEM, sItemIndex, 1, NULL, cCharName);
 
@@ -6732,7 +6732,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 				if ((m_bIsCrusadeMode == FALSE) && (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 89)) {
 					if ((memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[sOwnerH]->m_cGuildName, 20) == 0) &&
 						(m_pClientList[iClientH]->m_iGuildRank != -1) &&
-						(m_pClientList[sOwnerH]->m_iGuildRank == 0)) {
+						(m_pClientList[sOwnerH]->m_iGuildRank == 0 || m_pClientList[sOwnerH]->m_iGuildRank == 1)) {
 						// 길드 마스터이다.	길드 마스터에게는 탈퇴확인 요청 메시지를 전송한다.
 						SendNotifyMsg(iClientH, sOwnerH, DEF_NOTIFY_QUERY_DISMISSGUILDREQPERMISSION, NULL, NULL, NULL, NULL);
 						// 이제 아이템을 준 본인에게 아이템을 주었으므로 리스트에서 삭제할것을 통보한다.

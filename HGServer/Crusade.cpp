@@ -224,9 +224,7 @@ void CGame::LocalStartCrusadeMode(DWORD dwCrusadeGUID)
 void CGame::_CreateCrusadeGUID(DWORD dwCrusadeGUID, int iWinnerSide)
 {
 	char* cp, cTxt[256], cTemp[1024];
-	FILE* pFile;
-
-	
+	FILE* pFile;	
 
 	pFile = fopen("GameConfigs\\CrusadeGUID.Txt", "wt");
 	if (pFile == NULL) {
@@ -2121,7 +2119,7 @@ void CGame::SelectCrusadeDutyHandler(int iClientH, int iDuty)
 {
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if ((m_pClientList[iClientH]->m_iGuildRank != 0) && (iDuty == 3)) return;
+	if ((m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 3) && (iDuty == 3)) return;
 
 	if (m_iLastCrusadeWinner == m_pClientList[iClientH]->m_cSide &&
 		m_pClientList[iClientH]->m_dwCrusadeGUID == 0 && iDuty == 3) {
@@ -2294,7 +2292,7 @@ void CGame::RequestHelpHandler(int iClientH)
 	if (m_pClientList[iClientH]->m_iCrusadeDuty != 1) return;
 
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_iGuildRank == 0) &&
+		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_iGuildRank == 0 || m_pClientList[i]->m_iGuildRank == 3) &&
 			(m_pClientList[i]->m_iCrusadeDuty == 3) && (m_pClientList[i]->m_iGuildGUID == m_pClientList[iClientH]->m_iGuildGUID)) {
 			// °°Àº ±æµå ¸¶½ºÅÍÀÌ°í ÁöÈÖ°ü ¿ªÈ°À» ¸ÃÀº »óÅÂÀÌ´Ù.
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_HELP, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, m_pClientList[iClientH]->m_iHP, m_pClientList[iClientH]->m_cCharName);

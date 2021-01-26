@@ -938,7 +938,7 @@ void CGame::DrawDialogBox_CrusadeJob(short msX, short msY)
 		{
 			if (m_bAresden)
 			{
-				if (m_iGuildRank == 0)
+				if (m_iGuildRank == 0 || m_iGuildRank == 3)
 				{
 					if ((msX > sX + 24) && (msX < sX + 246) && (msY > sY + 150) && (msY < sY + 165))
 						PutAlignedString(sX + 24, sX + 246, sY + 150, DRAWDIALOGBOX_CRUSADEJOB5, 255, 255, 255);//(Commander)"
@@ -960,7 +960,7 @@ void CGame::DrawDialogBox_CrusadeJob(short msX, short msY)
 			}
 			else if (m_bAresden == FALSE)
 			{
-				if (m_iGuildRank == 0)
+				if (m_iGuildRank == 0 || m_iGuildRank == 3)
 				{
 					if ((msX > sX + 24) && (msX < sX + 246) && (msY > sY + 150) && (msY < sY + 165))
 						PutAlignedString(sX + 24, sX + 246, sY + 150, DRAWDIALOGBOX_CRUSADEJOB5, 255, 255, 255);//(Commander)"
@@ -10774,14 +10774,14 @@ void CGame::DlgBoxClick_GuildMenu(short msX, short msY)
 			m_stDialogBoxInfo[7].cMode = 11;
 			PlaySound('E', 14, 5);
 		}
-		if (m_iFightzoneNumber < 0) break;
+		/*if (m_iFightzoneNumber < 0) break;
 		if ((msX > sX + iAdjX + 72) && (msX < sX + iAdjX + 228) && (msY > sY + iAdjY + 143) && (msY < sY + iAdjY + 169))
 		{
 			if (m_iGuildRank != 0) return;
 			if (m_iFightzoneNumber == 0)	m_stDialogBoxInfo[7].cMode = 13;
 			else  m_stDialogBoxInfo[7].cMode = 19;
 			PlaySound('E', 14, 5);
-		}
+		}*/
 		break;
 	case 1:
 		if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
@@ -12242,7 +12242,7 @@ void CGame::DrawDialogBox_GuildMenu(short msX, short msY)
 			PutAlignedString(sX, sX + szX, sY + iAdjY + 125, DRAW_DIALOGBOX_GUILDMENU9, 255, 255, 255);//"
 		else PutAlignedString(sX, sX + szX, sY + iAdjY + 125, DRAW_DIALOGBOX_GUILDMENU9, 4, 0, 50);//"
 
-		if (m_iGuildRank == 0 && m_iFightzoneNumber == 0) {
+		/*if (m_iGuildRank == 0 && m_iFightzoneNumber == 0) {
 			if ((msX > sX + iAdjX + 72) && (msX < sX + iAdjX + 228) && (msY > sY + iAdjY + 143) && (msY < sY + iAdjY + 169))
 				PutAlignedString(sX, sX + szX, sY + iAdjY + 145, DRAW_DIALOGBOX_GUILDMENU11, 255, 255, 255);//"
 			else PutAlignedString(sX, sX + szX, sY + iAdjY + 145, DRAW_DIALOGBOX_GUILDMENU11, 4, 0, 50);//"
@@ -12257,8 +12257,8 @@ void CGame::DrawDialogBox_GuildMenu(short msX, short msY)
 		else if (m_iFightzoneNumber < 0) {
 			PutAlignedString(sX, sX + szX, sY + iAdjY + 145, DRAW_DIALOGBOX_GUILDMENU13, 65, 65, 65);//"
 		}
-		else PutAlignedString(sX, sX + szX, sY + iAdjY + 145, DRAW_DIALOGBOX_GUILDMENU11, 65, 65, 65);//"
-
+		else PutAlignedString(sX, sX + szX, sY + iAdjY + 145, DRAW_DIALOGBOX_GUILDMENU11, 65, 65, 65);*/
+		
 		PutAlignedString(sX, sX + szX, sY + iAdjY + 205, DRAW_DIALOGBOX_GUILDMENU17);//"
 		break;
 
@@ -19790,7 +19790,7 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 				DrawDialogBox_RepairAll(msX, msY, msZ); //@@@
 				break;
 			case 53: //Magn0S:: General Panel
-				DrawDialogBox_GeneralPanel(msX, msY);
+				DrawDialogBox_GeneralPanel(msX, msY, msZ, cLB);
 				break;
 			case 56: //Magn0S:: GMPanel
 				DrawDialogBox_GMPanel(msX, msY, msZ, cLB); //@@@
@@ -21720,6 +21720,10 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 	sY = m_stDialogBoxInfo[53].sY;
 	bool bFlag = false;
 
+	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
+	int x = 0;
+
+
 	ZeroMemory(cMapTP, sizeof(cMapTP));
 
 #ifdef RES_HIGH
@@ -21749,8 +21753,8 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			//m_stDialogBoxInfo[53].cMode = 4; // Online Users
-			EnableDialogBox(60, NULL, NULL, NULL);
 			bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
+			EnableDialogBox(60, NULL, NULL, NULL);
 			PlaySound('E', 14, 5);
 		}
 		iNext += 1;
@@ -21762,6 +21766,12 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 				LoadFriendList();
 			}
 			else DisableDialogBox(43);
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
+			if (m_iGuildRank == -1) return;
+			m_stDialogBoxInfo[53].cMode = 40; // Guild Menu
 			PlaySound('E', 14, 5);
 		}
 		break;
@@ -21875,11 +21885,206 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 		}
 
 		break;
+	case 40:
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			if (m_iGuildRank != 0 && m_iGuildRank != 3)
+			{
+				AddEventList("Only available for GuildMaster or Captain.", 10);
+				return;
+			}
+			m_stDialogBoxInfo[53].cMode = 41; // Return
+			PlaySound('E', 14, 5);
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			if (m_iGuildRank != 0 && m_iGuildRank != 2)
+			{
+				AddEventList("Only available for GuildMaster or Summoner.", 10);
+				return;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "/summonguild %s", m_cGuildName);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+
+		}
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			m_stDialogBoxInfo[53].cMode = 43; // Return
+			PlaySound('E', 14, 5);
+		}
+
+		break;
+	case 41:
+		x = 0;
+		for (i = 0; i < 17; i++)
+		{
+			if (((i + m_stDialogBoxInfo[53].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView] != NULL))
+			{
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+				{
+					ZeroMemory(cTemp2, sizeof(cTemp2));
+					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cGuildName, cStr2, cStr3);
+					m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+					if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) != 0)
+					{
+						continue;
+					}
+
+					if (m_iGuildRank == 0 || m_iGuildRank == 3)
+					{
+						if (strcmp(m_cPlayerName, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName) == 0)
+						{
+							AddEventList("You can't manipulate to yourself.", 10);
+							break;
+						}
+						ZeroMemory(cCharSelection, sizeof(cCharSelection));
+						strcpy(cCharSelection, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName);
+						m_stDialogBoxInfo[53].cMode = 42; // Manipulate Char
+					}
+					else
+					{
+						ZeroMemory(cTemp, sizeof(cTemp));
+						wsprintf(cTemp, "/to %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName);
+						bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
+					}
+					//bListSelected = true;
+					PlaySound('E', 14, 5);
+					break;
+				}
+				x++;
+			}
+		}
+
+		if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18))
+		{
+			if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+			{
+				for (i = 0; i < 500; i++)
+					if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
+
+				for (i = 0; i < 500; i++)
+					if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
+
+				bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
+
+				m_dwReqUsersTime = m_dwCurTime;
+				m_cCommandCount--;
+			}
+		}
+		break;
+	case 42:
+		iNext += 5;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			if (m_iGuildRank != 0)
+			{
+				AddEventList("Only available for GuildMaster.", 10);
+				return;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "/addcaptain %s", cCharSelection);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+
+		}
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			if (m_iGuildRank != 0)
+			{
+				AddEventList("Only available for GuildMaster.", 10);
+				return;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "/addsummoner %s", cCharSelection);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+
+		}
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			if (m_iGuildRank != 0)
+			{
+				AddEventList("Only available for GuildMaster.", 10);
+				return;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "/addrecluiter %s", cCharSelection);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+
+		}
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "/delrank %s", cCharSelection);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+
+		}
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			wsprintf(G_cTxt, "/ban %s", cCharSelection);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+
+		}
+		break;
+	case 43:
+		x = 0;
+		for (i = 0; i < 17; i++)
+		{
+			if (((i + m_stDialogBoxInfo[53].sView) < 500) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView] != NULL))
+			{
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+				{
+					ZeroMemory(cTemp2, sizeof(cTemp2));
+					wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cGuildName, cStr2, cStr3);
+					m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+					if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) != 0)
+					{
+						continue;
+					}
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "/to %s", m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName);
+					bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, cTemp);
+					
+					//bListSelected = true;
+					PlaySound('E', 14, 5);
+					break;
+				}
+				x++;
+			}
+		}
+
+		if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18))
+		{
+			if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+			{
+				for (i = 0; i < 500; i++)
+					if (m_pOnlineUsersList[i] != NULL) m_pOnlineUsersList[i] = NULL;
+
+				for (i = 0; i < 500; i++)
+					if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
+
+				bSendCommand(MSGID_REQUEST_ONLINE, NULL, NULL, NULL, NULL, NULL, NULL);
+
+				m_dwReqUsersTime = m_dwCurTime;
+				m_cCommandCount--;
+			}
+		}
+		break;
 	}
 }
 
 //New GM Panel by Magn0S ;D
-void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
+void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY, szX, sServerHour;
 	char cTxt[120];
@@ -21889,6 +22094,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 	int iNext = 0;
 	int iEntry = 0;
 
+	int iGuildIndex;
+
 	sX = m_stDialogBoxInfo[53].sX;
 	sY = m_stDialogBoxInfo[53].sY;
 	szX = m_stDialogBoxInfo[53].sSizeX;
@@ -21897,6 +22104,15 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 2);
 
+	int  i, iTemp;
+	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
+
+	double dTmp1, dTmp2, dTmp3;
+	int  iTotalLines, iPointerLoc;
+	double d1, d2, d3;
+	int iR, iG, iB;
+
+	int x;
 	
 	switch (m_stDialogBoxInfo[53].cMode) {
 	case 0:
@@ -21946,18 +22162,26 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		}
 		else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Friend's List", 4, 0, 50);
 
+		if (m_iGuildRank != -1) 
+		{
+			iNext += 1;
+			if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			{
+				PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Guild Menu", 255, 255, 255);
+			}
+			else PutAlignedString(sX + 30, sX + szX - 30, sY + iNext * 17 + 45, "Guild Menu", 4, 0, 50);
+		}
 		break;
 
 	case 1:
 		//PutString_SprFont3(sX + 70, sY + 10, "Server Top Ek", 2, 150, 0);
 		//PutString_SprFont(sX + 70, sY + 35, "Server Top Ek", 7, 0, 0);
 
-
 		PutString_SprFont2(sX + 70, sY + 5, "Server Top Ek", 240, 240, 240);
 
 		PutString2(sX + 65, sY + 30, "Name", 0, 255, 0);
 		PutString2(sX + 165, sY + 30, "EKs", 0, 255, 0);
-		for (int i = 1; i <= 15; i++)
+		for (i = 1; i <= 15; i++)
 		{
 			//if (strcmp(iHBTOPn[i], "HBTop-") == 0) continue;
 			string st1 = iHBTOPn[i];
@@ -22157,76 +22381,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		else PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 200);*/
 
 		break;
-
-		/*case 2: // Game Administration
-			PutString_SprFont3(sX + 70, sY + 10, "Event Schedule", 200, 250, 2);
-			//iNext += 2;
-			PutString2(sX + 45, sY + iNext * 15 + 35, "Event:", 255, 255, 255);
-			PutString2(sX + 190, sY + iNext * 15 + 35, "Status:", 255, 255, 255);
-			//Green color: RGB(0, 255, 0));
-			//------------------------------------------------------------------------------------------------------------
-			iNext += 1;
-			PutString2(sX + 25, sY + iNext * 15 + 35, "Death Match Game", 255, 255, 100);
-			if (!bDeathmatch) {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "OFF", 255, 0, 0);
-			}
-			else {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "ON", 0, 255, 0);
-			}
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Start eveyday at: 00h - 06h - 12h - 18h", RGB(255, 255, 255));
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Close eveyday at: 02h - 08h - 14h - 20h", RGB(255, 255, 255));
-			//------------------------------------------------------------------------------------------------------------
-			iNext += 2;
-			PutString2(sX + 25, sY + iNext * 15 + 35, "The Crusade", 255, 255, 100);
-			if (!m_bIsCrusadeMode) {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "OFF", 255, 0, 0);
-			}
-			else {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "ON", 0, 255, 0);
-			}
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Every: Monday, Wednesday and Friday", RGB(255, 255, 255));
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Start Hour: 20:00h", RGB(255, 255, 255));
-			//------------------------------------------------------------------------------------------------------------
-			iNext += 2;
-			PutString2(sX + 25, sY + iNext * 15 + 35, "The Apocalypse", 255, 255, 100);
-			if (!m_bApocalypse) {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "OFF", 255, 0, 0);
-			}
-			else {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "ON", 0, 255, 0);
-			}
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Start every Saturday on 9:00h", RGB(255, 255, 255));
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "The Portal to Druncnian City is on Ice Bound", RGB(255, 255, 255));
-			//------------------------------------------------------------------------------------------------------------
-			iNext += 2;
-			PutString2(sX + 25, sY + iNext * 15 + 35, "The Heldenian", 255, 255, 100);
-			if (!m_bIsHeldenian) {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "OFF", 255, 0, 0);
-			}
-			else {
-				PutString2(sX + 200, sY + iNext * 15 + 35, "ON", 0, 255, 0);
-			}
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Battlefield every Wed. on 20:00h", RGB(255, 255, 255));
-			iNext += 1;
-			PutString(sX + 10, sY + iNext * 15 + 35, "Siege every Sun. on 9:00h", RGB(255, 255, 255));
-			//------------------------------------------------------------------------------------------------------------
-
-			if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))
-				PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 2);
-			else PutString_SprFont3(sX + 210, sY + 315, "Back", 200, 250, 200);
-
-			break;*/
-
+		
 	case 3:
-		//PutString_SprFont3(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 5, "Graphic's Options", 255, 255, 255);
-		//PutString_SprFont(sX + 125 - ((strlen("Graphic's Options") * 7) / 2), sY + 15, "Graphic's Options", 7, 0, 0);
 		PutString_SprFont2(sX + 125 - ((strlen("Graphics Options") * 7) / 2), sY + 5, "Graphics Options", 240, 240, 240);
 
 		iNext += 1;
@@ -22293,36 +22449,406 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY)
 		}
 		break;
 
-	case 21:
-		/*PutString_SprFont2(sX + 125 - ((strlen("The Crusade") * 7) / 2), sY + 5, "The Crusade", 0, 255, 0);
+	case 40:
+		PutString_SprFont2(sX + 125 - ((strlen("Guild Menu") * 7) / 2), sY + 5, "Guild Menu", 240, 240, 240);
+		
+		wsprintf(G_cTxt, "%s", m_cGuildName);
+		PutAlignedString(sX + 30, sX + szX - 30, sY + 30+5, G_cTxt, 255, 255, 255);
 
 		iNext += 1;
-		PutAlignedString(sX + 20, sX + 240, sY + iNext * 17 + 20, "Aresden and Elvine fights against each other. Each city need to collect Mana on Middleland to generate power for the city to strike the enemy city.", 255, 255, 255);
-
-		iNext += 5;
-		PutAlignedString(sX + 20, sX + 240, sY + iNext * 17 + 20, "Prize: Teleport to Middeland", 210, 255, 0);
-
-		iNext += 2;
-		PutString(sX + 50, sY + iNext * 17 + 20, "Last Winner:", RGB(255, 255, 255), FALSE, 1);
-		PutString(sX + 140, sY + iNext * 17 + 20, "Elvine", RGB(50, 170, 255), FALSE, 1);
-
-		iNext += 2;
-		PutString(sX + 50, sY + iNext * 17 + 20, "Event Schedule: 2 times per week.", RGB(255, 255, 255), FALSE, 1);
-		iNext += 1;
-		PutString(sX + 60, sY + iNext * 17 + 20, "Every Wednesday and Saturday.", RGB(255, 255, 255), FALSE, 1);
-
-
-		if ((msX >= sX + 160) && (msX <= sX + 250) && (msY >= sY + 300) && (msY <= sY + 320))
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 160, sY + 300, 0);
-			//PutString2(sX + 210, sY + 320, "Back", 255, 200, 0);
-			PutAlignedString2(sX + 160, sX + 250, sY + 300, "Back", 255, 255, 100);
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Change Member Rank", 255, 255, 255);
 		}
-		else {
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 160, sY + 300, 1);
-			//PutString2(sX + 210, sY + 320, "Back", 255, 255, 200);
-			PutAlignedString2(sX + 160, sX + 250, sY + 300, "Back", 180, 188, 180);
-		}*/
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Change Member Rank", 19, 104, 169);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Summon Guild", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Summon Guild", 19, 104, 169);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Guild Member List", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Guild Member List", 19, 104, 169);
+
+		break;
+	case 41:
+		PutString_SprFont3(sX + 65, sY + 10, "Guild Member List", 2, 150, 0);
+
+		PutAlignedString(sX + 30, sX + szX - 30, sY + 30, "Select a member to change rank or ban.", 255, 255, 255);
+		
+		iTotalLines = 0;
+		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
+		if (iTotalLines > 13) {
+			d1 = (double)m_stDialogBoxInfo[53].sView;
+			d2 = (double)(iTotalLines - 13);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)(d3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+		}
+		else iPointerLoc = 0;
+
+		if (cLB != 0 && iTotalLines > 13)
+		{
+			if ((iGetTopDialogBoxIndex() == 53))
+			{
+				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
+				{
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 13);
+					d3 = (d1 * d2) / 274.0f;
+					m_stDialogBoxInfo[53].sView = (int)(d3 + 0.5f);
+				}
+			}
+		}
+		else m_stDialogBoxInfo[53].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 53 && msZ != 0)
+		{
+			m_stDialogBoxInfo[53].sView = m_stDialogBoxInfo[53].sView - msZ / 60;
+			m_DInput.m_sZ = 0;
+		}
+		if (iTotalLines > 13 && m_stDialogBoxInfo[53].sView > iTotalLines - 13) m_stDialogBoxInfo[53].sView = iTotalLines - 13;
+		if (m_stDialogBoxInfo[53].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[53].sView = 0;
+
+		x = 0;
+		for (i = 0; i < 13; i++) {
+			if (((i + m_stDialogBoxInfo[53].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName, cStr2, cStr3);
+
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+				if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+				else
+				{
+					//iR = 255;	iG = 255; iB = 255;
+					continue;
+				}
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+				{
+					PutString2(sX + 25, sY + x * 18 + 65, cTemp, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 25, sY + x * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+				}
+				x++;
+			}
+		}
+
+		x = 0;
+		for (i = 0; i < 13; i++) {
+			if (((i + m_stDialogBoxInfo[53].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp, '_', ' ');
+
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName, cStr2, cStr3);
+
+				// display blank space rather than NONE if char has no guild
+				if (memcmp(cTemp, "NONE", 4) == 0)
+				{
+					memcpy(cTemp, "    ", 4);
+				}
+
+				if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+				else
+				{
+					//iR = 255;	iG = 255; iB = 255;
+					continue;
+				}
+
+				if (FindGuildName(m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName, &iGuildIndex) == TRUE)
+				{
+					if (m_stGuildName[iGuildIndex].cGuildName[0] != NULL)
+					{
+						if (strcmp(m_stGuildName[iGuildIndex].cGuildName, "NONE") != 0)
+						{
+							if (m_stGuildName[iGuildIndex].iGuildRank == 0)
+							{
+								wsprintf(G_cTxt, "Guildmaster");//
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 12)
+							{
+								wsprintf(G_cTxt, "Guildsman");//"
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 1)
+							{
+								wsprintf(G_cTxt, "Recluiter");//" Guildsman)"
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 2)
+							{
+								wsprintf(G_cTxt, "Summoner");//" Guildsman)"
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 3)
+							{
+								wsprintf(G_cTxt, "Captain");//" Guildsman)"
+
+							}
+							m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
+						}
+						else
+						{
+							m_stGuildName[iGuildIndex].dwRefTime = 0;
+						}
+					}
+				}
+				else bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQGUILDRANK, NULL, NULL, iGuildIndex, NULL, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName);
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+				{
+					PutString2(sX + 125, sY + x * 18 + 65, G_cTxt, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 125, sY + x * 18 + 65, G_cTxt, iR / 2, iG / 2, iB / 2);
+				}
+				x++;
+			}
+		}
+
+		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		{
+			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 255);
+			}
+			else {
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 100);
+			}
+		}
+		else
+		{
+			PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 65, 65, 65);
+		}
+		break;
+
+	case 42:
+		//PutString_SprFont3(sX + 50, sY + 10, "Administration Panel", 2, 150, 0);
+		PutString_SprFont3(sX + 125 - ((strlen("Guild Menu") * 7) / 2), sY + 10, "Guild Menu", 2, 150, 0);
+
+		iNext += 2;
+		PutString2(sX + 25, sY + iNext * 17 + 45, "Guild Member:", 255, 255, 255);
+		PutString2(sX + 105, sY + iNext * 17 + 45, cCharSelection, 255, 255, 255);
+		PutString(sX + 100, sY + iNext * 17 + 47, "_____________", RGB(255, 255, 255));
+
+		if (iGetTopDialogBoxIndex() == 53 && msZ != 0)
+		{
+			m_stDialogBoxInfo[53].sV3 = m_stDialogBoxInfo[53].sV3 + msZ / 60;
+			m_DInput.m_sZ = 0;
+		}
+
+		iNext += 3;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Set as Captain", 255, 255, 255);
+		else PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Set as Captain", 255, 255, 100);
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Set as Summoner", 255, 255, 255);
+		else PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Set as Summoner", 255, 255, 100);
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Set as Recluiter", 255, 255, 255);
+		else PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Set as Recluiter", 255, 255, 100);
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Remove Rank", 255, 255, 255);
+		else PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Remove Rank", 255, 255, 100);
+		iNext += 2;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Ban Member", 255, 255, 255);
+		else PutAlignedString(sX + 10, sX + szX - 10, sY + iNext * 17 + 45, "Ban Member", 255, 255, 100);
+
+		break;
+	case 43:
+		PutString_SprFont3(sX + 65, sY + 10, "Guild Member List", 2, 150, 0);
+
+		PutString2(sX + 25, sY + 50, "Name", 0, 255, 0);
+		PutString2(sX + 135, sY + 50, "Rank", 0, 255, 0);
+		
+		iTotalLines = 0;
+		for (i = 0; i < DEF_MAXMENUITEMS; i++)
+			if (m_pOnlineUsersList[i] != NULL) iTotalLines++;
+		if (iTotalLines > 13) {
+			d1 = (double)m_stDialogBoxInfo[53].sView;
+			d2 = (double)(iTotalLines - 13);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)(d3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+		}
+		else iPointerLoc = 0;
+
+		if (cLB != 0 && iTotalLines > 13)
+		{
+			if ((iGetTopDialogBoxIndex() == 53))
+			{
+				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
+				{
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 13);
+					d3 = (d1 * d2) / 274.0f;
+					m_stDialogBoxInfo[53].sView = (int)(d3 + 0.5f);
+				}
+			}
+		}
+		else m_stDialogBoxInfo[53].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 53 && msZ != 0)
+		{
+			m_stDialogBoxInfo[53].sView = m_stDialogBoxInfo[53].sView - msZ / 60;
+			m_DInput.m_sZ = 0;
+		}
+		if (iTotalLines > 13 && m_stDialogBoxInfo[53].sView > iTotalLines - 13) m_stDialogBoxInfo[53].sView = iTotalLines - 13;
+		if (m_stDialogBoxInfo[53].sView < 0 || iTotalLines < 13) m_stDialogBoxInfo[53].sView = 0;
+
+		x = 0;
+		for (i = 0; i < 13; i++) {
+			if (((i + m_stDialogBoxInfo[53].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName, cStr2, cStr3);
+
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp2, '_', ' ');
+
+				if (memcmp(cTemp2, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+				else
+				{
+					//iR = 255;	iG = 255; iB = 255;
+					continue;
+				}
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+				{
+					PutString2(sX + 25, sY + x * 18 + 65, cTemp, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 25, sY + x * 18 + 65, cTemp, iR / 2, iG / 2, iB / 2);
+				}
+				x++;
+			}
+		}
+
+		x = 0;
+		for (i = 0; i < 13; i++) {
+			if (((i + m_stDialogBoxInfo[53].sView) < DEF_MAXMENUITEMS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView] != NULL))
+			{
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cGuildName, cStr2, cStr3);
+				m_Misc.ReplaceString(cTemp, '_', ' ');
+
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName, cStr2, cStr3);
+
+				// display blank space rather than NONE if char has no guild
+				if (memcmp(cTemp, "NONE", 4) == 0)
+				{
+					memcpy(cTemp, "    ", 4);
+				}
+
+				if (memcmp(cTemp, m_cGuildName, sizeof(m_cGuildName)) == 0)
+				{
+					iR = 255;	iG = 255; iB = 255;
+				}
+				else
+				{
+					//iR = 255;	iG = 255; iB = 255;
+					continue;
+				}
+
+				if (FindGuildName(m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName, &iGuildIndex) == TRUE)
+				{
+					if (m_stGuildName[iGuildIndex].cGuildName[0] != NULL)
+					{
+						if (strcmp(m_stGuildName[iGuildIndex].cGuildName, "NONE") != 0)
+						{
+							if (m_stGuildName[iGuildIndex].iGuildRank == 0)
+							{
+								wsprintf(G_cTxt, "Guildmaster");//
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 12)
+							{
+								wsprintf(G_cTxt, "Guildsman");//"
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 1)
+							{
+								wsprintf(G_cTxt, "Recluiter");//" Guildsman)"
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 2)
+							{
+								wsprintf(G_cTxt, "Summoner");//" Guildsman)"
+
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 3)
+							{
+								wsprintf(G_cTxt, "Captain");//" Guildsman)"
+
+							}
+							m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
+						}
+						else
+						{
+							m_stGuildName[iGuildIndex].dwRefTime = 0;
+						}
+					}
+				}
+				else bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQGUILDRANK, NULL, NULL, iGuildIndex, NULL, m_pOnlineUsersList[i + m_stDialogBoxInfo[53].sView]->m_cName);
+
+				if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + x * 18 + 65) && (msY <= sY + x * 18 + 79))
+				{
+					PutString2(sX + 125, sY + x * 18 + 65, G_cTxt, iR, iG, iB);
+				}
+				else
+				{
+					PutString2(sX + 125, sY + x * 18 + 65, G_cTxt, iR / 2, iG / 2, iB / 2);
+				}
+				x++;
+			}
+		}
+
+		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		{
+			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 255);
+			}
+			else {
+				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 100);
+			}
+		}
+		else
+		{
+			PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 65, 65, 65);
+		}
 		break;
 	}
 }

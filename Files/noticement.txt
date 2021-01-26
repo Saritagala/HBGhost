@@ -2,7 +2,7 @@ Welcome to Helbreath Ghost!
 .
 Administration and Coordination by Nixu
 .
-Coding and Features by Centuu and Magn0S
+Coding and Features by Centuu
 .
 .
 Initial Release v1.0

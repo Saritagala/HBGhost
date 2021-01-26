@@ -7563,7 +7563,7 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}
 
-		else if (memcmp(cp, "/ban", 4) == 0) {
+		else if (memcmp(cp, "/ban ", 5) == 0) {
 			UserCommand_BanGuildsman(iClientH, cp, dwMsgSize - 21);
 			
 		}
@@ -7993,20 +7993,28 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			
 		}*/
 
-		else if (memcmp(cp, "/addmaster ", 11) == 0) {
-            PlayerCommandAddMaster(iClientH, cp, dwMsgSize - 21);
+		else if (memcmp(cp, "/addcaptain ", 12) == 0) {
+            PlayerCommandAddRank(iClientH, cp, dwMsgSize - 21, 3);
             
         }
-		else if (memcmp(cp, "/deletemaster ", 13) == 0) {
-            PlayerOrder_DeleteGuildMaster(iClientH, cp, dwMsgSize - 21);
+		else if (memcmp(cp, "/addsummoner ", 13) == 0) {
+			PlayerCommandAddRank(iClientH, cp, dwMsgSize - 21, 2);
+
+		}
+		else if (memcmp(cp, "/addrecluiter ", 14) == 0) {
+			PlayerCommandAddRank(iClientH, cp, dwMsgSize - 21, 1);
+
+		}
+		else if (memcmp(cp, "/delrank ", 9) == 0) {
+            PlayerOrder_DeleteRank(iClientH, cp, dwMsgSize - 21);
             
         }
 
-		else if (memcmp(cp, "/save", 5) == 0) {
+		/*else if (memcmp(cp, "/save", 5) == 0) {
 			if (bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH) == FALSE) LocalSavePlayerData(iClientH);
 			SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Data saved!");
 			
-		}
+		}*/
 
 		else if (memcmp(cp, "/bum ", 5) == 0) { // MORLA - 2.12 Cagar pc del player
 			AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
@@ -9674,6 +9682,10 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 
 	case DEF_COMMONTYPE_REQGUILDNAME:
 		RequestGuildNameHandler(iClientH, iV1, iV2);
+		break;
+
+	case DEF_COMMONTYPE_REQGUILDRANK:
+		RequestGuildMemberRank(iClientH, pString, iV2);
 		break;
 
 	case DEF_COMMONTYPE_REQRANGO:
@@ -17659,7 +17671,7 @@ void CGame::RequestRango(int iClientH, int iObjectID)
 void CGame::RequestOnlines(int iClientH)
 {
 	char * cData = G_cData50000; //esta es el "buffer", onda, la memoria que neceisto para enviar
-
+	
 	DWORD * dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_REQUEST_ONLINE;//a la memoria esa le escribo este mensaje
 	WORD * wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);			   
@@ -17681,6 +17693,7 @@ void CGame::RequestOnlines(int iClientH)
 
 		memcpy(cp, m_pClientList[i]->m_cGuildName, 21); //copiar el nombre del char (de tamaño 10) a la data
 		cp += 21;//decirle a la data que le sume 10 bites
+
 		count++;
 	}
 
@@ -20250,17 +20263,27 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 						}
 					}
 				}
-				else if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1050 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 983) {
-					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
-						if (m_pClientList[sTargetH] == NULL) return 0;
+				
+				else if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 983 || // HuntSword
+					m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1050) // HuntBow	
+				{
+					if (cTargetType == DEF_OWNERTYPE_NPC) {
+						if (m_pNpcList[sTargetH]->m_sType == 49 || m_pNpcList[sTargetH]->m_sType == 50 || m_pNpcList[sTargetH]->m_sType == 66 ||
+							m_pNpcList[sTargetH]->m_sType == 73 || m_pNpcList[sTargetH]->m_sType == 81 || m_pNpcList[sTargetH]->m_sType == 99 ||
+							m_pNpcList[sTargetH]->m_sType == 92 || m_pNpcList[sTargetH]->m_sType == 21)
+						{
+							iAP_SM = 1;
+							iAP_L = 1;
+						}
+						else
+						{
+							iAP_SM = 1000;
+							iAP_L = 1000;
+						}
+					}
+					else if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						iAP_SM = 1;
 						iAP_L = 1;
-					}
-					else if (cTargetType == DEF_OWNERTYPE_NPC) {
-						if (m_pNpcList[sTargetH] == NULL) return 0;
-						iAP_SM = 1000;
-						iAP_L = 1000;
-						
 					}
 				}
 			}
@@ -23512,6 +23535,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 14);
 		break;
 
+	case DEF_UPDATE_GUILDRANK:
 	case DEF_NOTIFY_HEROBONUS:
 	case DEF_MAX_STATS: //LifeX Fix Bytes Accuracy 01/01
 	case DEF_NOTIFY_HELPFAILED:
@@ -23931,6 +23955,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 32);
 		break;
 
+	case DEF_NOTIFY_REQGUILDRANKANSWER:
 	case DEF_NOTIFY_REQGUILDNAMEANSWER: 
 		ip = (int*)cp;
 		*ip = (int)sV1;

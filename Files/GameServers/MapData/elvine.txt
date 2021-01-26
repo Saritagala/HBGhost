@@ -160,7 +160,7 @@ spot-mob-generator	= 8  1     234 201 254 223    54  30 // Ice Golem Abajo Derec
 
 
 // 경비병 고정 좌표
-spot-mob-generator	= 9   1    149 59 164 63      25  2
+spot-mob-generator	= 9   1    149 59 164 63      25  3
 spot-mob-generator	= 10  1    105 84 116 95      25  3
 spot-mob-generator	= 11  1    165 140 176 151    25  3
 spot-mob-generator	= 12  1    237 124 248 135    25  3

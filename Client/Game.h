@@ -1312,7 +1312,7 @@ public:
 	void ResponseQuestList(char* pData);
 
 	void DlgBoxClick_GeneralPanel(short msX, short msY);
-	void DrawDialogBox_GeneralPanel(short msX, short msY);
+	void DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB);
 
 	BOOL m_bHappyHour, m_bFuryHour;
 	//Magn0S:: New varaibles

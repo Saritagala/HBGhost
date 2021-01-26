@@ -46,7 +46,19 @@ void CGame::RequestGuildNameHandler(int iClientH, int iObjectID, int iIndex)
 	}
 }
 
-void CGame::PlayerCommandAddMaster(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::RequestGuildMemberRank(int iClientH, char *pName, int iIndex)
+{
+	if (m_pClientList[iClientH] == NULL) return;
+	
+	for (int i = 1; i < DEF_MAXCLIENTS; i++) {
+		if (m_pClientList[i] != NULL && strcmp(m_pClientList[i]->m_cCharName, pName) == 0) {
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REQGUILDRANKANSWER, m_pClientList[i]->m_iGuildRank, iIndex, NULL, m_pClientList[i]->m_cGuildName);
+			break;
+		}
+	}
+}
+
+void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int iRank)
 {
     char   seps[] = "= \t\n";
     char* token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11];
@@ -83,17 +95,37 @@ void CGame::PlayerCommandAddMaster(int iClientH, char* pData, DWORD dwMsgSize)
             if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
                 // ��ǥ ĳ���͸� ã�Ҵ�.     
 
-                if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 20) != 0) {
+                if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
                     // ????? ???????? ???? ?????? ????????.
 
-                    SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Add Master...");
-                    break;
+                    SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Add Rank...");
+					delete pStrTok;
+					return;
                 }
-                m_pClientList[i]->m_iGuildRank = 0;
-                SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "New Guild Master Added");
-                SendNotifyMsg(iClientH, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a GuildMaster");
 
+				if (m_pClientList[i]->m_iGuildRank == 0)
+				{
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot change a Guildmaster.");
+					delete pStrTok;
+					return;
+				}
+                
+				switch (iRank)
+				{
+				case 1:
+					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a Recluiter");
+					break;
+				case 2:
+					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a Summoner");
+					break;
+				case 3:
+					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a Captain");
+					break;
+				}
+				m_pClientList[i]->m_iGuildRank = iRank;
+				SendNotifyMsg(NULL, i, DEF_UPDATE_GUILDRANK, m_pClientList[i]->m_iGuildRank, NULL, NULL, NULL);
             }
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "New Rank Added");
 
         delete pStrTok;
         return;
@@ -106,7 +138,7 @@ void CGame::PlayerCommandAddMaster(int iClientH, char* pData, DWORD dwMsgSize)
     return;
 }
 
-void CGame::PlayerOrder_DeleteGuildMaster(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::PlayerOrder_DeleteRank(int iClientH, char* pData, DWORD dwMsgSize)
 {
     char   seps[] = "= \t\n";
     char* token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11];
@@ -116,7 +148,7 @@ void CGame::PlayerOrder_DeleteGuildMaster(int iClientH, char* pData, DWORD dwMsg
     if (m_pClientList[iClientH] == NULL) return;
     if ((dwMsgSize) <= 0) return;
 
-    if (m_pClientList[iClientH]->m_iGuildRank != 0) {
+    if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 3) {
         // ???? ??????? ?????* ?? ?????? ??????? ????.
         SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOGUILDMASTERLEVEL, NULL, NULL, NULL, NULL);
         return;
@@ -143,18 +175,26 @@ void CGame::PlayerOrder_DeleteGuildMaster(int iClientH, char* pData, DWORD dwMsg
             if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
                 // ��?�� ?����?�͸� ?���?��?�.     
 
-                if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 20) != 0) {
+                if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
                     // ????? ???????? ???? ?????? ????????.
 
-                    SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Delete Master...");
-                    break;
+                    SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Delete rank...");
+					delete pStrTok;
+					return;
                 }
+				if (m_pClientList[i]->m_iGuildRank == 0)
+				{
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot delete a Guildmaster.");
+					delete pStrTok;
+					return;
+				}
                 m_pClientList[i]->m_iGuildRank = 12;
-                SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Guild Master Deleted");
-                SendNotifyMsg(iClientH, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are No longer a GuildMaster");
+				SendNotifyMsg(NULL, i, DEF_UPDATE_GUILDRANK, m_pClientList[i]->m_iGuildRank, NULL, NULL, NULL);
+                SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are now a Guildsman");
 
             }
 
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Rank Deleted");
         delete pStrTok;
         return;
     }
@@ -644,7 +684,7 @@ void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((dwMsgSize) <= 0) return;
 
-	if (m_pClientList[iClientH]->m_iGuildRank != 0) {
+	if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 3) {
 		// ±æµå ¸¶½ºÅÍ°¡ ¾Æ´Ï¾î¼­ ÀÌ ±â´ÉÀ» »ç¿ëÇÒ¼ö ¾ø´Ù.
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOGUILDMASTERLEVEL, NULL, NULL, NULL, NULL);
 		return;
@@ -668,10 +708,16 @@ void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, DWORD dwMsgSize)
 			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
 				// ¸ñÇ¥ Ä³¸¯ÅÍ¸¦ Ã£¾Ò´Ù. °­Á¦·Î ±æµå¸¦ °­Åð ½ÃÅ²´Ù. 
 
-				if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 20) != 0) {
+				if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
 					// ÀÚ½ÅÀÇ ±æµå¿øÀÌ ¾Æ´Ï¶ó Çã¶ôÀÌ ºÒ°¡´ÉÇÏ´Ù.
 
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CANNOTBANGUILDMAN, NULL, NULL, NULL, NULL);
+					delete pStrTok;
+					return;
+				}
+				if (m_pClientList[i]->m_iGuildRank == 0)
+				{
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot ban a Guildmaster.");
 					delete pStrTok;
 					return;
 				}
@@ -724,9 +770,9 @@ void CGame::AdminOrder_SummonGuild(int iClientH, char* pData, DWORD dwMsgSize)
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
 		return;
 	}*/
-	if (m_pClientList[iClientH]->m_iAdminUserLevel == 0) // Check if gm:
-	{
-		if (m_pClientList[iClientH]->m_iGuildRank != 0) return;
+	//if (m_pClientList[iClientH]->m_iAdminUserLevel == 0) // Check if gm:
+	//{
+		if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 2) return;
 		dwGoldCount = dwGetItemCount(iClientH, "Gold");  // dwGoldCount = player gold
 		if (m_iSummonGuildCost > dwGoldCount)
 		{
@@ -734,9 +780,9 @@ void CGame::AdminOrder_SummonGuild(int iClientH, char* pData, DWORD dwMsgSize)
 		}
 		else // if summonguildcost is less than player gold
 		{
-			SetItemCount(iClientH, "Gold", dwGoldCount - m_iSummonGuildCost); // reduce gold by summonguildcost   
+			SetItemCount(iClientH, "Gold", dwGoldCount - (DWORD)m_iSummonGuildCost); // reduce gold by summonguildcost   
 		}
-	}
+	//}
 	ZeroMemory(cBuff, sizeof(cBuff));
 	memcpy(cBuff, pData, dwMsgSize);
 	pStrTok = new class CStrTok(cBuff, seps);

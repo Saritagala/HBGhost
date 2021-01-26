@@ -758,10 +758,12 @@ private:
 
 	void AFKChecker();
 
+	void RequestGuildMemberRank(int iClientH, char* pName, int iIndex);
+
 
 	void iRecoverFollowers(int  iClientH, BOOL bControlAll);
-	void PlayerCommandAddMaster(int iClientH, char* pData, DWORD dwMsgSize);
-	void PlayerOrder_DeleteGuildMaster(int iClientH, char* pData, DWORD dwMsgSize);
+	void PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int iRank);
+	void PlayerOrder_DeleteRank(int iClientH, char* pData, DWORD dwMsgSize);
 
 	void ApocalypseStarter();
 

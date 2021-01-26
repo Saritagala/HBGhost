@@ -4929,12 +4929,35 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					strcat(G_cTxt, DEF_MSG_ARESOLDIER); //
 				else strcat(G_cTxt, DEF_MSG_ELVSOLDIER); //
 			}
-			if (m_iGuildRank >= 0)
+			if (m_iGuildRank == 0)
 			{
 				strcat(G_cTxt, " (");
 				strcat(G_cTxt, m_cGuildName);
-				if (m_iGuildRank == 0) strcat(G_cTxt, DEF_MSG_GUILDMASTER1);
-				else strcat(G_cTxt, DEF_MSG_GUILDSMAN1); // " Guildsman)"
+				strcat(G_cTxt, DEF_MSG_GUILDMASTER1);
+			}
+			else if (m_iGuildRank == 12)
+			{
+				strcat(G_cTxt, " (");
+				strcat(G_cTxt, m_cGuildName);
+				strcat(G_cTxt, DEF_MSG_GUILDSMAN1); // " Guildsman)"
+			}
+			else if (m_iGuildRank == 1)
+			{
+				strcat(G_cTxt, " (");
+				strcat(G_cTxt, m_cGuildName);
+				strcat(G_cTxt, " Recluiter)"); // " Guildsman)"
+			}
+			else if (m_iGuildRank == 2)
+			{
+				strcat(G_cTxt, " (");
+				strcat(G_cTxt, m_cGuildName);
+				strcat(G_cTxt, " Summoner)"); // " Guildsman)"
+			}
+			else if (m_iGuildRank == 3)
+			{
+				strcat(G_cTxt, " (");
+				strcat(G_cTxt, m_cGuildName);
+				strcat(G_cTxt, " Captain)"); // " Guildsman)"
 			}
 		}
 
@@ -17080,7 +17103,7 @@ void CGame::DlgBoxClick_CrusadeJob(short msX, short msY)
 		{	DisableDialogBox(33);
 			PlaySound('E', 14, 5);
 		}else if (m_bAresden == TRUE)
-		{	if (m_iGuildRank == 0)
+		{	if (m_iGuildRank == 0 || m_iGuildRank == 3)
 			{	if ((msX > sX + 24) && (msX < sX + 246) && (msY > sY + 150) && (msY < sY + 165))
 				{	bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQUEST_SELECTCRUSADEDUTY, NULL, 3, NULL, NULL, NULL);
 					DisableDialogBox(33);
@@ -17098,7 +17121,7 @@ void CGame::DlgBoxClick_CrusadeJob(short msX, short msY)
 						PlaySound('E', 14, 5);
 			}	}	}
 		}else if (m_bAresden == FALSE)
-		{	if (m_iGuildRank == 0)
+		{	if (m_iGuildRank == 0 || m_iGuildRank == 3)
 			{	if ((msX > sX + 24) && (msX < sX + 246) && (msY > sY + 150) && (msY < sY + 165))
 				{	bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQUEST_SELECTCRUSADEDUTY, NULL, 3, NULL, NULL, NULL);
 					DisableDialogBox(33);
@@ -25372,8 +25395,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if( ( m_bCtrlPressed == TRUE ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
 		{	if (m_bIsDialogEnabled[60] == FALSE)
 			{	
-				EnableDialogBox(60, NULL, NULL, NULL);
 				bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos NULL, NULL etc
+				EnableDialogBox(60, NULL, NULL, NULL);
 				
 			}else	
 			{	DisableDialogBox(60);
@@ -27023,6 +27046,13 @@ void CGame::NotifyMsgHandler(char * pData)
 
 		break;
 
+	case DEF_UPDATE_GUILDRANK:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		ip = (int*)cp;
+		m_iGuildRank = *ip;
+		cp += 4;
+		break;
+
 	case DEF_NOTIFY_HEROBONUS:
 		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -27086,13 +27116,13 @@ void CGame::NotifyMsgHandler(char * pData)
 		minimapgreen_update(pData + 6);
 		break;
 
-	case MINIMAPYELLOW_CLEAR:
+	/*case MINIMAPYELLOW_CLEAR:
 		minimapyellow_clear(pData + 6);
 		break;
 
 	case MINIMAPYELLOW_UPDATE:
 		minimapyellow_update(pData + 6);
-		break;
+		break;*/
 
 	case DEF_NOTIFY_TEAMARENA: // Case BEC of switch 00454077
 		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -27277,6 +27307,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		AddEventList( DEF_MSG_GAMEMODE_CHANGED, 10 );
 		break;
 
+	case DEF_NOTIFY_REQGUILDRANKANSWER:
 	case DEF_NOTIFY_REQGUILDNAMEANSWER:	 //   0x0BA6
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		ip  = (int *)cp;
@@ -30741,12 +30772,30 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		if( memcmp(m_cPlayerName, pName, 10) == 0 )
 		{	if( m_iGuildRank == 0 )
 			{	wsprintf( G_cTxt, DEF_MSG_GUILDMASTER, m_cGuildName );//" Guildmaster)"
-				PutString2(sX, sY+14, G_cTxt, 180,180,180);
+				PutString2(sX, sY+14, G_cTxt, 255, 255, 0);
 				iAddY += 14;
 			}
-			else if( m_iGuildRank > 0 )
+			else if( m_iGuildRank == 12 )
 			{	wsprintf( G_cTxt, DEF_MSG_GUILDSMAN, m_cGuildName );//" Guildsman)"
-				PutString2(sX, sY+14, G_cTxt, 180,180,180);
+				PutString2(sX, sY+14, G_cTxt, 255, 255, 0);
+				iAddY += 14;
+			}
+			else if (m_iGuildRank == 1)
+			{
+				wsprintf(G_cTxt, "%s Recluiter", m_cGuildName);//" Guildsman)"
+				PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
+				iAddY += 14;
+			}
+			else if (m_iGuildRank == 2)
+			{
+				wsprintf(G_cTxt, "%s Summoner", m_cGuildName);//" Guildsman)"
+				PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
+				iAddY += 14;
+			}
+			else if (m_iGuildRank == 3)
+			{
+				wsprintf(G_cTxt, "%s Captain", m_cGuildName);//" Guildsman)"
+				PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
 				iAddY += 14;
 			}
 
@@ -30778,8 +30827,24 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 						{	if( m_stGuildName[iGuildIndex].iGuildRank == 0 )
 							{	wsprintf( G_cTxt, DEF_MSG_GUILDMASTER, m_stGuildName[iGuildIndex].cGuildName );//
 								
-							}else //if( m_stGuildName[iGuildIndex].iGuildRank > 0 )
+							}
+							else if( m_stGuildName[iGuildIndex].iGuildRank == 12 )
 							{	wsprintf( G_cTxt, DEF_MSG_GUILDSMAN, m_stGuildName[iGuildIndex].cGuildName );//"
+								
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 1)
+							{
+								wsprintf(G_cTxt, "%s Recluiter", m_stGuildName[iGuildIndex].cGuildName);//" Guildsman)"
+								
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 2)
+							{
+								wsprintf(G_cTxt, "%s Summoner", m_stGuildName[iGuildIndex].cGuildName);//" Guildsman)"
+								
+							}
+							else if (m_stGuildName[iGuildIndex].iGuildRank == 3)
+							{
+								wsprintf(G_cTxt, "%s Captain", m_stGuildName[iGuildIndex].cGuildName);//" Guildsman)"
 								
 							}
 							PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
@@ -30790,7 +30855,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 					}	}
 				}else bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQGUILDNAME, NULL, _tmp_wObjectID, iGuildIndex, NULL, NULL);
 		}	}
-		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQRANGO, NULL, _tmp_wObjectID, NULL, NULL, NULL); // MORLA2.2 - Pregunta EK y REP del player
+		//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQRANGO, NULL, _tmp_wObjectID, NULL, NULL, NULL); // MORLA2.2 - Pregunta EK y REP del player
 		
 		if ( bCitizen == FALSE )	
 			strcpy(cTxt, DRAW_OBJECT_NAME60);// "Traveller"
