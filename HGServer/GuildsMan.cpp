@@ -68,7 +68,7 @@ void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int
     if (m_pClientList[iClientH] == NULL) return;
     if ((dwMsgSize) <= 0) return;
 
-    if (m_pClientList[iClientH]->m_iGuildRank != 0) {
+    if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 3) {
         // ???? ??????? ?????* ?? ?????? ??????? ????.
         SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOGUILDMASTERLEVEL, NULL, NULL, NULL, NULL);
         return;

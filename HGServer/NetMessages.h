@@ -4,6 +4,9 @@
 #define DEF_VERSIONPLUSMODIFIER 0 // If the antihack was noy defined don't change any msgid
 #endif
 
+#define MINIMAPORANGE_CLEAR 0x1F43
+#define MINIMAPORANGE_UPDATE 0x1F44
+
 #define DEF_NOTIFY_CITYHP 0x1F33
 
 #define DEF_NOTIFY_HEROBONUS 0x1F32

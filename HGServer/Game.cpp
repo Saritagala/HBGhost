@@ -30,51 +30,6 @@ extern HWND	G_hWnd;
 extern BOOL	G_bIsThread;
 extern unsigned __stdcall ThreadProc(void *ch);
 
-// Move lock para 800 x 600
-/*int _tmp_iMoveLocX[9][47] = {
-	// 0   1   2   3   4   5   6   7   8   9  10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46
-	// 0
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	// 1
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//2
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, -1 },
-	//3
-	{ 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//4
-	{ 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, -1 },
-	//5
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//6
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1 },
-	//7
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//8
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1 }
-};
-
-int _tmp_iMoveLocY[9][47] = {
-	// 0   1   2   3   4   5   6   7   8   9  10   11   12   13   14   15   16   17   18   19   20   21   22   23   24   25   26   27   28   29   30   31   32   33   34   35   36   37   38   39   40   41   42   43   44   45   46
-	// 0
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//1
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//2
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, -1 },
-	//3
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//4
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, -1 },
-	//5
-	{ 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//6
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20, -1 },
-	//7
-	{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 18, 18, 19, 20, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-	//8
-	{ 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 }
-};*/
-
 char _tmp_cTmpDirX[9] =
 {
 	0, 0, 1, 1, 1, 0, -1, -1, -1
@@ -873,7 +828,7 @@ void CGame::DisplayInfo(HDC hdc)
 	TextOut(hdc, 735, 55, cTxt, strlen(cTxt));
 
     TextOut(hdc, 605, 70, "Max Stats:", 11);
-	wsprintf(cTxt, "%d", m_sCharStatLimit - 11);
+	wsprintf(cTxt, "%d", m_sCharStatLimit);
 	TextOut(hdc, 735, 70, cTxt, strlen(cTxt));
 
     TextOut(hdc, 605, 85, "Players Online:", 16);
@@ -1253,6 +1208,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 		m_pClientList[iClientH]->m_cDir = cDir;
 		RefreshPartyCoords(iClientH);
 		minimap_update(iClientH);
+		minimap_update_mark(iClientH);
 		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->SetOwner(iClientH, DEF_OWNERTYPE_PLAYER, dX, dY);
 		// Capture the Flag
 		if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0) {
@@ -2499,7 +2455,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUPERATTACKLEFT, NULL, NULL, NULL, NULL);
 
 	// centu - sends max stats to client, when log in
-	SendNotifyMsg(NULL, iClientH, DEF_MAX_STATS, m_sCharStatLimit - 11, NULL, NULL, NULL);
+	SendNotifyMsg(NULL, iClientH, DEF_MAX_STATS, m_sCharStatLimit, NULL, NULL, NULL);
 	
 	// SNOOPY: Send gate positions if applicable.
 	Notify_ApocalypseGateState(iClientH);
@@ -2887,7 +2843,7 @@ void CGame::OnTimer(char cType)
 		DynamicObjectEffectProcessor();
 		NoticeHandler();
 		//SpecialEventHandler();
-		
+		if (markX != -1 && markY != -1) DeleteMark();
 		if (m_bIsCTFEvent || bDeathmatch || c_team->bteam || bShinning || _drop_inhib || _candy_boost ||
 			_revelation || _city_teleport || m_bHappyHour || m_bFuryHour)
 		{
@@ -3002,6 +2958,14 @@ void CGame::OnTimer(char cType)
 	}
 }
 
+void CGame::DeleteMark()
+{
+	DWORD dwTime = timeGetTime();
+	if (dwTime < dwMarkTime) return;
+	markX = -1;
+	markY = -1;
+}
+
 // Centu - Crusade end in 1h30
 void CGame::CrusadeEnd()
 {
@@ -3093,6 +3057,11 @@ void CGame::CheckClientResponseTime()
 						RequestTeleportHandler(i, "2", "elvine", -1, -1, true);
 					else
 						RequestTeleportHandler(i, "2", "aresden", -1, -1, true);
+				}
+
+				if (markX == -1 && markY == -1)
+				{
+					minimap_clear_mark(i);
 				}
 
 				m_pClientList[i]->m_iTimeLeft_ShutUp--;
@@ -6487,12 +6456,12 @@ DPDC_STOP_DECODING:;
 	if (bRet == FALSE) {
 		GetMapInitialPoint(m_pClientList[iClientH]->m_cMapIndex, &m_pClientList[iClientH]->m_sX, &m_pClientList[iClientH]->m_sY, m_pClientList[iClientH]->m_cLocation);
 	}
-	if ((m_pClientList[iClientH]->m_iStr < 10) || (m_pClientList[iClientH]->m_iStr > m_sCharStatLimit - 11)) return FALSE;
-	if ((m_pClientList[iClientH]->m_iDex < 10) || (m_pClientList[iClientH]->m_iDex > m_sCharStatLimit - 11)) return FALSE;
-	if ((m_pClientList[iClientH]->m_iVit < 10) || (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit-11)) return FALSE;
-	if ((m_pClientList[iClientH]->m_iInt < 10) || (m_pClientList[iClientH]->m_iInt > m_sCharStatLimit - 11)) return FALSE;
-	if ((m_pClientList[iClientH]->m_iMag < 10) || (m_pClientList[iClientH]->m_iMag > m_sCharStatLimit - 11)) return FALSE;
-	if ((m_pClientList[iClientH]->m_iCharisma < 10) || (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit-11)) return FALSE;
+	if ((m_pClientList[iClientH]->m_iStr < 10) || (m_pClientList[iClientH]->m_iStr > m_sCharStatLimit)) return FALSE;
+	if ((m_pClientList[iClientH]->m_iDex < 10) || (m_pClientList[iClientH]->m_iDex > m_sCharStatLimit)) return FALSE;
+	if ((m_pClientList[iClientH]->m_iVit < 10) || (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit)) return FALSE;
+	if ((m_pClientList[iClientH]->m_iInt < 10) || (m_pClientList[iClientH]->m_iInt > m_sCharStatLimit)) return FALSE;
+	if ((m_pClientList[iClientH]->m_iMag < 10) || (m_pClientList[iClientH]->m_iMag > m_sCharStatLimit)) return FALSE;
+	if ((m_pClientList[iClientH]->m_iCharisma < 10) || (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit)) return FALSE;
 	
 	/*int cStatPointTotal = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
 		m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma;
@@ -10754,22 +10723,22 @@ void CGame::LevelUpSettingsHandler(int iClientH, char * pData, DWORD dwMsgSize)
 	}
 
 	// Level-Up Setting°ª¿¡ ¿À·ù°¡ ÀÖ´ÂÁö °Ë»çÇÑ´Ù.
-	if ((m_pClientList[iClientH]->m_iStr + cStr > m_sCharStatLimit - 11) || (cStr < 0))
+	if ((m_pClientList[iClientH]->m_iStr + cStr > m_sCharStatLimit) || (cStr < 0))
 		return;
 
-	if ((m_pClientList[iClientH]->m_iDex + cDex > m_sCharStatLimit - 11) || (cDex < 0))
+	if ((m_pClientList[iClientH]->m_iDex + cDex > m_sCharStatLimit) || (cDex < 0))
 		return;
 
-	if ((m_pClientList[iClientH]->m_iInt + cInt > m_sCharStatLimit - 11) || (cInt < 0))
+	if ((m_pClientList[iClientH]->m_iInt + cInt > m_sCharStatLimit) || (cInt < 0))
 		return;
 
-	if ((m_pClientList[iClientH]->m_iVit + cVit > m_sCharStatLimit - 11) || (cVit < 0))
+	if ((m_pClientList[iClientH]->m_iVit + cVit > m_sCharStatLimit) || (cVit < 0))
 		return;
 
-	if ((m_pClientList[iClientH]->m_iMag + cMag > m_sCharStatLimit - 11) || (cMag < 0))
+	if ((m_pClientList[iClientH]->m_iMag + cMag > m_sCharStatLimit) || (cMag < 0))
 		return;
 
-	if ((m_pClientList[iClientH]->m_iCharisma + cChar > m_sCharStatLimit - 11) || (cChar < 0))
+	if ((m_pClientList[iClientH]->m_iCharisma + cChar > m_sCharStatLimit) || (cChar < 0))
 		return;
 
 	/*int iTotalSetting = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit + 
@@ -15245,8 +15214,8 @@ void CGame::AdminOrder_CloseConn(int iClientH, char * pData, DWORD dwMsgSize)
 			}
 
 			// Admin Log
-			wsprintf(G_cTxt, "Admin Order(%s): Close Conn", m_pClientList[iClientH]->m_cCharName);
-			PutAdminLogFileList(G_cTxt);
+			/*wsprintf(G_cTxt, "Admin Order(%s): Close Conn", m_pClientList[iClientH]->m_cCharName);
+			PutAdminLogFileList(G_cTxt);*/
 
 			delete pStrTok;
 			return;
@@ -22206,7 +22175,7 @@ BOOL CGame::bReadSettingsConfigFile(char * cFn)
                break;
 
 			case 16: 
-               m_sCharStatLimit = 11 + atoi(token); 
+               m_sCharStatLimit = atoi(token); 
                if (m_sCharStatLimit == 0) m_sCharStatLimit = 200; 
                cReadMode = 0;
                break;
@@ -28545,12 +28514,123 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		return;*/
 		break;
 
+	case 70: // Centuu - mark on minimap
+		// X = iOption2
+		// Y = iOption3
+		// Map = cName
+
+		markX = iOption2;
+		markY = iOption3;
+		minimap_clear_mark(iClientH);
+		minimap_update_mark(iClientH);
+		dwMarkTime = timeGetTime() + 10 * 60 * 1000;
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Mark success.");
+		break;
+
 	default:
 		//return;
 		break;
 	}
-
 }
+
+void CGame::minimap_clear_mark(int client)
+{
+	char cData[56];
+	DWORD* dwp;
+	WORD* wp;
+	char* cp;
+	int* ip;
+	auto p = m_pClientList[client];
+	if (!p) return;
+
+	if (!bShinning && p->m_iGuildRank != -1)
+	{
+		if (!p->IsInMap("cityhall_1") && !p->IsInMap("cityhall_2") && !p->IsInMap("arejail") && !p->IsInMap("elvjail") && !p->IsInMap("default"))
+		{
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			*wp = MINIMAPORANGE_CLEAR;
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				//if (pi == p) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				if (strcmp(pi->m_cGuildName, "NONE") == 0) continue;
+				if (strcmp(pi->m_cGuildName, p->m_cGuildName) != 0) continue;
+
+				pi->m_pXSock->iSendMsg(cData, 10);
+			}
+		}
+	}
+}
+
+void CGame::minimap_update_mark(int client)
+{
+	char cData[56];
+	DWORD* dwp;
+	WORD* wp;
+	char* cp;
+	int* ip;
+	short* sp;
+	auto p = m_pClientList[client];
+	if (!p) return;
+
+	if (markX == -1 && markY == -1) return;
+
+	if (!bShinning && p->m_iGuildRank != -1)
+	{
+		if (!p->IsInMap("cityhall_1") && !p->IsInMap("cityhall_2") && !p->IsInMap("arejail") && !p->IsInMap("elvjail") && !p->IsInMap("default"))
+		{
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+
+			*wp = MINIMAPORANGE_UPDATE;
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			ip = (int*)cp;
+			*ip = client;
+			cp += 4;
+
+			sp = (short*)cp;
+			*sp = markX;
+			cp += 2;
+			sp = (short*)cp;
+			*sp = markY;
+			cp += 2;
+
+			for (int i = 0; i < DEF_MAXCLIENTS; i++)
+			{
+				auto pi = m_pClientList[i];
+
+				if (!pi) continue;
+
+				//if (pi == p) continue;
+
+				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+
+				if (strcmp(pi->m_cGuildName, "NONE") == 0) continue;
+				if (strcmp(pi->m_cGuildName, p->m_cGuildName) != 0) continue;
+
+				pi->m_pXSock->iSendMsg(cData, 14);
+			}
+		}
+	}
+}
+
 //Magn0S:: Command to Add GM
 void CGame::AdminOrder_AddGM(int iClientH, char* pData, DWORD dwMsgSize)
 {

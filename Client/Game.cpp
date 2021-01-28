@@ -27116,6 +27116,14 @@ void CGame::NotifyMsgHandler(char * pData)
 		minimapgreen_update(pData + 6);
 		break;
 
+	case MINIMAPORANGE_CLEAR:
+		minimaporange_clear(pData + 6);
+		break;
+
+	case MINIMAPORANGE_UPDATE:
+		minimaporange_update(pData + 6);
+		break;
+
 	/*case MINIMAPYELLOW_CLEAR:
 		minimapyellow_clear(pData + 6);
 		break;
@@ -29993,18 +30001,27 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 	}
 	if( shX < 30 || shY < 30 ) return;
 	if( shX > m_pMapData->m_sMapSizeX-30 || shY > m_pMapData->m_sMapSizeY-30 ) return;
+	
+	//Magn0S:: Add to double click in map and Auto-TP
+	//if ((strcmp(m_cPlayerName, "Magn0S[GM]") == 0) || (strcmp(m_cPlayerName, "Centuu[GM]") == 0) || (strcmp(m_cPlayerName, "[GM1]") == 0)) {
+	if (m_iAdminUserLevel > 0)
+	{
+		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 29, shX, shY, m_cMapName);
+		return;
+	}
+
+	if ((m_iGuildRank == 0 || m_iGuildRank == 3) && m_bCtrlPressed)
+	{
+		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 70, shX, shY, NULL);
+		return;
+	}
+	
 	if( (m_bRunningMode==TRUE) && (m_iSP>0) )
 		m_cCommand = DEF_OBJECTRUN;
 	else m_cCommand = DEF_OBJECTMOVE;
 	m_sCommX = shX;
 	m_sCommY = shY;
 	GetPlayerTurn();
-
-	//Magn0S:: Add to double click in map and Auto-TP
-	//if ((strcmp(m_cPlayerName, "Magn0S[GM]") == 0) || (strcmp(m_cPlayerName, "Centuu[GM]") == 0) || (strcmp(m_cPlayerName, "[GM1]") == 0)) {
-	if (m_iAdminUserLevel > 0) {
-		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 29, shX, shY, m_cMapName);
-	}
 }
 
 void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)

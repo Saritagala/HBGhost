@@ -679,6 +679,9 @@ public:
 	void minimapyellow_update(char* cp);
 	void minimapyellow_clear(char* cp);
 
+	void minimaporange_update(char* cp);
+	void minimaporange_clear(char* cp);
+
 	class Minimap {
 	public:
 		Minimap() {}
@@ -763,6 +766,23 @@ public:
 		void Clear();
 		void Remove(int handle);
 	} m_minimapyellow;
+
+	class MinimapOrange {
+	public:
+		MinimapOrange() {}
+		~MinimapOrange() {}
+
+		struct Unit {
+			Unit() {}
+			short x, y;
+			int id;
+			DWORD time;
+		};
+
+		std::vector<Unit> list;
+		void Clear();
+		void Remove(int handle);
+	} m_minimaporange;
 
 	char m_cFriends[13][10];
 	int m_iTotalFriends;

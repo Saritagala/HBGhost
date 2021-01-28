@@ -1136,7 +1136,12 @@ private:
 	BOOL var_89C, var_8A0;
 	BOOL m_bReceivedItemList;
 
-	
+	void minimap_update_mark(int client);
+	void minimap_clear_mark(int client);
+	void DeleteMark();
+
+	int markX = -1, markY = -1;
+	DWORD dwMarkTime = 0;
 
 	// MORLA 2.2 - Deathmach Game
 	int iDGtop1,iDGtop2,iDGtop3,iDGtop4,iDGtop5,iDGtop6,iDGtop7,iDGtop8,iDGtop9,iDGtop10;
