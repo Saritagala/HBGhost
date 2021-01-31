@@ -9898,6 +9898,12 @@ void CGame::PointCommandHandler(int indexX, int indexY, char cItemID)
 		else
 		{
 			PlaySound('E', 14, 5);
+			for (int i = 0; i < m_iTotalFriends; i++) {
+				if (strcmp(m_cMCName, m_cFriends[i]) == 0) {
+					AddEventList("This friend is already added.", 10);
+					return;
+				}
+			}
 			memcpy(m_cFriends[m_iTotalFriends], m_cMCName, 10);
 			m_iTotalFriends++;
 			m_stDialogBoxInfo[43].sV1 = 0;
@@ -12268,6 +12274,8 @@ void CGame::DrawDialogBox_GuildMenu(short msX, short msY)
 
 		if (iGetTopDialogBoxIndex() != 7)
 			PutString(sX + 75, sY + 140, m_cGuildName, RGB(255, 255, 255), 16, FALSE, 2);
+
+		PutAlignedString(sX + 24, sX + 239, sY + 175, "Making a Guild costs 100.000 Gold.", 55, 25, 25);//"
 
 		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY)) {
 			if ((strcmp(m_cGuildName, "NONE") == 0) || (strlen(m_cGuildName) == 0)) {
@@ -19821,6 +19829,9 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 			case 46: // VAMP - arena restart
 				DrawDialogBox_ArenaRestart(msX, msY, msZ, cLB);
 				break;
+			case 47:
+				DrawDialogBox_SummonGuild(msX, msY);
+				break;
 			case 50: // Snoopy: Resurection?
 				DrawDialogBox_Resurect(msX, msY);
 				break;
@@ -21304,6 +21315,17 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 		}
 		break;
 
+	case 47: 
+		if (m_bIsDialogEnabled[47] == FALSE)
+		{
+			m_stDialogBoxInfo[47].sX = 185;
+			m_stDialogBoxInfo[47].sY = 200;
+			m_stDialogBoxInfo[47].cMode = 0;
+			m_stDialogBoxInfo[47].sView = 0;
+			m_bSkillUsingStatus = FALSE;
+		}
+		break;
+
 	case 50: // Snoopy: Resurection
 		if (m_bIsDialogEnabled[50] == FALSE)
 		{
@@ -21479,6 +21501,48 @@ void CGame::DlgBoxClick_ArenaRestart(short msX, short msY)
 	}
 }
 
+void CGame::DrawDialogBox_SummonGuild(short msX, short msY)
+{
+	short sX, sY;
+	char cTemp[51];
+
+	sX = m_stDialogBoxInfo[47].sX;
+	sY = m_stDialogBoxInfo[47].sY;
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME5, sX, sY, 2);
+
+	PutString(sX + 10, sY + 20, "Your guild has requested your presence,", RGB(4,0,50));
+	wsprintf(cTemp,	"Do you want to teleport? Respond in %d sec..", sSummonGuild);
+	PutString(sX + 10, sY + 35, cTemp, RGB(4,0,50));
+
+	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 30, sY + 55, 19);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 30, sY + 55, 18);
+
+	if ((msX >= sX + 170) && (msX <= sX + 170 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 170, sY + 55, 3);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 170, sY + 55, 2);
+}
+
+
+void CGame::DlgBoxClick_SummonGuild(short msX, short msY)
+{
+	short sX, sY;
+
+	sX = m_stDialogBoxInfo[47].sX;
+	sY = m_stDialogBoxInfo[47].sY;
+	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+	{   // yes
+		bSendCommand(MSGID_REQUEST_SUMMONGUILD);
+		DisableDialogBox(47);
+		PlaySound('E', 14, 5);
+	}
+	else if ((msX >= sX + 170) && (msX <= sX + 170 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
+	{	// no
+		DisableDialogBox(47);
+		PlaySound('E', 14, 5);
+	}
+}
+
 void CGame::DisableDialogBox(int iBoxID)
 {
 	int i;
@@ -21625,6 +21689,11 @@ void CGame::DisableDialogBox(int iBoxID)
 		cStateChange2 = 0;
 		cStateChange3 = 0;
 
+		break;
+
+	case 47:
+		sSummonGuild = 0;
+		bSummonGuild = FALSE;
 		break;
 
 	}
@@ -21873,9 +21942,7 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 				AddEventList("Only available for GuildMaster or Summoner.", 10);
 				return;
 			}
-			ZeroMemory(G_cTxt, sizeof(G_cTxt));
-			wsprintf(G_cTxt, "/summonguild %s", m_cGuildName);
-			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, G_cTxt);
+			bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, "/summonguild");
 
 		}
 		iNext += 1;

@@ -752,7 +752,7 @@ private:
 
 	void RequestResurrectPlayer(int iClientH, bool bResurrect);
 
-	void AdminOrder_SummonGuild(int iClientH, char* pData, DWORD dwMsgSize);
+	void AdminOrder_SummonGuild(int iClientH);
 
 	void GetDkSet(int iClientH);
 
@@ -875,7 +875,20 @@ private:
 	// v1.4311-3 변수 선언 사투장에 들어갔을때 운영자 명령어로 강콜 않되게 함.
 	int  m_iFightzoneNoForceRecall;
 
-	
+	struct {
+		int markX, markY;
+		char cGuildName[21], cMap[11];
+		DWORD dwMarkTime;
+	}m_stGuildInfo[DEF_MAXGUILDS];
+
+	int ObtenerX(char* pGuild);
+	int ObtenerY(char* pGuild);
+	int ObtenerID(char* pGuild);
+
+	struct {
+		int sX, sY;
+		char cGuildName[21], cMap[11];
+	}m_stSummonGuild[DEF_MAXGUILDS];
 
 	int	  m_iStrategicStatus;
 
@@ -1139,9 +1152,6 @@ private:
 	void minimap_update_mark(int client);
 	void minimap_clear_mark(int client);
 	void DeleteMark();
-
-	int markX = -1, markY = -1;
-	DWORD dwMarkTime = 0;
 
 	// MORLA 2.2 - Deathmach Game
 	int iDGtop1,iDGtop2,iDGtop3,iDGtop4,iDGtop5,iDGtop6,iDGtop7,iDGtop8,iDGtop9,iDGtop10;

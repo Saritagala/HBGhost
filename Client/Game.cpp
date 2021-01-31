@@ -310,6 +310,10 @@ CGame::CGame()
 	m_stDialogBoxInfo[28].sSizeX = 258;
 	m_stDialogBoxInfo[28].sSizeY = 339;
 
+	//
+	// 29 RESERVED FOR GAUGE PANEL
+	//
+
 	//Icon Pannel
 #ifdef RES_HIGH
 	m_stDialogBoxInfo[30].sX = 0;
@@ -417,6 +421,11 @@ CGame::CGame()
 	m_stDialogBoxInfo[46].sY = 200;
 	m_stDialogBoxInfo[46].sSizeX = 270;
 	m_stDialogBoxInfo[46].sSizeY = 105;
+
+	m_stDialogBoxInfo[47].sX = 185;
+	m_stDialogBoxInfo[47].sY = 200;
+	m_stDialogBoxInfo[47].sSizeX = 270;
+	m_stDialogBoxInfo[47].sSizeY = 105;
 
 	// Snoopy: Resurection
 	m_stDialogBoxInfo[50].sX = 185 + SCREENX;
@@ -4749,6 +4758,9 @@ BOOL CGame::_bCheckDlgBoxClick(short msX, short msY)
 				break;
 			case 28:
 				DlgBoxClick_Quest(msX, msY);
+				break;
+			case 47:
+				DlgBoxClick_SummonGuild(msX, msY);
 				break;
 			case 30:
 				DlgBoxClick_IconPannel(msX, msY);
@@ -9732,6 +9744,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 	iShieldGlare = (_tmp_sAppr4 & 0x0003);
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInvy = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInvy = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInvy = TRUE;
 		else if (_revelation) bInvy = TRUE;
@@ -10270,8 +10283,9 @@ BOOL   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, BO
 	iShieldGlare = (_tmp_sAppr4 & 0x0003);
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
-		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
+		else if ( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
 		else if (_revelation) bInv = TRUE;
  		else return FALSE;
 	}
@@ -11044,6 +11058,7 @@ BOOL   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, BOOL 
 
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
 		else if (_revelation) bInv = TRUE;
@@ -11291,6 +11306,7 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 	iShieldGlare = (_tmp_sAppr4 & 0x0003);
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
 		else if (_revelation) bInv = TRUE;
@@ -12786,6 +12802,7 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 	iShieldGlare = (_tmp_sAppr4 & 0x0003);
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
 		else if (_revelation) bInv = TRUE;
@@ -13462,6 +13479,7 @@ BOOL CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, BOOL
 	iShieldGlare = (_tmp_sAppr4 & 0x0003);
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
 		else if (_revelation) bInv = TRUE;
@@ -14280,6 +14298,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 	iShieldGlare = (_tmp_sAppr4 & 0x0003);
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
 		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; // beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = TRUE;
 		else if (_revelation) bInv = TRUE;
@@ -16002,7 +16021,10 @@ BOOL CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, BOOL bTrans
 	if ((_tmp_iStatus & 0x10) != 0)
 	{
 		if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = TRUE;
+		else if (_iGetFOE(_tmp_iStatus) == 2) return FALSE;
+		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = TRUE; // beholder neck
 		else if (_iGetFOE(_tmp_iStatus) == 1) bInv = TRUE;
+		else if (_revelation) bInv = TRUE;
 		else return FALSE;
 	}
 
@@ -17753,6 +17775,9 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 	if (m_iHP > 0) {
 		if ((m_iLU_Point > 0) && (m_bIsDialogEnabled[12] == FALSE)) // Level-Up button
 			PutString_SprFont2(720 + 5, 510, "Level Up!", (timeGetTime() / 3) % 255, (timeGetTime() / 3) % 255, 0);
+	
+		if (bSummonGuild && !m_bIsDialogEnabled[47])
+			PutString_SprFont2(720 + 5, 490, "Message!", (timeGetTime() / 3) % 255, (timeGetTime() / 3) % 255, 0);
 	}
 	else
 	{
@@ -22722,7 +22747,7 @@ void CGame::NoticementHandler(char * pData)
 }
 
 int CGame::_iGetFOE(int iStatus)
-{	BOOL bPK, bCitizen, bAresden, bHunter;
+{	BOOL bPK, bCitizen, bAresden, bHunter, bGM;
 	if( m_iPKCount != 0 ) return -1;
 	//	CLEROTH			0x00000000 status is int NOT short ( 3.51 )
 	if( iStatus & 0x80000000 ) bPK = TRUE;
@@ -22733,6 +22758,12 @@ int CGame::_iGetFOE(int iStatus)
 	else bAresden = FALSE;
 	if( iStatus & 0x10000000 ) bHunter = TRUE;
 	else bHunter = FALSE;
+
+	// Centuu
+	if (iStatus & 0x00040000) bGM = TRUE;
+	else bGM = FALSE;
+	if (bGM) return 2;
+
 	if( bPK == TRUE ) return -2;
 	if( bCitizen == FALSE ) return 0;
 	if( m_bCitizen == FALSE ) return 0;
@@ -27124,6 +27155,11 @@ void CGame::NotifyMsgHandler(char * pData)
 		minimaporange_update(pData + 6);
 		break;
 
+	case DEF_NOTIFY_SUMMONGUILD:
+		bSummonGuild = TRUE;
+		sSummonGuild = 30;
+		break;
+
 	/*case MINIMAPYELLOW_CLEAR:
 		minimapyellow_clear(pData + 6);
 		break;
@@ -30004,7 +30040,7 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 	
 	//Magn0S:: Add to double click in map and Auto-TP
 	//if ((strcmp(m_cPlayerName, "Magn0S[GM]") == 0) || (strcmp(m_cPlayerName, "Centuu[GM]") == 0) || (strcmp(m_cPlayerName, "[GM1]") == 0)) {
-	if (m_iAdminUserLevel > 0)
+	if (m_iAdminUserLevel > 0 && !m_bCtrlPressed)
 	{
 		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 29, shX, shY, m_cMapName);
 		return;
@@ -30012,7 +30048,7 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 
 	if ((m_iGuildRank == 0 || m_iGuildRank == 3) && m_bCtrlPressed)
 	{
-		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 70, shX, shY, NULL);
+		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 70, shX, shY, m_cMapName);
 		return;
 	}
 	
@@ -31800,6 +31836,19 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 			{
 				m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_PRESSED;
 				// Snoopy: Added Golden LevelUp
+				if ((msX > 720 + 5) && (msX < 780 + 5) && (msY > 490) && (msY < 505))
+				{
+					if (m_iHP > 0) 
+					{
+						if (bSummonGuild && !m_bIsDialogEnabled[47])
+						{
+							EnableDialogBox(47, NULL, NULL, NULL);
+							m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+							return;
+						}
+					}
+					
+				}
 #ifdef RES_HIGH
 				if ((msX > 720 + 5) && (msX < 780 + 5) && (msY > 510) && (msY < 525))
 #else
@@ -31807,11 +31856,14 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 #endif
 
 				{
-					if (m_iHP > 0) {
+					if (m_iHP > 0) 
+					{
 						if ((m_bIsDialogEnabled[12] != TRUE) && (m_iLU_Point > 0))
 						{
 							EnableDialogBox(12, NULL, NULL, NULL);
-							//PlaySound('E', 14, 5);
+							PlaySound('E', 14, 5);
+							m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+							return;
 						}
 					}
 					else // Centuu : restart
@@ -31819,8 +31871,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						if (strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0)
 						{
 							EnableDialogBox(46, NULL, NULL, NULL);
-							//PlaySound('E', 14, 5);
-
+							
 						}
 						else{
 							if (m_cRestartCount == -1)
@@ -31829,13 +31880,15 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 								m_dwRestartCountTime = timeGetTime();
 								wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 								AddEventList(G_cTxt, 10);
-								//PlaySound('E', 14, 5);
+								
 
 							}
 						}
+						PlaySound('E', 14, 5);
+						m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+						return;
 					}
-					m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
-					return;
+					
 				}
 			}
 			else if (iRet == -1)
@@ -33493,7 +33546,7 @@ void CGame::UpdateScreen_OnGame()
 	if (m_cGameModeCount == 0)
 	{
 		m_DDraw.ClearBackB4();
-		m_dwCheckPingTime = m_dwFPStime = m_dwCheckConnTime = m_dwCheckSprTime = m_dwCheckChatTime = m_dwAuraTime = m_dwCheckWhoTime = dwTime;
+		m_dwCheckPingTime = m_dwFPStime = m_dwCheckConnTime = m_dwCheckSprTime = m_dwCheckChatTime = m_dwAuraTime = m_dwCheckWhoTime = m_dwSummonTime = dwTime;
 		m_sFrameCount = 0;
 		if (m_bMusicStat) StartBGM();
 	}
@@ -34262,10 +34315,19 @@ void CGame::UpdateScreen_OnGame()
 		m_dwAuraTime = dwTime;
 	}
 
+	if (dwTime - m_dwSummonTime > 1000)
+	{
+		if (sSummonGuild == 0) {
+			sSummonGuild = 0;
+			bSummonGuild = FALSE;
+			if (m_bIsDialogEnabled[47]) DisableDialogBox(47);
+		}
+		else sSummonGuild--;
+		m_dwSummonTime = dwTime;
+	}
+
 	if (iUpdateRet != 0)
 	{
-		
-
 		if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
 	}
 

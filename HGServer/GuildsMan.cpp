@@ -46,6 +46,43 @@ void CGame::RequestGuildNameHandler(int iClientH, int iObjectID, int iIndex)
 	}
 }
 
+int CGame::ObtenerX(char* pGuild)
+{
+	for (int i = 0; i < DEF_MAXGUILDS; i++)
+	{
+		if (string(m_stGuildInfo[i].cGuildName) == "NONE") continue;
+		if (string(m_stGuildInfo[i].cGuildName) == pGuild)
+		{
+			return m_stGuildInfo[i].markX;
+		}
+	}
+	return -1;
+}
+int CGame::ObtenerY(char* pGuild)
+{
+	for (int i = 0; i < DEF_MAXGUILDS; i++)
+	{
+		if (string(m_stGuildInfo[i].cGuildName) == "NONE") continue;
+		if (string(m_stGuildInfo[i].cGuildName) == pGuild)
+		{
+			return m_stGuildInfo[i].markY;
+		}
+	}
+	return -1;
+}
+int CGame::ObtenerID(char* pGuild)
+{
+	for (int i = 0; i < DEF_MAXGUILDS; i++)
+	{
+		if (string(m_stGuildInfo[i].cGuildName) == "NONE") continue;
+		if (string(m_stGuildInfo[i].cGuildName) == pGuild)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 void CGame::RequestGuildMemberRank(int iClientH, char *pName, int iIndex)
 {
 	if (m_pClientList[iClientH] == NULL) return;
@@ -752,78 +789,74 @@ void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, DWORD dwMsgSize)
 	delete pStrTok;
 }
 
-void CGame::AdminOrder_SummonGuild(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::AdminOrder_SummonGuild(int iClientH)
 {
-	char   seps[] = "= \t\n";
-	char* token, * cp, cBuff[256], cMapName[11];
-	char cGuildName[20];
-	WORD* wp;
+	char cTemp[51], cMapName[11], cGuildName[20];
 	int    pX, pY, i;
-	class  CStrTok* pStrTok;
-	DWORD  dwGoldCount;
-
+	
 	if (m_pClientList[iClientH] == NULL) return;
-	if ((dwMsgSize) <= 0) return;
-	/*if ((m_pClientList[iClientH]->m_iAdminUserLevel < 4)
-		&& (m_pClientList[iClientH]->m_iAdminUserLevel != 0))
+	
+	if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 2) return;
+	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");  // dwGoldCount = player gold
+	ZeroMemory(cTemp, sizeof(cTemp));
+	if (m_iSummonGuildCost > dwGoldCount)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
-		return;
-	}*/
-	//if (m_pClientList[iClientH]->m_iAdminUserLevel == 0) // Check if gm:
-	//{
-		if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 2) return;
-		dwGoldCount = dwGetItemCount(iClientH, "Gold");  // dwGoldCount = player gold
-		if (m_iSummonGuildCost > dwGoldCount)
-		{
-			return;
-		}
-		else // if summonguildcost is less than player gold
-		{
-			SetItemCount(iClientH, "Gold", dwGoldCount - (DWORD)m_iSummonGuildCost); // reduce gold by summonguildcost   
-		}
-	//}
-	ZeroMemory(cBuff, sizeof(cBuff));
-	memcpy(cBuff, pData, dwMsgSize);
-	pStrTok = new class CStrTok(cBuff, seps);
-	token = pStrTok->pGet();
-	token = pStrTok->pGet();
-	if (token == NULL)
-	{
-		delete pStrTok;
+		wsprintf(cTemp, "Not enough gold. Required %d Gold", m_iSummonGuildCost);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cTemp);
 		return;
 	}
+	else // if summonguildcost is less than player gold
+	{
+		SetItemCount(iClientH, "Gold", dwGoldCount - (DWORD)m_iSummonGuildCost); // reduce gold by summonguildcost   
+		wsprintf(cTemp, "You've used %d Gold!", m_iSummonGuildCost);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cTemp);
+	}
+	
 	pX = m_pClientList[iClientH]->m_sX;
 	pY = m_pClientList[iClientH]->m_sY;
+	
 	ZeroMemory(cMapName, sizeof(cMapName));
 	memcpy(cMapName, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, 11);
+	
 	ZeroMemory(cGuildName, sizeof(cGuildName));
-	if (strlen(token) > 20)
-		memcpy(cGuildName, token, 20);
-	else memcpy(cGuildName, token, strlen(token));
-	for (i = 0; i < DEF_MAXCLIENTS; i++)
-		if ((m_pClientList[i] != NULL) && (strcmp(m_pClientList[i]->m_cGuildName, token) == 0))
+	memcpy(cGuildName, m_pClientList[iClientH]->m_cGuildName, 21);
+	
+	BOOL bExiste = FALSE;
+	for (i = 0; i < DEF_MAXGUILDS; i++)
+	{
+		if (string(m_stSummonGuild[i].cGuildName) == "NONE") continue;
+		if (string(m_stSummonGuild[i].cGuildName) == cGuildName)
 		{
-			wsprintf(G_cTxt, "PC(%s) summoned by Guild(%s) to %s.", m_pClientList[i]->m_cCharName, cGuildName, cMapName);
-			PutLogList(G_cTxt);
-			RequestTeleportHandler(i, "2   ", cMapName, pX, pY);
+			m_stSummonGuild[i].sX = pX;
+			m_stSummonGuild[i].sY = pY;
+			strcpy(m_stSummonGuild[i].cMap, cMapName);
+			bExiste = TRUE;
+			break;
 		}
-	wsprintf(G_cTxt, "Guild(%s) summoned by PC(%s) to %s.", cGuildName, m_pClientList[iClientH]->m_cCharName, cMapName);
+	}
+	if (!bExiste)
+	{
+		for (i = 0; i < DEF_MAXGUILDS; i++)
+		{
+			if (string(m_stSummonGuild[i].cGuildName) == "NONE")
+			{
+				strcpy(m_stSummonGuild[i].cGuildName, cGuildName);
+				m_stSummonGuild[i].sX = pX;
+				m_stSummonGuild[i].sY = pY;
+				strcpy(m_stSummonGuild[i].cMap, cMapName);
+				break;
+			}
+		}
+	}
+
+	for (i = 0; i < DEF_MAXCLIENTS; i++) 
+	{
+		if (i == iClientH) continue;
+		if ((m_pClientList[i] != NULL) && (strcmp(m_pClientList[i]->m_cGuildName, cGuildName) == 0))
+		{
+			SendNotifyMsg(NULL, i, DEF_NOTIFY_SUMMONGUILD, NULL, NULL, NULL, NULL);
+		}
+	}
+	wsprintf(G_cTxt, "Guild(%s) summoned by PC(%s) to %s(%d,%d).", cGuildName, m_pClientList[iClientH]->m_cCharName, cMapName, pX, pY);
 	PutLogList(G_cTxt);
-	ZeroMemory(cBuff, sizeof(cBuff));
-	cp = (char*)cBuff;
-	*cp = GSM_REQUEST_SUMMONGUILD;
-	cp++;
-	memcpy(cp, cGuildName, 20);
-	cp += 20;
-	memcpy(cp, cMapName, 10);
-	cp += 10;
-	wp = (WORD*)cp;
-	*wp = m_pClientList[iClientH]->m_sX;
-	cp += 2;
-	wp = (WORD*)cp;
-	*wp = m_pClientList[iClientH]->m_sY;
-	cp += 2;
-	bStockMsgToGateServer(cBuff, 35);
-	delete pStrTok;
 }

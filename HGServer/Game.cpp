@@ -142,6 +142,23 @@ CGame::CGame(HWND hWnd)
 		for(x = 0; x < DEF_MAXPARTYMEMBERS; x++) 
 			m_stPartyInfo[i].iIndex[x] = 0;
 	}
+
+	// Centuu
+	for (i = 0; i < DEF_MAXGUILDS; i++) {
+		m_stGuildInfo[i].markX = -1;
+		m_stGuildInfo[i].markY = -1;
+		strcpy(m_stGuildInfo[i].cGuildName, "NONE");
+		m_stGuildInfo[i].dwMarkTime = 0;
+		ZeroMemory(m_stGuildInfo[i].cMap, sizeof(m_stGuildInfo[i].cMap));
+	}
+
+	for (i = 0; i < DEF_MAXGUILDS; i++) {
+		m_stSummonGuild[i].sX = -1;
+		m_stSummonGuild[i].sY = -1;
+		strcpy(m_stSummonGuild[i].cGuildName, "NONE");
+		ZeroMemory(m_stSummonGuild[i].cMap, sizeof(m_stSummonGuild[i].cMap));
+	}
+
 	//// End Highlight ///
 	m_iQueneHead = 0;
 	m_iQueneTail = 0;
@@ -2463,6 +2480,10 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	//Magn0S:: Update all events for Clients
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EVENTUPDATER, (int)bDeathmatch, (int)m_bIsCrusadeMode, (int)m_bIsApocalypseMode, NULL, (int)m_bIsHeldenianMode, (int)m_bIsCTFEvent);
 
+	//RefreshPartyCoords(iClientH);
+	minimap_update(iClientH);
+	minimap_update_mark(iClientH);
+
 	NotifyMapRestrictions(iClientH, false);
 
 	if (m_bIsCTFEvent) UpdateEventStatus();
@@ -2843,7 +2864,7 @@ void CGame::OnTimer(char cType)
 		DynamicObjectEffectProcessor();
 		NoticeHandler();
 		//SpecialEventHandler();
-		if (markX != -1 && markY != -1) DeleteMark();
+		DeleteMark();
 		if (m_bIsCTFEvent || bDeathmatch || c_team->bteam || bShinning || _drop_inhib || _candy_boost ||
 			_revelation || _city_teleport || m_bHappyHour || m_bFuryHour)
 		{
@@ -2961,9 +2982,16 @@ void CGame::OnTimer(char cType)
 void CGame::DeleteMark()
 {
 	DWORD dwTime = timeGetTime();
-	if (dwTime < dwMarkTime) return;
-	markX = -1;
-	markY = -1;
+	for (int i = 0; i < DEF_MAXGUILDS; i++)
+	{
+		if (string(m_stGuildInfo[i].cGuildName) == "NONE") continue;
+		if (dwTime < m_stGuildInfo[i].dwMarkTime) continue;
+		m_stGuildInfo[i].markX = -1;
+		m_stGuildInfo[i].markY = -1;
+		strcpy(m_stGuildInfo[i].cGuildName, "NONE");
+		m_stGuildInfo[i].dwMarkTime = 0;
+		ZeroMemory(m_stGuildInfo[i].cMap, sizeof(m_stGuildInfo[i].cMap));
+	}
 }
 
 // Centu - Crusade end in 1h30
@@ -3059,7 +3087,7 @@ void CGame::CheckClientResponseTime()
 						RequestTeleportHandler(i, "2", "aresden", -1, -1, true);
 				}
 
-				if (markX == -1 && markY == -1)
+				if (ObtenerX(m_pClientList[i]->m_cGuildName) == -1 && ObtenerY(m_pClientList[i]->m_cGuildName) == -1)
 				{
 					minimap_clear_mark(i);
 				}
@@ -8001,8 +8029,8 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 
 		}
 
-		else if (memcmp(cp, "/summonguild ", 13) == 0) {
-			AdminOrder_SummonGuild(iClientH, cp, dwMsgSize - 21);
+		else if (memcmp(cp, "/summonguild", 12) == 0) {
+			AdminOrder_SummonGuild(iClientH);
 			
 		}
 
@@ -9118,6 +9146,18 @@ DWORD * dwp, dwTimeRcv;
 
 			case MSGID_REQUEST_LEAVEARENA:
 				RequestLeaveArena(iClientH);
+				break;
+
+			case MSGID_REQUEST_SUMMONGUILD:
+				for (i = 0; i < DEF_MAXGUILDS; i++)
+				{
+					if (string(m_stSummonGuild[i].cGuildName) == "NONE") continue;
+					if (string(m_stSummonGuild[i].cGuildName) == m_pClientList[iClientH]->m_cGuildName)
+					{
+						RequestTeleportHandler(iClientH, "2   ", m_stSummonGuild[i].cMap, m_stSummonGuild[i].sX, m_stSummonGuild[i].sY);
+						break;
+					}
+				}
 				break;
 						
 			case MSGID_REQUEST_INITPLAYER:
@@ -23415,6 +23455,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	/* Centuu: msgs agrupados */
+	case DEF_NOTIFY_SUMMONGUILD:
 	case DEF_NOTIFY_TRAVELERLIMITEDLEVEL:
 	case DEF_NOTIFY_LIMITEDLEVEL:
 	case DEF_NOTIFY_BUILDITEMFAIL:
@@ -24645,7 +24686,8 @@ RTH_NEXTSTEP:;
 	// SNOOPY: Send gate positions if applicable.
 	Notify_ApocalypseGateState(iClientH);
 	RefreshPartyCoords(iClientH);
-
+	minimap_update(iClientH);
+	minimap_update_mark(iClientH);
 	NotifyMapRestrictions(iClientH, false);
 
 	//Magn0S:: NPC Info on Apoc
@@ -27907,6 +27949,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 	int i;
 	FILE* pFile;
 	char* token = NULL, cMsg[100] = {}, cIPtoBan[15] = {};
+	BOOL bExiste = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -28519,12 +28562,39 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 		// Y = iOption3
 		// Map = cName
 
-		markX = iOption2;
-		markY = iOption3;
+		for (i = 0; i < DEF_MAXGUILDS; i++)
+		{
+			if (string(m_stGuildInfo[i].cGuildName) == "NONE") continue;
+			if (string(m_stGuildInfo[i].cGuildName) == m_pClientList[iClientH]->m_cGuildName)
+			{
+				m_stGuildInfo[i].markX = iOption2;
+				m_stGuildInfo[i].markY = iOption3;
+				strcpy(m_stGuildInfo[i].cMap, cName);
+				m_stGuildInfo[i].dwMarkTime = timeGetTime() + 10 * 60 * 1000;
+				bExiste = TRUE;
+				break;
+			}
+		}
+		if (!bExiste)
+		{
+			for (i = 0; i < DEF_MAXGUILDS; i++)
+			{
+				if (string(m_stGuildInfo[i].cGuildName) == "NONE")
+				{
+					strcpy(m_stGuildInfo[i].cGuildName, m_pClientList[iClientH]->m_cGuildName);
+					m_stGuildInfo[i].markX = iOption2;
+					m_stGuildInfo[i].markY = iOption3;
+					strcpy(m_stGuildInfo[i].cMap, cName);
+					m_stGuildInfo[i].dwMarkTime = timeGetTime() + 10 * 60 * 1000;
+					break;
+				}
+			}
+		}
+
 		minimap_clear_mark(iClientH);
 		minimap_update_mark(iClientH);
-		dwMarkTime = timeGetTime() + 10 * 60 * 1000;
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Mark success.");
+		//
+		
 		break;
 
 	default:
@@ -28566,7 +28636,7 @@ void CGame::minimap_clear_mark(int client)
 
 				//if (pi == p) continue;
 
-				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+				//if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
 
 				if (strcmp(pi->m_cGuildName, "NONE") == 0) continue;
 				if (strcmp(pi->m_cGuildName, p->m_cGuildName) != 0) continue;
@@ -28588,10 +28658,15 @@ void CGame::minimap_update_mark(int client)
 	auto p = m_pClientList[client];
 	if (!p) return;
 
-	if (markX == -1 && markY == -1) return;
+	if (strcmp(p->m_cMapName, m_stGuildInfo[ObtenerID(p->m_cGuildName)].cMap) != 0)
+	{
+		minimap_clear_mark(client);
+		return;
+	}
 
 	if (!bShinning && p->m_iGuildRank != -1)
 	{
+		if (ObtenerX(p->m_cGuildName) == -1 && ObtenerY(p->m_cGuildName) == -1) return;
 		if (!p->IsInMap("cityhall_1") && !p->IsInMap("cityhall_2") && !p->IsInMap("arejail") && !p->IsInMap("elvjail") && !p->IsInMap("default"))
 		{
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
@@ -28606,10 +28681,10 @@ void CGame::minimap_update_mark(int client)
 			cp += 4;
 
 			sp = (short*)cp;
-			*sp = markX;
+			*sp = ObtenerX(p->m_cGuildName);
 			cp += 2;
 			sp = (short*)cp;
-			*sp = markY;
+			*sp = ObtenerY(p->m_cGuildName);
 			cp += 2;
 
 			for (int i = 0; i < DEF_MAXCLIENTS; i++)
@@ -28620,7 +28695,7 @@ void CGame::minimap_update_mark(int client)
 
 				//if (pi == p) continue;
 
-				if (pi->m_cMapIndex == -1 || pi->m_cMapIndex != p->m_cMapIndex)	continue;
+				if (pi->m_cMapIndex == -1 /*|| pi->m_cMapIndex != p->m_cMapIndex*/)	continue;
 
 				if (strcmp(pi->m_cGuildName, "NONE") == 0) continue;
 				if (strcmp(pi->m_cGuildName, p->m_cGuildName) != 0) continue;
@@ -29017,6 +29092,12 @@ void CGame::AdminOrder_SetAdminLvl(int iClientH, char* pData, DWORD dwMsgSize)
 		if ((m_pClientList[i] != NULL)
 			&& (memcmp(m_pClientList[i]->m_cCharName, cNick, strlen(cNick)) == 0))
 		{
+			if (m_pClientList[i]->m_iAdminUserLevel == 0)
+			{
+				delete pStrTok;
+				return;
+			}
+
 			oldpk = m_pClientList[i]->m_iAdminUserLevel;
 
 			if (atoi(cPK) >= 4)

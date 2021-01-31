@@ -153,6 +153,9 @@ class CGame
 {
 public:
 
+	void DrawDialogBox_SummonGuild(short msX, short msY);
+	void DlgBoxClick_SummonGuild(short msX, short msY);
+
 	BOOL m_bForceAttack;
 
 	void DrawDialogBox_Enchanting(int msX, int msY);
@@ -681,6 +684,10 @@ public:
 
 	void minimaporange_update(char* cp);
 	void minimaporange_clear(char* cp);
+
+	BOOL bSummonGuild = FALSE;
+	short sSummonGuild = 0;
+	DWORD m_dwSummonTime;
 
 	class Minimap {
 	public:
