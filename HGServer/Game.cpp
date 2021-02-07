@@ -298,8 +298,13 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 				fprintf(pFile, "banned-ip = %s", cIPtoBan);
 				fprintf(pFile, "\n");
 				fclose(pFile);
+				
 				//updates BannedList.cfg on the server
-				LocalUpdateConfigs(3);
+				//LocalUpdateConfigs(3);
+				for (auto x = 0; x < DEF_MAXBANNED; x++)
+					if (strlen(m_stBannedList[x].m_cBannedIPaddress) == 0)
+						strcpy(m_stBannedList[x].m_cBannedIPaddress, cIPtoBan);
+
 				delete m_pClientList[i];
 				m_pClientList[i] = NULL;
 				RemoveClientShortCut(i);
@@ -25099,7 +25104,10 @@ void CGame::AdminOrder_BanIP(int iClientH, char *pData, DWORD dwMsgSize)
 				fprintf(pFile, "\n");
 				fclose(pFile);
 			//updates BannedList.cfg on the server
-			LocalUpdateConfigs(3);
+			//LocalUpdateConfigs(3);
+				for (auto x = 0; x < DEF_MAXBANNED; x++)
+					if (strlen(m_stBannedList[x].m_cBannedIPaddress) == 0)
+						strcpy(m_stBannedList[x].m_cBannedIPaddress, cIPtoBan);
 			//disconnects player, and he can't connect again.. :)
 			DeleteClient(i, TRUE, TRUE);
 		}
@@ -25143,10 +25151,9 @@ void CGame::AdminOrder_BanPj(int iClientH, char* pData, DWORD dwMsgSize) // MORL
 	for(int i = 1; i < DEF_MAXCLIENTS; i++) {
 		if (m_pClientList[i] != NULL) {
 			if (memcmp(cPlayerName, m_pClientList[i]->m_cCharName, 10) == 0) {
-				if (m_pClientList[iClientH]->m_iAdminUserLevel > 0) {
-					wsprintf(cBuff,"GM Order(%s): Ban Player (%s)", m_pClientList[iClientH]->m_cCharName, m_pClientList[i]->m_cCharName);					
-					SendNotifyMsg(NULL, i, DEF_NOTIFY_MORLEARPJ, NULL, NULL, NULL, NULL); 
-				}
+				wsprintf(cBuff,"GM Order(%s): Ban Player (%s)", m_pClientList[iClientH]->m_cCharName, m_pClientList[i]->m_cCharName);					
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_MORLEARPJ, NULL, NULL, NULL, NULL); 
+				
 				break;
 			}
 		}
@@ -28274,7 +28281,10 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 					fprintf(pFile, "banned-ip = %s", cIPtoBan);
 					fprintf(pFile, "\n");
 					fclose(pFile);
-					LocalUpdateConfigs(3);
+					//LocalUpdateConfigs(3);
+					for (auto x = 0; x < DEF_MAXBANNED; x++)
+						if (strlen(m_stBannedList[x].m_cBannedIPaddress) == 0)
+							strcpy(m_stBannedList[x].m_cBannedIPaddress, cIPtoBan);
 					DeleteClient(i, TRUE, TRUE);
 					return;
 				}
@@ -28753,18 +28763,19 @@ void CGame::AdminOrder_AddGM(int iClientH, char* pData, DWORD dwMsgSize)
 			wsprintf(G_cTxt, "<%d> Added new GM: (%s)", i, cNickName);
 			PutLogList(G_cTxt);
 			//modifys cfg file
-			fprintf(pFile, "\nverified-admin = %s", cNickName);
+			fprintf(pFile, "verified-admin = %s", cNickName);
 			fprintf(pFile, "\n");
 			fclose(pFile);
 			//updates AdminList.cfg on the server
-			LocalUpdateConfigs(2);
+			//LocalUpdateConfigs(2);
 			ShowClientMsg(iClientH, "You have changed the Admin List.");
 			//kazin
-			for (auto x = 0; x < 10; x++)
+			for (auto x = 0; x < DEF_MAXADMINS; x++)
 				if (strlen(m_stAdminList[x].m_cGMName) == 0)
-					memcpy(m_stAdminList[x].m_cGMName, m_pClientList[i]->m_cCharName, 10);
+					strcpy(m_stAdminList[x].m_cGMName, cNickName);
 
 			m_pClientList[i]->m_iAdminUserLevel = level;
+			m_pClientList[i]->m_iStatus = m_pClientList[i]->m_iStatus | 0x00040000;
 		}
 	}
 	delete pStrTok;
