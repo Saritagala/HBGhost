@@ -1089,8 +1089,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	m_pClientList[iClientH]->m_iAddHP += iShieldHPrec;
 	m_pClientList[iClientH]->m_iAddSP += iShieldSPrec;
 	m_pClientList[iClientH]->m_iAddMP += iShieldMPrec;
-	//m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
-	m_pClientList[iClientH]->m_cHeroArmourBonus = 0;
+	m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
+	//m_pClientList[iClientH]->m_cHeroArmourBonus = 0;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HEROBONUS, m_pClientList[iClientH]->m_cHeroArmourBonus, NULL, NULL, NULL);
 	
 	// Snoopy: Bonus for Angels	
 	m_pClientList[iClientH]->m_iAddMR += m_pClientList[iClientH]->m_iAngelicInt;
@@ -10107,19 +10108,45 @@ int CGame::_cCheckHeroItemEquipped(int iClientH)
 	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor] == NULL) return 0;
 	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk] == NULL) return 0;
 
-	if (m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_bIsHero)
-		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_iHeroBonus;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 403 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 407 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 404 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 408 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 405 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 409 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 406 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 410 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 392 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 393 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 394 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 395)
+		iBonus += 2;
+		
+	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 411 || m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 415 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 412 || m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 416 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 413 || m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 417 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 414 || m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 418)
+		iBonus += 2;
+	
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 419 || m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 421 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 420 || m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 422)
+		iBonus += 2;
+	
+	if (m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 423 || m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 424 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 425 || m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 426)
+		iBonus += 2;
 
-	if (m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_bIsHero)
-		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_iHeroBonus;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 1061 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 1062 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 1063 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 1064 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 147 || m_pClientList[iClientH]->m_pItemList[sHeroHelm]->m_sIDnum == 148)
+		iBonus += 4;
 
-	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_bIsHero)
-		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_iHeroBonus;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 1065 || m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 1066 ||
+		m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 1067 || m_pClientList[iClientH]->m_pItemList[sHeroArmor]->m_sIDnum == 1068)
+		iBonus += 4;
 
-	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_bIsHero)
-		iBonus += m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_iHeroBonus;
+	if (m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 1069 || m_pClientList[iClientH]->m_pItemList[sHeroHauberk]->m_sIDnum == 1070)
+		iBonus += 4;
 
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HEROBONUS, iBonus, NULL, NULL, NULL);
+	if (m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 1071 || m_pClientList[iClientH]->m_pItemList[sHeroLeggings]->m_sIDnum == 1072)
+		iBonus += 4;
+
+	if (iBonus > 15) iBonus = 15;
+
 	return iBonus;
 }
 

@@ -20342,6 +20342,8 @@ BOOL CGame::bDlgBoxPress_Character(short msX, short msY)
 
 void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 {short sX, sY;
+int iReqHeroItemID;
+
 	sX = m_stDialogBoxInfo[13].sX;
 	sY = m_stDialogBoxInfo[13].sY;
 	switch (m_stDialogBoxInfo[13].cMode) {
@@ -20472,13 +20474,12 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 
 	// 3.51 Cityhall Menu - Request Hero's Items - Diuuude - fix by Drajwer
 	case 7:
- 		int iReqHeroItemID;
  		// Hero's Cape
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 95) && (msY <= sY + 110))
  		{	if(m_bAresden == TRUE) iReqHeroItemID = 400;
   			else iReqHeroItemID = 401;
-			ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
-			memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU47,strlen(DRAW_DIALOGBOX_CITYHALL_MENU47));
+			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU47,strlen(DRAW_DIALOGBOX_CITYHALL_MENU47));
   			m_stDialogBoxInfo[13].cMode = 11;
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
@@ -20489,8 +20490,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 404;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 405;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 406;
- 	 		ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
- 	 		memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU48,strlen(DRAW_DIALOGBOX_CITYHALL_MENU48));
+ 	 		//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+ 	 		//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU48,strlen(DRAW_DIALOGBOX_CITYHALL_MENU48));
  	 		m_stDialogBoxInfo[13].cMode = 11;
  	 		m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
  	 		PlaySound('E', 14, 5);
@@ -20501,8 +20502,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 408;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 409;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 410;
-  			ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
-  			memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU49,strlen(DRAW_DIALOGBOX_CITYHALL_MENU49));
+  			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+  			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU49,strlen(DRAW_DIALOGBOX_CITYHALL_MENU49));
   			m_stDialogBoxInfo[13].cMode = 11;
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
@@ -20513,8 +20514,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 412;
  	 		if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 413;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 414;
-  			ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
-  			memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU50,strlen(DRAW_DIALOGBOX_CITYHALL_MENU50));
+  			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+  			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU50,strlen(DRAW_DIALOGBOX_CITYHALL_MENU50));
   			m_stDialogBoxInfo[13].cMode = 11;
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
@@ -20525,8 +20526,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 416;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 417;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 418;
-  			ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
-  			memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU51,strlen(DRAW_DIALOGBOX_CITYHALL_MENU51));
+  			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+  			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU51,strlen(DRAW_DIALOGBOX_CITYHALL_MENU51));
   			m_stDialogBoxInfo[13].cMode = 11;
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
@@ -20537,8 +20538,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 	  		if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 420;
 	  		if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 421;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 422;
-  			ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
-  			memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU52,strlen(DRAW_DIALOGBOX_CITYHALL_MENU52));
+  			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+  			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU52,strlen(DRAW_DIALOGBOX_CITYHALL_MENU52));
   			m_stDialogBoxInfo[13].cMode = 11;
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
@@ -20549,8 +20550,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 424;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 425;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 426;
-  			ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
-  			memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU53,strlen(DRAW_DIALOGBOX_CITYHALL_MENU53));
+  			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
+  			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU53,strlen(DRAW_DIALOGBOX_CITYHALL_MENU53));
   			m_stDialogBoxInfo[13].cMode = 11;
   			m_stDialogBoxInfo[13].sV1=iReqHeroItemID;
   			PlaySound('E', 14, 5);
@@ -20562,8 +20563,8 @@ void CGame::DlgBoxClick_CityhallMenu(short msX, short msY)
 			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 393;
 			if ((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 394;
 			if ((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 395;
-			ZeroMemory(m_cTakeHeroItemName, sizeof(m_cTakeHeroItemName));
-			memcpy(m_cTakeHeroItemName, "Hero's Hood (EK 150 - Contrib 20)", strlen("Hero's Hood (EK 150 - Contrib 20)"));
+			//ZeroMemory(m_cTakeHeroItemName, sizeof(m_cTakeHeroItemName));
+			//memcpy(m_cTakeHeroItemName, "Hero's Hood (EK 150 - Contrib 20)", strlen("Hero's Hood (EK 150 - Contrib 20)"));
 			m_stDialogBoxInfo[13].cMode = 11;
 			m_stDialogBoxInfo[13].sV1 = iReqHeroItemID;
 			PlaySound('E', 14, 5);
@@ -26868,6 +26869,10 @@ void CGame::NotifyMsgHandler(char * pData)
 			PlaySound('E', 24, 5);
 			break;
 		}
+		break;
+
+	case DEF_NOTIFY_FRAGILE:
+		PlaySound('E', 10, 0);
 		break;
 
 	case DEF_NOTIFY_CURLIFESPAN:

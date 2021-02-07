@@ -2948,17 +2948,6 @@ void CGame::OnTimer(char cType)
 		m_dwCanFightzoneReserveTime = dwTime;
 	}
 
-	//Mang0S:: Update to check fragile time items;
-	if ((dwTime - m_dwNoticeTime) > DEF_CHECKFRAGILETIME * 1000 * 60)
-	{
-		for (int i = 0; i < DEF_MAXCLIENTS; i++)
-			if (this->m_pClientList[i] != NULL) {
-				CheckDestroyFragileItem(i);
-			}
-
-		m_dwNoticeTime = dwTime;
-	}
-
 	if ((m_bIsServerShutdowned == FALSE) && (m_bOnExitProcess == TRUE) && ((dwTime - m_dwExitProcessTime) > 1000*2)) {
 		if (_iForcePlayerDisconect(15) == 0) {
 			PutLogList("(!) GAME SERVER SHUTDOWN PROCESS COMPLETED! All players are disconnected.");
@@ -3094,6 +3083,8 @@ void CGame::CheckClientResponseTime()
 					else
 						RequestTeleportHandler(i, "2", "aresden", -1, -1, true);
 				}
+
+				CheckDestroyFragileItem(i);
 
 				if (ObtenerX(m_pClientList[i]->m_cGuildName) == -1 && ObtenerY(m_pClientList[i]->m_cGuildName) == -1)
 				{
@@ -15258,12 +15249,11 @@ void CGame::AdminOrder_CloseConn(int iClientH, char * pData, DWORD dwMsgSize)
 			// ¸ñÇ¥ Ä³¸¯ÅÍ¸¦ Ã£¾Ò´Ù. °­Á¦·Î Á¢¼ÓÀ» ²÷´Â´Ù.	
 			if (m_pClientList[i]->m_bIsInitComplete == TRUE) {
 				// v1.22 °­Á¦ Á¢¼Ó Á¾·áµÈ Å¬¶óÀÌ¾ðÆ®´Â ºí¸®µù ¾ÆÀÏ·£µå·Î ÅÚ·¹Æ÷Æ®µÈ´Ù.
-				DeleteClient(i, TRUE, TRUE, TRUE, TRUE);
+				// Admin Log
+				wsprintf(G_cTxt, "Admin Order(%s): Close Conn", m_pClientList[iClientH]->m_cCharName);
+				PutAdminLogFileList(G_cTxt);
+				DeleteClient(i, TRUE, TRUE);
 			}
-
-			// Admin Log
-			/*wsprintf(G_cTxt, "Admin Order(%s): Close Conn", m_pClientList[iClientH]->m_cCharName);
-			PutAdminLogFileList(G_cTxt);*/
 
 			delete pStrTok;
 			return;
@@ -23463,6 +23453,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	/* Centuu: msgs agrupados */
+	case DEF_NOTIFY_FRAGILE:
 	case DEF_NOTIFY_SUMMONGUILD:
 	case DEF_NOTIFY_TRAVELERLIMITEDLEVEL:
 	case DEF_NOTIFY_LIMITEDLEVEL:
@@ -28802,6 +28793,11 @@ void CGame::AdminOrder_SetEk(int iClientH, char* pData, DWORD dwMsgSize)
 		return;
 	}
 	strcpy(cPK, pk);
+	if (atoi(cPK) > 999999)
+	{
+		delete pStrTok;
+		return;
+	}
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		if ((m_pClientList[i] != NULL)
@@ -28864,6 +28860,11 @@ void CGame::AdminOrder_SetCoin(int iClientH, char* pData, DWORD dwMsgSize)
 		return;
 	}
 	strcpy(cPK, pk);
+	if (atoi(cPK) > 999999)
+	{
+		delete pStrTok;
+		return;
+	}
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		if ((m_pClientList[i] != NULL)
@@ -28922,6 +28923,11 @@ void CGame::AdminOrder_SetContrib(int iClientH, char* pData, DWORD dwMsgSize)
 		return;
 	}
 	strcpy(cPK, pk);
+	if (atoi(cPK) > 999999)
+	{
+		delete pStrTok;
+		return;
+	}
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		if ((m_pClientList[i] != NULL)
@@ -28980,6 +28986,11 @@ void CGame::AdminOrder_SetMAJ(int iClientH, char* pData, DWORD dwMsgSize)
 		return;
 	}
 	strcpy(cPK, pk);
+	if (atoi(cPK) > 999999)
+	{
+		delete pStrTok;
+		return;
+	}
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cNick, strlen(cNick)) == 0))
@@ -29037,6 +29048,11 @@ void CGame::AdminOrder_SetRep(int iClientH, char* pData, DWORD dwMsgSize)
 		return;
 	}
 	strcpy(cPK, pk);
+	if (atoi(cPK) > 999999)
+	{
+		delete pStrTok;
+		return;
+	}
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cNick, strlen(cNick)) == 0))
@@ -29108,8 +29124,8 @@ void CGame::AdminOrder_SetAdminLvl(int iClientH, char* pData, DWORD dwMsgSize)
 
 			oldpk = m_pClientList[i]->m_iAdminUserLevel;
 
-			if (atoi(cPK) >= 4)
-			m_pClientList[i]->m_iAdminUserLevel = 4;
+			if (atoi(cPK) > 4)
+				m_pClientList[i]->m_iAdminUserLevel = 4;
 			else m_pClientList[i]->m_iAdminUserLevel = atoi(cPK);
 
 			wsprintf(notice, "Admin User Level has been changed for player %s from %d to %d.", m_pClientList[i]->m_cCharName, oldpk, atoi(cPK));
@@ -29748,6 +29764,9 @@ void CGame::AdminOrder_SetEvent()
 void CGame::CheckDestroyFragileItem(int iClientH)
 {
 	CItem* item;
+	SYSTEMTIME SysTime;
+	GetLocalTime(&SysTime);
+	BOOL bFragile = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -29757,22 +29776,26 @@ void CGame::CheckDestroyFragileItem(int iClientH)
 		if (!item) continue;
 
 		if ((item->m_sNewEffect1 == DEF_FRAGILEITEM) && (item->m_sNewEffect2 != 0)) { // Quebra somente itens de tempo.
-			SYSTEMTIME SysTime;
-			GetLocalTime(&SysTime);
-
+			
 			if ((item->m_sNewEffect3 < SysTime.wMonth) && (item->m_sNewEffect4 <= SysTime.wYear)) {
 				wsprintf(G_cTxt, "Fragile Destroy - Char:(%s): (1) - Item:(%s)", m_pClientList[iClientH]->m_cCharName, item->m_cName);
 				PutLogList(G_cTxt);
 				ItemDepleteHandler(iClientH, i, FALSE, TRUE);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Your Fragile item has vanished.");
+				bFragile = TRUE;
 			}
 			else if ((item->m_sNewEffect2 < SysTime.wDay) && (item->m_sNewEffect3 <= SysTime.wMonth) && (item->m_sNewEffect4 <= SysTime.wYear)) {
 				wsprintf(G_cTxt, "Fragile Destroy - Char:(%s): (2) - Item:(%s)", m_pClientList[iClientH]->m_cCharName, item->m_cName);
 				PutLogList(G_cTxt);
 				ItemDepleteHandler(iClientH, i, FALSE, TRUE);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Your Fragile item has vanished.");
+				bFragile = TRUE;
 			}
 		}
+	}
+
+	if (bFragile)
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Your Fragile item has vanished.");
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_FRAGILE, NULL, NULL, NULL, NULL);
 	}
 }
 

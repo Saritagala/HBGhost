@@ -4374,6 +4374,33 @@ void CGame::DrawDialogBox_CMDHallMenu(short msX, short msY)
 		else PutAlignedString(sX, sX + szX, sY + 225, "Archer", 250, 250, 0);
 
 		break;
+
+	case 6: //drajwer - ask for tooking hero mantle
+		//PutAlignedString(sX, sX + szX - 1, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
+		//PutAlignedString(sX + 1, sX + szX, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
+		PutAlignedString(sX, sX + szX, sY + 260, "Would you like to receive this angel?", 55, 25, 25); // would you like..
+		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX)
+			&& (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 19);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 18);
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX)
+			&& (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 3);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 2);
+		break;
+	case 7: //drajwer - ask for tooking hero mantle
+		//PutAlignedString(sX, sX + szX - 1, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
+		//PutAlignedString(sX + 1, sX + szX, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
+		PutAlignedString(sX, sX + szX, sY + 260, "Would you like to change class?", 55, 25, 25); // would you like..
+		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX)
+			&& (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 19);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 18);
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX)
+			&& (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 3);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 2);
+		break;
 	}
 }
 
@@ -4491,25 +4518,33 @@ void CGame::DlgBoxClick_CMDHallMenu(short msX, short msY)
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 175) && (msY <= sY + 200)
 			&& (m_iGizonItemUpgradeLeft >= 5))
 		{
-			bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 1, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 1, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 6;
+			m_stDialogBoxInfo[51].sV1 = 1;
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 225)
 			&& (m_iGizonItemUpgradeLeft >= 5))
 		{
-			bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 2, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 2, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 6;
+			m_stDialogBoxInfo[51].sV1 = 2;
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 225) && (msY <= sY + 250)
 			&& (m_iGizonItemUpgradeLeft >= 5))
 		{
-			bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 3, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 3, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 6;
+			m_stDialogBoxInfo[51].sV1 = 3;
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 250) && (msY <= sY + 275)
 			&& (m_iGizonItemUpgradeLeft >= 5))
 		{
-			bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 4, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, 4, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 6;
+			m_stDialogBoxInfo[51].sV1 = 4;
 			PlaySound('E', 14, 5);
 		}
 
@@ -4520,22 +4555,56 @@ void CGame::DlgBoxClick_CMDHallMenu(short msX, short msY)
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 175) && (msY <= sY + 200)
 			&& (m_iGizonItemUpgradeLeft >= 500) && (m_iClass != 1))
 		{
-			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 1, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 1, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 7;
+			m_stDialogBoxInfo[51].sV1 = 1;
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 225)
 			&& (m_iGizonItemUpgradeLeft >= 500) && (m_iClass != 2))
 		{
-			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 2, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 2, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 7;
+			m_stDialogBoxInfo[51].sV1 = 2;
 			PlaySound('E', 14, 5);
 		}
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 225) && (msY <= sY + 250)
 			&& (m_iGizonItemUpgradeLeft >= 500) && (m_iClass != 3))
 		{
-			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 3, NULL, NULL, "Gail", NULL);
+			//bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, 3, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 7;
+			m_stDialogBoxInfo[51].sV1 = 3;
 			PlaySound('E', 14, 5);
 		}
 
+		break;
+
+	case 6: 
+		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{
+			bSendCommand(DEF_REQUEST_ANGEL, NULL, NULL, m_stDialogBoxInfo[51].sV1, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 0;
+			PlaySound('E', 14, 5);
+		}
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{
+			m_stDialogBoxInfo[51].cMode = 4;
+			PlaySound('E', 14, 5);
+		}
+		break;
+
+	case 7:
+		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{
+			bSendCommand(DEF_REQUEST_CHANGE_CLASS, NULL, NULL, m_stDialogBoxInfo[51].sV1, NULL, NULL, "Gail", NULL);
+			m_stDialogBoxInfo[51].cMode = 0;
+			PlaySound('E', 14, 5);
+		}
+		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
+		{
+			m_stDialogBoxInfo[51].cMode = 5;
+			PlaySound('E', 14, 5);
+		}
 		break;
 	}
 }
@@ -11498,8 +11567,8 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		break;
 
 	case 11: //drajwer - ask for tooking hero mantle
-		PutAlignedString(sX, sX + szX - 1, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
-		PutAlignedString(sX + 1, sX + szX, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
+		//PutAlignedString(sX, sX + szX - 1, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
+		//PutAlignedString(sX + 1, sX + szX, sY + 125, m_cTakeHeroItemName, 55, 25, 25);
 		PutAlignedString(sX, sX + szX, sY + 260, DRAW_DIALOGBOX_CITYHALL_MENU46A, 55, 25, 25); // would you like..
 		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX)
 			&& (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
