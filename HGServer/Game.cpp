@@ -28735,6 +28735,15 @@ void CGame::AdminOrder_AddGM(int iClientH, char* pData, DWORD dwMsgSize)
 	strcpy(cNickName, token);
 	pk = pStrTok->pGet();
 
+
+	if (pk == NULL)
+	{
+		delete pStrTok;
+		return;
+	}
+	char cPK[112];
+	strcpy(cPK, pk);
+	int level = atoi(cPK);
 	if ((strlen(cNickName) < 3) || (strlen(cNickName) > 10)) return;
 
 	for (i = 0; i < DEF_MAXCLIENTS; i++) {
@@ -28744,12 +28753,18 @@ void CGame::AdminOrder_AddGM(int iClientH, char* pData, DWORD dwMsgSize)
 			wsprintf(G_cTxt, "<%d> Added new GM: (%s)", i, cNickName);
 			PutLogList(G_cTxt);
 			//modifys cfg file
-			fprintf(pFile, "verified-admin = %s", cNickName);
+			fprintf(pFile, "\nverified-admin = %s", cNickName);
 			fprintf(pFile, "\n");
 			fclose(pFile);
 			//updates AdminList.cfg on the server
 			LocalUpdateConfigs(2);
 			ShowClientMsg(iClientH, "You have changed the Admin List.");
+			//kazin
+			for (auto x = 0; x < 10; x++)
+				if (strlen(m_stAdminList[x].m_cGMName) == 0)
+					memcpy(m_stAdminList[x].m_cGMName, m_pClientList[i]->m_cCharName, 10);
+
+			m_pClientList[i]->m_iAdminUserLevel = level;
 		}
 	}
 	delete pStrTok;
