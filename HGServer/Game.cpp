@@ -159,6 +159,14 @@ CGame::CGame(HWND hWnd)
 		ZeroMemory(m_stSummonGuild[i].cMap, sizeof(m_stSummonGuild[i].cMap));
 	}
 
+	for (i = 0; i < DEF_MAXGUILDS; i++) {
+		m_stGuild[i].iGuildLevel = 0;
+		strcpy(m_stGuild[i].cGuildName, "NONE");
+		for (x = 0; x < DEF_MAXBANKITEMS; x++) {
+			m_stGuild[i].m_pItemInBankList[x] = NULL;
+		}
+	}
+
 	//// End Highlight ///
 	m_iQueneHead = 0;
 	m_iQueneTail = 0;

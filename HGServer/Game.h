@@ -80,7 +80,7 @@ public:
 	BOOL bInit();
 	void Quit();
 	void OnTimer(char cType);
-	void ParseCommand(char* pMsg);
+	
 	void OnKeyUp(WPARAM wParam, LPARAM lParam);
 	void OnKeyDown(WPARAM wParam, LPARAM lParam);
 	BOOL bOnClose();
@@ -111,6 +111,16 @@ public:
 	class CMap* m_pMapList[DEF_MAXMAPS];
 
 private:
+
+	void _CreateNewGuildFile(char* cGuildName);
+	int _iComposeGuildDataFileContents(int iGuildH, char* pData);
+	int ObtenerNuevoID();
+
+	struct {
+		int iGuildLevel;
+		char cGuildName[21];
+		class CItem* m_pItemInBankList[DEF_MAXBANKITEMS];
+	}m_stGuild[DEF_MAXGUILDS];
 
 	int iCityMaxHP[2], iCityHP[2];
 
@@ -206,8 +216,7 @@ private:
 
 	int iGetPlayerStatus(int iClientH, short sOwnerH);
 
-	void AdminOrder_GetFightzoneTicket(int iClientH);
-
+	
 
 	void LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID);
 	void GlobalStartHeldenianMode();
@@ -386,7 +395,7 @@ private:
 	void CancelQuestHandler(int iClientH, int iQuest);
 	void ActivateSpecialAbilityHandler(int iClientH);
 	void EnergySphereProcessor(BOOL bIsAdminCreate = FALSE, int iClientH = NULL);
-	BOOL bCheckEnergySphereDestination(int iNpcH, short sAttackerH, char cAttackerType);
+	
 	void JoinPartyHandler(int iClientH, int iV1, char* pMemberName);
 	void CreateNewPartyHandler(int iClientH);
 	void _DeleteRandomOccupyFlag(int iMapIndex);
