@@ -209,7 +209,7 @@ CGame::CGame(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	m_bNpcItemConfig = FALSE;
+	m_bNpcItemConfig = TRUE;
 	m_iNotifyCleanMap = TRUE;
 
 	m_iExpSetting = 0;
@@ -9014,11 +9014,11 @@ DWORD * dwp, dwTimeRcv;
 				}
 
 				// centu - leer NpcItem.cfg 
-				/*if (_bDecodeNpcItemConfigFileContents("GameConfigs\\NpcItem.cfg") == FALSE)
+				if (_bDecodeNpcItemConfigFileContents("GameConfigs\\NpcItem.cfg") == FALSE)
 				{
 					PutLogList(" ");
 					PutLogList("(!!!) STOPPED! NpcItem configuration error.");
-				}*/
+				}
 				break;
 
 			case MSGID_RESPONSE_PLAYERDATA:
