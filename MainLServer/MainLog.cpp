@@ -737,38 +737,38 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 	dwp = (DWORD*)cp;
 	*dwp = iUperVersion;
 	cp += 2;
-
+//2
 	dwp = (DWORD*)cp;
 	*dwp = iLowerVersion;
 	cp += 2;
-
+//4
 	//used for account status
 	cp++;
-
+//5
 	dwp = (DWORD*)cp;
 	*dwp = m_pAccountList[iAccount]->m_iAccntYear;
 	cp += 2;
-
+//7
 	dwp = (DWORD*)cp;
 	*dwp = m_pAccountList[iAccount]->m_iAccntMonth;
 	cp += 2;
-
+//9
 	dwp = (DWORD*)cp;
 	*dwp = m_pAccountList[iAccount]->m_iAccntDay;
 	cp += 2;
-
+//11
 	dwp = (DWORD*)cp;
 	*dwp = m_pAccountList[iAccount]->m_iPassYear;
 	cp += 2;
-
+//13
 	dwp = (DWORD*)cp;
 	*dwp = m_pAccountList[iAccount]->m_iPassMonth;
 	cp += 2;
-
+//15
 	dwp = (DWORD*)cp;
 	*dwp = m_pAccountList[iAccount]->m_iPassDay;
 	cp += 2;
-
+//17
 	if (m_pAccountList[iAccount] != NULL) {
 
 		if (m_pClientList[iClientH] == NULL) {
@@ -785,7 +785,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 
 	*cp = cTotalChar;
 	cp++;
-
+//18
 	int accDBID = iGetAccountDatabaseID(cAccountName);
 	iRows = 0;
 
@@ -795,7 +795,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Donation-Points], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Account-ID] = :1)");
+		com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Account-ID] = :1)");
 		com.Param(1).setAsLong() = accDBID;
 
 		com.Execute();
@@ -958,10 +958,6 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 				memcpy(cp, cTemp, 10);
 				cp += 10;
 
-				ZeroMemory(cTest, sizeof(cTest));
-				wsprintf(cTest, "Player: %s     %s", com.Field("Character-Name").asString(), cTemp);
-				PutLogList(cTest);
-
 				iRows++;
 			}
 		}
@@ -986,7 +982,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 		PutLogList(cTemp);
 	}
 
-	if (iRows != cTotalChar)
+	/*if (iRows != cTotalChar)
 	{
 		//testlog
 		char cTest[256];
@@ -994,7 +990,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 		PutLogList(cTest);
 		DeleteAccount(iAccount);
 		return;
-	}
+	}*/
 
 	dwp = (DWORD*)cp;
 	*dwp = (DWORD)iSpace1;
@@ -1249,27 +1245,28 @@ void CMainLog::ResponseCharacter(int iClientH, char *pData, char cMode)
 			break;
 	}
 }
-void CMainLog::DeleteCharacter(int iClientH, char *pData, char cMode)
+void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 {
- char *cp, *cp2, cAccountName[11], cAccountPass[11], cWorldName[30], cData[500], cTotalChar, cCharName[11]; //cp2 out going message
- DWORD *dwp, dwAccountid;
- int i, iMessage, iAccount, iTracker, iDBID = -1;
- SYSTEMTIME SysTime;
-  ZeroMemory(cAccountName, sizeof(cAccountName));
-   ZeroMemory(cAccountPass, sizeof(cAccountPass));
-    ZeroMemory(cWorldName, sizeof(cWorldName));
+	char* cp, * cp2, cAccountName[11], cAccountPass[11], cWorldName[30], cData[500], cTotalChar, cCharName[11]; //cp2 out going message
+	DWORD* dwp, dwAccountid;
+	int i, iMessage, iAccount, iTracker, iDBID;
+	SYSTEMTIME SysTime;
+	ZeroMemory(cAccountName, sizeof(cAccountName));
+	ZeroMemory(cAccountPass, sizeof(cAccountPass));
+	ZeroMemory(cWorldName, sizeof(cWorldName));
 	ZeroMemory(cCharName, sizeof(cCharName));
 	ZeroMemory(cData, sizeof(cData));
 	iAccount = -1;
 	iTracker = -1;
+	iDBID = -1;
 	cTotalChar = 0;
 
-	if(m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == NULL) return;
 
-	switch(cMode) {
-		case 0:
-		cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2); //incomeing message
-		
+	switch (cMode) {
+	case 0:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2); //incomeing message
+
 		memcpy(cCharName, cp, 10);
 		cp += 10;
 		memcpy(cAccountName, cp, 10);
@@ -1281,13 +1278,13 @@ void CMainLog::DeleteCharacter(int iClientH, char *pData, char cMode)
 
 		iMessage = GetAccountInfo(iClientH, cAccountName, cAccountPass, cWorldName, &iAccount, &iDBID);
 
-		if(iMessage > 0) {
-		SendEventToWLS(DEF_LOGRESMSGTYPE_NOTEXISTINGACCOUNT, DEF_LOGRESMSGTYPE_NOTEXISTINGACCOUNT, 0, 0, iClientH);
-		return;
+		if (iMessage > 0) {
+			SendEventToWLS(DEF_LOGRESMSGTYPE_NOTEXISTINGACCOUNT, DEF_LOGRESMSGTYPE_NOTEXISTINGACCOUNT, 0, 0, iClientH);
+			return;
 		}
-		if(strcmp(m_pAccountList[iAccount]->cPassword, cAccountPass) != 0) {
-		SendEventToWLS(DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, 0, 0, iClientH);
-		return;
+		if (strcmp(m_pAccountList[iAccount]->cPassword, cAccountPass) != 0) {
+			SendEventToWLS(DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, 0, 0, iClientH);
+			return;
 		}
 		//delete charcter in account file
 		/*if(SaveAccountInfo(iAccount, NULL, m_pAccountList[iAccount]->cWorldName, cCharName, 3, iClientH) == FALSE) {
@@ -1295,79 +1292,84 @@ void CMainLog::DeleteCharacter(int iClientH, char *pData, char cMode)
 			return;
 		}*/
 		for (i = 0; i < DEF_MAXCHARACTER; i++)
-			if((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID)) { // iAccount
-				if(memcmp(m_pCharList[i]->cCharacterName, cCharName, strlen(cCharName)) == 0) {
-				delete m_pCharList[i];
-				m_pCharList[i] = NULL;
+			if ((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID)) {
+				if (memcmp(m_pCharList[i]->cCharacterName, cCharName, strlen(cCharName)) == 0) {
+					delete m_pCharList[i];
+					m_pCharList[i] = NULL;
 				}
 			}
-			for (i = 0; i < DEF_MAXCHARACTER; i++)
-			if((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID))	cTotalChar++; // iAccount
+		for (i = 0; i < DEF_MAXCHARACTER; i++)
+			if ((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID))	cTotalChar++;
 
 		GetLocalTime(&SysTime);
-		m_pAccountList[iAccount]->dAccountID = iDBID; //(int)(SysTime.wYear + SysTime.wMonth + SysTime.wDay + SysTime.wHour + SysTime.wMinute + timeGetTime());
+		m_pAccountList[iAccount]->dAccountID = iDBID;//(int)(SysTime.wYear + SysTime.wMonth + SysTime.wDay + SysTime.wHour + SysTime.wMinute + timeGetTime()); 
 
-		cp2 = (char *)(cData); //outgoing messag
+		cp2 = (char*)(cData); //outgoing messag
 
 		memcpy(cp2, cAccountName, 10);
 		cp2 += 10;
 
-		dwp = (DWORD *)cp2;
+		dwp = (DWORD*)cp2;
 		*dwp = m_pAccountList[iAccount]->dAccountID;
-	    cp2 += 4;
+		cp2 += 4;
 
 		memcpy(cp2, cCharName, 10);
 		cp2 += 10;
 
-	    *cp2 = cTotalChar;
-	    cp2++;
+		*cp2 = cTotalChar;
+		cp2++;
 
 		for (i = 0; i < DEF_MAXCHARACTER; i++)
-			if((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID)) { // iAccount
-			memcpy(cp2, m_pCharList[i]->cCharacterName, 11);
-			cp2 += 11;
-		}
+			if ((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID)) {
+				memcpy(cp2, m_pCharList[i]->cCharacterName, 11);
+				cp2 += 11;
+			}
 
 		for (i = 0; i < DEF_MAXCLIENTSOCK; i++)
-			if((m_pClientList[i] != NULL) && (strcmp(m_pClientList[i]->m_cWorldName, cWorldName) == 0)&& (m_pClientList[i]->m_cMode == 1)) {
-			SendEventToWLS(MSGID_REQUEST_DELETECHARACTER, DEF_MSGTYPE_CONFIRM, cData, 25+(cTotalChar*11), i);
-			break;
-		}
+			if ((m_pClientList[i] != NULL) && (strcmp(m_pClientList[i]->m_cWorldName, cWorldName) == 0) && (m_pClientList[i]->m_cMode == 1)) {
+				SendEventToWLS(MSGID_REQUEST_DELETECHARACTER, DEF_MSGTYPE_CONFIRM, cData, 25 + (cTotalChar * 11), i);
+				break;
+			}
 		break;
-		case 1:
-		cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2); //incomeing message
+	case 1:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2); //incomeing message
 
-			memcpy(cAccountName, cp, 10);
-			cp += 10;
+		memcpy(cAccountName, cp, 10);
+		cp += 10;
 
-		    dwp = (DWORD *)cp;
-			dwAccountid = *dwp;
-			cp += 4;
+		dwp = (DWORD*)cp;
+		dwAccountid = *dwp;
+		cp += 4;
 
-			for (i = 0; i < DEF_MAXACCOUNTS; i++)
-				if((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == 0)) {
-				  iTracker = m_pAccountList[i]->iClientH;
-				  iAccount= i;
-				  m_pAccountList[i]->iClientH = NULL; //set iclient to null becouse this is only to be sure he didnt dc on logon
-				if(m_pAccountList[i]->dAccountID != dwAccountid) {
+		for (i = 0; i < DEF_MAXACCOUNTS; i++)
+			if ((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == 0)) {
+				iTracker = m_pAccountList[i]->iClientH;
+				iAccount = i;
+				m_pAccountList[i]->iClientH = NULL; //set iclient to null becouse this is only to be sure he didnt dc on logon
+				if (m_pAccountList[i]->dAccountID != dwAccountid) {
 					SendEventToWLS(DEF_LOGRESMSGTYPE_NOTEXISTINGCHARACTER, DEF_LOGRESMSGTYPE_NOTEXISTINGCHARACTER, 0, 0, iTracker);
+
+					wsprintf(G_cTxt, "(DeleteCharacter) Delete Account: %i", i);
+					PutLogList(G_cTxt);
 					DeleteAccount(i);
 					return;
 				}
-				if(m_pClientList[iTracker] == NULL) {
+				if (m_pClientList[iTracker] == NULL) {
+					wsprintf(G_cTxt, "(DeleteCharacter) Delete Account: %i", i);
+					PutLogList(G_cTxt);
 					DeleteAccount(i);
 					return;
 				}
-				}
-			cp = (char *)(pData + 27); //incomeing
-			cTotalChar = *cp;
+			}
+		cp = (char*)(pData + 27); //incomeing
+		cTotalChar = *cp;
 
-			cp = (char *)(pData + 26); //incomeing
-			cp2 = (char *)(cData); //outgoing messag
-			memcpy(cp2, cp, 2+(cTotalChar*65)); // get message between total*
-			cp2 += 2+(cTotalChar*65);
+		cp = (char*)(pData + 26); //incomeing
+		cp2 = (char*)(cData); //outgoing messag
+		memcpy(cp2, cp, 2 + (cTotalChar * 65)); // get message between total*
+		cp2 += 2 + (cTotalChar * 65);
 
-			SendEventToWLS(DEF_LOGRESMSGTYPE_CHARACTERDELETED, DEF_LOGRESMSGTYPE_CHARACTERDELETED, cData, 2+(cTotalChar*65), iTracker);
+		SendEventToWLS(DEF_LOGRESMSGTYPE_CHARACTERDELETED, DEF_LOGRESMSGTYPE_CHARACTERDELETED, cData, 2 + (cTotalChar * 65), iTracker);
 
 		break;
 	}

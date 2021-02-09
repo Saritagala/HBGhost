@@ -1341,7 +1341,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Donation-Points], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour], [Character-Magic-Mastery], [Character-Skill-Mastery], [Character-Skill-SSN], [Character-Equip-Status], [Character-Item-Pos-X], [Character-Item-Pos-Y] , [Character-DR], [Character-HR], [Character-GM-Helper], [Character-Spheres], [Character-Title-Number], [Character-Title-Subject], [Character-Wanted-Level] FROM         Characters WHERE     ([Character-Name] = :1 AND [Account-ID] = :2)");
+			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour], [Character-Magic-Mastery], [Character-Skill-Mastery], [Character-Skill-SSN], [Character-Equip-Status], [Character-Item-Pos-X], [Character-Item-Pos-Y]  FROM         Characters WHERE     ([Character-Name] = :1 AND [Account-ID] = :2)");
 			com.Param(1).setAsString() = cCharacterName;
 			com.Param(2).setAsLong() = accDBID;
 
@@ -1426,18 +1426,6 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 					ZeroMemory(cTemp, sizeof(cTemp));
 					wsprintf(cTemp, "character-HP = %s", com.Field("Character-HP").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-DefenseRatio = %s", com.Field("Character-DR").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-HitRatio = %s", com.Field("Character-HR").asString());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1731,12 +1719,6 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "player-donation-points = %s", com.Field("Character-Donation-Points").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
 					com2.setConnection(&con);
 					com2.setCommandText("SELECT * FROM CharItems WHERE [Character-ID] = :1 ORDER BY [Item-ID]");
 					com2.Param(1).setAsLong() = iCharacterDBid;
@@ -1822,37 +1804,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "gm-helper = %s", com.Field("Character-GM-Helper").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "spheres = %s", com.Field("Character-Spheres").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "title-number = %s", com.Field("Character-Title-Number").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "title-subject = %s", com.Field("Character-Title-Subject").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "wanted-level = %s", com.Field("Character-Wanted-Level").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
+					
 					break;
 				}
 
@@ -2471,7 +2423,7 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Donation-Points], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Character-Name] = :1)");
+			com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Character-Name] = :1)");
 			com.Param(1).setAsString() = cCharName;
 
 			com.Execute();
@@ -2912,12 +2864,11 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize
 void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize, BOOL bVar1, BOOL bVar2)
 {
 	char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256], cTemp[25000], cProfile[31], cLocation[11], cGuildName[21];
-	char cMapName[11], cMagicM[101], cSpheres[8], cItemX[201], cItemY[201], cTitle[21], cItemName[21], cEquipStatus[51];
+	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51];
 	int iGuildGUID, iGuildRank, isX, isY, iHP, iMP, iSP, iLevel, iRating, iStr, iInt, iDex, iVit, iMag, iCharisma, iExp, iLU_Pool;
-	int iEK, iPK, iHunger, iShutUp, iRatingTime, iForceRecall, iBallPoints, iCrits, iAbilityTime, iMajestics, iApprColour, iTitle;
+	int iEK, iPK, iHunger, iShutUp, iRatingTime, iForceRecall, iContribution, iCrits, iAbilityTime, iMajestics, iApprColour;
 	int iRewardGold, i, iNumItems, iNumBankItems, iWarContribution, iCrusadeDuty, iConstructPts;
-	short sSex, sSkin, sHairStyle, sHairColour, sUnderwear, sAppr1, sAppr2, sAppr3, sAppr4, sCharID1, sCharID2, sCharID3, sWantedLevel;
-	BOOL bGMHelper;
+	short sSex, sSkin, sHairStyle, sHairColour, sUnderwear, sAppr1, sAppr2, sAppr3, sAppr4, sCharID1, sCharID2, sCharID3;
 
 	char* pContents, * token;
 	char   seps[] = "= \t\n";
@@ -2950,10 +2901,8 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	ZeroMemory(cGuildName, sizeof(cGuildName));
 	ZeroMemory(cMapName, sizeof(cMapName));
 	ZeroMemory(cMagicM, sizeof(cMagicM));
-	ZeroMemory(cSpheres, sizeof(cSpheres));
 	ZeroMemory(cItemX, sizeof(cItemX));
 	ZeroMemory(cItemY, sizeof(cItemY));
-	ZeroMemory(cTitle, sizeof(cTitle));
 
 	dwTime = timeGetTime();
 
@@ -3118,7 +3067,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	cp += 4;
 
 	ip = (int*)cp;
-	iBallPoints = *ip;
+	iContribution = *ip;
 	cp += 4;
 
 	ip = (int*)cp;
@@ -3175,23 +3124,6 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 
 	memcpy(cMagicM, cp, 100);
 	cp += 100;
-
-	bGMHelper = (BOOL)*cp;
-	cp++;
-
-	memcpy(cSpheres, cp, 7);
-	cp += 7;
-
-	ip = (int*)cp;
-	iTitle = *ip;
-	cp += 4;
-
-	memcpy(cTitle, cp, 20);
-	cp += 20;
-
-	sp = (short*)cp;
-	sWantedLevel = *sp;
-	cp += 2;
 
 	memcpy(cItemX, cp, 200);
 	cp += 200;
@@ -3401,7 +3333,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			}
 
 			com.setConnection(&con);
-			com.setCommandText("UPDATE Characters SET [Character-Wanted-Level] = :59, [Character-Construct-Points] = :58, [Character-Crusade-GUID] = :57, [Character-Crusade-Job] = :56, [Character-War-Contribution] = :55, [Character-ID3] = :54, [Character-ID2] = :53, [Character-ID1] = :52, [Character-Equip-Status] = :51, [Character-Item-Pos-Y] = :50, [Character-Item-Pos-X] = :49, [Character-Title-Subject] = :48, [Character-Title-Number] = :47, [Character-Spheres] = :46, [Character-GM-Helper] = :45, [Character-Magic-Mastery] = :44, [Character-Appr-Colour] = :43, [Character-Appr4] = :42, [Character-Appr3] = :41, [Character-Appr2] = :40, [Character-Appr1] = :39, [Character-Majestics] = :38, [Character-Ability-Time] = :37, [Character-Criticals] = :36, [Character-Contribution] = :35, [Character-Force-Time] = :34, [Character-Rating-Time] = :33, [Character-Shutup-Time] = :32, [Character-Hunger] = :31, [Character-Underwear] = :30, [Character-Hair-Colour] = :29, [Character-Hair-Style] = :28, [Character-Skin] = :27, [Character-Sex] = :26, [Character-Reward-Gold] = :25, [Character-PK-Count] = :24, [Character-EK-Count] = :23, [Character-LU-Pool] = :22, [Character-Experience] = :21, [Character-Charisma] = :20, [Character-Magic] = :19, [Character-Vitality] = :18, [Character-Dexterity] = :17, [Character-Intelligence] = :16, [Character-Strength] = :15, [Character-Rating] = :14, [Character-Level] = :13, [Character-SP] = :12, [Character-MP] = :11, [Character-HP] = :10, [Character-Loc-Y] = :9, [Character-Loc-X] = :8, [Character-Loc-Map] = :7, [Character-Guild-Rank] = :6, [Character-Guild-GUID] = :5, [Character-Guild-Name] = :4, [Character-Location] = :3, [Character-Profile] = :2 WHERE ([Character-Name] = :1)");
+			com.setCommandText("UPDATE Characters SET [Character-Construct-Points] = :54, [Character-Crusade-GUID] = :53, [Character-Crusade-Job] = :52, [Character-War-Contribution] = :51, [Character-ID3] = :50, [Character-ID2] = :49, [Character-ID1] = :48, [Character-Equip-Status] = :47, [Character-Item-Pos-Y] = :46, [Character-Item-Pos-X] = :45,  [Character-Magic-Mastery] = :44, [Character-Appr-Colour] = :43, [Character-Appr4] = :42, [Character-Appr3] = :41, [Character-Appr2] = :40, [Character-Appr1] = :39, [Character-Majestics] = :38, [Character-Ability-Time] = :37, [Character-Criticals] = :36, [Character-Contribution] = :35, [Character-Force-Time] = :34, [Character-Rating-Time] = :33, [Character-Shutup-Time] = :32, [Character-Hunger] = :31, [Character-Underwear] = :30, [Character-Hair-Colour] = :29, [Character-Hair-Style] = :28, [Character-Skin] = :27, [Character-Sex] = :26, [Character-Reward-Gold] = :25, [Character-PK-Count] = :24, [Character-EK-Count] = :23, [Character-LU-Pool] = :22, [Character-Experience] = :21, [Character-Charisma] = :20, [Character-Magic] = :19, [Character-Vitality] = :18, [Character-Dexterity] = :17, [Character-Intelligence] = :16, [Character-Strength] = :15, [Character-Rating] = :14, [Character-Level] = :13, [Character-SP] = :12, [Character-MP] = :11, [Character-HP] = :10, [Character-Loc-Y] = :9, [Character-Loc-X] = :8, [Character-Loc-Map] = :7, [Character-Guild-Rank] = :6, [Character-Guild-GUID] = :5, [Character-Guild-Name] = :4, [Character-Location] = :3, [Character-Profile] = :2 WHERE ([Character-Name] = :1)");
 			com.Param(1).setAsString() = cCharName;
 			com.Param(2).setAsString() = cProfile;
 			com.Param(3).setAsString() = cLocation;
@@ -3436,7 +3368,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			com.Param(32).setAsLong() = iShutUp;
 			com.Param(33).setAsLong() = iRatingTime;
 			com.Param(34).setAsLong() = iForceRecall;
-			com.Param(35).setAsLong() = iBallPoints;
+			com.Param(35).setAsLong() = iContribution;
 			com.Param(36).setAsLong() = iCrits;
 			com.Param(37).setAsLong() = iAbilityTime;
 			com.Param(38).setAsLong() = iMajestics;
@@ -3446,22 +3378,17 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			com.Param(42).setAsLong() = sAppr4;
 			com.Param(43).setAsLong() = iApprColour;
 			com.Param(44).setAsString() = cMagicM;
-			com.Param(45).setAsLong() = (short)bGMHelper;
-			com.Param(46).setAsString() = cSpheres;
-			com.Param(47).setAsLong() = iTitle;
-			com.Param(48).setAsString() = cTitle;
-			com.Param(49).setAsString() = cItemX;
-			com.Param(50).setAsString() = cItemY;
-			com.Param(51).setAsString() = cEquipStatus;
-			com.Param(52).setAsLong() = sCharID1;
-			com.Param(53).setAsLong() = sCharID2;
-			com.Param(54).setAsLong() = sCharID3;
-			com.Param(55).setAsLong() = iWarContribution;
-			com.Param(56).setAsLong() = iCrusadeDuty;
-			com.Param(57).setAsLong() = dwCrusadeGUID;
-			com.Param(58).setAsLong() = iConstructPts;
-			com.Param(59).setAsLong() = sWantedLevel;
-
+			com.Param(45).setAsString() = cItemX;
+			com.Param(46).setAsString() = cItemY;
+			com.Param(47).setAsString() = cEquipStatus;
+			com.Param(48).setAsLong() = sCharID1;
+			com.Param(49).setAsLong() = sCharID2;
+			com.Param(50).setAsLong() = sCharID3;
+			com.Param(51).setAsLong() = iWarContribution;
+			com.Param(52).setAsLong() = iCrusadeDuty;
+			com.Param(53).setAsLong() = dwCrusadeGUID;
+			com.Param(54).setAsLong() = iConstructPts;
+			
 			com.Execute();
 
 			long affected = com.RowsAffected();
@@ -4243,7 +4170,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char *pData)
 */
 void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 {
-	char cData[3000], cFileName[255], cCharacterName[111], cTotalCharNames[111], cNewCharName[11], cAccountName[11], cPassword[11], cUnknown1[31], cTxt[11], cTxt2[120], cMapName[11], cDir[11], cPreShared[128];
+	char cData[3000], cFileName[255], cCharacterName[111], cTotalCharNames[111], cNewCharName[11], cAccountName[11], cPassword[11], cUnknown1[31], cTxt[11], cTxt2[120], cMapName[11], cDir[11];
 	char* cp;
 	DWORD* dwp, dwCharID, dwTime = timeGetTime();
 	WORD* wp;
@@ -4269,8 +4196,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 	ZeroMemory(cTotalCharNames, sizeof(cTotalCharNames));
 	ZeroMemory(cUnknown1, sizeof(cUnknown1));
 	ZeroMemory(cTxt2, sizeof(cTxt2));
-	ZeroMemory(cPreShared, sizeof(cPreShared));
-
+	
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	memcpy(cNewCharName, cp, 10);
@@ -4393,7 +4319,6 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 			SACommand com;
 			SACommand getID;
 			SACommand addGold;
-			SACommand addTitles;
 
 			try
 			{
@@ -4458,11 +4383,6 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 				addGold.Param(15).setAsLong() = 0;
 
 				addGold.Execute();
-
-				addTitles.setConnection(&con);
-				addTitles.setCommandText("INSERT INTO CharTitles ([Character-ID]) VALUES (:1)");
-				addTitles.Param(1).setAsLong() = iCharDBID; // char id
-				addTitles.Execute();
 
 				ZeroMemory(G_cTxt, sizeof(G_cTxt));
 				wsprintf(G_cTxt, "Character Created:(%s) Account:(%s) Str(%d)Int(%d)Vit(%d)Dex(%d)Mag(%d)Chr(%d)Gender(%d)", cNewCharName, cAccountName, cNewStr, cNewInt, cNewVit, cNewDex, cNewMag, cNewChr, cNewGender - 1);
@@ -4562,7 +4482,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 		}
 
 		memcpy(&cTotalCharNames[cTotalChar * 11], cNewCharName, 10);
-		cTotalChar += 1;
+		cTotalChar++;
 
 	}
 	wsprintf(G_cTxt, "(O) New character (%s) created.", cNewCharName);
@@ -6935,7 +6855,7 @@ void CWorldLog::VerifyCharacterIntegrity(char* cCharacterName, char* cAccountNam
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Donation-Points], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Character-Name] = :1)");
+			com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Character-Name] = :1)");
 			com.Param(1).setAsString() = cCharacterName;
 
 			com.Execute();

@@ -1,0 +1,271 @@
+(2021: 2: 8:20:24) - (!) Reading configuration file...
+(2021: 2: 8:20:24) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:20:24) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:20:24) - (*) Backup Drive Letter : C
+(2021: 2: 8:20:24) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:20:24) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:20:24) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:20:24) - 
+(2021: 2: 8:20:24) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:20:24) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:20:24) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:20:24) - 
+(2021: 2: 8:20:25) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:20:25) - (O) Client (3) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (4) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (6) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (7) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (8) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (9) is socket to World Server(WS1)
+(2021: 2: 8:20:25) - (O) Client (10) is socket to World Server(WS1)
+(2021: 2: 8:20:25) -  
+(2021: 2: 8:20:25) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:20:26) - (!!!) SQL SERVER ERROR (SendCharacterData): Invalid column name 'Character-Donation-Points'.
+Statement(s) could not be prepared.
+(2021: 2: 8:20:26) - Account: (Centuu), Rows Affected: (0), Total Char: (1)
+(2021: 2: 8:20:26) - (!)Account Deleted(Centuu)
+(2021: 2: 8:20:51) - (X) World-Server-socket(3) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(4) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(5) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(6) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(7) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(8) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(9) error!
+(2021: 2: 8:20:51) - (X) World-Server-socket(10) error!
+(2021: 2: 8:20:51) -  
+(2021: 2: 8:20:51) - (X) World-Server(WS1) Deleted!
+(2021: 2: 8:20:53) - (!) Reading configuration file...
+(2021: 2: 8:20:53) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:20:53) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:20:53) - (*) Backup Drive Letter : C
+(2021: 2: 8:20:53) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:20:53) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:20:53) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:20:53) - 
+(2021: 2: 8:20:53) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:20:53) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:20:53) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:20:53) - 
+(2021: 2: 8:20:53) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:20:53) - (O) Client (3) is socket to World Server(WS1)
+(2021: 2: 8:20:53) - (O) Client (4) is socket to World Server(WS1)
+(2021: 2: 8:20:53) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:20:53) - (O) Client (6) is socket to World Server(WS1)
+(2021: 2: 8:20:53) - (O) Client (7) is socket to World Server(WS1)
+(2021: 2: 8:20:53) - (O) Client (8) is socket to World Server(WS1)
+(2021: 2: 8:20:53) -  
+(2021: 2: 8:20:53) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:20:53) - Player: Centuu     default
+(2021: 2: 8:20:53) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:20:53) - (!)Account Deleted(Centuu)
+(2021: 2: 8:20:54) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:20:54) - (!)Account Deleted(Centuu)
+(2021: 2: 8:20:54) - Player: Centuu     default
+(2021: 2: 8:20:54) - Player: Tanya     default
+(2021: 2: 8:20:54) - Account: (Centuu), Rows Affected: (2), Total Char: (4)
+(2021: 2: 8:20:54) - (!)Account Deleted(Centuu)
+(2021: 2: 8:20:54) - Player: Centuu     default
+(2021: 2: 8:20:54) - Player: Tanya     default
+(2021: 2: 8:20:54) - Account: (Centuu), Rows Affected: (2), Total Char: (4)
+(2021: 2: 8:20:54) - (!)Account Deleted(Centuu)
+(2021: 2: 8:20:54) - Player: Centuu     default
+(2021: 2: 8:20:54) - Player: Tanya     default
+(2021: 2: 8:20:54) - Account: (Centuu), Rows Affected: (2), Total Char: (4)
+(2021: 2: 8:20:54) - (!)Account Deleted(Centuu)
+(2021: 2: 8:20:56) - Player: Centuu     default
+(2021: 2: 8:20:56) - Player: Tanya     default
+(2021: 2: 8:20:56) - Account: (Centuu), Rows Affected: (2), Total Char: (4)
+(2021: 2: 8:20:56) - (!)Account Deleted(Centuu)
+(2021: 2: 8:21: 4) - (X) World-Server-socket(3) error!
+(2021: 2: 8:21: 4) - (X) World-Server-socket(4) error!
+(2021: 2: 8:21: 4) - (X) World-Server-socket(5) error!
+(2021: 2: 8:21: 4) - (X) World-Server-socket(6) error!
+(2021: 2: 8:21: 4) - (X) World-Server-socket(7) error!
+(2021: 2: 8:21: 4) - (X) World-Server-socket(8) error!
+(2021: 2: 8:21: 4) -  
+(2021: 2: 8:21: 4) - (X) World-Server(WS1) Deleted!
+(2021: 2: 8:21: 5) - (!) Reading configuration file...
+(2021: 2: 8:21: 5) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:21: 5) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:21: 5) - (*) Backup Drive Letter : C
+(2021: 2: 8:21: 5) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:21: 5) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:21: 5) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:21: 5) - 
+(2021: 2: 8:21: 5) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:21: 5) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:21: 5) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:21: 5) - 
+(2021: 2: 8:21: 5) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:21: 5) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:21: 5) - (O) Client (6) is socket to World Server(WS1)
+(2021: 2: 8:21: 5) - (O) Client (7) is socket to World Server(WS1)
+(2021: 2: 8:21: 5) - (O) Client (8) is socket to World Server(WS1)
+(2021: 2: 8:21: 5) - (O) Client (9) is socket to World Server(WS1)
+(2021: 2: 8:21: 5) - (O) Client (10) is socket to World Server(WS1)
+(2021: 2: 8:21: 5) -  
+(2021: 2: 8:21: 5) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:21: 5) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:21: 5) - (!)Account Deleted(Centuu)
+(2021: 2: 8:21: 6) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:21: 6) - (!)Account Deleted(Centuu)
+(2021: 2: 8:21: 6) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:21: 6) - (!)Account Deleted(Centuu)
+(2021: 2: 8:21:19) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:21:20) - (!)Account Deleted(Centuu)
+(2021: 2: 8:21:21) - (!) Reading configuration file...
+(2021: 2: 8:21:21) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:21:21) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:21:21) - (*) Backup Drive Letter : C
+(2021: 2: 8:21:21) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:21:21) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:21:21) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:21:21) - 
+(2021: 2: 8:21:21) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:21:21) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:21:21) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:21:21) - 
+(2021: 2: 8:21:21) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:21:21) - (O) Client (3) is socket to World Server(WS1)
+(2021: 2: 8:21:21) - (O) Client (4) is socket to World Server(WS1)
+(2021: 2: 8:21:21) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:21:21) - (O) Client (9) is socket to World Server(WS1)
+(2021: 2: 8:21:21) -  
+(2021: 2: 8:21:21) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:21:21) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:21:21) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:14) - (X) World-Server-socket(3) error!
+(2021: 2: 8:22:14) - (X) World-Server-socket(4) error!
+(2021: 2: 8:22:14) - (X) World-Server-socket(5) error!
+(2021: 2: 8:22:14) - (X) World-Server-socket(9) error!
+(2021: 2: 8:22:14) -  
+(2021: 2: 8:22:14) - (X) World-Server(WS1) Deleted!
+(2021: 2: 8:22:21) - (!) Reading configuration file...
+(2021: 2: 8:22:21) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:22:21) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:22:21) - (*) Backup Drive Letter : C
+(2021: 2: 8:22:21) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:22:21) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:22:21) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:22:21) - 
+(2021: 2: 8:22:21) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:22:21) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:22:21) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:22:21) - 
+(2021: 2: 8:22:21) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:22:22) - (O) Client (3) is socket to World Server(WS1)
+(2021: 2: 8:22:22) - (O) Client (4) is socket to World Server(WS1)
+(2021: 2: 8:22:22) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:22:22) - (O) Client (6) is socket to World Server(WS1)
+(2021: 2: 8:22:22) - (O) Client (8) is socket to World Server(WS1)
+(2021: 2: 8:22:22) - (O) Client (9) is socket to World Server(WS1)
+(2021: 2: 8:22:22) - (O) Client (10) is socket to World Server(WS1)
+(2021: 2: 8:22:22) -  
+(2021: 2: 8:22:22) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:22:22) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:22) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:23) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:23) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:24) - (!) Account Created: Test
+(2021: 2: 8:22:24) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:24) - (!)Account Deleted(Test)
+(2021: 2: 8:22:24) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:24) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:24) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:24) - (!)Account Deleted(Test)
+(2021: 2: 8:22:24) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:24) - (!)Account Deleted(Test)
+(2021: 2: 8:22:25) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:25) - (!)Account Deleted(Test)
+(2021: 2: 8:22:25) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:25) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:25) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:25) - (!)Account Deleted(Test)
+(2021: 2: 8:22:25) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:25) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:25) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:25) - (!)Account Deleted(Test)
+(2021: 2: 8:22:25) - (X) World-Server-socket(3) error!
+(2021: 2: 8:22:25) - (X) World-Server-socket(4) error!
+(2021: 2: 8:22:25) - (X) World-Server-socket(5) error!
+(2021: 2: 8:22:25) - (X) World-Server-socket(6) error!
+(2021: 2: 8:22:25) - (X) World-Server-socket(8) error!
+(2021: 2: 8:22:25) - (X) World-Server-socket(9) error!
+(2021: 2: 8:22:25) - (X) World-Server-socket(10) error!
+(2021: 2: 8:22:25) -  
+(2021: 2: 8:22:25) - (X) World-Server(WS1) Deleted!
+(2021: 2: 8:22:26) - (!) Reading configuration file...
+(2021: 2: 8:22:26) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:22:26) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:22:26) - (*) Backup Drive Letter : C
+(2021: 2: 8:22:26) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:22:26) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:22:26) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:22:26) - 
+(2021: 2: 8:22:26) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:22:26) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:22:26) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:22:26) - 
+(2021: 2: 8:22:26) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:22:26) - (O) Client (4) is socket to World Server(WS1)
+(2021: 2: 8:22:26) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:22:26) - (O) Client (6) is socket to World Server(WS1)
+(2021: 2: 8:22:26) - (O) Client (7) is socket to World Server(WS1)
+(2021: 2: 8:22:26) - (O) Client (8) is socket to World Server(WS1)
+(2021: 2: 8:22:26) - (O) Client (9) is socket to World Server(WS1)
+(2021: 2: 8:22:26) -  
+(2021: 2: 8:22:26) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:22:28) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:28) - (!)Account Deleted(Test)
+(2021: 2: 8:22:28) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:28) - (!)Account Deleted(Test)
+(2021: 2: 8:22:29) - (!) Reading configuration file...
+(2021: 2: 8:22:29) - (*) Main-Log-Server Address : 192.168.0.28
+(2021: 2: 8:22:29) - (*) Main-Server Internal port : 3840
+(2021: 2: 8:22:29) - (*) Backup Drive Letter : C
+(2021: 2: 8:22:29) - (*) Main-Server Internal port : 2848
+(2021: 2: 8:22:29) - (!) SQL SERVER CONNECTED: @HBGhost
+(2021: 2: 8:22:29) - (!) Internal-log-Socket Listening...
+(2021: 2: 8:22:29) - 
+(2021: 2: 8:22:29) - (!) Log-Socket Listening... Server Activated.
+(2021: 2: 8:22:29) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 2: 8:22:29) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 2: 8:22:29) - 
+(2021: 2: 8:22:29) - (OOO) World Server(WS1:192.168.0.28) registration success!
+(2021: 2: 8:22:29) - (O) Client (3) is socket to World Server(WS1)
+(2021: 2: 8:22:29) - (O) Client (4) is socket to World Server(WS1)
+(2021: 2: 8:22:29) - (O) Client (5) is socket to World Server(WS1)
+(2021: 2: 8:22:29) - (O) Client (6) is socket to World Server(WS1)
+(2021: 2: 8:22:29) - (O) Client (7) is socket to World Server(WS1)
+(2021: 2: 8:22:29) - (O) Client (10) is socket to World Server(WS1)
+(2021: 2: 8:22:29) -  
+(2021: 2: 8:22:29) - (!) WorldServer(WS1) Activated
+(2021: 2: 8:22:29) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:29) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:29) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:29) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:35) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:35) - (!)Account Deleted(Test)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:35) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Centuu
+(2021: 2: 8:22:35) - (!)Account Deleted(Centuu)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:35) - (!)Account Deleted(Test)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:35) - (!)Account Deleted(Test)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:35) - (!)Account Deleted(Test)
+(2021: 2: 8:22:35) - (onClientSubLogSocketEvent) Delete Account: Test
+(2021: 2: 8:22:35) - (!)Account Deleted(Test)
+(2021: 2: 8:23:19) - (X) World-Server-socket(3) error!
+(2021: 2: 8:23:19) - (X) World-Server-socket(4) error!
+(2021: 2: 8:23:19) - (X) World-Server-socket(5) error!
+(2021: 2: 8:23:19) - (X) World-Server-socket(6) error!
+(2021: 2: 8:23:19) - (X) World-Server-socket(7) error!
+(2021: 2: 8:23:19) - (X) World-Server-socket(10) error!
+(2021: 2: 8:23:19) -  
+(2021: 2: 8:23:19) - (X) World-Server(WS1) Deleted!

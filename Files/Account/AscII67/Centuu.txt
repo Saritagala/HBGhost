@@ -32,3 +32,6 @@ account-created-by =
 account-character  = Porotex
 account-character  = Centuu[GM]
 
+
+account-character  = Tanya
+account-character  = Porotex

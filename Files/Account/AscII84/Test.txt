@@ -31,3 +31,6 @@ account-created-by =
 [CHARACTERS]
 account-character  = asdas
 
+
+account-character  = Test
+account-character  = Centuu
