@@ -36,6 +36,7 @@ XSocket::XSocket(HWND hWnd, int iBlockLimit)
 	m_bIsAvailable = FALSE;
 
 	m_iBlockLimit = iBlockLimit;
+	m_bWriteMessage = FALSE;
 }
 
 XSocket::~XSocket()
@@ -104,6 +105,7 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 		break;
 	
 	case FD_WRITE:
+		m_bWriteMessage = TRUE;
 		return _iSendUnsentData();
 		break;
 
@@ -438,7 +440,12 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 		}
 	}
 	
-	iRet = _iSend(m_pSndBuffer, dwSize + 3, TRUE);
+	if (m_bWriteMessage == FALSE) { // 2020
+		iRet = _iRegisterUnsentData(m_pSndBuffer, dwSize + 3);
+	}
+	else {
+		iRet = _iSend(m_pSndBuffer, dwSize + 3, TRUE);
+	}
 
 	if (iRet < 0) return iRet;
 	else return (iRet - 3);

@@ -1,0 +1,11 @@
+C:\Users\centu\source\repos\HbFun_Launcher\task\bin\Debug\Updater.exe.config
+C:\Users\centu\source\repos\HbFun_Launcher\task\bin\Debug\Updater.exe
+C:\Users\centu\source\repos\HbFun_Launcher\task\bin\Debug\Updater.pdb
+C:\Users\centu\source\repos\HbFun_Launcher\task\bin\Debug\Updater.xml
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\Updater.Resources.resources
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\task.vbproj.GenerateResource.cache
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\task.vbproj.CoreCompileInputs.cache
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\Updater.exe
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\Updater.xml
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\Updater.pdb
+C:\Users\centu\source\repos\HbFun_Launcher\task\obj\Debug\task.vbprojAssemblyReference.cache

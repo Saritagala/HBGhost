@@ -93,8 +93,8 @@ bool CMainLog::bInit()
 	{
 		con.Connect(
 			"LOCALHOST\\SQLEXPRESS@HBGhost",
-			"",
-			"",
+			"sa",
+			"sasa",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -106,7 +106,7 @@ bool CMainLog::bInit()
 		return FALSE;
 	}
 
-	PutLogList("(!) SQL SERVER CONNECTED: @HBGhost");
+	PutLogList("(!) SQL SERVER CONNECTED: LOCALHOST\\SQLEXPRESS@HBGhost");
 	return TRUE;
 }
 
@@ -320,7 +320,7 @@ void CMainLog::SendEventToWLS(DWORD dwMsgID, WORD wMsgType, char * pData, DWORD 
 
 	memcpy((char *)cp, pData, dwMsgSize);
 
-	if ((iWorldH != -1)) { //if WLserver registered
+	if (iWorldH != -1 && m_pClientList[m_iCurWorldLogSockIndex] != NULL) { //if WLserver registered
 		switch(dwMsgID) {
 			case MSGID_RESPONSE_REGISTER_WORLDSERVERSOCKET:
 				iRet = m_pClientList[m_iCurWorldLogSockIndex]->m_pXSock->iSendMsg(G_cData50000, dwMsgSize+6, DEF_USE_ENCRYPTION);

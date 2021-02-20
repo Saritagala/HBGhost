@@ -105,6 +105,8 @@ private:
 	HWND         m_hWnd;
 
 	int			 m_iBlockLimit;
+
+	BOOL m_bWriteMessage;
 };
 
 
