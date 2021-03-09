@@ -1185,6 +1185,7 @@ void CGame::DeleteNpc(int iNpcH)
 		case 54: //Dark-Elf
 		case 30: //Liche
 		case 18: //Zombie
+		case 92: // Eternal Dragon
 			bGetItemNameWhenDeleteNpc(iItemID, m_pNpcList[iNpcH]->m_sType); 
 			IsFragile = TRUE;
 			break;
@@ -1192,7 +1193,7 @@ void CGame::DeleteNpc(int iNpcH)
 		// new 05/10/2004
 		case 66: // Wyvern
 		case 73: // Fire-Wyvern
-		case 92: // Eternal Dragon
+		
 		case 94: // BlackWyv
 		case 95: // LighWyvern
 		case 96: // PoisonWyvern
@@ -1201,7 +1202,7 @@ void CGame::DeleteNpc(int iNpcH)
 			bGetMultipleItemNamesWhenDeleteNpc(m_pNpcList[iNpcH]->m_sType,	// NPC Type
 				50,							// È®·ü( ÃÖ¼Ò ~ ÃÖ´ë »çÀÌÀÇ ¾ÆÀÌÅÛÀÌ ³ª¿Ã È®·ü , 100 ÀÌ¸é ÃÖ´ë °¹¼ö ¸¸Å­ ³ª¿Â´Ù.)
 				5,							// ³ª¿Í¾ß ÇÏ´Â Item ÃÖ¼Ò °³¼ö
-				15,							// ³ª¿Ã¼ö ÀÖ´Â Item ÃÖ´ë °³¼ö
+				9,							// ³ª¿Ã¼ö ÀÖ´Â Item ÃÖ´ë °³¼ö
 				m_pNpcList[iNpcH]->m_sX,	// ±âÁØ ÁÂÇ¥ X
 				m_pNpcList[iNpcH]->m_sY,	// ±âÁØ ÁÂÇ¥ Y
 				DEF_ITEMSPREAD_FIXED,		// ¾ÆÀÌÅÛ »Ñ¸®´Â ¹æ¹ý (RANDOM, FIXED)
@@ -1213,6 +1214,20 @@ void CGame::DeleteNpc(int iNpcH)
 			break;
 
 		case 81: // Abaddon
+			bGetMultipleItemNamesWhenDeleteNpc(m_pNpcList[iNpcH]->m_sType,	// NPC Type
+				50,							// È®·ü( ÃÖ¼Ò ~ ÃÖ´ë »çÀÌÀÇ ¾ÆÀÌÅÛÀÌ ³ª¿Ã È®·ü , 100 ÀÌ¸é ÃÖ´ë °¹¼ö ¸¸Å­ ³ª¿Â´Ù.)
+				12,							// ³ª¿Í¾ß ÇÏ´Â Item ÃÖ¼Ò °³¼ö
+				15,							// ³ª¿Ã¼ö ÀÖ´Â Item ÃÖ´ë °³¼ö
+				m_pNpcList[iNpcH]->m_sX,	// ±âÁØ ÁÂÇ¥ X
+				m_pNpcList[iNpcH]->m_sY,	// ±âÁØ ÁÂÇ¥ Y
+				DEF_ITEMSPREAD_FIXED,		// ¾ÆÀÌÅÛ »Ñ¸®´Â ¹æ¹ý (RANDOM, FIXED)
+				65,							// ¾ÆÀÌÅÛ »Ñ¸± ¹üÀ§, DEF_ITEMSPREAD_RANDOM ÀÏ¶§¸¸ »ç¿ë
+				iItemIDs,					// ¹Þ¾Æ¿Ã ¾ÆÀÌÅÛ Idµé
+				ItemPositions,				// ¾ÆÀÌÅÛµéÀÇ À§Ä¡
+				&iNumItem);
+			IsFragile = TRUE;
+			break;
+
 		case 99: // Ghost-Abaddon
 			bGetMultipleItemNamesWhenDeleteNpc(m_pNpcList[iNpcH]->m_sType,	// NPC Type
 				50,							// È®·ü( ÃÖ¼Ò ~ ÃÖ´ë »çÀÌÀÇ ¾ÆÀÌÅÛÀÌ ³ª¿Ã È®·ü , 100 ÀÌ¸é ÃÖ´ë °¹¼ö ¸¸Å­ ³ª¿Â´Ù.)
@@ -1257,7 +1272,7 @@ void CGame::DeleteNpc(int iNpcH)
 							pItem->m_dwCount = dwCount;
 						
 						string st1 = pItem->m_cName;
-						if (IsFragile && iDice(1,100) <= 70 && st1.find("Manual") == string::npos)
+						if (IsFragile && iDice(1,100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
 						{
 							// Centuu : fragile items
 							pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
@@ -1336,7 +1351,7 @@ void CGame::DeleteNpc(int iNpcH)
 				pItem->m_dwCount = dwCount;
 
 				string st1 = pItem->m_cName;
-				if (IsFragile && iDice(1, 100) <= 70 && st1.find("Manual") == string::npos)
+				if (IsFragile && iDice(1, 100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
 				{
 					// Centuu : fragile items
 					pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
@@ -1405,7 +1420,7 @@ void CGame::DeleteNpc(int iNpcH)
 			}
 		}
 
-		if (iDice(1, 100000) < 10) {
+		/*if (iDice(1, 100000) < 10) {
 			pItem2 = new class CItem;
 			switch (iDice(1, 4)) {
 			case 1:	iSlateID = 868; break;
@@ -1433,7 +1448,7 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem2->m_sIDnum, pItem2->m_sSpriteFrame, pItem2->m_cItemColor, pItem2->m_dwAttribute);
 				_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, m_pNpcList[iNpcH]->m_cNpcName, pItem2);
 			}
-		}
+		}*/
 	}
 
 	delete m_pNpcList[iNpcH];
@@ -1586,7 +1601,7 @@ void CGame::NpcRequestAssistance(int iNpcH)
 
 void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 {
-	char cRewardName[21], cTargetName[21];
+	char cRewardName[21], cTargetName[11];
 	int iResMode, iQuestNum, iQuestType, iRewardType, iRewardAmount, iContribution, iX, iY, iRange, iTargetType, iTargetCount, iReward, i;
 
 	iQuestNum = 0;
@@ -1642,7 +1657,7 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 					switch (iRewardType) {
 						// SNOOPY Strange here !
 
-					case -1: strcpy(cRewardName, "XP Points"); break;
+					case -1: strcpy(cRewardName, "Exp Points"); break;
 					}
 				}
 
@@ -1846,7 +1861,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	int   iGenLevel, iResult, iItemID;
 	DWORD dwType, dwValue;
 	double dTmp1, dTmp2, dTmp3;
-	short sElement;
+	//short sElement;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
 	if ((cAttackerType != DEF_OWNERTYPE_PLAYER) || (m_pNpcList[iNpcH]->m_bIsSummoned == TRUE)) return;
@@ -1863,10 +1878,10 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	}
 
 	// 6500 default; the lower the greater the Weapon/Armor/Wand Drop
-	if (iDice(1, 10000) >= m_iPrimaryDropRate) {
+	if (iDice(1, 100) >= m_iPrimaryDropRate) {
 		// 35% Drop 60% of that is gold
 		// 35% Chance of drop (35/100)
-		if (iDice(1, 10000) <= m_iGoldRate) { // Centuu : Agregado para controlar el drop de oro.
+		if (iDice(1, 100) <= m_iGoldRate) { // Centuu : Agregado para controlar el drop de oro.
 			iItemID = 90; // Gold: (35/100) * (60/100) = 21%
 			
 			// If a non-existing itemID is given create no item 
@@ -1899,7 +1914,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			}
 			// 9000 default; the lower the greater the Weapon/Armor/Wand Drop
 			// 35% Drop 40% of that is an Item 
-			if (iDice(1, 10000) <= m_iSecondaryDropRate) {
+			if (iDice(1, 100) <= m_iSecondaryDropRate) {
 				// 40% Drop 90% of that is a standard drop
 				// Standard Drop Calculation: (35/100) * (40/100) * (90/100) = 12.6%
 				iResult = iDice(1, 10000);
@@ -2021,8 +2036,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 				// Weapon Drop: 
 				// 1.4% chance Valuable Drop 60% that it is a Weapon
-				if (iDice(1, 10000) <= m_iPrimaryDropRate) {
-					if (iDice(1, 10000) <= m_iSecondaryDropRate) {
+				if (iDice(1, 100) <= m_iPrimaryDropRate) {
+					if (iDice(1, 100) <= m_iSecondaryDropRate) {
 						// 70% the Weapon is Melee
 						switch (iGenLevel) {
 
@@ -2269,7 +2284,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					// Centu - Mountain-Giant, Ettin, MasterMage-Orc, Giant-Lizard
 					case 9:
 					case 10:
-						switch (iDice(1, 21)) {
+						switch (iDice(1, 23)) {
 						case 1: iItemID = 456; break; // ChainMail(M)
 						case 2: iItemID = 476; break; // ChainMail(W)
 						case 3: iItemID = 458; break; // PlateMail(M)
@@ -2291,6 +2306,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 19: iItemID = 624; break; // Hood(W)
 						case 20: iItemID = 455; break; // LeatherArmor(M)
 						case 21: iItemID = 475; break; // LeatherArmor(W)
+						case 22: iItemID = 462; break; // PlateLeggings(M)
+						case 23: iItemID = 483; break; // PlateLeggings(W)
 
 						}
 						break;
@@ -2350,23 +2367,22 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+					else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+					else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+					else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
 					else dwValue = 1; // v2.03 906
 
 					switch (dwType) {
 					case ITEMSTAT_CRITICAL: // 
-						if (dwValue <= 5) dwValue = 5;
-						break;
 					case ITEMSTAT_POISONING: // Min +20
 						if (dwValue <= 4) dwValue = 4;
+						if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 						break;
-					case ITEMSTAT_LIGHT: // Min +16%
-						if (dwValue <= 4) dwValue = 4;
-						break;
+					case ITEMSTAT_LIGHT: // Min +14%
 					case ITEMSTAT_STRONG: // Min +14%					
 						if (dwValue <= 2) dwValue = 2;
 						break;
@@ -2381,7 +2397,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// Rare Drop 40%
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 100) <= m_iRareDropRate) {
 						//  Hit Prob(50%),  CAD(35%),  Gold(10%), Exp(5%)
 						iResult = iDice(1, 10000);
 						if ((iResult >= 1) && (iResult <= 4999))       dwType = ITEMSTAT2_HITPROB;
@@ -2398,16 +2414,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
+						else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+						else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+						else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
 						else dwValue = 1; // v2.03 906
 
 						switch (dwType) {
 						case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
 							if (dwValue <= 3) dwValue = 3;
+							if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 							break;
 						case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
 							//if (dwValue > 7) dwValue = 7;
@@ -2445,16 +2464,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-					else dwValue = 1;
+					else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+					else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+					else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
+					else dwValue = 1; // v2.03 906
 
 					switch (dwType) {
 					case ITEMSTAT_CRITICAL: // 
 						if (dwValue <= 5) dwValue = 5;
+						if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 						break;
 					case ITEMSTAT_MANACONV:
 					case ITEMSTAT_CRITICAL2:
@@ -2472,7 +2494,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// 40%
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 100) <= m_iRareDropRate) {
 
 						// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
 						iResult = iDice(1, 10000);
@@ -2494,16 +2516,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-						else dwValue = 1;
+						else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+						else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+						else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
+						else dwValue = 1; // v2.03 906
 
 						switch (dwType) {
 						case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
 							if (dwValue <= 3) dwValue = 3;
+							if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 							break;
 						case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
 							//if (dwValue > 7) dwValue = 7;
@@ -2513,6 +2538,12 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							break;
 						case ITEMSTAT2_GOLD: // Gold +50%
 							//dwValue = 5;
+							break;
+						case ITEMSTAT2_SPREC:
+						case ITEMSTAT2_MPREC:
+						case ITEMSTAT2_HPREC:
+							if (dwValue > m_iMaxRec) dwValue = m_iMaxRec;
+
 							break;
 						}
 
@@ -2540,12 +2571,14 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-					else dwValue = 1;
+					else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+					else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+					else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
+					else dwValue = 1; // v2.03 906
 
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
@@ -2554,7 +2587,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 100) <= m_iRareDropRate) {
 						iResult = iDice(1, 10000);
 						if ((iResult >= 1) && (iResult <= 4999))      dwType = ITEMSTAT2_HITPROB;
 						else if ((iResult >= 5000) && (iResult <= 8499)) dwType = ITEMSTAT2_CAD;
@@ -2570,18 +2603,21 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-						else dwValue = 1;
+						else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+						else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+						else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
+						else dwValue = 1; // v2.03 906
 
 						if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
 						switch (dwType) {
 						case ITEMSTAT2_HITPROB: // Hit Prob Min +21%
 							if (dwValue <= 3) dwValue = 3;
+							if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 							break;
 						case ITEMSTAT2_CAD: // Cad vai de +1 at� +7
 							//if (dwValue > 7) dwValue = 7;
@@ -2617,12 +2653,14 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 					else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 					else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-					else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-					else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-					else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-					else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-					else dwValue = 1;
+					else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+					else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+					else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+					else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+					else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+					else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+					else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
+					else dwValue = 1; // v2.03 906
 
 					switch (dwType) {
 					case ITEMSTAT_LIGHT: // Min +16%
@@ -2648,7 +2686,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					// 40%
-					if (iDice(1, 10000) <= m_iRareDropRate) {
+					if (iDice(1, 100) <= m_iRareDropRate) {
 
 						// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
 						iResult = iDice(1, 10000);
@@ -2677,24 +2715,40 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
 						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
 						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-						else dwValue = 1;
+						else if ((iResult >= 29300) && (iResult < 29500))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 29500) && (iResult < 29600))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 29600) && (iResult < 29700))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 29700) && (iResult < 29800))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 13; // 68/29348 = 0.1%
+						else if ((iResult >= 29900) && (iResult < 29950))  dwValue = 14; // 68/29348 = 0.1%
+						else if ((iResult >= 29950) && (iResult <= 30000))  dwValue = 15; // 68/29348 = 0.1%
+						else dwValue = 1; // v2.03 906
 
 						switch (dwType) {
+						case ITEMSTAT2_SPREC:
+						case ITEMSTAT2_MPREC:
+						case ITEMSTAT2_HPREC:
+							if (dwValue > m_iMaxRec) dwValue = m_iMaxRec;
+
+							break;
+
 						case 1: // Poison min +21%
 						case 3: // DR Min +21%
 						case 7: // MR Min +21%
-						case 8: // PA Min +9%
+						
 							if (dwValue <= 3) dwValue = 3;
+							if (dwValue > m_iMaxResist) dwValue = m_iMaxResist;
+							
 							break;
+
+						case 8: // PA Min +9%
 						case 9: // MA Min +9%
 							if (dwValue <= 3) dwValue = 3;
+
+							if (dwValue > m_iMaxAbs) dwValue = m_iMaxAbs;
+
 							//Magn0S:: Add Elements
-							iResult = iDice(1, 10200);
+							/*iResult = iDice(1, 10200);
 							if ((iResult >= 1) && (iResult < 2750)) sElement = 1;  //Earth 27%
 							else if ((iResult >= 2750) && (iResult < 5500)) sElement = 2;  //Light 27%
 							else if ((iResult >= 5500) && (iResult < 6500)) sElement = 3;  //Fire 10%
@@ -2703,8 +2757,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							else if ((iResult >= 9625) && (iResult < 10000)) sElement = 6;  //Unholy 04%
 							else if ((iResult >= 10000) && (iResult <= 10200)) sElement = 7;  //Unatunned 02%
 							else sElement = 7;
-
-							pItem->m_sNewEffect1 = sElement;
+							pItem->m_sNewEffect1 = sElement;*/
 							break;
 							
 						}
@@ -3002,8 +3055,8 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
 			// centu - fixed que lea probabilidades
-			if (iDice(1, 1000) == CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
-			if (iDice(1, 1000) == CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
+			if (iDice(1, 10000) == CTempNpcItem.m_sFirstProbability) bFirstDice = TRUE;
+			if (iDice(1, 10000) == CTempNpcItem.m_sSecondProbability) bSecondDice = TRUE;
 		
 			if (bFirstDice && bSecondDice) {
 				iItemID = CTempNpcItem.m_sItemID;

@@ -422,7 +422,7 @@ void CGame::NotifyMsg_MP(char * pData)
 
 void CGame::NotifyMsg_NewGuildsMan(char * pData)
 {
-	char * cp, cName[12], cTxt[120];
+	char * cp, cName[11], cTxt[120];
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
@@ -437,7 +437,7 @@ void CGame::NotifyMsg_PKcaptured(char *pData)
 	DWORD * dwp;
 	WORD  * wp;
 	int     iPKcount, iLevel, iRewardGold;
-	char cTxt[120], cName[12];
+	char cTxt[120], cName[11];
 	unsigned long iExp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	wp = (WORD *)cp;
@@ -508,7 +508,7 @@ void CGame::NotifyMsg_PKpenalty(char *pData)
 
 void CGame::NotifyMsg_PlayerShutUp(char * pData)
 {
-	char * cp, cName[12];
+	char * cp, cName[11];
 	WORD * wp, wTime;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	wp = (WORD *)cp;
@@ -526,7 +526,7 @@ void CGame::NotifyMsg_PlayerShutUp(char * pData)
 
 void CGame::NotifyMsg_PlayerStatus(BOOL bOnGame, char * pData)
 {
-	char cName[12], cMapName[12], *cp;
+	char cName[11], cMapName[11], *cp;
 	WORD * wp;
 	WORD  dx = 1, dy = 1;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -624,7 +624,7 @@ void CGame::NotifyMsg_QuestReward(char *pData)
 void CGame::NotifyMsg_RatingPlayer(char * pData)
 {
 	int * ip;
-	char * cp, cName[12];
+	char * cp, cName[11];
 	WORD  cValue;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	cValue = *cp;
@@ -896,7 +896,7 @@ void CGame::NotifyMsg_TotalUsers(char * pData)
 
 void CGame::NotifyMsg_WhisperMode(BOOL bActive, char * pData)
 {
-	char cName[12], *cp;
+	char cName[11], *cp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
@@ -1162,7 +1162,7 @@ void CGame::MotionEventHandler(char* pData)
 	WORD* wp, wEventType, wObjectID;
 	short* sp, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4, sV1, sV2, sV3, sPrevAppr2;
 	int iStatus, iStatus2;
-	char* cp, cDir, cName[12];
+	char* cp, cDir, cName[11];
 	int* ip, iApprColor, iLoc;
 	char    cTxt[120];
 	int i;
@@ -1367,9 +1367,9 @@ void CGame::MotionEventHandler(char* pData)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				wsprintf(cTxt, "-%dHp!", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
-				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
-				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 40))        iFontType = 21;
+				else if ((iDamage >= 40) && (iDamage < 80)) iFontType = 22;
+				else if (iDamage >= 80 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1400,9 +1400,9 @@ void CGame::MotionEventHandler(char* pData)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				wsprintf(cTxt, "-%dHp", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
-				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
-				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 40))        iFontType = 21;
+				else if ((iDamage >= 40) && (iDamage < 80)) iFontType = 22;
+				else if (iDamage >= 80 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1843,7 +1843,7 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 	DWORD dwTime = G_dwGlobalTime;
 	double dV1, dV2, dV3;
 	int tX, tY;
-	char cMapName[12];
+	char cMapName[11];
 	sX = m_stDialogBoxInfo[37].sX;
 	sY = m_stDialogBoxInfo[37].sY;
 	szX = m_stDialogBoxInfo[37].sSizeX;
@@ -5373,7 +5373,7 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			if (m_iAdminUserLevel > 3) {
-				m_stDialogBoxInfo[56].cMode = 24; // Drops / Damage server manipulation
+				//m_stDialogBoxInfo[56].cMode = 24; // Drops / Damage server manipulation
 				PlaySound('E', 14, 5);
 			}
 			else { AddEventList("Admin User Level is too low for this action.", 10); }
@@ -6585,6 +6585,17 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 
+		iNextC += 1;
+		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45)) {
+			strcpy(cSummon, "/summon Ghost-Abaddon ");
+			PlaySound('E', 14, 5);
+		}
+		iNextC += 1;
+		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45)) {
+			strcpy(cSummon, "/summon Eternal-Dragon ");
+			PlaySound('E', 14, 5);
+		}
+
 		wsprintf(cMsg, "%s %d", cSummon, m_stDialogBoxInfo[56].sV3);
 		strcpy(cSummon, cMsg);
 
@@ -7531,7 +7542,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
 		
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "%d%%", iFirstDropProb/100);
+		wsprintf(cDrops, "%d%%", iFirstDropProb);
 		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
 
 		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
@@ -7548,7 +7559,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
 
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "%d%%", iSecDropPro/100);
+		wsprintf(cDrops, "%d%%", iSecDropPro);
 		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
 
 		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
@@ -7556,11 +7567,11 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
 		iNext += 1;
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "Chance to drop Pots, Zems, Stones: %d%%", iSecDropPro / 100);
+		wsprintf(cDrops, "Chance to drop Pots, Zems, Stones: %d%%", iSecDropPro);
 		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, cDrops, 210, 255, 0);
 		iNext += 1;
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "Chance to Armors & Weapons: %d%%", 100 - (iSecDropPro / 100));
+		wsprintf(cDrops, "Chance to Armors & Weapons: %d%%", 100 - (iSecDropPro));
 		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, cDrops, 210, 255, 0);
 
 		iNext += 1;
@@ -7570,7 +7581,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
 
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "%d%%", 100 - (iStatedDropProb/100));
+		wsprintf(cDrops, "%d%%", iStatedDropProb);
 		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
 
 		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
@@ -7998,6 +8009,16 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45))
 			PutString2(sX + 190, sY + iNextC * 15 + 30, NPC_NAME_ABADDON, 255, 255, 255);
 		else PutString2(sX + 190, sY + iNextC * 15 + 30, NPC_NAME_ABADDON, 255, 255, 100);
+
+		iNextC += 1;
+		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45))
+			PutString2(sX + 190, sY + iNextC * 15 + 30, "Ghost Abaddon", 255, 255, 255);
+		else PutString2(sX + 190, sY + iNextC * 15 + 30, "Ghost Abaddon", 255, 255, 100);
+
+		iNextC += 1;
+		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45))
+			PutString2(sX + 190, sY + iNextC * 15 + 30, "E. Dragon", 255, 255, 255);
+		else PutString2(sX + 190, sY + iNextC * 15 + 30, "E. Dragon", 255, 255, 100);
 
 /*	
 ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
@@ -9130,14 +9151,14 @@ void CGame::ResponseOnlines(char * pData)
 		m_pOnlineUsersList[j] = new OnlineUser;
 		memcpy(m_pOnlineUsersList[j]->m_cName, cp, 10);
 		cp += 10;
-		memcpy(m_pOnlineUsersList[j]->m_cGuildName, cp, 21);
-		cp += 21;
+		memcpy(m_pOnlineUsersList[j]->m_cGuildName, cp, 20);
+		cp += 20;
 	}
 }
 
 void CGame::NpcTalkHandler(char *pData)
 {
-	char  * cp, cRewardName[21], cTargetName[21], cTemp[21], cTxt[250], cStr1[255], cStr2[255], cStr3[255];
+	char  * cp, cRewardName[21], cTargetName[11], cTemp[11], cTxt[250], cStr1[255], cStr2[255], cStr3[255];
 	short * sp, sType, sResponse;
 	int     iAmount, iIndex, iContribution, iX, iY, iRange;
 	int     iTargetType, iTargetCount, iQuestionType;
@@ -9174,8 +9195,8 @@ void CGame::NpcTalkHandler(char *pData)
 	memcpy(cRewardName, cp, 20);
 	cp += 20;
 	ZeroMemory(cTargetName, sizeof(cTargetName));
-	memcpy(cTargetName, cp, 20);
-	cp += 20;
+	memcpy(cTargetName, cp, 10);
+	cp += 10;
 	EnableDialogBox(21, sResponse, sType, 0);
 
 	if ((sType >= 1) && (sType <= 100))
@@ -9540,9 +9561,9 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 
 				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE; break;
 
-				case 9:  //wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3);  if(dwValue2 > 11) m_bIsRare = TRUE;  break;
+				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3);  if(dwValue2 > 11) m_bIsRare = TRUE;  break;
 					//Magn0S:: Added magic abs by elements
-					switch (pItem->m_sNewEffect1)
+					/*switch (pItem->m_sNewEffect1)
 					{
 						//wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3); if(dwValue2 > 11) m_bIsRare = TRUE;  break;
 					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
@@ -9553,7 +9574,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
 					default:
 						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
-					}
+					}*/
 					break;
 
 				case 10: wsprintf(cTxt, GET_ITEM_NAME33, dwValue2 * 4);   if (dwValue2 > 11) m_bIsRare = TRUE; break;
@@ -9563,7 +9584,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 				strcpy(pStr3, cTxt);
 
 				// VAMP - elemental armours - add to end of item name
-				if (pItem->m_sNewEffect1 > 0)
+				/*if (pItem->m_sNewEffect1 > 0)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
 					switch (pItem->m_sNewEffect1)
@@ -9576,7 +9597,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 					case 6: strcpy(cTxt, " of Corruption"); break;
 					}
 					strcat(pStr1, cTxt);
-				}
+				}*/
 
 			}
 		}
@@ -9844,9 +9865,9 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 
 				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 3);  if (dwValue2 > 11) m_bIsRare = TRUE; break;
 
-				case 9:  //wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3);   if(dwValue2 > 11) m_bIsRare = TRUE;  break;
+				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3);   if(dwValue2 > 11) m_bIsRare = TRUE;  break;
 					//Magn0S:: Added magic abs by elements
-					switch (sEffect1) //m_sItemSpecEffectValue2
+					/*switch (sEffect1) //m_sItemSpecEffectValue2
 					{
 						//wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3); if(dwValue2 > 11) m_bIsRare = TRUE;  break;
 					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
@@ -9857,7 +9878,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
 					default:
 						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
-					}
+					}*/
 					break;
 
 				case 10: wsprintf(cTxt, GET_ITEM_NAME33, dwValue2 * 4);   if (dwValue2 > 11) m_bIsRare = TRUE; break;
@@ -9866,7 +9887,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 				}
 				strcpy(pStr3, cTxt);
 				// VAMP - elemental armours - add to end of item name
-				if (dwType2 == 9)
+				/*if (dwType2 == 9)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
 					switch (sEffect1)
@@ -9879,7 +9900,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 					case 6: strcpy(cTxt, " of Corruption"); break;
 					}
 					strcat(pStr1, cTxt);
-				}
+				}*/
 			}
 		}
 	}
@@ -16535,7 +16556,7 @@ void CGame::NotifyMsg_DropItemFin_CountChanged(char *pData)
 
 void CGame::NotifyMsg_CannotJoinMoreGuildsMan(char * pData)
 {
-	char * cp, cName[12], cTxt[120];
+	char * cp, cName[11], cTxt[120];
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
@@ -16550,7 +16571,7 @@ void CGame::NotifyMsg_CannotJoinMoreGuildsMan(char * pData)
 
 void CGame::NotifyMsg_DismissGuildsMan(char * pData)
 {
-	char * cp, cName[12], cTxt[120];
+	char * cp, cName[11], cTxt[120];
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);

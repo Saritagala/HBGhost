@@ -4910,7 +4910,7 @@ BOOL CGame::_bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize)
 
 }
 
-void CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BOOL bIsPurchase)
+BOOL CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BOOL bIsPurchase)
 {
 	char* cp, cMagicName[31], cData[100];
 	DWORD* dwp, dwGoldCount = 0;
@@ -4920,8 +4920,8 @@ void CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BO
 	iTempInt = m_pClientList[iClientH]->m_iInt;
 	// SNOOPY: Angelic allow to buy Spell but not to read manual.
 
-	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH] == NULL) return FALSE;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return FALSE;
 
 	ZeroMemory(cData, sizeof(cData));
 	ZeroMemory(cMagicName, sizeof(cMagicName));
@@ -4930,17 +4930,18 @@ void CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BO
 
 	if (iRet != -1)
 	{
+		
 		if (bIsPurchase == TRUE)
 		{
 			if (m_pMagicConfigList[iRet]->m_iGoldCost < 0) bMagic = FALSE;
 			dwGoldCount = dwGetItemCount(iClientH, "Gold");
 			if ((DWORD)iCost > dwGoldCount) bMagic = FALSE;
-			iTempInt += m_pClientList[iClientH]->m_iAngelicInt;
+			//iTempInt += m_pClientList[iClientH]->m_iAngelicInt;
 			// SNOOPY: Was Buggy couldn't leran a Spell Book outside Magic Tower !
-			if (m_pClientList[iClientH]->m_bIsInsideWizardTower == FALSE) return;
+			if (m_pClientList[iClientH]->m_bIsInsideWizardTower == FALSE) bMagic = FALSE; //return FALSE;
 		}
 
-		if (m_pClientList[iClientH]->m_cMagicMastery[iRet] != 0) return;
+		if (m_pClientList[iClientH]->m_cMagicMastery[iRet] != 0) bMagic = FALSE; //return FALSE;
 
 		if ((iReqInt <= iTempInt) && (bMagic == TRUE))
 		{
@@ -4970,6 +4971,7 @@ void CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BO
 				DeleteClient(iClientH, TRUE, TRUE);
 				break;
 			}
+			return TRUE;
 		}
 		else
 		{
@@ -5001,6 +5003,7 @@ void CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BO
 			}
 		}
 	}
+	return FALSE;
 }
 
 

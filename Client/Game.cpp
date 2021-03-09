@@ -5790,25 +5790,27 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d", m_iAddMagicalDamage);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		/*PutString2(sX + iSLine, sY + iNext * 17 + 15, "Phy. Absorption:", 255, 255, 255);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Physical Absorption:", 255, 255, 255);
+		//wsprintf(G_cTxt, "+%d%%", m_iAddAbsPD);
 		wsprintf(G_cTxt, "+%d%%", m_iAddAbsPD);
-		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Defense Ratio:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalDR);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//--
-		/*PutString2(sX + iSLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddAbsMD);
-		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Resistense:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalMR);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//=====================================================================
-		iNext += 1;
+		/*iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Water Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsWater);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
@@ -5832,7 +5834,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iAddAbsFire);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
 		//--
 		/*iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
@@ -5850,11 +5852,6 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iLeggsPA);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
-
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Phy. Abs.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iHelmPA+ m_iBerkPA+ m_iArmorPA+ m_iLeggsPA);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 
 		//=====================================================================
 		iNext += 1;
@@ -6293,7 +6290,7 @@ void CGame::NotifyMsg_EnemyKillReward(char *pData)
 {
 	DWORD * dwp;
 	short * sp, sGuildRank;
-	char  * cp, cName[12], cGuildName[24], cTxt[120];
+	char  * cp, cName[11], cGuildName[21], cTxt[120];
 	int   iEnemyKillCount, iWarContribution;
 	int i;
 	int iExp;
@@ -6706,7 +6703,7 @@ void CGame::DisbandGuildResponseHandler(char * pData)
 }
 
 void CGame::NotifyMsg_BanGuildMan(char * pData)
-{ char * cp, cName[24], cLocation[12];
+{ char * cp, cName[21], cLocation[11];
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -6776,7 +6773,7 @@ void CGame::_ShiftGuildOperationList()
 void CGame::DlgBoxClick_GuildOp(short msX, short msY)
 {
  short sX, sY;
- char cName[12], cName20[24];
+ char cName[11], cName20[21];
 
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cName20, sizeof(cName20));
@@ -14877,7 +14874,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 void CGame::_ReadMapData(short sPivotX, short sPivotY, char * pData)
 {int i;
- char  * cp, ucHeader, cDir, cName[12], cItemColor;
+ char  * cp, ucHeader, cDir, cName[11], cItemColor;
  short * sp, sTotal, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4, sItemSpr, sItemSprFrame, sDynamicObjectType;
  int iStatus;
  int   * ip, iApprColor;
@@ -15038,7 +15035,7 @@ void CGame::LogEventHandler(char * pData)
 {WORD * wp, wEventType, wObjectID;
  short * sp, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4;
  int iStatus;
- char  * cp, cDir, cName[12];
+ char  * cp, cDir, cName[11];
  int   * ip, iApprColor;
 	wp   = (WORD *)(pData + DEF_INDEX2_MSGTYPE);
 	wEventType = *wp;
@@ -15148,7 +15145,7 @@ void CGame::LogResponseHandler(char * pData)
  WORD  * wp, wResponse;
  WORD wServerUpperVersion, wServerLowerVersion;
  DWORD * dwp;
- char  * cp, cCharName[12];
+ char  * cp, cCharName[11];
  int   * ip, i;
 
 	dwp = (DWORD *)(pData);
@@ -16559,7 +16556,7 @@ void CGame::InitDataResponseHandler(char * pData)
 {
 	int * ip, i;
 	short * sp, sX, sY;
-	char  * cp, cMapFileName[32], cTxt[120], cPreCurLocation[12];
+	char  * cp, cMapFileName[32], cTxt[120], cPreCurLocation[11];
 	BOOL  bIsObserverMode;
 	HANDLE hFile;
 	DWORD  dwFileSize;
@@ -21112,7 +21109,7 @@ int CGame::_iGetTotalItemNum()
 BOOL CGame::bCheckExID(char * pName)
 {	if (m_pExID == NULL) return FALSE;
 	if (memcmp(m_cPlayerName, pName, 10) == 0) return FALSE;
-	char cTxt[12];
+	char cTxt[11];
 	ZeroMemory(cTxt, sizeof(cTxt));
 	memcpy(cTxt, m_pExID->m_pMsg, strlen(m_pExID->m_pMsg));
 	if (memcmp(cTxt, pName, 10) == 0) return TRUE;
@@ -23026,7 +23023,7 @@ void CGame::DrawDialogBox_Map()
 void CGame::NotifyMsg_SetExchangeItem(char *pData)
 {short * sp, sDir, sSprite, sSpriteFrame, sCurLife, sMaxLife, sPerformance;
  int * ip, iAmount, i;
- char * cp, cColor, cItemName[24], cCharName[12];
+ char * cp, cColor, cItemName[21], cCharName[11];
  DWORD * dwp, dwAttribute;
 	ZeroMemory(cItemName, sizeof(cItemName));
 	ZeroMemory(cCharName, sizeof(cCharName));
@@ -23110,7 +23107,7 @@ void CGame::NotifyMsg_SetExchangeItem(char *pData)
 
 void CGame::NotifyMsg_DismissGuildApprove(char * pData)
 {
- char * cp, cName[24], cLocation[12];
+ char * cp, cName[21], cLocation[11];
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -23184,7 +23181,7 @@ void CGame::NotifyMsg_FishChance(char * pData)
 }
 
 void CGame::NotifyMsg_GuildDisbanded(char * pData)
-{char * cp, cName[24], cLocation[12];
+{char * cp, cName[21], cLocation[11];
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -23302,7 +23299,7 @@ void CGame::NotifyMsg_SellItemPrice(char * pData)
 }
 
 void CGame::NotifyMsg_QueryDismissGuildPermission(char * pData)
-{char * cp, cName[12];
+{char * cp, cName[11];
 	ZeroMemory(cName, sizeof(cName));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	memcpy(cName, cp, 10);
@@ -23313,7 +23310,7 @@ void CGame::NotifyMsg_QueryDismissGuildPermission(char * pData)
 
 
 void CGame::NotifyMsg_QueryJoinGuildPermission(char * pData)
-{char * cp, cName[12];
+{char * cp, cName[11];
 	ZeroMemory(cName, sizeof(cName));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	memcpy(cName, cp, 10);
@@ -23326,7 +23323,7 @@ void CGame::NotifyMsg_QueryJoinGuildPermission(char * pData)
 void CGame::NotifyMsg_QuestContents(char *pData)
 {short * sp, sV1, sV2, sV3, sV4, sV5, sV6, sV7, sV8, sV9, sV10;
 int i;
- char  * cp, cName[22];
+ char  * cp, cName[11];
  sV1 = sV2 = sV3 = sV4 = sV5 = sV6 = sV7 = sV8 = sV9 = sV10 = 0;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -23361,8 +23358,8 @@ int i;
 	sV10 = *sp;
 	cp += 2;
 
-	memcpy(cName, cp, 20);
-	cp += 20;
+	memcpy(cName, cp, 10);
+	cp += 10;
 
 	for (i = 0; i < DEF_MAXQUEST; i++) {
 		if (i == sV10) {
@@ -23407,7 +23404,7 @@ void CGame::NotifyMsg_NoticeMsg(char * pData)
 void CGame::NotifyMsg_OpenExchageWindow(char *pData)
 {short * sp, sDir, sSprite, sSpriteFrame, sCurLife, sMaxLife, sPerformance;
  int * ip, iAmount;
- char * cp, cColor, cItemName[24], cCharName[12];
+ char * cp, cColor, cItemName[21], cCharName[11];
  DWORD * dwp, dwAttribute;
 	ZeroMemory(cItemName, sizeof(cItemName));
 	ZeroMemory(cCharName, sizeof(cCharName));
@@ -23968,7 +23965,7 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 	int iMIbuttonNum;
 	static int iPoint;
 	char cLB, cRB, cMIresult;
-	static char cName[12];
+	static char cName[11];
 	static char cPrevFocus;
 	short msX, msY, msZ;
 	BOOL bFlag;
@@ -24593,7 +24590,7 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	char cMIresult;
 	int  iMIbuttonNum;
 	static class CMouseInterface* pMI;
-	static char cName[12], cPassword[12], cConfirm[12], cPrevFocus, cSSN_A[8], cSSN_B[8], cQuiz[44], cAnswer[20], cTempQuiz[44];
+	static char cName[11], cPassword[11], cConfirm[11], cPrevFocus, cSSN_A[8], cSSN_B[8], cQuiz[44], cAnswer[21], cTempQuiz[44];
 	DWORD dwTime = timeGetTime();
 	int iFlag = 0;
 
@@ -25015,8 +25012,8 @@ void CGame::UpdateScreen_OnLogin()
  char cMIresult;
  int  iMIbuttonNum;
  static class CMouseInterface * pMI;
- static char  cPassword[12], cPrevFocus;
- static char cName[12];
+ static char  cPassword[11], cPrevFocus;
+ static char cName[11];
 	
 	if (m_cGameModeCount == 0)
 	{	EndInputString();
@@ -26547,7 +26544,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 void CGame::NotifyMsgHandler(char * pData)
 {DWORD * dwp, dwTime, dwTemp;
  WORD  * wp, wEventType;
- char  * cp, cTemp[510], cTxt[120], cCharName[21], cGuildName[22], cItemName[21];
+ char  * cp, cTemp[510], cTxt[120], cCharName[11], cGuildName[21], cItemName[21];
  short * sp, sX, sY, sV1, sV2, sV3, sV4, sV5, sV6, sV7, sV8, sV9;
  int   * ip, i, iV1, iV2, iV3, iV4, j;
  bool* bp;
@@ -27624,7 +27621,7 @@ NMH_LOOPBREAK1:;
 			for (i = 1; i <= sV3; i++) {
 				ZeroMemory(m_stPartyMemberNameList[i-1].cName, sizeof(m_stPartyMemberNameList[i-1].cName));
 				memcpy(m_stPartyMemberNameList[i-1].cName, cp, 10);
-				cp += 11;
+				cp += 10;
 			}
 			ActualizarParty = TRUE;
 			break;
@@ -28152,7 +28149,7 @@ NMH_LOOPBREAK2:;
 		{	AddEventList(NOTIFY_MSG_HANDLER40);//"Observer Mode On. Press 'SHIFT + ESC' to Log Out..."
 			m_bIsObserverMode = TRUE;
 			m_dwObserverCamTime = timeGetTime();
-			char cName[12];
+			char cName[11];
 			ZeroMemory(cName, sizeof(cName));
 			memcpy(cName, m_cPlayerName, 10);
 			m_pMapData->bSetOwner(m_sPlayerObjectID, -1, -1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, cName, NULL, NULL, NULL, NULL);
@@ -28223,8 +28220,8 @@ NMH_LOOPBREAK2:;
 		cp += 4;
 
 		ZeroMemory(cItemName, sizeof(cItemName));
-		memcpy(cItemName, cp, 21);
-		cp += 21;
+		memcpy(cItemName, cp, 20);
+		cp += 20;
 
 		/*m_stQuest[iV1].sWho = sV1;
 		m_stQuest[iV1].sQuestType = sV2;
@@ -28993,7 +28990,7 @@ void CGame::SortArenaPlayers()
 
 void CGame::NotifyMsg_DGKill(char *pData) // MORLA 2.2 - Actualiza la info del Deathmach Game
 {
- char * cp, cStr[12];
+ char * cp, cStr[11];
  int  * ip, iV1, iV2, iV3;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -29011,7 +29008,7 @@ void CGame::NotifyMsg_DGKill(char *pData) // MORLA 2.2 - Actualiza la info del D
 	cp += 4;
 
 	strcpy(cStr, cp);
-	cp += 12;
+	cp += 10;
 
 	switch (iV1)
 	{
@@ -30080,7 +30077,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 	sY = m_stDialogBoxInfo[2].sY;
 
 	//Magn0S:: Add to Equip Full set with Ctrl Pressed.
-	if (m_bCtrlPressed == TRUE) {
+	/*if (m_bCtrlPressed == TRUE) {
 		for (i = 0; i < DEF_MAXITEMS; i++) {
 			cItemID = m_cItemOrder[DEF_MAXITEMS - 1 - i];
 			if (m_pItemList[cItemID] == NULL) continue;
@@ -30103,7 +30100,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}
 		}
 		return;
-	}
+	}*/
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{	if (m_cItemOrder[DEF_MAXITEMS - 1 - i] == -1) continue;
@@ -30292,7 +30289,7 @@ void CGame::UpdateScreen_OnChangePassword()
 	char cMIresult;
 	int  iMIbuttonNum;
 	static class CMouseInterface* pMI;
-	static char  cName[12], cPassword[12], cNewPassword[12], cNewPassConfirm[12], cPrevFocus;
+	static char  cName[11], cPassword[11], cNewPassword[11], cNewPassConfirm[11], cPrevFocus;
 	static DWORD dwCTime;
 	DWORD dwTime = timeGetTime();
 	BOOL bFlag = TRUE;
@@ -30830,30 +30827,30 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		if( memcmp(m_cPlayerName, pName, 10) == 0 )
 		{	if( m_iGuildRank == 0 )
 			{	wsprintf( G_cTxt, DEF_MSG_GUILDMASTER, m_cGuildName );//" Guildmaster)"
-				PutString2(sX, sY+14, G_cTxt, 255, 255, 0);
+				PutString2(sX, sY+14, G_cTxt, 180, 180, 180);
 				iAddY += 14;
 			}
 			else if( m_iGuildRank == 12 )
 			{	wsprintf( G_cTxt, DEF_MSG_GUILDSMAN, m_cGuildName );//" Guildsman)"
-				PutString2(sX, sY+14, G_cTxt, 255, 255, 0);
+				PutString2(sX, sY+14, G_cTxt, 180, 180, 180);
 				iAddY += 14;
 			}
 			else if (m_iGuildRank == 1)
 			{
 				wsprintf(G_cTxt, "%s Recluiter", m_cGuildName);//" Guildsman)"
-				PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
+				PutString2(sX, sY + 14, G_cTxt, 180, 180, 180);
 				iAddY += 14;
 			}
 			else if (m_iGuildRank == 2)
 			{
 				wsprintf(G_cTxt, "%s Summoner", m_cGuildName);//" Guildsman)"
-				PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
+				PutString2(sX, sY + 14, G_cTxt, 180, 180, 180);
 				iAddY += 14;
 			}
 			else if (m_iGuildRank == 3)
 			{
 				wsprintf(G_cTxt, "%s Captain", m_cGuildName);//" Guildsman)"
-				PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
+				PutString2(sX, sY + 14, G_cTxt, 180, 180, 180);
 				iAddY += 14;
 			}
 
@@ -30905,7 +30902,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 								wsprintf(G_cTxt, "%s Captain", m_stGuildName[iGuildIndex].cGuildName);//" Guildsman)"
 								
 							}
-							PutString2(sX, sY + 14, G_cTxt, 255, 255, 0);
+							PutString2(sX, sY + 14, G_cTxt, 180, 180, 180);
 							m_stGuildName[iGuildIndex].dwRefTime = m_dwCurTime;
 							iAddY += 14;
 						}else
@@ -30915,33 +30912,47 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		}	}
 		//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQRANGO, NULL, _tmp_wObjectID, NULL, NULL, NULL); // MORLA2.2 - Pregunta EK y REP del player
 		
-		if ( bCitizen == FALSE )	
-			strcpy(cTxt, DRAW_OBJECT_NAME60);// "Traveller"
-		else
-		{	if( bAresden )
-			{	if( bHunter == TRUE ) 
-					strcpy(cTxt, DEF_MSG_ARECIVIL); // "Aresden Civilian"
-				else 
-					strcpy(cTxt, DEF_MSG_ARESOLDIER);
-		
-			}else
-			{	if( bHunter == TRUE ) 
-					strcpy(cTxt, DEF_MSG_ELVCIVIL);// "Elvine Civilian"
-				else 
-					strcpy(cTxt, DEF_MSG_ELVSOLDIER);	// "Elvine Combatant"	
-			}		
+		if ((_tmp_iStatus & 0x40000) != 0)
+		{
+			strcpy(cTxt, "Game Master");
 		}
-		if( bPK == TRUE )
-		{	if( bCitizen == FALSE ) 
-				strcpy( cTxt, DEF_MSG_PK );	//"Criminal"
+		else {
+			if (bCitizen == FALSE)
+				strcpy(cTxt, DRAW_OBJECT_NAME60);// "Traveller"
 			else
-			{	if( bAresden ) 
-					strcpy( cTxt, DEF_MSG_AREPK );// "Aresden Criminal"
-				else 
-					strcpy( cTxt, DEF_MSG_ELVPK );  // "Elvine Criminal"
-		}	}		
+			{
+				if (bAresden)
+				{
+					if (bHunter == TRUE)
+						strcpy(cTxt, DEF_MSG_ARECIVIL); // "Aresden Civilian"
+					else
+						strcpy(cTxt, DEF_MSG_ARESOLDIER);
+
+				}
+				else
+				{
+					if (bHunter == TRUE)
+						strcpy(cTxt, DEF_MSG_ELVCIVIL);// "Elvine Civilian"
+					else
+						strcpy(cTxt, DEF_MSG_ELVSOLDIER);	// "Elvine Combatant"	
+				}
+			}
+			if (bPK == TRUE)
+			{
+				if (bCitizen == FALSE)
+					strcpy(cTxt, DEF_MSG_PK);	//"Criminal"
+				else
+				{
+					if (bAresden)
+						strcpy(cTxt, DEF_MSG_AREPK);// "Aresden Criminal"
+					else
+						strcpy(cTxt, DEF_MSG_ELVPK);  // "Elvine Criminal"
+				}
+			}
+		}
 		
-		PutString2(sX, sY+14 +iAddY, cTxt, sR, sG, sB);
+		if ((_tmp_iStatus & 0x40000) != 0) PutString2(sX, sY + 14 + iAddY, cTxt, 255, 255, 0);
+		else PutString2(sX, sY+14 +iAddY, cTxt, sR, sG, sB);
 
 		//MORLA 2.2 - Determina el rango del pj
 		/*if((m_iRango_EK >= 100) && (m_iRango_REP >=20 ))
@@ -31364,7 +31375,7 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 
 BOOL CGame::bCheckLocalChatCommand(char * pMsg)
 {class  CStrTok * pStrTok = NULL;
- char   * token, cBuff[256], cTxt[120], cName[12], cTemp[120];
+ char   * token, cBuff[256], cTxt[120], cName[11], cTemp[120];
  char   seps[] = " \t\n";
 	ZeroMemory(cBuff, sizeof(cBuff));
 	ZeroMemory(cName, sizeof(cName));
@@ -31761,7 +31772,7 @@ void CGame::DrawGM(short sX, short sY, DWORD dwTime)
 
 void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, char cLB, char cRB)
 {
-	char   cDir, absX, absY, cName[12];
+	char   cDir, absX, absY, cName[11];
 	short  sX, sY, sObjectType, tX, tY;
 	int iObjectStatus;
 	int    iRet;
@@ -33265,9 +33276,9 @@ MOTION_COMMAND_PROCESS:;
 					wsprintf(cTxt, "-%dHp", m_sDamageMoveAmount);
 
 					int iFontType;
-					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 20))        iFontType = 21;
-					else if ((m_sDamageMoveAmount >= 20) && (m_sDamageMoveAmount < 50)) iFontType = 22;
-					else if (m_sDamageMoveAmount >= 50 || m_sDamageMoveAmount < 0) iFontType = 23;
+					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 40))        iFontType = 21;
+					else if ((m_sDamageMoveAmount >= 40) && (m_sDamageMoveAmount < 80)) iFontType = 22;
+					else if (m_sDamageMoveAmount >= 80 || m_sDamageMoveAmount < 0) iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
@@ -34417,8 +34428,8 @@ void CGame::ResponseQuestList(char* pData)
 		cp += 4;
 
 		ZeroMemory(m_stQuestList[i].cPrizeName, sizeof(m_stQuestList[i].cPrizeName));
-		memcpy(m_stQuestList[i].cPrizeName, cp, 21);
-		cp += 21;
+		memcpy(m_stQuestList[i].cPrizeName, cp, 20);
+		cp += 20;
 
 		ZeroMemory(m_stQuestList[i].cMapName, sizeof(m_stQuestList[i].cMapName));
 		memcpy(m_stQuestList[i].cMapName, cp, 10);

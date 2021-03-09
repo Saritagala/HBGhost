@@ -514,7 +514,7 @@ void CGame::QuestAcceptedHandler(int iClientH)
 void CGame::_SendQuestContents(int iClientH)
 {
 	int iWho, iIndex, iQuestType, iContribution, iTargetType, iTargetCount, iX, iY, iRange, iQuestCompleted, i, iAmount;
-	char cTargetName[21];
+	char cTargetName[11];
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -535,7 +535,7 @@ void CGame::_SendQuestContents(int iClientH)
 				iY = m_pQuestConfigList[iIndex]->m_sY;
 				iRange = m_pQuestConfigList[iIndex]->m_iRange;
 				ZeroMemory(cTargetName, sizeof(cTargetName));
-				memcpy(cTargetName, m_pQuestConfigList[iIndex]->m_cTargetName, 20);
+				memcpy(cTargetName, m_pQuestConfigList[iIndex]->m_cTargetName, 10);
 				iQuestCompleted = (int)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCONTENTS, iWho, iQuestType, iContribution, NULL,
@@ -854,13 +854,14 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 				}*/
 
 				if (m_pQuestConfigList[index]->m_iRewardType[1] > 0) {
-					memcpy(cp, m_pItemConfigList[m_pQuestConfigList[index]->m_iRewardType[1]]->m_cName, 21);
-					cp += 21;
+					memcpy(cp, m_pItemConfigList[m_pQuestConfigList[index]->m_iRewardType[1]]->m_cName, 20);
+					
 				}
 				else {
-					memcpy(cp, "Exp Points", 21);
-					cp += 21;
+					memcpy(cp, "Exp Points", 20);
+					
 				}
+				cp += 20;
 
 				memcpy(cp, m_pQuestConfigList[index]->m_cTargetName, 10);
 				cp += 10;
@@ -871,7 +872,7 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 	}
 	if ((*listCount) == 0)*wp = DEF_MSGTYPE_REJECT;
 	// Quest List
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 10 + (*listCount) * 47);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 10 + (*listCount) * 46);
 	switch (iRet)
 	{
 	case DEF_XSOCKEVENT_QUENEFULL:

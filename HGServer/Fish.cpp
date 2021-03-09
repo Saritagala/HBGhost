@@ -32,7 +32,7 @@ CFish::~CFish()
 
 int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CItem* pItem, int iDifficulty, DWORD dwLastTime)
 {
-	register int i, iDynamicHandle;
+	int i, iDynamicHandle;
 
 	// ¸ÊÀÇ À§Ä¡°¡ ¹°ÀÎÁö È®ÀÎÇÑ´Ù. 
 	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return NULL;

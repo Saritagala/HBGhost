@@ -241,6 +241,8 @@
 
 #define DEF_ITEMEFFECTTYPE_BIJOUTERIE	45 // bijouterie
 
+#define DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION			46
+
 //Magn0S:: Added---------------------------------------------------------------
 #define DEF_MAXMAGICALABS		80
 #define DEF_MAXPHYSICALABS		80

@@ -8,6 +8,7 @@ BOOL InitInstance( HINSTANCE hInstance, int nCmdShow );
 LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam );
 void OnAccept();
 void PutLogList(char * cMsg);
+void PutChatList(char* cMsg);
 void OnKeyUp(WPARAM wParam, LPARAM lParam);
 void UpdateScreen();
 int  EventLoop();

@@ -361,20 +361,20 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						}
 						break;
 					case ITEMSTAT_SHARP:  // Sharp
-						m_pClientList[iClientH]->m_cAttackDiceRange_SM++;
-						m_pClientList[iClientH]->m_cAttackDiceRange_L++;
+						m_pClientList[iClientH]->m_cAttackDiceRange_SM += 10;
+						m_pClientList[iClientH]->m_cAttackDiceRange_L += 10;
 						break;
 					case ITEMSTAT_ANCIENT:  // Ancient
-						m_pClientList[iClientH]->m_cAttackDiceRange_SM += 2;
-						m_pClientList[iClientH]->m_cAttackDiceRange_L += 2;
+						m_pClientList[iClientH]->m_cAttackDiceRange_SM += 15;
+						m_pClientList[iClientH]->m_cAttackDiceRange_L += 15;
 						break;
 					case ITEMSTAT_MANACONV: // ManaConv 
 						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
-						if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
+						//if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
 						break;
 					case ITEMSTAT_CRITICAL2: // Crit Increase 
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
-						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
+						//if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
 					default: // All others
 						m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
@@ -397,14 +397,19 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)dwSWEValue * 7; break;
 					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)dwSWEValue * 7; break;
 					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7; break;
-					case 8:  m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; break;
+					
+					case 8:  
+						m_pClientList[iClientH]->m_iAddAbsPD += (int)dwSWEValue * 3;
+						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
+						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
+						break;
 
-					/*case 9:
+					case 9:
 						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
-						break;*/
+						break;
 					//Magn0S:: Magic Abs by elements
-					case 9:  //m_pClientList[iClientH]->m_iAddElementAbs += (int)dwSWEValue*3; break;
+					/*case 9:  
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:	m_pClientList[iClientH]->m_iAddAbsEarth += (int)dwSWEValue * 3; break;
 						case 2:	m_pClientList[iClientH]->m_iAddAbsLight += (int)dwSWEValue * 3; break;
@@ -415,7 +420,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						case 7:	m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						}
-						break;
+						break;*/
 
 					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
 					case 11: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
@@ -423,7 +428,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					}
 
 					//Magn0S:: Set max values for elemental magic abs
-					switch (dwSWEType) {
+					/*switch (dwSWEType) {
 					case 9:
 						if (m_pClientList[iClientH]->m_iAddElementAbs > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddElementAbs = DEF_MAXMAGICALABS;
 						//Magn0S:: Add elements abs.
@@ -434,7 +439,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						if (m_pClientList[iClientH]->m_iAddAbsHoly > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsHoly = DEF_MAXMAGICALABS;
 						if (m_pClientList[iClientH]->m_iAddAbsUnholy > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsUnholy = DEF_MAXMAGICALABS;
 						break;
-					}
+					}*/
 				}
 
 				// Those Attack items where treated as a bundle above, see here special cases
@@ -470,7 +475,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					break;
 
 				case DEF_ITEMEFFECTTYPE_ATTACK_DEFENSE: // PA for some weapons
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
+					m_pClientList[iClientH]->m_iAddAbsPD += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
+					if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 					break;
 
 				case DEF_ITEMEFFECTTYPE_ATTACK_SPECABLTY:
@@ -588,11 +595,13 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					break;
 
 				case 30: // Magin Sapphire	Phisical damage decreased(% applied) by the purity formula.	
-					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
+					/*iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += iTemp;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += iTemp;
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += iTemp;
+					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += iTemp;*/
+					m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
+					if (m_pClientList[iClientH]->m_iAddAbsPD > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddAbsPD = DEF_MAXMAGICALABS;
 					break;
 
 					/*
@@ -632,13 +641,15 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 				if (cEquipPos == DEF_EQUIPPOS_BACK)
 				{	// Snoopy Special effect capes/ mantles still have small DefRatio & PA
 					m_pClientList[iClientH]->m_iDefenseRatio += 3;	// Standard DR
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] ++;
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] ++;
+					m_pClientList[iClientH]->m_iAddAbsPD++;
 					// Merien Upgraded diverse (capes?)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					if (iTemp != 0)
 					{
 						m_pClientList[iClientH]->m_iDefenseRatio += (iTemp * 5);
-						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] += iTemp;
+						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] += iTemp;
+						m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
 					}
 				}
 				break;
@@ -698,12 +709,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 							}
 							break;
 						case ITEMSTAT_SHARP:  // Sharp
-							m_pClientList[iClientH]->m_cAttackDiceRange_SM++;
-							m_pClientList[iClientH]->m_cAttackDiceRange_L++;
+							m_pClientList[iClientH]->m_cAttackDiceRange_SM += 10;
+							m_pClientList[iClientH]->m_cAttackDiceRange_L += 10;
 							break;
 						case ITEMSTAT_ANCIENT:  // Ancient
-							m_pClientList[iClientH]->m_cAttackDiceRange_SM += 2;
-							m_pClientList[iClientH]->m_cAttackDiceRange_L += 2;
+							m_pClientList[iClientH]->m_cAttackDiceRange_SM += 15;
+							m_pClientList[iClientH]->m_cAttackDiceRange_L += 15;
 							break;
 						case ITEMSTAT_MANACONV: // ManaConv 
 							m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
@@ -734,12 +745,17 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)dwSWEValue * 7; break;
 					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)dwSWEValue * 7; break;
 					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7; break;
-					case 8:  m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; break;
-					/*case 9:  m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
+					case 8:  
+						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
+						m_pClientList[iClientH]->m_iAddAbsPD += (int)dwSWEValue * 3;
+						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
+						break;
+					case 9:  
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
-						break;*/
+						break;
 					//Magn0S:: Add elemental abs
-					case 9:  //m_pClientList[iClientH]->m_iAddElementAbs += (int)dwSWEValue*3; break;
+					/*case 9:  //m_pClientList[iClientH]->m_iAddElementAbs += (int)dwSWEValue*3; break;
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:	m_pClientList[iClientH]->m_iAddAbsEarth += (int)dwSWEValue * 3; break;
 						case 2:	m_pClientList[iClientH]->m_iAddAbsLight += (int)dwSWEValue * 3; break;
@@ -750,14 +766,14 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						case 7:	m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						}
-						break;
+						break;*/
 
 					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
 					case 11: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
 					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 					//Magn0S:: Set max values for elemental magic abs
-					switch (dwSWEType) {
+					/*switch (dwSWEType) {
 					case 9:
 						if (m_pClientList[iClientH]->m_iAddElementAbs > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddElementAbs = DEF_MAXMAGICALABS;
 						//Magn0S:: Add elements abs.
@@ -768,7 +784,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						if (m_pClientList[iClientH]->m_iAddAbsHoly > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsHoly = DEF_MAXMAGICALABS;
 						if (m_pClientList[iClientH]->m_iAddAbsUnholy > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsUnholy = DEF_MAXMAGICALABS;
 						break;
-					}
+					}*/
 				}
 				break;
 
@@ -825,11 +841,11 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						break;
 					case ITEMSTAT_MANACONV: // ManaConv  Total max 20
 						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
-						if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
+						//if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
 						break;
 					case ITEMSTAT_CRITICAL2: // Crit Increase Total max 20
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
-						if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
+						//if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
 					default:
 						break;
@@ -865,12 +881,17 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7;
 						break;
 					case ITEMSTAT2_PA: // PA
-						if (cEquipPos == DEF_EQUIPPOS_LHAND)
+						/*if (cEquipPos == DEF_EQUIPPOS_LHAND)
 							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += (int)dwSWEValue * 3;
-						else m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
+						else
+						{*/
+							m_pClientList[iClientH]->m_iAddAbsPD += (int)dwSWEValue * 3; //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
+							if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
+
+						//}
 						break;
 					case ITEMSTAT2_MA:
-						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
+						/*switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:	m_pClientList[iClientH]->m_iAddAbsEarth += (int)dwSWEValue * 3; break;
 						case 2:	m_pClientList[iClientH]->m_iAddAbsLight += (int)dwSWEValue * 3; break;
 						case 3:	m_pClientList[iClientH]->m_iAddAbsFire += (int)dwSWEValue * 3; break;
@@ -880,9 +901,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						case 7:	m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						}
-						break;
-						/*m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
-						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;*/
+						break;*/
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
+						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
 					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
@@ -890,7 +911,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					}
 
 					//Magn0S:: Set max values for elemental magic abs
-					switch (dwSWEType) {
+					/*switch (dwSWEType) {
 					case ITEMSTAT2_MA:
 						if (m_pClientList[iClientH]->m_iAddElementAbs > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddElementAbs = DEF_MAXMAGICALABS;
 						//Magn0S:: Add elements abs.
@@ -901,11 +922,11 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						if (m_pClientList[iClientH]->m_iAddAbsHoly > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsHoly = DEF_MAXMAGICALABS;
 						if (m_pClientList[iClientH]->m_iAddAbsUnholy > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsUnholy = DEF_MAXMAGICALABS;
 						break;
-					}
+					}*/
 
 				}
 				switch (cEquipPos) { // Sub-cases of DEF_ITEMEFFECTTYPE_DEFENSE
-				case DEF_EQUIPPOS_LHAND:
+				/*case DEF_EQUIPPOS_LHAND:
 					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 != 0)
 					{
 						m_pClientList[iClientH]->m_iDamageAbsorption_Shield = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
@@ -918,99 +939,38 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Shield += iTemp;
 
-					break;
+					break;*/
 				case DEF_EQUIPPOS_TWOHAND:
 
 				case DEF_EQUIPPOS_RHAND:
 
 					break;
+				
+				case DEF_EQUIPPOS_LHAND:
+				case DEF_EQUIPPOS_LEGGINGS:
+				case DEF_EQUIPPOS_ARMS:
+				case DEF_EQUIPPOS_BODY:
 				case DEF_EQUIPPOS_HEAD:	// PA on Head
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					// Merien Upgraded helmet +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
+					m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
 					break;
-				case DEF_EQUIPPOS_BODY:
+				/*case DEF_EQUIPPOS_BODY:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					// Merien Upgraded armor +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += iTemp;
-					/*switch (m_pClientList[iClientH]->m_cSex) {
-					case 1: // Male  1:Leather, 5:Tunic
-						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue) {
-						case 1:  // Leather
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						case 5:  // Tunic
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-							break;
-						case 2:  // Chain
-						case 3:  // Scale
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						case 6: //  Robe(M)
-						case 10: // eHeroRobe(M)
-						case 11: // aHeroRobe(M) // Some all places PA with robes
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						case 4: // Plate
-						default:	// plate +				
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						}
-						break;
-					case 2: // Women 1,2:Bodice, 3:Leather
-						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue) {
-						case 1:  // Bodice
-						case 2:  // Bodice
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-							break;
-						case 3:  // Leather
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						case 4:  // Chain
-						case 5:  // Scale
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						case 7: //  Robe(M)
-						case 11: // eHeroRobe(M)
-						case 12: // aHeroRobe(M) // Some all places PA with robes
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-							break;
-						case 6: // Plate
-						default:
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] / 2;
-
-							break;
-						}
-						break;
-					}*/
+					
 					break;
 				case DEF_EQUIPPOS_ARMS:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					// Merien Upgraded hauberks +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += iTemp;
-					/*switch (m_pClientList[iClientH]->m_cSex) {
-					case 1: // Male  1:Chemise 2:Hauberk
-						if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue <= 1)
-						{
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] / 2;
-						}
-						break;
-					case 2: // Women 1,2:Chemise Shirt, 3:Hauberk
-						if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cApprValue <= 2)
-						{
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_RELEASEALL] = m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] / 2;
-						}
-						break;
-					}*/
+					
 					break;
 				case DEF_EQUIPPOS_BOOTS:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
@@ -1029,14 +989,20 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 				case DEF_EQUIPPOS_BACK: // Cape
 					// Motemorphosed char is still affected by original cape
 					m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
+					break;*/
+
+				case DEF_EQUIPPOS_BOOTS:
+				case DEF_EQUIPPOS_BACK: // Cape
+					// Motemorphosed char is still affected by original cape
+					m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 					break;
 
 				default:
 					// SNOOPY: Kept this here so we can use Damage absorbtion for something else (ie: Cape)
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					// Merien Upgraded diverse (capes?)
-					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
+					//iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
 					break;
 				}
 
@@ -1104,7 +1070,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
 
 	// Maximum value for  PA, here instead of iCalculateAttackEffect
-	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] > DEF_MAXPHYSICALABS)	// Torse,  max 60
+	/*if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] > DEF_MAXPHYSICALABS)	// Torse,  max 60
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] = DEF_MAXPHYSICALABS;
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] > DEF_MAXPHYSICALABS)	// T�te    max 60
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] = DEF_MAXPHYSICALABS;
@@ -1115,12 +1081,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] > DEF_MAXPHYSICALABS)	// Pieds   max 60 
 		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] = DEF_MAXPHYSICALABS;
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] > DEF_MAXPHYSICALABS)	// Dos     max 60
-		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] = DEF_MAXPHYSICALABS;
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] = DEF_MAXPHYSICALABS;*/
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > DEF_MAXPHYSICALABS)						// Shield  max 60
 		m_pClientList[iClientH]->m_iDamageAbsorption_Shield = DEF_MAXPHYSICALABS;
 
 	NotifyPlayerAttributes(iClientH);
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARMOURVALUES, NULL, NULL, NULL, NULL);
+	//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARMOURVALUES, NULL, NULL, NULL, NULL);
 }
 
 BOOL CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short sItemIndex, short sDestItemID)
@@ -1182,6 +1148,63 @@ BOOL CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 		}
 		break;
 
+	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION:
+
+		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) {
+			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != NULL) {
+				// #todo
+				if (true) { //m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_cCategory == 6) {
+					auto attr = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute;
+					 // Creas pocion con atributos... por ejemplo pocion PA 9% 
+					auto dwType1 = (attr & 0x00F00000) >> 20;
+					auto dwValue1 = (attr & 0x000F0000) >> 16;
+					auto dwType2 = (attr & 0x0000F000) >> 12;
+					auto dwValue2 = (attr & 0x00000F00) >> 8;
+
+					auto& dst_attr = m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute;
+
+					auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
+					auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
+					auto dst_dwType2 = (dst_attr & 0x0000F000) >> 12;
+					auto dst_dwValue2 = (dst_attr & 0x00000F00) >> 8;
+
+					if (dst_dwType2 != dwType2)
+					{
+						PutLogList("Tratando de poner atributos de pocion a item que difiere de tipo");
+						return FALSE;
+					}
+
+					switch (dwType2)
+					{
+					case ITEMSTAT2_MR:
+					case ITEMSTAT2_PA:
+					case ITEMSTAT2_MA:
+					case ITEMSTAT2_DEF:
+					case ITEMSTAT2_HITPROB:
+					
+						auto dst_value = dst_dwValue2 + dwValue2;
+						dst_attr = NULL;
+						dst_dwType1 = dst_dwType1 << 20;
+						dst_dwValue1 = dst_dwValue1 << 16;
+						dwType2 = dwType2 << 12;
+						dwValue2 = dst_value << 8;
+						dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
+						dst_attr = dst_attr | dwType2 | dwValue2;
+						break;
+					
+
+					default:
+
+						break;
+					}
+
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute, NULL, NULL);
+					return TRUE;
+				}
+			}
+		}
+		break;
+
 	case DEF_ITEMEFFECTTYPE_ARMORDYE:
 		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) {
 			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != NULL) {
@@ -1224,7 +1247,7 @@ BOOL CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 					return TRUE;
 				}
 				else {
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CURLIFESPAN, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_wCurLifeSpan, NULL, NULL);
+					//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CURLIFESPAN, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_wCurLifeSpan, NULL, NULL);
 					return FALSE;
 				}
 			}
@@ -3866,6 +3889,12 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		// Main
 		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = NULL;
 		dwType = dwType << 20;
+		 // esto ocupa 1byte: aca tenes 8 0 y 1
+		 // esto ocupa 4 bytes: aca tenes 32 0 y 1 
+		 // 32 bools en un int
+			// 0 1 bool es 0 1 
+			// al tener 32 0 1 podes tener 32 bool
+			// ahorras memoria: 32 bool que ocupan 32 byts tenes un int que ocupa 4byte
 		dwValue = dwValue << 16;
 		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 
@@ -4072,7 +4101,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		case 9: // MA Min +9%
 			if (dwValue <= 3) dwValue = 3;
 			//Magn0S:: Add Elements
-			iResult = iDice(1, 1020);
+			/*iResult = iDice(1, 1020);
 			if ((iResult >= 1) && (iResult < 275)) sElement = 1;  //Earth 27%
 			else if ((iResult >= 275) && (iResult < 550)) sElement = 2;  //Light 27%
 			else if ((iResult >= 550) && (iResult < 650)) sElement = 3;  //Fire 10%
@@ -4082,7 +4111,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 			else if ((iResult >= 1000) && (iResult <= 1020)) sElement = 7;  //Unatunned 02%
 			else sElement = 7;
 
-			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sNewEffect1 = sElement;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sNewEffect1 = sElement;*/
 			break;
 
 		}
@@ -5041,22 +5070,20 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 
 		case DEF_ITEMEFFECTTYPE_STUDYMAGIC:
 			iV1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
-			//Magn0S:: Add to avoid consume Manual without necessery Int
-			iV2 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
 			
-			if (iV2 > (m_pClientList[iClientH]->m_iInt)) {
-				
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "You cannot learn this magic. Int too low.");
-				return;
+			if (m_pMagicConfigList[iV1] != NULL) {
+				if (!RequestStudyMagicHandler(iClientH, m_pMagicConfigList[iV1]->m_cName, bDepleteNow, FALSE)) {
+					return;
+				}
 			}
-			if (m_pMagicConfigList[iV1] != NULL)
-				RequestStudyMagicHandler(iClientH, m_pMagicConfigList[iV1]->m_cName, bDepleteNow, FALSE);
 			break;
 
 		//Magn0S:: Reputation Increased Potion.
 		case DEF_ITEMEFFECTTYPE_REP:
 			iV1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 			m_pClientList[iClientH]->m_iRating += iV1;
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_REPDGDEATHS, NULL, NULL, m_pClientList[iClientH]->m_iRating, NULL); // MORLA 2.4 - Actualiza la REP
+
 			if (m_pClientList[iClientH]->m_iRating > 5000)  m_pClientList[iClientH]->m_iRating = 5000;
 			if (m_pClientList[iClientH]->m_iRating < -5000)  m_pClientList[iClientH]->m_iRating = -5000;
 			break;
@@ -5121,7 +5148,6 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 						// ºí¸®µù ¾ÆÀÏ·Î °£´Ù 
 						if (memcmp(m_pClientList[iClientH]->m_cMapName, "bisle", 5) != 0) {
 							//v1.42
-							ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
 							RequestTeleportHandler(iClientH, "2   ", "bisle", -1, -1);
 						}
 					}
@@ -5160,7 +5186,6 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 							wsprintf(cDestMapName, "fightzone%d", m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 - 10);
 							if (memcmp(m_pClientList[iClientH]->m_cMapName, cDestMapName, 10) != 0) {
 								//v1.42
-								ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
 								RequestTeleportHandler(iClientH, "2   ", cDestMapName, -1, -1);
 							}
 						}
@@ -5192,8 +5217,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 							m_pClientList[iClientH]->m_iWarContribution += 300;
 
 						}
-						// But older scrolls will be depleted without effect!
-						ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
+						
 					}
 					else
 					{	// Not personal scrolls can summon and deplete scroll now
@@ -5203,12 +5227,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 						else
 							PlayerMagicHandler(iClientH, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, 31, TRUE,
 								m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 * -1);
-						ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
 					}
-				}
-				else // No permanent scroll outside Special Heldenian summon scrolls
-				{
-					if (m_bIsHeldenianMode == FALSE) ItemDepleteHandler(iClientH, sItemIndex, TRUE, TRUE);
 				}
 				break;
 			}
@@ -7047,7 +7066,7 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 	}
 
 	cp = (char*)pData;
-	cp += 11;
+	cp += 10;
 
 	// 14% chance of creating slates
 	if (iDice(1, 100) < m_sSlateSuccessRate) bIsSlatePresent = TRUE;

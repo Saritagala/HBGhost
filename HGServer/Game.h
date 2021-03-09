@@ -101,6 +101,8 @@ public:
 	BOOL bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify = TRUE);
 	void ItemDepleteHandler(int iClientH, short sItemIndex, BOOL bIsUseItemResult, BOOL bIsItemUsed);
 
+	void ParseCommand(char* pMsg);
+
 	char m_cGameServerAddrInternal[16];
 	char m_cGameServerAddrExternal[16];
 	int  m_iGameServerMode;
@@ -585,7 +587,7 @@ private:
 	int  _iGetSkillNumber(char* pSkillName);
 	void TrainSkillResponse(BOOL bSuccess, int iClientH, int iSkillNum, int iSkillLevel);
 	int _iGetMagicNumber(char* pMagicName, int* pReqInt, int* pCost);
-	void RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces = FALSE, BOOL bIsPurchase = TRUE);
+	BOOL RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces = FALSE, BOOL bIsPurchase = TRUE);
 	BOOL _bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize);
 	BOOL _bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize);
 	void ReleaseFollowMode(short sOwnerH);
@@ -779,6 +781,8 @@ private:
 
 	void CheckSpecialEvent(int iClientH);
 
+	DWORD m_iMaxAbs = 0, m_iMaxResist = 0, m_iMaxRec = 0, m_iMaxHPCrit = 0;
+	int m_iFragileDropRate = 0;
 
 	BOOL m_bIsGameServerRegistered;
 	BOOL m_bIsSocketConnected[DEF_MAXSUBLOGSOCK];

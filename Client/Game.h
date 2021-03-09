@@ -201,8 +201,8 @@ public:
 		iDGKill10 = 0;
 	int iDGDeath1 = 0, iDGDeath2 = 0, iDGDeath3 = 0, iDGDeath4 = 0, iDGDeath5 = 0, iDGDeath6 = 0, iDGDeath7 = 0, iDGDeath8 = 0, iDGDeath9 = 0,
 		iDGDeath10 = 0;
-	char cDGName1[12], cDGName2[10], cDGName3[10], cDGName4[10], cDGName5[10], cDGName6[10], cDGName7[10], cDGName8[10],
-		cDGName9[10], cDGName10[10];
+	char cDGName1[11], cDGName2[11], cDGName3[11], cDGName4[11], cDGName5[11], cDGName6[11], cDGName7[11], cDGName8[11],
+		cDGName9[11], cDGName10[11];
 	DWORD dwTimeLastMsg;
 	int iKillAnnouncer;
 	int m_iPlayerDeaths = 0, m_iPlayerDGPoints = 0;
@@ -210,13 +210,13 @@ public:
 	short _tmp_sOwnerType, _tmp_sAppr1, _tmp_sAppr2, _tmp_sAppr3, _tmp_sAppr4;
 
 	int _tmp_iStatus;
-	char  _tmp_cAction, _tmp_cDir, _tmp_cFrame, _tmp_cName[12];
+	char  _tmp_cAction, _tmp_cDir, _tmp_cFrame, _tmp_cName[11];
 	int   _tmp_iChatIndex, _tmp_dx, _tmp_dy, _tmp_iApprColor, _tmp_iEffectType, _tmp_iEffectFrame, _tmp_dX, _tmp_dY; // 21.171 2002-6-14
 	WORD  _tmp_wObjectID;
 	char cDynamicObjectData1, cDynamicObjectData2, cDynamicObjectData3, cDynamicObjectData4;
 	WORD  wFocusObjectID;
 	short sFocus_dX, sFocus_dY;
-	char  cFocusAction, cFocusFrame, cFocusDir, cFocusName[12];
+	char  cFocusAction, cFocusFrame, cFocusDir, cFocusName[11];
 	short sFocusX, sFocusY, sFocusOwnerType, sFocusAppr1, sFocusAppr2, sFocusAppr3, sFocusAppr4;
 	int iFocuiStatus;
 	int   iFocusApprColor;
@@ -886,7 +886,7 @@ public:
 	} m_stSellItemList[DEF_MAXSELLLIST];
 
 	struct {
-		char cName[22];
+		char cName[21];
 		char cOpMode;
 	} m_stGuildOpList[100];
 
@@ -909,7 +909,7 @@ public:
 
 	struct {
 		char cStatus;
-		char cName[12];
+		char cName[11];
 	} m_stPartyMember[DEF_MAXPARTYMEMBERS];
 
 	struct {
@@ -919,20 +919,20 @@ public:
 	} m_stCrusadeStructureInfo[DEF_MAXCRUSADESTRUCTURES];
 
 	struct {
-		char cName[12];
+		char cName[11];
 	} m_stPartyMemberNameList[DEF_MAXPARTYMEMBERS+1];
 
 	// v2.171 2002-6-14
 	struct {
 		DWORD dwRefTime;
 		int iGuildRank;
-		char cCharName[12];
-		char cGuildName[24];
+		char cCharName[11];
+		char cGuildName[21];
 	} m_stGuildName[DEF_MAXGUILDNAMES];
 
 	struct {
 		int iIndex;
-		char mapname[12];
+		char mapname[11];
 		int iX;
 		int iY;
 		int iCost;
@@ -1015,7 +1015,7 @@ public:
 
 	int PartyId;
 	int iPartyHp[9], iMaxPoint2[9], iPartySex[9], iParty_sX[9], iParty_sY[9], iPartyMp[9], iMaxPoint0[9], iBarWidth2[9], iBarWidth0[9];
-	char PartyMapName[9][12];
+	char PartyMapName[9][11];
 	BOOL ActualizarParty, m_bShowParty;
 
 
@@ -1157,31 +1157,31 @@ public:
 	char m_cEdit[4];
 	char G_cTxt[128];
 	char m_cGameModeCount;
-	char m_cBGMmapName[12];
+	char m_cBGMmapName[11];
 	char m_cItemOrder[DEF_MAXITEMS];
-	char m_cAmountString[12];
+	char m_cAmountString[11];
 	char m_cLogOutCount;
 	char m_cRestartCount;
 	char m_cGameMode;
 	char m_cWhisperIndex;
-	char m_cAccountName[12];
-	char m_cAccountPassword[12];
-	char m_cAccountAge[12];
-	char m_cNewPassword[12];
-	char m_cNewPassConfirm[12];
+	char m_cAccountName[11];
+	char m_cAccountPassword[11];
+	char m_cAccountAge[11];
+	char m_cNewPassword[11];
+	char m_cNewPassConfirm[11];
 	char m_cAccountCountry[18];
 	char m_cAccountSSN[32];
 	char m_cEmailAddr[52];
 	char m_cAccountQuiz[46];// Quiz
-	char m_cAccountAnswer[22];
-	char m_cPlayerName[12];
+	char m_cAccountAnswer[21];
+	char m_cPlayerName[11];
 	char m_cPlayerDir;
 	char m_cMsg[200];
-	char m_cLocation[12];
-	char m_cCurLocation[12];
-   	char m_cGuildName[22];
-	char m_cMCName[12];
-	char m_cMapName[12];
+	char m_cLocation[11];
+	char m_cCurLocation[11];
+   	char m_cGuildName[21];
+	char m_cMCName[11];
+	char m_cMapName[11];
 	char m_cMapMessage[32];
 	char m_cMapIndex;
 	char m_cPlayerTurn;
@@ -1217,17 +1217,17 @@ public:
 	char m_cWhetherEffectType;
 	char m_cWhetherStatus;
 	char m_cIlusionOwnerType;
-	char m_cName_IE[12];
+	char m_cName_IE[11];
 	char m_sViewDX, m_sViewDY;
 	char m_cCommandCount;
 	char m_cLoading;
 	char m_cDiscount;
 
-	char m_cStatusMapName[12];
+	char m_cStatusMapName[11];
 	char m_cTopMsg[64];
-	char m_cTeleportMapName[12];
-	char m_cConstructMapName[12];
-	char m_cGameServerName[22]; //  Gateway
+	char m_cTeleportMapName[11];
+	char m_cConstructMapName[11];
+	char m_cGameServerName[21]; //  Gateway
 
 	char m_cItemDrop[25][25];
 
@@ -1243,7 +1243,7 @@ public:
     int  m_iItemDropCnt;
 
 	// Snoopy: Apocalypse Gate
-	char m_cGateMapName[12];
+	char m_cGateMapName[11];
 	BOOL m_bIsHeldenian;
 	int  m_iGatePositX, m_iGatePositY;
 	int m_iHeldenianAresdenLeftTower;
@@ -1293,7 +1293,7 @@ public:
 		//int iTeam;
 		int iKills;
 		int iDeaths;
-		char cCharName[12];
+		char cCharName[11];
 	} m_stArenaPlayers[500];
 
 	void SortArenaPlayers();
@@ -1301,7 +1301,7 @@ public:
 	void DrawDialogBox_ArenaRestart(short msX, short msY, short msZ, char cLB);
 
 	struct {
-		char cCharName[12];
+		char cCharName[11];
 	} m_stOnlineGuild[500];
 
 	void DrawDialogBox_ChangeCity(short msX, short msY);
@@ -1320,7 +1320,7 @@ public:
 		int iQuestID;
 		int iContribution;
 		int iMaxCount, iNpcID;
-		char cMapName[15];
+		char cMapName[11];
 		char cPrizeName[21];
 	} m_stQuestList[50];
 	int m_iIleQuestJest;
@@ -1330,7 +1330,7 @@ public:
 		BOOL bIsQuestCompleted;
 		short sWho, sQuestType, sContribution, sTargetType, sTargetCount, sX, sY, sRange;
 		short sCurrentCount;
-		char cTargetName[22], cPrizeName[21];
+		char cTargetName[11], cPrizeName[21];
 		int iQuestID, iAmount, iRewardType;
 	} m_stQuest[DEF_MAXQUEST];
 

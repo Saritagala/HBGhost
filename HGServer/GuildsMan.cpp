@@ -109,9 +109,11 @@ void CGame::RequestGuildMemberRank(int iClientH, char *pName, int iIndex)
 void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int iRank)
 {
     char   seps[] = "= \t\n";
-    char* token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11];
+    char* token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11], cMsg[52];
     class  CStrTok* pStrTok;
-    int i;
+    int i, iMajesticCount;
+
+	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
     if (m_pClientList[iClientH] == NULL) return;
     if ((dwMsgSize) <= 0) return;
@@ -121,6 +123,30 @@ void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int
         SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOGUILDMASTERLEVEL, NULL, NULL, NULL, NULL);
         return;
     }
+
+	ZeroMemory(cMsg, sizeof(cMsg));
+	switch (iRank)
+	{
+	case 1:
+		wsprintf(cMsg, "You are Now a Recluiter");
+		iMajesticCount = 60;
+		break;
+	case 2:
+		wsprintf(cMsg, "You are Now a Summoner");
+		iMajesticCount = 50;
+		break;
+	case 3:
+		wsprintf(cMsg, "You are Now a Captain");
+		iMajesticCount = 80;
+		break;
+	}
+
+	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft < iMajesticCount)
+	{
+		wsprintf(G_cTxt, "Not enough majestic. Required %d points.", iMajesticCount);
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, G_cTxt);
+		return;
+	}
 
     ZeroMemory(cName, sizeof(cName));
     ZeroMemory(cNpcWaypoint, sizeof(cNpcWaypoint));
@@ -139,51 +165,44 @@ void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int
             memcpy(cTargetName, token, 10);
         else memcpy(cTargetName, token, strlen(token));
 
-        for (i = 1; i < DEF_MAXCLIENTS; i++)
-            if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
-                // ∏Ò«• ƒ≥∏Ø≈Õ∏¶ √£æ“¥Ÿ.     
+		if (dwGoldCount >= 1000000) {
+			for (i = 1; i < DEF_MAXCLIENTS; i++) {
+				if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
+					// ∏Ò«• ƒ≥∏Ø≈Õ∏¶ √£æ“¥Ÿ.     
 
-                if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
-                    // ????? ???????? ???? ?????? ????????.
+					if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
+						// ????? ???????? ???? ?????? ????????.
 
-                    SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Add Rank...");
-					delete pStrTok;
-					return;
-                }
+						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Add Rank...");
+						delete pStrTok;
+						return;
+					}
 
-				if (m_pClientList[i]->m_iGuildRank == 0)
-				{
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot change a Guildmaster.");
-					delete pStrTok;
-					return;
+					if (m_pClientList[i]->m_iGuildRank == 0)
+					{
+						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot change a Guildmaster.");
+						delete pStrTok;
+						return;
+					}
+					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cMsg);
+					m_pClientList[i]->m_iGuildRank = iRank;
+					SendNotifyMsg(NULL, i, DEF_UPDATE_GUILDRANK, m_pClientList[i]->m_iGuildRank, NULL, NULL, NULL);
 				}
-                
-				switch (iRank)
-				{
-				case 1:
-					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a Recluiter");
-					break;
-				case 2:
-					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a Summoner");
-					break;
-				case 3:
-					SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are Now a Captain");
-					break;
-				}
-				m_pClientList[i]->m_iGuildRank = iRank;
-				SendNotifyMsg(NULL, i, DEF_UPDATE_GUILDRANK, m_pClientList[i]->m_iGuildRank, NULL, NULL, NULL);
-            }
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "New Rank Added");
+			}
+			m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= iMajesticCount;
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
 
-        delete pStrTok;
-        return;
+			SetItemCount(iClientH, "Gold", dwGoldCount - 1000000);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "New Rank Added");
+		}
+		else
+		{
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enough gold. Required 1kk of Gold.");
+		}
     }
 
-    // «ˆ¿Á ¡¢º”¡ﬂ¿Ã æ∆¥œ¥Ÿ.
-    SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cTargetName);
-
     delete pStrTok;
-    return;
+    
 }
 
 void CGame::PlayerOrder_DeleteRank(int iClientH, char* pData, DWORD dwMsgSize)
@@ -219,39 +238,34 @@ void CGame::PlayerOrder_DeleteRank(int iClientH, char* pData, DWORD dwMsgSize)
             memcpy(cTargetName, token, 10);
         else memcpy(cTargetName, token, strlen(token));
 
-        for (i = 1; i < DEF_MAXCLIENTS; i++)
-            if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
-                // ∏Ò?á• ?Ñ≥∏Ø?ÖÕ∏¶ ?É£æ?í¥?ô.     
+		for (i = 1; i < DEF_MAXCLIENTS; i++) {
+			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
+				// ∏Ò?á• ?Ñ≥∏Ø?ÖÕ∏¶ ?É£æ?í¥?ô.     
 
-                if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
-                    // ????? ???????? ???? ?????? ????????.
+				if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
+					// ????? ???????? ???? ?????? ????????.
 
-                    SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Delete rank...");
+					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot Delete rank...");
 					delete pStrTok;
 					return;
-                }
+				}
 				if (m_pClientList[i]->m_iGuildRank == 0)
 				{
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Error: Cannot delete a Guildmaster.");
 					delete pStrTok;
 					return;
 				}
-                m_pClientList[i]->m_iGuildRank = 12;
+				m_pClientList[i]->m_iGuildRank = 12;
 				SendNotifyMsg(NULL, i, DEF_UPDATE_GUILDRANK, m_pClientList[i]->m_iGuildRank, NULL, NULL, NULL);
-                SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are now a Guildsman");
+				SendNotifyMsg(NULL, i, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You are now a Guildsman");
 
-            }
-
+			}
+		}
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Rank Deleted");
-        delete pStrTok;
-        return;
     }
 
-    // ?áˆ?ÄÁ ¡¢º?ì¡?ü?Ä?å æ?Ü¥œ¥?ô.
-    SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cTargetName);
-
     delete pStrTok;
-    return;
+    
 }
 
 void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
@@ -270,10 +284,10 @@ void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
 
 	// √Ä√å¬∏¬ß√Ä√å √Ä√è√Ñ¬°√á√è¬¥√Ç √Ö¬¨¬∂√≥√Ä√å¬æ√∞√Ü¬Æ¬∏¬¶ √É¬£¬¥√Ç¬¥√ô.
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
-		if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cCharName, 10) == 0) &&
-			(m_pClientList[i]->m_iLevel >= 100) && //(m_pClientList[i]->m_iCharisma >= 20) &&
+		if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, cCharName, 10) == 0) //&&
+			//(m_pClientList[i]->m_iLevel >= 100) && (m_pClientList[i]->m_iCharisma >= 20) &&
 			// centu - guild cost gold
-			(dwGetItemCount(i, "Gold") >= m_iGuildCost)) {
+			/*(dwGetItemCount(i, "Gold") >= m_iGuildCost)*/) {
 
 			wp = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wp) {

@@ -459,7 +459,7 @@ class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID/*, short * 
 {
 	class CTile* pTile;
 	class CItem* pItem;
-	register int i;
+	int i;
 
 	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return NULL;
 
@@ -680,7 +680,7 @@ BOOL CMap::bGetDynamicObject(short sX, short sY, short *pType, DWORD *pRegisterT
 
 int CMap::iGetEmptyNamingValue()
 {
-  register int i;
+  int i;
 
 	for (i = 0; i < 15000; i++) //LifeX Fix Mobs Respawn Limit 01/01
 	if (m_bNamingValueUsingStatus[i] == FALSE) 
@@ -3054,7 +3054,7 @@ void CGame::ClearMap()
 **********************************************************************************************************************/
 int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 {
-	register int* ip, ix, iy, iSize, iTileExists;
+	int* ip, ix, iy, iSize, iTileExists;
 	class CTile/** pTileSrc, */* pTile;
 	unsigned char ucHeader;
 	short* sp, * pTotal;
