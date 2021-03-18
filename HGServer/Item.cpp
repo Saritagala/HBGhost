@@ -1148,59 +1148,72 @@ BOOL CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 		}
 		break;
 
-	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION:
+	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION: // kazin
+		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) 
+		{
+			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != NULL) 
+			{
+				auto attr = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute;
+				auto dwType1 = (attr & 0x00F00000) >> 20;
+				auto dwValue1 = (attr & 0x000F0000) >> 16;
+				auto dwType2 = (attr & 0x0000F000) >> 12;
+				auto dwValue2 = (attr & 0x00000F00) >> 8;
 
-		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) {
-			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != NULL) {
-				// #todo
-				if (true) { //m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_cCategory == 6) {
-					auto attr = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute;
-					 // Creas pocion con atributos... por ejemplo pocion PA 9% 
-					auto dwType1 = (attr & 0x00F00000) >> 20;
-					auto dwValue1 = (attr & 0x000F0000) >> 16;
-					auto dwType2 = (attr & 0x0000F000) >> 12;
-					auto dwValue2 = (attr & 0x00000F00) >> 8;
+				auto& dst_attr = m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute;
 
-					auto& dst_attr = m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute;
+				auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
+				auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
+				auto dst_dwType2 = (dst_attr & 0x0000F000) >> 12;
+				auto dst_dwValue2 = (dst_attr & 0x00000F00) >> 8;
 
-					auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
-					auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
-					auto dst_dwType2 = (dst_attr & 0x0000F000) >> 12;
-					auto dst_dwValue2 = (dst_attr & 0x00000F00) >> 8;
-
-					if (dst_dwType2 != dwType2)
-					{
-						PutLogList("Tratando de poner atributos de pocion a item que difiere de tipo");
-						return FALSE;
-					}
-
-					switch (dwType2)
-					{
-					case ITEMSTAT2_MR:
-					case ITEMSTAT2_PA:
-					case ITEMSTAT2_MA:
-					case ITEMSTAT2_DEF:
-					case ITEMSTAT2_HITPROB:
-					
-						auto dst_value = dst_dwValue2 + dwValue2;
-						dst_attr = NULL;
-						dst_dwType1 = dst_dwType1 << 20;
-						dst_dwValue1 = dst_dwValue1 << 16;
-						dwType2 = dwType2 << 12;
-						dwValue2 = dst_value << 8;
-						dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
-						dst_attr = dst_attr | dwType2 | dwValue2;
-						break;
-					
-
-					default:
-
-						break;
-					}
-
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute, NULL, NULL);
-					return TRUE;
+				if ((m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute & 0x0000F000) == NULL)
+				{
+					return FALSE;
 				}
+
+				if (dst_dwType2 != dwType2)
+				{
+					return FALSE;
+				}
+
+				auto dst_value = dst_dwValue2 + dwValue2;
+
+				switch (dwType2) {
+				case ITEMSTAT2_PSNRES: // 1
+				case ITEMSTAT2_HPREC: // 4
+				case ITEMSTAT2_MPREC: // 6
+				case ITEMSTAT2_SPREC: // 5
+				case ITEMSTAT2_MR: // 7
+				case ITEMSTAT2_PA: // 8
+				case ITEMSTAT2_MA: // 9
+				case ITEMSTAT2_DEF: // 3
+				case ITEMSTAT2_HITPROB: // 2
+
+					// Centuu : limite maximo para las attribute potion
+					if (dwType2 == ITEMSTAT2_PA || dwType2 == ITEMSTAT2_MA)
+					{
+						if (dst_value > 15) dst_value = 15;
+					}
+					else
+					{
+						if (dst_value > 28) dst_value = 28;
+					}
+					dst_attr = NULL;
+					dst_dwType1 = dst_dwType1 << 20;
+					dst_dwValue1 = dst_dwValue1 << 16;
+					dwType2 = dwType2 << 12;
+					dwValue2 = dst_value << 8;
+					dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
+					dst_attr = dst_attr | dwType2 | dwValue2;
+					break;
+
+				default:
+					return FALSE;
+				}
+
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute, NULL, NULL);
+				return TRUE;
+				
 			}
 		}
 		break;
@@ -4660,9 +4673,11 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 	
 	DWORD* dwp, dwItemCount;
 	WORD* wp;
-	int   i, iRet, iEraseReq, iCost;
+	int   i, iRet, iEraseReq, iCost = 0;
 
-	iCost = 0;
+	BOOL bIsCoin = FALSE, bIsPotion = FALSE;
+
+	DWORD dwType1, dwType2, dwValue;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -4670,8 +4685,86 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 	ZeroMemory(cData, sizeof(cData));
 	ZeroMemory(cItemName, sizeof(cItemName));
 
-	memcpy(cItemName, pItemName, 20);
-	dwItemCount = 1;
+	if (iPurchase == 3)
+	{
+		if (memcmp(pItemName, "10Coins", 7) == 0) {
+			strcpy(cItemName, "Coin");
+			dwItemCount = 10;
+			bIsCoin = TRUE;
+		}
+		else if (memcmp(pItemName, "100Coins", 8) == 0) {
+			strcpy(cItemName, "Coin");
+			dwItemCount = 100;
+			bIsCoin = TRUE;
+		}
+		else if (memcmp(pItemName, "Coin", 4) == 0) {
+			strcpy(cItemName, "Coin");
+			dwItemCount = 1;
+			bIsCoin = TRUE;
+		}
+		else if (memcmp(pItemName, "PAPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_PA;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "MAPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_MA;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "DRPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_DEF;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "PRPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_PSNRES;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "HitPPotion", 10) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_HITPROB;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "HPPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_HPREC;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "SPPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_SPREC;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "MPPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_MPREC;
+			bIsPotion = TRUE;
+		}
+		else if (memcmp(pItemName, "MRPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_MR;
+			bIsPotion = TRUE;
+		}
+		else {
+			memcpy(cItemName, pItemName, 20);
+			dwItemCount = 1;
+		}
+	}
+	else {
+		memcpy(cItemName, pItemName, 20);
+		dwItemCount = 1;
+	}
 
 	for (i = 1; i <= iNum; i++) {
 
@@ -4693,7 +4786,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Enemy Kill Points to purchase this item.");
 					return;
 				}
-				iCost = pItem->m_wEkPrice;
+				iCost = pItem->m_wEkPrice* dwItemCount;
 				break;
 			case 2:
 				if (pItem->bContrbSale == false) {
@@ -4706,7 +4799,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Contribution Points to purchase this item.");
 					return;
 				}
-				iCost = pItem->m_wContribPrice;
+				iCost = pItem->m_wContribPrice* dwItemCount;
 				break;
 			case 3:
 				if (pItem->bCoinSale == false) {
@@ -4719,15 +4812,58 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Not enought Coins to purchase this item.");
 					return;
 				}
-				iCost = pItem->m_wCoinPrice;
+				iCost = pItem->m_wCoinPrice* dwItemCount;
 				break;
 			default:
 				return;
 				break;
 			}
 
+			pItem->m_dwCount = dwItemCount;
+
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE) {
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
+
+				if (bIsCoin)
+				{
+					pItem->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
+					pItem->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
+					pItem->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
+					pItem->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
+				}
+
+				if (bIsPotion)
+				{
+					dwType1 = ITEMSTAT_STRONG;
+					dwValue = 1;
+
+					pItem->m_dwAttribute = NULL;
+					dwType1 = dwType1 << 20;
+					dwValue = dwValue << 16;
+					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType1 | dwValue;
+
+					//dwType2 = ITEMSTAT2_DEF;
+					dwValue = 1;
+
+					dwType2 = dwType2 << 12;
+					dwValue = dwValue << 8;
+					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType2 | dwValue;
+					
+					_AdjustRareItemValue(pItem);
+
+					pItem->m_sTouchEffectType = DEF_ITET_ID;
+					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
+					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
+
+					SYSTEMTIME SysTime;
+					char cTemp[256];
+					GetLocalTime(&SysTime);
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
+					pItem->m_sTouchEffectValue3 = atoi(cTemp);
+
+					_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, NULL, pItem);
+				}
 
 				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, iCost);
 
@@ -4888,7 +5024,8 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 	if ((sItemIndex < 0) || (sItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 
-	if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE) ||
+	if ((string(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == "Coin") ||
+		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE) ||
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_EAT)) {
 
 		// Centuu - class
@@ -5089,10 +5226,11 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 			break;
 
 		case DEF_ITEMEFFECTTYPE_COINS:
-			iV1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
+			iV1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount; //m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 			m_pClientList[iClientH]->m_iCoinPoints += iV1;
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_COINPOINTS, m_pClientList[iClientH]->m_iCoinPoints, NULL, NULL, NULL);
 			break;
+		
 		//End Magn0S --------------------------------------------------------------------------------------------------
 
 		// New 15/05/2004 Changed
@@ -5315,6 +5453,9 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 
 			SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 			break;
+
+		default:
+			return;
 		}
 		// *** Request Teleport Handler°¡ ÀÛµ¿µÇ¸é ÀÌ¹Ì µ¥ÀÌÅÍ ÀúÀåÀÌ ¿äÃ»µÈ »óÅÂÀÌ¹Ç·Î ÀÌÈÄ¿¡ ¾ÆÀÌÅÛÀ» ¾ø¾ÖºÁ¾ß ¼Ò¿ëÀÌ ¾ø´Ù. 
 		// ¾ÆÀÌÅÛÀ» ¸ÕÀú ¾ø¾Ø´Ù.
@@ -6694,6 +6835,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 							pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 					}
 				}
+				
 				else {
 					// ÀÏ¹Ý NPC¿¡°Ô ¾ÆÀÌÅÛÀ» ÁÖ¸é ¾ÆÀÌÅÛÀ» ¼­ÀÖ´Â À§Ä¡¿¡ ¹ö·Á¾ß ÇÑ´Ù. 
 					m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem);
@@ -8347,7 +8489,11 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 		*ip = pItem->m_iQuantStat;
 		cp += 4;
 
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 78+8); // 48
+		dwp = (DWORD*)cp;
+		*dwp = pItem->m_dwAttribute;
+		cp += 4;
+
+		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 78+8+4); // 48
 		break;
 
 	case DEF_NOTIFY_CANNOTCARRYMOREITEM:
@@ -10526,11 +10672,11 @@ BOOL CGame::_bCheckGoodItem(class CItem* pItem)
 {
 	if (pItem == NULL) return FALSE;
 
-	if (pItem->m_sIDnum == 90)
+	/*if (pItem->m_sIDnum == 90)
 	{
 		if (pItem->m_dwCount > 10000) return TRUE;  //Gold¿¡ ÇÑÇØ 10000¿ø ÀÌ»ó¸¸ ·Î±×¿¡ ³²±ä´Ù.
 		else return FALSE;
-	}
+	}*/
 	switch (pItem->m_sIDnum) {
 		// Gold Ãß°¡ 
 	case 259:
@@ -10691,7 +10837,7 @@ int CGame::iGetItemWeight(CItem* pItem, int iCount)
 	iWeight = pItem->m_wWeight;
 	if (iCount < 0) iCount = 1;
 	iWeight = iWeight * iCount;
-	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77) iWeight = 0; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
+	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77 || pItem->m_sIDnum == 1002) iWeight = 0; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
 	if (iWeight < 0) iWeight = 1;
 
 	return iWeight;

@@ -5994,9 +5994,9 @@ void CGame::bItemDrop_ExternalScreen(char cItemID, short msX, short msY)
 					tY = msY - 50;
 					if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-					if ((tX + 235) > 800) tX = 800 - 235;
+					if ((tX + 235) > 799) tX = 799 - 235;
 					if (tY < 0) tY = 0;
-					if ((tY + 100) > 600) tY = 600 - 100;
+					if ((tY + 100) > 599) tY = 599 - 100;
 #else
 					if ((tX + 235) > 639) tX = 639 - 235;
 					if (tY < 0) tY = 0;
@@ -6683,6 +6683,10 @@ void CGame::InitPlayerCharacteristics(char * pData)
 
 	ip = (int*)cp;
 	m_iClass = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	m_iCoinPoints = *ip;
 	cp += 4;
 }
 
@@ -20993,6 +20997,7 @@ int CGame::_iCalcTotalWeight()
 		{	iTemp = m_pItemList[i]->m_wWeight * m_pItemList[i]->m_dwCount;
 			if (strcmp(m_pItemList[i]->m_cName, "Gold") == 0) iTemp = 0;
 			if (strcmp(m_pItemList[i]->m_cName, "Arrow") == 0) iTemp = 0;
+			if (strcmp(m_pItemList[i]->m_cName, "Coin") == 0) iTemp = 0;
 			iWeight += iTemp;
 		}else iWeight += m_pItemList[i]->m_wWeight;
 		iCnt++;
@@ -30146,7 +30151,8 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 				return;
 			}
 
-			if (   (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE)
+			if (	(string(m_pItemList[cItemID]->m_cName) == "Coin")
+				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_PERM)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) )

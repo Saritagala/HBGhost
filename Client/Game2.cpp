@@ -17292,7 +17292,7 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	WORD  * wp;
 	int i, j, *ip, iClass, wCost;
 
-	DWORD dwCount;
+	DWORD dwCount, dwAttribute;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	BOOL  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
@@ -17411,8 +17411,13 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	ip = (int*)cp;
 	iReqStat = *ip;
 	cp += 4;
+
 	ip = (int*)cp;
 	iQuantStat = *ip;
+	cp += 4;
+
+	dwp = (DWORD*)cp;
+	dwAttribute = *dwp;
 	cp += 4;
 	
 	ZeroMemory(cTxt, sizeof(cTxt));
@@ -17502,6 +17507,8 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 
 			m_pItemList[i]->m_iReqStat = iReqStat;
 			m_pItemList[i]->m_iQuantStat = iQuantStat;
+
+			m_pItemList[i]->m_dwAttribute = dwAttribute;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)

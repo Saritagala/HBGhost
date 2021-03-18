@@ -1847,7 +1847,11 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	*ip = m_pClientList[iClientH]->m_iClass;
 	cp += 4;
 
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 132);
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iCoinPoints;
+	cp += 4;
+
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 136);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
