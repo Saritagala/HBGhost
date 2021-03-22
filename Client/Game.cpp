@@ -20486,7 +20486,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Helm
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 110) && (msY <= sY + 125))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 110) && (msY <= sY + 125) && (m_iClass == 1))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 403;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 404;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 405;
@@ -20498,7 +20498,7 @@ int iReqHeroItemID;
  	 		PlaySound('E', 14, 5);
  		}
  		// Hero's Cap
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140) && (m_iClass == 2))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 407;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 408;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 409;
@@ -20510,7 +20510,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Armor
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 140) && (msY <= sY + 155))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 140) && (msY <= sY + 155) && (m_iClass != 2))
  		{  	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 411;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 412;
  	 		if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 413;
@@ -20522,7 +20522,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Robe
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170) && (m_iClass == 2))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 415;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 416;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 417;
@@ -20558,7 +20558,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
 		// Hero's Hood
-		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 215))
+		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 215) && (m_iClass == 3))
 		{
 			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 392;
 			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 393;
@@ -20790,6 +20790,8 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 		break;
+	case 1:
+		return;
 	}
 }
 
@@ -31895,15 +31897,14 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 							EnableDialogBox(46, NULL, NULL, NULL);
 							
 						}
-						else{
+						else
+						{
 							if (m_cRestartCount == -1)
 							{
 								m_cRestartCount = 5;
 								m_dwRestartCountTime = timeGetTime();
 								wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 								AddEventList(G_cTxt, 10);
-								
-
 							}
 						}
 						PlaySound('E', 14, 5);

@@ -7929,6 +7929,16 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, DWORD dwMsgSize)
 			ManageShinning();
 		}
 
+		else if (strcmp(cp, "/clearbag") == 0)
+		{
+			if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) return;
+			for (i = 0; i < DEF_MAXITEMS; i++) 
+			{
+				if (m_pClientList[iClientH]->m_bIsItemEquipped[i]) continue;
+				ItemDepleteHandler(iClientH, i, FALSE, TRUE);
+			}
+		}
+
 		else if (memcmp(cp, "/who", 4) == 0) 
 		{
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_TOTALUSERS, NULL, NULL, NULL, NULL);
@@ -20187,8 +20197,13 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 			}
 
-			if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) {
-				iAttackerHitRatio += 100;
+			if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 0) 
+			{
+				iAttackerHitRatio += 20;
+				if (m_pClientList[sAttackerH]->m_cHeroArmourBonus > 8)
+				{
+					iAttackerHitRatio += 10;
+				}
 				iAP_SM += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 				iAP_L += m_pClientList[sAttackerH]->m_cHeroArmourBonus;
 			}

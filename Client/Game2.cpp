@@ -9765,7 +9765,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 			case 1: strcpy(cTxt, GET_ITEM_NAME3); break;
 			case 2: strcpy(cTxt, GET_ITEM_NAME4); break;
 			case 3: strcpy(cTxt, GET_ITEM_NAME5); break;
-			case 4: break;
+			case 4: strcpy(cTxt, "Fragile "); break;
 			case 5: strcpy(cTxt, GET_ITEM_NAME6); break;
 			case 6: strcpy(cTxt, GET_ITEM_NAME7); break;
 			case 7: strcpy(cTxt, GET_ITEM_NAME8); break;
@@ -11277,8 +11277,8 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		//	if (m_stQuest[i].sQuestType == NULL)
 		//	{
 				if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 145) && (msY < sY + 170))
-					PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 255, 255, 255);//"
-				else PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 4, 0, 50);//"
+					PutAlignedString(sX, sX + szX, sY + 145, "Quest List.", 255, 255, 255);//"
+				else PutAlignedString(sX, sX + szX, sY + 145, "Quest List.", 4, 0, 50);//"
 		//	}
 		//	else    PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 65, 65, 65);//"
 		//}
@@ -11309,10 +11309,10 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		if ((m_bIsCrusadeMode == FALSE) && m_bCitizen && (m_iPKCount == 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 195) && (msY < sY + 220))
-				PutAlignedString(sX, sX + szX, sY + 195, "Teleport List", 255, 255, 255);//"Teleporting to dungeon level 2."
-			else PutAlignedString(sX, sX + szX, sY + 195, "Teleport List", 4, 0, 50);
+				PutAlignedString(sX, sX + szX, sY + 195, "Teleport List.", 255, 255, 255);//"Teleporting to dungeon level 2."
+			else PutAlignedString(sX, sX + szX, sY + 195, "Teleport List.", 4, 0, 50);
 		}
-		else    PutAlignedString(sX, sX + szX, sY + 195, "Teleport List", 65, 65, 65);
+		else    PutAlignedString(sX, sX + szX, sY + 195, "Teleport List.", 65, 65, 65);
 
 		//Change crusade role
 		if (m_bIsCrusadeMode && m_bCitizen)
@@ -11325,8 +11325,8 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 
 		//MORLA 2.4 - Trade Items
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 240) && (msY < sY + 257))
-			PutAlignedString(sX, sX + szX, sY + 240, "Trade Market", 255, 255, 255);//"Change the crusade assignment."
-		else PutAlignedString(sX, sX + szX, sY + 240, "Trade Market", 4, 0, 50);//"
+			PutAlignedString(sX, sX + szX, sY + 240, "Trade Market.", 255, 255, 255);//"Change the crusade assignment."
+		else PutAlignedString(sX, sX + szX, sY + 240, "Trade Market.", 4, 0, 50);//"
 
 		//MORLA 2.4 - DK Set
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 260) && (msY < sY + 273))
@@ -11427,7 +11427,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU47, 65, 65, 65);// Disabled Mode
 		// Hero's Helm (EK 150 - Contrib 20)
-		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20) && (m_iClass == 1))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 110) && (msY < sY + 125))
 				PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 255, 255, 255);// On mouse over Mode
@@ -11435,7 +11435,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 65, 65, 65);// Disabled Mode
 		// Hero's Cap (EK 100 - Contrib 20)
-		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 20) && (m_iClass == 2))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 125) && (msY < sY + 140))
 				PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 255, 255, 255);// On mouse over Mode
@@ -11443,7 +11443,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 65, 65, 65);// Disabled Mode
 		// Hero's Armor (EK 300 - Contrib 30)
-		if ((m_iEnemyKillCount >= 300) && (m_iContribution >= 30))
+		if ((m_iEnemyKillCount >= 300) && (m_iContribution >= 30) && (m_iClass != 2))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 140) && (msY < sY + 155))
 				PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 255, 255, 255);// On mouse over Mode
@@ -11451,7 +11451,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 65, 65, 65);// Disabled Mode
 		// Hero's Robe (EK 200 - Contrib 20)
-		if ((m_iEnemyKillCount >= 200) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 200) && (m_iContribution >= 20) && (m_iClass == 2))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 155) && (msY < sY + 170))
 				PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU51, 255, 255, 255);// On mouse over Mode
@@ -11475,7 +11475,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU53, 65, 65, 65);// Disabled Mode
 		// Hero's Hood (EK 150 - Contrib 20)
-		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20) && (m_iClass == 3))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 200) && (msY < sY + 215))
 				PutAlignedString(sX, sX + szX, sY + 200, "Hero's Hood (EK 150 - Contrib 20)", 255, 255, 255);// On mouse over Mode
