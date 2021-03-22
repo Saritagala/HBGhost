@@ -1376,8 +1376,29 @@ void CGame::DeleteNpc(int iNpcH)
 				{
 					// Centuu : fragile items
 					pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
+					
+					DWORD dwType = 4;
+					DWORD dwValue = 1;
+
+					pItem->m_dwAttribute = NULL;
+					dwType = dwType << 20;
+					dwValue = dwValue << 16;
+					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
+
+					_AdjustRareItemValue(pItem);
+
+					pItem->m_sTouchEffectType = DEF_ITET_ID;
+					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
+					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
+
 					SYSTEMTIME SysTime;
+					char cTemp[256];
 					GetLocalTime(&SysTime);
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
+					pItem->m_sTouchEffectValue3 = atoi(cTemp);
+
+					_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, NULL, pItem);
 
 					pItem->m_sNewEffect2 = SysTime.wDay + 15;
 					pItem->m_sNewEffect3 = SysTime.wMonth;
