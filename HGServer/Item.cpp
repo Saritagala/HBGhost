@@ -153,12 +153,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	m_pClientList[iClientH]->m_iAngelicMag = 0; // By Snoopy81 
 	SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 0, 0);
 
-	if (m_pClientList[iClientH]->m_iWantedLevel > 0) 
-		SetWantedFlag(iClientH, DEF_OWNERTYPE_PLAYER, 1); // Wanted System
+	//if (m_pClientList[iClientH]->m_iWantedLevel > 0) 
+		//SetWantedFlag(iClientH, DEF_OWNERTYPE_PLAYER, 1); // Wanted System
 
-	//if (m_pClientList[iClientH]->m_iAdminUserLevel > 0)
-	//	m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00080000;
-	
 	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = 0;
 	m_pClientList[iClientH]->m_cAttackDiceRange_SM = 0;
 	m_pClientList[iClientH]->m_cAttackBonus_SM = 0;
@@ -390,22 +387,22 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000F00) >> 8;
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)dwSWEValue * 7; break;
+					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
 					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // armes HitProba
 					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
-					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)dwSWEValue * 7; break;
-					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)dwSWEValue * 7; break;
-					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)dwSWEValue * 7; break;
-					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7; break;
+					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100); break;
+					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100); break;
+					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100); break;
+					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
 					
 					case 8:  
-						m_pClientList[iClientH]->m_iAddAbsPD += (int)dwSWEValue * 3;
+						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
 						break;
 
 					case 9:
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					//Magn0S:: Magic Abs by elements
@@ -423,7 +420,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						break;*/
 
 					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
+					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
 					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 
@@ -738,20 +735,20 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000F00) >> 8;
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)dwSWEValue * 7; break;
+					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
 					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // adds Hit Proba
 					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
-					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)dwSWEValue * 7; break;
-					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)dwSWEValue * 7; break;
-					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)dwSWEValue * 7; break;
-					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7; break;
+					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100); break;
+					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100); break;
+					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100); break;
+					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
 					case 8:  
 						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
-						m_pClientList[iClientH]->m_iAddAbsPD += (int)dwSWEValue * 3;
+						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 						break;
 					case 9:  
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					//Magn0S:: Add elemental abs
@@ -769,7 +766,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						break;*/
 
 					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
+					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
 					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 					//Magn0S:: Set max values for elemental magic abs
@@ -859,33 +856,34 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 					// HP or Rep+ will have effect on Armor or MainGauche !
 					switch (dwSWEType) {
 					case 0:  break;
-					case ITEMSTAT2_PSNRES:  m_pClientList[iClientH]->m_iAddPR += (int)dwSWEValue * 7; break;
+					case ITEMSTAT2_PSNRES:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
 					case ITEMSTAT2_HITPROB:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // Armes Hit Proba
 					case ITEMSTAT2_DEF:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
+					
 					case ITEMSTAT2_HPREC:  // HPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldHPrec += (int)dwSWEValue * 7;
-						else m_pClientList[iClientH]->m_iAddHP += (int)dwSWEValue * 7;
+							iShieldHPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100);
+						else m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100);
 						break;
 					case ITEMSTAT2_SPREC:  // SPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldSPrec += (int)dwSWEValue * 7;
-						else m_pClientList[iClientH]->m_iAddSP += (int)dwSWEValue * 7;
+							iShieldSPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100);
+						else m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100);
 						break;
 					case ITEMSTAT2_MPREC:   // MPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldMPrec += (int)dwSWEValue * 7;
-						else m_pClientList[iClientH]->m_iAddMP += (int)dwSWEValue * 7;
+							iShieldMPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100);
+						else m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100);
 						break;
 					case ITEMSTAT2_MR:
-						m_pClientList[iClientH]->m_iAddMR += (int)dwSWEValue * 7;
+						m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100);
 						break;
 					case ITEMSTAT2_PA: // PA
 						/*if (cEquipPos == DEF_EQUIPPOS_LHAND)
 							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += (int)dwSWEValue * 3;
 						else
 						{*/
-							m_pClientList[iClientH]->m_iAddAbsPD += (int)dwSWEValue * 3; //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100); //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
 							if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 
 						//}
@@ -902,11 +900,11 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						}
 						break;*/
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)dwSWEValue * 3;
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)dwSWEValue * 10; break;
+					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
 					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 
@@ -953,10 +951,13 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 				case DEF_EQUIPPOS_HEAD:	// PA on Head
 					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3);
+
 					// Merien Upgraded helmet +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
 					m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
+					m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
 					break;
 				/*case DEF_EQUIPPOS_BODY:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);

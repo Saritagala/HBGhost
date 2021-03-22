@@ -408,7 +408,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		case 0:  // Mining
 		case 5:  // Hand-Attack
 		case 13: // Manufacturing
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iStr) * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
 			}
@@ -426,7 +426,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		case 4:  // Magic
 		case 18: // Crafting
 		case 21: // Staff-Attack
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iMag) * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
 			}
@@ -448,7 +448,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		case 10: // Axe-Attack
 		case 11: // Shield        	
 		case 14: // Hammer 
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iAngelicDex) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iDex) * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
 			}
@@ -461,7 +461,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 		case 19: // Pretend-Corpse
 		case 22: // Taming
 		case 20: // Enchanting
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iInt) * 2)) {
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
 			}
@@ -538,7 +538,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 		case 0:
 		case 5:
 		case 13:
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iStr) * 2)) {
 				// Á¦ÇÑÄ¡º¸´Ù Ä¿Á³´Ù. ¹«È¿ÀÌ¹Ç·Î ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù.
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
@@ -559,7 +559,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 		case 4:
 		case 18: // Crafting
 		case 21:
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iMag) * 2)) {
 				// Á¦ÇÑÄ¡º¸´Ù Ä¿Á³´Ù. ¹«È¿ÀÌ¹Ç·Î ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù.
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
@@ -573,7 +573,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 		case 9:
 		case 10:
 		case 11:
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iAngelicDex) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iDex) * 2)) {
 				// Á¦ÇÑÄ¡º¸´Ù Ä¿Á³´Ù. ¹«È¿ÀÌ¹Ç·Î ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù.
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;
@@ -588,7 +588,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 		case 19:
 		case 22:
 		case 20: // Enchanting
-			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) * 2)) {
+			if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] > ((m_pClientList[iClientH]->m_iInt) * 2)) {
 				// Á¦ÇÑÄ¡º¸´Ù Ä¿Á³´Ù. ¹«È¿ÀÌ¹Ç·Î ÀÌÀü»óÅÂ·Î µÇµ¹¸°´Ù.
 				m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]--;
 				m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = iOldSSN;

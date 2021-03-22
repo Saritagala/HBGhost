@@ -1490,9 +1490,9 @@ BOOL CGame::_bNpcBehavior_ManaCollector(int iNpcH)
 				switch (cOwnerType) {
 				case DEF_OWNERTYPE_PLAYER:
 					if (m_pNpcList[iNpcH]->m_cSide == m_pClientList[sOwnerH]->m_cSide) {
-						iMaxMP = (2 * (m_pClientList[sOwnerH]->m_iMag + m_pClientList[sOwnerH]->m_iAngelicMag)) + (2 * (m_pClientList[sOwnerH]->m_iLevel)) + ((m_pClientList[sOwnerH]->m_iInt + m_pClientList[sOwnerH]->m_iAngelicInt) / 2);
+						iMaxMP = (2 * (m_pClientList[sOwnerH]->m_iMag)) + (2 * (m_pClientList[sOwnerH]->m_iLevel)) + ((m_pClientList[sOwnerH]->m_iInt) / 2);
 						if (m_pClientList[sOwnerH]->m_iMP < iMaxMP) {
-							iTotal = iDice(1, (m_pClientList[sOwnerH]->m_iMag + m_pClientList[sOwnerH]->m_iAngelicMag));
+							iTotal = iDice(1, (m_pClientList[sOwnerH]->m_iMag));
 							if (m_pClientList[sOwnerH]->m_iAddMP != 0) {
 								dV2 = (double)iTotal;
 								dV3 = (double)m_pClientList[sOwnerH]->m_iAddMP;

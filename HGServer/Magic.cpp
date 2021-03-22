@@ -491,8 +491,8 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	dV1 = dV2 * dV3;
 	iResult = (int)dV1;
 
-	if ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) > 50)
-		iResult += ((m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt) - 50) / 2;
+	if ((m_pClientList[iClientH]->m_iInt) > 50)
+		iResult += ((m_pClientList[iClientH]->m_iInt) - 50) / 2;
 
 	sLevelMagic = ((m_pClientList[iClientH]->m_iLevel) / 10);
 	if (sMagicCircle != sLevelMagic) {
@@ -567,7 +567,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 	}
 
 	iResult = m_pClientList[iClientH]->m_cSkillMastery[4];
-	if ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) > 50) iResult += ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) - 50);
+	if ((m_pClientList[iClientH]->m_iMag) > 50) iResult += ((m_pClientList[iClientH]->m_iMag) - 50);
 
 	sLevelMagic = ((m_pClientList[iClientH]->m_iLevel) / 10);
 	if (sMagicCircle != sLevelMagic) {
@@ -4457,8 +4457,8 @@ BOOL CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char 
 		if ((m_pClientList[sTargetH]->m_iStatus & 0x400000) != 0) return TRUE;
 		cTargetDir = m_pClientList[sTargetH]->m_cDir;
 		iTargetMagicResistRatio = m_pClientList[sTargetH]->m_cSkillMastery[3] + m_pClientList[sTargetH]->m_iAddMR;
-		if ((m_pClientList[sTargetH]->m_iMag + m_pClientList[sTargetH]->m_iAngelicMag) > 50)
-			iTargetMagicResistRatio += ((m_pClientList[sTargetH]->m_iMag + m_pClientList[sTargetH]->m_iAngelicMag) - 50);
+		if ((m_pClientList[sTargetH]->m_iMag) > 50)
+			iTargetMagicResistRatio += ((m_pClientList[sTargetH]->m_iMag) - 50);
 		iTargetMagicResistRatio += m_pClientList[sTargetH]->m_iAddResistMagic;
 		cProtect = m_pClientList[sTargetH]->m_cMagicEffectStatus[DEF_MAGICTYPE_PROTECT];
 		break;
@@ -5042,7 +5042,7 @@ void CGame::bCheckMagicInt(int iClientH)
 	for (int i = 0;i < DEF_MAXMAGICTYPE;i++)
 	{
 		if (m_pMagicConfigList[i] != NULL) {
-			if (m_pMagicConfigList[i]->m_sIntLimit > (m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iAngelicInt))
+			if (m_pMagicConfigList[i]->m_sIntLimit > (m_pClientList[iClientH]->m_iInt))
 			{
 				m_pClientList[iClientH]->m_cMagicMastery[i] = 0;
 			}
@@ -5182,7 +5182,7 @@ void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, BO
 
 	iResult = m_pClientList[iClientH]->m_cSkillMastery[4];
 
-	if (m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag > 50) iResult += ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) - 50);
+	if (m_pClientList[iClientH]->m_iMag > 50) iResult += ((m_pClientList[iClientH]->m_iMag) - 50);
 
 	sMagicCircle = (sType / 10) + 1;
 	sLevelMagic = (m_pClientList[iClientH]->m_iLevel / 10);
@@ -5201,7 +5201,7 @@ void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, BO
 	}
 
 	// Magn0S::2020 Adicionado iMag/2 como extra hit-ratio
-	iResult += m_pClientList[iClientH]->m_iAddAR + ((m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iAngelicMag) / 2);
+	iResult += m_pClientList[iClientH]->m_iAddAR + ((m_pClientList[iClientH]->m_iMag) / 2);
 
 	if (iResult <= 0) iResult = 1;
 	if (sType >= 80) iResult += 10000;
