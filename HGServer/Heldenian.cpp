@@ -1986,12 +1986,9 @@ void CGame::HeldenianWarStarter()
 
 	GetLocalTime(&SysTime);
 	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
-		if ((m_bIsHeldenianScheduleLoaded == TRUE) &&
-			(m_stHeldenianSchedule[i].iDay == SysTime.wDayOfWeek) &&
+		if ((m_stHeldenianSchedule[i].iDay == SysTime.wDayOfWeek) &&
 			(m_stHeldenianSchedule[i].StartiHour == SysTime.wHour) &&
-			(m_stHeldenianSchedule[i].StartiMinute == SysTime.wMinute) &&
-			(m_bIsApocalypseMode != TRUE) &&
-			(m_bIsCrusadeMode != TRUE)) {
+			(m_stHeldenianSchedule[i].StartiMinute == SysTime.wMinute)) {
 			wsprintf(G_cTxt, "(!) Heldenian Start : time(%d %d:%d), index(%d)", m_stHeldenianSchedule[i].iDay, m_stHeldenianSchedule[i].StartiHour, m_stHeldenianSchedule[i].StartiMinute, i);
 			PutLogFileList(G_cTxt);
 			GlobalStartHeldenianMode();

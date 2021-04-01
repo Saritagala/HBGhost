@@ -7144,6 +7144,9 @@ int CGame::SetItemCount(int iClientH, char* pItemName, DWORD dwCount)
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, pItemName);
 
+	m_pClientList[iClientH]->m_dwGold = dwCount;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GOLD, m_pClientList[iClientH]->m_dwGold, NULL, NULL, NULL);
+
 	for (i = 0; i < DEF_MAXITEMS; i++)
 		if ((m_pClientList[iClientH]->m_pItemList[i] != NULL) && (memcmp(m_pClientList[iClientH]->m_pItemList[i]->m_cName, cTmpName, 20) == 0)) {
 

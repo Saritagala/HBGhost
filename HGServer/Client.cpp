@@ -125,6 +125,8 @@ CClient::CClient(HWND hWnd)
 	m_iAllocatedFish = NULL;
 	m_iFishChance = 0;
 
+	m_dwGold = 0;
+
 	m_iAngelicStr = 0; // By Snoopy81
 	m_iAngelicInt = 0;
 	m_iAngelicDex = 0;

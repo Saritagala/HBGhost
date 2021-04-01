@@ -55,6 +55,8 @@ public:
 	int  m_iAngelicMag; // By Snoopy81
 	int m_iWantedLevel; // Wanted System
 
+	DWORD m_dwGold;
+
 	BOOL m_bIsInsideEnemyBuilding;
 	char m_cWarType;
 	int m_iRecentWalkTime;

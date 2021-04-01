@@ -114,6 +114,8 @@ public:
 
 private:
 
+	void StormBringer(int iClientH, short dX, short dY);
+
 	void _CreateNewGuildFile(char* cGuildName);
 	int _iComposeGuildDataFileContents(int iGuildH, char* pData);
 	int ObtenerNuevoID();
@@ -843,6 +845,18 @@ private:
 	BOOL m_bIsApocalypseStarter;
 	int m_iLatestCrusadeDayOfWeek;
 
+	// Centuu - scheduled events
+	void DeathmatchStarter();
+	void CaptureTheFlagStarter();
+	void InvasionStarter();
+	void CandyStarter();
+	void BeholderStarter();
+	void BagProtectionStarter();
+	void TeamArenaStarter();
+	void ShinningStarter();
+	void HappyHourStarter();
+	void FuryHourStarter();
+
 	int  m_cDayOrNight;		// 1이면 주간, 2면 야간 
 	int   m_iSkillSSNpoint[102];
 
@@ -1041,7 +1055,13 @@ private:
 		int iDay;
 		int iHour;
 		int iMinute;
-	} m_stTPDungeonSchedule[DEF_MAXSCHEDULE];
+	} m_stHappyHourSchedule[DEF_MAXSCHEDULE];
+
+	struct {
+		int iDay;
+		int iHour;
+		int iMinute;
+	} m_stFuryHourSchedule[DEF_MAXSCHEDULE];
 
 	int m_iTotalMiddleCrusadeStructures;
 

@@ -7,6 +7,7 @@ Public Class Launcher
     Dim WC1 As WebClient
     Dim WC3 As WebClient
     Dim WC4 As WebClient
+    Dim ip = "151.106.108.2"
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         WC1 = New WebClient
         WC3 = New WebClient
@@ -19,7 +20,7 @@ Public Class Launcher
         End If
         Try
             Dim currentversion As String = Assembly.GetExecutingAssembly.GetName.Version.Major & "." & Assembly.GetExecutingAssembly.GetName.Version.Minor
-            Dim request As HttpWebRequest = HttpWebRequest.Create("http://162.248.93.248/Launcher.txt")
+            Dim request As HttpWebRequest = HttpWebRequest.Create("http://" & ip & "/Launcher.txt")
             Dim response As HttpWebResponse = request.GetResponse()
             Dim sr As New StreamReader(response.GetResponseStream())
             Dim newestversion As String = sr.ReadToEnd()
@@ -37,7 +38,7 @@ Public Class Launcher
         Try
             AddHandler WC4.DownloadProgressChanged, AddressOf ProgChanged4
             AddHandler WC4.DownloadFileCompleted, AddressOf DownComplete4
-            WC4.DownloadFileAsync(New Uri("http://162.248.93.248/Launcher.zip"), "Launcher.zip")
+            WC4.DownloadFileAsync(New Uri("http://" & ip & "/Launcher.zip"), "Launcher.zip")
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -71,7 +72,7 @@ Public Class Launcher
     Private Sub CheckVersion()
         Try
             Dim currentversion As String = My.Computer.FileSystem.ReadAllText("version.txt")
-            Dim request As HttpWebRequest = HttpWebRequest.Create("http://162.248.93.248/version.txt")
+            Dim request As HttpWebRequest = HttpWebRequest.Create("http://" & ip & "/version.txt")
             Dim response As HttpWebResponse = request.GetResponse()
             Dim sr As New StreamReader(response.GetResponseStream())
             Dim newestversion As String = sr.ReadToEnd()
@@ -90,7 +91,7 @@ Public Class Launcher
         File.Delete("version.txt")
         Try
             AddHandler WC3.DownloadFileCompleted, AddressOf DownComplete3
-            WC3.DownloadFileAsync(New Uri("http://162.248.93.248/version.txt"), "version.txt")
+            WC3.DownloadFileAsync(New Uri("http://" & ip & "/version.txt"), "version.txt")
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
@@ -107,7 +108,7 @@ Public Class Launcher
         Try
             AddHandler WC1.DownloadProgressChanged, AddressOf ProgChanged
             AddHandler WC1.DownloadFileCompleted, AddressOf DownComplete
-            WC1.DownloadFileAsync(New Uri("http://162.248.93.248/Update.zip"), "Update.zip")
+            WC1.DownloadFileAsync(New Uri("http://" & ip & "/Update.zip"), "Update.zip")
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try

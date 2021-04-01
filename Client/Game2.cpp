@@ -20665,37 +20665,99 @@ void CGame::StartBGM()
 		strcpy(cWavFileName, "music\\MainMenu.mp3");
 	}
 	else if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
-		if (m_bIsXmas == TRUE) strcpy(cWavFileName, "music\\Carol.wav");
+		if (m_bIsXmas == TRUE) strcpy(cWavFileName, "music\\Carol.mp3");
 		else
 		{
-			if (memcmp(m_cCurLocation, "aresden", 7) == 0) strcpy(cWavFileName, "music\\aresden.wav");
-			else if (memcmp(m_cCurLocation, "elvine", 6) == 0) strcpy(cWavFileName, "music\\elvine.wav");
-			else if (memcmp(m_cCurLocation, "dglv", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-			else if (memcmp(m_cCurLocation, "middled1", 8) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
-			else if (memcmp(m_cCurLocation, "middleland", 10) == 0) strcpy(cWavFileName, "music\\middleland.wav");
+			if (memcmp(m_cCurLocation, "aresden", 7) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else  strcpy(cWavFileName, "music\\aresden.mp3");
+			}
+			else if (memcmp(m_cCurLocation, "elvine", 6) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\elvine.mp3");
+			}
+			else if (memcmp(m_cCurLocation, "dglv", 4) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\dungeon.mp3");
+			}
+			else if (memcmp(m_cCurLocation, "middled1", 8) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\dungeon.mp3");
+			}
+			else if (memcmp(m_cCurLocation, "middleland", 10) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\middleland.mp3");
+			}
 			// Snoopy: new musics
-			else if (memcmp(m_cCurLocation, "druncncity", 10) == 0) strcpy(cWavFileName, "music\\druncncity.wav");
-			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
-			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
-			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
+			else if (memcmp(m_cCurLocation, "druncncity", 10) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\druncncity.mp3");
+			}
+			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.mp3");
+			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.mp3");
+			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.mp3");
 			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) {
 				if (bPlayGhostMusic) {
 					m_bSoundFlag = TRUE;
 					m_cMusicVolume = 100; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.wav");
+					strcpy(cWavFileName, "music\\Ghost.mp3");
 				}
 				else {
-					strcpy(cWavFileName, "music\\abaddon.wav");
+					strcpy(cWavFileName, "music\\abaddon.mp3");
 				}
 			}
 			else if (memcmp(m_cCurLocation, "stadium", 7) == 0) strcpy(cWavFileName, "music\\stadium.mp3");
-			else if (memcmp(m_cCurLocation, "lost", 4) == 0) strcpy(cWavFileName, "music\\lost.mp3");
-			else if (memcmp(m_cCurLocation, "catacombs", 9) == 0) strcpy(cWavFileName, "music\\lost1.mp3");
+			else if (memcmp(m_cCurLocation, "lost", 4) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\lost.mp3");
+			}
+			else if (memcmp(m_cCurLocation, "catacombs", 9) == 0) {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\lost1.mp3");
+			}
 			else if (memcmp(m_cCurLocation, "qusmarsh", 8) == 0) strcpy(cWavFileName, "music\\lost2.mp3");
 			else if (memcmp(m_cCurLocation, "asgarde", 7) == 0) strcpy(cWavFileName, "music\\lost3.mp3");
 
-			else strcpy(cWavFileName, "music\\MainTm.wav");
-
+			else {
+				if (bPlayGhostMusic) {
+					m_bSoundFlag = TRUE;
+					m_cMusicVolume = 50; //Magn0S:: Set max volume
+					strcpy(cWavFileName, "music\\Ghost.mp3");
+				}
+				else strcpy(cWavFileName, "music\\MainTm.mp3");
+			}
 		}
 	}
 
@@ -20731,7 +20793,7 @@ void CGame::StartBGM()
 	if (m_bSoundFlag == FALSE) m_bSoundFlag = TRUE;
 
 	if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
-		if ((memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.wav");
+		if ((memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.mp3");
 
 	}
 	//Snoopy: mp3 support

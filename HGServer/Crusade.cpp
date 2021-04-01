@@ -804,7 +804,8 @@ void CGame::CrusadeWarStarter()
 		if ((m_stCrusadeWarSchedule[i].iDay == SysTime.wDayOfWeek) &&
 			(m_stCrusadeWarSchedule[i].iHour == SysTime.wHour) &&
 			(m_stCrusadeWarSchedule[i].iMinute == SysTime.wMinute)) {
-			PutLogList("(!) Automated Crusade is being initiated!");
+			wsprintf(G_cTxt, "(!) Crusade Start : time(%d %d:%d), index(%d) schedule", m_stCrusadeWarSchedule[i].iDay, m_stCrusadeWarSchedule[i].iHour, m_stCrusadeWarSchedule[i].iMinute, i);
+			PutLogList(G_cTxt);
 			GlobalStartCrusadeMode();
 			break;
 		}

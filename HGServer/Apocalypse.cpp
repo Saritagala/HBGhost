@@ -30,17 +30,29 @@ void CGame::ApocalypseStarter()
 	if (m_bIsHeldenianMode) return;
 	if (m_bIsApocalypseStarter == FALSE) return;
 
+	char* cp, cData[120];
+	DWORD* dwp, dwApocalypseGUID;
+
 	GetLocalTime(&SysTime);
 	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
-		if ((m_bIsApocalypseScheduleLoaded == TRUE) &&
-			(m_bIsHeldenianMode == FALSE) &&
-			(m_bIsCrusadeMode == FALSE) &&
-			(m_stApocalypseScheduleStart[i].iDay == SysTime.wDayOfWeek) &&
+		if ((m_stApocalypseScheduleStart[i].iDay == SysTime.wDayOfWeek) &&
 			(m_stApocalypseScheduleStart[i].iHour == SysTime.wHour) &&
 			(m_stApocalypseScheduleStart[i].iMinute == SysTime.wMinute)) {
-			wsprintf(G_cTxt, "(!) Apocalypse Start : time(%d %d:%d), index(%d) schedule", m_stApocalypseScheduleStart[i].iDay, m_stApocalypseScheduleStart[i].iDay, m_stApocalypseScheduleStart[i].iMinute, i);
+			wsprintf(G_cTxt, "(!) Apocalypse Start : time(%d %d:%d), index(%d) schedule", m_stApocalypseScheduleStart[i].iDay, m_stApocalypseScheduleStart[i].iHour, m_stApocalypseScheduleStart[i].iMinute, i);
 			PutLogFileList(G_cTxt);
-			GlobalStartApocalypseMode(i, 0);
+			//GlobalStartApocalypseMode(i, 0);
+
+			dwApocalypseGUID = timeGetTime();
+			//if (dwApocalypseGUID < 10) dwApocalypseGUID += 10;
+			ZeroMemory(cData, sizeof(cData));
+			cp = (char*)cData;
+			*cp = GSM_BEGINAPOCALYPSE;
+			cp++;
+			dwp = (DWORD*)cp;
+			*dwp = dwApocalypseGUID;
+			cp += 4;
+			bStockMsgToGateServer(cData, 5);
+			LocalStartApocalypse(dwApocalypseGUID); // Gate will no return order to this server
 			break;
 		}
 	}
@@ -156,7 +168,7 @@ void CGame::_CreateApocalypseGUID(DWORD dwApocalypseGUID)
 //**************************************************************************************
 void CGame::LocalStartApocalypse(DWORD dwApocalypseGUID)
 {
-	if (dwApocalypseGUID == 1)// Means want to open Gate
+	/*if (dwApocalypseGUID == 1)// Means want to open Gate
 	{
 		ForceOpen_ApocalypseGate();
 		return;
@@ -165,7 +177,7 @@ void CGame::LocalStartApocalypse(DWORD dwApocalypseGUID)
 	{
 		ForceClose_ApocalypseGate();
 		return;
-	}
+	}*/
 	int i;
 	m_bIsApocalypseMode = TRUE;
 	if (dwApocalypseGUID != NULL)
@@ -331,9 +343,9 @@ void CGame::LocalEndApocalypse()
 	m_bIsApocalypseMode = FALSE;
 	m_bIsApocalypseGateOpen = FALSE;
 	int i;
-	DWORD  dwTime = timeGetTime();
-	m_dwApocalypseGateCloseTime = dwTime - 1;
-	m_dwApocalypseGateOpenTime = dwTime - 100; // alreaddy closed
+	//DWORD  dwTime = timeGetTime();
+	m_dwApocalypseGateCloseTime = 0;//dwTime - 1;
+	m_dwApocalypseGateOpenTime = 0;//dwTime - 100; // alreaddy closed
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
 	{
 		if (m_pClientList[i] != NULL)
@@ -923,7 +935,7 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 				// Tell everybody on this server if Abaddon has appeared
 				if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
 				{
-					SendNotifyMsg(NULL, x, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Ghost Abbadon has appeared...");
+					SendNotifyMsg(NULL, x, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Ghost Abaddon has appeared...");
 					SendNotifyMsg(NULL, x, DEF_NOTIFY_ABBYAPPEAR, NULL, NULL, NULL, NULL);
 				}
 			}
@@ -1002,8 +1014,8 @@ void CGame::ForceOpen_ApocalypseGate()
 void CGame::ForceClose_ApocalypseGate()
 {
 	if (m_bIsApocalypseMode == FALSE)	return;
-	DWORD  dwTime = timeGetTime();
-	m_dwApocalypseGateCloseTime = dwTime - 1;
-	m_dwApocalypseGateOpenTime = dwTime - 100; // alreaddy closed
+	//DWORD  dwTime = timeGetTime();
+	m_dwApocalypseGateCloseTime = 0;//dwTime - 1;
+	m_dwApocalypseGateOpenTime = 0;//dwTime - 100; // alreaddy closed
 	OpenCloseApocalypseGate();
 }

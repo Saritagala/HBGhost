@@ -10,6 +10,7 @@
 #endif // _MSC_VER >= 1000
 
 #include "dsound.h"
+#include "MP3.h"
 
 #define DEF_MAXSOUNDBUFFERS		2	
 

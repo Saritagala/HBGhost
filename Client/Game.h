@@ -1100,6 +1100,8 @@ public:
 	int m_iIpYear, m_iIpMonth, m_iIpDay;
 	int m_iDownSkillIndex;
 
+	DWORD m_dwGold = 0;
+
 	int m_iIlusionOwnerH;
 	int m_iApprColor_IE;
 	int m_iInputX, m_iInputY;

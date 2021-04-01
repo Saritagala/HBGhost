@@ -1298,8 +1298,6 @@ void CGame::DeleteNpc(int iNpcH)
 							wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
 							pItem->m_sTouchEffectValue3 = atoi(cTemp);
 
-							_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, NULL, pItem);
-
 							pItem->m_sNewEffect2 = SysTime.wDay + 15;
 							pItem->m_sNewEffect3 = SysTime.wMonth;
 							pItem->m_sNewEffect4 = SysTime.wYear;
@@ -1397,8 +1395,6 @@ void CGame::DeleteNpc(int iNpcH)
 					ZeroMemory(cTemp, sizeof(cTemp));
 					wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
 					pItem->m_sTouchEffectValue3 = atoi(cTemp);
-
-					_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, NULL, pItem);
 
 					pItem->m_sNewEffect2 = SysTime.wDay + 15;
 					pItem->m_sNewEffect3 = SysTime.wMonth;
@@ -1936,7 +1932,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			pItem->m_dwCount = (DWORD)(iDice(1, (m_pNpcList[iNpcH]->m_iGoldDiceMax - m_pNpcList[iNpcH]->m_iGoldDiceMin)) + m_pNpcList[iNpcH]->m_iGoldDiceMin);
 
 			// v1.42 Gold 
-			if ((cAttackerType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH]->m_iAddGold != NULL)) {
+			if ((cAttackerType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH]->m_iAddGold > 0)) {
 				dTmp1 = (double)m_pClientList[sAttackerH]->m_iAddGold;
 				dTmp2 = (double)pItem->m_dwCount;
 				dTmp3 = (dTmp1 / 100.0f) * dTmp2;
@@ -3799,7 +3795,7 @@ void CGame::MobGenerator()
 	for (i = 0; i < DEF_MAXMAPS; i++) {
 
 		if (m_pMapList[i] != NULL) {
-			iResultNum = (m_pMapList[i]->m_iMaximumObject - 30);
+			iResultNum = m_pMapList[i]->m_iMaximumObject;
 		}
 
 		if ((m_pMapList[i] != NULL) && (m_pMapList[i]->m_bRandomMobGenerator == TRUE) && (iResultNum > m_pMapList[i]->m_iTotalActiveObject)) {
