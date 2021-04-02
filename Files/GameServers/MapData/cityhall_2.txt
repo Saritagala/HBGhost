@@ -3,6 +3,8 @@
 map-location  = elvine
 initial-point = 1  50 41
 
+DynamicGateCoord	= 33 43 34 44        arebrk11	   100  45
+DynamicGateType	= 10
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 teleport-loc     =      60     43     elvine             149    131    4

@@ -1,0 +1,182 @@
+[FILE-DATE]
+
+file-saved-date: 2020 12 25 3 59
+
+[NAME-ACCOUNT]
+
+character-name     = thisplus
+account-name       = lsp4834
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = elvine
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = middleland
+character-loc-x   = 432
+character-loc-y   = 145
+
+character-HP       = 1270
+character-MP       = 689
+character-SP       = 820
+character-LEVEL    = 310
+character-RATING   = 40
+character-STR      = 100
+character-INT      = 59
+character-VIT      = 200
+character-DEX      = 284
+character-MAG      = 20
+character-CHARISMA = 334
+character-LUCK     = 10
+character-EXP      = 10617510
+character-LU_Pool  = 0
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = 8344
+character-IDnum2 = 893
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 2
+skin-status      = 3
+hairstyle-status = 3
+haircolor-status = 12
+underwear-status = 4
+hunger-status    = 73
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 22 12 11 0 9 
+character-quest-ID = 122 112 111 0 109 
+current-quest-count = 27 0 0 174 0 
+quest-reward-type = -1 -1 -1 0 -1 
+quest-reward-amount = 12000 12000 12000 0 12000 
+character-contribution = 200
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 2
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 2072895
+party-id = 0
+gizon-item-upgrade-left = 1
+character-Deaths = 7
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 222.114.247.196
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 3
+
+
+appr1 = 964
+appr2 = -3520
+appr3 = 21875
+appr4 = 4864
+appr-color = 6317574
+
+[ITEMLIST]
+
+character-item = Arrow                215 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = Gold                 345733 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-item = DarkArcherHauberkW   1 1 8344 893 1 6 0 0 0 30000 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 2 29996 25720 1224 0 0 0 0 3 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = DarkArcherLeggingsW  1 1 8344 893 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkArcherArmorW     1 1 8344 893 1 6 0 0 0 600 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = GoldRing             1 2 9523 3047 1224 0 0 0 0 300 1376256 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = MagicWand(MS20)      1 0 0 0 0 0 0 0 0 3538 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = Shoes                1 2 18808 14107 1224 0 0 0 0 300 12730624 0 0 0 0
+character-item = DarkArcherHoodW      1 1 8344 893 1 6 0 0 0 500 0 0 0 0 0
+character-item = BlackArcherBow       1 1 8344 893 1 9 0 0 0 1674 -268435456 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = GoldNecklace         1 2 945 29734 1224 0 0 0 0 300 12723968 0 0 0 0
+character-item = AngelicPandent(DEX)  1 1 8344 893 1 6 0 0 0 300 -1879048192 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = Cape                 1 2 3052 1480 1224 0 0 0 0 384 8688384 6 0 0 0
+character-item = Cape                 1 2 31545 26538 1224 0 0 0 0 300 6587136 0 0 0 0
+character-item = Cape                 1 2 2690 11234 1224 0 0 0 0 300 12801280 0 0 0 0
+character-item = Cape                 1 2 29624 19481 1224 0 0 0 0 300 6566656 0 0 0 0
+character-item = FullHelm(W)          1 2 5574 6019 1225 0 0 0 0 2000 8533504 0 0 0 0
+
+
+character-bank-item = Direction-Bow        1 0 0 0 0 0 0 0 0 1200 0 0 0 0 0
+character-bank-item = GiantBow             1 2 18278 14884 1224 5 0 0 0 1000 1385216 0 0 0 0
+character-bank-item = AresdenFlag(Master)  1 2 10325 5767 1224 0 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 23483 15270 1224 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 12238 19506 1224 12 0 0 0 1 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 1080 20708 1224 0 0 0 0 3 0 0 0 0 0
+character-bank-item = AcientTablet(RU)     1 2 30700 3706 31198 0 0 0 0 1 0 0 0 0 0
+character-bank-item = GoldNecklace         1 2 29350 17853 1224 0 0 0 0 300 12713984 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 1916 13841 1224 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 7162 26708 1224 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 31492 30254 1224 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 21719 6838 6532 0 0 0 0 3 0 10 8 1 2021
+character-bank-item = ZemstoneofSacrifice  1 2 6757 6952 1224 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 25772 15407 1224 0 0 0 0 3 0 0 0 0 0
+character-bank-item = KnightBow            1 2 31813 16095 1224 4 0 0 0 1000 2359296 0 0 0 0
+character-bank-item = PlateBow             1 2 18320 20776 1224 1 0 0 0 2500 5570560 0 0 0 0
+character-bank-item = ChainHose(W)         1 2 3901 25289 1224 0 0 0 0 500 6579456 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1110000000111110000011011111101111111110111111110011011010000000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 758 242 0 97629 21 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00010000000000110000000010010011000001000000100000
+item-position-x = 159 47 113 1 47 47 47 47 26 26 26 26 76 47 0 2 47 47 47 47 47 47 47 47 40 47 47 0 47 47 170 56 0 47 47 47 47 141 40 47 47 47 142 131 40 160 40 80 40 40 
+item-position-y = 14 -10 -10 89 -10 -10 -10 -10 -10 -10 -10 -10 68 -10 85 90 -10 -10 -10 -10 -10 -10 -10 -10 30 -10 -10 93 -10 -10 13 58 93 -10 -10 -10 -10 1 30 -10 -10 -10 95 95 30 95 30 29 30 30 
+
+[EOF]
+
+
+
+     

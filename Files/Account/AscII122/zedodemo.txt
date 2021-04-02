@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/3/29/17/17)  IP(190.102.50.104)
+
+[NAME]
+
+account-name     = zedodemo
+
+[PASSWORD]
+
+account-password = 89201420
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 4 5
+
+account-change-password = 2021 3 29
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = dougff6@gmail.com
+account-Quiz     = aaa
+account-Answer   = 123
+account-created-by = 
+
+[CHARACTERS]
+account-character  = ASSAda
+

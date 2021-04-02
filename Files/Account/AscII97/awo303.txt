@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/12/1/19/2)  IP(74.192.106.102)
+
+[NAME]
+
+account-name     = awo303
+
+[PASSWORD]
+
+account-password = Joker12312
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 8
+
+account-change-password = 2020 12 1
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = awo30303030@gmail.com
+account-Quiz     = dogs_name?
+account-Answer   = joker
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Hellfire
+

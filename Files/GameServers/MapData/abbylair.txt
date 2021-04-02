@@ -37,14 +37,14 @@ fixed-dayornight-mode   = 1
 //-----------------------Num-Type-RECT---------------Mob-MobNum-Event
 
 //Hellclaw = Completed! - Leader[GM]
-spot-mob-generator	= 1   1    46 52 56 65  	95	1 0 //Light-Wyvern
-//spot-mob-generator	= 2   1    56 48 66 60  	96	1 0 // Poison-Wyvern
-//spot-mob-generator	= 3   1    49 69 61 86  	97	1 0 // Heaven-Wyvern
-spot-mob-generator	= 4   1    65 63 73 85  	98	1 0 // Illusion-Wyvern
+spot-mob-generator	= 1   1    46 52 56 65  	92	1 0 //Light-Wyvern
+//spot-mob-generator	= 2   1    56 48 66 60  	73	1 0 // Poison-Wyvern
+//spot-mob-generator	= 3   1    49 69 61 86  	66	1 0 // Heaven-Wyvern
+spot-mob-generator	= 4   1    65 63 73 85  	92	1 0 // Illusion-Wyvern
 spot-mob-generator	= 5   1    80 67 83 83  	49	1 0
 spot-mob-generator	= 6   1    65 82 75 97  	49	1 0
 spot-mob-generator	= 7   1    94 83 104 98  	49	2 0
-spot-mob-generator	= 8   1    109 78 122 88  	94	1 0 // Black-Wyvern
+spot-mob-generator	= 8   1    109 78 122 88  	31	1 0 // Black-Wyvern
 spot-mob-generator	= 22   1    90 61 99 79  	49	2 0
 spot-mob-generator	= 24   1    81 93 94 105  	49	1 0
 
@@ -62,13 +62,13 @@ spot-mob-generator	= 24   1    81 93 94 105  	49	1 0
 
 //Fire Wyvern = Completed! - Leader[GM]
 spot-mob-generator	= 17   1    93 22 104 42  	73	1 0
-spot-mob-generator	= 18   1    110 29 117 30  	94	1 0
-spot-mob-generator	= 19   1    81 39 112 29  	95	1 0
+spot-mob-generator	= 18   1    110 29 117 30  	73	1 0
+spot-mob-generator	= 19   1    81 39 112 29  	73	1 0
 
 //Abaddon = Completed! - Leader[GM]
 spot-mob-generator	= 20   1    66 76 88 67  	81	1 0
 spot-mob-generator	= 21   1    76 82 100 77  	81	1 0
-//spot-mob-generator	= 21   1    76 82 100 77  	99	1 0
+spot-mob-generator	= 21   1    76 82 100 77  	99	1 0
 
 // Entrace Map = Completed! - Leader[GM]
 spot-mob-generator	= 26   1    55 29 61 40  	49	4 0 // Hellclaw

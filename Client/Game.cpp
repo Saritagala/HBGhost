@@ -30989,8 +30989,17 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		PutString2(sX, sY+14, cTxt, 150,150,150); // v2.171
 	}
 
-	switch ((iStatus & 0x0F00) >> 8) 
+	if (sOwnerType == 99)
 	{
+		if (m_Misc.bCheckIMEString(DRAW_OBJECT_NAME52)) PutString_SprFont3(sX, sY + 22, DRAW_OBJECT_NAME52, m_wR[13] * 4, m_wG[13] * 4, m_wB[13] * 4, FALSE, 2);
+		else PutString2(sX, sY + 28, DRAW_OBJECT_NAME52, 240, 240, 70);
+		
+		if (m_Misc.bCheckIMEString(DRAW_OBJECT_NAME53)) PutString_SprFont3(sX, sY + 22+14, DRAW_OBJECT_NAME53, m_wR[13] * 4, m_wG[13] * 4, m_wB[13] * 4, FALSE, 2);
+		else PutString2(sX, sY + 28+14, DRAW_OBJECT_NAME53, 240, 240, 70);
+	}
+	else {
+		switch ((iStatus & 0x0F00) >> 8)
+		{
 		case 0: break;
 		case 1: strcpy(cTxt2, DRAW_OBJECT_NAME52); break;//"Clairvoyant"
 		case 2: strcpy(cTxt2, DRAW_OBJECT_NAME53); break;//"Destruction of Magic Protection"
@@ -31000,9 +31009,10 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		case 6: strcpy(cTxt2, DRAW_OBJECT_NAME57); break;//"Critical Poisonous"
 		case 7: strcpy(cTxt2, DRAW_OBJECT_NAME58); break;//"Explosive"
 		case 8: strcpy(cTxt2, DRAW_OBJECT_NAME59); break;//"Critical Explosive"
+		}
+		if (m_Misc.bCheckIMEString(cTxt2)) PutString_SprFont3(sX, sY + 22, cTxt2, m_wR[13] * 4, m_wG[13] * 4, m_wB[13] * 4, FALSE, 2);
+		else PutString2(sX, sY + 28, cTxt2, 240, 240, 70);
 	}
-	if( m_Misc.bCheckIMEString(cTxt2) ) PutString_SprFont3(sX, sY + 22, cTxt2, m_wR[13]*4, m_wG[13]*4, m_wB[13]*4, FALSE, 2);
-	else PutString2(sX, sY + 28, cTxt2, 240,240,70);
 
 	// centu: no muestra la barra de hp de algunos npc
 	switch (sOwnerType) {

@@ -1,0 +1,76 @@
+Character-updated:  Time(2021/2/26/9/24)
+
+
+
+[NAME-ACCOUNT]
+
+character-name     = MujercitA
+account-name       = vocacion
+account-password   = vocacion
+
+[STATUS]
+
+character-location   = NONE
+character-guild-name = NONE
+character-guild-rank = -1
+
+character-loc-map  = default
+character-loc-x	  = -1
+character-loc-y	  = -1
+
+character-HP       = 26
+character-MP       = 30
+character-SP       = 22
+character-DefenseRatio = 10
+character-LEVEL    = 1
+character-STR      = 10
+character-INT      = 14
+character-VIT      = 12
+character-DEX      = 10
+character-MAG      = 14
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 0
+character-LU_Str    = 0
+character-LU_Vit    = 0
+character-LU_Dex    = 0
+character-LU_Int    = 0
+character-LU_Mag    = 0
+character-LU_Char   = 0
+character-EK-Count  = 0
+character-PK-Count  = 0
+sex-status       = 2
+skin-status      = 1
+hairstyle-status = 0
+haircolor-status = 13
+underwear-status = 2
+
+appr1 = 210
+appr2 = 0
+appr3 = 0
+appr4 = 0
+
+[ITEMLIST]
+
+character-item = Dagger               1 0 0 0 0 0 0 0 0 300 0
+character-item = Map                  1 0 0 0 0 0 0 0 0 300 0
+character-item = RedPotion            1 0 0 0 0 0 0 0 0 300 0
+character-item = BluePotion           1 0 0 0 0 0 0 0 0 300 0
+character-item = GreenPotion          1 0 0 0 0 0 0 0 0 300 0
+character-item = Chemise(W)           1 0 0 0 0 0 0 0 0 300 0
+
+[MAGIC-SKILL-MASTERY]
+
+magic-mastery     = 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
+skill-mastery     = 0 0 0 4 24 20 0 20 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00000100000000000000000000000000000000000000000000
+
+
+
+
+

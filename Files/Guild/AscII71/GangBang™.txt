@@ -1,0 +1,11 @@
+;Guild file - Updated 2021/ 2/ 1/17/56
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = TT
+guild-GUID = -94683874
+guild-location       = elvine
+
+[GUILDSMAN]
+

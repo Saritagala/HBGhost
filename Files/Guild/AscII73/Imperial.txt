@@ -1,0 +1,11 @@
+;Guild file - Updated 2020/12/14/12/15
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = XYZ
+guild-GUID = 267255114
+guild-location       = elvine
+
+[GUILDSMAN]
+

@@ -1,0 +1,11 @@
+;Guild file - Updated 2021/ 2/ 5/10/12
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = Centuu[GM]
+guild-GUID = 2228239
+guild-location       = elvine
+
+[GUILDSMAN]
+

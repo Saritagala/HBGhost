@@ -270,6 +270,13 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 			ZeroMemory(m_pClientList[i]->m_cIPaddress, sizeof(m_pClientList[i]->m_cIPaddress));
 			m_pClientList[i]->m_pXSock->iGetPeerAddress(m_pClientList[i]->m_cIPaddress);
 #ifdef ANTI_HAX
+			if (strcmp("162.248.93.248", m_pClientList[i]->m_cIPaddress) == 0)
+			{
+				delete m_pClientList[i];
+				m_pClientList[i] = NULL;
+				RemoveClientShortCut(i);
+				return FALSE;
+			}
 			for (int v = 0; v < DEF_MAXBANNED; v++)
 			{
 				if (strcmp(m_stBannedList[v].m_cBannedIPaddress, m_pClientList[i]->m_cIPaddress) == 0)
@@ -839,6 +846,9 @@ void CGame::DisplayInfo(HDC hdc)
 	TextOut(hdc, 605, 40, "Players Online:", 16);
 	wsprintf(cTxt, "%d/%d", m_iTotalClients, m_iMaxClients);
 	TextOut(hdc, 735, 40, cTxt, strlen(cTxt));
+
+	wsprintf(cTxt, "%d", m_iTotalClients);
+	PutLogOnline(cTxt);
 
 	TextOut(hdc, 605, 55, "Max Resistance:", 16);
 	wsprintf(cTxt, "%d%%", m_iMaxResist * 7);
@@ -20500,7 +20510,11 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 		else bIsAttackerBerserk = FALSE;
 
 		iAttackerHP = m_pNpcList[sAttackerH]->m_iHP;
-		cAttackerSA = m_pNpcList[sAttackerH]->m_cSpecialAbility;
+		
+		if (m_pNpcList[sAttackerH]->m_sType == 99)
+			cAttackerSA = 2;
+		else
+			cAttackerSA = m_pNpcList[sAttackerH]->m_cSpecialAbility;
 
 		sAtkX = m_pNpcList[sAttackerH]->m_sX;
 		sAtkY = m_pNpcList[sAttackerH]->m_sY;
@@ -20884,7 +20898,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	}
 
 	// Centuu : Ranged Hit Fix - HB2
-	BOOL bRangedWeapon = FALSE;
+	/*BOOL bRangedWeapon = FALSE;
 	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
 		if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)
 			 sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
@@ -20940,7 +20954,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 			break;
 		}
-	}
+	}*/
 
 	iResult = iDice(1, 100);
 
@@ -25544,11 +25558,6 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 		if (m_pNpcList[iNpcH]->m_cActionLimit == 5) 
 		{
 			switch (m_pNpcList[iNpcH]->m_sType) {
-			case 89: // AGT
-				SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, dX, dY, 1);
-				m_pNpcList[iNpcH]->m_iMagicHitRatio = 1000;
-				NpcMagicHandler(iNpcH, dX, dY, 61);
-				break;
 			case 87: // CT
 				SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, dX, dY, 2);
 				iCalculateAttackEffect(m_pNpcList[iNpcH]->m_iTargetIndex, m_pNpcList[iNpcH]->m_cTargetType, iNpcH, DEF_OWNERTYPE_NPC, dX, dY, 2, FALSE, FALSE, FALSE, FALSE);
@@ -25558,6 +25567,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 				iCalculateAttackEffect(m_pNpcList[iNpcH]->m_iTargetIndex, m_pNpcList[iNpcH]->m_cTargetType, iNpcH, DEF_OWNERTYPE_NPC, dX, dY, 2, FALSE, FALSE, FALSE, FALSE);
 				break;
 			case 37: // Cannon Guard Tower: 
+			case 89: // AGT
 				SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, dX, dY, 1);
 				m_pNpcList[iNpcH]->m_iMagicHitRatio = 1000;
 				NpcMagicHandler(iNpcH, dX, dY, 61);
@@ -25783,11 +25793,14 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 			if (m_pNpcList[iNpcH]->m_cActionLimit == 5) {
 				switch (m_pNpcList[iNpcH]->m_sType) {
 				case 87: // CT
-				case 36: // Crossbow Guard Tower
 					SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, dX, dY, 2);
 					iCalculateAttackEffect(m_pNpcList[iNpcH]->m_iTargetIndex, m_pNpcList[iNpcH]->m_cTargetType, iNpcH, DEF_OWNERTYPE_NPC, dX, dY, 2, FALSE, FALSE, FALSE, FALSE);
 					break;
-				case 37: // Cannon Guard Tower: ¸
+				case 36: // Crossbow Guard Tower: 
+					SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, m_pNpcList[iNpcH]->m_sX + _tmp_cTmpDirX[cDir], m_pNpcList[iNpcH]->m_sY + _tmp_cTmpDirY[cDir], 2); // È°
+					iCalculateAttackEffect(m_pNpcList[iNpcH]->m_iTargetIndex, m_pNpcList[iNpcH]->m_cTargetType, iNpcH, DEF_OWNERTYPE_NPC, dX, dY, 2, FALSE, FALSE, FALSE, FALSE);
+					break;
+				case 37: // Cannon Guard Tower: 
 				case 89: // AGT
 					SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, dX, dY, 1);
 					m_pNpcList[iNpcH]->m_iMagicHitRatio = 1000;

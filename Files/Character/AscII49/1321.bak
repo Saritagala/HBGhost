@@ -1,0 +1,193 @@
+[FILE-DATE]
+
+file-saved-date: 2021 2 18 15 19
+
+[NAME-ACCOUNT]
+
+character-name     = 1321
+account-name       = Chispano
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = elvine
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = procella2
+character-loc-x   = 74
+character-loc-y   = 82
+
+character-HP       = 762
+character-MP       = 951
+character-SP       = 694
+character-LEVEL    = 310
+character-RATING   = 100
+character-STR      = 40
+character-INT      = 500
+character-VIT      = 86
+character-DEX      = 10
+character-MAG      = 351
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 10625910
+character-LU_Pool  = 0
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = 4144
+character-IDnum2 = 200
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 2
+skin-status      = 3
+hairstyle-status = 5
+haircolor-status = 1
+underwear-status = 7
+hunger-status    = 79
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 200 433 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 1410
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 31
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 2016145
+party-id = 0
+gizon-item-upgrade-left = 82
+character-Deaths = 1
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 181.31.85.121
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 2
+
+
+appr1 = 1303
+appr2 = -3552
+appr3 = 17795
+appr4 = 4864
+appr-color = 6972934
+
+[ITEMLIST]
+
+character-item = ZemstoneofSacrifice  1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-item = DarkMageHauberkW     1 1 4144 200 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkMageChainMailW   1 1 4144 200 1 6 0 0 0 30000 0 0 0 0 0
+character-item = Gold                 52005 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-item = DarkMageLeggingsW    1 1 4144 200 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkMageHat(W)       1 1 4144 200 1 6 0 0 0 30000 0 0 0 0 0
+character-item = BerserkWand(MS.20)   1 0 0 0 0 0 0 0 0 4969 0 0 0 0 0
+character-item = Cape                 1 0 0 0 0 10 0 0 0 300 0 0 0 0 0
+character-item = BigGreenPotion       1 2 7038 32260 124 0 0 0 0 1 0 0 0 0 0
+character-item = Shoes                1 2 18976 29976 124 0 0 0 0 300 8533248 0 0 0 0
+character-item = BigBluePotion        1 2 29137 28223 126 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 9717 23465 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 20784 31233 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 17395 20503 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 25934 2352 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 24243 2712 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 27556 12135 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 3079 25041 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 12569 15535 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 14524 28277 124 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 2 14548 4791 126 0 0 0 0 1 0 0 0 0 0
+character-item = HeroNeckMage(DM+35)  1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-item = BigRedPotion         1 2 26401 30081 126 0 0 0 0 1 0 0 0 0 0
+character-item = AngelicPandent(MAG)  1 1 4144 200 1 6 0 0 0 300 1610612736 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = MerienShield         1 0 0 0 0 0 0 0 0 1600 0 0 0 0 0
+character-item = HeroWand             1 0 0 0 0 2 0 0 0 29988 0 0 0 0 0
+character-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+
+
+character-bank-item = StoneOfXelima        1 2 27099 26017 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 31294 2559 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 2779 28061 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 6640 26365 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 30714 13154 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = LongBoots            1 2 3164 18587 124 10 0 0 0 300 11629312 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 11857 3512 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = LeatherShield        1 2 17090 2555 124 0 0 0 0 300 8532736 0 0 0 0
+character-bank-item = KlonessPotion        1 2 28075 3436 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 32587 32758 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 10282 9855 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 27599 30437 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 26139 6413 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 17631 23893 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 15714 32147 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 25173 4849 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 28404 25751 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 30432 31343 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 32163 2418 124 12 0 0 0 1 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 21924 13297 124 0 0 0 0 3 0 0 0 0 0
+character-bank-item = Wings-Helm(M)        1 2 9466 10483 124 0 0 0 0 2500 8750080 0 0 0 0
+character-bank-item = XelimaRapier         1 0 0 0 0 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = ResurWand(MS.20)     1 0 0 0 0 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = BlackMageTemple      1 1 4144 200 1 9 0 0 0 29393 -268435456 0 0 0 0
+character-bank-item = KlonessWand(MS.20)   1 0 0 0 0 7 0 0 0 5000 0 0 0 0 0
+character-bank-item = HuntSword            1 0 0 0 0 4 0 0 0 3000 0 0 0 0 0
+character-bank-item = HeroSword            1 0 0 0 0 4 0 0 0 30000 0 0 0 0 0
+character-bank-item = RingofGrandMage      1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = StunSB               1 0 0 0 0 9 0 0 0 3000 0 0 0 0 0
+character-bank-item = MedusaBow            1 0 0 0 0 9 0 0 0 1000 0 0 0 0 0
+character-bank-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1110000000111110000011011111101111111110111111110011011011001111111000111110010011110000001100011000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 51 794 0 0 24 0 0 0 0 0 0 0 0 0 0 0 0 0 14 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 01101111010000000000010100000000000000000001000000
+item-position-x = 40 40 40 2 40 40 105 131 2 40 40 60 60 60 60 60 60 60 60 40 60 60 60 40 32 4 60 40 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 40 40 40 62 122 114 
+item-position-y = 30 30 30 83 30 30 40 67 -10 30 30 -10 -10 -10 -10 -10 -10 -10 -10 30 -10 -10 -10 30 -10 -4 -10 30 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 -10 30 30 30 51 42 52 
+
+[EOF]
+
+
+
+                                                                                                                                                                                                     

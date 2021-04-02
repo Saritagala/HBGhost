@@ -1,0 +1,12 @@
+;Guild file - Updated 2021/ 3/ 1/18/33
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = Nixu
+guild-GUID = 777534261
+guild-location       = elvine
+
+[GUILDSMAN]
+guildsman-name       = poroto
+

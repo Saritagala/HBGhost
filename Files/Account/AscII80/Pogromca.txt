@@ -1,0 +1,34 @@
+Account-generated:  Time(2021/2/19/10/57)  IP(185.21.85.191)
+
+[NAME]
+
+account-name     = Pogromca
+
+[PASSWORD]
+
+account-password = itmx6487x
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 2 26
+
+account-change-password = 2021 2 19
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = roz90@o2.pl
+account-Quiz     = mampsa
+account-Answer   = takmam
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Pogromcyni
+account-character  = Pogromca
+

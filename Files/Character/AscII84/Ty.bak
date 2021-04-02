@@ -1,0 +1,209 @@
+[FILE-DATE]
+
+file-saved-date: 2021 2 1 20 19
+
+[NAME-ACCOUNT]
+
+character-name     = Ty
+account-name       = tank
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = elvine
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = cityhall_2
+character-loc-x   = 52
+character-loc-y   = 45
+
+character-HP       = 860
+character-MP       = 656
+character-SP       = 680
+character-LEVEL    = 310
+character-RATING   = 30
+character-STR      = 30
+character-INT      = 32
+character-VIT      = 75
+character-DEX      = 500
+character-MAG      = 10
+character-CHARISMA = 350
+character-LUCK     = 10
+character-EXP      = 10693820
+character-LU_Pool  = 0
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = -11156
+character-IDnum2 = 206
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 1
+skin-status      = 3
+hairstyle-status = 5
+haircolor-status = 11
+underwear-status = 6
+hunger-status    = 99
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 0 0 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 0
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 554
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 2009932
+party-id = 0
+gizon-item-upgrade-left = 13
+character-Deaths = 2
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 24.7.7.193
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 3
+
+
+appr1 = 1462
+appr2 = -3536
+appr3 = 13426
+appr4 = 768
+appr-color = 6317574
+
+[ITEMLIST]
+
+character-item = Dagger               1 0 0 0 0 0 0 0 0 300 0 0 0 1 0
+character-item = Gold                 399071 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-item = Arrow                19104 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-item = DarkArcherHauberk    1 1 -11156 206 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkArcherLeggings   1 1 -11156 206 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkArcherArmor      1 1 -11156 206 1 6 0 0 0 600 0 0 0 0 0
+character-item = DarkArcherHood       1 1 -11156 206 1 6 0 0 0 500 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = AngelicPandent(STR)  1 1 -11156 206 1 6 0 0 0 300 805306368 0 0 0 0
+character-item = Cape                 1 2 1979 27260 2 0 0 0 0 300 12713984 0 0 0 0
+character-item = PlateBow             1 0 0 0 0 8 0 0 0 2500 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = GoldRing             1 2 22312 20872 2 0 0 0 0 300 11862016 0 0 0 0
+
+
+character-bank-item = HeroNeckMage(DM+35)  1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = NecklaceOfMerien     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = NecklaceOfMerien     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = KnecklaceOfMedusa    1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = KnecklaceOfMedusa    1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = KnecklaceOfMedusa    1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-bank-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-bank-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-bank-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-bank-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-bank-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = DarkElfBow           1 0 0 0 0 0 0 0 0 2485 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-bank-item = RingoftheAbaddon     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = RingoftheAbaddon     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = RingoftheAbaddon     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = RingoftheAbaddon     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = RingoftheAbaddon     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = RingofDemonpower     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = LeatherArmor(M)      1 2 4552 3310 2 0 0 0 0 400 8534016 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 31147 29683 2 0 0 0 0 3 0 0 0 0 0
+character-bank-item = LeatherArmor(M)      1 2 30889 15160 2 0 0 0 0 400 8611840 0 0 0 0
+character-bank-item = I.M.CManual          1 0 0 0 0 1 0 0 0 0 0 0 0 0 0
+character-bank-item = DarkArcherBow        1 1 -11156 206 1 6 0 0 0 498 0 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 0010000000001000000011001111100011100000000000000000000000000000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 0 58 0 25670 44 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00000111100010000100000000000000001100100000000000
+item-position-x = 68 0 40 34 13 157 90 40 40 40 34 40 152 6 75 6 6 6 6 75 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 6 75 40 118 40 6 40 40 17 40 40 40 40 40 40 
+item-position-y = -10 27 30 0 93 45 85 30 30 30 0 30 32 -4 -10 -4 -4 -4 -4 -10 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -4 -10 30 4 30 -4 30 30 93 30 30 30 30 30 30 
+
+[EOF]
+
+
+
+                                                                                                                                                                                                                     

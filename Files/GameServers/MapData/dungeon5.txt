@@ -43,7 +43,7 @@ spot-mob-generator	= 6  1    45 92 50 112	      66  1 0 //IceWyvern
 spot-mob-generator	= 7  1    130 150 122 180     73  1 0 //FireWyvern
 spot-mob-generator	= 8  1    165 65 200 90       50  5 0 //Tigerworm 
 spot-mob-generator	= 9  1    164 66 201 89       31  5 0 //Demon 
-spot-mob-generator	= 18  1    163 65 200 90       95  1 0 //Black Demon
+spot-mob-generator	= 18  1    163 65 200 90       92  1 0 //Black Demon
 
 //spot mobs added by Tav
 spot-mob-generator	= 10 1 68 67 91 62 50   1 0 //Tw Pit 3
@@ -55,8 +55,6 @@ spot-mob-generator	= 13 1 125 84 155 64 50   1 0 //Tw Pit 2
 spot-mob-generator      = 14 1    121  64 125 66         49   2 0 //Hellclaw
 spot-mob-generator      = 15 1     80  30  88 37         49   2 0 //Hellclaw
 spot-mob-generator	     = 16 1    57 122 49 151       66  1 0 //IceWyvern
-
-spot-mob-generator	     = 17 1    170 108 160 132       94  1 0 //AirWyvern
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 

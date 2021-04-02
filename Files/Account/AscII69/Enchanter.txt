@@ -1,0 +1,35 @@
+Account-generated:  Time(2021/2/5/13/53)  IP(80.220.103.25)
+
+[NAME]
+
+account-name     = Enchanter
+
+[PASSWORD]
+
+account-password = Kusperra
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 2 12
+
+account-change-password = 2021 2 5
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = jgullsten85@gmail.com
+account-Quiz     = Mikä?
+account-Answer   = Paska
+account-created-by = 
+
+[CHARACTERS]
+account-character  = B00MD00M
+account-character  = Slic3dic3
+account-character  = t00sl0w
+

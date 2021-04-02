@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/11/17/9/10)  IP(181.44.53.79)
+
+[NAME]
+
+account-name     = yoko
+
+[PASSWORD]
+
+account-password = yoko
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 11 24
+
+account-change-password = 2020 11 17
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = yoko@yoko.
+account-Quiz     = yoko
+account-Answer   = yoko
+account-created-by = 
+
+[CHARACTERS]
+account-character  = YoKo[GM]
+account-character  = YoKo
+account-character  = GM2

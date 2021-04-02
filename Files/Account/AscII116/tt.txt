@@ -1,0 +1,35 @@
+Account-generated:  Time(2021/1/31/6/44)  IP(190.190.153.124)
+
+[NAME]
+
+account-name     = tt
+
+[PASSWORD]
+
+account-password = apolo13
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 2 7
+
+account-change-password = 2021 1 31
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = franquito_95@hotmail.com
+account-Quiz     = hola
+account-Answer   = chau
+account-created-by = 
+
+[CHARACTERS]
+account-character  = TT
+account-character  = T
+account-character  = GB
+

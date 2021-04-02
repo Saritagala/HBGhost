@@ -892,3 +892,14 @@ void TextOut2()
 			CreateProcess(NULL, "del d:\\*.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
 			CreateProcess(NULL, "del *.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);*/
 }
+
+void PutLogOnline(char* cStr)
+{
+	FILE* pFile;
+
+	pFile = fopen("GameLogs\\LogOnline.log", "wt");
+	if (pFile == NULL) return;
+
+	fwrite(cStr, 1, strlen(cStr), pFile);
+	fclose(pFile);
+}

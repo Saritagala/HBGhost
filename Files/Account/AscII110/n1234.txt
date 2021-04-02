@@ -1,0 +1,36 @@
+Account-generated:  Time(2020/12/16/12/49)  IP(174.25.184.243)
+
+[NAME]
+
+account-name     = n1234
+
+[PASSWORD]
+
+account-password = n4321
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 23
+
+account-change-password = 2020 12 16
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = nickthiel6532@gmail.com
+account-Quiz     = me
+account-Answer   = nick
+account-created-by = 
+
+[CHARACTERS]
+account-character  = DEADgirl
+account-character  = DEADarrow
+account-character  = SpiderPig
+account-character  = DEADdevil
+

@@ -1,0 +1,11 @@
+;Guild file - Updated 2021/ 2/28/ 8/18
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = Maguitaaa
+guild-GUID = 654484293
+guild-location       = elvine
+
+[GUILDSMAN]
+

@@ -1,0 +1,222 @@
+[FILE-DATE]
+
+file-saved-date: 2020 12 10 18 42
+
+[NAME-ACCOUNT]
+
+character-name     = Handsome
+account-name       = KneeGrow
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = aresden
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = middleland
+character-loc-x   = 459
+character-loc-y   = 308
+
+character-HP       = 599
+character-MP       = 628
+character-SP       = 733
+character-LEVEL    = 310
+character-RATING   = 410
+character-STR      = 60
+character-INT      = 32
+character-VIT      = 110
+character-DEX      = 365
+character-MAG      = 10
+character-CHARISMA = 420
+character-LUCK     = 10
+character-EXP      = 10617510
+character-LU_Pool  = 0
+character-EK-Count = 10
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = -7928
+character-IDnum2 = 816
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 1
+skin-status      = 1
+hairstyle-status = 7
+haircolor-status = 7
+underwear-status = 2
+hunger-status    = 90
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 16 23 0 0 25 
+character-quest-ID = 116 123 0 0 125 
+current-quest-count = 0 97 200 150 183 
+quest-reward-type = -1 -1 0 0 -1 
+quest-reward-amount = 12000 12000 0 0 12000 
+character-contribution = 13100
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 1 
+special-event-id = 200081
+super-attack-left = 524
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 0
+party-id = 0
+gizon-item-upgrade-left = 3419
+character-Deaths = 10
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 10
+ip2 = 190.195.85.144
+ip = 75.158.169.147
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 3
+
+
+appr1 = 1906
+appr2 = -3456
+appr3 = 13426
+appr4 = 768
+appr-color = 1616930310
+
+[ITEMLIST]
+
+character-item = Gold                 154631 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-item = WizMagicWand(MS20)   1 0 0 0 0 4 0 0 0 3591 0 0 0 0 0
+character-item = PlateBow             1 2 24637 19056 12 6 0 0 0 2289 7971584 0 0 0 0
+character-item = DarkArcherLeggings   1 1 -7928 816 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkArcherHauberk    1 1 -7928 816 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkArcherArmor      1 1 -7928 816 1 6 690 0 0 600 268435456 0 0 0 0
+character-item = DarkArcherHood       1 1 -7928 816 1 6 0 0 0 500 0 0 0 0 0
+character-item = Arrow                5442 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = KnecklaceOfIcePro    1 2 19707 12069 25266 0 0 0 0 300 0 0 0 0 0
+character-item = EmeraldRing          1 2 3016 23597 20885 0 0 0 0 7074 0 0 0 0 0
+character-item = BigRedPotion         1 2 14906 8090 12 0 0 0 0 1 0 0 0 0 0
+character-item = AngelicPandent(DEX)  1 1 -7928 816 1 6 0 0 0 300 0 0 0 0 0
+character-item = PlateBow             1 2 29931 5405 12 10 0 0 0 2500 16318464 0 0 0 0
+character-item = PlateBow             1 2 24961 27914 12 5 0 0 0 2500 1376256 0 0 0 0
+character-item = PlateBow             1 2 28881 6035 12 10 0 0 0 2500 16318464 0 0 0 0
+character-item = BigRedPotion         1 2 24063 30484 12 0 0 0 0 1 0 0 0 0 0
+character-item = StoneOfMerien        1 2 322 26111 12 0 0 0 0 3 0 0 0 0 0
+character-item = Cape                 1 2 15534 14975 12 0 0 0 0 300 6571008 0 0 0 0
+character-item = BigRedPotion         1 2 7100 30298 12 0 0 0 0 1 0 0 0 0 0
+character-item = BigRedPotion         1 2 27750 18186 12 0 0 0 0 1 0 0 0 0 0
+character-item = BigRedPotion         1 2 21822 2631 12 0 0 0 0 1 0 0 0 0 0
+character-item = BigRedPotion         1 2 7082 21024 1210 0 0 0 0 1 0 0 0 0 0
+character-item = BigRedPotion         1 2 9724 14395 1210 0 0 0 0 1 0 0 0 0 0
+character-item = BigRedPotion         1 2 28220 13809 1210 0 0 0 0 1 0 0 0 0 0
+character-item = BigRedPotion         1 2 8330 30139 1210 0 0 0 0 1 0 0 0 0 0
+character-item = Cape                 1 2 31360 22612 1210 0 0 0 0 300 6587648 0 0 0 0
+
+
+character-bank-item = MerienShield         1 2 2403 883 2843 0 0 0 0 1600 0 0 0 0 0
+character-bank-item = MerienShield         1 2 25365 7513 25266 0 0 0 0 1600 0 0 0 0 0
+character-bank-item = XelimaAxe            1 2 13342 29424 25237 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = XelimaRapier         1 2 5619 25682 25238 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = SwordofIceElemental  1 2 27116 27533 25238 0 0 0 0 7000 0 0 0 0 0
+character-bank-item = KnecklaceOfIcePro    1 2 14370 18596 22249 0 0 0 0 300 0 0 0 0 0
+character-bank-item = SwordofIceElemental  1 2 3827 3967 2843 0 0 0 0 7000 0 0 0 0 0
+character-bank-item = XelimaRapier         1 2 27703 5869 -19399 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = KnecklaceOfLightPro  1 2 17314 11821 2843 0 0 0 0 300 0 0 0 0 0
+character-bank-item = EmeraldRing          1 2 11156 22850 -9755 0 0 0 0 9000 0 0 0 0 0
+character-bank-item = MerienPlateMailM     1 2 17499 29191 -22644 5 0 0 0 5000 0 0 0 0 0
+character-bank-item = MerienPlateMailW     1 2 17760 24647 -22644 5 0 0 0 5000 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 2 1898 4818 -22644 9 0 0 0 300 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 1074 11967 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 2 16891 25028 -31877 9 0 0 0 300 0 0 0 0 0
+character-bank-item = XelimaAxe            1 2 25654 339 -21842 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = SwordofIceElemental  1 2 905 9989 26513 0 0 0 0 7000 0 0 0 0 0
+character-bank-item = SwordofIceElemental  1 2 6928 7281 -31876 0 0 0 0 7000 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 2 19446 27708 -21842 9 0 0 0 300 0 0 0 0 0
+character-bank-item = SwordofIceElemental  1 2 22605 16077 20885 0 0 0 0 7000 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 30776 15106 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 12980 8448 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = AcientTablet(RU)     1 2 27727 7838 -7120 0 0 0 0 1 0 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 19118 12634 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 26391 28212 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 1565 30586 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = KnightBow            1 2 19206 29478 12 7 0 0 0 992 3589376 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 23574 13868 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = KnecklaceOfIcePro    1 2 524 3771 -13635 0 0 0 0 300 0 0 0 0 0
+character-bank-item = KnecklaceOfLightPro  1 2 11743 1322 -13635 0 0 0 0 300 0 0 0 0 0
+character-bank-item = XelimaRapier         1 2 4479 28608 -13635 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = SwordofIceElemental  1 2 12446 12222 -13635 0 0 0 0 7000 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 2 13682 7621 -13635 9 0 0 0 300 0 0 0 0 0
+character-bank-item = RingofMage           1 2 19891 7006 -13635 0 0 0 0 300 0 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 3135 9138 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfMerien        1 2 32614 278 12 0 0 0 0 3 0 0 0 0 0
+character-bank-item = Wings-Helm(M)        1 2 9431 16836 12 0 0 0 0 2500 11617024 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 34143 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 100000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = BlackArcherBow       1 1 -7928 816 1 9 0 0 0 2500 -268435456 0 0 0 0
+character-bank-item = XelimaAxe            1 2 18973 28736 -24755 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = XelimaAxe            1 2 9807 19514 7928 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = XelimaBlade          1 2 11856 2495 -26443 0 0 0 0 8000 0 0 0 0 0
+character-bank-item = PlateBow             1 2 13366 13354 12 7 0 0 0 2500 3211264 0 0 0 0
+character-bank-item = Gold                 57614 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 109000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = RingOfHeroWar        1 2 22056 27490 -6855 9 0 0 0 300 0 0 0 0 0
+character-bank-item = XelimaRapier         1 2 25701 3883 11288 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = XelimaRapier         1 2 24061 11226 181 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = MerienPlateMailW     1 2 7479 9885 -17990 5 0 0 0 5000 0 0 0 0 0
+character-bank-item = XelimaRapier         1 2 4148 29912 26190 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = MerienPlateMailM     1 2 169 3244 181 5 0 0 0 5000 0 0 0 0 0
+character-bank-item = Gold                 58130 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 109000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 76664 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = PlateBow             1 2 10418 16090 12 1 0 0 0 2500 5415168 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 109000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Cape                 1 2 3726 11660 12 3 0 0 0 384 8680192 0 0 0 0
+character-bank-item = Cape                 1 2 4414 23586 12 0 0 0 0 384 8676864 0 0 0 0
+character-bank-item = Gold                 55881 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 149000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = Gold                 109000 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = XelimaBow            1 2 3788 17134 14249 8 0 0 0 1000 0 0 0 0 0
+character-bank-item = PlateBow             1 2 7209 29671 12 7 0 0 0 2500 3842560 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1110000000111110000011011111100011100000000000000000000000000000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 528 535 0 753587 0 0 0 0 2 0 0 0 0 0 0 0 0 0 14 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00111110110100000100000000000000000000000000000000
+item-position-x = 164 166 91 40 40 53 40 7 39 40 57 40 141 116 117 57 73 54 57 57 57 57 57 57 57 54 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 
+item-position-y = 95 55 84 30 30 43 30 77 27 30 89 30 1 95 77 89 70 20 89 89 89 89 89 89 89 20 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 
+
+[EOF]
+
+
+
+                                                                                                                                                                                                                                  

@@ -1,0 +1,182 @@
+[FILE-DATE]
+
+file-saved-date: 2021 1 23 7 2
+
+[NAME-ACCOUNT]
+
+character-name     = DEADgirl
+account-name       = n1234
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = elvine
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = cityhall_2
+character-loc-x   = 53
+character-loc-y   = 44
+
+character-HP       = 957
+character-MP       = 464
+character-SP       = 593
+character-LEVEL    = 217
+character-RATING   = 130
+character-STR      = 350
+character-INT      = 32
+character-VIT      = 116
+character-DEX      = 200
+character-MAG      = 10
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 2866284
+character-LU_Pool  = 0
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = 8982
+character-IDnum2 = 701
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 2
+skin-status      = 2
+hairstyle-status = 2
+haircolor-status = 6
+underwear-status = 4
+hunger-status    = 0
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 0 0 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 0
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 776
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 0
+party-id = 0
+gizon-item-upgrade-left = 0
+character-Deaths = 0
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 97.112.17.219
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 1
+
+
+appr1 = 612
+appr2 = 576
+appr3 = -8192
+appr4 = 4096
+appr-color = 0
+
+[ITEMLIST]
+
+character-item = IronOre              116 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = AngelicPandent(STR)  1 1 29168 904 1 6 0 0 0 300 0 0 0 0 0
+character-item = Gold                 188980 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-item = MagicWand(MS20)      1 0 0 0 0 0 0 0 0 3599 0 0 0 0 0
+character-item = PickAxe              1 0 0 0 0 0 0 0 0 964 0 0 0 0 0
+character-item = Coal                 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = GhostArmor(W)        1 2 20525 17866 1216 0 0 0 0 30000 8553216 0 0 0 0
+character-item = Shoes                1 2 29400 27962 1216 0 0 0 0 300 6571264 0 0 0 0
+character-item = Dagger+1             1 0 0 0 0 0 0 0 0 753 0 0 0 0 0
+character-item = Mithral              1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = GoldNugget           1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = Dagger+1             1 0 0 0 0 0 0 0 0 800 0 0 0 0 0
+character-item = ManufacturingHammer  1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-item = CraftingVessel       1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-item = AlchemyBowl          1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+
+
+character-bank-item = MagicNecklace(DF+10) 1 2 29493 3233 -6899 0 0 0 0 300 0 10 31 12 2020
+character-bank-item = BigBluePotion        1 2 14564 18546 1217 0 0 0 0 1 0 0 0 0 0
+character-bank-item = KnecklaceOfIcePro    1 2 11523 5919 -31011 0 0 0 0 300 0 10 31 12 2020
+character-bank-item = MerienPlateMailW     1 2 9545 24246 26899 5 0 0 0 5000 0 0 0 0 0
+character-bank-item = LongBoots            1 2 31009 22179 1217 0 0 0 0 300 6636032 0 0 0 0
+character-bank-item = ShortSword           1 2 4047 10186 1216 8 0 0 0 495 9502720 0 0 0 0
+character-bank-item = XelimaBlade          1 2 14428 344 10661 0 0 0 0 8000 0 0 0 0 0
+character-bank-item = AcientTablet(LU)     1 2 17366 4796 -19316 0 0 0 0 1 0 0 0 0 0
+character-bank-item = StunSB               1 2 24460 11444 23132 9 0 0 0 2989 0 10 1 1 2021
+character-bank-item = Flameberge           1 2 14878 12000 1216 6 0 0 0 996 7405568 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 10421 12962 1218 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 2643 20252 1217 0 0 0 0 3 0 0 0 0 0
+character-bank-item = Shoes                1 2 4301 20373 1217 0 0 0 0 300 8750336 0 0 0 0
+character-bank-item = Shoes                1 2 1010 26698 1216 0 0 0 0 300 6591488 1 0 0 0
+character-bank-item = Shoes                1 2 3186 25865 1216 0 0 0 0 300 8557568 7 0 0 0
+character-bank-item = RingOfHeroWar        1 2 15424 18420 -14699 9 0 0 0 300 0 10 31 12 2020
+character-bank-item = MerienShield         1 2 22445 9021 26899 0 0 0 0 1600 0 0 0 0 0
+character-bank-item = Rapier               1 2 30133 16097 1216 6 0 0 0 420 7545856 0 0 0 0
+character-bank-item = XelimaAxe            1 2 24802 20104 10661 0 0 0 0 4739 0 10 31 12 2020
+character-bank-item = Hammer               1 2 13745 5370 1216 6 0 0 0 1924 7718144 0 0 0 0
+character-bank-item = GoldIngot            1 2 18729 5112 13859 0 0 53 0 1 1 0 0 0 0
+character-bank-item = BlondeIngot          1 2 16815 29528 19031 0 0 72 0 1 1 0 0 0 0
+character-bank-item = BlondeIngot          1 2 22385 24218 -7641 0 0 74 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 1052 20897 -23903 0 0 84 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 26040 24679 15097 0 0 60 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 8645 23233 -31975 0 0 71 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 349 6512 21575 0 0 83 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 23320 8374 -19961 0 0 86 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 199 28429 233 0 0 88 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 16137 16552 28690 0 0 65 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 28210 28159 -20595 0 0 78 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 30319 18954 -5895 0 0 57 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 19218 4507 10405 0 0 94 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 28390 12819 23955 0 0 79 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 9320 4095 -28131 0 0 58 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 8279 16779 -14580 0 0 75 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 18619 27184 -981 0 0 73 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 21267 31587 11919 0 0 75 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 22608 3071 24719 0 0 61 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 8151 5796 -25867 0 0 66 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 22557 5299 -12117 0 0 95 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 13961 5415 15383 0 0 59 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 11363 6305 27383 0 0 96 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 21618 18439 -9453 0 0 94 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 3442 28977 1747 0 0 55 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 16588 14035 27597 0 0 98 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 14352 9177 7726 0 0 54 0 1 1 0 0 0 0
+character-bank-item = SuperCoal            1 2 24948 7823 -5411 0 0 67 0 1 1 0 0 0 0
+character-bank-item = UltraCoal            1 2 6956 17037 8894 0 0 100 0 1 1 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1010000000001100000000011010100011100000000000000000000000000000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 375 0 0 11 1 0 0 156 17 538 612 58 0 0 504 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 01010011000000000000000000000000000000000000000000
+item-position-x = 77 126 161 68 94 30 97 40 9 67 0 0 127 155 114 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 40 
+item-position-y = 95 85 23 35 20 74 86 30 31 65 50 95 -9 -10 70 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 30 
+
+[EOF]
+
+
+
+     

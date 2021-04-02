@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/3/1/10/16)  IP(92.142.79.65)
+
+[NAME]
+
+account-name     = carlos
+
+[PASSWORD]
+
+account-password = carlos
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 3 8
+
+account-change-password = 2021 3 1
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = carlosramondelarosa@gmail.com
+account-Quiz     = soy
+account-Answer   = carlos
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Mirian
+

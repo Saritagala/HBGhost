@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/12/24/5/41)  IP(222.114.247.196)
+
+[NAME]
+
+account-name     = lsp4834
+
+[PASSWORD]
+
+account-password = dlcodnjs
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 31
+
+account-change-password = 2020 12 24
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = lsp5724@hotmail.com
+account-Quiz     = who_are_you?
+account-Answer   = ssprite
+account-created-by = 
+
+[CHARACTERS]
+account-character  = thisplus
+account-character  = dunhill
+

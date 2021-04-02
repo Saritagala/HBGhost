@@ -1,0 +1,12 @@
+;Guild file - Updated 2020/12/26/ 6/49
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = Arkloss
+guild-GUID = 969736774
+guild-location       = elvine
+
+[GUILDSMAN]
+guildsman-name       = Cavaro
+

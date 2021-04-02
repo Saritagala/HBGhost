@@ -1,0 +1,11 @@
+;Guild file - Updated 2020/12/16/23/13
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = DEADarrow
+guild-GUID = 166321688
+guild-location       = elvine
+
+[GUILDSMAN]
+

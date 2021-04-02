@@ -1,0 +1,35 @@
+Account-generated:  Time(2020/11/28/20/50)  IP(75.158.169.147)
+
+[NAME]
+
+account-name     = KneeGrow
+
+[PASSWORD]
+
+account-password = shawnsux
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 5
+
+account-change-password = 2020 11 28
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = hesse.adam@gmail.com
+account-Quiz     = shawn
+account-Answer   = sux
+account-created-by = 
+
+[CHARACTERS]
+account-character  = yeet
+account-character  = Handsome
+account-character  = KneeGrow
+

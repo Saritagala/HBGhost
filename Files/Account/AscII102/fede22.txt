@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/1/24/22/33)  IP(181.167.153.172)
+
+[NAME]
+
+account-name     = fede22
+
+[PASSWORD]
+
+account-password = 222222
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 1 31
+
+account-change-password = 2021 1 24
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = federicogjm@gmail.com
+account-Quiz     = quien_es_coco
+account-Answer   = pedro
+account-created-by = 
+
+[CHARACTERS]
+account-character  = nenemalo
+

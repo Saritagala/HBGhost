@@ -178,6 +178,19 @@ void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
 					if (cTargetSide == m_pNpcList[iNpcH]->m_cSide) goto SKIP_SEARCH;
 				}
 
+				if (m_pNpcList[iNpcH]->m_sType == 99)
+				{
+					if (abs(sX - dX) >= abs(sY - dY))
+						sTempDistance = abs(sX - dX);
+					else sTempDistance = abs(sY - dY);
+
+					if (sTempDistance < sDistance) {
+						sDistance = sTempDistance;
+						sTargetOwner = sOwner;
+						cTargetType = cOwnerType;
+					}
+				}
+
 				// ¸¸¾à INVISIBILITY°¡ µÇ¾î ÀÖ°í Åõ¸í Å½Áö ´É·ÂÀÌ ¾ø´Ù¸é 
 				if ((iInv != 0) && (m_pNpcList[iNpcH]->m_cSpecialAbility != 1)) goto SKIP_SEARCH;
 
@@ -351,11 +364,14 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 			{
 				switch (iCode) {
 				case DEF_MAGICTYPE_INVISIBILITY:
-					if (m_pNpcList[i]->m_cSpecialAbility != 1)
+					if (m_pNpcList[i]->m_sType != 99)
 					{
-						m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
-						m_pNpcList[i]->m_iTargetIndex = NULL;
-						m_pNpcList[i]->m_cTargetType = NULL;
+						if (m_pNpcList[i]->m_cSpecialAbility != 1)
+						{
+							m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
+							m_pNpcList[i]->m_iTargetIndex = NULL;
+							m_pNpcList[i]->m_cTargetType = NULL;
+						}
 					}
 					break;
 				case DEF_MAGICTYPE_TELEPORT:
@@ -605,7 +621,7 @@ NKH_GOTOPOINT1:;
 		m_pNpcList[iNpcH]->m_iMagicHitRatio = 100;
 		NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, 30);
 	}
-	else if (m_pNpcList[iNpcH]->m_cSpecialAbility == 8) {
+	else if (m_pNpcList[iNpcH]->m_cSpecialAbility == 8 || m_pNpcList[iNpcH]->m_sType == 99) {
 		m_pNpcList[iNpcH]->m_iMana = 100;
 		m_pNpcList[iNpcH]->m_iMagicHitRatio = 100;
 		NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, 61);

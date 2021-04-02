@@ -1,0 +1,34 @@
+Account-generated:  Time(2021/1/31/5/43)  IP(94.254.129.135)
+
+[NAME]
+
+account-name     = styppol
+
+[PASSWORD]
+
+account-password = Kontoo23
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 2 7
+
+account-change-password = 2021 1 31
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = wolskimarcin1989@gmail.com
+account-Quiz     = pies
+account-Answer   = mika
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Tina
+account-character  = Maximus
+

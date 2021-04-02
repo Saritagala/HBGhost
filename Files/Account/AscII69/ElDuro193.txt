@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/1/13/22/59)  IP(186.141.135.57)
+
+[NAME]
+
+account-name     = ElDuro193
+
+[PASSWORD]
+
+account-password = 50650066
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 1 20
+
+account-change-password = 2021 1 13
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = a@gmail.com
+account-Quiz     = asd
+account-Answer   = dsa
+account-created-by = 
+
+[CHARACTERS]
+account-character  = esa
+

@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/12/26/6/22)  IP(178.237.237.137)
+
+[NAME]
+
+account-name     = chaken
+
+[PASSWORD]
+
+account-password = warrill148
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 1 2
+
+account-change-password = 2020 12 26
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = meneklenya@hotmail.com
+account-Quiz     = leña
+account-Answer   = ecologica
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Cuesco
+

@@ -3,6 +3,9 @@
 map-location  = aresden
 initial-point = 1  50 41
 
+DynamicGateCoord	= 33 43 34 44        arebrk11	   30  45
+DynamicGateType	= 10
+
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 teleport-loc     =      60     43     aresden             149    127    4

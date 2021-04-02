@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/12/2/23/27)  IP(181.46.143.92)
+
+[NAME]
+
+account-name     = 320514
+
+[PASSWORD]
+
+account-password = 320514a
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 9
+
+account-change-password = 2020 12 2
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = gamacray3205@gmail.com
+account-Quiz     = tu_nombre
+account-Answer   = alex
+account-created-by = 
+
+[CHARACTERS]
+account-character  = NeW
+

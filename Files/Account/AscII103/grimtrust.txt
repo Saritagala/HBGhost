@@ -1,0 +1,36 @@
+Account-generated:  Time(2020/11/20/19/23)  IP(108.243.141.12)
+
+[NAME]
+
+account-name     = grimtrust
+
+[PASSWORD]
+
+account-password = hewlettt
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 11 27
+
+account-change-password = 2020 11 20
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = reihlaer@gmail.com
+account-Quiz     = whodaman
+account-Answer   = batman
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Pain
+account-character  = Artillery
+account-character  = Archon
+account-character  = Wrath
+

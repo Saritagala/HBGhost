@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/1/23/20/52)  IP(190.19.87.229)
+
+[NAME]
+
+account-name     = xiaoming85
+
+[PASSWORD]
+
+account-password = superman11
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 1 30
+
+account-change-password = 2021 1 23
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = kyo403753682@gmail.com
+account-Quiz     = kiraku1234
+account-Answer   = kinkan1234
+account-created-by = 
+
+[CHARACTERS]
+account-character  = santo
+

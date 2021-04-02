@@ -29,9 +29,8 @@ account-Answer   = Perro
 account-created-by = 
 
 [CHARACTERS]
-account-character  = Porotex
+account-character  = asdfg
+account-character  = test
+account-character  = poroto
 account-character  = Centuu[GM]
 
-
-account-character  = Tanya
-account-character  = Porotex

@@ -1,0 +1,232 @@
+[FILE-DATE]
+
+file-saved-date: 2021 4 1 0 42
+
+[NAME-ACCOUNT]
+
+character-name     = Maolei
+account-name       = maolei
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = aresden
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = dungeon5
+character-loc-x   = 20
+character-loc-y   = 142
+
+character-HP       = 975
+character-MP       = 713
+character-SP       = 1320
+character-LEVEL    = 310
+character-RATING   = 10
+character-STR      = 350
+character-INT      = 67
+character-VIT      = 60
+character-DEX      = 400
+character-MAG      = 30
+character-CHARISMA = 50
+character-LUCK     = 10
+character-EXP      = 10617860
+character-LU_Pool  = 40
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = -23789
+character-IDnum2 = 600
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 2
+skin-status      = 2
+hairstyle-status = 1
+haircolor-status = 0
+underwear-status = 7
+hunger-status    = 89
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 0 0 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 0
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 859
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 1
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 1818929412
+party-id = 0
+gizon-item-upgrade-left = 545
+character-Deaths = 20
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 115.133.192.5
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 1
+character-gold = 2619252
+
+
+appr1 = 263
+appr2 = -3536
+appr3 = 25875
+appr4 = 8962
+appr-color = 5268998
+
+[ITEMLIST]
+
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = HuntSword            1 0 0 0 0 4 0 0 0 2485 536870912 0 0 0 0
+character-item = Gold                 2721123 2 8898 13064 328 0 0 0 0 0 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = LongBoots            1 2 2028 24448 328 0 0 0 0 405 8741120 0 0 0 0
+character-item = PickAxe              1 0 0 0 0 0 0 0 0 1000 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = AngelicPandent(DEX)  1 1 -23789 600 1 6 0 0 0 300 0 0 0 0 0
+character-item = DarkKnightHauberkW   1 1 -23789 600 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkKnightFullHelmW  1 1 -23789 600 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkKnightLeggingsW  1 1 -23789 600 1 6 0 0 0 30000 0 0 0 0 0
+character-item = DarkKnightPlateMailW 1 1 -23789 600 1 6 0 0 0 30000 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = MerienPlateMailW     1 0 0 0 0 5 0 0 0 5000 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4451 0 0 0 0 0
+character-item = Cape                 1 2 5571 1593 328 0 0 0 0 300 8549120 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+character-item = NecklaceOfMerien     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = HeroNeckWar(DM+35)   1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-item = RingOfHeroWar        1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-item = HeroSword            1 0 0 0 0 4 0 0 0 29755 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = RedCandy             1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlondeStone          3 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = GoldNugget           1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = SilverNugget         3 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = IronOre              12 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = Coal                 4 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+
+
+character-bank-item = BigGreenPotion       1 2 14242 340 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = BigGreenPotion       1 2 11762 13109 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = BigBluePotion        1 2 2711 27985 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = MerienPlateMailM     1 0 0 0 0 5 0 0 0 5000 0 0 0 0 0
+character-bank-item = Claymore             1 2 12244 18956 327 1 0 0 0 1000 5350144 0 0 0 0
+character-bank-item = BigGreenPotion       1 2 12586 1668 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = KnightBow            1 2 13620 27008 327 4 0 0 0 1000 2424832 0 0 0 0
+character-bank-item = Wings-Helm(W)        1 0 0 0 0 0 0 0 0 2500 0 0 0 0 0
+character-bank-item = LeatherArmor(W)      1 2 19975 16268 327 0 0 0 0 400 6591232 0 0 0 0
+character-bank-item = ChainMail(M)         1 2 212 1850 327 0 0 0 0 1000 11665408 0 0 0 0
+character-bank-item = WoodShield           1 2 9948 29289 328 0 0 0 0 300 11665408 0 0 0 0
+character-bank-item = WoodShield           1 2 15942 5534 328 0 0 0 0 300 8585216 0 0 0 0
+character-bank-item = BigBluePotion        1 2 20054 16596 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = BigBluePotion        1 2 4073 10802 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = BigBluePotion        1 2 31562 30850 327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Crystal              69 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = ManufacturingHammer  1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = GoldNugget           8 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = SilverNugget         15 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = BlondeStone          60 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Sapphire             3 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Ruby                 7 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = DarkKnightGiantSword 1 1 -23789 600 1 6 0 0 0 29935 1073741824 0 0 0 0
+character-bank-item = PlateBow             1 2 28850 10126 328 1 0 0 0 2500 5505024 0 0 0 0
+character-bank-item = AngelicPandent(STR)  1 1 -23789 600 1 6 0 0 0 300 0 0 0 0 0
+character-bank-item = Rapier               1 2 12812 10055 328 5 0 0 0 800 1352192 0 0 0 0
+character-bank-item = KlonessPotion        1 2 15378 2852 328 12 0 0 0 1 0 0 0 0 0
+character-bank-item = IronOre              187 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Coal                 216 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-bank-item = BlackShadowSword     1 0 0 0 0 0 0 0 0 2800 0 0 0 0 0
+character-bank-item = ChainHose(W)         1 2 11002 12659 328 0 0 0 0 500 6587648 0 0 0 0
+character-bank-item = WerewolfHeart        1 2 15793 27315 -31775 0 0 0 0 1 0 0 0 0 0
+character-bank-item = OgreHeart            1 2 12514 19162 -32444 0 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 4713 32304 328 12 0 0 0 1 0 0 0 0 0
+character-bank-item = HuntBow              1 0 0 0 0 4 0 0 0 2500 0 0 0 0 0
+character-bank-item = I.M.CManual          1 0 0 0 0 1 0 0 0 0 0 0 0 0 0
+character-bank-item = BerserkWand(MS.20)   1 0 0 0 0 0 0 0 0 5000 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 0 0 0 0 0 0 0 0 3 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 7290 19648 328 12 0 0 0 1 0 0 0 0 0
+character-bank-item = KlonessPotion        1 2 2396 525 328 12 0 0 0 1 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 21208 20437 328 0 0 0 0 3 0 0 0 0 0
+character-bank-item = KlonessAxe           1 0 0 0 0 7 0 0 0 4990 268435456 0 0 0 0
+character-bank-item = Gold                 405754 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+character-bank-item = BarbarianHammer      1 0 0 0 0 0 0 0 0 4448 0 0 0 0 0
+character-bank-item = Hood(M)              1 2 2780 790 328 0 0 0 0 500 6643968 0 0 0 0
+character-bank-item = DarkExecutor         1 0 0 0 0 0 0 0 0 3995 0 0 0 0 0
+character-bank-item = StormBringer         1 0 0 0 0 0 0 0 0 2994 0 0 0 0 0
+character-bank-item = LightingBlade        1 0 0 0 0 0 0 0 0 3987 0 0 0 0 0
+character-bank-item = StunSB               1 0 0 0 0 9 0 0 0 2993 0 0 0 0 0
+character-bank-item = KlonessBlade         1 0 0 0 0 7 0 0 0 7987 268435456 0 0 0 0
+character-bank-item = BlackDevastator      1 0 0 0 0 11 0 0 0 2952 0 0 0 0 0
+character-bank-item = GiantBattleHammer    1 0 0 0 0 9 0 0 0 5984 0 0 0 0 0
+character-bank-item = BelzeSword           1 0 0 0 0 4 0 0 0 1490 0 0 0 0 0
+character-bank-item = StripBarbarian       1 0 0 0 0 0 0 0 0 4464 0 0 0 0 0
+character-bank-item = RingoftheAbaddon     1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = XelimaAxe            1 0 0 0 0 0 0 0 0 4977 0 0 0 0 0
+character-bank-item = XelimaBlade          1 0 0 0 0 0 0 0 0 7998 0 0 0 0 0
+character-bank-item = SwordofMedusa        1 0 0 0 0 0 0 0 0 6995 0 0 0 0 0
+character-bank-item = DemonSlayer          1 0 0 0 0 9 0 0 0 4992 0 0 0 0 0
+character-bank-item = NecklaceOfXelima     1 0 0 0 0 5 0 0 0 300 0 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1110000000111110000011011111101111111110111111110011011011001000000000000000000000000000000000000000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 599 0 0 424 878 1 0 237 74564 0 275 0 0 0 10890 0 0 0 0 0 0 18 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 00000000100111100000010110010000010000000000000000
+item-position-x = 170 0 140 170 170 170 170 170 40 170 170 132 162 170 170 168 170 170 170 170 170 7 170 1 93 170 170 130 103 170 170 170 127 40 37 170 170 170 170 170 170 170 170 170 170 32 71 58 35 90 
+item-position-y = 95 -10 95 95 95 95 95 95 30 0 95 31 39 95 95 48 95 95 95 95 95 74 95 95 -10 95 95 48 2 95 95 95 -10 30 -10 95 95 95 95 95 95 95 95 95 95 95 95 71 66 80 
+
+[EOF]
+
+
+
+ 

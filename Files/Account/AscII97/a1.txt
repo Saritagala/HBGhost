@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/11/30/8/1)  IP(190.245.143.233)
+
+[NAME]
+
+account-name     = a1
+
+[PASSWORD]
+
+account-password = asd
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 7
+
+account-change-password = 2020 11 30
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = asd@asd.com
+account-Quiz     = asdasdasd
+account-Answer   = ads
+account-created-by = 
+
+[CHARACTERS]
+account-character  = ThePutit
+account-character  = LujuriA
+

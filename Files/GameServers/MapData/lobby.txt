@@ -1,0 +1,12 @@
+[MAP-INFO]
+
+map-location  = lobby
+initial-point = 1  37 39
+//type          = 1
+
+
+
+
+maximum-object = 50
+
+[END-MAP-INFO]

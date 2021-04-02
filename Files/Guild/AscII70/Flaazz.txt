@@ -1,0 +1,11 @@
+;Guild file - Updated 2021/ 2/27/ 9/35
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = fudd
+guild-GUID = 572834910
+guild-location       = elvine
+
+[GUILDSMAN]
+

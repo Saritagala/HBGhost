@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/11/13/7/48)  IP(186.120.197.194)
+
+[NAME]
+
+account-name     = hellsing
+
+[PASSWORD]
+
+account-password = a
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 11 20
+
+account-change-password = 2020 11 13
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = asd@hotmail.es
+account-Quiz     = asdasd
+account-Answer   = asasd
+account-created-by = 
+
+[CHARACTERS]
+account-character  = KenZoB
+

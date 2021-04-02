@@ -1,0 +1,36 @@
+Account-generated:  Time(2020/11/27/20/50)  IP(42.153.134.135)
+
+[NAME]
+
+account-name     = hberic40
+
+[PASSWORD]
+
+account-password = 5059937
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 4
+
+account-change-password = 2020 11 27
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = eric811113@gmail.com
+account-Quiz     = 123698745
+account-Answer   = 147896325
+account-created-by = 
+
+[CHARACTERS]
+account-character  = WwwwW
+account-character  = FUCKINGu
+account-character  = OldLady
+account-character  = SpicyCake
+

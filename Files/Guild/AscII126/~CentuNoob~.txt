@@ -1,0 +1,11 @@
+;Guild file - Updated 2021/ 1/28/16/50
+;Just created
+
+[GUILD-INFO]
+
+guildmaster-name     = NiXuGM
+guild-GUID = -443542371
+guild-location       = elvine
+
+[GUILDSMAN]
+

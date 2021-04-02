@@ -1,0 +1,227 @@
+[FILE-DATE]
+
+file-saved-date: 2021 2 1 22 51
+
+[NAME-ACCOUNT]
+
+character-name     = Vio
+account-name       = bobo
+
+[STATUS]
+
+character-profile 	=__________
+character-location   = aresden
+character-guild-name = NONE
+character-guild-GUID = -1
+character-guild-rank = -1
+character-loc-map = cityhall_1
+character-loc-x   = 46
+character-loc-y   = 42
+
+character-HP       = 751
+character-MP       = 1795
+character-SP       = 820
+character-LEVEL    = 310
+character-RATING   = 270
+character-STR      = 100
+character-INT      = 350
+character-VIT      = 27
+character-DEX      = 10
+character-MAG      = 500
+character-CHARISMA = 10
+character-LUCK     = 10
+character-EXP      = 10617510
+character-LU_Pool  = 0
+character-EK-Count = 0
+character-PK-Count = 0
+character-reward-gold = 0
+character-downskillindex = -1
+character-IDnum1 = 977
+character-IDnum2 = 303
+character-IDnum3 = 1
+party-rank = -1
+sex-status       = 2
+skin-status      = 3
+hairstyle-status = 7
+haircolor-status = 9
+underwear-status = 6
+hunger-status    = 88
+timeleft-shutup  = 0
+timeleft-rating  = 0
+timeleft-force-recall  = 0
+timeleft-firm-staminar = 0
+admin-user-level = 0
+penalty-block-date = 0 0 0
+character-quest-number = 0 0 0 0 0 
+character-quest-ID = 0 0 0 0 0 
+current-quest-count = 91 160 0 0 0 
+quest-reward-type = 0 0 0 0 0 
+quest-reward-amount = 0 0 0 0 0 
+character-contribution = 200
+character-war-contribution = 0
+character-quest-completed = 0 0 0 0 0 
+special-event-id = 200081
+super-attack-left = 30
+reserved-fightzone-id = 0 0 0
+special-ability-time = 0
+locked-map-name = NONE
+locked-map-time = 0
+crusade-job = 0
+crusade-GUID = 0
+construct-point = 0
+dead-penalty-time = 1960741
+party-id = 0
+gizon-item-upgrade-left = 10559
+character-Deaths = 4
+character-TotalDGKills = 0
+character-DGPoints = 0
+character-TotalDGDeaths = 0
+character-DGKills = 0
+max-ek = 0
+ip2 = ip
+ip = 24.7.7.193
+heldenian-GUID = 0
+character-wanted-level = 0
+coin-points = 0
+character-team = 0
+character-class = 2
+
+
+appr1 = 1942
+appr2 = -3536
+appr3 = 17523
+appr4 = 8960
+appr-color = 0
+
+[ITEMLIST]
+
+character-item = AngelicPandent(MAG)  1 1 977 303 1 6 0 0 0 300 -1610612736 0 0 0 0
+character-item = LongBoots            1 2 6095 32715 122 0 0 0 0 300 6776320 0 0 0 0
+character-item = MagicWand(MS60-LLF)  1 0 0 0 0 0 0 0 0 4800 0 0 0 0 0
+character-item = ChainHose(W)         1 2 25312 31071 122 0 0 0 0 605 8611584 0 0 0 0
+character-item = Cape                 1 2 5946 4750 122 0 0 0 0 342 8544768 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = Hauberk(W)           1 2 18065 15741 123 0 0 0 0 342 8545280 0 0 0 0
+character-item = ZemstoneofSacrifice  1 2 1504 30565 121 0 0 0 0 3 0 0 0 0 0
+character-item = Gold                 6633221 2 7851 4027 123 0 0 0 0 0 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 2 18927 14862 123 0 0 0 0 3 0 0 0 0 0
+character-item = ChainMail(W)         1 2 15754 15482 124 0 0 0 0 1140 8545280 0 0 0 0
+character-item = Wizard-Cap(W)        1 2 12339 21220 123 0 0 0 0 570 8545792 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = BlueCandy            1 0 0 0 0 0 0 0 0 1 0 0 0 0 0
+character-item = AcientTablet(LU)     1 2 7032 9129 13400 0 0 0 0 1 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 2 2146 23739 13400 0 0 0 0 3 0 10 16 2 2021
+character-item = ZemstoneofSacrifice  1 2 22026 14120 122 0 0 0 0 3 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 2 18398 31900 122 0 0 0 0 3 0 0 0 0 0
+character-item = HeroNeckMage(DM+35)  1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+character-item = HeroWand             1 0 0 0 0 2 0 0 0 30000 0 0 0 0 0
+character-item = ZemstoneofSacrifice  1 2 17763 4660 16975 0 0 0 0 3 0 10 16 2 2021
+
+
+character-bank-item = Hood(W)              1 2 21964 24129 121 0 0 0 0 500 6571008 0 0 0 0
+character-bank-item = GoldNecklace         1 2 3874 26485 121 0 0 0 0 300 12723200 0 0 0 0
+character-bank-item = LeatherArmor(W)      1 2 30057 32599 121 0 0 0 0 400 6584064 0 0 0 0
+character-bank-item = AcientTablet(LD)     1 2 26814 7981 -6752 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Wizard-Hat(W)        1 2 13465 18737 122 0 0 0 0 800 8667904 0 0 0 0
+character-bank-item = AcientTablet(LU)     1 2 17031 5142 -11122 0 0 0 0 1 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 3068 24411 122 0 0 0 0 3 0 0 0 0 0
+character-bank-item = SilverNecklace       1 2 23771 15212 122 0 0 0 0 300 1427200 0 0 0 0
+character-bank-item = Hood(M)              1 2 30996 27553 122 0 0 0 0 500 8733440 0 0 0 0
+character-bank-item = SilverRing           1 2 16078 26432 122 0 0 0 0 300 11710720 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 10727 16992 122 0 0 0 0 3 0 0 0 0 0
+character-bank-item = GoldRing             1 2 5507 23092 122 0 0 0 0 300 11715328 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 12119 6401 122 0 0 0 0 3 0 0 0 0 0
+character-bank-item = GoldRing             1 2 15230 18659 121 0 0 0 0 300 11710720 0 0 0 0
+character-bank-item = PlateMail(M)         1 2 1755 32164 122 0 0 0 0 3000 6584576 0 0 0 0
+character-bank-item = Wizard-Hat(M)        1 2 20581 20585 122 0 0 0 0 800 6570752 0 0 0 0
+character-bank-item = GoldRing             1 2 32690 30830 122 0 0 0 0 300 1421568 0 0 0 0
+character-bank-item = Wizard-Cap(M)        1 2 5181 8882 122 0 0 0 0 500 8996096 0 0 0 0
+character-bank-item = Wizard-Hat(W)        1 2 2041 2841 121 0 0 0 0 1080 8733696 0 0 0 0
+character-bank-item = AcientTablet(LD)     1 2 13139 7434 -23146 0 0 0 0 1 0 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 21807 13881 122 0 0 0 0 3 0 0 0 0 0
+character-bank-item = ChainHose(W)         1 2 29833 22901 122 0 0 0 0 500 8619008 0 0 0 0
+character-bank-item = AcientTablet(RU)     1 2 23827 22154 23672 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Hauberk(W)           1 2 11212 15782 121 0 0 0 0 363 8610816 0 0 0 0
+character-bank-item = eHeroArmor(W)        1 2 7532 7573 123 0 0 0 0 5000 6578688 0 0 0 0
+character-bank-item = Hauberk(W)           1 2 13593 13858 123 0 0 0 0 300 8619008 0 0 0 0
+character-bank-item = GoldRing             1 2 3333 1728 123 0 0 0 0 300 12386304 0 0 0 0
+character-bank-item = AcientTablet(LU)     1 2 14079 15182 12050 0 0 0 0 1 0 0 0 0 0
+character-bank-item = RingofGrandMage      1 0 0 0 0 0 0 0 0 300 0 0 0 0 0
+character-bank-item = StoneOfXelima        1 2 17245 10089 123 0 0 0 0 3 0 0 0 0 0
+character-bank-item = SilverRing           1 2 21149 1971 123 0 0 0 0 300 11641856 0 0 0 0
+character-bank-item = AcientTablet(LD)     1 2 28310 29493 -26327 0 0 0 0 1 0 0 0 0 0
+character-bank-item = Shoes                1 2 20411 31312 123 0 0 0 0 300 8537088 0 0 0 0
+character-bank-item = ChainMail(W)         1 2 25833 19764 123 0 0 0 0 1000 8536832 0 0 0 0
+character-bank-item = Hood(W)              1 2 878 12080 123 0 0 0 0 500 8537344 0 0 0 0
+character-bank-item = SilverNecklace       1 2 20248 32677 123 0 0 0 0 300 11710976 0 0 0 0
+character-bank-item = PlateMail(W)         1 2 321 29079 123 0 0 0 0 3420 8551680 0 0 0 0
+character-bank-item = Wizard-Hat(W)        1 2 23522 23340 123 0 0 0 0 800 6702336 0 0 0 0
+character-bank-item = CrystalWare          1 2 12416 2834 123 0 0 0 0 1 0 0 0 0 0
+character-bank-item = LeatherArmor(W)      1 2 29589 28649 123 0 0 0 0 400 6578944 0 0 0 0
+character-bank-item = LongBoots            1 2 9070 12586 123 0 0 0 0 300 6649088 0 0 0 0
+character-bank-item = AcientTablet(LU)     1 2 17592 1896 -21261 0 0 0 0 1 0 0 0 0 0
+character-bank-item = GoldRing             1 2 14344 1484 123 0 0 0 0 300 11645440 0 0 0 0
+character-bank-item = eHeroArmor(W)        1 2 428 5625 122 0 0 0 0 5000 8519680 0 0 0 0
+character-bank-item = aHeroLeggings(M)     1 2 10343 2866 123 0 0 0 0 3000 8519680 0 0 0 0
+character-bank-item = ZemstoneofSacrifice  1 2 16991 20525 122 0 0 0 0 3 0 0 0 0 0
+character-bank-item = Horned-Helm(M)       1 2 32454 22464 121 0 0 0 0 3500 8537600 0 0 0 0
+character-bank-item = AcientTablet(LD)     1 2 18736 5940 19068 0 0 0 0 1 0 0 0 0 0
+character-bank-item = ChainHose(W)         1 2 20088 29463 123 0 0 0 0 500 8553984 0 0 0 0
+character-bank-item = AcientTablet(RD)     1 2 2650 17051 17670 0 0 0 0 1 0 0 0 0 0
+character-bank-item = AcientTablet(RD)     1 2 11684 24172 17178 0 0 0 0 1 0 0 0 0 0
+character-bank-item = SilverNecklace       1 2 23011 16685 123 0 0 0 0 300 10596864 0 0 0 0
+character-bank-item = ArenaTicket(5)       1 2 27067 17289 123 0 0 0 0 1 0 0 0 0 0
+character-bank-item = SilverNecklace       1 2 30904 32756 123 0 0 0 0 300 12694016 0 0 0 0
+character-bank-item = Horned-Helm(M)       1 2 1309 10102 123 0 0 0 0 3500 8668416 0 0 0 0
+character-bank-item = PlateBow             1 2 30895 23023 123 1 0 0 0 2500 5555968 0 0 0 0
+character-bank-item = SilverNecklace       1 2 391 25544 123 0 0 0 0 300 12759552 0 0 0 0
+character-bank-item = Wizard-Cap(W)        1 2 27668 30046 123 0 0 0 0 570 8545792 0 0 0 0
+character-bank-item = GoldNecklace         1 2 27062 11945 123 0 0 0 0 300 12235776 0 0 0 0
+character-bank-item = MagicWand(MS10)      1 2 16868 21068 123 5 0 0 0 2400 10799360 0 0 0 0
+character-bank-item = PlateMail(M)         1 2 24544 7581 123 0 0 0 0 3420 8538112 0 0 0 0
+character-bank-item = LeatherArmor(M)      1 2 29551 30077 123 0 0 0 0 456 8537856 0 0 0 0
+character-bank-item = GoldRing             1 2 11088 15232 123 0 0 0 0 300 1428224 0 0 0 0
+character-bank-item = AcientTablet(LU)     1 2 31389 3652 1937 0 0 0 0 1 0 0 0 0 0
+character-bank-item = LongBoots            1 2 580 23206 124 0 0 0 0 300 8550144 0 0 0 0
+character-bank-item = Cape                 1 2 23170 8432 124 0 0 0 0 300 12817408 1 0 0 0
+character-bank-item = Cape                 1 2 30316 5037 124 0 0 0 0 300 6592000 1 0 0 0
+character-bank-item = SilverRing           1 2 787 12079 124 0 0 0 0 300 12694016 0 0 0 0
+character-bank-item = SilverRing           1 2 15438 9246 124 0 0 0 0 300 11707648 0 0 0 0
+character-bank-item = Wizard-Hat(W)        1 2 14636 28399 122 0 0 0 0 800 8603136 0 0 0 0
+character-bank-item = eHeroArmor(W)        1 2 7445 369 122 0 0 0 0 5000 8811264 0 0 0 0
+character-bank-item = XelimaBow            1 2 6561 24494 123 8 0 0 0 987 0 0 0 0 0
+character-bank-item = SilverRing           1 2 24163 22068 123 0 0 0 0 300 11626240 0 0 0 0
+character-bank-item = Wizard-Hat(W)        1 2 28651 29448 124 0 0 0 0 800 8537344 0 0 0 0
+character-bank-item = Wizard-Cap(W)        1 2 1144 26301 122 0 0 0 0 500 6579456 0 0 0 0
+character-bank-item = PlateMail(W)         1 2 13702 14110 125 0 0 0 0 3000 8684544 0 0 0 0
+character-bank-item = ChainHose(W)         1 2 14043 25655 125 0 0 0 0 500 8545024 0 0 0 0
+character-bank-item = MerienHRobe(M)       1 2 23224 27012 123 5 0 0 0 4000 0 0 0 0 0
+character-bank-item = Hood(M)              1 2 19381 1915 123 0 0 0 0 500 8747520 0 0 0 0
+character-bank-item = KlonessWand(MS.20)   1 0 0 0 0 7 0 0 0 4998 0 0 0 0 0
+character-bank-item = BerserkWand(MS.20)   1 0 0 0 0 0 0 0 0 4995 0 0 0 0 0
+character-bank-item = HeroNeckMage(DM+35)  1 0 0 0 0 6 0 0 0 300 0 0 0 0 0
+character-bank-item = HeroWand             1 0 0 0 0 2 0 0 0 30000 0 0 0 0 0
+character-bank-item = RingOfHeroMage       1 0 0 0 0 9 0 0 0 300 0 0 0 0 0
+
+
+[MAGIC-SKILL-MASTERY]
+
+//------------------012345678901234567890123456789012345678901234567890
+magic-mastery     = 1110000000111110000011011111101111111110111111110011011011001111111000111110010011100000001100001000
+skill-mastery     = 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 100 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+skill-SSN     = 0 0 0 425 25052 0 0 169 0 3 0 0 0 0 0 0 0 0 0 1 0 249 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+[ITEM-EQUIP-STATUS]
+
+item-equip-status = 11111001000110000000000000000000000000000000000000
+item-position-x = 24 40 11 40 40 119 119 40 13 44 13 40 40 119 119 119 119 154 13 40 13 13 40 40 40 40 40 40 40 54 0 40 40 40 40 40 40 40 40 40 13 40 40 40 40 40 40 40 40 40 
+item-position-y = 74 30 72 30 30 -10 -10 30 -10 -10 -10 30 30 -10 -10 -10 -10 1 -10 30 -10 -10 30 30 30 30 30 30 30 81 62 30 30 30 30 30 30 30 30 30 -10 30 30 30 30 30 30 30 30 30 
+
+[EOF]
+
+
+
+     

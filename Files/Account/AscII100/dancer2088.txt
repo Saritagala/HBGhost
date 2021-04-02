@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/3/23/23/51)  IP(125.44.222.123)
+
+[NAME]
+
+account-name     = dancer2088
+
+[PASSWORD]
+
+account-password = 98201408
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 3 30
+
+account-change-password = 2021 3 23
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = 06-kj@163.com
+account-Quiz     = dsadjsaj1
+account-Answer   = dsadjksad
+account-created-by = 
+
+[CHARACTERS]
+account-character  = chine
+

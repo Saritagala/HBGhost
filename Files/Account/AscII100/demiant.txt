@@ -1,0 +1,34 @@
+Account-generated:  Time(2020/11/11/8/18)  IP(190.107.228.14)
+
+[NAME]
+
+account-name     = demiant
+
+[PASSWORD]
+
+account-password = viceroy
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 11 18
+
+account-change-password = 2020 11 11
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = lujuria_hb@hotmail.com
+account-Quiz     = mi_perro?
+account-Answer   = tintin
+account-created-by = 
+
+[CHARACTERS]
+account-character  = WEED
+account-character  = WeeOn
+

@@ -29,5 +29,8 @@ account-Answer   = como
 account-created-by = 
 
 [CHARACTERS]
+account-character  = LeFreak
+account-character  = a1
+account-character  = Cagaron
 account-character  = GM1
 

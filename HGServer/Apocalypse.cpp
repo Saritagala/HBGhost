@@ -39,7 +39,7 @@ void CGame::ApocalypseStarter()
 			(m_stApocalypseScheduleStart[i].iHour == SysTime.wHour) &&
 			(m_stApocalypseScheduleStart[i].iMinute == SysTime.wMinute)) {
 			wsprintf(G_cTxt, "(!) Apocalypse Start : time(%d %d:%d), index(%d) schedule", m_stApocalypseScheduleStart[i].iDay, m_stApocalypseScheduleStart[i].iHour, m_stApocalypseScheduleStart[i].iMinute, i);
-			PutLogFileList(G_cTxt);
+			PutLogList(G_cTxt);
 			//GlobalStartApocalypseMode(i, 0);
 
 			dwApocalypseGUID = timeGetTime();

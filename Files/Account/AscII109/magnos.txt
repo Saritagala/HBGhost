@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/11/24/15/21)  IP(138.99.55.42)
+
+[NAME]
+
+account-name     = magnos
+
+[PASSWORD]
+
+account-password = magnos
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 1
+
+account-change-password = 2020 11 24
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = Magn0S_THX@hotmail.com
+account-Quiz     = a
+account-Answer   = a
+account-created-by = 
+
+[CHARACTERS]
+account-character  = SkyMage
+

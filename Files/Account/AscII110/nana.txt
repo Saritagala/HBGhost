@@ -1,0 +1,36 @@
+Account-generated:  Time(2021/1/22/18/2)  IP(24.7.7.193)
+
+[NAME]
+
+account-name     = nana
+
+[PASSWORD]
+
+account-password = small
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 1 29
+
+account-change-password = 2021 1 22
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = liquanwanwan@gmail.com
+account-Quiz     = color
+account-Answer   = purple
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Pikachu
+account-character  = Sam
+account-character  = AK
+account-character  = DK
+

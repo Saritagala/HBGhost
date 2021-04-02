@@ -1,0 +1,33 @@
+Account-generated:  Time(2020/12/27/15/37)  IP(72.141.252.189)
+
+[NAME]
+
+account-name     = Shiino
+
+[PASSWORD]
+
+account-password = winterwind
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 1 3
+
+account-change-password = 2020 12 27
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = humdee.elbagdady@gmail.com
+account-Quiz     = asdfasdf
+account-Answer   = zxcvzxcv
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Shiina
+

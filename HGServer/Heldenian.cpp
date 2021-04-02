@@ -1990,7 +1990,7 @@ void CGame::HeldenianWarStarter()
 			(m_stHeldenianSchedule[i].StartiHour == SysTime.wHour) &&
 			(m_stHeldenianSchedule[i].StartiMinute == SysTime.wMinute)) {
 			wsprintf(G_cTxt, "(!) Heldenian Start : time(%d %d:%d), index(%d)", m_stHeldenianSchedule[i].iDay, m_stHeldenianSchedule[i].StartiHour, m_stHeldenianSchedule[i].StartiMinute, i);
-			PutLogFileList(G_cTxt);
+			PutLogList(G_cTxt);
 			GlobalStartHeldenianMode();
 			break;
 		}

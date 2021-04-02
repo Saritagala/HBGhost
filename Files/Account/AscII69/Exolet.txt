@@ -1,0 +1,35 @@
+Account-generated:  Time(2020/12/23/20/38)  IP(190.163.124.218)
+
+[NAME]
+
+account-name     = Exolet
+
+[PASSWORD]
+
+account-password = dhelos300
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2020 12 30
+
+account-change-password = 2020 12 23
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = elquenadietiene@hotmail.com
+account-Quiz     = Answer
+account-Answer   = Question?
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Darknight
+account-character  = Arkloss
+account-character  = CaosKloss
+

@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/2/19/15/38)  IP(124.80.25.90)
+
+[NAME]
+
+account-name     = jini302
+
+[PASSWORD]
+
+account-password = eogksalsrn
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 2 26
+
+account-change-password = 2021 2 19
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = cjdrn302@gmail.com
+account-Quiz     = dkfmaekdns
+account-Answer   = dnflrkdtks
+account-created-by = 
+
+[CHARACTERS]
+account-character  = Mcchen
+

@@ -1,2 +1,2 @@
-CrusadeGUID = 127130669
-winner-side = 2
+CrusadeGUID = 1165139879
+winner-side = 0

@@ -1,0 +1,33 @@
+Account-generated:  Time(2021/2/25/8/39)  IP(97.70.91.149)
+
+[NAME]
+
+account-name     = KillaCam
+
+[PASSWORD]
+
+account-password = 753951
+
+[ACCOUNT-STATUS]
+
+account-valid-time = 0
+account-valid-date = 2021 3 4
+
+account-change-password = 2021 2 25
+[ETC]
+
+account-Gender   =  
+account-Age      = 
+account-Birth-Year =  
+account-Birth-Month =  
+account-Birth-Day   =  
+account-RealName = 
+account-SSN      = -
+account-Email    = dookiedowork@gmail.com
+account-Quiz     = dog
+account-Answer   = rico
+account-created-by = 
+
+[CHARACTERS]
+account-character  = DirtyPenis
+
