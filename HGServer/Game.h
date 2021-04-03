@@ -114,6 +114,8 @@ public:
 
 private:
 
+	void GenerateMonsterSlaves(int MapIndex, int iX, int iY, int iOrder);
+
 	void StormBringer(int iClientH, short dX, short dY);
 
 	void _CreateNewGuildFile(char* cGuildName);

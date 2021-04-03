@@ -25600,7 +25600,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 		cDir = m_Misc.cGetNextMoveDir(sX, sY, dX, dY);
 		if (cDir == 0) return;
 		m_pNpcList[iNpcH]->m_cDir = cDir;
-		if ((m_pNpcList[iNpcH]->m_cMagicLevel > 0) && (iDice(1, 2) == 1) &&
+		if ((m_pNpcList[iNpcH]->m_cMagicLevel > 0) && (iDice(1, 3) == 2) &&
 			(abs(sX - dX) <= 11) && (abs(sY - dY) <= 9)) {
 			iMagicType = -1;
 			switch (m_pNpcList[iNpcH]->m_cMagicLevel) {
@@ -25610,123 +25610,132 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 				break;
 
 			case 2:
-				if (m_pMagicConfigList[10]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 10;
-				else if (m_pMagicConfigList[0]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 0;
+				switch (iDice(1, 2)) {
+				case 1: iMagicType = 0; break; // Ice-Strike
+				case 2: iMagicType = 10; break; // Ice-Strike
+				}
 				break;
 
 			case 3: // Orc-Mage
-				if (m_pMagicConfigList[20]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 20;
-				else if (m_pMagicConfigList[10]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 10;
+				switch (iDice(1, 2)) {
+				case 1: iMagicType = 20; break; // Ice-Strike
+				case 2: iMagicType = 10; break; // Ice-Strike
+				}
 				break;
 
 			case 4:
-				if (m_pMagicConfigList[30]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 30;
-				else if (m_pMagicConfigList[37]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 37;
-				else if (m_pMagicConfigList[20]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 20;
-				else if (m_pMagicConfigList[10]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 10;
+				switch (iDice(1, 4)) {
+				case 1: iMagicType = 30; break; // Ice-Strike
+				case 2: iMagicType = 37; break; // Ice-Strike
+				case 3: iMagicType = 20; break; // Ice-Strike
+				case 4: iMagicType = 10; break; // Ice-Strike
+				}
 				break;
 
 			case 5: // Rudolph, Cannibal-Plant, Cyclops
-				if (m_pMagicConfigList[43]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 43;
-				else if (m_pMagicConfigList[30]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 30;
-				else if (m_pMagicConfigList[37]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 37;
-				else if (m_pMagicConfigList[20]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 20;
-				else if (m_pMagicConfigList[10]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 10;
+				switch (iDice(1, 5)) {
+				case 1: iMagicType = 43; break; // Ice-Strike
+				case 2: iMagicType = 30; break; // Ice-Strike
+				case 3: iMagicType = 37; break; // Ice-Strike
+				case 4: iMagicType = 20; break; // Ice-Strike
+				case 5: iMagicType = 10; break; // Ice-Strike
+				}
 				break;
 
 			case 6: // Tentocle, Liche
-				if (m_pMagicConfigList[51]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 51;
-				else if (m_pMagicConfigList[43]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 43;
-				else if (m_pMagicConfigList[30]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 30;
-				else if (m_pMagicConfigList[37]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 37;
-				else if (m_pMagicConfigList[20]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 20;
-				else if (m_pMagicConfigList[10]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 10;
+				switch (iDice(1, 6)) {
+				case 1: iMagicType = 51; break; // Blizzard
+				case 2: iMagicType = 43; break; // Ice-Strike
+				case 3: iMagicType = 30; break; // Ice-Strike
+				case 4: iMagicType = 37; break; // Ice-Strike
+				case 5: iMagicType = 20; break; // Ice-Strike
+				case 6: iMagicType = 10; break; // Ice-Strike
+				}
 				break;
 
 			case 7: // Barlog, Fire-Wyvern, MasterMage-Orc , LightWarBeatle, GHK, GHKABS, TK, BG
 				// Sor, Gagoyle, Demon
-				if ((m_pMagicConfigList[70]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 5) == 3))
-					iMagicType = 70;
-				else if (m_pMagicConfigList[61]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 61;
-				else if (m_pMagicConfigList[60]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 60;
-				else if (m_pMagicConfigList[51]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 51;
-				else if (m_pMagicConfigList[43]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 43;
+				switch (iDice(1, 5)) {
+				case 1: iMagicType = 70; break; // Blizzard
+				case 2: iMagicType = 61; break; // Ice-Strike
+				case 3: iMagicType = 60; break; // Ice-Strike
+				case 4: iMagicType = 51; break; // Ice-Strike
+				case 5: iMagicType = 43; break; // Ice-Strike
+				}
 				break;
 
 			case 8: // Unicorn, Centaurus
-				if ((m_pMagicConfigList[35]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 35;
-				else if (m_pMagicConfigList[60]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 60;
-				else if (m_pMagicConfigList[51]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 51;
-				else if (m_pMagicConfigList[43]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 43;
+				switch (iDice(1, 4)) {
+				case 1: iMagicType = 35; break; // Blizzard
+				case 2: iMagicType = 60; break; // Ice-Strike
+				case 3: iMagicType = 51; break; // Ice-Strike
+				case 4: iMagicType = 43; break; // Ice-Strike
+				}
 				break;
 
 			case 9: // Tigerworm
-				if ((m_pMagicConfigList[74]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
+				if ((m_pMagicConfigList[74]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana))
 					iMagicType = 74; // Lightning-Strike
 				break;
 
 			case 10: // Frost, Nizie
-				if ((m_pMagicConfigList[57]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
+				if ((m_pMagicConfigList[57]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana))
 					iMagicType = 57; // Ice-Strike
 				break;
 
 			case 12: // Wyvern
-				if ((m_pMagicConfigList[91]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 91; // Blizzard
-				else if (m_pMagicConfigList[57]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 57; // Ice-Strike
+				switch (iDice(1, 2)) {
+				case 1: iMagicType = 91; break; // Blizzard
+				case 2: iMagicType = 57; break; // Ice-Strike
+				}
 				break;
 
 			case 13: // Abaddon
-				if ((m_pMagicConfigList[96]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 96; // Earth Shock Wave
-				else if ((m_pMagicConfigList[91]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 91; // Blizzard
-				else if (m_pMagicConfigList[81]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 81; // Metoer Strike
+				switch (iDice(1, 3)) {
+				case 1: iMagicType = 96; break; // Earth Shock Wave
+				case 2: iMagicType = 91; break; // Blizzard
+				case 3: iMagicType = 81; break; // Metoer Strike
+				}
 				break;
 			case 14: // Ghost-Abaddon
-				if ((m_pMagicConfigList[96]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 96; // Earth Shock Wave
-				else if ((m_pMagicConfigList[93]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 93; // Mass Blizzard
-				else if (m_pMagicConfigList[81]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana)
-					iMagicType = 81; // Metoer Strike
-				else if ((m_pMagicConfigList[98]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 98; // Strike of the Ghosts
-				else if ((m_pMagicConfigList[99]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 99; // Call of the Ghosts
-				else if ((m_pMagicConfigList[92]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 92; // Fiery Shock Wave
-				else if ((m_pMagicConfigList[97]->m_sValue1 <= m_pNpcList[iNpcH]->m_iMana) && (iDice(1, 3) == 2))
-					iMagicType = 97; // Fury of Thor
+				switch (iDice(1, 8)) {
+				case 1: iMagicType = 96; break; // Earth Shock Wave
+				case 2: iMagicType = 93; break; // Mass Blizzard
+				case 3: iMagicType = 81; break; // Metoer Strike
+				case 4: iMagicType = 98; break; // Strike of the Ghosts
+				case 5: iMagicType = 99; break; // Call of the Ghosts
+				case 6: iMagicType = 92; break; // Fiery Shock Wave
+				case 7: iMagicType = 97; break; // Fury of Thor
+				case 8:
+					{
+						char cName[21], cNpcName[21], cNpcWaypoint[11];
+						int iNamingValue, tX, tY;
+						iNamingValue = m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->iGetEmptyNamingValue();
+						if (iNamingValue != -1) {
+							ZeroMemory(cNpcName, sizeof(cNpcName));
+							switch (iDice(1, 4)) {
+							case 1: strcpy(cNpcName, "Demon"); break;
+							case 2: strcpy(cNpcName, "Gagoyle"); break;
+							case 3: strcpy(cNpcName, "Hellclaw"); break;
+							case 4: strcpy(cNpcName, "Tigerworm"); break;
+							}
+							ZeroMemory(cName, sizeof(cName));
+							wsprintf(cName, "XX%d", iNamingValue);
+							cName[0] = '_';
+							cName[1] = m_pNpcList[iNpcH]->m_cMapIndex + 65;
+							ZeroMemory(cNpcWaypoint, sizeof(cNpcWaypoint));
+							tX = (int)m_pNpcList[iNpcH]->m_sX;
+							tY = (int)m_pNpcList[iNpcH]->m_sY;
+							if (bCreateNewNpc(cNpcName, cName, m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_cName, 0, (rand() % 9),
+								DEF_MOVETYPE_RANDOM, &tX, &tY, cNpcWaypoint, NULL, NULL, -1, FALSE, FALSE) == FALSE) {
+								m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->SetNamingValueEmpty(iNamingValue);
+							}
+						}
+					}
+					break;
+				}
+
+
 				break;
 
 			case 11:
@@ -25960,6 +25969,43 @@ NBA_CHASE:;
 			m_pNpcList[iNpcH]->m_sY = dY;
 			m_pNpcList[iNpcH]->m_cDir = cDir;
 			SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTMOVE, NULL, NULL, NULL);
+		}
+	}
+}
+
+//Magn0S::  Generating Abby Ghost slaves to fight.
+void CGame::GenerateMonsterSlaves(int MapIndex, int iX, int iY, int iOrder)
+{
+	char cName[21], cNpcName[21], cNpcWaypoint[11];
+	int iNamingValue, iQtd, j;
+	BOOL bZerk;
+	bZerk = TRUE; // FALSE;
+	iQtd = 0;
+	ZeroMemory(cNpcWaypoint, sizeof(cNpcWaypoint));
+	iNamingValue = m_pMapList[MapIndex]->iGetEmptyNamingValue();
+	if (iNamingValue != -1)
+	{
+		switch (iOrder) {
+		case 1: strcpy(cNpcName, "Demon"); iQtd = 5; break;
+		case 2: strcpy(cNpcName, "Gagoyle"); iQtd = 3; break;
+		case 3: strcpy(cNpcName, "Hellclaw"); iQtd = 2; break;
+		case 4: strcpy(cNpcName, "Tigerworm"); iQtd = 2; break;
+		}
+
+		for (j = 0; j < iQtd; j++) {
+			ZeroMemory(cName, sizeof(cName));
+			wsprintf(cName, "XX%d", iNamingValue);
+			cName[0] = '_';
+			cName[1] = MapIndex + 65;
+
+			/*if (iDice(1, 5) >= 3)
+				bZerk = TRUE;
+			else bZerk = FALSE;*/
+
+			if (bCreateNewNpc(cNpcName, cName, m_pMapList[MapIndex]->m_cName, 0, (rand() % 3)
+				, DEF_MOVETYPE_RANDOM, &iX, &iY, cNpcWaypoint, NULL, NULL, 10, FALSE, FALSE, bZerk, TRUE) == FALSE) {
+				m_pMapList[MapIndex]->SetNamingValueEmpty(iNamingValue);
+			}
 		}
 	}
 }

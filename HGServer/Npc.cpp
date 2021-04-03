@@ -55,6 +55,8 @@ CNpc::CNpc(char * pName5)
 
 	m_iExp = 0;
 
+	m_iSummonSlave = 0;
+
 	m_cPoisonResistance = 110;
 	m_iPoisonLevel = 0;
 
@@ -616,15 +618,35 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 NKH_GOTOPOINT1:;
 
 	// v1.411 ¸¸¾à ExplosiveÇÑ ¸ó½ºÅÍ°¡ Á×Àº °Å¶ó¸é Explosive
-	if (m_pNpcList[iNpcH]->m_cSpecialAbility == 7) {
+
+	if (m_pNpcList[iNpcH]->m_sType == 99)
+	{
 		m_pNpcList[iNpcH]->m_iMana = 100;
-		m_pNpcList[iNpcH]->m_iMagicHitRatio = 100;
-		NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, 30);
-	}
-	else if (m_pNpcList[iNpcH]->m_cSpecialAbility == 8 || m_pNpcList[iNpcH]->m_sType == 99) {
-		m_pNpcList[iNpcH]->m_iMana = 100;
-		m_pNpcList[iNpcH]->m_iMagicHitRatio = 100;
+		m_pNpcList[iNpcH]->m_iMagicHitRatio = 1000;
 		NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, 61);
+		for (i = 1; i <= 5; i++) 
+		{
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX - i, m_pNpcList[iNpcH]->m_sY, 61); // 1
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX - i, m_pNpcList[iNpcH]->m_sY - i, 61); // 2
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY - i, 61); // 3
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX + i, m_pNpcList[iNpcH]->m_sY - i, 61); // 4
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX + i, m_pNpcList[iNpcH]->m_sY, 61); // 5
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX + i, m_pNpcList[iNpcH]->m_sY + i, 61); // 6
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY + i, 61); // 7
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX - i, m_pNpcList[iNpcH]->m_sY + i, 61); // 8
+		}
+	}
+	else {
+		if (m_pNpcList[iNpcH]->m_cSpecialAbility == 7) {
+			m_pNpcList[iNpcH]->m_iMana = 100;
+			m_pNpcList[iNpcH]->m_iMagicHitRatio = 100;
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, 30);
+		}
+		else if (m_pNpcList[iNpcH]->m_cSpecialAbility == 8) {
+			m_pNpcList[iNpcH]->m_iMana = 100;
+			m_pNpcList[iNpcH]->m_iMagicHitRatio = 100;
+			NpcMagicHandler(iNpcH, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, 61);
+		}
 	}
 	// new spawns boss when no monsters exist and apocalypse zone == 2
 	if ((m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_iTotalAliveObject == 0) &&

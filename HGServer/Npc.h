@@ -37,6 +37,8 @@ public:
 	CNpc(char * pName5);
 	virtual ~CNpc();
 
+	int m_iSummonSlave;
+
 	int m_iPoisonLevel;
 	int m_cPoisonResistance;
 
