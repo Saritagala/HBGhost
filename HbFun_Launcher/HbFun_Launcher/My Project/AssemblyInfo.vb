@@ -12,8 +12,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Helbreath Ghost Launcher")>
 <Assembly: AssemblyCompany("Helbreath Ghost")>
 <Assembly: AssemblyProduct("Helbreath Ghost Launcher")>
-<Assembly: AssemblyCopyright("Copyright © 2020")>
-<Assembly: AssemblyTrademark("Juan Cruz Centurion")>
+<Assembly: AssemblyCopyright("Copyright © 2021")>
+<Assembly: AssemblyTrademark("Helbreath Ghost")>
 
 <Assembly: ComVisible(False)>
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' utilizando el carácter "*", como se muestra a continuación:
 ' <Assembly: AssemblyVersion("1.0.*")>
 
-<Assembly: AssemblyVersion("1.6.0.0")>
-<Assembly: AssemblyFileVersion("1.6.0.0")>
+<Assembly: AssemblyVersion("1.7.0.0")>
+<Assembly: AssemblyFileVersion("1.7.0.0")>

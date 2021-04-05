@@ -10205,14 +10205,14 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 	}	}
 	if (_tmp_sOwnerType == 99)
 	{
-		int randFrame = _tmp_iEffectFrame % 12;
+		/*int randFrame = _tmp_iEffectFrame % 12;
 		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
 		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
 		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
 		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		/*switch (_tmp_cDir) {
+		switch (_tmp_cDir) {
 		case 1:
 			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 108, _tmp_iEffectFrame % 28, dwTime);
 			m_pEffectSpr[164]->PutTransSprite70(sX - 50, sY + 10, _tmp_iEffectFrame % 15, dwTime);
@@ -12102,14 +12102,14 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 	}	}
 	if (_tmp_sOwnerType == 99)
 	{
-		int randFrame = _tmp_iEffectFrame % 12;
+		/*int randFrame = _tmp_iEffectFrame % 12;
 		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
 		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
 		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
 		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		/*switch (_tmp_cDir) {
+		switch (_tmp_cDir) {
 		case 1:
 			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 108, _tmp_iEffectFrame % 28, dwTime);
 			m_pEffectSpr[164]->PutTransSprite70(sX - 50, sY + 10, _tmp_iEffectFrame % 15, dwTime);
@@ -13530,14 +13530,14 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 	if (_tmp_sOwnerType == 99)
 	{
-		int randFrame = _tmp_iEffectFrame % 12;
+		/*int randFrame = _tmp_iEffectFrame % 12;
 		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
 		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
 		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
 		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		/*switch (_tmp_cDir) {
+		switch (_tmp_cDir) {
 		case 1:
 			m_pEffectSpr[153]->PutTransSprite70(sX + dx, sY + dy + 108, _tmp_iEffectFrame % 28, dwTime);
 			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 50, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
@@ -15008,14 +15008,14 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 	if (_tmp_sOwnerType == 99)
 	{
-		int randFrame = _tmp_iEffectFrame % 12;
+		/*int randFrame = _tmp_iEffectFrame % 12;
 		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
 		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
 		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
 		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
 		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		/*switch (_tmp_cDir) {
+		switch (_tmp_cDir) {
 		case 1:
 			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 108, _tmp_iEffectFrame % 28, dwTime);
 			m_pEffectSpr[164]->PutTransSprite70(sX - 50, sY + 10, _tmp_iEffectFrame % 15, dwTime);

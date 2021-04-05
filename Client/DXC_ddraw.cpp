@@ -231,8 +231,8 @@ HRESULT DXC_ddraw::iFlip()
 
 		ddVal = m_lpBackB4flip->BltFast( 0, 0, m_lpBackB4, &m_rcFlipping, DDBLTFAST_NOCOLORKEY); 
 		
-		//ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_NOVSYNC); // fps fix - farjat
-		ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_WAIT);
+		ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_NOVSYNC); // fps fix - farjat
+		//ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_WAIT);
 	}
 	else
 	{
