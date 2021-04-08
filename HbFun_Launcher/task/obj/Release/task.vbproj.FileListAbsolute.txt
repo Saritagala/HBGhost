@@ -20,3 +20,5 @@ C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CoreC
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.exe
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.xml
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.pdb
+C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\SharpCompress.dll
+C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CopyComplete

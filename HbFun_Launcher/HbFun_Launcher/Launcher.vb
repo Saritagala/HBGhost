@@ -7,7 +7,6 @@ Public Class Launcher
     Dim WC1 As WebClient
     Dim WC3 As WebClient
     Dim WC4 As WebClient
-    Dim ip = "151.106.108.2"
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         WC1 = New WebClient
         WC3 = New WebClient
@@ -19,6 +18,26 @@ Public Class Launcher
             File.Delete("Launcher.zip")
         End If
         Try
+            '
+            Dim requestStatus As HttpWebRequest = HttpWebRequest.Create("http://162.248.93.248/ServerStatus.php")
+            Dim responseStatus As HttpWebResponse = requestStatus.GetResponse()
+            Dim srStatus As New StreamReader(responseStatus.GetResponseStream())
+            Dim Status As String = srStatus.ReadToEnd()
+            If Status.Contains("Online") Then
+                Label4.ForeColor = Color.Lime
+                Label4.Text = "ONLINE"
+            Else
+                Label4.ForeColor = Color.Red
+                Label4.Text = "OFFLINE"
+            End If
+            '
+            '
+            'Dim requestPlayers As HttpWebRequest = HttpWebRequest.Create("http://162.248.93.248/UsersOnline.php")
+            'Dim responsePlayers As HttpWebResponse = requestPlayers.GetResponse()
+            'Dim srPlayers As New StreamReader(responsePlayers.GetResponseStream())
+            'Dim Players As String = srPlayers.ReadToEnd()
+            'Label6.Text = Players
+            '
             Dim currentversion As String = Assembly.GetExecutingAssembly.GetName.Version.Major & "." & Assembly.GetExecutingAssembly.GetName.Version.Minor
             Dim request As HttpWebRequest = HttpWebRequest.Create("http://" & ip & "/Launcher.txt")
             Dim response As HttpWebResponse = request.GetResponse()
@@ -49,24 +68,13 @@ Public Class Launcher
     End Sub
     Private Sub DownComplete4()
         WC4.Dispose()
-        Try
-            Dim appPath As String = AppDomain.CurrentDomain.BaseDirectory()
-            Dim archive As IArchive = ArchiveFactory.Open("Launcher.zip")
-            For Each entry In archive.Entries
-                If Not entry.IsDirectory Then
-                    entry.WriteToDirectory(appPath & "Launcher", ExtractOptions.ExtractFullPath Or ExtractOptions.Overwrite)
-                End If
-            Next
-        Catch ex As Exception
-        End Try
         Label1.Text = ""
         If MsgBox("Launcher need to be restarted to proceed with the update. Restart?", vbYesNo + vbExclamation, "Launcher Update") = vbYes Then
             Me.Hide()
             Process.Start("Updater.exe")
-            Me.Dispose()
+            Application.Exit()
         Else
             Button1.Enabled = True
-            Button1.Text = "Restart"
         End If
     End Sub
     Private Sub CheckVersion()
@@ -138,23 +146,13 @@ Public Class Launcher
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Me.Hide()
         RegistryKeyFix()
-        If Button1.Text = "Play" Then
-            Process.Start("Game.exe")
-        Else
-            Process.Start("Updater.exe")
-        End If
-        Me.Dispose()
+        Process.Start("Game.exe")
+        Application.Exit()
     End Sub
     Private Sub Launcher_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        Me.Dispose()
+        LiberarMemoria()
     End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Settings.ShowDialog()
-    End Sub
-    Private Sub RegistryKeyFix()
-        Dim osversion As Version = Environment.OSVersion.Version
-        If (osversion.Major = 6 And osversion.Minor > 1) Or (osversion.Major = 10 And osversion.Minor = 0) Then
-            My.Computer.Registry.SetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Layers", Application.StartupPath & "\Game.exe", "Layer_ForceDirectDrawEmulation DWM8And16BitMitigation 8And16BitAggregateBlts")
-        End If
     End Sub
 End Class

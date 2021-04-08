@@ -229,7 +229,8 @@ void Mp3Cleanup(void)
 //////////////////////////////////////////////////////////////////////////
 /// Loop the music
 void Mp3Event(void)
-{long EventCode, Param1, Param2;
+{LONG_PTR Param1, Param2;
+long EventCode;
 
 	while (g_pMediaEvent->GetEvent(&EventCode, &Param1, &Param2, 0) != E_ABORT)
 	{	switch (EventCode) {		

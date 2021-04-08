@@ -246,7 +246,7 @@ CGame::~CGame()
 **********************************************************************************************************************/
 BOOL CGame::bAccept(class XSocket * pXSock)
 {
-	int i, x, iTotalip = 0;
+	int i, iTotalip = 0, a;
 	class XSocket * pTmpSock;
 	char cIPtoBan[21];
 	FILE* pFile;
@@ -270,27 +270,22 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 			ZeroMemory(m_pClientList[i]->m_cIPaddress, sizeof(m_pClientList[i]->m_cIPaddress));
 			m_pClientList[i]->m_pXSock->iGetPeerAddress(m_pClientList[i]->m_cIPaddress);
 #ifdef ANTI_HAX
+			a = i;
 			if (strcmp("162.248.93.248", m_pClientList[i]->m_cIPaddress) == 0)
 			{
-				delete m_pClientList[i];
-				m_pClientList[i] = NULL;
-				RemoveClientShortCut(i);
-				return FALSE;
+				goto CLOSE_CONN;
 			}
 			for (int v = 0; v < DEF_MAXBANNED; v++)
 			{
 				if (strcmp(m_stBannedList[v].m_cBannedIPaddress, m_pClientList[i]->m_cIPaddress) == 0)
 				{
-					delete m_pClientList[i];
-					m_pClientList[i] = NULL;
-					RemoveClientShortCut(i);
-					return FALSE;
+					goto CLOSE_CONN;
 				}
 			}
 			//centu: Anti-Downer
-			for (x = 1; x < DEF_MAXCLIENTS; x++) {
-				if (m_pClientList[x] != NULL) {
-					if (strcmp(m_pClientList[x]->m_cIPaddress, m_pClientList[i]->m_cIPaddress) == 0) iTotalip++;
+			for (int j = 1; j < DEF_MAXCLIENTS; j++) {
+				if (m_pClientList[j] != NULL) {
+					if (strcmp(m_pClientList[j]->m_cIPaddress, m_pClientList[i]->m_cIPaddress) == 0) iTotalip++;
 				}
 			}
 			if (iTotalip > 9) {
@@ -308,20 +303,13 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 				
 				//updates BannedList.cfg on the server
 				//LocalUpdateConfigs(3);
-				for (auto x = 0; x < DEF_MAXBANNED; x++)
+				for (int x = 0; x < DEF_MAXBANNED; x++)
 					if (strlen(m_stBannedList[x].m_cBannedIPaddress) == 0)
 						strcpy(m_stBannedList[x].m_cBannedIPaddress, cIPtoBan);
 
-				delete m_pClientList[i];
-				m_pClientList[i] = NULL;
-				RemoveClientShortCut(i);
-				return FALSE;
+				goto CLOSE_CONN;
 			}
-			/*if(strlen(m_pClientList[i]->m_cIPaddress) < 10) {
-				delete m_pClientList[i];
-				m_pClientList[i] = NULL;
-				return FALSE;
-			}*/
+			
 #endif
 			wsprintf(G_cTxt, "<%d> Client connected: (%s)", i, m_pClientList[i]->m_cIPaddress);
 			PutLogList(G_cTxt);
@@ -340,6 +328,11 @@ CLOSE_ANYWAY:;
 	pTmpSock = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 	pXSock->bAccept(pTmpSock, NULL); 
 	delete pTmpSock;
+	return FALSE;
+CLOSE_CONN:;
+	delete m_pClientList[a];
+	m_pClientList[a] = NULL;
+	RemoveClientShortCut(a);
 	return FALSE;
 }
 
@@ -20898,13 +20891,15 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	}
 
 	// Centuu : Ranged Hit Fix - HB2
-	/*BOOL bRangedWeapon = FALSE;
+	BOOL bRangedWeapon = FALSE;
 	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
 		if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)
 			 sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 		else sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 		if (sWeaponIndex != -1)	{
-			if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sRelatedSkill == 6) {
+			if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sRelatedSkill == 6 ||
+				m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sIDnum == 845 ||
+				m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sIDnum == 1037) {
 				bRangedWeapon = TRUE;
 			}
 		}
@@ -20954,7 +20949,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 			}
 			break;
 		}
-	}*/
+	}
 
 	iResult = iDice(1, 100);
 
@@ -25713,11 +25708,14 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 						iNamingValue = m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->iGetEmptyNamingValue();
 						if (iNamingValue != -1) {
 							ZeroMemory(cNpcName, sizeof(cNpcName));
-							switch (iDice(1, 4)) {
+							switch (iDice(1, 7)) {
 							case 1: strcpy(cNpcName, "Demon"); break;
 							case 2: strcpy(cNpcName, "Gagoyle"); break;
-							case 3: strcpy(cNpcName, "Hellclaw"); break;
-							case 4: strcpy(cNpcName, "Tigerworm"); break;
+							case 3: strcpy(cNpcName, "Beholder"); break;
+							case 4: strcpy(cNpcName, "Giant-Lizard"); break;
+							case 5: strcpy(cNpcName, "MasterMage-Orc"); break;
+							case 6: strcpy(cNpcName, "Nizie"); break;
+							case 7: strcpy(cNpcName, "Barlog"); break;
 							}
 							ZeroMemory(cName, sizeof(cName));
 							wsprintf(cName, "XX%d", iNamingValue);

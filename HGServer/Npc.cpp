@@ -967,9 +967,9 @@ void CGame::CalcNextWayPointDestination(int iNpcH)
 
 void CGame::DeleteNpc(int iNpcH)
 {
-	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP], iSlateID;
+	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP];
 	char cTmp[21], cItemName[21];
-	class CItem* pItem, * pItem2;
+	class CItem* pItem;
 	DWORD dwCount, dwTime;
 	POINT ItemPositions[MAX_NPCITEMDROP];
 	char cTemp[256];
@@ -3126,7 +3126,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		switch (m_pNpcConfigList[iNpcIndex]->m_iNpcItemType) {
 		case 1:
 			// ¼³Á¤ ÆÄÀÏÀÇ ¿©·¯ °³ÀÇ ¾ÆÀÌÅÛ Áß ÇÏ³ª¸¦ °í¸¥´Ù.
-			iResult = iDice(1, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size()) - 1;
+			iResult = iDice(1, (int)m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size()) - 1;
 
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
@@ -3157,7 +3157,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 
 	}
 	else {
-		int iResult;
+		
 		// NPCë¥¼ ì‚­ì œí• ë•Œ íŠ¹ìˆ˜ ì•„ì´í…œì„ ë°œìƒì‹œí‚¬ ê²ƒì¸ì§€ì˜ ì—¬ë¶€ë¥¼ ê³„ì‚°í•œë‹¤. 
 
 		switch (sNpcType) {

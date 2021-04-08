@@ -31057,11 +31057,11 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_GETNPCHP, NULL, _tmp_wObjectID, NULL, NULL, NULL);
 		if (iNpcHP > 0)
 		{
-			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 15, 18, 75, m_dwCurTime, false);
+			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 16, 18, 75, m_dwCurTime, false);
 			int iBarWidth2 = (iNpcHP * 75) / iNpcMaxHP;
 			if (iBarWidth2 < 0) iBarWidth2 = 0;
 			if (iBarWidth2 > 75) iBarWidth2 = 75;
-			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 15, 19, iBarWidth2, m_dwCurTime, false); // 16
+			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 16, 19, iBarWidth2, m_dwCurTime, false); // 16
 		}
 		break;
 	}
