@@ -25,9 +25,9 @@ public:
 	int		m_iMinLvl;
 	int		m_iMaxLvl;
 	int		m_iSide;
-	BOOL	m_bHunter;
-	BOOL	m_bNetural;
-	BOOL	m_bCriminal;
+	bool	m_bHunter;
+	bool	m_bNetural;
+	bool	m_bCriminal;
 };
 
 #endif // AFX_TELEPORT_H__A9554BE2_A96B_11D2_B143_00001C7030A6__INCLUDED_

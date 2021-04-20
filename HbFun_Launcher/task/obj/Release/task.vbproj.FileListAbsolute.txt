@@ -13,12 +13,12 @@ C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.exe.confi
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.exe
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.pdb
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.xml
+C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\SharpCompress.dll
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbprojAssemblyReference.cache
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.Resources.resources
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.GenerateResource.cache
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CoreCompileInputs.cache
+C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CopyComplete
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.exe
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.xml
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.pdb
-C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\SharpCompress.dll
-C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CopyComplete

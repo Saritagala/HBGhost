@@ -489,11 +489,11 @@ void CGame::DoAbaddonThunderDamageHandler(char cMapIndex)
 	}
 }
 
-BOOL CGame::MobBossGenerator(int iMapIndex)
+bool CGame::MobBossGenerator(int iMapIndex)
 {
 	char cNpcName[21], cName[11], cSA, cNpcWaypointIndex[11];
 	int iProbSA, iKindSA, dX, dY, iNamingValue;
-	BOOL bFirmBerserk, bRet;
+	bool bFirmBerserk, bRet;
 
 	if (m_pMapList[iMapIndex]->m_bIsBossInMap == TRUE) return FALSE;
 	iNamingValue = m_pMapList[iMapIndex]->iGetEmptyNamingValue();
@@ -599,7 +599,7 @@ BOOL CGame::MobBossGenerator(int iMapIndex)
 void CGame::OpenCloseApocalypseGate()
 {
 	DWORD  dwTime = timeGetTime();
-	BOOL bIsOpen = m_bIsApocalypseGateOpen;
+	bool bIsOpen = m_bIsApocalypseGateOpen;
 	if ((dwTime >= m_dwApocalypseGateOpenTime)
 		&& (dwTime < m_dwApocalypseGateCloseTime))
 	{

@@ -27,7 +27,7 @@ char * CStrTok::pGet()
 {
  int i = 0;
  char cNextData;
- BOOL bFlag;
+ bool bFlag;
 
 	ZeroMemory(m_cToken, sizeof(m_cToken));
 
@@ -66,7 +66,7 @@ char * CStrTok::pGet()
 	return NULL;
 }
 
-BOOL CStrTok::_bIsSeperator(char cData, char cNextData)
+bool CStrTok::_bIsSeperator(char cData, char cNextData)
 {
  int i = 0;
 	

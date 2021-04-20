@@ -89,7 +89,7 @@ CItem::~CItem()
 
 }
 
-void CGame::ItemDepleteHandler(int iClientH, short sItemIndex, BOOL bIsUseItemResult, BOOL bIsItemUsed)
+void CGame::ItemDepleteHandler(int iClientH, short sItemIndex, bool bIsUseItemResult, bool bIsItemUsed)
 {
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -122,7 +122,7 @@ void CGame::ItemDepleteHandler(int iClientH, short sItemIndex, BOOL bIsUseItemRe
 	iCalcTotalWeight(iClientH);
 }
 
-void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
+void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 {
 	short sItemIndex;
 	int  i, iPrevSAType, iTemp;
@@ -1090,9 +1090,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, BOOL bNotify)
 	//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ARMOURVALUES, NULL, NULL, NULL, NULL);
 }
 
-BOOL CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short sItemIndex, short sDestItemID)
+bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short sItemIndex, short sDestItemID)
 {
-	BOOL bRet;
+	bool bRet;
 
 	// À§Ä¡¸¦ ÁöÁ¤ÇÏ°í »ç¿ë ÈÄ »ç¶óÁö´Â ¾ÆÀÌÅÛ È¿°ú Ã³¸® ºÎºÐ 
 	if (m_pClientList[iClientH] == NULL) return FALSE;
@@ -1701,7 +1701,7 @@ void CGame::CheckUniqueItemEquipment(int iClientH)
 }
 
 /*********************************************************************************************************************
-** BOOL CGame::GetAngelHandler(int iClientH, char * pData, DWORD dwMsgSize)											**
+** bool CGame::GetAngelHandler(int iClientH, char * pData, DWORD dwMsgSize)											**
 ** description   :: Reversed and coded by Snoopy																	**
 *********************************************************************************************************************/
 void CGame::GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize)
@@ -4352,7 +4352,7 @@ int CGame::HeroItemChecker(int iItemID, short sEnemyKill, char cContribution, ch
 
 }
 
-BOOL CGame::iUpgradeHeroCapeRequirements(int iClientH, int iItemIndex)
+bool CGame::iUpgradeHeroCapeRequirements(int iClientH, int iItemIndex)
 {
 	int iAfterItemID, iRequiredEnemyKills, iRequiredContribution, iStoneNumber, i;
 	int iBeforeItemID;
@@ -4406,7 +4406,7 @@ BOOL CGame::iUpgradeHeroCapeRequirements(int iClientH, int iItemIndex)
 	return FALSE;
 }
 
-BOOL CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
+bool CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
 {
 	int iRequiredEnemyKills, iStoneNumber, i;
 	int iBeforeItemID, iAfterItemID;
@@ -4676,7 +4676,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 	WORD* wp;
 	int   i, iRet, iEraseReq, iCost = 0;
 
-	BOOL bIsCoin = FALSE, bIsPotion = FALSE;
+	bool bIsCoin = FALSE, bIsPotion = FALSE;
 
 	DWORD dwType1, dwType2, dwValue;
 
@@ -5013,7 +5013,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 	DWORD dwTime, dwGUID;
 	short sTemp, sTmpType, sTmpAppr1;
 	char cSlateType[20];
-	BOOL bDepleteNow = TRUE;
+	bool bDepleteNow = TRUE;
 
 	dwTime = timeGetTime();
 	ZeroMemory(cSlateType, sizeof(cSlateType));
@@ -5543,7 +5543,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 	}
 }
 
-BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
+bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 {
 	int i, iRet, *ip;
 	DWORD* dwp;
@@ -5711,7 +5711,7 @@ BOOL CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 		}
 	return FALSE;
 }
-BOOL CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
+bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 {
 	int i, iRet, *ip;
 	DWORD* dwp;
@@ -5881,7 +5881,7 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 	short sRemainLife;
 	int   iPrice;
 	double d1, d2, d3;
-	BOOL   bNeutral;
+	bool   bNeutral;
 	DWORD  dwSWEType, dwSWEValue, dwAddPrice1, dwAddPrice2, dwMul1, dwMul2;
 	CItem* m_pGold;
 
@@ -6071,7 +6071,7 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 	WORD* wp;
 	int    iEraseReq, iRet;
 	
-	BOOL   bNeutral;
+	bool   bNeutral;
 
 
 	// ¾ÆÀÌÅÛÀ» ÆÈ°Ú´Ù´Â °ÍÀÌ °áÁ¤µÇ¾ú´Ù.
@@ -7144,8 +7144,8 @@ int CGame::SetItemCount(int iClientH, char* pItemName, DWORD dwCount)
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, pItemName);
 
-	m_pClientList[iClientH]->m_dwGold = dwCount;
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GOLD, m_pClientList[iClientH]->m_dwGold, NULL, NULL, NULL);
+	//m_pClientList[iClientH]->m_dwGold = dwCount;
+	//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GOLD, m_pClientList[iClientH]->m_dwGold, NULL, NULL, NULL);
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 		if ((m_pClientList[iClientH]->m_pItemList[i] != NULL) && (memcmp(m_pClientList[iClientH]->m_pItemList[i]->m_cName, cTmpName, 20) == 0)) {
@@ -7197,7 +7197,7 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 	int i, iRet;
 	char cItemID[4], ctr[4];
 	char* cp, cSlateColour, cData[120];
-	BOOL bIsSlatePresent = FALSE;
+	bool bIsSlatePresent = FALSE;
 	CItem* pItem;
 	int iSlateType, iEraseReq;
 	DWORD* dwp;
@@ -7393,7 +7393,7 @@ void CGame::SetSlateFlag(int iClientH, short sType, bool bFlag)
 }
 
 // v2.16 2002-5-21 °í±¤Çö Ãß°¡
-BOOL CGame::bCheckIsItemUpgradeSuccess(int iClientH, int iItemIndex, int iSomH, BOOL bBonus)
+bool CGame::bCheckIsItemUpgradeSuccess(int iClientH, int iItemIndex, int iSomH, bool bBonus)
 {
 	int iValue, iProb;
 
@@ -7438,14 +7438,14 @@ BOOL CGame::bCheckIsItemUpgradeSuccess(int iClientH, int iItemIndex, int iSomH, 
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::_bDecodeItemConfigFileContents(char * pData, DWORD dwMsgSize)										**
+**  bool CGame::_bDecodeItemConfigFileContents(char * pData, DWORD dwMsgSize)										**
 **  DESCRIPTION			:: decodes Item.cfg file																	**
 **  LAST_UPDATED		:: March 17, 2005; 2:09 PM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	n/a																						**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
-BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -7933,14 +7933,14 @@ BOOL CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::_bInitItemAttr(class CItem * pItem, char * pItemName)												**
+**  bool CGame::_bInitItemAttr(class CItem * pItem, char * pItemName)												**
 **  DESCRIPTION			:: initializes item variables - by ItemName													**
 **  LAST_UPDATED		:: March 17, 2005; 2:10 PM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	- overloaded function - see other _bInitItemAttr										**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
-BOOL CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
+bool CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
 {
 	int i;
 	char cTmpName[22];
@@ -8003,14 +8003,14 @@ BOOL CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::_bInitItemAttr(class CItem * pItem, char * pItemName)												**
+**  bool CGame::_bInitItemAttr(class CItem * pItem, char * pItemName)												**
 **  DESCRIPTION			:: initializes item variables - by ItemID													**
 **  LAST_UPDATED		:: March 17, 2005; 2:10 PM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	- overloaded function - see other _bInitItemAttr										**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
-BOOL CGame::_bInitItemAttr(class CItem* pItem, int iItemID)
+bool CGame::_bInitItemAttr(class CItem* pItem, int iItemID)
 {
 	int i;
 
@@ -8080,7 +8080,7 @@ int CGame::_iGetItemSpaceLeft(int iClientH)
 	return (DEF_MAXITEMS - iTotalItem);
 }
 
-BOOL CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
+bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 {
 	char* cp, cData[256];
 	DWORD* dwp;
@@ -8506,7 +8506,7 @@ void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1
 	}
 }
 
-BOOL CGame::_bCheckItemReceiveCondition(int iClientH, CItem* pItem)
+bool CGame::_bCheckItemReceiveCondition(int iClientH, CItem* pItem)
 {
 	int i;
 
@@ -8523,7 +8523,7 @@ BOOL CGame::_bCheckItemReceiveCondition(int iClientH, CItem* pItem)
 }
 
 // New 07/05/2004
-void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* pItemName, BOOL bByPlayer)
+void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* pItemName, bool bByPlayer)
 {
 	class CItem* pItem;
 
@@ -8760,7 +8760,7 @@ int CGame::iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char 
 	return 1;
 }
 
-BOOL CGame::_bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq)
+bool CGame::_bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq)
 {
 	int i;
 
@@ -8820,7 +8820,7 @@ BOOL CGame::_bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq)
 	return FALSE;
 }
 
-BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
+bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 {
 	char  cEquipPos;
 	short   sSpeed;
@@ -9292,7 +9292,7 @@ BOOL CGame::bEquipItemHandler(int iClientH, short sItemIndex, BOOL bNotify)
 
 }
 
-void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, BOOL bNotice)
+void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, bool bNotice)
 {
 	char cEquipPos;
 	short  sTemp;
@@ -9460,7 +9460,7 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, BOOL bNotice)
 	CalcTotalItemEffect(iClientH, sItemIndex, TRUE);
 }
 
-BOOL CGame::bPlayerItemToBank(int iClientH, short sItemIndex)
+bool CGame::bPlayerItemToBank(int iClientH, short sItemIndex)
 {
 	int i, iIndex;
 
@@ -9492,7 +9492,7 @@ NEXT_STEP_PLTB:;
 	return TRUE;
 }
 
-BOOL CGame::bBankItemToPlayer(int iClientH, short sItemIndex)
+bool CGame::bBankItemToPlayer(int iClientH, short sItemIndex)
 {
 	int i, iIndex;
 
@@ -9685,7 +9685,7 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 }
 
 // 05/29/2004 - Hypnotoad - Limits some items from not dropping
-void CGame::_PenaltyItemDrop(int iClientH, int iTotal, BOOL bIsSAattacked)
+void CGame::_PenaltyItemDrop(int iClientH, int iTotal, bool bIsSAattacked)
 {
 	int i, j, iRemainItem;
 	char cItemIndexList[DEF_MAXITEMS], cItemIndex;
@@ -9826,7 +9826,7 @@ int CGame::_iCalcMaxLoad(int iClientH)
 	return (((m_pClientList[iClientH]->m_iStr) * 500) + ((m_pClientList[iClientH]->m_iLevel) * 500));
 }
 
-BOOL CGame::bCheckAndConvertPlusWeaponItem(int iClientH, int iItemIndex)
+bool CGame::bCheckAndConvertPlusWeaponItem(int iClientH, int iItemIndex)
 {
 	if (m_pClientList[iClientH] == NULL) return FALSE;
 	if (m_pClientList[iClientH]->m_pItemList[iItemIndex] == NULL) return FALSE;
@@ -10452,7 +10452,7 @@ void CGame::_bDecodeDupItemIDFileContents(char* pData, DWORD dwMsgSize)
 	PutLogList(cTxt);
 }
 
-BOOL CGame::_bCheckDupItemID(CItem* pItem)
+bool CGame::_bCheckDupItemID(CItem* pItem)
 {
 	int i;
 
@@ -10511,7 +10511,7 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 }
 
 // Item Logging
-BOOL CGame::_bItemLog(int iAction, int iGiveH, int iRecvH, class CItem* pItem, BOOL bForceItemLog)
+bool CGame::_bItemLog(int iAction, int iGiveH, int iRecvH, class CItem* pItem, bool bForceItemLog)
 {
 	char  cTxt[1024], cTemp1[120], cTemp2[120];
 	int iItemCount;
@@ -10618,7 +10618,7 @@ BOOL CGame::_bItemLog(int iAction, int iGiveH, int iRecvH, class CItem* pItem, B
 	return TRUE;
 }
 
-BOOL CGame::_bItemLog(int iAction, int iClientH, char* cName, class CItem* pItem)
+bool CGame::_bItemLog(int iAction, int iClientH, char* cName, class CItem* pItem)
 {
 	if (pItem == NULL) return FALSE;
 	if (_bCheckGoodItem(pItem) == FALSE) return FALSE;
@@ -10672,7 +10672,7 @@ BOOL CGame::_bItemLog(int iAction, int iClientH, char* cName, class CItem* pItem
 	return TRUE;
 }
 
-BOOL CGame::_bCheckGoodItem(class CItem* pItem)
+bool CGame::_bCheckGoodItem(class CItem* pItem)
 {
 	if (pItem == NULL) return FALSE;
 
@@ -10847,7 +10847,7 @@ int CGame::iGetItemWeight(CItem* pItem, int iCount)
 	return iWeight;
 }
 
-BOOL CGame::bCopyItemContents(CItem* pCopy, CItem* pOriginal)
+bool CGame::bCopyItemContents(CItem* pCopy, CItem* pOriginal)
 {
 	if (pOriginal == NULL) return FALSE;
 	if (pCopy == NULL) return FALSE;

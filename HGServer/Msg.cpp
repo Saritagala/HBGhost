@@ -19,7 +19,7 @@ CMsg::~CMsg()
 	if (m_pData != NULL) delete m_pData;
 }
 
-BOOL CMsg::bPut(char cFrom, char * pData, DWORD dwSize, int iIndex, char cKey)
+bool CMsg::bPut(char cFrom, char * pData, DWORD dwSize, int iIndex, char cKey)
 {
 	m_pData = new char [dwSize + 1];
 	if (m_pData == NULL) return FALSE;

@@ -14,7 +14,7 @@ extern HWND	G_hWnd;
 
 #pragma warning (disable : 4996)
 
-BOOL CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -606,7 +606,7 @@ void CGame::_CheckQuestEnvironment(int iClientH)
 	}
 }
 
-BOOL CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
+bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 {
 	int iQuestIndex;
 	char cTargetName[21];

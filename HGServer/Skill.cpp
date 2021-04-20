@@ -97,7 +97,7 @@ void CGame::PoisonEffect(int iClientH, int iV1)
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_POISON, NULL, NULL, NULL);
 	}
 }
-BOOL CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
+bool CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 {
 	int iResist, iResult;
 
@@ -125,7 +125,7 @@ BOOL CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 	return TRUE;
 }
 
-BOOL CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -290,7 +290,7 @@ BOOL CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 	return TRUE;
 }
 
-void CGame::TrainSkillResponse(BOOL bSuccess, int iClientH, int iSkillNum, int iSkillLevel)
+void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int iSkillLevel)
 {
 	char* cp, cData[100];
 	DWORD* dwp;
@@ -1120,12 +1120,12 @@ void CGame::GetMagicAbilityHandler(int iClientH)
 	bCheckTotalSkillMasteryPoints(iClientH, 4);
 }
 
-BOOL CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, int iItemEffectValue2, int iClientH)
+bool CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, int iItemEffectValue2, int iClientH)
 {
 	int iNamingValue, tX, tY;
 	short sOwnerH;
 	char cOwnerType, cNpcName[21], cName[21], cNpcWaypointIndex[11];
-	BOOL bRet;
+	bool bRet;
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_iTotalAgriculture >= 200) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOMOREAGRICULTURE, NULL, NULL, NULL, NULL);
@@ -1198,7 +1198,7 @@ BOOL CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, 
 	return FALSE;
 }
 
-void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, BOOL bType)
+void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 {
 	char cCropType;
 	int iItemID;

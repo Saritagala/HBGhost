@@ -422,7 +422,7 @@ void CGame::NotifyMsg_MP(char * pData)
 
 void CGame::NotifyMsg_NewGuildsMan(char * pData)
 {
-	char * cp, cName[11], cTxt[120];
+	char * cp, cName[12], cTxt[120];
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
@@ -437,7 +437,7 @@ void CGame::NotifyMsg_PKcaptured(char *pData)
 	DWORD * dwp;
 	WORD  * wp;
 	int     iPKcount, iLevel, iRewardGold;
-	char cTxt[120], cName[11];
+	char cTxt[120], cName[12];
 	unsigned long iExp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	wp = (WORD *)cp;
@@ -508,7 +508,7 @@ void CGame::NotifyMsg_PKpenalty(char *pData)
 
 void CGame::NotifyMsg_PlayerShutUp(char * pData)
 {
-	char * cp, cName[11];
+	char * cp, cName[12];
 	WORD * wp, wTime;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	wp = (WORD *)cp;
@@ -526,7 +526,7 @@ void CGame::NotifyMsg_PlayerShutUp(char * pData)
 
 void CGame::NotifyMsg_PlayerStatus(BOOL bOnGame, char * pData)
 {
-	char cName[11], cMapName[11], *cp;
+	char cName[12], cMapName[12], *cp;
 	WORD * wp;
 	WORD  dx = 1, dy = 1;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -624,7 +624,7 @@ void CGame::NotifyMsg_QuestReward(char *pData)
 void CGame::NotifyMsg_RatingPlayer(char * pData)
 {
 	int * ip;
-	char * cp, cName[11];
+	char * cp, cName[12];
 	WORD  cValue;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	cValue = *cp;
@@ -896,7 +896,7 @@ void CGame::NotifyMsg_TotalUsers(char * pData)
 
 void CGame::NotifyMsg_WhisperMode(BOOL bActive, char * pData)
 {
-	char cName[11], *cp;
+	char cName[12], *cp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
@@ -1162,7 +1162,7 @@ void CGame::MotionEventHandler(char* pData)
 	WORD* wp, wEventType, wObjectID;
 	short* sp, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4, sV1, sV2, sV3, sPrevAppr2;
 	int iStatus, iStatus2;
-	char* cp, cDir, cName[11];
+	char* cp, cDir, cName[12];
 	int* ip, iApprColor, iLoc;
 	char    cTxt[120];
 	int i;
@@ -1367,9 +1367,9 @@ void CGame::MotionEventHandler(char* pData)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				wsprintf(cTxt, "-%dHp!", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 40))        iFontType = 21;
-				else if ((iDamage >= 40) && (iDamage < 80)) iFontType = 22;
-				else if (iDamage >= 80 || iDamage < 0)    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
+				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
+				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1400,9 +1400,9 @@ void CGame::MotionEventHandler(char* pData)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				wsprintf(cTxt, "-%dHp", iDamage);
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 40))        iFontType = 21;
-				else if ((iDamage >= 40) && (iDamage < 80)) iFontType = 22;
-				else if (iDamage >= 80 || iDamage < 0)    iFontType = 23;
+				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
+				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
+				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == FALSE)
@@ -1843,7 +1843,7 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 	DWORD dwTime = G_dwGlobalTime;
 	double dV1, dV2, dV3;
 	int tX, tY;
-	char cMapName[11];
+	char cMapName[12];
 	sX = m_stDialogBoxInfo[37].sX;
 	sY = m_stDialogBoxInfo[37].sY;
 	szX = m_stDialogBoxInfo[37].sSizeX;
@@ -5373,7 +5373,7 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59)) {
 			if (m_iAdminUserLevel > 3) {
-				//m_stDialogBoxInfo[56].cMode = 24; // Drops / Damage server manipulation
+				m_stDialogBoxInfo[56].cMode = 24; // Drops / Damage server manipulation
 				PlaySound('E', 14, 5);
 			}
 			else { AddEventList("Admin User Level is too low for this action.", 10); }
@@ -6585,17 +6585,6 @@ void CGame::DlgBoxClick_GMPanel(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 
-		iNextC += 1;
-		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45)) {
-			strcpy(cSummon, "/summon Ghost-Abaddon ");
-			PlaySound('E', 14, 5);
-		}
-		iNextC += 1;
-		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45)) {
-			strcpy(cSummon, "/summon Eternal-Dragon ");
-			PlaySound('E', 14, 5);
-		}
-
 		wsprintf(cMsg, "%s %d", cSummon, m_stDialogBoxInfo[56].sV3);
 		strcpy(cSummon, cMsg);
 
@@ -7542,7 +7531,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
 		
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "%d%%", iFirstDropProb);
+		wsprintf(cDrops, "%d%%", iFirstDropProb/100);
 		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
 
 		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
@@ -7559,7 +7548,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
 
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "%d%%", iSecDropPro);
+		wsprintf(cDrops, "%d%%", iSecDropPro/100);
 		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
 
 		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
@@ -7567,11 +7556,11 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 240, sY + iNext * 17 + 28, 20, dwTime); // -
 		iNext += 1;
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "Chance to drop Pots, Zems, Stones: %d%%", iSecDropPro);
+		wsprintf(cDrops, "Chance to drop Pots, Zems, Stones: %d%%", iSecDropPro / 100);
 		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, cDrops, 210, 255, 0);
 		iNext += 1;
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "Chance to Armors & Weapons: %d%%", 100 - (iSecDropPro));
+		wsprintf(cDrops, "Chance to Armors & Weapons: %d%%", 100 - (iSecDropPro / 100));
 		PutAlignedString2(sX + 10, sX + 250, sY + iNext * 17 + 20, cDrops, 210, 255, 0);
 
 		iNext += 1;
@@ -7581,7 +7570,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		else m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6]->PutSpriteFast(sX + 190, sY + iNext * 17 + 28, 19, dwTime); // +
 
 		ZeroMemory(cDrops, sizeof(cDrops));
-		wsprintf(cDrops, "%d%%", iStatedDropProb);
+		wsprintf(cDrops, "%d%%", 100 - (iStatedDropProb/100));
 		PutAlignedString2(sX + 200, sX + 230, sY + iNext * 17 + 20, cDrops, 255, 255, 255);
 
 		if ((msX >= sX + 230) && (msX <= sX + 245) && (msY >= sY + iNext * 17 + 20) && (msY <= sY + iNext * 17 + 34))
@@ -8009,16 +7998,6 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45))
 			PutString2(sX + 190, sY + iNextC * 15 + 30, NPC_NAME_ABADDON, 255, 255, 255);
 		else PutString2(sX + 190, sY + iNextC * 15 + 30, NPC_NAME_ABADDON, 255, 255, 100);
-
-		iNextC += 1;
-		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45))
-			PutString2(sX + 190, sY + iNextC * 15 + 30, "Ghost Abaddon", 255, 255, 255);
-		else PutString2(sX + 190, sY + iNextC * 15 + 30, "Ghost Abaddon", 255, 255, 100);
-
-		iNextC += 1;
-		if ((msX >= sX + 180) && (msX <= sX + 230) && (msY >= sY + iNextC * 15 + 30) && (msY <= sY + iNextC * 15 + 45))
-			PutString2(sX + 190, sY + iNextC * 15 + 30, "E. Dragon", 255, 255, 255);
-		else PutString2(sX + 190, sY + iNextC * 15 + 30, "E. Dragon", 255, 255, 100);
 
 /*	
 ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
@@ -9151,14 +9130,14 @@ void CGame::ResponseOnlines(char * pData)
 		m_pOnlineUsersList[j] = new OnlineUser;
 		memcpy(m_pOnlineUsersList[j]->m_cName, cp, 10);
 		cp += 10;
-		memcpy(m_pOnlineUsersList[j]->m_cGuildName, cp, 20);
-		cp += 20;
+		memcpy(m_pOnlineUsersList[j]->m_cGuildName, cp, 21);
+		cp += 21;
 	}
 }
 
 void CGame::NpcTalkHandler(char *pData)
 {
-	char  * cp, cRewardName[21], cTargetName[11], cTemp[11], cTxt[250], cStr1[255], cStr2[255], cStr3[255];
+	char  * cp, cRewardName[21], cTargetName[21], cTemp[21], cTxt[250], cStr1[255], cStr2[255], cStr3[255];
 	short * sp, sType, sResponse;
 	int     iAmount, iIndex, iContribution, iX, iY, iRange;
 	int     iTargetType, iTargetCount, iQuestionType;
@@ -9195,8 +9174,8 @@ void CGame::NpcTalkHandler(char *pData)
 	memcpy(cRewardName, cp, 20);
 	cp += 20;
 	ZeroMemory(cTargetName, sizeof(cTargetName));
-	memcpy(cTargetName, cp, 10);
-	cp += 10;
+	memcpy(cTargetName, cp, 20);
+	cp += 20;
 	EnableDialogBox(21, sResponse, sType, 0);
 
 	if ((sType >= 1) && (sType <= 100))
@@ -9574,8 +9553,8 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
 					default:
 						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
-					}*/
-					break;
+					}
+					break;*/
 
 				case 10: wsprintf(cTxt, GET_ITEM_NAME33, dwValue2 * 4);   if (dwValue2 > 11) m_bIsRare = TRUE; break;
 				case 11: wsprintf(cTxt, GET_ITEM_NAME34, dwValue2 * 10); break;
@@ -9878,8 +9857,8 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
 					default:
 						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = TRUE;  break;
-					}*/
-					break;
+					}
+					break;*/
 
 				case 10: wsprintf(cTxt, GET_ITEM_NAME33, dwValue2 * 4);   if (dwValue2 > 11) m_bIsRare = TRUE; break;
 				case 11: wsprintf(cTxt, GET_ITEM_NAME34, dwValue2 * 10); break;
@@ -11277,8 +11256,8 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		//	if (m_stQuest[i].sQuestType == NULL)
 		//	{
 				if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 145) && (msY < sY + 170))
-					PutAlignedString(sX, sX + szX, sY + 145, "Quest List.", 255, 255, 255);//"
-				else PutAlignedString(sX, sX + szX, sY + 145, "Quest List.", 4, 0, 50);//"
+					PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 255, 255, 255);//"
+				else PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 4, 0, 50);//"
 		//	}
 		//	else    PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 65, 65, 65);//"
 		//}
@@ -11309,10 +11288,10 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		if ((m_bIsCrusadeMode == FALSE) && m_bCitizen && (m_iPKCount == 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 195) && (msY < sY + 220))
-				PutAlignedString(sX, sX + szX, sY + 195, "Teleport List.", 255, 255, 255);//"Teleporting to dungeon level 2."
-			else PutAlignedString(sX, sX + szX, sY + 195, "Teleport List.", 4, 0, 50);
+				PutAlignedString(sX, sX + szX, sY + 195, "Teleport List", 255, 255, 255);//"Teleporting to dungeon level 2."
+			else PutAlignedString(sX, sX + szX, sY + 195, "Teleport List", 4, 0, 50);
 		}
-		else    PutAlignedString(sX, sX + szX, sY + 195, "Teleport List.", 65, 65, 65);
+		else    PutAlignedString(sX, sX + szX, sY + 195, "Teleport List", 65, 65, 65);
 
 		//Change crusade role
 		if (m_bIsCrusadeMode && m_bCitizen)
@@ -11325,8 +11304,8 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 
 		//MORLA 2.4 - Trade Items
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 240) && (msY < sY + 257))
-			PutAlignedString(sX, sX + szX, sY + 240, "Trade Market.", 255, 255, 255);//"Change the crusade assignment."
-		else PutAlignedString(sX, sX + szX, sY + 240, "Trade Market.", 4, 0, 50);//"
+			PutAlignedString(sX, sX + szX, sY + 240, "Trade Market", 255, 255, 255);//"Change the crusade assignment."
+		else PutAlignedString(sX, sX + szX, sY + 240, "Trade Market", 4, 0, 50);//"
 
 		//MORLA 2.4 - DK Set
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 260) && (msY < sY + 273))
@@ -11427,7 +11406,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU47, 65, 65, 65);// Disabled Mode
 		// Hero's Helm (EK 150 - Contrib 20)
-		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20) && (m_iClass == 1))
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 110) && (msY < sY + 125))
 				PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 255, 255, 255);// On mouse over Mode
@@ -11435,7 +11414,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 110, DRAW_DIALOGBOX_CITYHALL_MENU48, 65, 65, 65);// Disabled Mode
 		// Hero's Cap (EK 100 - Contrib 20)
-		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 20) && (m_iClass == 2))
+		if ((m_iEnemyKillCount >= 100) && (m_iContribution >= 20))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 125) && (msY < sY + 140))
 				PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 255, 255, 255);// On mouse over Mode
@@ -11443,7 +11422,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 125, DRAW_DIALOGBOX_CITYHALL_MENU49, 65, 65, 65);// Disabled Mode
 		// Hero's Armor (EK 300 - Contrib 30)
-		if ((m_iEnemyKillCount >= 300) && (m_iContribution >= 30) && (m_iClass != 2))
+		if ((m_iEnemyKillCount >= 300) && (m_iContribution >= 30))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 140) && (msY < sY + 155))
 				PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 255, 255, 255);// On mouse over Mode
@@ -11451,7 +11430,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 140, DRAW_DIALOGBOX_CITYHALL_MENU50, 65, 65, 65);// Disabled Mode
 		// Hero's Robe (EK 200 - Contrib 20)
-		if ((m_iEnemyKillCount >= 200) && (m_iContribution >= 20) && (m_iClass == 2))
+		if ((m_iEnemyKillCount >= 200) && (m_iContribution >= 20))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 155) && (msY < sY + 170))
 				PutAlignedString(sX, sX + szX, sY + 155, DRAW_DIALOGBOX_CITYHALL_MENU51, 255, 255, 255);// On mouse over Mode
@@ -11475,7 +11454,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		}
 		else PutAlignedString(sX, sX + szX, sY + 185, DRAW_DIALOGBOX_CITYHALL_MENU53, 65, 65, 65);// Disabled Mode
 		// Hero's Hood (EK 150 - Contrib 20)
-		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20) && (m_iClass == 3))
+		if ((m_iEnemyKillCount >= 150) && (m_iContribution >= 20))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 200) && (msY < sY + 215))
 				PutAlignedString(sX, sX + szX, sY + 200, "Hero's Hood (EK 150 - Contrib 20)", 255, 255, 255);// On mouse over Mode
@@ -16556,7 +16535,7 @@ void CGame::NotifyMsg_DropItemFin_CountChanged(char *pData)
 
 void CGame::NotifyMsg_CannotJoinMoreGuildsMan(char * pData)
 {
-	char * cp, cName[11], cTxt[120];
+	char * cp, cName[12], cTxt[120];
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
@@ -16571,7 +16550,7 @@ void CGame::NotifyMsg_CannotJoinMoreGuildsMan(char * pData)
 
 void CGame::NotifyMsg_DismissGuildsMan(char * pData)
 {
-	char * cp, cName[11], cTxt[120];
+	char * cp, cName[12], cTxt[120];
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
@@ -17292,7 +17271,7 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	WORD  * wp;
 	int i, j, *ip, iClass, wCost;
 
-	DWORD dwCount, dwAttribute;
+	DWORD dwCount;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	BOOL  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
@@ -17411,13 +17390,8 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	ip = (int*)cp;
 	iReqStat = *ip;
 	cp += 4;
-
 	ip = (int*)cp;
 	iQuantStat = *ip;
-	cp += 4;
-
-	dwp = (DWORD*)cp;
-	dwAttribute = *dwp;
 	cp += 4;
 	
 	ZeroMemory(cTxt, sizeof(cTxt));
@@ -17507,8 +17481,6 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 
 			m_pItemList[i]->m_iReqStat = iReqStat;
 			m_pItemList[i]->m_iQuantStat = iQuantStat;
-
-			m_pItemList[i]->m_dwAttribute = dwAttribute;
 
 			// fixed v1.11
 			for (j = 0; j < DEF_MAXITEMS; j++)
@@ -20665,99 +20637,37 @@ void CGame::StartBGM()
 		strcpy(cWavFileName, "music\\MainMenu.mp3");
 	}
 	else if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
-		if (m_bIsXmas == TRUE) strcpy(cWavFileName, "music\\Carol.mp3");
+		if (m_bIsXmas == TRUE) strcpy(cWavFileName, "music\\Carol.wav");
 		else
 		{
-			if (memcmp(m_cCurLocation, "aresden", 7) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else  strcpy(cWavFileName, "music\\aresden.mp3");
-			}
-			else if (memcmp(m_cCurLocation, "elvine", 6) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\elvine.mp3");
-			}
-			else if (memcmp(m_cCurLocation, "dglv", 4) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\dungeon.mp3");
-			}
-			else if (memcmp(m_cCurLocation, "middled1", 8) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\dungeon.mp3");
-			}
-			else if (memcmp(m_cCurLocation, "middleland", 10) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\middleland.mp3");
-			}
+			if (memcmp(m_cCurLocation, "aresden", 7) == 0) strcpy(cWavFileName, "music\\aresden.wav");
+			else if (memcmp(m_cCurLocation, "elvine", 6) == 0) strcpy(cWavFileName, "music\\elvine.wav");
+			else if (memcmp(m_cCurLocation, "dglv", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
+			else if (memcmp(m_cCurLocation, "middled1", 8) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
+			else if (memcmp(m_cCurLocation, "middleland", 10) == 0) strcpy(cWavFileName, "music\\middleland.wav");
 			// Snoopy: new musics
-			else if (memcmp(m_cCurLocation, "druncncity", 10) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\druncncity.mp3");
-			}
-			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.mp3");
-			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.mp3");
-			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.mp3");
+			else if (memcmp(m_cCurLocation, "druncncity", 10) == 0) strcpy(cWavFileName, "music\\druncncity.wav");
+			else if (memcmp(m_cCurLocation, "inferniaA", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
+			else if (memcmp(m_cCurLocation, "inferniaB", 9) == 0) strcpy(cWavFileName, "music\\middleland.wav");
+			else if (memcmp(m_cCurLocation, "maze", 4) == 0) strcpy(cWavFileName, "music\\dungeon.wav");
 			else if (memcmp(m_cCurLocation, "abaddon", 7) == 0) {
 				if (bPlayGhostMusic) {
 					m_bSoundFlag = TRUE;
 					m_cMusicVolume = 100; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
+					strcpy(cWavFileName, "music\\Ghost.wav");
 				}
 				else {
-					strcpy(cWavFileName, "music\\abaddon.mp3");
+					strcpy(cWavFileName, "music\\abaddon.wav");
 				}
 			}
 			else if (memcmp(m_cCurLocation, "stadium", 7) == 0) strcpy(cWavFileName, "music\\stadium.mp3");
-			else if (memcmp(m_cCurLocation, "lost", 4) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\lost.mp3");
-			}
-			else if (memcmp(m_cCurLocation, "catacombs", 9) == 0) {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\lost1.mp3");
-			}
+			else if (memcmp(m_cCurLocation, "lost", 4) == 0) strcpy(cWavFileName, "music\\lost.mp3");
+			else if (memcmp(m_cCurLocation, "catacombs", 9) == 0) strcpy(cWavFileName, "music\\lost1.mp3");
 			else if (memcmp(m_cCurLocation, "qusmarsh", 8) == 0) strcpy(cWavFileName, "music\\lost2.mp3");
 			else if (memcmp(m_cCurLocation, "asgarde", 7) == 0) strcpy(cWavFileName, "music\\lost3.mp3");
 
-			else {
-				if (bPlayGhostMusic) {
-					m_bSoundFlag = TRUE;
-					m_cMusicVolume = 50; //Magn0S:: Set max volume
-					strcpy(cWavFileName, "music\\Ghost.mp3");
-				}
-				else strcpy(cWavFileName, "music\\MainTm.mp3");
-			}
+			else strcpy(cWavFileName, "music\\MainTm.wav");
+
 		}
 	}
 
@@ -20793,7 +20703,7 @@ void CGame::StartBGM()
 	if (m_bSoundFlag == FALSE) m_bSoundFlag = TRUE;
 
 	if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME) {
-		if ((memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.mp3");
+		if ((memcmp(m_cCurLocation, "abaddon", 7) == 0)) strcpy(cWavFileName, "music\\Ghost.wav");
 
 	}
 	//Snoopy: mp3 support

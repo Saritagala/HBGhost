@@ -67,8 +67,8 @@ public:
 	
 	char  m_cDynamicObjectFrame;
 	char  m_cDynamicObjectData1, m_cDynamicObjectData2, m_cDynamicObjectData3, m_cDynamicObjectData4;
-	char  m_cOwnerName[11];
-	char  m_cDeadOwnerName[11];
+	char  m_cOwnerName[12];
+	char  m_cDeadOwnerName[12];
 };
 
 #endif // !defined(AFX_TILE_H__DA7A0761_758B_11D2_A8E6_00001C7030A6__INCLUDED_)

@@ -68,12 +68,12 @@ int CGame::iGetWhetherMagicBonusEffect(short sType, char cWheatherStatus)
 }
 
 /*********************************************************************************************************************
-**  void CGame::SetInvisibilityFlag(short sOwnerH, char cOwnerType, BOOL bStatus)									**
+**  void CGame::SetInvisibilityFlag(short sOwnerH, char cOwnerType, bool bStatus)									**
 **  description			:: changes the status of the player to show invisibility aura								**
 **  last updated		:: November 20, 2004; 9:30 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetInvisibilityFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetInvisibilityFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -95,12 +95,12 @@ void CGame::SetInvisibilityFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void CGame::SetInhibitionCastingFlag(short sOwnerH, char cOwnerType, BOOL bStatus)								**
+**  void CGame::SetInhibitionCastingFlag(short sOwnerH, char cOwnerType, bool bStatus)								**
 **  description			:: changes the status of the player to show inhibit casting aura							**
 **  last updated		:: November 20, 2004; 9:33 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetInhibitionCastingFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetInhibitionCastingFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -122,12 +122,12 @@ void CGame::SetInhibitionCastingFlag(short sOwnerH, char cOwnerType, BOOL bStatu
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetBerserkFlag(short sOwnerH, char cOwnerType, BOOL bStatus)									**
+**  void void CGame::SetBerserkFlag(short sOwnerH, char cOwnerType, bool bStatus)									**
 **  description			:: changes the status of the player to show berserk aura									**
 **  last updated		:: November 20, 2004; 9:35 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetBerserkFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetBerserkFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -149,12 +149,12 @@ void CGame::SetBerserkFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetIceFlag(short sOwnerH, char cOwnerType, BOOL bStatus)										**
+**  void void CGame::SetIceFlag(short sOwnerH, char cOwnerType, bool bStatus)										**
 **  description			:: changes the status of the player to show frozen aura										**
 **  last updated		:: November 20, 2004; 9:35 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetIceFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetIceFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -176,12 +176,12 @@ void CGame::SetIceFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetPoisonFlag(short sOwnerH, char cOwnerType, BOOL bStatus)									**
+**  void void CGame::SetPoisonFlag(short sOwnerH, char cOwnerType, bool bStatus)									**
 **  description			:: changes the status of the player to show poison aura										**
 **  last updated		:: November 20, 2004; 9:36 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetPoisonFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetPoisonFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -203,12 +203,12 @@ void CGame::SetPoisonFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetIllusionFlag(short sOwnerH, char cOwnerType, BOOL bStatus)									**
+**  void void CGame::SetIllusionFlag(short sOwnerH, char cOwnerType, bool bStatus)									**
 **  description			:: changes the status of the player to show illusion aura									**
 **  last updated		:: November 20, 2004; 9:36 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetIllusionFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetIllusionFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -230,12 +230,12 @@ void CGame::SetIllusionFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetHeroFlag(short sOwnerH, char cOwnerType, BOOL bStatus)										**
+**  void void CGame::SetHeroFlag(short sOwnerH, char cOwnerType, bool bStatus)										**
 **  description			:: changes the status of the player to show hero item aura									**
 **  last updated		:: November 20, 2004; 9:37 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetHeroFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetHeroFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -257,12 +257,12 @@ void CGame::SetHeroFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetDefenseShieldFlag(short sOwnerH, char cOwnerType, BOOL bStatus)								**
+**  void void CGame::SetDefenseShieldFlag(short sOwnerH, char cOwnerType, bool bStatus)								**
 **  description			:: changes the status of the player to show defense aura									**
 **  last updated		:: November 20, 2004; 9:37 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetDefenseShieldFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetDefenseShieldFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -284,12 +284,12 @@ void CGame::SetDefenseShieldFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetMagicProtectionFlag(short sOwnerH, char cOwnerType, BOOL bStatus)							**
+**  void void CGame::SetMagicProtectionFlag(short sOwnerH, char cOwnerType, bool bStatus)							**
 **  description			:: changes the status of the player to show magic protect aura								**
 **  last updated		:: November 20, 2004; 9:38 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetMagicProtectionFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetMagicProtectionFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -311,12 +311,12 @@ void CGame::SetMagicProtectionFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetProtectionFromArrowFlag(short sOwnerH, char cOwnerType, BOOL bStatus)						**
+**  void void CGame::SetProtectionFromArrowFlag(short sOwnerH, char cOwnerType, bool bStatus)						**
 **  description			:: changes the status of the player to show arrow protect aura								**
 **  last updated		:: November 20, 2004; 9:39 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetProtectionFromArrowFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetProtectionFromArrowFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -338,12 +338,12 @@ void CGame::SetProtectionFromArrowFlag(short sOwnerH, char cOwnerType, BOOL bSta
 }
 
 /*********************************************************************************************************************
-**  void void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, BOOL bStatus)							**
+**  void void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, bool bStatus)							**
 **  description			:: changes the status of the player to show illusion movement aura							**
 **  last updated		:: November 20, 2004; 9:39 PM; Hypnotoad													**
 **	return value		:: void																						**
 *********************************************************************************************************************/
-void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, BOOL bStatus)
+void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, bool bStatus)
 {
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -357,7 +357,7 @@ void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, BOOL bStatus
 }
 
 /*********************************************************************************************************************
-**  void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect, int iV1)			**
+**  void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool bItemEffect, int iV1)			**
 **  description			:: handles all magic related items/spells													**
 **  last updated		:: November 22, 2004; 5:45 PM; Hypnotoad													**
 **	return value		:: void																						**
@@ -367,7 +367,7 @@ void CGame::SetIllusionMovementFlag(short sOwnerH, char cOwnerType, BOOL bStatus
 **********************************************************************************************************************/
 int  _tmp_iMCProb[] = { 0, 300, 250, 200, 150, 100, 80, 70, 60, 50, 40 };
 int  _tmp_iMLevelPenalty[] = { 0,   5,   5,   8,   8,  10, 14, 28, 32, 36, 40 };
-void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect, int iV1, BOOL bIgnoreOwnerLimits)
+void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool bItemEffect, int iV1, bool bIgnoreOwnerLimits)
 {
 	short* sp, sX, sY, sOwnerH, sMagicCircle, rx, ry, sLevelMagic, sTemp;
 	char* cp, cData[120], cDir, cOwnerType, cName[11], cItemName[21], cNpcWaypoint[11], cName_Master[11], cNpcName[21], cRemainItemColor;
@@ -2872,7 +2872,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, BOOL b
 
 				case 2:
 					// Field - Type
-					BOOL bFlag = FALSE;
+					bool bFlag = FALSE;
 					int cx, cy;
 					for (ix = dX - m_pMagicConfigList[sType]->m_sValue12; ix <= dX + m_pMagicConfigList[sType]->m_sValue12; ix++)
 						for (iy = dY - m_pMagicConfigList[sType]->m_sValue12; iy <= dY + m_pMagicConfigList[sType]->m_sValue12; iy++) {
@@ -4687,15 +4687,15 @@ NMH_NOEFFECT:;
 }
 
 /*********************************************************************************************************************
-**  int BOOL CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio) **
+**  int bool CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio) **
 **  description			:: calculates if a player resists magic														**
 **  last updated		:: November 20, 2004; 8:42 PM; Hypnotoad													**
-**	return value		:: BOOL																						**
+**	return value		:: bool																						**
 **  commentary			::	-	hero armor for target mages adds 50 magic resistance								**
 **							-	10000 or more it ratio will deduct 10000 hit ratio									**
 **							-	invincible tablet is 100% magic resistance											**
 **********************************************************************************************************************/
-BOOL CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio)
+bool CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio)
 {
 	double dTmp1, dTmp2, dTmp3;
 	int    iTargetMagicResistRatio, iDestHitRatio;
@@ -4744,7 +4744,7 @@ BOOL CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char 
 	return TRUE;
 }
 
-BOOL CGame::bCheckResistingTremorSuccess(short sTargetH, char cTargetType)
+bool CGame::bCheckResistingTremorSuccess(short sTargetH, char cTargetType)
 {
 	int  iStability;
 	switch (cTargetType) {
@@ -4764,7 +4764,7 @@ BOOL CGame::bCheckResistingTremorSuccess(short sTargetH, char cTargetType)
 	}
 	return FALSE;
 }
-BOOL CGame::bCheckResistingIceSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio)
+bool CGame::bCheckResistingIceSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio)
 {
 	int iTargetIceResistRatio;
 
@@ -4852,7 +4852,7 @@ int CGame::iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cD
 	return 1;
 }
 
-BOOL CGame::_bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -5162,13 +5162,13 @@ BOOL CGame::_bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize)
 
 }
 
-BOOL CGame::RequestStudyMagicHandler(int iClientH, char* pName, BOOL bSucces, BOOL bIsPurchase)
+bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bool bIsPurchase)
 {
 	char* cp, cMagicName[31], cData[100];
 	DWORD* dwp, dwGoldCount = 0;
 	WORD* wp;
 	int* ip, iReqInt, iCost, iRet, iTempInt;
-	BOOL bMagic = TRUE;
+	bool bMagic = TRUE;
 	iTempInt = m_pClientList[iClientH]->m_iInt;
 	// SNOOPY: Angelic allow to buy Spell but not to read manual.
 
@@ -5283,7 +5283,7 @@ int CGame::_iGetMagicNumber(char* pMagicName, int* pReqInt, int* pCost)
 
 // 2003-04-21 ÀÎÆ®¿¡ µû¸¥ ¸¶¹ýÀ» »èÁ¦ ½ÃÄÑÁØ´Ù...
 /////////////////////////////////////////////////////////////////////////////////////
-//  BOOL CGame::bCheckMagicInt(int iClientH)  //another retarded korean function
+//  bool CGame::bCheckMagicInt(int iClientH)  //another retarded korean function
 //  desc		 :: ÀÎÆ®°¡ ³»·Á°¬À»¶§ »èÁ¦ÇÒ ¸¶¹ýÀ» Ã³¸®ÇÑ´Ù... Ã¼Å©¸¸...
 //	return value :: ¹«Á¶°Ç TRUE   // ....dumbass koreans
 //  date		 :: 2003-04-21
@@ -5303,7 +5303,7 @@ void CGame::bCheckMagicInt(int iClientH)
 }
 
 //Magn0S:: Battle Staffs coded by Magn0S for Helbreath Friend's 02/2012
-void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, BOOL bItemEffect, int iV1)
+void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, bool bItemEffect, int iV1)
 {
 	short  sX, sY, sOwnerH, sMagicCircle, sLevelMagic, sAppr2, sEqStatus;
 	char   cOwnerType;

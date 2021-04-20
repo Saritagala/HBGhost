@@ -26,7 +26,7 @@ void CGame::NpcBehavior_Stop(int iNpcH)
 {
 	char  cTargetType;
 	short sTarget = NULL;
-	BOOL  bFlag;
+	bool  bFlag;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
 
@@ -750,7 +750,7 @@ void CGame::ManualEndCrusadeMode(int iWinnerSide)
 }
 
 // New 13/05/2004
-BOOL CGame::_bCrusadeLog(int iAction, int iClientH, int iData, char* cName)
+bool CGame::_bCrusadeLog(int iAction, int iClientH, int iData, char* cName)
 {
 	char  cTxt[200];
 
@@ -1472,13 +1472,13 @@ void CGame::_GrandMagicLaunchMsgSend(int iType, char cAttackerSide)
 }
 
 // October 19, 2004 - 3.51 translated
-BOOL CGame::_bNpcBehavior_ManaCollector(int iNpcH)
+bool CGame::_bNpcBehavior_ManaCollector(int iNpcH)
 {
 	int dX, dY, iMaxMP, iTotal;
 	short sOwnerH;
 	char  cOwnerType;
 	double dV1, dV2, dV3;
-	BOOL bRet;
+	bool bRet;
 
 	if (m_pNpcList[iNpcH] == NULL) return FALSE;
 	if (m_pNpcList[iNpcH]->m_sAppr2 != 0) return FALSE;
@@ -1615,12 +1615,12 @@ void CGame::_NpcBehavior_GrandMagicGenerator(int iNpcH)
 }
 
 // October 19, 2004 - 3.51 translated
-BOOL CGame::_bNpcBehavior_Detector(int iNpcH)
+bool CGame::_bNpcBehavior_Detector(int iNpcH)
 {
 	int dX, dY;
 	short sOwnerH;
 	char  cOwnerType, cSide;
-	BOOL  bFlag = FALSE;
+	bool  bFlag = FALSE;
 
 	if (m_pNpcList[iNpcH] == NULL) return FALSE;
 	if (m_pNpcList[iNpcH]->m_sAppr2 != 0) return FALSE;
@@ -1666,7 +1666,7 @@ BOOL CGame::_bNpcBehavior_Detector(int iNpcH)
 	return bFlag;
 }
 
-BOOL CGame::__bSetConstructionKit(int iMapIndex, int dX, int dY, int iType, int iTimeCost, int iClientH)
+bool CGame::__bSetConstructionKit(int iMapIndex, int dX, int dY, int iType, int iTimeCost, int iClientH)
 {
 	int iNamingValue, ix, iy, tX, tY;
 	char cNpcName[21], cName[21], cNpcWaypoint[11], cOwnerType;
@@ -1841,7 +1841,7 @@ void CGame::RequestSummonWarUnitHandler(int iClientH, int dX, int dY, char cType
 	char cName[6], cNpcName[21], cMapName[11], cNpcWayPoint[11], cOwnerType;
 	int i, x;
 	int iNamingValue, tX, tY, ix, iy;
-	BOOL bRet;
+	bool bRet;
 	short sOwnerH;
 	DWORD dwTime = timeGetTime();
 

@@ -27,7 +27,7 @@ extern HWND	G_hWnd;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-extern BOOL	G_bIsThread;
+extern bool	G_bIsThread;
 extern unsigned __stdcall ThreadProc(void *ch);
 
 char _tmp_cTmpDirX[9] =
@@ -235,27 +235,27 @@ CGame::~CGame()
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bAccept																								**
+**  bool CGame::bAccept																								**
 **  DESCRIPTION			:: function following player connect														**
 **  LAST_UPDATED		:: March 13, 2005; 9:34 AM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	- added (m_bIsWLServerAvailable == FALSE)												**
 **							- modified "<%d> New client: %s" to "<%d> Client connected: (%s)"						**
 **							- added "Maximum Players: %d" code														**
 **  MODIFICATION		::	- added print message if CLOSE_ANYWAY													**
 **********************************************************************************************************************/
-BOOL CGame::bAccept(class XSocket * pXSock)
+bool CGame::bAccept(class XSocket* pXSock)
 {
 	int i, iTotalip = 0, a;
-	class XSocket * pTmpSock;
+	class XSocket* pTmpSock;
 	char cIPtoBan[21];
 	FILE* pFile;
 
-	if ((m_bIsGateSockAvailable == FALSE)  || (m_bIsLogSockAvailable == FALSE)   || 
-		(m_bIsItemAvailable == FALSE)      || (m_bIsNpcAvailable == FALSE)       || 
-		(m_bIsMagicAvailable == FALSE)     || (m_bIsSkillAvailable == FALSE)     || 
-		(m_bIsPotionAvailable == FALSE)    || (m_bOnExitProcess == TRUE)         || 
-		(m_bIsQuestAvailable == FALSE)     || (m_bIsBuildItemAvailable == FALSE) || 
+	if ((m_bIsGateSockAvailable == FALSE) || (m_bIsLogSockAvailable == FALSE) ||
+		(m_bIsItemAvailable == FALSE) || (m_bIsNpcAvailable == FALSE) ||
+		(m_bIsMagicAvailable == FALSE) || (m_bIsSkillAvailable == FALSE) ||
+		(m_bIsPotionAvailable == FALSE) || (m_bOnExitProcess == TRUE) ||
+		(m_bIsQuestAvailable == FALSE) || (m_bIsBuildItemAvailable == FALSE) ||
 		(m_bIsGameStarted == FALSE))
 		goto CLOSE_ANYWAY;
 	for (i = 1; i < DEF_MAXCLIENTS; i++) {
@@ -300,7 +300,7 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 				fprintf(pFile, "banned-ip = %s", cIPtoBan);
 				fprintf(pFile, "\n");
 				fclose(pFile);
-				
+
 				//updates BannedList.cfg on the server
 				//LocalUpdateConfigs(3);
 				for (int x = 0; x < DEF_MAXBANNED; x++)
@@ -309,7 +309,7 @@ BOOL CGame::bAccept(class XSocket * pXSock)
 
 				goto CLOSE_CONN;
 			}
-			
+
 #endif
 			wsprintf(G_cTxt, "<%d> Client connected: (%s)", i, m_pClientList[i]->m_cIPaddress);
 			PutLogList(G_cTxt);
@@ -326,7 +326,7 @@ CLOSE_ANYWAY:;
 	PutLogList("(!) bAccept->CLOSE_ANYWAY");
 	/********END*********/
 	pTmpSock = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
-	pXSock->bAccept(pTmpSock, NULL); 
+	pXSock->bAccept(pTmpSock, NULL);
 	delete pTmpSock;
 	return FALSE;
 CLOSE_CONN:;
@@ -392,10 +392,10 @@ void CGame::OnClientSocketEvent(UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bInit()		   																						**
+**  bool CGame::bInit()		   																						**
 **  DESCRIPTION			:: general variable initializer																**
 **  LAST_UPDATED		:: March 13, 2005; 8:00 PM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	- Added Nulliy to "m_pTeleportDestination[i]"											**
 **							- reduced MaxLevel from 3500 to 300														**
 **							- changed DEF_MAXGATESERVERSTOCKMSGSIZE from 10000 to 30000								**
@@ -407,7 +407,7 @@ void CGame::OnClientSocketEvent(UINT message, WPARAM wParam, LPARAM lParam)
 **							- Added Admin and Banned List initialization											**
 **							- Added initialization to Apocalypse end/start and Heldenian Timer						**
 **********************************************************************************************************************/
-BOOL CGame::bInit()		   
+bool CGame::bInit()		   
 {
  char * cp, cTxt[120];
  DWORD * dwp;
@@ -1139,7 +1139,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
  WORD  * wp, wObjectID;
  short * sp, dX, dY, sDOtype, /*pTopItem,*/ wV1, wV2, sTemp;
  int   * ip, iRet, iSize, iDamage, iTemp, iTemp2, iDestX, iDestY;
- BOOL  bRet, bIsBlocked = FALSE;
+ bool  bRet, bIsBlocked = FALSE;
  char cTemp[11], cDestMapName[11], cDestDir;
 
 	if (m_pClientList[iClientH] == NULL) return 0;
@@ -1233,7 +1233,7 @@ int CGame::iClientMotion_Move_Handler(int iClientH, short sX, short sY, char cDi
 	// Capture the Flag
 	if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0) {
 		ZeroMemory(cDestMapName, sizeof(cDestMapName));
-		BOOL bRet2 = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSearchTeleportDest(dX, dY, cDestMapName, &iDestX, &iDestY, &cDestDir);
+		bool bRet2 = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSearchTeleportDest(dX, dY, cDestMapName, &iDestX, &iDestY, &cDestDir);
 		if (bRet2 &&
 			(memcmp(cDestMapName, "elvine", 6) != 0 &&
 				memcmp(cDestMapName, "aresden", 7) != 0 &&
@@ -1544,7 +1544,7 @@ void CGame::RequestInitPlayerHandler(int iClientH, char * pData, char cKey)
 {
  int i;
  char * cp, cCharName[11], cAccountName[11], cAccountPassword[11], cTxt[120];
- BOOL bIsObserverMode;
+ bool bIsObserverMode;
 	
 	// SNOOPY; added trap for faultlly client ID
 	if (iClientH < 1) return;
@@ -1588,7 +1588,7 @@ void CGame::RequestInitPlayerHandler(int iClientH, char * pData, char cKey)
 	ZeroMemory(cAccountPassword, sizeof(cAccountPassword));
 	memcpy(cAccountPassword, cTxt, 10);
 	
-	bIsObserverMode = (BOOL)*cp;
+	bIsObserverMode = (bool)*cp;
 	cp++;
 
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
@@ -1649,7 +1649,7 @@ void CGame::RequestInitPlayerHandler(int iClientH, char * pData, char cKey)
 **						 	- notifies player if apocalypse gate is open as he enters zone							**
 **	MODIFICATION		:: none																						**
 **********************************************************************************************************************/
-void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bIsResurrected)
+void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, bool bIsResurrected)
 {
 	short* sp, sSummonPoints;
 	DWORD* dwp;
@@ -1659,7 +1659,7 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	SYSTEMTIME SysTime;
 	char* pBuffer = NULL;
 	int iMapSide;
-	BOOL bIsItemListNull;
+	bool bIsItemListNull;
 	POINT TempItemPosList[DEF_MAXITEMS];
 	bool* bp;
 
@@ -1841,11 +1841,11 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 	*ip = m_pClientList[iClientH]->m_iCoinPoints;
 	cp += 4;
 
-	dwp = (DWORD*)cp;
+	/*dwp = (DWORD*)cp;
 	*dwp = m_pClientList[iClientH]->m_dwGold;
-	cp += 4;
+	cp += 4;*/
 
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 140);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(pBuffer, 136);
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -2527,14 +2527,14 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, BOOL bI
 }
 
 /*********************************************************************************************************************
-**  void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogout, BOOL bForceCloseConn)		**
+**  void CGame::DeleteClient(int iClientH, bool bSave, bool bNotify, bool bCountLogout, bool bForceCloseConn)		**
 **  DESCRIPTION			:: manages disconnect player																**
 **  LAST_UPDATED		:: March 16, 2005; 12:02 AM; Hypnotoad														**
 **	RETURN_VALUE		:: void																						**
 **  NOTES				:: n/a																						**
 **	MODIFICATION		:: n/a																						**
 **********************************************************************************************************************/
-void CGame::DeleteClient(int iClientH, BOOL bSave, BOOL bNotify, BOOL bCountLogout, BOOL bForceCloseConn)
+void CGame::DeleteClient(int iClientH, bool bSave, bool bNotify, bool bCountLogout, bool bForceCloseConn)
 {
 	int i, iExH;
 	char * cp, cData[120], cTmpMap[30];
@@ -3552,7 +3552,7 @@ void CGame::OnMainLogRead()
 }
 
 
-BOOL CGame::bSendMsgToLS(DWORD dwMsg, int iClientH, BOOL bFlag, char* pData)
+bool CGame::bSendMsgToLS(DWORD dwMsg, int iClientH, bool bFlag, char* pData)
 {
  DWORD * dwp;
  WORD  * wp;
@@ -3994,7 +3994,7 @@ void CGame::ResponsePlayerDataHandler(char * pData, DWORD dwSize)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bReadProgramConfigFile(char * cFn)																	**
+**  bool CGame::bReadProgramConfigFile(char * cFn)																	**
 **  DESCRIPTION			:: function that reads GServer.cfg															**
 **  LAST_UPDATED		:: March 17, 2005; 12:09 PM; Hypnotoad														**
 **	RETURN_VALUE		:: void																						**
@@ -4006,7 +4006,7 @@ void CGame::ResponsePlayerDataHandler(char * pData, DWORD dwSize)
 **							- gate-server-dns (if set to "true" put in alphabetical dns address)					**
 **							- log-server-dns (both dns options benefitial if ip is dynamic and server is no-ip.com	**
 **********************************************************************************************************************/
-BOOL CGame::bReadProgramConfigFile(char * cFn)
+bool CGame::bReadProgramConfigFile(char * cFn)
 {	
 	FILE * pFile;
 	HANDLE hFile;
@@ -4217,16 +4217,16 @@ BOOL CGame::bReadProgramConfigFile(char * cFn)
 
 
 /*********************************************************************************************************************
-**  BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwSize)							**
+**  bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwSize)							**
 **  DESCRIPTION			:: decodes <PLAYERNAME>.txt file in Character folder										**
 **  LAST_UPDATED		:: March 17, 2005; 12:42 PM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	- MOST OF THIS FUNCTION UPGRADE IS IGNORED DUE TO MYSQL<->ASCII ISSUES					**
 **							- changed stat point checks code														**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
 
-BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwSize)
+bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwSize)
 {
 	char * pContents, * token, * pOriginContents, cTmpName[11], cTxt[120];
 	char   seps[] = "= \t\n";
@@ -4234,11 +4234,11 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 	int    i, iItemIndex, iItemInBankIndex, iTotalGold, iNotUsedItemPrice;
 	class  CStrTok * pStrTok;
 	short  sTmpType, sTmpAppr1;
-	BOOL   bRet;
+	bool   bRet;
 	int    iTemp, iValue;
 	SYSTEMTIME SysTime;
 	long iDateSum1, iDateSum2;
-	BOOL   bIsNotUsedItemFound = FALSE;
+	bool   bIsNotUsedItemFound = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return FALSE;
 
@@ -5915,7 +5915,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 						return FALSE;
 					}
 
-					m_pClientList[iClientH]->m_bIsQuestCompleted[0] = (BOOL)atoi(token);
+					m_pClientList[iClientH]->m_bIsQuestCompleted[0] = (bool)atoi(token);
 					cReadModeB = 2;
 					break;
 				case 2:
@@ -5927,7 +5927,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 						return FALSE;
 					}
 
-					m_pClientList[iClientH]->m_bIsQuestCompleted[1] = (BOOL)atoi(token);
+					m_pClientList[iClientH]->m_bIsQuestCompleted[1] = (bool)atoi(token);
 					cReadModeB = 3;
 					break;
 				case 3:
@@ -5939,7 +5939,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 						return FALSE;
 					}
 
-					m_pClientList[iClientH]->m_bIsQuestCompleted[2] = (BOOL)atoi(token);
+					m_pClientList[iClientH]->m_bIsQuestCompleted[2] = (bool)atoi(token);
 					cReadModeB = 4;
 					break;
 				case 4:
@@ -5951,7 +5951,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 						return FALSE;
 					}
 
-					m_pClientList[iClientH]->m_bIsQuestCompleted[3] = (BOOL)atoi(token);
+					m_pClientList[iClientH]->m_bIsQuestCompleted[3] = (bool)atoi(token);
 					cReadModeB = 5;
 					break;
 				case 5:
@@ -5962,8 +5962,8 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 						delete pStrTok;
 						return FALSE;
 					}
-					//m_bIsQuestCompleted = (BOOL)atoi(token);
-					m_pClientList[iClientH]->m_bIsQuestCompleted[4] = (BOOL)atoi(token);
+					//m_bIsQuestCompleted = (bool)atoi(token);
+					m_pClientList[iClientH]->m_bIsQuestCompleted[4] = (bool)atoi(token);
 					cReadModeA = 0;
 					cReadModeB = 0;
 					break;
@@ -5978,7 +5978,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 					delete pStrTok;
 					return FALSE;
 				}
-				m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = (BOOL)atoi(token);
+				m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = (bool)atoi(token);
 				cReadModeA = 0;
 				break;
 
@@ -5991,7 +5991,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 					return FALSE;
 				}
 
-				m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar = (BOOL)atoi(token);
+				m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar = (bool)atoi(token);
 				cReadModeA = 0;
 				break;
 
@@ -6004,7 +6004,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 					return FALSE;
 				}
 
-				m_pClientList[iClientH]->m_iSpecialEventID = (BOOL)atoi(token);
+				m_pClientList[iClientH]->m_iSpecialEventID = (bool)atoi(token);
 				cReadModeA = 0;
 				break;
 
@@ -6065,7 +6065,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 					return FALSE;
 				}
 
-				m_pClientList[iClientH]->m_iSuperAttackLeft = (BOOL)atoi(token);
+				m_pClientList[iClientH]->m_iSuperAttackLeft = (bool)atoi(token);
 				cReadModeA = 0;
 				break;
 
@@ -6352,7 +6352,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				break;
 
 			case 94:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				/*if (_bGetIsStringIsNumber(token) == FALSE) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
 					PutLogList(cTxt);
 					delete pContents;
@@ -6360,7 +6360,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 					return FALSE;
 				}
 
-				m_pClientList[iClientH]->m_dwGold = atoi(token);
+				m_pClientList[iClientH]->m_dwGold = atoi(token);*/
 				cReadModeA = 0;
 				break;
 				
@@ -6509,7 +6509,7 @@ BOOL CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 
 			if (memcmp(token, "character-team", 14) == 0)    cReadModeA = 92;
 			if (memcmp(token, "character-class", 15) == 0)    cReadModeA = 93;
-			if (memcmp(token, "character-gold", 14) == 0)    cReadModeA = 94;
+			//if (memcmp(token, "character-gold", 14) == 0)    cReadModeA = 94;
 
 			if (memcmp(token, "[EOF]", 5) == 0) goto DPDC_STOP_DECODING;
 		}
@@ -7031,9 +7031,9 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 	strcat(pData, cTxt);
 	strcat(pData, "\n");
 
-	wsprintf(cTxt, "character-gold = %d", m_pClientList[iClientH]->m_dwGold);
+	/*wsprintf(cTxt, "character-gold = %d", m_pClientList[iClientH]->m_dwGold);
 	strcat(pData, cTxt);
-	strcat(pData, "\n");
+	strcat(pData, "\n");*/
 
 	strcat(pData,"\n\n");
 
@@ -7284,14 +7284,14 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::_bGetIsStringIsNumber(char * pStr)																	**
+**  bool CGame::_bGetIsStringIsNumber(char * pStr)																	**
 **  DESCRIPTION			:: checks if valid ASCII value																**
 **  LAST_UPDATED		:: March 17, 2005; 2:24 PM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	n/a																						**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
-BOOL CGame::_bGetIsStringIsNumber(char * pStr)
+bool CGame::_bGetIsStringIsNumber(char * pStr)
 {
  int i;
 	for (i = 0; i < (int)strlen(pStr); i++)
@@ -8359,7 +8359,7 @@ void CGame::ChatMsgHandlerGSM(int iMsgType, int iV1, char * pName, char * pData,
 
 /*********************************************************************************************************************
 **  int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short dX, short dY, short wType,		**
-**		char cDir, WORD wTargetObjectID, BOOL bResponse, BOOL bIsDash)												**
+**		char cDir, WORD wTargetObjectID, bool bResponse, bool bIsDash)												**
 **  DESCRIPTION			:: controls player attack																	**
 **  LAST_UPDATED		:: March 19, 2005; 1:21 PM; Hypnotoad														**
 **	RETURN_VALUE		:: int																						**
@@ -8369,7 +8369,7 @@ void CGame::ChatMsgHandlerGSM(int iMsgType, int iV1, char * pName, char * pData,
 **							- fixed attack unmoving object															**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
-int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short dX, short dY, short wType, char cDir, WORD wTargetObjectID, BOOL bResponse, BOOL bIsDash)
+int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short dX, short dY, short wType, char cDir, WORD wTargetObjectID, bool bResponse, bool bIsDash)
 {
  char cData[100];
  DWORD * dwp, dwTime;
@@ -8377,7 +8377,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
  int     iRet, tdX = 0, tdY = 0, i;
  short   sOwner, sAbsX, sAbsY;
  char    cOwnerType;
- BOOL    bNearAttack = FALSE, var_AC = FALSE;
+ bool    bNearAttack = FALSE, var_AC = FALSE;
  short sItemIndex;
  int tX, tY, iErr;
  int iExp;
@@ -8486,7 +8486,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 				// Magic Weapons - Add Special Effect for Weapon
 				short sType, sManaCost;
 				DWORD dwType1, dwType2, dwValue1, dwValue2;
-				BOOL bIce = FALSE;
+				bool bIce = FALSE;
 
 				if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND] != -1) {
 					sItemIndex = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
@@ -9414,7 +9414,7 @@ DWORD * dwp, dwTimeRcv;
 }
 
 
-BOOL CGame::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey)
+bool CGame::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey)
 {
 	
 	// ¸Þ½ÃÁö Å¥°¡ ´Ù Ã¡´Ù¸é ¿¡·¯ 
@@ -9457,7 +9457,7 @@ void CGame::AdminOrder_SetObserverMode(int iClientH)
 }
 
 
-BOOL CGame::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
+bool CGame::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
 {
 	
 	// °¡Á®°¥ ¸Þ½ÃÁö°¡ ¾øÀ¸¸é ¿¡·¯  
@@ -9944,7 +9944,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
  char  * cp, cAttackerName[21], cData[120];
  short sAttackerWeapon;
  int   * ip, i, iExH;
- BOOL  bIsSAattacked = FALSE;
+ bool  bIsSAattacked = FALSE;
  int Killedi;
 	
 	if (m_pClientList[iClientH] == NULL) return;
@@ -10763,7 +10763,7 @@ void CGame::StateChangeHandler(int iClientH, char* pData, DWORD dwMsgSize)
 //	return value :: BOOLÇü 0(FASLE) ¿¡·¯ ·¹º§ ¼öÁ¤ ºÒ°¡...
 //  date		 :: [2003-04-14] 
 /////////////////////////////////////////////////////////////////////////////////////
-BOOL CGame::bChangeState(char cStateChange, char* cStr, char *cVit,char *cDex,char *cInt,char *cMag,char *cChar)
+bool CGame::bChangeState(char cStateChange, char* cStr, char *cVit,char *cDex,char *cInt,char *cMag,char *cChar)
 {	// centu - fixed
 	if(cStateChange == DEF_STR)
 	{	++*cStr; 
@@ -10970,7 +10970,7 @@ void CGame::FightzoneReserveHandler(int iClientH, char * pData, DWORD dwMsgSize)
 	}
 }
 
-BOOL CGame::bCheckLimitedUser(int iClientH)
+bool CGame::bCheckLimitedUser(int iClientH)
 {
 	if (m_pClientList[iClientH] == NULL) return FALSE;
 	
@@ -11453,7 +11453,7 @@ void CGame::EnemyKillRewardHandler(int iAttackerH, int iClientH)
 }
 
 // 05/22/2004 - Hypnotoad - register in pk log
-void CGame::ApplyCombatKilledPenalty(int iClientH, int cPenaltyLevel, BOOL bIsSAattacked)
+void CGame::ApplyCombatKilledPenalty(int iClientH, int cPenaltyLevel, bool bIsSAattacked)
 {  
 	int iExp;
 
@@ -11784,7 +11784,7 @@ void CGame::RequestFullObjectData(int iClientH, char *pData)
 	}
 }
 
-void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sV1, short sV2, short sV3, BOOL bExp, int iAttr)
+void CGame::Effect_Damage_Spot(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sV1, short sV2, short sV3, bool bExp, int iAttr)
 {
 int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack, iRepDamage, iExtraDmg;
  char cAttackerSide, cDamageMoveDir, cDamageMod[256];
@@ -12366,7 +12366,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 	}
 }
 
-void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, BOOL bExp, int iAttr)
+void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, bool bExp, int iAttr)
 {
  int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAttack, iExtraDmg, iRepDamage;
  char cAttackerSide, cDamageMoveDir, cDamageMinimum, cDamageMod[256];
@@ -12904,7 +12904,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 	}
 }
 
-void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, BOOL bExp, int iAttr)
+void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, short sTargetH, char cTargetType, short sAtkX, short sAtkY, short sV1, short sV2, short sV3, bool bExp, int iAttr)
 {
  int iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iExtraDmg, iMaxSuperAttack;
  DWORD dwTime, wWeaponType;
@@ -13688,13 +13688,13 @@ void CGame::OnKeyUp(WPARAM wParam, LPARAM lParam)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bRegisterDelayEvent(int iDelayType, int iEffectType, DWORD dwLastTime, int iTargetH,				**
+**  bool CGame::bRegisterDelayEvent(int iDelayType, int iEffectType, DWORD dwLastTime, int iTargetH,				**
 **									   char cTargetType, char cMapIndex, int dX, int dY, int iV1, int iV2, int iV3) **
 **  description			:: initiates the delayed event process														**
 **  last updated		:: November 20, 2004; 9:30 PM; Hypnotoad													**
-**	return value		:: BOOL																						**
+**	return value		:: bool																						**
 **********************************************************************************************************************/
-BOOL CGame::bRegisterDelayEvent(int iDelayType, int iEffectType, DWORD dwLastTime, int iTargetH, char cTargetType, char cMapIndex, int dX, int dY, int iV1, int iV2, int iV3)
+bool CGame::bRegisterDelayEvent(int iDelayType, int iEffectType, DWORD dwLastTime, int iTargetH, char cTargetType, char cMapIndex, int dX, int dY, int iV1, int iV2, int iV3)
 {
  int i;
 
@@ -13924,7 +13924,7 @@ void CGame::DelayEventProcessor()
 		m_pDelayEventList[i] = NULL;
 	}
 }
-BOOL CGame::bRemoveFromDelayEventList(int iH, char cType, int iEffectType)
+bool CGame::bRemoveFromDelayEventList(int iH, char cType, int iEffectType)
 {
  int i;
 
@@ -14646,7 +14646,7 @@ void CGame::GetPlayerProfile(int iClientH, char * pMsg, DWORD dwMsgSize)
 }
 
 /*********************************************************************************************************************
-** BOOL CGame::SetAngelFlag(short sOwnerH, char cOwnerType, int iStatus, iTemp)  Snoopy								** 
+** bool CGame::SetAngelFlag(short sOwnerH, char cOwnerType, int iStatus, iTemp)  Snoopy								** 
 ** description   :: Sets the staus to send or not Angels to every client											**
 *********************************************************************************************************************/
 void CGame::SetAngelFlag(short sOwnerH, char cOwnerType, int iStatus, int iTemp) 
@@ -14693,7 +14693,7 @@ int CGame::_iGetPlayerNumberOnSpot(short dX, short dY, char cMapIndex, char cRan
 	return iSum;
 }
 
-BOOL CGame::bAnalyzeCriminalAction(int iClientH, short dX, short dY, BOOL bIsCheck)
+bool CGame::bAnalyzeCriminalAction(int iClientH, short dX, short dY, bool bIsCheck)
 {
  int   iNamingValue, tX, tY;
  short sOwnerH;
@@ -14742,7 +14742,7 @@ BOOL CGame::bAnalyzeCriminalAction(int iClientH, short dX, short dY, BOOL bIsChe
 	return FALSE;
 }
 
-BOOL CGame::_bGetIsPlayerHostile(int iClientH, int sOwnerH)
+bool CGame::_bGetIsPlayerHostile(int iClientH, int sOwnerH)
 {
 	if (m_pClientList[iClientH] == NULL) return FALSE;
 	if (m_pClientList[sOwnerH]  == NULL) return FALSE;
@@ -14974,7 +14974,7 @@ void CGame::SetPlayerReputation(int iClientH, char * pMsg, char cValue, DWORD dw
 	delete pStrTok;
 }
 
-BOOL CGame::bReadNotifyMsgListFile(char * cFn)
+bool CGame::bReadNotifyMsgListFile(char * cFn)
 {
  FILE * pFile;
  HANDLE hFile;
@@ -15398,7 +15398,7 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, DWORD dwMsgSize)
  char   * token, cBuff[256], cMapName[256];
  class  CStrTok * pStrTok;
  int dX, dY;
- BOOL   bFlag;
+ bool   bFlag;
 
 	dX = dY = -1;
 
@@ -15964,7 +15964,7 @@ void CGame::AdminOrder_SetInvi(int iClientH, char *pData, DWORD dwMsgSize)
 	delete pStrTok;
 }
 
-BOOL CGame::bOnClose()
+bool CGame::bOnClose()
 {
 	if (m_bIsServerShutdowned == FALSE) 
 		if (MessageBox(NULL, "Player data not saved! Shutdown server now?", m_cServerName, MB_ICONEXCLAMATION | MB_YESNO) == IDYES) return TRUE;
@@ -16167,7 +16167,7 @@ void CGame::_BWM_Command_Shutup(char *pData)
 	}
 }
 
-int CGame::iGetMaxHP(int iClientH, BOOL bBloodEffect)
+int CGame::iGetMaxHP(int iClientH, bool bBloodEffect)
 {
 	int iRet;
 	if (m_pClientList[iClientH] == NULL) return 0;
@@ -16274,10 +16274,10 @@ void CGame::OnSubLogRead(int iIndex)
 	}	
 }
 
-BOOL CGame::_bCheckSubLogSocketIndex()
+bool CGame::_bCheckSubLogSocketIndex()
 {
  int  iCnt;
- BOOL bLoopFlag;
+ bool bLoopFlag;
 
 	// ¸Þ½ÃÁö¸¦ º¸³¾ Sub-log-socket ÀÎµ¦½º ÀüÁø 
 	m_iCurSubLogSockIndex++;
@@ -16404,7 +16404,7 @@ void CGame::AdminOrder_Summon(int iClientH, char *pData, DWORD dwMsgSize)
  char   * token, cBuff[256], cName_Master[10], cName_Slave[10], cNpcName[256], cWaypoint[11], cSA; 
  int    pX, pY, j, iNum, iNamingValue;
  class  CStrTok * pStrTok;
- BOOL   bMaster = FALSE;
+ bool   bMaster = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if ((dwMsgSize)	<= 0) return;
@@ -17095,7 +17095,7 @@ void CGame::CheckConnectionHandler(int iClientH, char *pData)
 	}
 }
 
-BOOL CGame::bStockMsgToGateServer(char *pData, DWORD dwSize)
+bool CGame::bStockMsgToGateServer(char *pData, DWORD dwSize)
 {
  char * cp;
 
@@ -17140,7 +17140,7 @@ void CGame::ServerStockMsgHandler(char *pData)
  char * cp, * cp2, cTemp[120], cLocation[10], cGuildName[20], cName[11], cTemp2[120], cTemp3[120], cMapName[11], cBuffer[256]; short * sp;
  WORD * wp, wServerID, wClientH, wV1, wV2, wV3, wV4, wV5;
  DWORD * dwp;
- BOOL bFlag = FALSE;
+ bool bFlag = FALSE;
  int * ip, i, iTotal, iV1, iV2, iV3, iRet;
  short sX, sY;
 
@@ -17670,7 +17670,7 @@ void CGame::GSM_RequestFindCharacter(WORD wReqServerID, WORD wReqClientH, char *
 	}
 }
 
-BOOL CGame::bAddClientShortCut(int iClientH)
+bool CGame::bAddClientShortCut(int iClientH)
 {
  int i; 
 
@@ -17780,7 +17780,7 @@ void CGame::RequestOnlines(int iClientH)
 	
 }
 
-void CGame::GetExp(int iClientH, int iExp, BOOL bIsAttackerOwn)
+void CGame::GetExp(int iClientH, int iExp, bool bIsAttackerOwn)
 {
 
 	double dV1, dV2, dV3;
@@ -18309,7 +18309,7 @@ void CGame::GSM_RequestShutupPlayer(char * pGMName,WORD wReqServerID, WORD wReqC
 }
 
 // v2.14 05/22/2004 - Hypnotoad - adds pk log
-BOOL CGame::_bPKLog(int iAction,int iAttackerH , int iVictumH, char * pNPC)
+bool CGame::_bPKLog(int iAction,int iAttackerH , int iVictumH, char * pNPC)
 {
 	char  cTxt[1024], cTemp1[120], cTemp2[120];
 
@@ -19008,7 +19008,7 @@ void CGame::CheckForceRecallTime(int iClientH)
 		
 }
 
-BOOL CGame::bReadAdminSetConfigFile(char * cFn)
+bool CGame::bReadAdminSetConfigFile(char * cFn)
 {
 	FILE * pFile;
 	HANDLE hFile;
@@ -19642,7 +19642,7 @@ void CGame::AdminOrder_Pushplayer(int iClientH, char * pData, DWORD dwMsgSize)
  class  CStrTok * pStrTok;
  int dX, dY;
   int i, j;
- BOOL   bFlag = FALSE;
+ bool   bFlag = FALSE;
 	ZeroMemory(cTargetName, sizeof(cTargetName));
 	ZeroMemory(cBuff, sizeof(cBuff));
 	ZeroMemory(cMapName, sizeof(cMapName));
@@ -19737,7 +19737,7 @@ void CGame::AdminOrder_Pushplayer(int iClientH, char * pData, DWORD dwMsgSize)
 }
 
 
-BOOL CGame::bReadAdminListConfigFile(char *pFn)
+bool CGame::bReadAdminListConfigFile(char *pFn)
 {
  FILE * pFile;
  HANDLE hFile;
@@ -19807,7 +19807,7 @@ BOOL CGame::bReadAdminListConfigFile(char *pFn)
 	return TRUE;
 }
 
-BOOL CGame::bReadBannedListConfigFile(char *pFn)
+bool CGame::bReadBannedListConfigFile(char *pFn)
 {
  FILE * pFile;
  HANDLE hFile;
@@ -19882,7 +19882,7 @@ void CGame::AdminOrder_CleanMap(int iClientH, char * pData, DWORD dwMsgSize)
 	char   seps[] = "= \t\n";
 	class  CStrTok * pStrTok;
 	char   * token, cMapName[11], cBuff[256];
-	BOOL bFlag = FALSE;	//Used to check if we are on the map we wanna clear
+	bool bFlag = FALSE;	//Used to check if we are on the map we wanna clear
 	int i;
 	CItem *pItem;
 	short dX, dY, sRemainItemID, len;
@@ -20072,7 +20072,7 @@ void CGame::TimeHitPointsUp(int iClientH)
 	m_pClientList[iClientH]->m_iHPstock = 0;
 }
 
-int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttackerH, char cAttackerType, int tdX, int tdY, int iAttackMode, BOOL bNearAttack, BOOL bIsDash, BOOL bArrowUse, BOOL bMainGaucheAttack)
+int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttackerH, char cAttackerType, int tdX, int tdY, int iAttackMode, bool bNearAttack, bool bIsDash, bool bArrowUse, bool bMainGaucheAttack)
 {
  int    iAP_SM, iAP_L, iAttackerHitRatio, iTargetDefenseRatio, iDestHitRatio, iResult, iAP_Abs_Armor, iAP_Abs_Shield, iAP_Abs_Cape, iExtraDmg;
  char   cAttackerName[21], cAttackerDir, cAttackerSide, cTargetDir, cProtect, cCropSkill, cFarmingSkill, cDamageMod[256];
@@ -20080,9 +20080,9 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
  DWORD  dwTime;
  WORD   wWeaponType;
  double dTmp1, dTmp2, dTmp3;
- BOOL   bKilled;
- BOOL   bNormalMissileAttack;
- BOOL   bIsAttackerBerserk;
+ bool   bKilled;
+ bool   bNormalMissileAttack;
+ bool   bIsAttackerBerserk;
  int    iKilledDice, iDamage, iWepLifeOff, iSideCondition, iMaxSuperAttack, iWeaponSkill, iComboBonus, iTemp;
  int    iAttackerHP, iMoveDamage, iRepDamage;
  char   cAttackerSA;
@@ -20891,12 +20891,12 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	}
 
 	// Centuu : Ranged Hit Fix - HB2
-	BOOL bRangedWeapon = FALSE;
+	bool bRangedWeapon = FALSE;
 	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
 		if (m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)
 			 sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 		else sWeaponIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
-		if (sWeaponIndex != -1)	{
+		if (sWeaponIndex != -1) {
 			if (m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sRelatedSkill == 6 ||
 				m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sIDnum == 845 ||
 				m_pClientList[sAttackerH]->m_pItemList[sWeaponIndex]->m_sIDnum == 1037) {
@@ -21971,7 +21971,7 @@ CAE_SKIPDAMAGEMOVE2:;
 	return iExp;
 }
 
-BOOL CGame::_bCheckCharacterData(int iClientH)
+bool CGame::_bCheckCharacterData(int iClientH)
 {
  int i;
  int iTotalPoints;
@@ -22133,7 +22133,7 @@ int CGame::iGetPlayerStatus(int iClientH, short sOwnerH)
 	return iRet;
 }
 
-BOOL CGame::bReadSettingsConfigFile(char * cFn) 
+bool CGame::bReadSettingsConfigFile(char * cFn) 
 { 
    FILE * pFile; 
    HANDLE hFile; 
@@ -24227,7 +24227,7 @@ void CGame::RequestTeleportHandler(int iClientH, char * pData, char * cMapName, 
  char  * cp, cDestMapName[11], cDir, cMapIndex, cPoints = 0;
  short * sp, sX, sY, sSummonPoints, sV1, aX, aY;
  int   * ip, i, iRet, iSize, iDestX, iDestY, iExH, iMapSide, iTemp, iTemp2, iQuestNumber, iQuestType, j;
- BOOL    bRet, bIsLockedMapNotify;
+ bool    bRet, bIsLockedMapNotify;
  SYSTEMTIME SysTime;
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -24959,7 +24959,7 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
  DWORD * dwp;
  WORD  * wp;
  int iRet, iTemp, iTemp2, i, iQuestType, iQuestNumber, j;
- BOOL bRet;
+ bool bRet;
  short sV1;
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -25266,7 +25266,7 @@ void CGame::PlayerOrder_Criticals(int iClientH)
 	else ShowClientMsg(iClientH, "Max Crits 1000 - Req 40k Gold");
 }
 
-void CGame::PlayerOrder_ChangeCity(int iClientH, BOOL bChange) 
+void CGame::PlayerOrder_ChangeCity(int iClientH, bool bChange) 
 {
 	if (m_pClientList[iClientH] == NULL) return;  
 	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft >= 1000) {
@@ -25335,7 +25335,7 @@ void CGame::ParseCommand(char * pMsg)
  char   * token, * token2; 
  class  CStrTok * pStrTok; 
  char buff[256]; 
- BOOL bFlag; 
+ bool bFlag; 
  char ss[256];
 
 	if (pMsg == NULL) return; 
@@ -25428,7 +25428,7 @@ void CGame::AdminOrder_Revive(int iClientH, char * pData, DWORD dwMsgSize)
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_PLAYERNOTONGAME, NULL, NULL, NULL, cTargetName);
 }
 
-BOOL CGame::bGetEmptyArea(short sOwnerH, char cMapIndex, short pX, short pY, char cArea)
+bool CGame::bGetEmptyArea(short sOwnerH, char cMapIndex, short pX, short pY, char cArea)
 {
 	short sAreaSquared;
 	int i;
@@ -25441,7 +25441,7 @@ BOOL CGame::bGetEmptyArea(short sOwnerH, char cMapIndex, short pX, short pY, cha
 	return TRUE;
 }
 
-BOOL CGame::bGetEmptyPosition(short* pX, short* pY, char cMapIndex)
+bool CGame::bGetEmptyPosition(short* pX, short* pY, char cMapIndex)
 {
 	int i;
 	short sX, sY;
@@ -25468,7 +25468,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 	short sX, sY, dX, dY;
 	char  cDir;
 	DWORD dwTime = timeGetTime();
-	BOOL bFly = FALSE;
+	bool bFly = FALSE;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
 	if (m_pNpcList[iNpcH]->m_cMagicEffectStatus[DEF_MAGICTYPE_HOLDOBJECT] != 0) return;
@@ -25693,7 +25693,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 				}
 				break;
 			case 14: // Ghost-Abaddon
-				switch (iDice(1, 8)) {
+				switch (iDice(1,8)) {
 				case 1: iMagicType = 96; break; // Earth Shock Wave
 				case 2: iMagicType = 93; break; // Mass Blizzard
 				case 3: iMagicType = 81; break; // Metoer Strike
@@ -25732,8 +25732,6 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 					}
 					break;
 				}
-
-
 				break;
 
 			case 11:
@@ -25791,6 +25789,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 				return;
 			}
 		}
+		
 		if ((m_pNpcList[iNpcH]->m_iAttackRange > 1) &&
 			(abs(sX - dX) <= m_pNpcList[iNpcH]->m_iAttackRange) &&
 			(abs(sY - dY) <= m_pNpcList[iNpcH]->m_iAttackRange)) {
@@ -25976,7 +25975,7 @@ void CGame::GenerateMonsterSlaves(int MapIndex, int iX, int iY, int iOrder)
 {
 	char cName[21], cNpcName[21], cNpcWaypoint[11];
 	int iNamingValue, iQtd, j;
-	BOOL bZerk;
+	bool bZerk;
 	bZerk = TRUE; // FALSE;
 	iQtd = 0;
 	ZeroMemory(cNpcWaypoint, sizeof(cNpcWaypoint));
@@ -26008,7 +26007,7 @@ void CGame::GenerateMonsterSlaves(int MapIndex, int iX, int iY, int iOrder)
 	}
 }
 
-BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability, int iMin, int iMax, short sBaseX, short sBaseY, int iItemSpreadType, int iSpreadRange, int* iItemIDs, POINT* BasePos, int* iNumItem)
+bool CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability, int iMin, int iMax, short sBaseX, short sBaseY, int iItemSpreadType, int iSpreadRange, int* iItemIDs, POINT* BasePos, int* iNumItem)
 {
 	if (m_bNpcItemConfig == TRUE) {
 
@@ -26020,7 +26019,7 @@ BOOL CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 		
 		int		iItemID = 0;
 		int		iNum = 0;
-		BOOL	bFirstDice = FALSE, bSecondDice = FALSE;
+		bool	bFirstDice = FALSE, bSecondDice = FALSE;
 
 		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {
 			if (m_pNpcConfigList[iNpcIndex] != NULL) {
@@ -26961,7 +26960,7 @@ void CGame::NpcBehavior_Flee(int iNpcH)
 	}
 }
 
-BOOL CGame::bGetNpcMovementArea(short sOwnerH, short pX, short pY, char cMapIndex, char cArea)
+bool CGame::bGetNpcMovementArea(short sOwnerH, short pX, short pY, char cMapIndex, char cArea)
 {
 	short sAreaSquared, sPositionY, sPositionX, sX, sY;
 	int i;
@@ -27086,7 +27085,7 @@ void CGame::SetWantedFlag(short sOwnerH, char cOwnerType, bool iStatus)
 	SendEventToNearClient_TypeA(sOwnerH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 }
 
-BOOL CGame::bReadTopPlayersFile(char* cFn) // MORLA 2.4 - Tops
+bool CGame::bReadTopPlayersFile(char* cFn) // MORLA 2.4 - Tops
 {
 	FILE* pFile;
 	HANDLE hFile;
@@ -27450,7 +27449,7 @@ void CGame::PlayerCommandCheckAdmins(int iClientH)
 }
 
 //Magn0S:: Added Teleport List
-BOOL CGame::bDecodeTeleportList(char *pFn)
+bool CGame::bDecodeTeleportList(char *pFn)
 {
  FILE * pFile;
  HANDLE hFile;
@@ -28026,7 +28025,7 @@ void CGame::ReceivedClientOrder(int iClientH, int iOption1, int iOption2, int iO
 	int i;
 	FILE* pFile;
 	char* token = NULL, cMsg[100] = {}, cIPtoBan[15] = {};
-	BOOL bExiste = FALSE;
+	bool bExiste = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -29863,7 +29862,7 @@ void CGame::CheckDestroyFragileItem(int iClientH)
 	CItem* item;
 	SYSTEMTIME SysTime;
 	GetLocalTime(&SysTime);
-	BOOL bFragile = FALSE;
+	bool bFragile = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -30114,7 +30113,7 @@ void CGame::CityTeleport()
 void CGame::SetClass(int iClientH)
 {
 	class CItem* pItem;
-	BOOL bArcher = FALSE;
+	bool bArcher = FALSE;
 	int iItemID, iEraseReq;
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_iStr == 14) 

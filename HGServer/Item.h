@@ -53,7 +53,7 @@ public:
 	short m_sRelatedSkill;
 	
 	char  m_cCategory;
-	BOOL  m_bIsForSale;
+	bool  m_bIsForSale;
 
 	DWORD m_dwCount;
 	short m_sTouchEffectType;
@@ -81,7 +81,7 @@ public:
 	int m_iReqStat, m_iQuantStat;
 	int m_iClass;
 
-	BOOL m_bIsHero;
+	bool m_bIsHero;
 	int m_iHeroBonus;
 };
 

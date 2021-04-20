@@ -6,7 +6,7 @@
 warning C4018: '<' : signed/unsigned mismatch
 */
 
-BOOL CALLBACK lpDialogFunc(HWND,UINT,WPARAM,LPARAM);
+bool CALLBACK lpDialogFunc(HWND,UINT,WPARAM,LPARAM);
 void DebugWindowThread();
 HWND m_DbgWnd;
 HWND m_DbgList;
@@ -34,7 +34,7 @@ void DebugWindowThread(){
 	DialogBox(GetModuleHandle(NULL),MAKEINTRESOURCE(IDD_DIALOG1),NULL,(DLGPROC)lpDialogFunc);
 }
 
-BOOL CALLBACK lpDialogFunc(HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam){
+bool CALLBACK lpDialogFunc(HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam){
 	switch(uMsg) {
 	case WM_INITDIALOG:
 		//Copy HWND's

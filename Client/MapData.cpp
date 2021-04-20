@@ -1361,7 +1361,7 @@ BOOL CMapData::bIsTeleportLoc(short sX, short sY)
 BOOL __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, int cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName, short sAction, short sV1, short sV2, short sV3, int iPreLoc, int iFrame)
 {int   iX, iY, dX, dY;
  int   iChatIndex, iAdd;
- char  cTmpName[11];
+ char  cTmpName[12];
  DWORD dwTime;
  int   iEffectType, iEffectFrame, iEffectTotalFrame;
 
@@ -4131,7 +4131,7 @@ BOOL CMapData::bSetItem(short sX, short sY, short sIDnum/*, short sItemSpr, shor
 BOOL __fastcall CMapData::bSetDeadOwner(WORD wObjectID, short sX, short sY, short sType, char cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName)
 {
  int  dX, dY;
- char pTmpName[11];
+ char pTmpName[12];
  BOOL bEraseFlag = FALSE;
 
 	ZeroMemory(pTmpName, sizeof(pTmpName));

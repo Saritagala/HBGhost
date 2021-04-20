@@ -230,7 +230,7 @@ void CMisc::GetDirPoint(char cDir, int * pX, int * pY)
 }
 
 
-BOOL CMisc::bEncode(char cKey, char *pStr)
+bool CMisc::bEncode(char cKey, char *pStr)
 {
  int i, iLen;
 
@@ -246,7 +246,7 @@ BOOL CMisc::bEncode(char cKey, char *pStr)
 }
 
 
-BOOL CMisc::bDecode(char cKey, char *pStr)
+bool CMisc::bDecode(char cKey, char *pStr)
 {
  int i, iLen;
 
@@ -262,7 +262,7 @@ BOOL CMisc::bDecode(char cKey, char *pStr)
 }
 
 
-BOOL CMisc::bCheckValidName(char *pStr)
+bool CMisc::bCheckValidName(char *pStr)
 {
  int i, iLen;
  

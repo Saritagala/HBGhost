@@ -24,47 +24,47 @@ class CMap
 public:
 
 		//Snoopy:
-	BOOL bGetIsStayAllowedTile(short dX, short dY);
-	void SetStayAllowedFlag(int dX, int dY, BOOL bFlag);
+	bool bGetIsStayAllowedTile(short dX, short dY);
+	void SetStayAllowedFlag(int dX, int dY, bool bFlag);
 	
-	BOOL bApocalypseGate();
+	bool bApocalypseGate();
 	void ClearBigOwner(short sOwnerH, char cOwnerType, short pX, short pY, char cArea);
-	BOOL bGetMoveableArea(short sOwnerH, short dX, short dY);
-	BOOL bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short * tX, short * tY);
-	BOOL bCheckFlySpaceAvailable(short sX, short sY, char cDir, short sOwner);
-	BOOL bGetIsFarm(short tX, short tY);
+	bool bGetMoveableArea(short sOwnerH, short dX, short dY);
+	bool bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short * tX, short * tY);
+	bool bCheckFlySpaceAvailable(short sX, short sY, char cDir, short sOwner);
+	bool bGetIsFarm(short tX, short tY);
 	void RestoreStrikePoints();
-	BOOL bRemoveCrusadeStructureInfo(short sX, short sY);
-	BOOL bAddCrusadeStructureInfo(char cType, short sX, short sY, char cSide);
+	bool bRemoveCrusadeStructureInfo(short sX, short sY);
+	bool bAddCrusadeStructureInfo(char cType, short sX, short sY, char cSide);
 	int iGetAttribute(int dX, int dY, int iBitMask);
 	void _SetupNoAttackArea();
 	
 	int iRegisterOccupyFlag(int dX, int dY, int iSide, int iEKNum, int iDOI);
 	int  iCheckItem(short sX, short sY);
-	void SetTempMoveAllowedFlag(int dX, int dY, BOOL bFlag);
+	void SetTempMoveAllowedFlag(int dX, int dY, bool bFlag);
 	int iAnalyze(char cType, int *pX, int *pY, int * pV1, int *pV2, int * pV3);
-	BOOL bGetIsWater(short dX, short dY);
+	bool bGetIsWater(short dX, short dY);
 	void GetDeadOwner(short * pOwner, char * pOwnerClass, short sX, short sY);
-	BOOL bGetIsMoveAllowedTile(short dX, short dY);
+	bool bGetIsMoveAllowedTile(short dX, short dY);
 	void SetNamingValueEmpty(int iValue);
 	int iGetEmptyNamingValue();
-	BOOL bGetDynamicObject(short sX, short sY, short * pType, DWORD * pRegisterTime, int * pIndex = NULL);
+	bool bGetDynamicObject(short sX, short sY, short * pType, DWORD * pRegisterTime, int * pIndex = NULL);
 	void SetDynamicObject(WORD wID, short sType, short sX, short sY, DWORD dwRegisterTime);
-	BOOL bGetIsTeleport(short dX, short dY);
-	BOOL bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int * pDy, char * pDir);
-	BOOL bInit(char * pName);
-	BOOL bIsValidLoc(short sX, short sY);
+	bool bGetIsTeleport(short dX, short dY);
+	bool bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int * pDy, char * pDir);
+	bool bInit(char * pName);
+	bool bIsValidLoc(short sX, short sY);
 	//class CItem * pGetItem(short sX, short sY, short * pRemainItemSprite, short * pRemainItemSpriteFrame, char * pRemainItemColor);
 	class CItem* pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, DWORD* pRemainItemAttr);
-	BOOL bSetItem(short sX, short sY, class CItem * pItem);
+	bool bSetItem(short sX, short sY, class CItem * pItem);
 	void ClearDeadOwner(short sX, short sY);
 	void ClearOwner(int iDebugCode, short sOwnerH, char cOwnerType, short sX, short sY);
-	BOOL bGetMoveable(short dX, short dY, short * pDOtype = NULL/*, short * pTopItem = NULL*/);
+	bool bGetMoveable(short dX, short dY, short * pDOtype = NULL/*, short * pTopItem = NULL*/);
 	void GetOwner(short * pOwner, char * pOwnerClass, short sX, short sY);
 	void SetOwner(short sOwner, char cOwnerClass, short sX, short sY);
 	void SetDeadOwner(short sOwner, char cOwnerClass, short sX, short sY);
-	BOOL bRemoveCropsTotalSum();
-	BOOL bAddCropsTotalSum();
+	bool bRemoveCropsTotalSum();
+	bool bAddCropsTotalSum();
 	void SetBigOwner(short sOwner, char cOwnerClass, short pX, short pY, char cArea);
 
 	void ClearSectorInfo();
@@ -82,13 +82,13 @@ public:
 	
 	POINT m_pInitialPoint[DEF_MAXINITIALPOINT];
 
-	BOOL  m_bNamingValueUsingStatus[15000]; //LifeX Fix Mobs Respawn Limit 01/01
-	BOOL  m_bRandomMobGenerator;
+	bool  m_bNamingValueUsingStatus[15000]; //LifeX Fix Mobs Respawn Limit 01/01
+	bool  m_bRandomMobGenerator;
 	char  m_cRandomMobGeneratorLevel;
 	int   m_iTotalActiveObject;
 	int   m_iTotalAliveObject;
 	int   m_iMaximumObject;
-	BOOL  m_bIsGateAvailable;
+	bool  m_bIsGateAvailable;
 	char  m_cType;				// 맵의 형식. 0이면 보통. 1이면 공격행위가 범죄가 아니다.
 
 
@@ -103,10 +103,10 @@ public:
 	char  m_cDynamicGateCoordDestMap[11];
 	short m_sDynamicGateCoordTgtX, m_sDynamicGateCoordTgtY;
 
-	BOOL  m_bIsFixedDayMode;	// 항상 주간모드인지: 건물 내부 등 
+	bool  m_bIsFixedDayMode;	// 항상 주간모드인지: 건물 내부 등 
 
 	struct {		    
-		BOOL bDefined;
+		bool bDefined;
 		char cType;				// 1:RANDOMAREA   2:RANDOMWAYPOINT
 		
 		char cWaypoint[10];     // RANDOMWAYPOINT 등
@@ -126,8 +126,8 @@ public:
 	RECT	m_rcDynamicGateRect[DEF_MAXDYNAMICGATE];
 	char	m_cDynamicGateDestMap[11];
 
-	BOOL m_bIsBossInMap;
-	BOOL m_bIsGateMap;
+	bool m_bIsBossInMap;
+	bool m_bIsGateMap;
 	POINT m_WaypointList[DEF_MAXWAYPOINTCFG];
 	RECT  m_rcMobGenAvoidRect[DEF_MAXMGAR];
 	RECT  m_rcNoAttackRect[DEF_MAXNMR];
@@ -137,14 +137,14 @@ public:
 	int   m_iTotalFishPoint, m_iMaxFish, m_iCurFish;
 	
 	
-	BOOL  m_bIsCitizenLimit;
+	bool  m_bIsCitizenLimit;
 	short m_sHeldenianTowerType;
 	char  m_cHeldenianTowerSide;
 	char  m_cHeldenianModeMap;
 
 	short m_sHeldenianWinningZoneX, m_sHeldenianWinningZoneY;
 
-	BOOL  m_bMineralGenerator;
+	bool  m_bMineralGenerator;
 	char  m_cMineralGeneratorLevel;
 	POINT m_MineralPointList[DEF_MAXMINERALPOINT];
 	int   m_iTotalMineralPoint, m_iMaxMineral, m_iCurMineral;
@@ -159,13 +159,13 @@ public:
 	int   m_iTotalOccupyFlags;
 	
 	class CStrategicPoint * m_pStrategicPointList[DEF_MAXSTRATEGICPOINTS];
-	BOOL  m_bIsAttackEnabled;
+	bool  m_bIsAttackEnabled;
 
 	//Magn0S:: Maps Restrictions
 	bool bMapTP = true, bMapParty = true, bMapIllusion = false, bMapActivate = true, bMapInvi = true, bMapAMP = true;
 	bool bMapRegens = true, bMapHideEnemy = false, bMapBonusDmg = false, bMapEquip = true;
 
-	BOOL  m_bIsFightZone;
+	bool  m_bIsFightZone;
 
 	struct {
 		char cType;
@@ -182,7 +182,7 @@ public:
 
 	int m_iTotalEnergySphereGoalPoint;
 
-	BOOL m_bIsEnergySphereGoalEnabled;
+	bool m_bIsEnergySphereGoalEnabled;
 	int m_iCurEnergySphereGoalPointIndex; 
 
 	struct {
@@ -232,7 +232,7 @@ public:
 	} m_stStrikePoint[DEF_MAXSTRIKEPOINTS];
 	int m_iTotalStrikePoints;
 
-	BOOL m_bIsDisabled;		// 폭격으로 기능이 마비된 경우 
+	bool m_bIsDisabled;		// 폭격으로 기능이 마비된 경우 
 	int m_iTotalAgriculture;
 
 	struct {
@@ -241,17 +241,17 @@ public:
 		short sX, sY;		// 설치된 위치 
 	} m_stCrusadeStructureInfo[DEF_MAXCRUSADESTRUCTURES];
 	int m_iTotalCrusadeStructures;
-	BOOL m_bIsEnergySphereAutoCreation;
-	BOOL m_bIsApocalypseMobSpawn;
+	bool m_bIsEnergySphereAutoCreation;
+	bool m_bIsApocalypseMobSpawn;
 
 private:
-	BOOL _bDecodeMapDataFileContents();
+	bool _bDecodeMapDataFileContents();
 public:
 	// Snow BOOLean for certain maps to snow instead of rain
-	BOOL m_bIsSnowEnabled;
-	BOOL m_bIsRecallImpossible;
-	BOOL m_bIsApocalypseMap;
-	BOOL m_bIsHeldenianMap;
+	bool m_bIsSnowEnabled;
+	bool m_bIsRecallImpossible;
+	bool m_bIsApocalypseMap;
+	bool m_bIsHeldenianMap;
 
 	char m_cThunder; //0: normal, 1:Lightning, 2: Apoc FireThunder
 };

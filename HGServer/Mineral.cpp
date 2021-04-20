@@ -37,7 +37,7 @@ CMineral::~CMineral()
 
 }
 
-BOOL CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -412,7 +412,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	char* cp, cName[21], cElementItemID[6], cColor;
 	int    i, x, z, iMatch, iCount, iPlayerSkillLevel, iResult, iTotalValue, iResultValue, iTemp, iItemCount[DEF_MAXITEMS];
 	class  CItem* pItem;
-	BOOL   bFlag, bItemFlag[6];
+	bool   bFlag, bItemFlag[6];
 	double dV1, dV2, dV3;
 	DWORD  dwTemp, dwTemp2, dwType, dwValue;
 	WORD   wTemp;

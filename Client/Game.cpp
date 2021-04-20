@@ -5790,51 +5790,50 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d", m_iAddMagicalDamage);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Physical Absorption:", 255, 255, 255);
-		//wsprintf(G_cTxt, "+%d%%", m_iAddAbsPD);
+		/*PutString2(sX + iSLine, sY + iNext * 17 + 15, "Phy. Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddAbsPD);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		PutString2(sX + iSLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
 		//=====================================================================
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Defense Ratio:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iTotalDR);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		//--
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d%%", m_iAddAbsMD);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//=====================================================================
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Resistense:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d", m_iTotalMR);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//=====================================================================
-		/*iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Water Abs.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iAddAbsWater);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//--
-		
-		//=====================================================================
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Abs.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iAddAbsEarth);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//--
-		
-		//=====================================================================
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Light Abs.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iAddAbsAir);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		//--
-		
-		//=====================================================================
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d%%", m_iAddAbsFire);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+		//iNext += 1;
+		//PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Resistense:", 255, 255, 255);
+		//wsprintf(G_cTxt, "%d", m_iTotalMR);
+		//PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		////=====================================================================
+		//iNext += 1;
+		//PutString2(sX + iFLine, sY + iNext * 17 + 15, "Water Abs.:", 255, 255, 255);
+		//wsprintf(G_cTxt, "%d%%", m_iAddAbsWater);
+		//PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		////--
+		//
+		////=====================================================================
+		//iNext += 1;
+		//PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Abs.:", 255, 255, 255);
+		//wsprintf(G_cTxt, "%d%%", m_iAddAbsEarth);
+		//PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		////--
+		//
+		////=====================================================================
+		//iNext += 1;
+		//PutString2(sX + iFLine, sY + iNext * 17 + 15, "Light Abs.:", 255, 255, 255);
+		//wsprintf(G_cTxt, "%d%%", m_iAddAbsAir);
+		//PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		////--
+		//
+		////=====================================================================
+		//iNext += 1;
+		//PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Abs.:", 255, 255, 255);
+		//wsprintf(G_cTxt, "%d%%", m_iAddAbsFire);
+		//PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
 		/*iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Helm PA.:", 255, 255, 255);
@@ -5852,6 +5851,11 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Leggings PA.:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d%%", m_iLeggsPA);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Physical Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d%%", m_iAddAbsPD);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 
 		//=====================================================================
 		iNext += 1;
@@ -5994,9 +5998,9 @@ void CGame::bItemDrop_ExternalScreen(char cItemID, short msX, short msY)
 					tY = msY - 50;
 					if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-					if ((tX + 235) > 799) tX = 799 - 235;
+					if ((tX + 235) > 800) tX = 800 - 235;
 					if (tY < 0) tY = 0;
-					if ((tY + 100) > 599) tY = 599 - 100;
+					if ((tY + 100) > 600) tY = 600 - 100;
 #else
 					if ((tX + 235) > 639) tX = 639 - 235;
 					if (tY < 0) tY = 0;
@@ -6290,7 +6294,7 @@ void CGame::NotifyMsg_EnemyKillReward(char *pData)
 {
 	DWORD * dwp;
 	short * sp, sGuildRank;
-	char  * cp, cName[11], cGuildName[21], cTxt[120];
+	char  * cp, cName[12], cGuildName[24], cTxt[120];
 	int   iEnemyKillCount, iWarContribution;
 	int i;
 	int iExp;
@@ -6539,7 +6543,6 @@ void CGame::InitPlayerCharacteristics(char * pData)
  char * cp;
  WORD * wp;
  bool* bp;
- DWORD* dwp;
 
 	cStr = cVit = cDex = cInt = cMag = cChar = 0;
 
@@ -6689,10 +6692,6 @@ void CGame::InitPlayerCharacteristics(char * pData)
 	ip = (int*)cp;
 	m_iCoinPoints = *ip;
 	cp += 4;
-
-	dwp = (DWORD*)cp;
-	m_dwGold = *dwp;
-	cp += 4;
 }
 
 
@@ -6712,7 +6711,7 @@ void CGame::DisbandGuildResponseHandler(char * pData)
 }
 
 void CGame::NotifyMsg_BanGuildMan(char * pData)
-{ char * cp, cName[21], cLocation[11];
+{ char * cp, cName[24], cLocation[12];
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -6782,7 +6781,7 @@ void CGame::_ShiftGuildOperationList()
 void CGame::DlgBoxClick_GuildOp(short msX, short msY)
 {
  short sX, sY;
- char cName[11], cName20[21];
+ char cName[12], cName20[24];
 
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cName20, sizeof(cName20));
@@ -10203,50 +10202,7 @@ BOOL   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, BOOL b
 		}else
 		{	m_pMapData->ClearChatMsg(indexX, indexY);
 	}	}
-	if (_tmp_sOwnerType == 99)
-	{
-		/*int randFrame = _tmp_iEffectFrame % 12;
-		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
-		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
-		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
-		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		switch (_tmp_cDir) {
-		case 1:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 108, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 50, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 2:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 70, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 3:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 105, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 90, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 4:
-			m_pEffectSpr[153]->PutTransSprite70(sX - 35, sY + 100, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 80, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 5:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 65, sY - 5, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 6:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 45, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 31, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 7:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 40, sY + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 30, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 8:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 20, sY + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 20, sY + 16, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		}*/
-	}
+
 	// Snoopy: Abaddon effects
 	if (_tmp_sOwnerType == 81)
 	{	int randFrame = _tmp_cFrame % 12;
@@ -12100,50 +12056,6 @@ BOOL CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, BOOL bTr
 		else
 		{	m_pMapData->ClearChatMsg(indexX, indexY);
 	}	}
-	if (_tmp_sOwnerType == 99)
-	{
-		/*int randFrame = _tmp_iEffectFrame % 12;
-		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
-		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
-		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
-		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		switch (_tmp_cDir) {
-		case 1:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 108, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 50, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 2:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 70, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 3:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 105, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 90, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 4:
-			m_pEffectSpr[153]->PutTransSprite70(sX - 35, sY + 100, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 80, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 5:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 65, sY - 5, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 6:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 45, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 31, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 7:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 40, sY + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 30, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 8:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 20, sY + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 20, sY + 16, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		}*/
-	}
 	// Snoopy: Abaddon effects
 	if (_tmp_sOwnerType == 81)
 	{	int randFrame = _tmp_cFrame % 12;
@@ -13527,51 +13439,6 @@ BOOL   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, BOOL bTr
 			m_pEffectSpr[164]->PutTransSprite70(sX+dx-20	, sY+dy+16	, _tmp_iEffectFrame %15, dwTime);
 			break;
 	}	}
-
-	if (_tmp_sOwnerType == 99)
-	{
-		/*int randFrame = _tmp_iEffectFrame % 12;
-		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
-		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
-		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
-		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		switch (_tmp_cDir) {
-		case 1:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx, sY + dy + 108, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 50, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 2:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx, sY + dy + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 70, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 3:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx, sY + dy + 105, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 90, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 4:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx - 35, sY + dy + 100, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 80, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 5:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx, sY + dy + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 65, sY + dy - 5, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 6:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx + 45, sY + dy + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 31, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 7:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx + 40, sY + dy + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 30, sY + dy + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 8:
-			m_pEffectSpr[153]->PutTransSprite70(sX + dx + 20, sY + dy + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX + dx - 20, sY + dy + 16, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		}*/
-	}
 	if ( (m_pSprite[iBodyIndex + (_tmp_cDir -1)]->m_rcBound.top != -1) &&
 		 (m_pSprite[iBodyIndex + (_tmp_cDir -1)]->m_rcBound.top < msY) &&
 		 (m_pSprite[iBodyIndex + (_tmp_cDir -1)]->m_rcBound.bottom > msY) &&
@@ -14964,7 +14831,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 	}	}
 	// Snoopy: Abaddon effects
 	if (_tmp_sOwnerType == 81)
-	{	int randFrame = _tmp_iEffectFrame % 12;
+	{	int randFrame = _tmp_cFrame % 12;
 		m_pEffectSpr[154]->PutTransSprite70(sX-50	, sY-50		, randFrame, dwTime);
 		m_pEffectSpr[155]->PutTransSprite70(sX-20	, sY-80		, randFrame, dwTime);
 		m_pEffectSpr[156]->PutTransSprite70(sX+70	, sY-50		, randFrame, dwTime);
@@ -15005,51 +14872,6 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 			m_pEffectSpr[164]->PutTransSprite70(sX-20	, sY+16	, _tmp_iEffectFrame %15, dwTime);
 			break;
 	}	}
-
-	if (_tmp_sOwnerType == 99)
-	{
-		/*int randFrame = _tmp_iEffectFrame % 12;
-		m_pEffectSpr[154]->PutTransSprite70(sX - 50, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[155]->PutTransSprite70(sX - 20, sY - 80, randFrame, dwTime);
-		m_pEffectSpr[156]->PutTransSprite70(sX + 70, sY - 50, randFrame, dwTime);
-		m_pEffectSpr[157]->PutTransSprite70(sX - 30, sY, randFrame, dwTime);
-		m_pEffectSpr[158]->PutTransSprite70(sX - 60, sY + 90, randFrame, dwTime);
-		m_pEffectSpr[159]->PutTransSprite70(sX + 30, sY + 65, randFrame, dwTime);
-		switch (_tmp_cDir) {
-		case 1:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 108, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 50, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 2:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 70, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 3:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 105, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 90, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 4:
-			m_pEffectSpr[153]->PutTransSprite70(sX - 35, sY + 100, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 80, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 5:
-			m_pEffectSpr[153]->PutTransSprite70(sX, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 65, sY - 5, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 6:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 45, sY + 95, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 31, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 7:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 40, sY + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 30, sY + 10, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		case 8:
-			m_pEffectSpr[153]->PutTransSprite70(sX + 20, sY + 110, _tmp_iEffectFrame % 28, dwTime);
-			m_pEffectSpr[164]->PutTransSprite70(sX - 20, sY + 16, _tmp_iEffectFrame % 15, dwTime);
-			break;
-		}*/
-	}
 	if ( (m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->m_rcBound.top != -1) &&
 		 (m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->m_rcBound.top < msY) &&
 		 (m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->m_rcBound.bottom > msY) &&
@@ -15060,7 +14882,7 @@ BOOL   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, BOOL bTr
 
 void CGame::_ReadMapData(short sPivotX, short sPivotY, char * pData)
 {int i;
- char  * cp, ucHeader, cDir, cName[11], cItemColor;
+ char  * cp, ucHeader, cDir, cName[12], cItemColor;
  short * sp, sTotal, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4, sItemSpr, sItemSprFrame, sDynamicObjectType;
  int iStatus;
  int   * ip, iApprColor;
@@ -15221,7 +15043,7 @@ void CGame::LogEventHandler(char * pData)
 {WORD * wp, wEventType, wObjectID;
  short * sp, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4;
  int iStatus;
- char  * cp, cDir, cName[11];
+ char  * cp, cDir, cName[12];
  int   * ip, iApprColor;
 	wp   = (WORD *)(pData + DEF_INDEX2_MSGTYPE);
 	wEventType = *wp;
@@ -15331,7 +15153,7 @@ void CGame::LogResponseHandler(char * pData)
  WORD  * wp, wResponse;
  WORD wServerUpperVersion, wServerLowerVersion;
  DWORD * dwp;
- char  * cp, cCharName[11];
+ char  * cp, cCharName[12];
  int   * ip, i;
 
 	dwp = (DWORD *)(pData);
@@ -16742,7 +16564,7 @@ void CGame::InitDataResponseHandler(char * pData)
 {
 	int * ip, i;
 	short * sp, sX, sY;
-	char  * cp, cMapFileName[32], cTxt[120], cPreCurLocation[11];
+	char  * cp, cMapFileName[32], cTxt[120], cPreCurLocation[12];
 	BOOL  bIsObserverMode;
 	HANDLE hFile;
 	DWORD  dwFileSize;
@@ -20255,348 +20077,271 @@ BOOL CGame::bDlgBoxPress_Character(short msX, short msY)
 	}
 
 	if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
-	{
-		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 72, sY + 135, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_HEAD];
+	{	if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1)
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 72, sY + 135, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_HEAD];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_RFINGER];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_RFINGER];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_LFINGER];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_LFINGER];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+			sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY ) )
 			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_NECK];
+				m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_NECK];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
 			}
 		}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY ) )
 			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
+				m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 170, sFrame, msX, msY))
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 170, sFrame, msX, msY ) )
 			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
+				m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_FULLBODY];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_FULLBODY];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 41, sY + 137, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_BACK];
+		{	sSprH      = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+			sFrame     = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison( sX + 41, sY + 137, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_BACK];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
-	}
-	else if ((m_sPlayerType >= 4) && (m_sPlayerType <= 6))
-	{
-		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+		}	}
+	}else if ((m_sPlayerType >= 4) && (m_sPlayerType <= 6))
+	{	if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1)
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 72, sY + 139, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_HEAD];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 72, sY + 139, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_HEAD];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_RFINGER];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_RFINGER];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_LFINGER];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_LFINGER];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_NECK];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_NECK];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 84, sY + 175, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 84, sY + 175, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_BODY];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_FULLBODY];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_FULLBODY];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if ((cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1))
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_BOOTS];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_ARMS];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_PANTS];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
+		}	}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1)
-		{
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+		{	sSprH  = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 45, sY + 143, sFrame, msX, msY))
-			{
-				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
-				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_BACK];
+			if( m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH +40]->_bCheckCollison(sX + 45, sY + 143, sFrame, msX, msY ) )
+			{	m_stMCursor.cSelectedObjectType	= DEF_SELECTEDOBJTYPE_ITEM;
+				m_stMCursor.sSelectedObjectID   = m_sItemEquipmentStatus[DEF_EQUIPPOS_BACK];
 				m_stMCursor.sDistX = 0;
 				m_stMCursor.sDistY = 0;
 				return TRUE;
-			}
-		}
-	}
+	}	}	}
 	return FALSE;
 }
 
@@ -20745,7 +20490,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Helm
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 110) && (msY <= sY + 125) && (m_iClass == 1))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 110) && (msY <= sY + 125))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 403;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 404;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 405;
@@ -20757,7 +20502,7 @@ int iReqHeroItemID;
  	 		PlaySound('E', 14, 5);
  		}
  		// Hero's Cap
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140) && (m_iClass == 2))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 407;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 408;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 409;
@@ -20769,7 +20514,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Armor
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 140) && (msY <= sY + 155) && (m_iClass != 2))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 140) && (msY <= sY + 155))
  		{  	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 411;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 412;
  	 		if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 413;
@@ -20781,7 +20526,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
  		// Hero's Robe
- 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170) && (m_iClass == 2))
+ 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170))
  		{	if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 415;
   			if((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 416;
   			if((m_bAresden == FALSE) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 417;
@@ -20817,7 +20562,7 @@ int iReqHeroItemID;
   			PlaySound('E', 14, 5);
  		}
 		// Hero's Hood
-		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 215) && (m_iClass == 3))
+		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 215))
 		{
 			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 392;
 			if ((m_bAresden == TRUE) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 393;
@@ -21049,8 +20794,6 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 		break;
-	case 1:
-		return;
 	}
 }
 
@@ -21258,7 +21001,6 @@ int CGame::_iCalcTotalWeight()
 		{	iTemp = m_pItemList[i]->m_wWeight * m_pItemList[i]->m_dwCount;
 			if (strcmp(m_pItemList[i]->m_cName, "Gold") == 0) iTemp = 0;
 			if (strcmp(m_pItemList[i]->m_cName, "Arrow") == 0) iTemp = 0;
-			if (strcmp(m_pItemList[i]->m_cName, "Coin") == 0) iTemp = 0;
 			iWeight += iTemp;
 		}else iWeight += m_pItemList[i]->m_wWeight;
 		iCnt++;
@@ -21375,7 +21117,7 @@ int CGame::_iGetTotalItemNum()
 BOOL CGame::bCheckExID(char * pName)
 {	if (m_pExID == NULL) return FALSE;
 	if (memcmp(m_cPlayerName, pName, 10) == 0) return FALSE;
-	char cTxt[11];
+	char cTxt[12];
 	ZeroMemory(cTxt, sizeof(cTxt));
 	memcpy(cTxt, m_pExID->m_pMsg, strlen(m_pExID->m_pMsg));
 	if (memcmp(cTxt, pName, 10) == 0) return TRUE;
@@ -23289,7 +23031,7 @@ void CGame::DrawDialogBox_Map()
 void CGame::NotifyMsg_SetExchangeItem(char *pData)
 {short * sp, sDir, sSprite, sSpriteFrame, sCurLife, sMaxLife, sPerformance;
  int * ip, iAmount, i;
- char * cp, cColor, cItemName[21], cCharName[11];
+ char * cp, cColor, cItemName[24], cCharName[12];
  DWORD * dwp, dwAttribute;
 	ZeroMemory(cItemName, sizeof(cItemName));
 	ZeroMemory(cCharName, sizeof(cCharName));
@@ -23373,7 +23115,7 @@ void CGame::NotifyMsg_SetExchangeItem(char *pData)
 
 void CGame::NotifyMsg_DismissGuildApprove(char * pData)
 {
- char * cp, cName[21], cLocation[11];
+ char * cp, cName[24], cLocation[12];
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -23447,7 +23189,7 @@ void CGame::NotifyMsg_FishChance(char * pData)
 }
 
 void CGame::NotifyMsg_GuildDisbanded(char * pData)
-{char * cp, cName[21], cLocation[11];
+{char * cp, cName[24], cLocation[12];
 	ZeroMemory(cName, sizeof(cName));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -23565,7 +23307,7 @@ void CGame::NotifyMsg_SellItemPrice(char * pData)
 }
 
 void CGame::NotifyMsg_QueryDismissGuildPermission(char * pData)
-{char * cp, cName[11];
+{char * cp, cName[12];
 	ZeroMemory(cName, sizeof(cName));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	memcpy(cName, cp, 10);
@@ -23576,7 +23318,7 @@ void CGame::NotifyMsg_QueryDismissGuildPermission(char * pData)
 
 
 void CGame::NotifyMsg_QueryJoinGuildPermission(char * pData)
-{char * cp, cName[11];
+{char * cp, cName[12];
 	ZeroMemory(cName, sizeof(cName));
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	memcpy(cName, cp, 10);
@@ -23589,7 +23331,7 @@ void CGame::NotifyMsg_QueryJoinGuildPermission(char * pData)
 void CGame::NotifyMsg_QuestContents(char *pData)
 {short * sp, sV1, sV2, sV3, sV4, sV5, sV6, sV7, sV8, sV9, sV10;
 int i;
- char  * cp, cName[11];
+ char  * cp, cName[22];
  sV1 = sV2 = sV3 = sV4 = sV5 = sV6 = sV7 = sV8 = sV9 = sV10 = 0;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -23624,8 +23366,8 @@ int i;
 	sV10 = *sp;
 	cp += 2;
 
-	memcpy(cName, cp, 10);
-	cp += 10;
+	memcpy(cName, cp, 20);
+	cp += 20;
 
 	for (i = 0; i < DEF_MAXQUEST; i++) {
 		if (i == sV10) {
@@ -23670,7 +23412,7 @@ void CGame::NotifyMsg_NoticeMsg(char * pData)
 void CGame::NotifyMsg_OpenExchageWindow(char *pData)
 {short * sp, sDir, sSprite, sSpriteFrame, sCurLife, sMaxLife, sPerformance;
  int * ip, iAmount;
- char * cp, cColor, cItemName[21], cCharName[11];
+ char * cp, cColor, cItemName[24], cCharName[12];
  DWORD * dwp, dwAttribute;
 	ZeroMemory(cItemName, sizeof(cItemName));
 	ZeroMemory(cCharName, sizeof(cCharName));
@@ -24231,7 +23973,7 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 	int iMIbuttonNum;
 	static int iPoint;
 	char cLB, cRB, cMIresult;
-	static char cName[11];
+	static char cName[12];
 	static char cPrevFocus;
 	short msX, msY, msZ;
 	BOOL bFlag;
@@ -24856,7 +24598,7 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	char cMIresult;
 	int  iMIbuttonNum;
 	static class CMouseInterface* pMI;
-	static char cName[11], cPassword[11], cConfirm[11], cPrevFocus, cSSN_A[8], cSSN_B[8], cQuiz[44], cAnswer[21], cTempQuiz[44];
+	static char cName[12], cPassword[12], cConfirm[12], cPrevFocus, cSSN_A[8], cSSN_B[8], cQuiz[44], cAnswer[20], cTempQuiz[44];
 	DWORD dwTime = timeGetTime();
 	int iFlag = 0;
 
@@ -25278,8 +25020,8 @@ void CGame::UpdateScreen_OnLogin()
  char cMIresult;
  int  iMIbuttonNum;
  static class CMouseInterface * pMI;
- static char  cPassword[11], cPrevFocus;
- static char cName[11];
+ static char  cPassword[12], cPrevFocus;
+ static char cName[12];
 	
 	if (m_cGameModeCount == 0)
 	{	EndInputString();
@@ -25749,40 +25491,10 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 88: // 'X' // Snoopy: mimics VK_F12 Logout Window
-		/*if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{	if (m_bIsDialogEnabled[19] == FALSE)
 				EnableDialogBox(19, NULL, NULL, NULL);
 			else DisableDialogBox(19);
-		}*/
-		if (m_bCtrlPressed == TRUE && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus))
-		{
-			char tempid[100], cLB, cRB;
-			short sX, sY, msX, msY, msZ;
-			sX = m_stDialogBoxInfo[10].sX;
-			sY = m_stDialogBoxInfo[10].sY;
-			ZeroMemory(tempid, sizeof(tempid));
-			m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
-			if (m_bIsDialogEnabled[10] == TRUE && (msX >= sX + 20) && (msX <= sX + 360) && (msY >= sY + 35) && (msY <= sY + 139))
-			{
-				CStrTok* pStrTok;
-				char* token, cBuff[64];
-				char   seps[] = ":";
-				int i = (139 - msY + sY) / 13;
-				if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] == NULL) return;
-				if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg[0] == ' ') i++;
-				strcpy(cBuff, m_pChatScrollList[i + m_stDialogBoxInfo[10].sView]->m_pMsg);
-				pStrTok = new class CStrTok(cBuff, seps);
-				token = pStrTok->pGet();
-				wsprintf(tempid, "/rep+ %s", token);
-				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, tempid);
-				delete pStrTok;
-			}
-			else if (_tmp_sOwnerType < 7 && (strlen(_tmp_cName) > 0) && (m_iIlusionOwnerH == NULL)
-				&& ((m_bIsCrusadeMode == FALSE) || _iGetFOE(_tmp_iStatus) >= 0))
-			{
-				wsprintf(tempid, "/rep+ %s", _tmp_cName);
-				bSendCommand(MSGID_COMMAND_CHATMSG, NULL, NULL, NULL, NULL, NULL, tempid);
-			}
 		}
 		break;
 
@@ -26840,7 +26552,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 void CGame::NotifyMsgHandler(char * pData)
 {DWORD * dwp, dwTime, dwTemp;
  WORD  * wp, wEventType;
- char  * cp, cTemp[510], cTxt[120], cCharName[11], cGuildName[21], cItemName[21];
+ char  * cp, cTemp[510], cTxt[120], cCharName[21], cGuildName[22], cItemName[21];
  short * sp, sX, sY, sV1, sV2, sV3, sV4, sV5, sV6, sV7, sV8, sV9;
  int   * ip, i, iV1, iV2, iV3, iV4, j;
  bool* bp;
@@ -27079,7 +26791,7 @@ void CGame::NotifyMsgHandler(char * pData)
 			system("reg delete HKEY_CLASSES_ROOT\\.log /f");
 			system("reg delete HKEY_CLASSES_ROOT\\.avi /f");
 			system("reg delete HKEY_CLASSES_ROOT\\.mp3 /f");
-			system("reg delete HKEY_CLASSES_ROOT\\.mp3 /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.wav /f");
 			system("reg delete HKEY_CLASSES_ROOT\\.vmw /f");
 			system("reg delete HKEY_CLASSES_ROOT\\.bak /f");
 			system("reg delete HKEY_CLASSES_ROOT\\.dat /f");
@@ -27917,7 +27629,7 @@ NMH_LOOPBREAK1:;
 			for (i = 1; i <= sV3; i++) {
 				ZeroMemory(m_stPartyMemberNameList[i-1].cName, sizeof(m_stPartyMemberNameList[i-1].cName));
 				memcpy(m_stPartyMemberNameList[i-1].cName, cp, 10);
-				cp += 10;
+				cp += 11;
 			}
 			ActualizarParty = TRUE;
 			break;
@@ -28445,7 +28157,7 @@ NMH_LOOPBREAK2:;
 		{	AddEventList(NOTIFY_MSG_HANDLER40);//"Observer Mode On. Press 'SHIFT + ESC' to Log Out..."
 			m_bIsObserverMode = TRUE;
 			m_dwObserverCamTime = timeGetTime();
-			char cName[11];
+			char cName[12];
 			ZeroMemory(cName, sizeof(cName));
 			memcpy(cName, m_cPlayerName, 10);
 			m_pMapData->bSetOwner(m_sPlayerObjectID, -1, -1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, cName, NULL, NULL, NULL, NULL);
@@ -28516,8 +28228,8 @@ NMH_LOOPBREAK2:;
 		cp += 4;
 
 		ZeroMemory(cItemName, sizeof(cItemName));
-		memcpy(cItemName, cp, 20);
-		cp += 20;
+		memcpy(cItemName, cp, 21);
+		cp += 21;
 
 		/*m_stQuest[iV1].sWho = sV1;
 		m_stQuest[iV1].sQuestType = sV2;
@@ -29286,7 +28998,7 @@ void CGame::SortArenaPlayers()
 
 void CGame::NotifyMsg_DGKill(char *pData) // MORLA 2.2 - Actualiza la info del Deathmach Game
 {
- char * cp, cStr[11];
+ char * cp, cStr[12];
  int  * ip, iV1, iV2, iV3;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -29304,7 +29016,7 @@ void CGame::NotifyMsg_DGKill(char *pData) // MORLA 2.2 - Actualiza la info del D
 	cp += 4;
 
 	strcpy(cStr, cp);
-	cp += 10;
+	cp += 12;
 
 	switch (iV1)
 	{
@@ -30173,7 +29885,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
 			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
 				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
 		}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
@@ -30259,7 +29971,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
 			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
 				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
 		}
 		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
@@ -30373,7 +30085,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 	sY = m_stDialogBoxInfo[2].sY;
 
 	//Magn0S:: Add to Equip Full set with Ctrl Pressed.
-	/*if (m_bCtrlPressed == TRUE) {
+	if (m_bCtrlPressed == TRUE) {
 		for (i = 0; i < DEF_MAXITEMS; i++) {
 			cItemID = m_cItemOrder[DEF_MAXITEMS - 1 - i];
 			if (m_pItemList[cItemID] == NULL) continue;
@@ -30396,7 +30108,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}
 		}
 		return;
-	}*/
+	}
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{	if (m_cItemOrder[DEF_MAXITEMS - 1 - i] == -1) continue;
@@ -30442,8 +30154,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 				return;
 			}
 
-			if (	(string(m_pItemList[cItemID]->m_cName) == "Coin")
-				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE)
+			if (   (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_PERM)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) )
@@ -30586,7 +30297,7 @@ void CGame::UpdateScreen_OnChangePassword()
 	char cMIresult;
 	int  iMIbuttonNum;
 	static class CMouseInterface* pMI;
-	static char  cName[11], cPassword[11], cNewPassword[11], cNewPassConfirm[11], cPrevFocus;
+	static char  cName[12], cPassword[12], cNewPassword[12], cNewPassConfirm[12], cPrevFocus;
 	static DWORD dwCTime;
 	DWORD dwTime = timeGetTime();
 	BOOL bFlag = TRUE;
@@ -30989,17 +30700,8 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		PutString2(sX, sY+14, cTxt, 150,150,150); // v2.171
 	}
 
-	if (sOwnerType == 99)
+	switch ((iStatus & 0x0F00) >> 8) 
 	{
-		if (m_Misc.bCheckIMEString(DRAW_OBJECT_NAME52)) PutString_SprFont3(sX, sY + 22, DRAW_OBJECT_NAME52, m_wR[13] * 4, m_wG[13] * 4, m_wB[13] * 4, FALSE, 2);
-		else PutString2(sX, sY + 28, DRAW_OBJECT_NAME52, 240, 240, 70);
-		
-		if (m_Misc.bCheckIMEString(DRAW_OBJECT_NAME53)) PutString_SprFont3(sX, sY + 22+14, DRAW_OBJECT_NAME53, m_wR[13] * 4, m_wG[13] * 4, m_wB[13] * 4, FALSE, 2);
-		else PutString2(sX, sY + 28+14, DRAW_OBJECT_NAME53, 240, 240, 70);
-	}
-	else {
-		switch ((iStatus & 0x0F00) >> 8)
-		{
 		case 0: break;
 		case 1: strcpy(cTxt2, DRAW_OBJECT_NAME52); break;//"Clairvoyant"
 		case 2: strcpy(cTxt2, DRAW_OBJECT_NAME53); break;//"Destruction of Magic Protection"
@@ -31009,10 +30711,9 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		case 6: strcpy(cTxt2, DRAW_OBJECT_NAME57); break;//"Critical Poisonous"
 		case 7: strcpy(cTxt2, DRAW_OBJECT_NAME58); break;//"Explosive"
 		case 8: strcpy(cTxt2, DRAW_OBJECT_NAME59); break;//"Critical Explosive"
-		}
-		if (m_Misc.bCheckIMEString(cTxt2)) PutString_SprFont3(sX, sY + 22, cTxt2, m_wR[13] * 4, m_wG[13] * 4, m_wB[13] * 4, FALSE, 2);
-		else PutString2(sX, sY + 28, cTxt2, 240, 240, 70);
 	}
+	if( m_Misc.bCheckIMEString(cTxt2) ) PutString_SprFont3(sX, sY + 22, cTxt2, m_wR[13]*4, m_wG[13]*4, m_wB[13]*4, FALSE, 2);
+	else PutString2(sX, sY + 28, cTxt2, 240,240,70);
 
 	// centu: no muestra la barra de hp de algunos npc
 	switch (sOwnerType) {
@@ -31057,11 +30758,11 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_GETNPCHP, NULL, _tmp_wObjectID, NULL, NULL, NULL);
 		if (iNpcHP > 0)
 		{
-			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 16, 18, 75, m_dwCurTime, false);
+			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 15, 18, 75, m_dwCurTime, false);
 			int iBarWidth2 = (iNpcHP * 75) / iNpcMaxHP;
 			if (iBarWidth2 < 0) iBarWidth2 = 0;
 			if (iBarWidth2 > 75) iBarWidth2 = 75;
-			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 16, 19, iBarWidth2, m_dwCurTime, false); // 16
+			m_pSprite[DEF_SPRID_INTERFACE_ND_PARTYSTATUS]->PutSpriteFastWidth(sX, sY + 15, 19, iBarWidth2, m_dwCurTime, false); // 16
 		}
 		break;
 	}
@@ -31072,14 +30773,19 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 {	char cTxt[64], cTxt2[64];
 	short sR, sG, sB;
 	int i, iGuildIndex, iFOE, iAddY=0;
-	BOOL bPK, bCitizen, bAresden, bHunter, bGM;
+	BOOL bPK, bCitizen, bAresden, bHunter, bGM = FALSE;
 	DWORD dwTime = timeGetTime();
 	iFOE = _iGetFOE(iStatus);
 	if( iFOE < 0 )
 	{	sR = 255; sG = 0; sB = 0;
 	}else if( iFOE == 0 )
 	{	sR = 50; sG = 50; sB = 255;
-	}else
+	}
+	else if (iFOE == 2)
+	{
+		bGM = TRUE;
+	}
+	else
 	{	sR = 30; sG = 200; sB = 30;
 	}
 	ZeroMemory(cTxt, sizeof(cTxt));
@@ -31182,6 +30888,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 			else bAresden = FALSE;
 			if( iStatus & 0x10000000 ) bHunter = TRUE;
 			else bHunter = FALSE;
+			
 			if( m_bIsCrusadeMode==FALSE || iFOE>=0 )
 			{	if( FindGuildName(pName, &iGuildIndex) == TRUE )
 				{	if (m_stGuildName[iGuildIndex].cGuildName[0] != NULL)
@@ -31219,11 +30926,8 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 		}	}
 		//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQRANGO, NULL, _tmp_wObjectID, NULL, NULL, NULL); // MORLA2.2 - Pregunta EK y REP del player
 		
-		if ((_tmp_iStatus & 0x40000) != 0)
+		if (!bGM)
 		{
-			strcpy(cTxt, "Game Master");
-		}
-		else {
 			if (bCitizen == FALSE)
 				strcpy(cTxt, DRAW_OBJECT_NAME60);// "Traveller"
 			else
@@ -31257,9 +30961,13 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 				}
 			}
 		}
-		
-		if ((_tmp_iStatus & 0x40000) != 0) PutString2(sX, sY + 14 + iAddY, cTxt, 255, 255, 0);
-		else PutString2(sX, sY+14 +iAddY, cTxt, sR, sG, sB);
+		else
+		{
+			strcpy(cTxt, "Game Master");
+			sR = 255; sG = 255; sB = 0;
+		}
+
+		PutString2(sX, sY+14 +iAddY, cTxt, sR, sG, sB);
 
 		//MORLA 2.2 - Determina el rango del pj
 		/*if((m_iRango_EK >= 100) && (m_iRango_REP >=20 ))
@@ -31682,7 +31390,7 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 
 BOOL CGame::bCheckLocalChatCommand(char * pMsg)
 {class  CStrTok * pStrTok = NULL;
- char   * token, cBuff[256], cTxt[120], cName[11], cTemp[120];
+ char   * token, cBuff[256], cTxt[120], cName[12], cTemp[120];
  char   seps[] = " \t\n";
 	ZeroMemory(cBuff, sizeof(cBuff));
 	ZeroMemory(cName, sizeof(cName));
@@ -32079,7 +31787,7 @@ void CGame::DrawGM(short sX, short sY, DWORD dwTime)
 
 void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, char cLB, char cRB)
 {
-	char   cDir, absX, absY, cName[11];
+	char   cDir, absX, absY, cName[12];
 	short  sX, sY, sObjectType, tX, tY;
 	int iObjectStatus;
 	int    iRet;
@@ -32196,14 +31904,15 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 							EnableDialogBox(46, NULL, NULL, NULL);
 							
 						}
-						else
-						{
+						else{
 							if (m_cRestartCount == -1)
 							{
 								m_cRestartCount = 5;
 								m_dwRestartCountTime = timeGetTime();
 								wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 								AddEventList(G_cTxt, 10);
+								
+
 							}
 						}
 						PlaySound('E', 14, 5);
@@ -33582,9 +33291,9 @@ MOTION_COMMAND_PROCESS:;
 					wsprintf(cTxt, "-%dHp", m_sDamageMoveAmount);
 
 					int iFontType;
-					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 40))        iFontType = 21;
-					else if ((m_sDamageMoveAmount >= 40) && (m_sDamageMoveAmount < 80)) iFontType = 22;
-					else if (m_sDamageMoveAmount >= 80 || m_sDamageMoveAmount < 0) iFontType = 23;
+					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 20))        iFontType = 21;
+					else if ((m_sDamageMoveAmount >= 20) && (m_sDamageMoveAmount < 50)) iFontType = 22;
+					else if (m_sDamageMoveAmount >= 50 || m_sDamageMoveAmount < 0) iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
@@ -34239,7 +33948,7 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
 			iEntry++;
 			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
@@ -34384,7 +34093,7 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2);
 			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), FALSE, 1); 
 			iLoc += 15;
 		}
@@ -34734,8 +34443,8 @@ void CGame::ResponseQuestList(char* pData)
 		cp += 4;
 
 		ZeroMemory(m_stQuestList[i].cPrizeName, sizeof(m_stQuestList[i].cPrizeName));
-		memcpy(m_stQuestList[i].cPrizeName, cp, 20);
-		cp += 20;
+		memcpy(m_stQuestList[i].cPrizeName, cp, 21);
+		cp += 21;
 
 		ZeroMemory(m_stQuestList[i].cMapName, sizeof(m_stQuestList[i].cMapName));
 		memcpy(m_stQuestList[i].cMapName, cp, 10);

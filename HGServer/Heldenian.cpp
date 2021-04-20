@@ -45,11 +45,11 @@ void CGame::_CheckStrategicPointOccupyStatus(char cMapIndex)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::__bSetOccupyFlag(char cMapIndex,int dX,int dY,int iSide,int iEKNum,int iClientH,BOOL bAutoFlag)		**
+**  bool CGame::__bSetOccupyFlag(char cMapIndex,int dX,int dY,int iSide,int iEKNum,int iClientH,bool bAutoFlag)		**
 **  description		:: A player has used a Flag during Heldenian event...        									**
 **	Called when player sets a flag, or at Heldenian Type 2 beginning												**
 *********************************************************************************************************************/
-BOOL CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKNum, int iClientH, BOOL bAutoFlag)
+bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKNum, int iClientH, bool bAutoFlag)
 {
 	int ix, iy;
 	int   iDynamicObjectIndex, iIndex;
@@ -199,7 +199,7 @@ BOOL CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::GetOccupyFlagHandler(int iClientH)																	**
+**  bool CGame::GetOccupyFlagHandler(int iClientH)																	**
 **  description		:: Buy the occupy Flag from commander										       				**
 *********************************************************************************************************************/
 void CGame::GetOccupyFlagHandler(int iClientH)
@@ -368,7 +368,7 @@ int CGame::_iComposeFlagStatusContents(char* pData)
 	return strlen(pData);
 }
 
-BOOL CGame::_bDecodeOccupyFlagSaveFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeOccupyFlagSaveFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token;
 	char seps[] = "= \t\n";
@@ -664,7 +664,7 @@ void CGame::LocalEndHeldenianMode(DWORD dwHeldenianGUID, int iWinner)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::RemoveOccupyFlags(int iMapIndex)																	**
+**  bool CGame::RemoveOccupyFlags(int iMapIndex)																	**
 **  description		:: Removes all occupy flags from given map										       			**
 **             		:: 																								**
 **	Called at Heldenian begin and Heldenian end...																	**
@@ -753,20 +753,20 @@ void CGame::_CreateHeldenianGUID(DWORD dwHeldenianGUID, int iWinnerSide)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bCheckHeldenianMap(int sAttackerH, int iMapIndex, char cType)										**
+**  bool CGame::bCheckHeldenianMap(int sAttackerH, int iMapIndex, char cType)										**
 **  description			:: checks if the player is in the specified map												**
 **  last updated		:: November 22, 2004; 6:19 PM; Hypnotoad													**
-**	return value		:: BOOL																						**
+**	return value		:: bool																						**
 **  commentary			::	-	translated from scratch using IDA Pro												**
 **						::	-	changed pTile->m_cOwner to m_iOccupyStatus											**
 **						::	-	added check to prevent access violation if pTile == NULL							**
 **						::	-	removed 4 return(s) after "iRet = 1;" and placed at end								**
 *********************************************************************************************************************/
-BOOL CGame::bCheckHeldenianMap(int sAttackerH, char cType)
+bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 {
 	if (m_bHeldenianWarInitiated == FALSE) return FALSE;
 	short tX, tY;
-	BOOL iRet;
+	bool iRet;
 	int  iMapIndex;
 	class CTile* pTile;
 	iRet = FALSE;
@@ -838,7 +838,7 @@ BOOL CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::RequestHeldenianTeleportList(int iClientH, char * pData, DWORD dwMsgSize)							**
+**  bool CGame::RequestHeldenianTeleportList(int iClientH, char * pData, DWORD dwMsgSize)							**
 **  description		:: A player requested to go Heldenian maps...										 			**
 *********************************************************************************************************************/
 void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, DWORD dwMsgSize)
@@ -1009,7 +1009,7 @@ void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, DWORD dwMsgS
 	}
 }
 /*********************************************************************************************************************
-**  BOOL CGame::RequestHeldenianTeleportNow(int iClientH, char * pData, DWORD dwMsgSize)							**
+**  bool CGame::RequestHeldenianTeleportNow(int iClientH, char * pData, DWORD dwMsgSize)							**
 **  description		:: Suposed to be free TP to ML for heldenian winners								 			**
 **  TP is available from Gail, here, but winner TP is also available at CH for higher price							**
 *********************************************************************************************************************/
@@ -1221,7 +1221,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 	int i, x, iNamingValue;
 	char cName[11], cTmp[21], cNpcWaypointIndex[10], cSide, cOwnerType;
 	short sOwnerH;
-	BOOL bRet;
+	bool bRet;
 	int dX, dY;
 	if (m_bIsHeldenianMode == TRUE) return;
 	m_cHeldenianType = sV1;
@@ -1584,12 +1584,12 @@ void CGame::CheckHeldenianResultCalculation(int iClientH)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::UpdateHeldenianStatus(int iClientH)																	**
+**  bool CGame::UpdateHeldenianStatus(int iClientH)																	**
 **  description		:: Informs every client of the progression of the battle (Type 1 Heldenian)	           			**
 **             		:: give -1 as parameter to inform everybody on BtField.											**
 **					:: give iClientH to inform only one client														**
 *********************************************************************************************************************/
-BOOL CGame::UpdateHeldenianStatus(int iClientH)
+bool CGame::UpdateHeldenianStatus(int iClientH)
 {
 	if (m_bIsHeldenianMode == FALSE)  return FALSE;
 	if (m_cHeldenianType != 1)		  return FALSE;
@@ -1628,7 +1628,7 @@ BOOL CGame::UpdateHeldenianStatus(int iClientH)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::RequestHeldenianScroll(int iClientH, char * pData, DWORD dwMsgSize)									**
+**  bool CGame::RequestHeldenianScroll(int iClientH, char * pData, DWORD dwMsgSize)									**
 **  description		:: A player requested some scroll										 						**
 **  Scrolls are only available for current battle, and usable only by the player that brought it					**
 **																													**
@@ -1998,7 +1998,7 @@ void CGame::HeldenianWarStarter()
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bReadHeldenianGUIDFile(char * cFn)																	**
+**  bool CGame::bReadHeldenianGUIDFile(char * cFn)																	**
 **  description		:: Read thee GUID file for each server						                        			**
 **             		:: Used when server starts																		**
 **																													**

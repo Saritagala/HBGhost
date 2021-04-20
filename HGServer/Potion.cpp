@@ -47,7 +47,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	int    iRet, i, j, iEraseReq, iSkillLimit, iSkillLevel, iResult, iDifficulty;
 	short* sp, sItemIndex[6], sTemp;
 	short  sItemNumber[6], sItemArray[12];
-	BOOL   bDup, bFlag;
+	bool   bDup, bFlag;
 	class  CItem* pItem;
 
 	if (m_pClientList[iClientH] == NULL) return;
@@ -334,7 +334,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	}
 }
 
-BOOL CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -547,7 +547,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	int    iRet, i, j, iEraseReq, iRiskLevel, iDifficulty, iNeededContrib = 0;
 	short* sp, sTemp;
 	short  sItemIndex[6], sItemPurity[6], sItemNumber[6], sItemArray[12];
-	BOOL   bDup, bFlag, bNeedLog;
+	bool   bDup, bFlag, bNeedLog;
 	class  CItem* pItem;
 
 	if (m_pClientList[iClientH] == NULL) return;

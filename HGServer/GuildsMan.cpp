@@ -673,7 +673,7 @@ void CGame::ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize)
 void CGame::JoinGuildApproveHandler(int iClientH, char* pName)
 {
 	int i;
-	BOOL bIsExist = FALSE;
+	bool bIsExist = FALSE;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
@@ -986,7 +986,7 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 	ZeroMemory(cGuildName, sizeof(cGuildName));
 	memcpy(cGuildName, m_pClientList[iClientH]->m_cGuildName, 21);
 	
-	BOOL bExiste = FALSE;
+	bool bExiste = FALSE;
 	for (i = 0; i < DEF_MAXGUILDS; i++)
 	{
 		if (string(m_stSummonGuild[i].cGuildName) == "NONE") continue;

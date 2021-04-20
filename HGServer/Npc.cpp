@@ -698,7 +698,7 @@ NKH_GOTOPOINT1:;
 	}
 }
 
-BOOL CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char cSA)
+bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char cSA)
 {
 	int i, iTemp;
 	char cTmpName[21];
@@ -898,7 +898,7 @@ void CGame::CalcNextWayPointDestination(int iNpcH)
 {
 	short sRange, sX, sY;
 	int i, j, iMapIndex;
-	BOOL bFlag;
+	bool bFlag;
 
 	switch (m_pNpcList[iNpcH]->m_cMoveType) {
 	case DEF_MOVETYPE_GUARD:
@@ -967,9 +967,9 @@ void CGame::CalcNextWayPointDestination(int iNpcH)
 
 void CGame::DeleteNpc(int iNpcH)
 {
-	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP];
+	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP], iSlateID;
 	char cTmp[21], cItemName[21];
-	class CItem* pItem;
+	class CItem* pItem, * pItem2;
 	DWORD dwCount, dwTime;
 	POINT ItemPositions[MAX_NPCITEMDROP];
 	char cTemp[256];
@@ -1039,7 +1039,7 @@ void CGame::DeleteNpc(int iNpcH)
 
 	}
 
-	BOOL IsFragile = FALSE;
+	bool IsFragile = FALSE;
 
 	// DelayEvent√´¬•¬º √¨‚Äö¬≠√¨¬†≈ì 
 	bRemoveFromDelayEventList(iNpcH, DEF_OWNERTYPE_NPC, NULL);
@@ -1531,7 +1531,7 @@ void CGame::DeleteNpc(int iNpcH)
 	m_pNpcList[iNpcH] = NULL;
 }
 
-BOOL CGame::isLeap(int y)
+bool CGame::isLeap(int y)
 {
 	return (y % 4 == 0) && (y % 100 != 0) || (y % 400 == 0);
 }
@@ -1552,7 +1552,7 @@ int CGame::iGetFollowerNumber(short sOwnerH, char cOwnerType)
 	return iTotal;
 }
 
-void CGame::bSetNpcAttackMode(char* cName, int iTargetH, char cTargetType, BOOL bIsPermAttack)
+void CGame::bSetNpcAttackMode(char* cName, int iTargetH, char cTargetType, bool bIsPermAttack)
 {
 	int i, iIndex;
 
@@ -1933,7 +1933,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 {
 	class CItem* pItem;
 	char  cColor, cItemName[21];
-	BOOL  bIsGold;
+	bool  bIsGold;
 	int   iGenLevel, iResult, iItemID;
 	DWORD dwType, dwValue;
 	double dTmp1, dTmp2, dTmp3;
@@ -2895,7 +2895,7 @@ void CGame::NpcBehavior_Dead(int iNpcH)
 }
 
 
-BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
+bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
@@ -3103,7 +3103,7 @@ BOOL CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 	return TRUE;
 
 }
-BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
+bool CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 {
 	if (m_bNpcItemConfig == TRUE) {
 
@@ -3111,7 +3111,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		int    iResult;
 		int    iNpcIndex;
 
-		BOOL	bFirstDice = FALSE, bSecondDice = FALSE;
+		bool	bFirstDice = FALSE, bSecondDice = FALSE;
 
 		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {
 			if (m_pNpcConfigList[iNpcIndex] != NULL) {
@@ -3126,7 +3126,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		switch (m_pNpcConfigList[iNpcIndex]->m_iNpcItemType) {
 		case 1:
 			// º≥¡§ ∆ƒ¿œ¿« ø©∑Ø ∞≥¿« æ∆¿Ã≈€ ¡ﬂ «œ≥™∏¶ ∞Ì∏•¥Ÿ.
-			iResult = iDice(1, (int)m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size()) - 1;
+			iResult = iDice(1, m_pNpcConfigList[iNpcIndex]->m_vNpcItem.size()) - 1;
 
 			CTempNpcItem = m_pNpcConfigList[iNpcIndex]->m_vNpcItem.at(iResult);
 
@@ -3157,7 +3157,7 @@ BOOL CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 
 	}
 	else {
-		
+		int iResult;
 		// NPCÎ•º ÏÇ≠Ï†úÌï†Îïå ÌäπÏàò ÏïÑÏù¥ÌÖúÏùÑ Î∞úÏÉùÏãúÌÇ¨ Í≤ÉÏù∏ÏßÄÏùò Ïó¨Î∂ÄÎ•º Í≥ÑÏÇ∞ÌïúÎã§. 
 
 		switch (sNpcType) {
@@ -3427,7 +3427,7 @@ void CGame::RemoveEventNpc(int iNpcH)
 
 }
 
-BOOL CGame::_bDecodeNpcConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeNpcConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -3825,7 +3825,7 @@ void CGame::MobGenerator()
 	char cNpcName[21], cName_Master[11], cName_Slave[11], cWaypoint[11];
 	char cSA;
 	int  pX, pY, iMapLevel, iProbSA, iKindSA, iResultNum, iNpcID;
-	BOOL bFirmBerserk, bIsSpecialEvent, bMaster = FALSE;
+	bool bFirmBerserk, bIsSpecialEvent, bMaster = FALSE;
 	bool bIsGuard;
 
 	if (m_bOnExitProcess == TRUE) return;
@@ -4898,7 +4898,7 @@ void CGame::MobGenerator()
 }
 
 // SNOOPY: reconnecting clients will recover summons 
-void CGame::iRecoverFollowers(int  iClientH, BOOL bControlAll)
+void CGame::iRecoverFollowers(int  iClientH, bool bControlAll)
 {
 	if (m_pClientList[iClientH] == NULL) return;
 	int i, iTotal;
@@ -4952,10 +4952,10 @@ void CGame::iRecoverFollowers(int  iClientH, BOOL bControlAll)
 }
 
 /*********************************************************************************************************************
-**  BOOL CGame::bSetNpcFollowMode(char * pName, char * pFollowName, char cFollowOwnerType)							**
+**  bool CGame::bSetNpcFollowMode(char * pName, char * pFollowName, char cFollowOwnerType)							**
 **  DESCRIPTION			:: set npc follow mode																		**
 **  LAST_UPDATED		:: March 18, 2005; 9:43 AM; Hypnotoad														**
-**	RETURN_VALUE		:: BOOL																						**
+**	RETURN_VALUE		:: bool																						**
 **  NOTES				::	n/a																						**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
@@ -4967,7 +4967,7 @@ void CGame::iRecoverFollowers(int  iClientH, BOOL bControlAll)
 **  iRecoverFollowers:  Restore follow mode after a client has disconnected the connected again		**
 **  iGetFollowerNumber: Counts the follower numbers to prevent too much summons						**
 *****************************************************************************************************/
-BOOL CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerType)
+bool CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerType)
 {
 	int i, iIndex, iMapIndex, iFollowIndex;
 	char cTmpName[11], cFollowSide;
@@ -5020,8 +5020,8 @@ BOOL CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerT
 
 /*********************************************************************************************************************
 **  int CGame::bCreateNewNpc(char * pNpcName, char * pName, char * pMapName, short sClass, char cSA, char cMoveType,**
-** int * poX, int * poY, char * pWaypointList, RECT * pArea, int iSpotMobIndex, char cChangeSide, BOOL bHideGenMode,**
-** BOOL bIsSummoned, BOOL bFirmBerserk, BOOL bIsMaster, int iGuildGUID)												**
+** int * poX, int * poY, char * pWaypointList, RECT * pArea, int iSpotMobIndex, char cChangeSide, bool bHideGenMode,**
+** bool bIsSummoned, bool bFirmBerserk, bool bIsMaster, int iGuildGUID)												**
 **  DESCRIPTION			:: creates a npc																			**
 **  LAST_UPDATED		:: March 18, 2005; 6:01 PM; Hypnotoad														**
 **	RETURN_VALUE		:: int																						**
@@ -5030,12 +5030,12 @@ BOOL CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerT
 **							- creates blocked spaces below 1x1, 2x2, and 3x3 monsters								**
 **	MODIFICATION		::	- ExpDice MIN/MAX and bFirmBerserk requires testing										**
 **********************************************************************************************************************/
-int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sClass, char cSA, char cMoveType, int* poX, int* poY, char* pWaypointList, RECT* pArea, int iSpotMobIndex, char cChangeSide, BOOL bHideGenMode, BOOL bIsSummoned, BOOL bFirmBerserk, BOOL bIsMaster, int iGuildGUID)
+int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sClass, char cSA, char cMoveType, int* poX, int* poY, char* pWaypointList, RECT* pArea, int iSpotMobIndex, char cChangeSide, bool bHideGenMode, bool bIsSummoned, bool bFirmBerserk, bool bIsMaster, int iGuildGUID)
 {
 	int i, t, j, k, iMapIndex;
 	char  cTmpName[11], cTxt[120];
 	short sX, sY, sRange;
-	BOOL  bFlag;
+	bool  bFlag;
 	SYSTEMTIME SysTime;
 
 	if (strlen(pName) == 0)   return FALSE;

@@ -81,7 +81,7 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 }
 
 
-BOOL CGame::bDeleteFish(int iHandle, int iDelMode)
+bool CGame::bDeleteFish(int iHandle, int iDelMode)
 {
 	int i, iH;
 	DWORD dwTime;

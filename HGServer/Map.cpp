@@ -211,7 +211,7 @@ void CMap::SetOwner(short sOwner, char cOwnerClass, short sX, short sY)
 char _tmp_cMoveDirX[9] = { 0,0,1,1,1,0,-1,-1,-1 };
 char _tmp_cMoveDirY[9] = { 0,-1,-1,0,1,1,1,0,-1 };
 
-BOOL CMap::bCheckFlySpaceAvailable(short sX, short sY, char cDir, short sOwner)
+bool CMap::bCheckFlySpaceAvailable(short sX, short sY, char cDir, short sOwner)
 {
  class CTile * pTile;
  short dX, dY;
@@ -289,7 +289,7 @@ void CMap::GetDeadOwner(short * pOwner, char * pOwnerClass, short sX, short sY)
 	*pOwnerClass = pTile->m_cDeadOwnerClass;
 }
  								  
-BOOL CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*/)
+bool CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*/)
 {
  class CTile * pTile;	
 	
@@ -306,7 +306,7 @@ BOOL CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*
 	return TRUE;
 }
 
-BOOL CMap::bGetMoveableArea(short sOwnerH, short dX, short dY)
+bool CMap::bGetMoveableArea(short sOwnerH, short dX, short dY)
 {
  class CTile * pTile;	
 	
@@ -319,7 +319,7 @@ BOOL CMap::bGetMoveableArea(short sOwnerH, short dX, short dY)
 	return TRUE;
 }
 
-BOOL CMap::bGetIsMoveAllowedTile(short dX, short dY)
+bool CMap::bGetIsMoveAllowedTile(short dX, short dY)
 {
  class CTile * pTile;	
 	
@@ -333,7 +333,7 @@ BOOL CMap::bGetIsMoveAllowedTile(short dX, short dY)
 	return TRUE;
 }
 
-BOOL CMap::bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short * tX, short * tY)
+bool CMap::bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short * tX, short * tY)
 {
  class CTile * pTile;	
 	
@@ -357,7 +357,7 @@ BOOL CMap::bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short 
 	return FALSE;
 }
 
-BOOL CMap::bGetIsTeleport(short dX, short dY)
+bool CMap::bGetIsTeleport(short dX, short dY)
 {
  class CTile * pTile;	
 	
@@ -402,7 +402,7 @@ void CMap::ClearDeadOwner(short sX, short sY)
 	pTile->m_cDeadOwnerClass = NULL;
 }
 
-BOOL CMap::bSetItem(short sX, short sY, class CItem * pItem)
+bool CMap::bSetItem(short sX, short sY, class CItem * pItem)
 {
  class CTile * pTile;	
  int i;
@@ -505,13 +505,13 @@ int CMap::iCheckItem(short sX, short sY)
 	return pItem->m_sIDnum;
 }
 
-BOOL CMap::bIsValidLoc(short sX, short sY)
+bool CMap::bIsValidLoc(short sX, short sY)
 {
 	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return FALSE;
 	return TRUE;
 }
 
-BOOL CMap::bInit(char * pName)
+bool CMap::bInit(char * pName)
 {
  int i;
 	// 맵파일을 로드한다.
@@ -529,7 +529,7 @@ BOOL CMap::bInit(char * pName)
 	return TRUE;
 }
 
-BOOL CMap::_bDecodeMapDataFileContents()
+bool CMap::_bDecodeMapDataFileContents()
 {
  HANDLE hFile;
  char  cMapFileName[256], cHeader[260], cTemp[100];
@@ -631,7 +631,7 @@ BOOL CMap::_bDecodeMapDataFileContents()
 	return TRUE;
 }
 
-BOOL CMap::bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int * pDy, char * pDir)
+bool CMap::bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int * pDy, char * pDir)
 {
  int i;
 
@@ -662,7 +662,7 @@ void CMap::SetDynamicObject(WORD wID, short sType, short sX, short sY, DWORD dwR
 	pTile->m_dwDynamicObjectRegisterTime = dwRegisterTime;
 }
 
-BOOL CMap::bGetDynamicObject(short sX, short sY, short *pType, DWORD *pRegisterTime, int * pIndex)
+bool CMap::bGetDynamicObject(short sX, short sY, short *pType, DWORD *pRegisterTime, int * pIndex)
 {
  class CTile * pTile;	
 
@@ -697,7 +697,7 @@ void CMap::SetNamingValueEmpty(int iValue)
 	m_bNamingValueUsingStatus[iValue] = FALSE;
 }
 
-BOOL CMap::bGetIsWater(short dX, short dY)
+bool CMap::bGetIsWater(short dX, short dY)
 {
  class CTile * pTile;	
 	
@@ -711,7 +711,7 @@ BOOL CMap::bGetIsWater(short dX, short dY)
 }
 
 //v2.19 2002-12-16 농사 스킬 관련
-BOOL CMap::bRemoveCropsTotalSum()
+bool CMap::bRemoveCropsTotalSum()
 {
 	if(m_iTotalAgriculture < DEF_MAXAGRICULTURE)
 	{
@@ -726,7 +726,7 @@ BOOL CMap::bRemoveCropsTotalSum()
 }
 
 //v2.19 2002-12-16 농사 스킬 관련
-BOOL CMap::bAddCropsTotalSum()
+bool CMap::bAddCropsTotalSum()
 {
 	if(m_iTotalAgriculture < DEF_MAXAGRICULTURE)
 	{
@@ -736,7 +736,7 @@ BOOL CMap::bAddCropsTotalSum()
 	return FALSE;
 }
 
-BOOL CMap::bGetIsFarm(short tX, short tY)
+bool CMap::bGetIsFarm(short tX, short tY)
 {
  class CTile * pTile;	
 	
@@ -766,7 +766,7 @@ int CMap::iAnalyze(char cType, int * pX, int * pY, int * pV1, int * pV2, int * p
 	return 0;
 }
 
-void CMap::SetTempMoveAllowedFlag(int dX, int dY, BOOL bFlag)
+void CMap::SetTempMoveAllowedFlag(int dX, int dY, bool bFlag)
 {
  class CTile * pTile;	
 	
@@ -837,7 +837,7 @@ int CMap::iGetAttribute(int dX, int dY, int iBitMask)
 	return (pTile->m_iAttribute & iBitMask);
 }
 
-BOOL CMap::bAddCrusadeStructureInfo(char cType, short sX, short sY, char cSide)
+bool CMap::bAddCrusadeStructureInfo(char cType, short sX, short sY, char cSide)
 {
  int i;
 
@@ -855,7 +855,7 @@ BOOL CMap::bAddCrusadeStructureInfo(char cType, short sX, short sY, char cSide)
 	return FALSE;
 }
 
-BOOL CMap::bRemoveCrusadeStructureInfo(short sX, short sY)
+bool CMap::bRemoveCrusadeStructureInfo(short sX, short sY)
 {
  int i;
 
@@ -949,7 +949,7 @@ void CMap::ClearBigOwner(short sOwnerH, char cOwnerType, short pX, short pY, cha
 	}
 }
 
-BOOL CMap::bApocalypseGate()
+bool CMap::bApocalypseGate()
 {
  class CTile * pTile;
  int i, LR, TB;
@@ -973,13 +973,13 @@ BOOL CMap::bApocalypseGate()
 }
 
 // SNoopy: Prevent characters to stay behind crusade structures
-void CMap::SetStayAllowedFlag(int dX, int dY, BOOL bFlag)
+void CMap::SetStayAllowedFlag(int dX, int dY, bool bFlag)
 { class CTile * pTile;		
 	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return;
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	pTile->m_bCanStayHere = bFlag;
 }
-BOOL CMap::bGetIsStayAllowedTile(short dX, short dY) // Staying there, and suffer damage....
+bool CMap::bGetIsStayAllowedTile(short dX, short dY) // Staying there, and suffer damage....
 { class CTile * pTile;		
 	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return FALSE;
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);	
@@ -989,7 +989,7 @@ BOOL CMap::bGetIsStayAllowedTile(short dX, short dY) // Staying there, and suffe
 	return TRUE;
 }
 
-BOOL CGame::__bReadMapInfo(int iMapIndex)
+bool CGame::__bReadMapInfo(int iMapIndex)
 {
 	char* pContents, * token, cTxt[250], cFn[255];
 	char seps[] = "= \t\n";
@@ -1286,7 +1286,7 @@ BOOL CGame::__bReadMapInfo(int iMapIndex)
 						delete pStrTok;
 						return FALSE;
 					}
-					m_pMapList[iMapIndex]->m_bRandomMobGenerator = (BOOL)atoi(token);
+					m_pMapList[iMapIndex]->m_bRandomMobGenerator = (bool)atoi(token);
 					cReadModeB = 2;
 					break;
 
@@ -1672,7 +1672,7 @@ BOOL CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 11:
-				m_pMapList[iMapIndex]->m_bIsFixedDayMode = (BOOL)atoi(token);
+				m_pMapList[iMapIndex]->m_bIsFixedDayMode = (bool)atoi(token);
 				if (m_pMapList[iMapIndex]->m_bIsFixedDayMode == TRUE)
 					m_pMapList[iMapIndex]->m_bIsSnowEnabled = FALSE;
 				cReadModeA = 0;
@@ -1774,7 +1774,7 @@ BOOL CGame::__bReadMapInfo(int iMapIndex)
 						delete pStrTok;
 						return FALSE;
 					}
-					m_pMapList[iMapIndex]->m_bMineralGenerator = (BOOL)atoi(token);
+					m_pMapList[iMapIndex]->m_bMineralGenerator = (bool)atoi(token);
 					cReadModeB = 2;
 					break;
 
@@ -2547,7 +2547,7 @@ BOOL CGame::__bReadMapInfo(int iMapIndex)
 					delete pStrTok;
 					return FALSE;
 				}
-				m_pMapList[iMapIndex]->m_bIsRecallImpossible = (BOOL)atoi(token);
+				m_pMapList[iMapIndex]->m_bIsRecallImpossible = (bool)atoi(token);
 				cReadModeA = 0;
 				cReadModeB = 0;
 				break;
@@ -2559,7 +2559,7 @@ BOOL CGame::__bReadMapInfo(int iMapIndex)
 					delete pStrTok;
 					return FALSE;
 				}
-				m_pMapList[iMapIndex]->m_bIsApocalypseMap = (BOOL)atoi(token);
+				m_pMapList[iMapIndex]->m_bIsApocalypseMap = (bool)atoi(token);
 				cReadModeA = 0;
 				cReadModeB = 0;
 				break;
@@ -3385,7 +3385,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 	WORD* wp;
 	int* ipStatus, iDumm;
 	short* sp, sRange, sX, sY;
-	BOOL  bFlag, cOwnerSend;
+	bool  bFlag, cOwnerSend;
 	char cKey;
 	int iTemp3, iTemp, iTemp2;
 
@@ -3906,7 +3906,7 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	DWORD* dwp, dwTime;
 	WORD* wp;
 	short* sp;
-	BOOL bFlag;
+	bool bFlag;
 	char  cKey;
 
 	cKey = (char)(rand() % 245) + 1; // v1.4
@@ -3974,7 +3974,7 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	DWORD* dwp, dwTime;
 	WORD* wp;
 	short* sp;
-	BOOL bFlag;
+	bool bFlag;
 	char  cKey;
 
 	cKey = (char)(rand() % 245) + 1; // v1.4
@@ -4036,7 +4036,7 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	}
 }
 
-BOOL CGame::_bRegisterMap(char* pName)
+bool CGame::_bRegisterMap(char* pName)
 {
 	int i;
 	char cTmpName[11], cTxt[120];

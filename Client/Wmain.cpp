@@ -164,27 +164,6 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 	case WM_USER_MP3_EVENT:
 		G_pGame->LoopBGM();
 		break;
-
-	/*case WM_WINDOWPOSCHANGED:
-	
-		HMONITOR monitor = MonitorFromWindow(hWnd, MONITOR_DEFAULTTONULL);
-		if (monitor != g_monitor)
-		{
-			g_monitor = monitor;
-			if (g_spRenderTarget != NULL)
-			{
-				IDWriteRenderingParams* pRenderingParams = NULL;
-				g_spDWriteFactory->CreateMonitorRenderingParams(monitor, &pRenderingParams);
-
-				g_spRenderTarget->SetTextRenderingParams(pRenderingParams);
-
-				SafeRelease(&pRenderingParams);
-			}
-
-			InvalidateRect(hWnd, NULL, TRUE);
-		}
-	
-		break;*/
 		
 	default: 
 		return (DefWindowProc(hWnd, message, wParam, lParam));

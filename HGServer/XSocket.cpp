@@ -60,7 +60,7 @@ XSocket::~XSocket()
 	_CloseConn(); 
 }
 
-BOOL XSocket::bInitBufferSize(DWORD dwBufferSize)
+bool XSocket::bInitBufferSize(DWORD dwBufferSize)
 {
 	if (m_pRcvBuffer != NULL) delete m_pRcvBuffer;
 	if (m_pSndBuffer != NULL) delete m_pSndBuffer;
@@ -125,7 +125,7 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 	return DEF_XSOCKEVENT_UNKNOWN;
 }
 
-BOOL XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
+bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
  u_long          arg;
@@ -259,7 +259,7 @@ int XSocket::_iOnRead()
 
 
 
-int XSocket::_iSend(char * cData, int iSize, BOOL bSaveFlag)
+int XSocket::_iSend(char * cData, int iSize, bool bSaveFlag)
 {
  int  iOutLen, iRet, WSAErr;
 
@@ -448,7 +448,7 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 	else return (iRet - 3);
 }
 
-BOOL XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
+bool XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
 
@@ -483,7 +483,7 @@ BOOL XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 	return TRUE;
 }
 
-BOOL XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
+bool XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
 {
  SOCKET			AcceptedSock;
  sockaddr		Addr;
@@ -517,7 +517,7 @@ BOOL XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
 void XSocket::_CloseConn()
 {
  char cTmp[100];
- BOOL bFlag = TRUE;	
+ bool bFlag = TRUE;	
  int  iRet;
 
 	if (m_Sock == INVALID_SOCKET) return; // v1.4
@@ -566,11 +566,11 @@ char * XSocket::pGetRcvDataPointer(DWORD * pMsgSize, char * pKey)
 }
 
 /*********************************************************************************************************************
-**  BOOL _InitWinsock()																								**
+**  bool _InitWinsock()																								**
 **  last updated		:: March 11, 2005; 11:09 PM; Hypnotoad														**
-**	return value		:: BOOL																						**
+**	return value		:: bool																						**
 **********************************************************************************************************************/
-BOOL _InitWinsock()
+bool _InitWinsock()
 {
  int     iErrCode;
  WORD	 wVersionRequested;

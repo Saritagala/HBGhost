@@ -36,7 +36,7 @@ HWND G_hBut = NULL;
 char			szAppClass[32];
 HWND			G_hWnd = NULL;
 char			G_cMsgList[120*50];
-BOOL            G_cMsgUpdated =	FALSE;
+bool            G_cMsgUpdated =	FALSE;
 char            G_cTxt[512];
 char			G_cData50000[50000];
 MMRESULT        G_mmTimer = NULL;
@@ -47,7 +47,7 @@ class XSocket * G_pLogSock    = NULL;
 class CGame *   G_pGame       = NULL;
 
 int             G_iQuitProgramCount = 0;
-BOOL			G_bIsThread = TRUE;
+bool			G_bIsThread = TRUE;
 
 FILE * pLogFile;
 
@@ -189,7 +189,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 	return NULL;
 }
 
-BOOL CALLBACK lpCrashDialogFunc(HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam){
+bool CALLBACK lpCrashDialogFunc(HWND hDlg,UINT uMsg,WPARAM wParam,LPARAM lParam){
 HANDLE outHand;
 char cCrashFileName[MAX_PATH];
 char cLF[]={0x0d,0x0a};
@@ -322,7 +322,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
     return 0;
 }
 
-BOOL InitApplication( HINSTANCE hInstance)
+bool InitApplication( HINSTANCE hInstance)
 {     
  WNDCLASS  wc;
 
@@ -344,7 +344,7 @@ BOOL InitApplication( HINSTANCE hInstance)
 }
 
 
-BOOL InitInstance( HINSTANCE hInstance, int nCmdShow )
+bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 {
  char cTitle[100];
  SYSTEMTIME SysTime;
