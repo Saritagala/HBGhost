@@ -8969,7 +8969,7 @@ bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 		// Resurrection wand(MS.10) or Resurrection wand(MS.20)
 		if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {
 			if (((m_pClientList[iClientH]->m_iInt) > 99) && ((m_pClientList[iClientH]->m_iMag) > 99) && (m_pClientList[iClientH]->m_iSpecialAbilityTime < 1)) {
-				m_pClientList[iClientH]->m_cMagicMastery[94] = true;
+				m_pClientList[iClientH]->m_cMagicMastery[94] = 1;
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_RESUR_ON, NULL, NULL, NULL, NULL);
 			}
 		}
@@ -9315,7 +9315,7 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, bool bNotice)
 	if (cEquipPos == DEF_EQUIPPOS_RHAND) {
 		if (m_pClientList[iClientH]->m_pItemList[sItemIndex] != NULL) {
 			if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {
-				m_pClientList[iClientH]->m_cMagicMastery[94] = false;
+				m_pClientList[iClientH]->m_cMagicMastery[94] = 0;
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_RESUR_OFF, NULL, NULL, NULL, NULL);
 			}
 		}

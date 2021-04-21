@@ -3289,7 +3289,7 @@ void CGame::CheckClientResponseTime()
 					if (sItemIndex != -1) {
 						if ((m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[i]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {
 							if(((m_pClientList[i]->m_iInt) > 99) && ((m_pClientList[i]->m_iMag) > 99)){
-								m_pClientList[i]->m_cMagicMastery[94] = true;
+								m_pClientList[i]->m_cMagicMastery[94] = 1;
 								SendNotifyMsg(NULL, i, DEF_NOTIFY_RESUR_ON, NULL, NULL, NULL, NULL);
 							}
 						}
@@ -7202,7 +7202,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 
 	strcat(pData, "magic-mastery     = ");
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
-		wsprintf(cTxt,"%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
+		wsprintf(cTxt,"%d", m_pClientList[iClientH]->m_cMagicMastery[i]);
 		strcat(pData, cTxt);
 	}
 	strcat(pData, "\n");
@@ -23558,12 +23558,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 			cp++;
 		}
 
-		for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
-			*cp = m_pClientList[iToH]->m_cSkillMastery[i];
-			cp++;
-		}
-
-		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 6 + DEF_MAXMAGICTYPE + DEF_MAXSKILLTYPE);
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 6 + DEF_MAXMAGICTYPE);
 		break;
 
 	/* Centuu: msgs agrupados */
@@ -24060,6 +24055,38 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	case DEF_NOTIFY_STATECHANGE_SUCCESS:
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iStr;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iVit;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iDex;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iInt;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iMag;
+		cp += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iToH]->m_iCharisma;
+		cp += 4;
+
+		for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
+			*cp = m_pClientList[iToH]->m_cMagicMastery[i];
+			cp++;
+		}
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30 + DEF_MAXMAGICTYPE);
+		break;
+
 	case DEF_NOTIFY_SETTING_SUCCESS:
 	case DEF_NOTIFY_LEVELUP:
 		ip = (int*)cp;
@@ -30108,24 +30135,24 @@ void CGame::CityTeleport()
 // Centuu - new classes
 void CGame::SetClass(int iClientH)
 {
-	class CItem* pItem;
+	/*class CItem* pItem;
 	bool bArcher = false;
-	int iItemID, iEraseReq;
+	int iItemID, iEraseReq;*/
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_iStr == 14) 
 	{
-		iItemID = 8;
+		//iItemID = 8;
 		m_pClientList[iClientH]->m_iClass = 1; // War
 	}
 	else if (m_pClientList[iClientH]->m_iMag == 14)
 	{
-		iItemID = 258;
+		//iItemID = 258;
 		m_pClientList[iClientH]->m_iClass = 2; // Mage
 	}
 	else if (m_pClientList[iClientH]->m_iCharisma == 14)
 	{
-		iItemID = 75;
-		bArcher = true;
+		//iItemID = 75;
+		//bArcher = true;
 		m_pClientList[iClientH]->m_iClass = 3; // Archer
 	}
 	/*pItem = new class CItem;
@@ -30147,7 +30174,7 @@ void CGame::SetClass(int iClientH)
 void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	char* cp, cTmpName[5];
-	int   iClass, * ip;
+	int   i, iClass, * ip, iStr = 0, iDex = 0, iVit = 0, iMag = 0, iChar = 0, iInt = 0;
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft < 500) return;
@@ -30166,6 +30193,42 @@ void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	case 2: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!"); break;
 	case 3: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now an Archer!"); break;
 	}
+
+	iStr = m_pClientList[iClientH]->m_iStr;
+	iDex = m_pClientList[iClientH]->m_iDex;
+	iVit = m_pClientList[iClientH]->m_iVit;
+	iInt = m_pClientList[iClientH]->m_iInt;
+	iMag = m_pClientList[iClientH]->m_iMag;
+	iChar = m_pClientList[iClientH]->m_iCharisma;
+
+	m_pClientList[iClientH]->m_iLU_Pool += (iStr - 10) + (iDex - 10) + (iVit - 10) + (iInt - 10) + (iMag - 10) + (iChar - 10);
+
+	m_pClientList[iClientH]->m_iStr = 10;
+	m_pClientList[iClientH]->m_iDex = 10;
+	m_pClientList[iClientH]->m_iVit = 10;
+	m_pClientList[iClientH]->m_iInt = 10;
+	m_pClientList[iClientH]->m_iMag = 10;
+	m_pClientList[iClientH]->m_iCharisma = 10;
+
+	for (i = 0; i < DEF_MAXMAGICTYPE; i++)
+	{
+		m_pClientList[iClientH]->m_cMagicMastery[i] = 0;
+	}
+
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, false);
+	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
+	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		if (m_pClientList[iClientH]->m_bIsItemEquipped[i])
+		{
+			ReleaseItemHandler(iClientH, i, true);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[i]->m_cEquipPos, i, NULL, NULL);
+		}
+	}
+
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS, NULL, NULL, NULL, NULL);
 }
 
 void CGame::DeathmatchStarter()

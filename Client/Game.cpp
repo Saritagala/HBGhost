@@ -19238,14 +19238,14 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 		DisableDialogBox(12);
 		PlaySound('E', 14, 5);
 	}
-	if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+	/*if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 	{	// Change stats with Majestic
 		if (   (m_iGizonItemUpgradeLeft >0) && (m_iLU_Point <= 0)
 			&& (m_cLU_Str == 0)&&(m_cLU_Vit == 0)&&(m_cLU_Dex == 0)&&(m_cLU_Int == 0)&&(m_cLU_Mag == 0)&&(m_cLU_Char == 0))
 		{	DisableDialogBox(12);
 			iPrevGizon = m_iGizonItemUpgradeLeft;
 			EnableDialogBox(42, 0, 0, 0);
-	}	}
+	}	}*/
 }
 
 void CGame::CannotConstruct(int iCode)
@@ -27313,7 +27313,8 @@ void CGame::NotifyMsgHandler(char * pData)
 	// MJ Stats Change - Diuuude: Erreur, ici il s'agit de sorts et skills, le serveur comme la v351 sont aussi bugués !
 	case DEF_NOTIFY_STATECHANGE_SUCCESS:	// 0x0BB5
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
-		for (i = 0; i < DEF_MAXMAGICTYPE; i++)
+		
+		/*for (i = 0; i < DEF_MAXMAGICTYPE; i++)
 		{	m_cMagicMastery[i] = *cp;
 			cp++;
 		}
@@ -27331,8 +27332,43 @@ void CGame::NotifyMsgHandler(char * pData)
 		m_iMag += m_cLU_Mag;
 		m_iCharisma += m_cLU_Char;
 		m_iLU_Point = m_iLevel*3 - ((m_iStr + m_iVit + m_iDex + m_iInt + m_iMag + m_iCharisma) - 70) - 3;
-		m_cLU_Str = m_cLU_Vit = m_cLU_Dex = m_cLU_Int = m_cLU_Mag = m_cLU_Char = 0;
-		AddEventList( "Your stat has been changed.", 10 ); // "Your stat has been changed."
+		m_cLU_Str = m_cLU_Vit = m_cLU_Dex = m_cLU_Int = m_cLU_Mag = m_cLU_Char = 0;*/
+
+		ip = (int*)cp;
+		m_iStr = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_iVit = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_iDex = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_iInt = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_iMag = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		m_iCharisma = *ip;
+		cp += 4;
+
+		// CLEROTH - LU
+		m_iLU_Point = m_iLevel * 3 - ((m_iStr + m_iVit + m_iDex + m_iInt + m_iMag + m_iCharisma) - 70) - 3;
+		
+		for (i = 0; i < DEF_MAXMAGICTYPE; i++)
+		{
+			m_cMagicMastery[i] = *cp;
+			cp++;
+		}
+
+		AddEventList("Your stat has been changed.", 10); // "Your stat has been changed."
+
 		break;
 
 	case DEF_NOTIFY_LEVELUP: // 0x0B16
