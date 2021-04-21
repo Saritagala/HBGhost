@@ -21,16 +21,16 @@ bool CxMemFile::Close()
 		m_pBuffer = NULL;
 		m_Size = 0;
 	}
-	return true;
+	return TRUE;
 }
 //////////////////////////////////////////////////////////
 bool CxMemFile::Open()
 {
-	if (m_pBuffer) return false;	// Can't re-open without closing first
+	if (m_pBuffer) return FALSE;	// Can't re-open without closing first
 
 	m_Position = m_Size = m_Edge = 0;
 	m_pBuffer=(BYTE*)malloc(1);
-	m_bFreeOnClose = true;
+	m_bFreeOnClose = TRUE;
 
 	return (m_pBuffer!=0);
 }
@@ -84,18 +84,18 @@ size_t CxMemFile::Write(const void *buffer, size_t size, size_t count)
 //////////////////////////////////////////////////////////
 bool CxMemFile::Seek(long offset, int origin)
 {
-	if (m_pBuffer==NULL) return false;
+	if (m_pBuffer==NULL) return FALSE;
 	long lNewPos = m_Position;
 
 	if (origin == SEEK_SET)		 lNewPos = offset;
 	else if (origin == SEEK_CUR) lNewPos += offset;
 	else if (origin == SEEK_END) lNewPos = m_Size + offset;
-	else return false;
+	else return FALSE;
 
 	if (lNewPos < 0) lNewPos = 0;
 
 	m_Position = lNewPos;
-	return true;
+	return TRUE;
 }
 //////////////////////////////////////////////////////////
 long CxMemFile::Tell()
@@ -112,13 +112,13 @@ long CxMemFile::Size()
 //////////////////////////////////////////////////////////
 bool CxMemFile::Flush()
 {
-	if (m_pBuffer==NULL) return false;
-	return true;
+	if (m_pBuffer==NULL) return FALSE;
+	return TRUE;
 }
 //////////////////////////////////////////////////////////
 bool CxMemFile::Eof()
 {
-	if (m_pBuffer==NULL) return true;
+	if (m_pBuffer==NULL) return TRUE;
 	return (m_Position >= (long)m_Size);
 }
 //////////////////////////////////////////////////////////
@@ -130,7 +130,7 @@ long CxMemFile::Error()
 //////////////////////////////////////////////////////////
 bool CxMemFile::PutC(unsigned char c)
 {
-	if (m_pBuffer==NULL) return false;
+	if (m_pBuffer==NULL) return FALSE;
 	if (m_Position + 1 > m_Edge) Alloc(m_Position + 1);
 
 	memcpy(m_pBuffer + m_Position, &c, 1);
@@ -139,7 +139,7 @@ bool CxMemFile::PutC(unsigned char c)
 
 	if (m_Position > (long)m_Size) m_Size = m_Position;
 	
-	return true;
+	return TRUE;
 }
 //////////////////////////////////////////////////////////
 long CxMemFile::GetC()
@@ -159,7 +159,7 @@ void CxMemFile::Alloc(DWORD dwNewLen)
 		if (m_pBuffer == NULL) m_pBuffer = (BYTE*)malloc(dwNewBufferSize);
 		else	m_pBuffer = (BYTE*)realloc(m_pBuffer, dwNewBufferSize);
 		// I own this buffer now (caller knows nothing about it)
-		m_bFreeOnClose = true;
+		m_bFreeOnClose = TRUE;
 
 		m_Edge = dwNewBufferSize;
 	}

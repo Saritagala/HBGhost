@@ -147,7 +147,7 @@ typedef struct tagCxImageInfo {
 	long	yDPI;				///< vertical resolution
 	RECT	rSelectionBox;		///< bounding rectangle
 	BYTE	nAlphaMax;			///< max opacity (fade)
-	bool	bAlphaPaletteEnabled; ///< true if alpha values in the palette are enabled.
+	bool	bAlphaPaletteEnabled; ///< TRUE if alpha values in the palette are enabled.
 	bool	bEnabled;			///< enables the painting functions
 	long	xOffset;
 	long	yOffset;
@@ -173,7 +173,7 @@ typedef struct tagCxTextInfo
 	LOGFONT  lfont;      ///< font and codepage data
     COLORREF fcolor;     ///< foreground color
     long     align;      ///< DT_CENTER, DT_RIGHT, DT_LEFT aligment for multiline text
-    BYTE     opaque;     ///< text has background or hasn't. Default is true.
+    BYTE     opaque;     ///< text has background or hasn't. Default is TRUE.
 						 ///< data for background (ignored if .opaque==FALSE) 
     COLORREF bcolor;     ///< background color
     float    b_opacity;  ///< opacity value for background between 0.0-1.0 Default is 0. (opaque)
@@ -187,7 +187,7 @@ public:
 /** \addtogroup Constructors */ //@{
 	CxImage(DWORD imagetype = 0);
 	CxImage(DWORD dwWidth, DWORD dwHeight, DWORD wBpp, DWORD imagetype = 0);
-	CxImage(const CxImage &src, bool copypixels = true, bool copyselection = true, bool copyalpha = true);
+	CxImage(const CxImage &src, bool copypixels = TRUE, bool copyselection = TRUE, bool copyalpha = TRUE);
 	CxImage(const TCHAR * filename, DWORD imagetype);	// For UNICODE support: char -> TCHAR
 	CxImage(FILE * stream, DWORD imagetype);
 	CxImage(CxFile * stream, DWORD imagetype);
@@ -200,7 +200,7 @@ public:
 	void*	Create(DWORD dwWidth, DWORD dwHeight, DWORD wBpp, DWORD imagetype = 0);
 	bool	Destroy();
 	void	Clear(BYTE bval=0);
-	void	Copy(const CxImage &src, bool copypixels = true, bool copyselection = true, bool copyalpha = true);
+	void	Copy(const CxImage &src, bool copypixels = TRUE, bool copyselection = TRUE, bool copyalpha = TRUE);
 	bool	Transfer(CxImage &from);
 	bool	CreateFromArray(BYTE* pArray,DWORD dwWidth,DWORD dwHeight,DWORD dwBitsperpixel, DWORD dwBytesperline, bool bFlipImage);
 	bool	CreateFromMatrix(BYTE** ppMatrix,DWORD dwWidth,DWORD dwHeight,DWORD dwBitsperpixel, DWORD dwBytesperline, bool bFlipImage);
@@ -257,7 +257,7 @@ public:
 	bool	SetCodecOption(DWORD opt, DWORD imagetype = 0);
 
 	DWORD	GetFlags() const;
-	void	SetFlags(DWORD flags, bool bLockReservedFlags = true);
+	void	SetFlags(DWORD flags, bool bLockReservedFlags = TRUE);
 
 	//void*	GetUserData() const {return info.pUserData;}
 	//void	SetUserData(void* pUserData) {info.pUserData = pUserData;}
@@ -268,7 +268,7 @@ public:
  * @{ */
 	bool	IsGrayScale();
 	bool	IsIndexed() const;
-	bool	IsSamePalette(CxImage &img, bool bCheckAlpha = true);
+	bool	IsSamePalette(CxImage &img, bool bCheckAlpha = TRUE);
 	DWORD	GetPaletteSize();
 	RGBQUAD* GetPalette() const;
 	RGBQUAD GetPaletteColor(BYTE idx);
@@ -289,15 +289,15 @@ public:
 /** \addtogroup Pixel */ //@{
 	bool	IsInside(long x, long y);
 	bool	IsTransparent(long x,long y);
-	RGBQUAD GetPixelColor(long x,long y, bool bGetAlpha = true);
+	RGBQUAD GetPixelColor(long x,long y, bool bGetAlpha = TRUE);
 	BYTE	GetPixelIndex(long x,long y);
 	BYTE	GetPixelGray(long x, long y);
-	void	SetPixelColor(long x,long y,RGBQUAD c, bool bSetAlpha = false);
+	void	SetPixelColor(long x,long y,RGBQUAD c, bool bSetAlpha = FALSE);
 	void	SetPixelColor(long x,long y,COLORREF cr);
 	void	SetPixelIndex(long x,long y,BYTE i);
-	void	DrawLine(int StartX, int EndX, int StartY, int EndY, RGBQUAD color, bool bSetAlpha=false);
+	void	DrawLine(int StartX, int EndX, int StartY, int EndY, RGBQUAD color, bool bSetAlpha=FALSE);
 	void	DrawLine(int StartX, int EndX, int StartY, int EndY, COLORREF cr);
-	void	BlendPixelColor(long x,long y,RGBQUAD c, float blend, bool bSetAlpha = false);
+	void	BlendPixelColor(long x,long y,RGBQUAD c, float blend, bool bSetAlpha = FALSE);
 //@}
 
 protected:
@@ -385,17 +385,17 @@ public:
 	bool	CreateFromHANDLE(HANDLE hMem);		//Windows objects (clipboard)
 	bool	CreateFromHBITMAP(HBITMAP hbmp, HPALETTE hpal=0);	//Windows resource
 	bool	CreateFromHICON(HICON hico);
-	long	Draw(HDC hdc, long x=0, long y=0, long cx = -1, long cy = -1, RECT* pClipRect = 0, bool bSmooth = false);
-	long	Draw(HDC hdc, const RECT& rect, RECT* pClipRect=NULL, bool bSmooth = false);
+	long	Draw(HDC hdc, long x=0, long y=0, long cx = -1, long cy = -1, RECT* pClipRect = 0, bool bSmooth = FALSE);
+	long	Draw(HDC hdc, const RECT& rect, RECT* pClipRect=NULL, bool bSmooth = FALSE);
 	long	Stretch(HDC hdc, long xoffset, long yoffset, long xsize, long ysize, DWORD dwRop = SRCCOPY);
 	long	Stretch(HDC hdc, const RECT& rect, DWORD dwRop = SRCCOPY);
 	long	Tile(HDC hdc, RECT *rc);
 	long	Draw2(HDC hdc, long x=0, long y=0, long cx = -1, long cy = -1);
 	long	Draw2(HDC hdc, const RECT& rect);
-	//long	DrawString(HDC hdc, long x, long y, const char* text, RGBQUAD color, const char* font, long lSize=0, long lWeight=400, BYTE bItalic=0, BYTE bUnderline=0, bool bSetAlpha=false);
-	long	DrawString(HDC hdc, long x, long y, const TCHAR* text, RGBQUAD color, const TCHAR* font, long lSize=0, long lWeight=400, BYTE bItalic=0, BYTE bUnderline=0, bool bSetAlpha=false);
+	//long	DrawString(HDC hdc, long x, long y, const char* text, RGBQUAD color, const char* font, long lSize=0, long lWeight=400, BYTE bItalic=0, BYTE bUnderline=0, bool bSetAlpha=FALSE);
+	long	DrawString(HDC hdc, long x, long y, const TCHAR* text, RGBQUAD color, const TCHAR* font, long lSize=0, long lWeight=400, BYTE bItalic=0, BYTE bUnderline=0, bool bSetAlpha=FALSE);
 	// <VATI> extensions
-	long    DrawStringEx(HDC hdc, long x, long y, CXTEXTINFO *pTextType, bool bSetAlpha=false );
+	long    DrawStringEx(HDC hdc, long x, long y, CXTEXTINFO *pTextType, bool bSetAlpha=FALSE );
 	void    InitTextInfo( CXTEXTINFO *txt );
 #endif //CXIMAGE_SUPPORT_WINDOWS
 //@}
@@ -445,7 +445,7 @@ public:
 	//misc.
 	bool IsValid() const;
 	bool IsEnabled() const;
-	void Enable(bool enable=true);
+	void Enable(bool enable=TRUE);
 
 	// frame operations
 	long GetNumFrames() const;
@@ -470,19 +470,19 @@ public:
 	bool Rotate(float angle, CxImage* iDst = NULL);
 	bool Rotate2(float angle, CxImage *iDst = NULL, InterpolationMethod inMethod=IM_BILINEAR,
                 OverflowMethod ofMethod=OM_BACKGROUND, RGBQUAD *replColor=0,
-                bool const optimizeRightAngles=true, bool const bKeepOriginalSize=false);
+                bool const optimizeRightAngles=TRUE, bool const bKeepOriginalSize=FALSE);
 	bool Rotate180(CxImage* iDst = NULL);
 	bool Resample(long newx, long newy, int mode = 1, CxImage* iDst = NULL);
 	bool Resample2(long newx, long newy, InterpolationMethod const inMethod=IM_BICUBIC2,
 				OverflowMethod const ofMethod=OM_REPEAT, CxImage* const iDst = NULL,
-				bool const disableAveraging=false);
+				bool const disableAveraging=FALSE);
 	bool DecreaseBpp(DWORD nbit, bool errordiffusion, RGBQUAD* ppal = 0, DWORD clrimportant = 0);
 	bool IncreaseBpp(DWORD nbit);
 	bool Dither(long method = 0);
 	bool Crop(long left, long top, long right, long bottom, CxImage* iDst = NULL);
 	bool Crop(const RECT& rect, CxImage* iDst = NULL);
 	bool CropRotatedRectangle( long topx, long topy, long width, long height, float angle, CxImage* iDst = NULL);
-	bool Skew(float xgain, float ygain, long xpivot=0, long ypivot=0, bool bEnableInterpolation = false);
+	bool Skew(float xgain, float ygain, long xpivot=0, long ypivot=0, bool bEnableInterpolation = FALSE);
 	bool Expand(long left, long top, long right, long bottom, RGBQUAD canvascolor, CxImage* iDst = 0);
 	bool Expand(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst = 0);
 	bool Thumbnail(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst = 0);
@@ -504,7 +504,7 @@ public:
 	bool Jitter(long radius=2);
 	bool Repair(float radius = 0.25f, long niterations = 1, long colorspace = 0);
 	bool Combine(CxImage* r,CxImage* g,CxImage* b,CxImage* a, long colorspace = 0);
-	bool FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage* dstImag, long direction = 1, bool bForceFFT = true, bool bMagnitude = true);
+	bool FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage* dstImag, long direction = 1, bool bForceFFT = TRUE, bool bMagnitude = TRUE);
 	bool Noise(long level);
 	bool Median(long Ksize=3);
 	bool Gamma(float gamma);
@@ -519,7 +519,7 @@ public:
 	bool Edge(long Ksize=2);
 	void HuePalette(float correction=1);
 	enum ImageOpType { OpAdd, OpAnd, OpXor, OpOr, OpMask, OpSrcCopy, OpDstCopy, OpSub, OpSrcBlend, OpScreen };
-	void Mix(CxImage & imgsrc2, ImageOpType op, long lXOffset = 0, long lYOffset = 0, bool bMixAlpha = false);
+	void Mix(CxImage & imgsrc2, ImageOpType op, long lXOffset = 0, long lYOffset = 0, bool bMixAlpha = FALSE);
 	void MixFrom(CxImage & imagesrc2, long lXOffset, long lYOffset);
 	bool UnsharpMask(float radius = 5.0, float amount = 0.5, int threshold = 0);
 	bool Lut(BYTE* pLut);
@@ -601,7 +601,7 @@ public:
 	BYTE* AlphaGetPointer(const long x = 0,const long y = 0);
 
 	void AlphaPaletteClear();
-	void AlphaPaletteEnable(bool enable=true);
+	void AlphaPaletteEnable(bool enable=TRUE);
 	bool AlphaPaletteIsEnabled();
 	bool AlphaPaletteIsValid();
 	bool AlphaPaletteSplit(CxImage *dest);

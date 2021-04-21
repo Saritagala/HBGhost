@@ -44,7 +44,7 @@ bool CxImageTIF::Decode(CxFile * hFile)
 	uint16 res_unit; //<Trifon>
 	uint32 x, y;
 	float resolution, offset;
-	BOOL isRGB;
+	bool isRGB;
 	BYTE *bits;		//pointer to source data
 	BYTE *bits2;	//pointer to destination data
 
@@ -216,7 +216,7 @@ bool CxImageTIF::Decode(CxFile * hFile)
 				TIFFGetField(m_tif, TIFFTAG_COLORMAP, &red, &green, &blue); 
 
 				// Is the palette 16 or 8 bits ?
-				BOOL Palette16Bits = FALSE;
+				bool Palette16Bits = FALSE;
 				int n=1<<bitspersample;
 				while (n-- > 0) {
 					if (red[n] >= 256 || green[n] >= 256 || blue[n] >= 256) {
@@ -421,11 +421,11 @@ bool CxImageTIF::Decode(CxFile * hFile)
   } catch (char *message) {
 	  strncpy(info.szLastError,message,255);
 	  if (m_tif) TIFFClose(m_tif);
-	  if (info.nEscape==-1) return true;
-	  return false;
+	  if (info.nEscape==-1) return TRUE;
+	  return FALSE;
   }
 	TIFFClose(m_tif);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_ENCODE
@@ -440,7 +440,7 @@ bool CxImageTIF::Encode(CxFile * hFile, bool bAppend)
 	if (m_tif2==NULL) m_tif2=_TIFFOpenEx(hFile, "a");
 	if (m_tif2==NULL) throw "initialization fail";
 
-	if (bAppend || m_pages) m_multipage=true;
+	if (bAppend || m_pages) m_multipage=TRUE;
 	m_pages++;
 
 	if (!EncodeBody(m_tif2,m_multipage,m_pages,m_pages)) throw "Error saving TIFF file";
@@ -452,18 +452,18 @@ bool CxImageTIF::Encode(CxFile * hFile, bool bAppend)
 	  if (m_tif2){
 		  TIFFClose(m_tif2);
 		  m_tif2=NULL;
-		  m_multipage=false;
+		  m_multipage=FALSE;
 		  m_pages=0;
 	  }
-	  return false;
+	  return FALSE;
   }
 	if (!bAppend){
 		TIFFClose(m_tif2);
 		m_tif2=NULL;
-		m_multipage=false;
+		m_multipage=FALSE;
 		m_pages=0;
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // Thanks to Abe <God(dot)bless(at)marihuana(dot)com>
@@ -477,13 +477,13 @@ bool CxImageTIF::Encode(CxFile * hFile, CxImage ** pImages, int pagecount)
 	for (int i=1; i<=pagecount; i++){
 		if (pImages[i-1]==NULL) throw "Bad image pointer";
 		ghost.Ghost(pImages[i-1]);
-		if (!ghost.Encode(hFile,true)) throw "Error saving TIFF file";
+		if (!ghost.Encode(hFile,TRUE)) throw "Error saving TIFF file";
 	}
   } catch (char *message) {
 	  strncpy(info.szLastError,message,255);
-	  return false;
+	  return FALSE;
   }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount)
@@ -657,13 +657,13 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 			if (samplesperpixel==1){
 				for (y = 0; y < height; y++) {
 					bits= info.pImage + (height - y - 1)*info.dwEffWidth;
-					if (TIFFWriteScanline(m_tif,bits, y, 0)==-1) return false;
+					if (TIFFWriteScanline(m_tif,bits, y, 0)==-1) return FALSE;
 				}
 			}
 #if CXIMAGE_SUPPORT_ALPHA
 			else { //8bpp + alpha layer
 				bits = (BYTE*)malloc(2*width);
-				if (!bits) return false;
+				if (!bits) return FALSE;
 				for (y = 0; y < height; y++) {
 					for (x=0;x<width;x++){
 						bits[2*x]=GetPixelIndex(x,height - y - 1);
@@ -671,7 +671,7 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 					}
 					if (TIFFWriteScanline(m_tif,bits, y, 0)==-1) {
 						free(bits);
-						return false;
+						return FALSE;
 					}
 				}
 				free(bits);
@@ -682,7 +682,7 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 		case 24:
 		{
 			BYTE *buffer = (BYTE *)malloc(info.dwEffWidth);
-			if (!buffer) return false;
+			if (!buffer) return FALSE;
 			for (y = 0; y < height; y++) {
 				// get a pointer to the scanline
 				memcpy(buffer, info.pImage + (height - y - 1)*info.dwEffWidth, info.dwEffWidth);
@@ -697,7 +697,7 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 				// write the scanline to disc
 				if (TIFFWriteScanline(m_tif, buffer, y, 0)==-1){
 					free(buffer);
-					return false;
+					return FALSE;
 				}
 			}
 			free(buffer);
@@ -707,7 +707,7 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 		{
 #if CXIMAGE_SUPPORT_ALPHA
 			BYTE *buffer = (BYTE *)malloc((info.dwEffWidth*4)/3);
-			if (!buffer) return false;
+			if (!buffer) return FALSE;
 			for (y = 0; y < height; y++) {
 				// get a pointer to the scanline
 				memcpy(buffer, info.pImage + (height - y - 1)*info.dwEffWidth, info.dwEffWidth);
@@ -725,7 +725,7 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 				// write the scanline to disc
 				if (TIFFWriteScanline(m_tif, buffer, y, 0)==-1){
 					free(buffer);
-					return false;
+					return FALSE;
 				}
 			}
 			free(buffer);
@@ -733,7 +733,7 @@ bool CxImageTIF::EncodeBody(TIFF *m_tif, bool multipage, int page, int pagecount
 			break;
 		}				
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE

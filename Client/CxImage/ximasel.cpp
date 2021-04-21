@@ -34,9 +34,9 @@ bool CxImage::SelectionClear()
 		info.rSelectionBox.left = head.biWidth;
 		info.rSelectionBox.bottom = head.biHeight;
 		info.rSelectionBox.right = info.rSelectionBox.top = 0;
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -58,7 +58,7 @@ bool CxImage::SelectionDelete()
 	info.rSelectionBox.left = head.biWidth;
 	info.rSelectionBox.bottom = head.biHeight;
 	info.rSelectionBox.right = info.rSelectionBox.top = 0;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -67,10 +67,10 @@ bool CxImage::SelectionDelete()
 bool CxImage::SelectionIsInside(long x, long y)
 {
 	if (IsInside(x,y)){
-		if (pSelection==NULL) return true;
+		if (pSelection==NULL) return TRUE;
 		return pSelection[x+y*head.biWidth]!=0;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -79,7 +79,7 @@ bool CxImage::SelectionIsInside(long x, long y)
 bool CxImage::SelectionAddRect(RECT r)
 {
 	if (pSelection==NULL) SelectionCreate();
-	if (pSelection==NULL) return false;
+	if (pSelection==NULL) return FALSE;
 
 	RECT r2;
 	if (r.left<r.right) {r2.left=r.left; r2.right=r.right; } else {r2.left=r.right ; r2.right=r.left; }
@@ -98,7 +98,7 @@ bool CxImage::SelectionAddRect(RECT r)
 	for (long y=ymin; y<ymax; y++)
 		memset(pSelection + xmin + y * head.biWidth, 255, xmax-xmin);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -107,11 +107,11 @@ bool CxImage::SelectionAddRect(RECT r)
 bool CxImage::SelectionAddEllipse(RECT r)
 {
 	if (pSelection==NULL) SelectionCreate();
-	if (pSelection==NULL) return false;
+	if (pSelection==NULL) return FALSE;
 
 	long xradius = abs(r.right - r.left)/2;
 	long yradius = abs(r.top - r.bottom)/2;
-	if (xradius==0 || yradius==0) return false;
+	if (xradius==0 || yradius==0) return FALSE;
 
 	long xcenter = (r.right + r.left)/2;
 	long ycenter = (r.top + r.bottom)/2;
@@ -139,7 +139,7 @@ bool CxImage::SelectionAddEllipse(RECT r)
 			if (yo>y) pSelection[x + y * head.biWidth] = 255;
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -154,9 +154,9 @@ bool CxImage::SelectionInvert()
 			*iSrc=(BYTE)~(*(iSrc));
 			iSrc++;
 		}
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -164,12 +164,12 @@ bool CxImage::SelectionInvert()
  */
 bool CxImage::SelectionCopy(CxImage &from)
 {
-	if (from.pSelection == NULL || head.biWidth != from.head.biWidth || head.biHeight != from.head.biHeight) return false;
+	if (from.pSelection == NULL || head.biWidth != from.head.biWidth || head.biHeight != from.head.biHeight) return FALSE;
 	if (pSelection==NULL) pSelection = (BYTE*)malloc(head.biWidth * head.biHeight);
-	if (pSelection==NULL) return false;
+	if (pSelection==NULL) return FALSE;
 	memcpy(pSelection,from.pSelection,head.biWidth * head.biHeight);
 	memcpy(&info.rSelectionBox,&from.info.rSelectionBox,sizeof(RECT));
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -179,10 +179,10 @@ bool CxImage::SelectionCopy(CxImage &from)
  */
 bool CxImage::SelectionAddPolygon(POINT *points, long npoints)
 {
-	if (points==NULL || npoints<3) return false;
+	if (points==NULL || npoints<3) return FALSE;
 
 	if (pSelection==NULL) SelectionCreate();
-	if (pSelection==NULL) return false;
+	if (pSelection==NULL) return FALSE;
 
 	BYTE* plocal = (BYTE*)calloc(head.biWidth*head.biHeight, 1);
 	RECT localbox = {head.biWidth,0,0,head.biHeight};
@@ -353,7 +353,7 @@ bool CxImage::SelectionAddPolygon(POINT *points, long npoints)
 	free(plocal);
 	free(pix);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -362,7 +362,7 @@ bool CxImage::SelectionAddPolygon(POINT *points, long npoints)
 bool CxImage::SelectionAddColor(RGBQUAD c)
 {
     if (pSelection==NULL) SelectionCreate();
-	if (pSelection==NULL) return false;
+	if (pSelection==NULL) return FALSE;
 
 	RECT localbox = {head.biWidth,0,0,head.biHeight};
 
@@ -388,7 +388,7 @@ bool CxImage::SelectionAddColor(RGBQUAD c)
 	if (info.rSelectionBox.right < localbox.right) info.rSelectionBox.right = localbox.right;
 	if (info.rSelectionBox.bottom > localbox.bottom) info.rSelectionBox.bottom = localbox.bottom;
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -397,14 +397,14 @@ bool CxImage::SelectionAddColor(RGBQUAD c)
 bool CxImage::SelectionAddPixel(int x, int y)
 {
     if (pSelection==NULL) SelectionCreate();
-	if (pSelection==NULL) return false;
+	if (pSelection==NULL) return FALSE;
 
     if (IsInside(x,y)) {
         pSelection[x + y * head.biWidth] = 255; // set the correct mask bit
-        return true;
+        return TRUE;
     }
 
-    return false;
+    return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -412,10 +412,10 @@ bool CxImage::SelectionAddPixel(int x, int y)
  */
 bool CxImage::SelectionSplit(CxImage *dest)
 {
-	if (!pSelection || !dest) return false;
+	if (!pSelection || !dest) return FALSE;
 
 	CxImage tmp(head.biWidth,head.biHeight,8);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 	for(long y=0; y<head.biHeight; y++){
 		for(long x=0; x<head.biWidth; x++){
@@ -426,7 +426,7 @@ bool CxImage::SelectionSplit(CxImage *dest)
 	tmp.SetGrayPalette();
 	dest->Transfer(tmp);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_WINDOWS
@@ -460,9 +460,9 @@ bool CxImage::SelectionToHRGN(HRGN& region)
                 iStart = -1;
             }
         }
-		return true;
+		return TRUE;
     }
-	return false;
+	return FALSE;
 }
 #endif //CXIMAGE_SUPPORT_WINDOWS
 ////////////////////////////////////////////////////////////////////////////////

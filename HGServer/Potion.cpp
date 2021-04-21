@@ -83,14 +83,14 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	for (i = 0; i < 6; i++)
 		if (cI[i] >= 0) {
 			// ¸ÕÀú ÀÌ¹Ì ÀÖ´Â ¸®½ºÆ®ÀÎÁö °Ë»ö 
-			bDup = FALSE;
+			bDup = false;
 			for (j = 0; j < 6; j++)
 				if (sItemIndex[j] == cI[i]) {
 					// ÀÖ´Ù. Ä«¿îÆ® Áõ°¡ 
 					sItemNumber[j]++;
-					bDup = TRUE;
+					bDup = true;
 				}
-			if (bDup == FALSE) {
+			if (bDup == false) {
 				// ¾ø´Ù. »õ·Î Ãß°¡ÇÑ´Ù.
 				for (j = 0; j < 6; j++)
 					if (sItemIndex[j] == -1) {
@@ -114,9 +114,9 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	}
 
 	// ¾ÆÀÌÅÛÀ» ¾ÆÀÌÅÛ ¾ÆÀÌµð ¹øÈ£°¡ Å« ¼ø¼­ºÎÅÍ Á¤·ÄÇÑ´Ù. Bubble Sort
-	bFlag = TRUE;
-	while (bFlag == TRUE) {
-		bFlag = FALSE;
+	bFlag = true;
+	while (bFlag == true) {
+		bFlag = false;
 		for (i = 0; i < 5; i++) {
 			if ((sItemIndex[i] != -1) && (sItemIndex[i + 1] != -1)) {
 				if ((m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_sIDnum) <
@@ -128,7 +128,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 					sTemp = sItemNumber[i + 1];
 					sItemNumber[i + 1] = sItemNumber[i];
 					sItemNumber[i] = sTemp;
-					bFlag = TRUE;
+					bFlag = true;
 				}
 			}
 		}
@@ -152,11 +152,11 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 
 	for (i = 0; i < DEF_MAXPOTIONTYPES; i++)
 		if (m_pPotionConfigList[i] != NULL) {
-			bFlag = FALSE;
+			bFlag = false;
 			for (j = 0; j < 12; j++)
-				if (m_pPotionConfigList[i]->m_sArray[j] != sItemArray[j]) bFlag = TRUE;
+				if (m_pPotionConfigList[i]->m_sArray[j] != sItemArray[j]) bFlag = true;
 
-			if (bFlag == FALSE) {
+			if (bFlag == false) {
 				// Æ÷¼Ç Á¶ÇÕÀÌ ÀÏÄ¡ÇÏ´Â ¸®½ºÆ®¸¦ ¹ß°ßÇß´Ù. 
 				ZeroMemory(cPotionName, sizeof(cPotionName));
 				memcpy(cPotionName, m_pPotionConfigList[i]->m_cName, 20);
@@ -205,17 +205,17 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_cItemType == DEF_ITEMTYPE_CONSUME)
 					// v1.41 !!!
 					SetItemCount(iClientH, sItemIndex[i], m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_dwCount - sItemNumber[i]);
-				else ItemDepleteHandler(iClientH, sItemIndex[i], FALSE, TRUE);
+				else ItemDepleteHandler(iClientH, sItemIndex[i], false, true);
 			}
 
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_POTIONSUCCESS, NULL, NULL, NULL, cPotionName);
 		// v1.41 ¼Ò·®ÀÇ °æÇèÄ¡ Áõ°¡ 
 		GetExp(iClientH, iDice(1, (iDifficulty / 3)));
 
-		if ((_bInitItemAttr(pItem, cPotionName) == TRUE)) {
+		if ((_bInitItemAttr(pItem, cPotionName) == true)) {
 			// Æ÷¼Ç ¾ÆÀÌÅÛÀÌ ¸¸µé¾îÁ³´Ù. ÇÃ·¹ÀÌ¾îÀÇ ¾ÆÀÌÅÛ ¸®½ºÆ®¿¡ µî·ÏÇÑ´Ù. ¸¸¾à °ø°£ÀÌ ¾ø°Å³ª 
 			// ¹«°Ô°¡ ¸ðÀÚ¶ó¸é ¹ß ¹Ø¿¡ ¶³¾îÁ®¾ß ÇÑ´Ù.
-			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE) {
+			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
 				ZeroMemory(cData, sizeof(cData));
 				// ¾ÆÀÌÅÛÀ» È¹µæÇß´Ù.
 				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
@@ -289,7 +289,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				case DEF_XSOCKEVENT_CRITICALERROR:
 				case DEF_XSOCKEVENT_SOCKETCLOSED:
 					// ¸Þ½ÃÁö¸¦ º¸³¾¶§ ¿¡·¯°¡ ¹ß»ýÇß´Ù¸é Á¦°ÅÇÑ´Ù.
-					DeleteClient(iClientH, TRUE, TRUE);
+					DeleteClient(iClientH, true, true);
 					break;
 				}
 
@@ -322,7 +322,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				case DEF_XSOCKEVENT_CRITICALERROR:
 				case DEF_XSOCKEVENT_SOCKETCLOSED:
 					// ¸Þ½ÃÁö¸¦ º¸³¾¶§ ¿¡·¯°¡ ¹ß»ýÇß´Ù¸é Á¦°ÅÇÑ´Ù.
-					DeleteClient(iClientH, TRUE, TRUE);
+					DeleteClient(iClientH, true, true);
 					break;
 				}
 			}
@@ -357,11 +357,11 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 				switch (cReadModeB) {
 				case 1:
 					// ���� ��ȣ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! POTION configuration file error - Wrong Data format(1).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					if (m_pPotionConfigList[atoi(token)] != NULL) {
@@ -369,7 +369,7 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 						PutLogList("(!!!) CRITICAL ERROR! POTION configuration file error - Duplicate potion number.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pPotionConfigList[atoi(token)] = new class CPotion;
 					iPotionConfigListIndex = atoi(token);
@@ -386,11 +386,11 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				default:
 					// ���� ���� m_sArray[0~10]
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! MAGIC configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pPotionConfigList[iPotionConfigListIndex]->m_sArray[cReadModeB - 3] = atoi(token);
 					cReadModeB++;
@@ -398,11 +398,11 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 14:
 					// ������ m_sArray[11]
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! MAGIC configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pPotionConfigList[iPotionConfigListIndex]->m_sArray[11] = atoi(token);
 					cReadModeB = 15;
@@ -410,11 +410,11 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 15:
 					// ��ų ����ġ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! MAGIC configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pPotionConfigList[iPotionConfigListIndex]->m_iSkillLimit = atoi(token);
 					cReadModeB = 16;
@@ -422,11 +422,11 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 16:
 					// ���̵�
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! MAGIC configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pPotionConfigList[iPotionConfigListIndex]->m_iDifficulty = atoi(token);
 					cReadModeA = 0;
@@ -438,15 +438,15 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 			case 2: // Crafting
 				switch (cReadModeB) {
 				case 1:	// 
-					if (_bGetIsStringIsNumber(token) == FALSE)
+					if (_bGetIsStringIsNumber(token) == false)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Wrong Data format(1).");
-						delete[] pContents; delete pStrTok; return FALSE;
+						delete[] pContents; delete pStrTok; return false;
 					}
 					if (m_pCraftingConfigList[atoi(token)] != NULL)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Duplicate crafting number.");
-						delete[] pContents; delete pStrTok; return FALSE;
+						delete[] pContents; delete pStrTok; return false;
 					}
 					m_pCraftingConfigList[atoi(token)] = new class CPotion;
 					iCraftingConfigListIndex = atoi(token);
@@ -460,40 +460,40 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				default: // m_sArray[0~10]
-					if (_bGetIsStringIsNumber(token) == FALSE)
+					if (_bGetIsStringIsNumber(token) == false)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Wrong Data format.");
-						delete[] pContents; delete pStrTok; return FALSE;
+						delete[] pContents; delete pStrTok; return false;
 					}
 					m_pCraftingConfigList[iCraftingConfigListIndex]->m_sArray[cReadModeB - 3] = atoi(token);
 					cReadModeB++;
 					break;
 
 				case 14: // m_sArray[11]
-					if (_bGetIsStringIsNumber(token) == FALSE)
+					if (_bGetIsStringIsNumber(token) == false)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Wrong Data format.");
-						delete[] pContents; delete pStrTok; return FALSE;
+						delete[] pContents; delete pStrTok; return false;
 					}
 					m_pCraftingConfigList[iCraftingConfigListIndex]->m_sArray[11] = atoi(token);
 					cReadModeB = 15;
 					break;
 
 				case 15: // 
-					if (_bGetIsStringIsNumber(token) == FALSE)
+					if (_bGetIsStringIsNumber(token) == false)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Wrong Data format.");
-						delete[] pContents; delete pStrTok; return FALSE;
+						delete[] pContents; delete pStrTok; return false;
 					}
 					m_pCraftingConfigList[iCraftingConfigListIndex]->m_iSkillLimit = atoi(token);
 					cReadModeB = 16;
 					break;
 
 				case 16:// 
-					if (_bGetIsStringIsNumber(token) == FALSE)
+					if (_bGetIsStringIsNumber(token) == false)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Wrong Data format.");
-						delete[] pContents; delete pStrTok; return FALSE;
+						delete[] pContents; delete pStrTok; return false;
 					}
 					m_pCraftingConfigList[iCraftingConfigListIndex]->m_iDifficulty = atoi(token);
 					cReadModeA = 0;
@@ -527,13 +527,13 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		PutLogList("(!!!) CRITICAL ERROR! POTION configuration file contents error!");
-		return FALSE;
+		return false;
 	}
 
 	wsprintf(cTxt, "(!) POTION(Total:%d) configuration - success!", iPotionConfigListIndex);
 	PutLogList(cTxt);
 
-	return TRUE;
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -586,14 +586,14 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	{
 		if (cI[i] >= 0)
 		{
-			bDup = FALSE;
+			bDup = false;
 			for (j = 0; j < 6; j++)
 				if (sItemIndex[j] == cI[i])
 				{
 					sItemNumber[j]++;
-					bDup = TRUE;
+					bDup = true;
 				}
-			if (bDup == FALSE)
+			if (bDup == false)
 			{
 				for (j = 0; j < 6; j++)
 					if (sItemIndex[j] == -1)
@@ -640,10 +640,10 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 		}
 	}
 	// Bubble Sort
-	bFlag = TRUE;
-	while (bFlag == TRUE)
+	bFlag = true;
+	while (bFlag == true)
 	{
-		bFlag = FALSE;
+		bFlag = false;
 		for (i = 0; i < 5; i++)
 		{
 			if ((sItemIndex[i] != -1) && (sItemIndex[i + 1] != -1))
@@ -659,7 +659,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 					sTemp = sItemNumber[i + 1];
 					sItemNumber[i + 1] = sItemNumber[i];
 					sItemNumber[i] = sTemp;
-					bFlag = TRUE;
+					bFlag = true;
 				}
 			}
 		}
@@ -679,12 +679,12 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	for (i = 0; i < DEF_MAXPOTIONTYPES; i++) {
 		if (m_pCraftingConfigList[i] != NULL)
 		{
-			bFlag = FALSE;
+			bFlag = false;
 			for (j = 0; j < 12; j++)
 			{
-				if (m_pCraftingConfigList[i]->m_sArray[j] != sItemArray[j]) bFlag = TRUE; // one item mismatch	
+				if (m_pCraftingConfigList[i]->m_sArray[j] != sItemArray[j]) bFlag = true; // one item mismatch	
 			}
-			if (bFlag == FALSE) // good Crafting receipe
+			if (bFlag == false) // good Crafting receipe
 			{
 				ZeroMemory(cCraftingName, sizeof(cCraftingName));
 				memcpy(cCraftingName, m_pCraftingConfigList[i]->m_cName, 20);
@@ -721,7 +721,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 					&& (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_sSprite == 6)
 					&& (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_sSpriteFrame == 129))
 				{
-					ItemDepleteHandler(iClientH, sItemIndex[i], FALSE, TRUE);
+					ItemDepleteHandler(iClientH, sItemIndex[i], false, true);
 				}
 				else {
 					// Risk to deplete any other items (not stackable ones) // DEF_ITEMTYPE_CONSUME
@@ -730,7 +730,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 					{
 						if (iDice(1, 100) < iRiskLevel)
 						{
-							ItemDepleteHandler(iClientH, sItemIndex[i], FALSE, TRUE);
+							ItemDepleteHandler(iClientH, sItemIndex[i], false, true);
 						}
 					}
 				}
@@ -755,7 +755,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	if (iCount == 0)
 	{
 		iPurity = 20 + iDice(1, 80);			// Wares have random purity (20%..100%)
-		bNeedLog = FALSE;
+		bNeedLog = false;
 	}
 	else
 	{
@@ -763,12 +763,12 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 		iTot = (iPurity * 4) / 5;
 		iCount = iPurity - iTot;
 		iPurity = iTot + iDice(1, iCount);	// Jewel completion depends off Wares purity
-		bNeedLog = TRUE;
+		bNeedLog = true;
 	}
 	if (iNeededContrib != 0)
 	{
 		iPurity = 0;						// Necks require contribution but no purity/completion
-		bNeedLog = TRUE;
+		bNeedLog = true;
 	}
 
 	CalculateSSN_SkillIndex(iClientH, 18, 1);
@@ -789,7 +789,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 				}
 				else // So if item is not Type 5 (stackable items), you deplete item
 				{
-					ItemDepleteHandler(iClientH, sItemIndex[i], FALSE, TRUE);
+					ItemDepleteHandler(iClientH, sItemIndex[i], false, true);
 				}
 			}
 		}
@@ -804,7 +804,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 
 		GetExp(iClientH, iDice(1, iDice(2, 100)));
 
-		if ((_bInitItemAttr(pItem, cCraftingName) == TRUE))
+		if ((_bInitItemAttr(pItem, cCraftingName) == true))
 		{	// // Snoopy: Added Purity to Oils/Elixirs
 			if (iPurity != 0)
 			{
@@ -831,7 +831,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 					, pItem->m_sItemSpecEffectValue2);
 				PutLogList(G_cTxt);
 			}
-			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == TRUE)
+			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true)
 			{
 				ZeroMemory(cData, sizeof(cData));
 				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
@@ -884,7 +884,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 				case DEF_XSOCKEVENT_SOCKETERROR:
 				case DEF_XSOCKEVENT_CRITICALERROR:
 				case DEF_XSOCKEVENT_SOCKETCLOSED:
-					DeleteClient(iClientH, TRUE, TRUE);
+					DeleteClient(iClientH, true, true);
 					break;
 				}
 			}
@@ -910,7 +910,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 				case DEF_XSOCKEVENT_SOCKETERROR:
 				case DEF_XSOCKEVENT_CRITICALERROR:
 				case DEF_XSOCKEVENT_SOCKETCLOSED:
-					DeleteClient(iClientH, TRUE, TRUE);
+					DeleteClient(iClientH, true, true);
 					break;
 				}
 			}

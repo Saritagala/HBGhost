@@ -15,11 +15,11 @@ CxImageJPG::CxExifInfo::CxExifInfo(EXIFINFO* info)
 {
 	if (info) {
 		m_exifinfo = info;
-		freeinfo = false;
+		freeinfo = FALSE;
 	} else {
 		m_exifinfo = new EXIFINFO;
 		memset(m_exifinfo,0,sizeof(EXIFINFO));
-		freeinfo = true;
+		freeinfo = TRUE;
 	}
 
 	m_szLastError[0]='\0';
@@ -53,7 +53,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
 
         if (SectionsRead >= MAX_SECTIONS){
 			strcpy(m_szLastError,"Too many sections in jpg file");
-			return false;
+			return FALSE;
         }
 
         for (a=0;a<7;a++){
@@ -62,14 +62,14 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
 
             if (a >= 6){
                 printf("too many padding bytes\n");
-                return false;
+                return FALSE;
             }
         }
 
         if (marker == 0xff){
             // 0xff is legal padding, but if we get that many, something's wrong.
             strcpy(m_szLastError,"too many padding bytes!");
-			return false;
+			return FALSE;
         }
 
         Sections[SectionsRead].Type = marker;
@@ -82,7 +82,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
 
         if (itemlen < 2){
             strcpy(m_szLastError,"invalid marker");
-			return false;
+			return FALSE;
         }
 
         Sections[SectionsRead].Size = itemlen;
@@ -90,7 +90,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
         Data = (BYTE *)malloc(itemlen);
         if (Data == NULL){
             strcpy(m_szLastError,"Could not allocate memory");
-			return false;
+			return FALSE;
         }
         Sections[SectionsRead].Data = Data;
 
@@ -101,7 +101,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
         got = hFile->Read(Data+2, 1, itemlen-2); // Read the whole section.
         if (got != itemlen-2){
             strcpy(m_szLastError,"Premature end of file?");
-			return false;
+			return FALSE;
         }
         SectionsRead += 1;
 
@@ -121,13 +121,13 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
                     Data = (BYTE *)malloc(size);
                     if (Data == NULL){
                         strcpy(m_szLastError,"could not allocate data for entire image");
-						return false;
+						return FALSE;
                     }
 
                     got = hFile->Read(Data, 1, size);
                     if (got != size){
                         strcpy(m_szLastError,"could not read the rest of the image");
-						return false;
+						return FALSE;
                     }
 
                     Sections[SectionsRead].Data = Data;
@@ -135,7 +135,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
                     Sections[SectionsRead].Type = PSEUDO_IMAGE_MARKER;
                     SectionsRead ++;
                 }
-                return true;
+                return TRUE;
 
             case M_EOI:   // in case it's a tables-only JPEG stream
                 printf("No image in jpeg!\n");
@@ -195,7 +195,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
                 break;
         }
     }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------------------------------
@@ -214,7 +214,7 @@ bool CxImageJPG::CxExifInfo::process_EXIF(unsigned char * CharBuf, unsigned int 
         static const unsigned char ExifHeader[] = "Exif\0\0";
         if (memcmp(CharBuf+0, ExifHeader,6)){
 			strcpy(m_szLastError,"Incorrect Exif header");
-			return false;
+			return FALSE;
 		}
     }
 
@@ -225,14 +225,14 @@ bool CxImageJPG::CxExifInfo::process_EXIF(unsigned char * CharBuf, unsigned int 
             MotorolaOrder = 1;
         }else{
             strcpy(m_szLastError,"Invalid Exif alignment marker.");
-			return false;
+			return FALSE;
         }
     }
 
     /* Check the next two values for correctness. */
     if (Get16u(CharBuf+8) != 0x2a){
         strcpy(m_szLastError,"Invalid Exif start (1)");
-		return false;
+		return FALSE;
     }
 
 	int FirstOffset = Get32u(CharBuf+10);
@@ -241,19 +241,19 @@ bool CxImageJPG::CxExifInfo::process_EXIF(unsigned char * CharBuf, unsigned int 
         // I used to ensure this was set to 8 (website I used indicated its 8)
         // but PENTAX Optio 230 has it set differently, and uses it as offset. (Sept 11 2002)
         strcpy(m_szLastError,"Suspicious offset of first IFD value");
-		return false;
+		return FALSE;
     }*/
 
     unsigned char * LastExifRefd = CharBuf;
 
     /* First directory starts 16 bytes in.  Offsets start at 8 bytes in. */
     if (!ProcessExifDir(CharBuf+14, CharBuf+6, length-6, m_exifinfo, &LastExifRefd))
-		return false;
+		return FALSE;
 
 	/* <Richard Collins> give a chance for a second directory */
 	if (FirstOffset > 8) {
 		if (!ProcessExifDir(CharBuf+14+FirstOffset-8, CharBuf+6, length-6, m_exifinfo, &LastExifRefd))
-			return false;
+			return FALSE;
 	}
 
     /* This is how far the interesting (non thumbnail) part of the exif went. */
@@ -264,7 +264,7 @@ bool CxImageJPG::CxExifInfo::process_EXIF(unsigned char * CharBuf, unsigned int 
         m_exifinfo->CCDWidth = (float)(ExifImageWidth * m_exifinfo->FocalplaneUnits / m_exifinfo->FocalplaneXRes);
     }
 
-	return true;
+	return TRUE;
 }
 //--------------------------------------------------------------------------
 // Get 16 bits motorola order (always) for jpeg header stuff.
@@ -389,7 +389,7 @@ bool CxImageJPG::CxExifInfo::ProcessExifDir(unsigned char * DirStart, unsigned c
 
     if ((DirStart+2+NumDirEntries*12) > (OffsetBase+ExifLength)){
         strcpy(m_szLastError,"Illegally sized directory");
-		return false;
+		return FALSE;
     }
 
     for (de=0;de<NumDirEntries;de++){
@@ -410,7 +410,7 @@ bool CxImageJPG::CxExifInfo::ProcessExifDir(unsigned char * DirStart, unsigned c
         if ((Format-1) >= NUM_FORMATS) {
             /* (-1) catches illegal zero case as unsigned underflows to positive large */
             strcpy(m_szLastError,"Illegal format code in EXIF dir");
-			return false;
+			return FALSE;
 		}
 
         ByteCount = Components * BytesPerFormat[Format];
@@ -422,7 +422,7 @@ bool CxImageJPG::CxExifInfo::ProcessExifDir(unsigned char * DirStart, unsigned c
             if (OffsetVal+ByteCount > ExifLength){
                 /* Bogus pointer offset and / or bytecount value */
                 strcpy(m_szLastError,"Illegal pointer offset value in EXIF.");
-				return false;
+				return FALSE;
             }
             ValuePtr = OffsetBase+OffsetVal;
         }else{
@@ -647,7 +647,7 @@ bool CxImageJPG::CxExifInfo::ProcessExifDir(unsigned char * DirStart, unsigned c
 				if (SubdirStart < OffsetBase || 
 					SubdirStart > OffsetBase+ExifLength){
 					strcpy(m_szLastError,"Illegal subdirectory link");
-					return false;
+					return FALSE;
 				}
 				ProcessExifDir(SubdirStart, OffsetBase, ExifLength, m_exifinfo, LastExifRefdP);
 			}
@@ -670,7 +670,7 @@ bool CxImageJPG::CxExifInfo::ProcessExifDir(unsigned char * DirStart, unsigned c
             if (SubdirStart < OffsetBase 
                 || SubdirStart > OffsetBase+ExifLength){
                 strcpy(m_szLastError,"Illegal subdirectory link");
-				return false;
+				return FALSE;
             }
             ProcessExifDir(SubdirStart, OffsetBase, ExifLength, m_exifinfo, LastExifRefdP);
         }
@@ -685,7 +685,7 @@ bool CxImageJPG::CxExifInfo::ProcessExifDir(unsigned char * DirStart, unsigned c
         }
     }
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /*--------------------------------------------------------------------------
@@ -799,7 +799,7 @@ bool CxImageJPG::CxExifInfo::EncodeExif(CxFile * hFile)
 
     if (FindSection(M_SOS)==NULL){
 		strcpy(m_szLastError,"Can't write exif : didn't read all");
-		return false;
+		return FALSE;
     }
 
     // Initial static jpeg marker.
@@ -826,7 +826,7 @@ bool CxImageJPG::CxExifInfo::EncodeExif(CxFile * hFile)
     // Write the remaining image data.
     hFile->Write(Sections[a].Data, Sections[a].Size, 1);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImageJPG::CxExifInfo::DiscardAllButExif()

@@ -131,9 +131,9 @@ public:
 
 #if CXIMAGE_SUPPORT_ENCODE
 	bool Encode(CxFile * fp);
-	bool Encode(CxFile * fp, CxImage ** pImages, int pagecount, bool bLocalColorMap = false);
+	bool Encode(CxFile * fp, CxImage ** pImages, int pagecount, bool bLocalColorMap = FALSE);
 	bool Encode(FILE *fp) { CxIOFile file(fp); return Encode(&file); }
-	bool Encode(FILE *fp, CxImage ** pImages, int pagecount, bool bLocalColorMap = false)
+	bool Encode(FILE *fp, CxImage ** pImages, int pagecount, bool bLocalColorMap = FALSE)
 				{ CxIOFile file(fp); return Encode(&file, pImages, pagecount, bLocalColorMap); }
 #endif // CXIMAGE_SUPPORT_ENCODE
 
@@ -149,7 +149,7 @@ protected:
 	void EncodeHeader(CxFile *fp);
 	void EncodeLoopExtension(CxFile *fp);
 	void EncodeExtension(CxFile *fp);
-	void EncodeBody(CxFile *fp, bool bLocalColorMap = false);
+	void EncodeBody(CxFile *fp, bool bLocalColorMap = FALSE);
 	void EncodeComment(CxFile *fp);
 	bool EncodeRGB(CxFile *fp);
 	void GifMix(CxImage & imgsrc2, struct_image & imgdesc);

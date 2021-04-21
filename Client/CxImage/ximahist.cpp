@@ -72,12 +72,12 @@ long CxImage::Histogram(long* red, long* green, long* blue, long* gray, long col
 /**
  * HistogramStretch
  * \param method: 0 = luminance (default), 1 = linked channels , 2 = independent channels.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  * \author [dave] and [nipper]
  */
 bool CxImage::HistogramStretch(long method)
 {
-  if (!pDib) return false;
+  if (!pDib) return FALSE;
 
   if ((head.biBitCount==8) && IsGrayScale()){
 	// get min/max info
@@ -98,7 +98,7 @@ bool CxImage::HistogramStretch(long method)
 		}
 	}
 
-	if (minc == 0 && maxc == 255) return true;
+	if (minc == 0 && maxc == 255) return TRUE;
 	
 	// calculate LUT
 	BYTE lut[256];
@@ -145,7 +145,7 @@ bool CxImage::HistogramStretch(long method)
 		}
 
 		if (minc == 0 && maxc == 255)
-			return true;
+			return TRUE;
 		
 		// calculate LUT
 		BYTE lut[256];
@@ -205,7 +205,7 @@ bool CxImage::HistogramStretch(long method)
 		}
 
 		if (minR == 0 && maxR == 255 && minG == 0 && maxG == 255 && minB == 0 && maxB == 255)
-			return true;
+			return TRUE;
 
 		// calculate LUT
 		BYTE lutR[256];
@@ -282,7 +282,7 @@ bool CxImage::HistogramStretch(long method)
 					if ( tmpGray > upperd )	upperd = tmpGray;
 				}
 			}
-			if (upperd==lowerc) return false;
+			if (upperd==lowerc) return FALSE;
 			
 			for( y = ymin; y < ymax; y++ ){
 				info.nProgress = (long)(50+50*y/ymax);
@@ -311,7 +311,7 @@ bool CxImage::HistogramStretch(long method)
 				if ( tmpGray < lowerc )	lowerc = tmpGray;
 				if ( tmpGray > upperd )	upperd = tmpGray;
 			}
-			if (upperd==lowerc) return false;
+			if (upperd==lowerc) return FALSE;
 
 			for( j = 0; j < head.biClrUsed; j++ ){
 
@@ -332,13 +332,13 @@ bool CxImage::HistogramStretch(long method)
 	  }
 	}
   }
-  return true;
+  return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // HistogramEqualize function by <dave> : dave(at)posortho(dot)com
 bool CxImage::HistogramEqualize()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
     int histogram[256];
 	int map[256];
@@ -373,7 +373,7 @@ bool CxImage::HistogramEqualize()
 	// equalize
 	low = map[0];
 	high = map[255];
-	if (low == high) return false;
+	if (low == high) return FALSE;
 	for( i = 0; i <= 255; i++ ){
 		equalize_map[i] = (unsigned int)((((double)( map[i] - low ) ) * 255) / ( high - low ) );
 	}
@@ -406,13 +406,13 @@ bool CxImage::HistogramEqualize()
 			SetPaletteColor( (BYTE)i, color );
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // HistogramNormalize function by <dave> : dave(at)posortho(dot)com
 bool CxImage::HistogramNormalize()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	int histogram[256];
 	int threshold_intensity, intense;
@@ -466,7 +466,7 @@ bool CxImage::HistogramNormalize()
 			if( intense > threshold_intensity )	break;
 		}
 	}
-	if( low == high ) return false;  // zero span bound
+	if( low == high ) return FALSE;  // zero span bound
 
 	// Stretch the histogram to create the normalized image mapping.
 	for(i = 0; i <= 255; i++){
@@ -508,13 +508,13 @@ bool CxImage::HistogramNormalize()
  			SetPaletteColor( (BYTE)i, color );
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // HistogramLog function by <dave> : dave(at)posortho(dot)com
 bool CxImage::HistogramLog()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	//q(i,j) = 255/log(1 + |high|) * log(1 + |p(i,j)|);
     int x, y, i;
@@ -572,14 +572,14 @@ bool CxImage::HistogramLog()
 		}
 	}
  
-	return true;
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 // HistogramRoot function by <dave> : dave(at)posortho(dot)com
 bool CxImage::HistogramRoot()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	//q(i,j) = sqrt(|p(i,j)|);
 
     int x, y, i;
@@ -643,7 +643,7 @@ bool CxImage::HistogramRoot()
 		}
 	}
  
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif

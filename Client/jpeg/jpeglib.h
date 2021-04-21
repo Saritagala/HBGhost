@@ -1083,7 +1083,7 @@ struct jpeg_color_quantizer { long dummy; };
 
 /*
  * The JPEG library modules define JPEG_INTERNALS before including this file.
- * The internal structure declarations are read only when that is true.
+ * The internal structure declarations are read only when that is TRUE.
  * Applications using the library should not include jpegint.h, but may wish
  * to include jerror.h.
  */

@@ -96,12 +96,12 @@ bool Team::MakeItems(int client, short steam)
 	char color;
 	auto g = G_pGame;
 	auto p = g->m_pClientList[client];
-	if (!p) return FALSE;
+	if (!p) return false;
 
 	if (p->GetItemCount() > 48)
 	{
 		g->ShowClientMsg(client, "You need 2 free space in bag for this event.");
-		return FALSE;
+		return false;
 	}
 
 	switch (steam)
@@ -110,12 +110,12 @@ bool Team::MakeItems(int client, short steam)
 	case 1: color = 10; break; //blue 
 	case 2: color = 5; break; //green
 	case 3: color = 13; break; //yellow
-	default: return FALSE; break;
+	default: return false; break;
 	}
 
 	CreateCape(client, "Cape+1", color);
 	CreateBoots(client, "LongBoots", color);
-	return TRUE;
+	return true;
 }
 
 void Team::Kill(int iattacker, int itarget)
@@ -190,7 +190,7 @@ void Team::DontRevive(int client)
 	p->m_iMP = ((p->m_iMag * 2) + (p->m_iLevel / 2)) + p->m_iInt / 2;
 	p->m_iSP = (p->m_iStr * 2) + (p->m_iLevel / 2);
 	p->m_iHungerStatus = 100;
-	p->m_bIsBeingResurrected = FALSE;
+	p->m_bIsBeingResurrected = false;
 	p->m_cMagicEffectStatus[DEF_MAGICTYPE_HOLDOBJECT] = 0;
 	p->m_cMagicEffectStatus[DEF_MAGICTYPE_ICE] = 0;
 
@@ -342,7 +342,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 
 	pItem = new class CItem;
 
-	if (g->_bInitItemAttr(pItem, itemname) == FALSE) {
+	if (g->_bInitItemAttr(pItem, itemname) == false) {
 		delete pItem;
 		return;
 	}
@@ -352,7 +352,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 	pItem->m_cItemColor = color;
 	pItem->teamcape = true;
 
-	if (g->_bAddClientItemList(client, pItem, &iEraseReq) == TRUE) {
+	if (g->_bAddClientItemList(client, pItem, &iEraseReq) == true) {
 
 		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
@@ -454,7 +454,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 
 	pItem = new class CItem;
 
-	if (g->_bInitItemAttr(pItem, itemname) == FALSE) {
+	if (g->_bInitItemAttr(pItem, itemname) == false) {
 		delete pItem;
 		return;
 	}
@@ -464,7 +464,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 	pItem->m_cItemColor = color;
 	pItem->teamboots = true;
 
-	if (g->_bAddClientItemList(client, pItem, &iEraseReq) == TRUE) {
+	if (g->_bAddClientItemList(client, pItem, &iEraseReq) == true) {
 
 		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
@@ -591,7 +591,7 @@ void Team::EquipCape(int client)
 	}
 	if (index != -1)
 	{
-		g->bEquipItemHandler(client, index, TRUE);
+		g->bEquipItemHandler(client, index, true);
 		g->SendNotifyMsg(NULL, client, NOTIFY_EQUIPITEM2, index, NULL, 0, 0, 0, 0, 0);
 	}
 }
@@ -617,7 +617,7 @@ void Team::EquipBoots(int client)
 	}
 	if (index != -1)
 	{
-		g->bEquipItemHandler(client, index, TRUE);
+		g->bEquipItemHandler(client, index, true);
 		g->SendNotifyMsg(NULL, client, NOTIFY_EQUIPITEM2, index, NULL, 0, 0, 0, 0, 0);
 	}
 }
@@ -636,7 +636,7 @@ void Team::DeleteCape(int iClientH) {
 		if (!it->teamcape)
 			continue;
 
-		G_pGame->ItemDepleteHandler(iClientH, i, FALSE, TRUE);
+		G_pGame->ItemDepleteHandler(iClientH, i, false, true);
 	}
 }
 
@@ -653,6 +653,6 @@ void Team::DeleteBoots(int iClientH) {
 		if (!it->teamboots)
 			continue;
 
-		G_pGame->ItemDepleteHandler(iClientH, i, FALSE, TRUE);
+		G_pGame->ItemDepleteHandler(iClientH, i, false, true);
 	}
 }

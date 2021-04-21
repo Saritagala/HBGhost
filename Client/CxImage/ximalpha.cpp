@@ -99,12 +99,12 @@ void CxImage::AlphaInvert()
  */
 bool CxImage::AlphaCopy(CxImage &from)
 {
-	if (from.pAlpha == NULL || head.biWidth != from.head.biWidth || head.biHeight != from.head.biHeight) return false;
+	if (from.pAlpha == NULL || head.biWidth != from.head.biWidth || head.biHeight != from.head.biHeight) return FALSE;
 	if (pAlpha==NULL) pAlpha = (BYTE*)malloc(head.biWidth * head.biHeight);
-	if (pAlpha==NULL) return false;
+	if (pAlpha==NULL) return FALSE;
 	memcpy(pAlpha,from.pAlpha,head.biWidth * head.biHeight);
 	info.nAlphaMax=from.info.nAlphaMax;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -112,17 +112,17 @@ bool CxImage::AlphaCopy(CxImage &from)
  */
 bool CxImage::AlphaSet(CxImage &from)
 {
-	if (!from.IsGrayScale() || head.biWidth != from.head.biWidth || head.biHeight != from.head.biHeight) return false;
+	if (!from.IsGrayScale() || head.biWidth != from.head.biWidth || head.biHeight != from.head.biHeight) return FALSE;
 	if (pAlpha==NULL) pAlpha = (BYTE*)malloc(head.biWidth * head.biHeight);
 	BYTE* src = from.info.pImage;
 	BYTE* dst = pAlpha;
-	if (src==NULL || dst==NULL) return false;
+	if (src==NULL || dst==NULL) return FALSE;
 	for (long y=0; y<head.biHeight; y++){
 		memcpy(dst,src,head.biWidth);
 		dst += head.biWidth;
 		src += from.info.dwEffWidth;
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -187,9 +187,9 @@ bool CxImage::AlphaPaletteIsValid()
 	RGBQUAD c;
 	for(WORD ip=0; ip<head.biClrUsed;ip++){
 		c=GetPaletteColor((BYTE)ip);
-		if (c.rgbReserved != 0) return true;
+		if (c.rgbReserved != 0) return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -238,9 +238,9 @@ void CxImage::AlphaStrip()
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::AlphaFlip()
 {
-	if (!pAlpha) return false;
+	if (!pAlpha) return FALSE;
 	BYTE* pAlpha2 = (BYTE*)malloc(head.biWidth * head.biHeight);
-	if (!pAlpha2) return false;
+	if (!pAlpha2) return FALSE;
 	BYTE *iSrc,*iDst;
 	iSrc=pAlpha + (head.biHeight-1)*head.biWidth;
 	iDst=pAlpha2;
@@ -251,14 +251,14 @@ bool CxImage::AlphaFlip()
 	}
 	free(pAlpha);
 	pAlpha=pAlpha2;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::AlphaMirror()
 {
-	if (!pAlpha) return false;
+	if (!pAlpha) return FALSE;
 	BYTE* pAlpha2 = (BYTE*)malloc(head.biWidth * head.biHeight);
-	if (!pAlpha2) return false;
+	if (!pAlpha2) return FALSE;
 	BYTE *iSrc,*iDst;
 	long wdt=head.biWidth-1;
 	iSrc=pAlpha + wdt;
@@ -271,7 +271,7 @@ bool CxImage::AlphaMirror()
 	}
 	free(pAlpha);
 	pAlpha=pAlpha2;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -279,10 +279,10 @@ bool CxImage::AlphaMirror()
  */
 bool CxImage::AlphaSplit(CxImage *dest)
 {
-	if (!pAlpha || !dest) return false;
+	if (!pAlpha || !dest) return FALSE;
 
 	CxImage tmp(head.biWidth,head.biHeight,8);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 	for(long y=0; y<head.biHeight; y++){
 		for(long x=0; x<head.biWidth; x++){
@@ -293,7 +293,7 @@ bool CxImage::AlphaSplit(CxImage *dest)
 	tmp.SetGrayPalette();
 	dest->Transfer(tmp);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -301,10 +301,10 @@ bool CxImage::AlphaSplit(CxImage *dest)
  */
 bool CxImage::AlphaPaletteSplit(CxImage *dest)
 {
-	if (!AlphaPaletteIsValid() || !dest) return false;
+	if (!AlphaPaletteIsValid() || !dest) return FALSE;
 
 	CxImage tmp(head.biWidth,head.biHeight,8);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 	for(long y=0; y<head.biHeight; y++){
 		for(long x=0; x<head.biWidth; x++){
@@ -315,7 +315,7 @@ bool CxImage::AlphaPaletteSplit(CxImage *dest)
 	tmp.SetGrayPalette();
 	dest->Transfer(tmp);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif //CXIMAGE_SUPPORT_ALPHA

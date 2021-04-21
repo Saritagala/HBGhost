@@ -32,7 +32,7 @@ CClient::CClient(HWND hWnd)
 	strcpy(m_cLocation, "NONE");
 	m_iGuildRank = -1;
 	m_iGuildGUID = -1;
-	m_bIsInitComplete = FALSE;
+	m_bIsInitComplete = false;
 	m_iLU_Pool = 0; // removed
 	iteam = stoptime = 0;
 	m_cWarType = 0;
@@ -41,8 +41,8 @@ CClient::CClient(HWND hWnd)
 	m_iPKCount = 0;
 	m_iRewardGold = 0;
 	m_iCurWeightLoad = 0;
-	m_bIsSafeAttackMode  = FALSE;
-	m_bIsSelfSafe = FALSE;
+	m_bIsSafeAttackMode  = false;
+	m_bIsSelfSafe = false;
 	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++) {
 		m_sItemEquipmentStatus[i] = -1;
 	}
@@ -50,7 +50,7 @@ CClient::CClient(HWND hWnd)
 		m_pItemList[i]       = NULL;
 		m_ItemPosList[i].x   = 40;
 		m_ItemPosList[i].y   = 30;
-		m_bIsItemEquipped[i] = FALSE;
+		m_bIsItemEquipped[i] = false;
 	}
 	m_cArrowIndex = -1;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++) {
@@ -63,7 +63,7 @@ CClient::CClient(HWND hWnd)
 		m_cSkillMastery[i] = NULL;
 	}
 	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
-		m_bSkillUsingStatus[i] = FALSE;
+		m_bSkillUsingStatus[i] = false;
 		m_iSkillUsingTimeID[i] = NULL;
 	}
 	m_cMapIndex = -1;
@@ -100,15 +100,15 @@ CClient::CClient(HWND hWnd)
 	m_iDamageAbsorption_Shield = 0;
 	m_iHPstock = 0;
 	// <MISSING_VARIABLE_HERE> 00B4h 
-	m_bIsKilled = FALSE;
+	m_bIsKilled = false;
 	for (i = 0; i < DEF_MAXMAGICEFFECTS; i++) {
 		m_cMagicEffectStatus[i]	= 0;
 	}
 	m_iWhisperPlayerIndex = -1;
 	ZeroMemory(m_cWhisperPlayerName, sizeof(m_cWhisperPlayerName));
 	m_iHungerStatus = 100;
-	m_bIsWarLocation = FALSE;
-	m_bIsPoisoned = FALSE;
+	m_bIsWarLocation = false;
+	m_bIsPoisoned = false;
 	m_iPoisonLevel = 0;
 	m_iAdminUserLevel = 0;
 	m_iRating = 0;
@@ -120,7 +120,7 @@ CClient::CClient(HWND hWnd)
 	m_iRecentWalkTime = 0;
 	// <MISSING_VARIABLE_HERE> 0BC0h 
 	m_sV1 = 0;
-	m_bIsOnServerChange = FALSE;
+	m_bIsOnServerChange = false;
 	m_iExpStock = 0;
 	m_iAllocatedFish = NULL;
 	m_iFishChance = 0;
@@ -142,7 +142,7 @@ CClient::CClient(HWND hWnd)
 
 	m_iWantedLevel = 0; // Wanted System
 
-	m_bIsPolymorph = FALSE;
+	m_bIsPolymorph = false;
 
 	m_dwDSLAT = m_dwDSLATOld = m_dwDSLATS = 0;
 	m_iDSCount = 0;
@@ -158,7 +158,7 @@ CClient::CClient(HWND hWnd)
 	
 	m_dwAFKCheckTime = 0;
 
-	m_bIsOnWaitingProcess = FALSE;
+	m_bIsOnWaitingProcess = false;
 	m_iSuperAttackLeft = 0;
 	m_iSuperAttackCount = 0;
 	m_sUsingWeaponSkill = 5;
@@ -166,7 +166,7 @@ CClient::CClient(HWND hWnd)
 	m_iAddResistMagic = 0;
 	m_iAddPhysicalDamage = 0;
 	m_iAddMagicalDamage = 0;
-	m_bIsLuckyEffect = FALSE;
+	m_bIsLuckyEffect = false;
 	m_iSideEffect_MaxHPdown = 0;
 
 	m_iAddAbsLight = 0;
@@ -189,10 +189,10 @@ CClient::CClient(HWND hWnd)
 		ZeroMemory(m_stPartyMemberName[i].cName, sizeof(m_stPartyMemberName[i].cName));
 	}
 	m_iAbuseCount = 0;
-	m_bIsBWMonitor = FALSE;
-	m_bIsForceDisconnect = FALSE; // new
+	m_bIsBWMonitor = false;
+	m_bIsForceDisconnect = false; // new
 	// <MISSING_VARIABLE_HERE> 0CD0h 
-	m_bIsBeingResurrected = FALSE;
+	m_bIsBeingResurrected = false;
 	m_cExchangeMode = 0;
 	m_iFightZoneTicketNumber = m_iFightzoneNumber = m_iReserveTime =  0;
 	// <MISSING_VARIABLE_HERE> 0B8Ch 
@@ -206,7 +206,7 @@ CClient::CClient(HWND hWnd)
 		ZeroMemory(m_cExchangeItemName[i], sizeof(m_cExchangeItemName[i]));
 	}
 	m_iExchangeComplete = 0;
-	m_bIsExchangeConfirm = FALSE;
+	m_bIsExchangeConfirm = false;
 	m_iExchangeCount = 0;
 	m_iAlterItemDropIndex = -1;
 
@@ -216,7 +216,7 @@ CClient::CClient(HWND hWnd)
 	for (i = 0; i < DEF_MAXQUEST; i++) m_iCurQuestCount[i] = NULL;
 	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardType[i] = NULL;
 	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardAmount[i] = NULL;
-	for (i = 0; i < DEF_MAXQUEST; i++) m_bIsQuestCompleted[i] = FALSE;
+	for (i = 0; i < DEF_MAXQUEST; i++) m_bIsQuestCompleted[i] = false;
 
 	//m_iQuest = NULL;
 	//m_iQuestID = NULL;
@@ -225,11 +225,11 @@ CClient::CClient(HWND hWnd)
 	//m_iQuestRewardType = NULL;
 	//m_iQuestRewardAmount = NULL;
 	m_iContribution = NULL;
-	m_bQuestMatchFlag_Loc = FALSE;
-	//m_bIsQuestCompleted = FALSE;
+	m_bQuestMatchFlag_Loc = false;
+	//m_bIsQuestCompleted = false;
 	m_cHeroArmourBonus = 0;
-	m_bIsNeutral = FALSE;
-	m_bIsObserverMode = FALSE;
+	m_bIsNeutral = false;
+	m_bIsObserverMode = false;
 	m_iSpecialEventID = 200081;
 	m_iSpecialWeaponEffectType = 0;
 	m_iSpecialWeaponEffectValue = 0;
@@ -239,15 +239,15 @@ CClient::CClient(HWND hWnd)
 	m_iAddCD = m_iAddExp = m_iAddGold = 0;
 	m_iSpecialAbilityTime = DEF_SPECABLTYTIMESEC;
 	m_iSpecialAbilityType = NULL;
-	m_bIsSpecialAbilityEnabled = FALSE;
+	m_bIsSpecialAbilityEnabled = false;
 	m_iSpecialAbilityLastSec = 0;
 	m_iSpecialAbilityEquipPos = 0;
 	m_iMoveMsgRecvCount = 0;
 	m_iAttackMsgRecvCount = 0;
 	m_iRunMsgRecvCount = 0;
 	m_iSkillMsgRecvCount = 0;
-	m_bIsAdminCreateItemEnabled = FALSE; // new
-	m_bIsAdminCommandEnabled = TRUE;
+	m_bIsAdminCreateItemEnabled = false; // new
+	m_bIsAdminCommandEnabled = true;
 	m_iAutoExpAmount = 0;
 	m_iWarContribution = 0;
 	m_dwMoveLAT = m_dwRunLAT = m_dwAttackLAT = 0;
@@ -266,7 +266,7 @@ CClient::CClient(HWND hWnd)
 		m_stCrusadeStructureInfo[i].sY = NULL;
 	}	
 	m_iCSIsendPoint = NULL;
-	m_bIsSendingMapStatus = FALSE;
+	m_bIsSendingMapStatus = false;
 	ZeroMemory(m_cSendingMapName, sizeof(m_cSendingMapName));
 	m_iConstructionPoint = NULL;
 	ZeroMemory(m_cConstructMapName, sizeof(m_cConstructMapName));
@@ -277,22 +277,22 @@ CClient::CClient(HWND hWnd)
 	m_iReqJoinPartyClientH = 0;	
 	ZeroMemory(m_cReqJoinPartyName,sizeof(m_cReqJoinPartyName));
 	m_dwLastActionTime = 0; // new
-	m_bIsCheckingWhisperPlayer = FALSE;
+	m_bIsCheckingWhisperPlayer = false;
 	// <MISSING_VARIABLE_HERE> 1660h
 	m_iGizonItemUpgradeLeft = 0;
 	// <MISSING_VARIABLE_HERE> 168Ch
 	// <MISSING_VARIABLE_HERE> 1684h
 	// <MISSING_VARIABLE_HERE> 1688h
-	m_bIsMoveBlocked = FALSE;
+	m_bIsMoveBlocked = false;
 	// <MISSING_VARIABLE_HERE> 1694h
-	m_bIsOwnLocation = FALSE;
-	m_pIsProcessingAllowed = FALSE;
+	m_bIsOwnLocation = false;
+	m_pIsProcessingAllowed = false;
 	// <MISSING_VARIABLE_HERE> 16A4h
-	m_bIsInsideWarehouse = FALSE;
+	m_bIsInsideWarehouse = false;
 	// <MISSING_VARIABLE_HERE> 16B0h	
-	m_bIsAdminOrderGoto = FALSE;
-	m_bIsInsideEnemyBuilding = FALSE; // new
-	m_bIsImpossibleZone = FALSE; // rename
+	m_bIsAdminOrderGoto = false;
+	m_bIsInsideEnemyBuilding = false; // new
+	m_bIsImpossibleZone = false; // rename
 
 	///////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////Modifications////////////////////////////////////////
@@ -303,20 +303,20 @@ CClient::CClient(HWND hWnd)
 	m_dwLogoutHackCheck = 0;
 	m_iAddTransMana = 0;
 	m_iAddChargeCritical = 0;
-	m_bInhibition = FALSE;
+	m_bInhibition = false;
 	m_iPenaltyBlockYear = m_iPenaltyBlockMonth = m_iPenaltyBlockDay = 0; // v1.4
 	ZeroMemory(m_cExchangeName, sizeof(m_cExchangeName));			// 교환할 대상의 이름 
 	ZeroMemory(m_cExchangeItemName, sizeof(m_cExchangeItemName));	// 교환할 아이템 이름 	
 	m_dwHeldenianGUID = NULL;
-	m_bIsInsideWizardTower = FALSE;
+	m_bIsInsideWizardTower = false;
 	m_cHeroArmorBonus = 0;
-	m_bMagicConfirm = FALSE;
-	m_bMagicItem = FALSE;
+	m_bMagicConfirm = false;
+	m_bMagicItem = false;
 	m_iSpellCount = 0;
-	m_bMagicPauseTime = FALSE;
-	m_bIsClientConnected = FALSE;
+	m_bMagicPauseTime = false;
+	m_bIsClientConnected = false;
 
-	m_bIsExchangeMode = FALSE;
+	m_bIsExchangeMode = false;
 
 	//50Cent - Repair All
     totalItemRepair = 0;
@@ -329,7 +329,7 @@ CClient::CClient(HWND hWnd)
 	m_iCoinPoints = 0;
 	bShowDmg = false;
 
-	m_bIsOnApocMap = FALSE;
+	m_bIsOnApocMap = false;
 	///////////////////////////////////////////////////////////////////////////////////////
 }
 

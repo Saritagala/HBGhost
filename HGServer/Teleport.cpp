@@ -15,9 +15,9 @@ CTeleport::CTeleport()
 	m_iMinLvl = 0;
 	m_iMaxLvl = 0;
 	m_iSide = 0;	// all
-	m_bHunter = TRUE;
-	m_bNetural = TRUE;
-	m_bCriminal = TRUE;
+	m_bHunter = true;
+	m_bNetural = true;
+	m_bCriminal = true;
 }
 
 CTeleport::~CTeleport()

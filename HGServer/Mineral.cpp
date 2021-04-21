@@ -68,11 +68,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 2:
 					// Â½ÂºÃ…Â³ ÃÂ¦Ã‡Ã‘Ã„Â¡ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format(1).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iSkillLimit = atoi(token);
@@ -81,11 +81,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 3:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemID[0] = atoi(token);
@@ -93,11 +93,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemCount[0] = atoi(token);
@@ -105,11 +105,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 5:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemValue[0] = atoi(token);
@@ -118,11 +118,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 6:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemID[1] = atoi(token);
@@ -130,11 +130,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 7:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemCount[1] = atoi(token);
@@ -142,11 +142,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 8:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemValue[1] = atoi(token);
@@ -155,11 +155,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 9:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemID[2] = atoi(token);
@@ -167,11 +167,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 10:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemCount[2] = atoi(token);
@@ -179,11 +179,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 11:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemValue[2] = atoi(token);
@@ -193,11 +193,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 12:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemID[3] = atoi(token);
@@ -205,11 +205,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 13:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemCount[3] = atoi(token);
@@ -217,11 +217,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 14:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemValue[3] = atoi(token);
@@ -230,11 +230,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 15:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemID[4] = atoi(token);
@@ -242,11 +242,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 16:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pBuildItemList[iIndex]->m_iMaterialItemCount[4] = atoi(token);
 
@@ -254,11 +254,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 17:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemValue[4] = atoi(token);
@@ -269,11 +269,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 18:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemID[5] = atoi(token);
@@ -281,11 +281,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 19:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pBuildItemList[iIndex]->m_iMaterialItemCount[5] = atoi(token);
 
@@ -293,11 +293,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 20:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaterialItemValue[5] = atoi(token);
@@ -309,11 +309,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 21:
 					// m_iAverageValue
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iAverageValue = atoi(token);
@@ -323,11 +323,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 22:
 					// m_iMaxSkill
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_iMaxSkill = atoi(token);
@@ -337,11 +337,11 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 23:
 					// m_wAttribute
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pBuildItemList[iIndex]->m_wAttribute = atoi(token);
@@ -350,7 +350,7 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 					cReadModeB = 0;
 
 					pItem = new class CItem;
-					if (_bInitItemAttr(pItem, m_pBuildItemList[iIndex]->m_cName) == TRUE) {
+					if (_bInitItemAttr(pItem, m_pBuildItemList[iIndex]->m_cName) == true) {
 						// Â¾Ã†Ã€ÃŒÃ…Ã›Ã€Ã‡ ÃÂ¸Ã€Ã§Â°Â¡ ÃˆÂ®Ã€ÃŽÂµÃ‡Â¾ÃºÂ´Ã™.
 						m_pBuildItemList[iIndex]->m_sItemID = pItem->m_sIDnum;
 
@@ -370,7 +370,7 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					delete pItem;
 					break;
@@ -397,13 +397,13 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		PutLogList("(!!!) CRITICAL ERROR! BuildItem configuration file contents error!");
-		return FALSE;
+		return false;
 	}
 
 	wsprintf(cTxt, "(!) BuildItem(Total:%d) configuration - success!", iIndex);
 	PutLogList(cTxt);
 
-	return TRUE;
+	return true;
 }
 
 // Centu : agregados items con atributos
@@ -440,19 +440,19 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	cElementItemID[5] = *cp;
 	cp++;
 
-	bFlag = TRUE;
-	while (bFlag == TRUE) {
-		bFlag = FALSE;
+	bFlag = true;
+	while (bFlag == true) {
+		bFlag = false;
 		for (i = 0; i <= 4; i++) {
 			if ((cElementItemID[i] == -1) && (cElementItemID[i + 1] != -1)) {
 				cElementItemID[i] = cElementItemID[i + 1];
 				cElementItemID[i + 1] = -1;
-				bFlag = TRUE;
+				bFlag = true;
 			}
 		}
 	}
 
-	for (i = 0; i < 6; i++) bItemFlag[i] = FALSE;
+	for (i = 0; i < 6; i++) bItemFlag[i] = false;
 
 	iPlayerSkillLevel = m_pClientList[iClientH]->m_cSkillMastery[13];
 	iResult = iDice(1, 100);
@@ -488,7 +488,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					}
 					else {
 						for (z = 0; z < 6; z++) {
-							if ((cElementItemID[z] != -1) && (bItemFlag[z] == FALSE)) {
+							if ((cElementItemID[z] != -1) && (bItemFlag[z] == false)) {
 
 								if ((m_pClientList[iClientH]->m_pItemList[cElementItemID[z]]->m_sIDnum == m_pBuildItemList[i]->m_iMaterialItemID[x]) &&
 									(m_pClientList[iClientH]->m_pItemList[cElementItemID[z]]->m_dwCount >= m_pBuildItemList[i]->m_iMaterialItemCount[x]) &&
@@ -501,7 +501,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 									iTotalValue += (iTemp * m_pBuildItemList[i]->m_iMaterialItemValue[x]);
 									iItemCount[cElementItemID[z]] -= m_pBuildItemList[i]->m_iMaterialItemCount[x];
 									iMatch++;
-									bItemFlag[z] = TRUE;
+									bItemFlag[z] = true;
 
 									break;
 								}
@@ -524,7 +524,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 				iTotalValue = (int)dV1;
 
 				pItem = new class CItem;
-				if (_bInitItemAttr(pItem, m_pBuildItemList[i]->m_cName) == FALSE) {
+				if (_bInitItemAttr(pItem, m_pBuildItemList[i]->m_cName) == false) {
 					delete pItem;
 					return;
 				}
@@ -847,7 +847,7 @@ void CGame::MineralGenerator()
 
 	for (i = 0; i < DEF_MAXMAPS; i++) {
 		if ((iDice(1, 4) == 1) && (m_pMapList[i] != NULL) &&
-			(m_pMapList[i]->m_bMineralGenerator == TRUE) &&
+			(m_pMapList[i]->m_bMineralGenerator == true) &&
 			(m_pMapList[i]->m_iCurMineral < m_pMapList[i]->m_iMaxMineral)) {
 
 			iP = iDice(1, m_pMapList[i]->m_iTotalMineralPoint) - 1;
@@ -1146,7 +1146,7 @@ void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 			}
 
 			pItem = new class CItem;
-			if (_bInitItemAttr(pItem, iItemID) == FALSE) {
+			if (_bInitItemAttr(pItem, iItemID) == false) {
 				delete pItem;
 			}
 			else {
@@ -1198,7 +1198,7 @@ void CGame::bDeleteMineral(int iIndex)
 	// ¸Ê¿¡¼­ ±¤¹° µ¿Àû °´Ã¼¸¦ »èÁ¦ÇÑ´Ù.
 	m_pMapList[m_pDynamicObjectList[iDynamicIndex]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY, dwTime);
 	// ±¤¹°ÀÌ »ç¶óÁ³À¸¹Ç·Î ÀÌµ¿ÀÌ °¡´ÉÇÏ°Ô ÇÑ´Ù. 
-	m_pMapList[m_pMineral[iIndex]->m_cMapIndex]->SetTempMoveAllowedFlag(m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY, TRUE);
+	m_pMapList[m_pMineral[iIndex]->m_cMapIndex]->SetTempMoveAllowedFlag(m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY, true);
 
 	// ±¤¹° °³Ã¼ ¼ö °¨¼Ò 
 	m_pMapList[m_pMineral[iIndex]->m_cMapIndex]->m_iCurMineral--;

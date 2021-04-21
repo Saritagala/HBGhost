@@ -44,7 +44,7 @@ MMRESULT		G_mmTimer;
 char   G_cSpriteAlphaDegree;
 class CGame * G_pGame;
 class XSocket * G_pCalcSocket = NULL;
-BOOL  G_bIsCalcSocketConnected = TRUE;
+bool  G_bIsCalcSocketConnected = true;
 DWORD G_dwCalcSocketTime = NULL, G_dwCalcSocketSendTime = NULL;
 
 char G_cCmdLine[256], G_cCmdLineTokenA[120], G_cCmdLineTokenA_Lowercase[120], G_cCmdLineTokenB[120], G_cCmdLineTokenC[120], G_cCmdLineTokenD[120], G_cCmdLineTokenE[120];
@@ -62,7 +62,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 		break;
 	
 	case WM_CLOSE:
-		if ( (G_pGame->m_cGameMode == DEF_GAMEMODE_ONMAINGAME) && ( G_pGame->m_bForceDisconn == FALSE ) )
+		if ( (G_pGame->m_cGameMode == DEF_GAMEMODE_ONMAINGAME) && ( G_pGame->m_bForceDisconn == false ) )
 		{
 
 #ifdef _DEBUG
@@ -105,33 +105,33 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 
 	case WM_ACTIVATEAPP:
 		if( wParam == 0 ) 
-		{	G_pGame->m_bIsProgramActive = FALSE;
-			G_pGame->m_DInput.SetAcquire(FALSE);
+		{	G_pGame->m_bIsProgramActive = false;
+			G_pGame->m_DInput.SetAcquire(false);
 			// Snoopy: mp3 support
-			if (G_pGame->m_bMusicStat == TRUE)
+			if (G_pGame->m_bMusicStat == true)
 			{	G_pGame->PauseBGM(); // If music running, pause it
 			}else
 			{	G_pGame->StopBGM();	 // 
 			}
 		}else 
-		{	G_pGame->m_bIsProgramActive = TRUE;
-			G_pGame->m_DInput.SetAcquire(TRUE);
-			G_pGame->m_bCtrlPressed = FALSE;
+		{	G_pGame->m_bIsProgramActive = true;
+			G_pGame->m_DInput.SetAcquire(true);
+			G_pGame->m_bCtrlPressed = false;
 
 			if (IsWin())
 			{
-				G_pGame->m_bIsRedrawPDBGS = TRUE;
+				G_pGame->m_bIsRedrawPDBGS = true;
 				G_pGame->m_DDraw.ChangeDisplayMode(G_hWnd);
 			}
 
 			// Snoopy: mp3 support
-			if (G_pGame->m_bMusicStat == TRUE)
+			if (G_pGame->m_bMusicStat == true)
 			{	G_pGame->ResumeBGM(); // If music running, resume it it
 			}else
 			{	G_pGame->StopBGM();	 // 
 			}
 			
-			if (G_pGame->bCheckImportantFile() == FALSE) 
+			if (G_pGame->bCheckImportantFile() == false) 
 			{	MessageBox(G_pGame->m_hWnd, "File checksum error! Get Update again please!", "ERROR1", MB_ICONEXCLAMATION | MB_OK);
 				PostQuitMessage(0);
 				return 0;
@@ -145,7 +145,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 
 	case WM_SETCURSOR:
 		SetCursor(NULL);
-		return TRUE;
+		return true;
 
 	case WM_DESTROY:
 		OnDestroy();
@@ -220,19 +220,19 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 	FreeLibrary(hDll);
 	wsprintf( szAppClass, "Client-I%d", hInstance);
-	if (!InitApplication( hInstance))		return (FALSE);
-    if (!InitInstance(hInstance, nCmdShow)) return (FALSE);
+	if (!InitApplication( hInstance))		return (false);
+    if (!InitInstance(hInstance, nCmdShow)) return (false);
 
 	Initialize((char *)lpCmdLine);
 	// Snoopy: MP3 support
 	Mp3Init();
 
 #ifndef DEF_MULTI_CLIENT
-	if (OpenMutex(MUTEX_ALL_ACCESS, FALSE, "0543kjg3j31%") != NULL) {
+	if (OpenMutex(MUTEX_ALL_ACCESS, false, "0543kjg3j31%") != NULL) {
 		MessageBox(NULL, "Only one Helbreath Ghost client program allowed!", "ERROR!", MB_OK);
 		return 0;
 	}
-	HANDLE hMutex = CreateMutex(NULL, FALSE, "0543kjg3j31%");
+	HANDLE hMutex = CreateMutex(NULL, false, "0543kjg3j31%");
 #endif
 	
 	EventLoop();
@@ -249,7 +249,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	return 0;
 }
 
-BOOL InitApplication( HINSTANCE hInstance)
+bool InitApplication( HINSTANCE hInstance)
 {WNDCLASS  wc;
 	wc.style = (CS_HREDRAW | CS_VREDRAW | CS_OWNDC | CS_DBLCLKS);
 	wc.lpfnWndProc   = (WNDPROC)WndProc;             
@@ -264,7 +264,7 @@ BOOL InitApplication( HINSTANCE hInstance)
 	return (RegisterClass(&wc));
 }
 
-BOOL InitInstance( HINSTANCE hInstance, int nCmdShow )
+bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 {	int cx = GetSystemMetrics(SM_CXFULLSCREEN)/2;
 	int cy = GetSystemMetrics(SM_CYFULLSCREEN)/2;
 	
@@ -277,11 +277,11 @@ BOOL InitInstance( HINSTANCE hInstance, int nCmdShow )
 	G_hWnd = CreateWindowEx(NULL, szAppClass, "Helbreath The Heldenian", WS_POPUP, cx-320, cy-240, 
 							640, 480, NULL, NULL, hInstance, NULL);  
 #endif
-    if (!G_hWnd) return FALSE;
+    if (!G_hWnd) return false;
     G_hInstance	= hInstance;
 	ShowWindow(G_hWnd, SW_SHOWDEFAULT);
 	UpdateWindow(G_hWnd);
-	return TRUE;
+	return true;
 }
 
 
@@ -294,13 +294,13 @@ void EventLoop()
             DispatchMessage(&msg);
 		}
 		else if (G_pGame->m_bIsProgramActive) G_pGame->UpdateScreen();
-		else if (G_pGame->m_cGameMode == DEF_GAMEMODE_ONLOADING) G_pGame->UpdateScreen_OnLoading( FALSE );
+		else if (G_pGame->m_cGameMode == DEF_GAMEMODE_ONLOADING) G_pGame->UpdateScreen_OnLoading( false );
 		else WaitMessage();
 	}
 }
 
 void OnDestroy()
-{	G_pGame->m_bIsProgramActive = FALSE;		
+{	G_pGame->m_bIsProgramActive = false;		
 	_StopTimer(G_mmTimer);
 	G_pGame->Quit();
 	WSACleanup();
@@ -345,7 +345,7 @@ void Initialize(char * pCmdLine)
 		PostQuitMessage(0);
 		return;
 	}
-	if (G_pGame->bInit(G_hWnd, G_hInstance, pCmdLine) == FALSE) 
+	if (G_pGame->bInit(G_hWnd, G_hInstance, pCmdLine) == false) 
 	{	PostQuitMessage(0);
 		return;
 	}	

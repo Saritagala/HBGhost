@@ -22,7 +22,7 @@ CMsg::~CMsg()
 bool CMsg::bPut(char cFrom, char * pData, DWORD dwSize, int iIndex, char cKey)
 {
 	m_pData = new char [dwSize + 1];
-	if (m_pData == NULL) return FALSE;
+	if (m_pData == NULL) return false;
 	ZeroMemory(m_pData, dwSize + 1);
 	memcpy(m_pData, pData, dwSize);
 
@@ -31,7 +31,7 @@ bool CMsg::bPut(char cFrom, char * pData, DWORD dwSize, int iIndex, char cKey)
 	m_iIndex = iIndex;
 	m_cKey   = cKey;
 
-	return TRUE;
+	return true;
 }
 
 void CMsg::Get(char * pFrom, char * pData, DWORD * pSize, int * pIndex, char * pKey)

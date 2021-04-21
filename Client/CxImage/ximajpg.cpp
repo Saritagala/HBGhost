@@ -62,7 +62,7 @@ bool CxImageJPG::DecodeExif(CxFile * hFile)
 		hFile->Seek(pos,SEEK_SET);
 		return m_exif->m_exifinfo->IsExif;
 	} else {
-		return false;
+		return FALSE;
 	}
 }
 #endif //CXIMAGEJPG_SUPPORT_EXIF
@@ -70,7 +70,7 @@ bool CxImageJPG::DecodeExif(CxFile * hFile)
 bool CxImageJPG::Decode(CxFile * hFile)
 {
 
-	bool is_exif = false;
+	bool is_exif = FALSE;
 #if CXIMAGEJPG_SUPPORT_EXIF
 	is_exif = DecodeExif(hFile);
 #endif
@@ -131,7 +131,7 @@ bool CxImageJPG::Decode(CxFile * hFile)
 	if ((GetCodecOption(CXIMAGE_FORMAT_JPG) & DECODE_NOSMOOTH) != 0)
 		cinfo.do_fancy_upsampling = FALSE;
 
-//<DP>: Load true color images as RGB (no quantize) 
+//<DP>: Load TRUE color images as RGB (no quantize) 
 /* Step 4: set parameters for decompression */
 /*  if (cinfo.jpeg_color_space!=JCS_GRAYSCALE) {
  *	cinfo.quantize_colors = TRUE;
@@ -149,7 +149,7 @@ bool CxImageJPG::Decode(CxFile * hFile)
 		head.biWidth = cinfo.output_width;
 		head.biHeight = cinfo.output_height;
 		jpeg_destroy_decompress(&cinfo);
-		return true;
+		return TRUE;
 	}
 
 	/* Step 5: Start decompressor */
@@ -258,18 +258,18 @@ bool CxImageJPG::Decode(CxFile * hFile)
 	*/
 
 	/* And we're done! */
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_ENCODE
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJPG::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	if (head.biClrUsed!=0 && !IsGrayScale()){
 		strcpy(info.szLastError,"JPEG can save only RGB or GreyScale images");
-		return false;
+		return FALSE;
 	}	
 
 	// necessary for EXIF, and for roll backs
@@ -445,7 +445,7 @@ bool CxImageJPG::Encode(CxFile * hFile)
 
 
 	/* And we're done! */
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE

@@ -147,7 +147,7 @@ public:
       return S_OK;
    }
 
-   STDMETHOD (OnShowWindow)( BOOL )
+   STDMETHOD (OnShowWindow)( bool )
    {
       return S_OK;
    }
@@ -164,7 +164,7 @@ public:
       return S_OK;
    }
 
-   STDMETHOD (ContextSensitiveHelp)( BOOL )
+   STDMETHOD (ContextSensitiveHelp)( bool )
    {
       return E_NOTIMPL;
    }
@@ -207,7 +207,7 @@ public:
       CopyRect( prcClipRect, prcPosRect );
 
       pFrameInfo->cb             = sizeof(OLEINPLACEFRAMEINFO);
-      pFrameInfo->fMDIApp        = FALSE;
+      pFrameInfo->fMDIApp        = false;
       pFrameInfo->hwndFrame      = m_hwnd;
       pFrameInfo->haccel         = NULL;
       pFrameInfo->cAccelEntries  = 0;
@@ -222,7 +222,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (OnUIDeactivate)( BOOL )
+   STDMETHOD (OnUIDeactivate)( bool )
    {
       return E_NOTIMPL;
    }
@@ -289,7 +289,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (EnableModeless)( BOOL )
+   STDMETHOD (EnableModeless)( bool )
    {
       return E_NOTIMPL;
    }
@@ -305,7 +305,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (LockInPlaceActive)( BOOL )
+   STDMETHOD (LockInPlaceActive)( bool )
    {
       return E_NOTIMPL;
    }
@@ -325,7 +325,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (OnFocus)( BOOL )
+   STDMETHOD (OnFocus)( bool )
    {
       return E_NOTIMPL;
    }

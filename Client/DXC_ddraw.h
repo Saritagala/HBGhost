@@ -33,7 +33,7 @@ public:
 
 	DXC_ddraw();
 	virtual ~DXC_ddraw();
-	BOOL bInit(HWND hWnd);
+	bool bInit(HWND hWnd);
 	void ColorTransferRGB(COLORREF fcolor, int * iR, int * iG, int * iB);
 	HRESULT InitFlipToGDI(HWND hWnd);
 	void ChangeDisplayMode(HWND hWnd);
@@ -64,7 +64,7 @@ public:
 	long    m_lTransG2[64][64], m_lTransRB2[64][64];
 	long    m_lFadeG[64][64],  m_lFadeRB[64][64];
 
-	BOOL m_bFullMode;
+	bool m_bFullMode;
 
 	LPDIRECTDRAW7		 m_lpDD4;
 	LPDIRECTDRAWSURFACE7 m_lpFrontB4, m_lpBackB4, m_lpBackB4flip;
@@ -76,7 +76,7 @@ public:
 	HDC m_hDC;
 	HFONT m_hFontInUse;
 
-	BOOL m_init;
+	bool m_init;
 
 	bool IsWin2();
 };

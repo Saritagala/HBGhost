@@ -12,12 +12,12 @@ CTile::CTile()
 { 
  int i;
 
-	m_bCanStayHere = TRUE;
+	m_bCanStayHere = true;
 
-	m_bIsMoveAllowed = TRUE;
-	m_bIsTeleport    = FALSE;
-	m_bIsWater       = FALSE;
-	m_bIsFarm        = FALSE;									   
+	m_bIsMoveAllowed = true;
+	m_bIsTeleport    = false;
+	m_bIsWater       = false;
+	m_bIsFarm        = false;									   
 	m_sOwner      = NULL;
 	m_cOwnerClass = NULL;
 	m_sDeadOwner      = NULL;
@@ -27,13 +27,13 @@ CTile::CTile()
 	m_cTotalItem = 0;
 	m_wDynamicObjectID   = NULL;
 	m_sDynamicObjectType = NULL;
-	m_bIsTempMoveAllowed = TRUE;
+	m_bIsTempMoveAllowed = true;
 	m_iOccupyStatus    = NULL;
 	m_iOccupyFlagIndex = NULL;
 	m_iAttribute  = NULL;
-	m_bIsApocalypseGate = FALSE;
+	m_bIsApocalypseGate = false;
 	m_cApocalypseGateMap = NULL;
-	m_bHeldenianWinner = FALSE;
+	m_bHeldenianWinner = false;
 }
 
 CTile::~CTile()

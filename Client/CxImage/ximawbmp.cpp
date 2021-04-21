@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageWBMP::Decode(CxFile *hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	WBMPHEADER wbmpHead;
 
@@ -45,19 +45,19 @@ bool CxImageWBMP::Decode(CxFile *hFile)
 	strncpy(info.szLastError,message,255);
 	return FALSE;
   }
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_ENCODE
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageWBMP::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	//check format limits
 	if ((head.biWidth>255)||(head.biHeight>255)||(head.biBitCount!=1)){
 		strcpy(info.szLastError,"Can't save this image as WBMP");
-		return false;
+		return FALSE;
 	}
 
 	WBMPHEADER wbmpHead;
@@ -76,7 +76,7 @@ bool CxImageWBMP::Encode(CxFile * hFile)
 		hFile->Write(iter.GetRow(),linewidth,1);
 		iter.PrevRow();
     }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE

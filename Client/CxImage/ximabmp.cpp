@@ -17,7 +17,7 @@
 bool CxImageBMP::Encode(CxFile * hFile)
 {
 
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	BITMAPFILEHEADER	hdr;
 
@@ -32,7 +32,7 @@ bool CxImageBMP::Encode(CxFile * hFile)
 	hFile->Write(&hdr,min(14,sizeof(BITMAPFILEHEADER)),1);
     // Write the DIB header and the pixels
 	hFile->Write(pDib,GetSize(),1);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif //CXIMAGE_SUPPORT_ENCODE
@@ -41,7 +41,7 @@ bool CxImageBMP::Encode(CxFile * hFile)
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageBMP::Decode(CxFile * hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	BITMAPFILEHEADER   bf;
 	DWORD off = hFile->Tell(); //<CSC>
@@ -149,10 +149,10 @@ bool CxImageBMP::Decode(CxFile * hFile)
 				BYTE second_byte = 0;
 				int scanline = 0;
 				int bits = 0;
-				BOOL low_nibble = FALSE;
+				bool low_nibble = FALSE;
 				CImageIterator iter(this);
 
-				for (BOOL bContinue = TRUE; bContinue;) {
+				for (bool bContinue = TRUE; bContinue;) {
 					hFile->Read(&status_byte, sizeof(BYTE), 1);
 					switch (status_byte) {
 						case RLE_COMMAND :
@@ -232,7 +232,7 @@ bool CxImageBMP::Decode(CxFile * hFile)
 				int bits = 0;
 				CImageIterator iter(this);
 
-				for (BOOL bContinue = TRUE; bContinue; ) {
+				for (bool bContinue = TRUE; bContinue; ) {
 					hFile->Read(&status_byte, sizeof(BYTE), 1);
 					switch (status_byte) {
 						case RLE_COMMAND :
@@ -292,10 +292,10 @@ bool CxImageBMP::Decode(CxFile * hFile)
 
   } catch (char *message) {
 	strncpy(info.szLastError,message,255);
-	if (info.nEscape==-1) return true;
-	return false;
+	if (info.nEscape==-1) return TRUE;
+	return FALSE;
   }
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /*  ReadDibBitmapInfo()
@@ -306,9 +306,9 @@ bool CxImageBMP::Decode(CxFile * hFile)
  */
 bool CxImageBMP::DibReadBitmapInfo(CxFile* fh, BITMAPINFOHEADER *pdib)
 {
-	if ((fh==NULL)||(pdib==NULL)) return false;
+	if ((fh==NULL)||(pdib==NULL)) return FALSE;
 
-    if (fh->Read(pdib,sizeof(BITMAPINFOHEADER),1)==0) return false;
+    if (fh->Read(pdib,sizeof(BITMAPINFOHEADER),1)==0) return FALSE;
 
     BITMAPCOREHEADER   bc;
 
@@ -347,12 +347,12 @@ bool CxImageBMP::DibReadBitmapInfo(CxFile* fh, BITMAPINFOHEADER *pdib)
 	             fh->Seek((long)(pdib->biSize - sizeof(BITMAPINFOHEADER)),SEEK_CUR);
 				 break;
 			 }
-			return false;
+			return FALSE;
     }
 
     FixBitmapInfo(pdib);
 
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif //CXIMAGE_SUPPORT_DECODE

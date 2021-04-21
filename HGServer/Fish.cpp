@@ -37,7 +37,7 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 	// ¸ÊÀÇ À§Ä¡°¡ ¹°ÀÎÁö È®ÀÎÇÑ´Ù. 
 	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return NULL;
 	if (m_pMapList[cMapIndex] == NULL) return NULL;
-	if (m_pMapList[cMapIndex]->bGetIsWater(sX, sY) == FALSE) return NULL;
+	if (m_pMapList[cMapIndex]->bGetIsWater(sX, sY) == false) return NULL;
 
 	for (i = 0; i < DEF_MAXFISHS; i++)
 		if (m_pFish[i] == NULL) {
@@ -86,7 +86,7 @@ bool CGame::bDeleteFish(int iHandle, int iDelMode)
 	int i, iH;
 	DWORD dwTime;
 
-	if (m_pFish[iHandle] == NULL) return FALSE;
+	if (m_pFish[iHandle] == NULL) return false;
 
 	dwTime = timeGetTime();
 
@@ -105,7 +105,7 @@ bool CGame::bDeleteFish(int iHandle, int iDelMode)
 
 	// ÀÌ ¹°°í±â¿Í ¿¬°áµÇ¾î ÀÖ´Â ÇÃ·¹ÀÌ¾îµé¿¡°Ô ¹°°í±â°¡ »ç¶óÁ® ³¬½Ã°¡ Ãë¼ÒµÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù. 
 	for (i = 1; i < DEF_MAXCLIENTS; i++) {
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE) &&
+		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true) &&
 			(m_pClientList[i]->m_iAllocatedFish == iHandle)) {
 			// ¸Þ½ÃÁö Àü¼Û 
 			SendNotifyMsg(NULL, i, DEF_NOTIFY_FISHCANCELED, iDelMode, NULL, NULL, NULL);
@@ -117,7 +117,7 @@ bool CGame::bDeleteFish(int iHandle, int iDelMode)
 	delete m_pFish[iHandle];
 	m_pFish[iHandle] = NULL;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -127,7 +127,7 @@ int CGame::iCheckFish(int iClientH, char cMapIndex, short dX, short dY)
 	short sDistX, sDistY;
 
 	if (m_pClientList[iClientH] == NULL) return 0;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return 0;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return 0;
 
 	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return 0;
 
@@ -152,7 +152,7 @@ int CGame::iCheckFish(int iClientH, char cMapIndex, short dX, short dY)
 				m_pClientList[iClientH]->m_iAllocatedFish = m_pDynamicObjectList[i]->m_sOwner;
 				m_pClientList[iClientH]->m_iFishChance = 1;
 				// ÀÌ Ä³¸¯ÅÍ´Â ³¬½Ã ½ºÅ³À» »ç¿ëÁßÀÓÀ» ¼³Á¤.
-				m_pClientList[iClientH]->m_bSkillUsingStatus[1] = TRUE;
+				m_pClientList[iClientH]->m_bSkillUsingStatus[1] = true;
 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EVENTFISHMODE, (m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_wPrice / 2), m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_sSprite,
 					m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_sSpriteFrame, m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_cName);
@@ -173,7 +173,7 @@ void CGame::FishProcessor()
 
 	// �̺�Ʈ ���� ��尡 �Ҵ�� �÷��̾���� ó���Ѵ�.
 	for (i = 1; i < DEF_MAXCLIENTS; i++) {
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE) &&
+		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true) &&
 			(m_pClientList[i]->m_iAllocatedFish != NULL)) {
 
 			if (m_pFish[m_pClientList[i]->m_iAllocatedFish] == NULL) continue;
@@ -214,12 +214,12 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 	class CItem* pItem;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_pClientList[iClientH]->m_iAllocatedFish == NULL) return;
 	if (m_pFish[m_pClientList[iClientH]->m_iAllocatedFish] == NULL) return;
 
 	// ���� ��ų ��������� ������Ų��.
-	m_pClientList[iClientH]->m_bSkillUsingStatus[1] = FALSE;
+	m_pClientList[iClientH]->m_bSkillUsingStatus[1] = false;
 
 	iResult = iDice(1, 100);
 	if (m_pClientList[iClientH]->m_iFishChance >= iResult) {
@@ -358,7 +358,7 @@ void CGame::FishGenerator()
 			}
 			dwLastTime = (60000 * 10) + (iDice(1, 3) - 1) * (60000 * 10);
 
-			if (_bInitItemAttr(pItem, cItemName) == TRUE) {
+			if (_bInitItemAttr(pItem, cItemName) == true) {
 				iRet = iCreateFish(i, tX, tY, 1, pItem, sDifficulty, dwLastTime);
 			}
 			else {

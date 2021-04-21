@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImagePCX::Decode(CxFile *hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	PCXHEADER pcxHeader;
 	int i, x, y, y2, nbytes, count, Height, Width;
@@ -143,18 +143,18 @@ bool CxImagePCX::Decode(CxFile *hFile)
 	strncpy(info.szLastError,message,255);
 	if (lpHead1){ free(lpHead1); lpHead1 = NULL; }
     if (lpHead2){ free(lpHead2); lpHead2 = NULL; }
-	return false;
+	return FALSE;
   }
 	if (lpHead1){ free(lpHead1); lpHead1 = NULL; }
     if (lpHead2){ free(lpHead2); lpHead2 = NULL; }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_ENCODE
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImagePCX::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
   try {
 	PCXHEADER pcxHeader;
@@ -233,7 +233,7 @@ bool CxImagePCX::Encode(CxFile * hFile)
 			}
 		}
 
-		hFile->Write(buffer.GetBuffer(false),buffer.Size(),1);
+		hFile->Write(buffer.GetBuffer(FALSE),buffer.Size(),1);
 
 	} else if (head.biBitCount==8) {
 
@@ -245,7 +245,7 @@ bool CxImagePCX::Encode(CxFile * hFile)
 			PCX_PackPixels(-1-(head.biWidth&0x1),c,n,buffer);
 		}
 
-		hFile->Write(buffer.GetBuffer(false),buffer.Size(),1);
+		hFile->Write(buffer.GetBuffer(FALSE),buffer.Size(),1);
 
 		if (head.biBitCount == 8){
 			hFile->PutC(0x0C);
@@ -263,7 +263,7 @@ bool CxImagePCX::Encode(CxFile * hFile)
 	} else { //(head.biBitCount==4) || (head.biBitCount==1)
 
 		RGBQUAD *rgb = GetPalette();
-		bool binvert = false;
+		bool binvert = FALSE;
 		if (CompareColors(&rgb[0],&rgb[1])>0) binvert=(head.biBitCount==1);
 		
 		BYTE* plane = (BYTE*)malloc(pcxHeader.BytesPerLine);
@@ -284,15 +284,15 @@ bool CxImagePCX::Encode(CxFile * hFile)
 		free(plane);
 		free(raw);
 
-		hFile->Write(buffer.GetBuffer(false),buffer.Size(),1);
+		hFile->Write(buffer.GetBuffer(FALSE),buffer.Size(),1);
 
 	}
 
   } catch (char *message) {
 	strncpy(info.szLastError,message,255);
-	return false;
+	return FALSE;
   }
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE

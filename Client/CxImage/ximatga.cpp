@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageTGA::Decode(CxFile *hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	TGAHEADER tgaHead;
 
@@ -39,12 +39,12 @@ bool CxImageTGA::Decode(CxFile *hFile)
 	case TGA_Map:
 	case TGA_RGB:
 	case TGA_Mono:
-		bCompressed = false;
+		bCompressed = FALSE;
 		break;
 	case TGA_RLEMap:
 	case TGA_RLERGB:
 	case TGA_RLEMono:
-		bCompressed = true;
+		bCompressed = TRUE;
 		break;
 	default:
 		throw "Unknown TGA image type";
@@ -106,18 +106,18 @@ bool CxImageTGA::Decode(CxFile *hFile)
 	strncpy(info.szLastError,message,255);
 	return FALSE;
   }
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_ENCODE
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageTGA::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	if (head.biBitCount<8){
 		strcpy(info.szLastError,"Bit depth must be 8 or 24");
-		return false;
+		return FALSE;
 	}
 
 	TGAHEADER tgaHead;
@@ -178,7 +178,7 @@ bool CxImageTGA::Encode(CxFile * hFile)
 		}
 		free(pDest);
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE

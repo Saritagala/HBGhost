@@ -24,7 +24,7 @@ void CxImage::SetPaletteColor(BYTE idx, BYTE r, BYTE g, BYTE b, BYTE alpha)
 			iDst[ldx++] = (BYTE) g;
 			iDst[ldx++] = (BYTE) r;
 			iDst[ldx] = (BYTE) alpha;
-			info.last_c_isvalid = false;
+			info.last_c_isvalid = FALSE;
 		}
 	}
 }
@@ -39,7 +39,7 @@ void CxImage::SetPaletteColor(BYTE idx, RGBQUAD c)
 			iDst[ldx++] = (BYTE) c.rgbGreen;
 			iDst[ldx++] = (BYTE) c.rgbRed;
 			iDst[ldx] = (BYTE) c.rgbReserved;
-			info.last_c_isvalid = false;
+			info.last_c_isvalid = FALSE;
 		}
 	}
 }
@@ -54,7 +54,7 @@ void CxImage::SetPaletteColor(BYTE idx, COLORREF cr)
 			iDst[ldx++] = (BYTE) GetGValue(cr);
 			iDst[ldx++] = (BYTE) GetRValue(cr);
 			iDst[ldx] = (BYTE) 0;
-			info.last_c_isvalid = false;
+			info.last_c_isvalid = FALSE;
 		}
 	}
 }
@@ -259,7 +259,7 @@ void CxImage::SetPixelColor(long x,long y,RGBQUAD c, bool bSetAlpha)
  * \param x,y = pixel
  * \param c = new color
  * \param blend = can be from 0 (no effect) to 1 (full effect).
- * \param bSetAlpha = if true, blends also the alpha component stored in c.rgbReserved
+ * \param bSetAlpha = if TRUE, blends also the alpha component stored in c.rgbReserved
  */
 void CxImage::BlendPixelColor(long x,long y,RGBQUAD c, float blend, bool bSetAlpha)
 {
@@ -297,7 +297,7 @@ BYTE CxImage::GetNearestIndex(RGBQUAD c)
 	// <RJ> check matching with the previous result
 	if (info.last_c_isvalid && (*(long*)&info.last_c == *(long*)&c)) return info.last_c_index;
 	info.last_c = c;
-	info.last_c_isvalid = true;
+	info.last_c_isvalid = TRUE;
 
 	BYTE* iDst = (BYTE*)(pDib) + sizeof(BITMAPINFOHEADER);
 	long distance=200000;
@@ -365,9 +365,9 @@ bool CxImage::GetPaletteColor(BYTE i, BYTE* r, BYTE* g, BYTE* b)
 		*r = ppal[i].rgbRed;
 		*g = ppal[i].rgbGreen;
 		*b = ppal[i].rgbBlue; 
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImage::SetPalette(DWORD n, BYTE *r, BYTE *g, BYTE *b)
@@ -382,7 +382,7 @@ void CxImage::SetPalette(DWORD n, BYTE *r, BYTE *g, BYTE *b)
 		ppal[i].rgbGreen=g[i];
 		ppal[i].rgbBlue=b[i];
 	}
-	info.last_c_isvalid = false;
+	info.last_c_isvalid = FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImage::SetPalette(rgb_color *rgb,DWORD nColors)
@@ -395,14 +395,14 @@ void CxImage::SetPalette(rgb_color *rgb,DWORD nColors)
 		ppal[i].rgbGreen=rgb[i].g;
 		ppal[i].rgbBlue=rgb[i].b;
 	}
-	info.last_c_isvalid = false;
+	info.last_c_isvalid = FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImage::SetPalette(RGBQUAD* pPal,DWORD nColors)
 {
 	if ((pPal==NULL)||(pDib==NULL)||(head.biClrUsed==0)) return;
 	memcpy(GetPalette(),pPal,min(GetPaletteSize(),nColors*sizeof(RGBQUAD)));
-	info.last_c_isvalid = false;
+	info.last_c_isvalid = FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -440,16 +440,16 @@ void CxImage::BlendPalette(COLORREF cr,long perc)
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
- * Returns true if the image has 256 colors and a linear grey scale palette.
+ * Returns TRUE if the image has 256 colors and a linear grey scale palette.
  */
 bool CxImage::IsGrayScale()
 {
 	RGBQUAD* ppal=GetPalette();
-	if(!(pDib && ppal && head.biClrUsed)) return false;
+	if(!(pDib && ppal && head.biClrUsed)) return FALSE;
 	for(DWORD i=0;i<head.biClrUsed;i++){
-		if (ppal[i].rgbBlue!=i || ppal[i].rgbGreen!=i || ppal[i].rgbRed!=i) return false;
+		if (ppal[i].rgbBlue!=i || ppal[i].rgbGreen!=i || ppal[i].rgbRed!=i) return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -476,15 +476,15 @@ void CxImage::SwapIndex(BYTE idx1, BYTE idx2)
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::IsTransparent(long x, long y)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	if (info.nBkgndIndex>=0){
 		if (head.biClrUsed){
-			if (GetPixelIndex(x,y) == info.nBkgndIndex) return true;
+			if (GetPixelIndex(x,y) == info.nBkgndIndex) return TRUE;
 		} else {
 			RGBQUAD ct = info.nBkgndColor;
-			RGBQUAD c = GetPixelColor(x,y,false);
-			if (*(long*)&c==*(long*)&ct) return true;
+			RGBQUAD c = GetPixelColor(x,y,FALSE);
+			if (*(long*)&c==*(long*)&ct) return TRUE;
 		}
 	}
 
@@ -492,7 +492,7 @@ bool CxImage::IsTransparent(long x, long y)
 	if (pAlpha) return AlphaGet(x,y)==0;
 #endif
 
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -503,20 +503,20 @@ bool CxImage::IsTransparent(long x, long y)
 bool CxImage::IsSamePalette(CxImage &img, bool bCheckAlpha)
 {
 	if (head.biClrUsed != img.head.biClrUsed)
-		return false;
+		return FALSE;
 	if (head.biClrUsed == 0)
-		return false;
+		return FALSE;
 
 	RGBQUAD c1,c2;
 	for (DWORD n=0; n<head.biClrUsed; n++){
 		c1 = GetPaletteColor((BYTE)n);
 		c2 = img.GetPaletteColor((BYTE)n);
-		if (c1.rgbRed != c2.rgbRed) return false;
-		if (c1.rgbBlue != c2.rgbBlue) return false;
-		if (c1.rgbGreen != c2.rgbGreen) return false;
-		if (bCheckAlpha && (c1.rgbReserved != c2.rgbReserved)) return false;
+		if (c1.rgbRed != c2.rgbRed) return FALSE;
+		if (c1.rgbBlue != c2.rgbBlue) return FALSE;
+		if (c1.rgbGreen != c2.rgbGreen) return FALSE;
+		if (bCheckAlpha && (c1.rgbReserved != c2.rgbReserved)) return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**

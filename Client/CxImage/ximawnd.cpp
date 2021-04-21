@@ -50,15 +50,15 @@ HANDLE CxImage::CopyToHandle()
 /**
  * Global object (clipboard paste) constructor
  * \param hMem: source bitmap object, the clipboard format must be CF_DIB
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::CreateFromHANDLE(HANDLE hMem)
 {
 	if (!Destroy())
-		return false;
+		return FALSE;
 
 	DWORD dwSize = GlobalSize(hMem);
-	if (!dwSize) return false;
+	if (!dwSize) return FALSE;
 
 	BYTE *lpVoid;						//pointer to the bitmap
 	lpVoid = (BYTE *)GlobalLock(hMem);
@@ -73,7 +73,7 @@ bool CxImage::CreateFromHANDLE(HANDLE hMem)
 		//create the image
 		if(!Create(head.biWidth,head.biHeight,head.biBitCount)){
 			GlobalUnlock(lpVoid);
-			return false;
+			return FALSE;
 		}
 		//preserve DPI
 		if (head.biXPelsPerMeter) SetXDPI((long)floor(head.biXPelsPerMeter * 254.0 / 10000.0 + 0.5)); else SetXDPI(96);
@@ -172,10 +172,10 @@ bool CxImage::CreateFromHANDLE(HANDLE hMem)
 							BYTE second_byte = 0;
 							int scanline = 0;
 							int bits = 0;
-							BOOL low_nibble = FALSE;
+							bool low_nibble = FALSE;
 							CImageIterator iter(this);
 
-							for (BOOL bContinue = TRUE; bContinue; ) {
+							for (bool bContinue = TRUE; bContinue; ) {
 								status_byte = *(lpDIBBits++);
 								switch (status_byte) {
 								case RLE_COMMAND :
@@ -255,7 +255,7 @@ bool CxImage::CreateFromHANDLE(HANDLE hMem)
 							int bits = 0;
 							CImageIterator iter(this);
 
-							for (BOOL bContinue = TRUE; bContinue; ) {
+							for (bool bContinue = TRUE; bContinue; ) {
 								status_byte = *(lpDIBBits++);
 								if (status_byte==RLE_COMMAND) {
 									status_byte = *(lpDIBBits++);
@@ -316,9 +316,9 @@ bool CxImage::CreateFromHANDLE(HANDLE hMem)
 		}
 
 		GlobalUnlock(lpVoid);
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -355,12 +355,12 @@ HBITMAP CxImage::MakeBitmap(HDC hdc)
  * Bitmap resource constructor
  * \param hbmp : bitmap resource handle
  * \param hpal : (optional) palette, useful for 8bpp DC 
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::CreateFromHBITMAP(HBITMAP hbmp, HPALETTE hpal)
 {
 	if (!Destroy())
-		return false;
+		return FALSE;
 
 	if (hbmp) { 
         BITMAP bm;
@@ -368,11 +368,11 @@ bool CxImage::CreateFromHBITMAP(HBITMAP hbmp, HPALETTE hpal)
         GetObject(hbmp, sizeof(BITMAP), (LPSTR) &bm);
 		// create the image
         if (!Create(bm.bmWidth, bm.bmHeight, bm.bmBitsPixel, 0))
-			return false;
+			return FALSE;
 		// create a device context for the bitmap
         HDC dc = ::GetDC(NULL);
 		if (!dc)
-			return false;
+			return FALSE;
 
 		if (hpal){
 			SelectObject(dc,hpal); //the palette you should get from the user or have a stock one
@@ -384,29 +384,29 @@ bool CxImage::CreateFromHBITMAP(HBITMAP hbmp, HPALETTE hpal)
 			(LPBITMAPINFO)pDib, DIB_RGB_COLORS) == 0){ //replace &head with pDib <Wil Stark>
             strcpy(info.szLastError,"GetDIBits failed");
 			::ReleaseDC(NULL, dc);
-			return false;
+			return FALSE;
         }
         ::ReleaseDC(NULL, dc);
-		return true;
+		return TRUE;
     }
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * icon resource constructor
  * \param hico : icon resource handle
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::CreateFromHICON(HICON hico)
 {
 	if (!Destroy())
-		return false;
+		return FALSE;
 
 	if (hico) { 
 		ICONINFO iinfo;
 		GetIconInfo(hico,&iinfo);
 		if (!CreateFromHBITMAP(iinfo.hbmColor))
-			return false;
+			return FALSE;
 #if CXIMAGE_SUPPORT_ALPHA
 		CxImage mask;
 		mask.CreateFromHBITMAP(iinfo.hbmMask);
@@ -416,9 +416,9 @@ bool CxImage::CreateFromHICON(HICON hico)
 #endif
 		DeleteObject(iinfo.hbmColor); //<Sims>
 		DeleteObject(iinfo.hbmMask);  //<Sims>
-		return true;
+		return TRUE;
     }
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 long CxImage::Draw(HDC hdc, const RECT& rect, RECT* pClipRect, bool bSmooth)
@@ -437,7 +437,7 @@ long CxImage::Draw(HDC hdc, const RECT& rect, RECT* pClipRect, bool bSmooth)
  * \param pClipRect : limit the drawing operations inside a given rectangle in the output device context.
  * \param bSmooth : activates a bilinear filter that will enhance the appearence for zommed pictures.
  *                   Quite slow. Needs CXIMAGE_SUPPORT_INTERPOLATION.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 long CxImage::Draw(HDC hdc, long x, long y, long cx, long cy, RECT* pClipRect, bool bSmooth)
 {
@@ -720,7 +720,7 @@ long CxImage::Draw2(HDC hdc, const RECT& rect)
  *                 - If cx or cy are not specified (or less than 0), the normal width or height will be used
  *                 - If cx or cy are different than width or height, the image will be stretched
  *
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 long CxImage::Draw2(HDC hdc, long x, long y, long cx, long cy)
 {
@@ -793,7 +793,7 @@ long CxImage::Stretch(HDC hdc, const RECT& rect, DWORD dwRop)
  * \param xoffset,yoffset : (optional) offset
  * \param xsize,ysize : size.
  * \param dwRop : raster operation code (see BitBlt documentation)
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 long CxImage::Stretch(HDC hdc, long xoffset, long yoffset, long xsize, long ysize, DWORD dwRop)
 {
@@ -812,7 +812,7 @@ long CxImage::Stretch(HDC hdc, long xoffset, long yoffset, long xsize, long ysiz
  * Tiles the device context in the specified rectangle with the image.
  * \param hdc : destination device context
  * \param rc : tiled rectangle in the output device context
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 long CxImage::Tile(HDC hdc, RECT *rc)
 {

@@ -84,7 +84,7 @@ public:
 
 	int m_iResponseMode;		// 응답 모드: 0(ok) 1(Accept/Decline) 2(Next)
 
-	char m_cTargetName[11];		// 퀘스트가 지정된 이름. 맵 혹은 캐릭터 이름  
+	char m_cTargetName[21];		// 퀘스트가 지정된 이름. 맵 혹은 캐릭터 이름  
 	int  m_sX, m_sY, m_iRange;	// 퀘스트가 지정된 맵 장소 
 
 	int  m_iQuestID;			// 퀘스트 ID. 만약 퀘스트의 내용이 변경되었을 경우를 대비한 것임.

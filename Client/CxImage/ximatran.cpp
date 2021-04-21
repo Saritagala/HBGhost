@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::GrayScale()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	if (head.biBitCount<=8){
 		RGBQUAD* ppal=GetPalette();
 		int gray;
@@ -31,7 +31,7 @@ bool CxImage::GrayScale()
 		if (head.biBitCount==4 || head.biBitCount==1){
 			CxImage ima;
 			ima.CopyInfo(*this);
-			if (!ima.Create(head.biWidth,head.biHeight,8,info.dwType)) return false;
+			if (!ima.Create(head.biWidth,head.biHeight,8,info.dwType)) return FALSE;
 			ima.SetGrayPalette();
 #if CXIMAGE_SUPPORT_SELECTION
 			ima.SelectionCopy(*this);
@@ -52,7 +52,7 @@ bool CxImage::GrayScale()
 		BYTE *iSrc=info.pImage;
 		CxImage ima;
 		ima.CopyInfo(*this);
-		if (!ima.Create(head.biWidth,head.biHeight,8,info.dwType)) return false;
+		if (!ima.Create(head.biWidth,head.biHeight,8,info.dwType)) return FALSE;
 		ima.SetGrayPalette();
 #if CXIMAGE_SUPPORT_SELECTION
 		ima.SelectionCopy(*this);
@@ -71,15 +71,15 @@ bool CxImage::GrayScale()
 		}
 		Transfer(ima);
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Flip()
 {
-	if (!pDib) return false;
-	CxImage* imatmp = new CxImage(*this,false,false,true);
-	if (!imatmp) return false;
-	if (!imatmp->IsValid()) return false;
+	if (!pDib) return FALSE;
+	CxImage* imatmp = new CxImage(*this,FALSE,FALSE,TRUE);
+	if (!imatmp) return FALSE;
+	if (!imatmp->IsValid()) return FALSE;
 	BYTE *iSrc,*iDst;
 	iSrc=info.pImage + (head.biHeight-1)*info.dwEffWidth;
 	iDst=imatmp->info.pImage;
@@ -95,15 +95,15 @@ bool CxImage::Flip()
 
 	Transfer(*imatmp);
 	delete imatmp;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Mirror()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
-	CxImage* imatmp = new CxImage(*this,false,false,true);
-	if (!imatmp) return false;
+	CxImage* imatmp = new CxImage(*this,FALSE,FALSE,TRUE);
+	if (!imatmp) return FALSE;
 	BYTE *iSrc,*iDst;
 	long wdt=(head.biWidth-1) * (head.biBitCount==24 ? 3:1);
 	iSrc=info.pImage + wdt;
@@ -142,7 +142,7 @@ bool CxImage::Mirror()
 
 	Transfer(*imatmp);
 	delete imatmp;
-	return true;
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +151,7 @@ bool CxImage::Mirror()
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::RotateLeft(CxImage* iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long newWidth = GetHeight();
 	long newHeight = GetWidth();
@@ -265,13 +265,13 @@ bool CxImage::RotateLeft(CxImage* iDst)
 	//select the destination
 	if (iDst) iDst->Transfer(imgDest);
 	else Transfer(imgDest);
-	return true;
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::RotateRight(CxImage* iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long newWidth = GetHeight();
 	long newHeight = GetWidth();
@@ -376,13 +376,13 @@ bool CxImage::RotateRight(CxImage* iDst)
 	//select the destination
 	if (iDst) iDst->Transfer(imgDest);
 	else Transfer(imgDest);
-	return true;
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Negative()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	if (head.biBitCount<=8){
 		if (IsGrayScale()){ //GRAYSCALE, selection
@@ -441,7 +441,7 @@ bool CxImage::Negative()
 		info.nBkgndColor.rgbGreen = (BYTE)(255-info.nBkgndColor.rgbGreen);
 		info.nBkgndColor.rgbRed = (BYTE)(255-info.nBkgndColor.rgbRed);
 	}
-	return true;
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +453,7 @@ bool CxImage::Negative()
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Rotate(float angle, CxImage* iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	//  Copyright (c) 1996-1998 Ulrich von Zadow
 
@@ -538,7 +538,7 @@ bool CxImage::Rotate(float angle, CxImage* iDst)
 	if (iDst) iDst->Transfer(imgDest);
 	else Transfer(imgDest);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -568,7 +568,7 @@ bool CxImage::Rotate2(float angle,
                        bool const optimizeRightAngles,
 					   bool const bKeepOriginalSize)
 {
-	if (!pDib) return false;					//no dib no go
+	if (!pDib) return FALSE;					//no dib no go
 	
 	double ang = -angle*acos(0.0f)/90.0f;		//convert angle to radians and invert (positive angle performs clockwise rotation)
 	float cos_angle = (float) cos(ang);			//these two are needed later (to rotate)
@@ -607,7 +607,7 @@ bool CxImage::Rotate2(float angle,
 			if (newp[3].Distance(p[3]) < 0.25) {
 				//rotation not significant
 				if (iDst) iDst->Copy(*this);		//copy image to iDst, if required
-				return true;						//and we're done
+				return TRUE;						//and we're done
 			}//if
 		}//if
 	}//if
@@ -707,10 +707,10 @@ bool CxImage::Rotate2(float angle,
 				//***!*** SetPixelColor is slow for palleted images
 #if CXIMAGE_SUPPORT_ALPHA
 				if (AlphaIsValid()) 
-					imgDest.SetPixelColor(destx,desty,rgb,true);
+					imgDest.SetPixelColor(destx,desty,rgb,TRUE);
 				else 
 #endif //CXIMAGE_SUPPORT_ALPHA     
-					imgDest.SetPixelColor(destx,desty,rgb,false);
+					imgDest.SetPixelColor(destx,desty,rgb,FALSE);
 				x++;
 			}//for destx
 			y++;
@@ -721,12 +721,12 @@ bool CxImage::Rotate2(float angle,
 	if (iDst) iDst->Transfer(imgDest);
 	else Transfer(imgDest);
 	
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Rotate180(CxImage* iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long wid = GetWidth();
 	long ht = GetHeight();
@@ -760,7 +760,7 @@ bool CxImage::Rotate180(CxImage* iDst)
 	//select the destination
 	if (iDst) iDst->Transfer(imgDest);
 	else Transfer(imgDest);
-	return true;
+	return TRUE;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -771,11 +771,11 @@ bool CxImage::Rotate180(CxImage* iDst)
  */
 bool CxImage::Resample(long newx, long newy, int mode, CxImage* iDst)
 {
-	if (newx==0 || newy==0) return false;
+	if (newx==0 || newy==0) return FALSE;
 
 	if (head.biWidth==newx && head.biHeight==newy){
 		if (iDst) iDst->Copy(*this);
-		return true;
+		return TRUE;
 	}
 
 	float xScale, yScale, fX, fY;
@@ -786,7 +786,7 @@ bool CxImage::Resample(long newx, long newy, int mode, CxImage* iDst)
 	newImage.CopyInfo(*this);
 	newImage.Create(newx,newy,head.biBitCount,GetType());
 	newImage.SetPalette(GetPalette());
-	if (!newImage.IsValid()) return false;
+	if (!newImage.IsValid()) return FALSE;
 
 	switch (mode) {
 	case 1: // nearest pixel
@@ -1011,7 +1011,7 @@ bool CxImage::Resample(long newx, long newy, int mode, CxImage* iDst)
 	if (iDst) iDst->Transfer(newImage);
 	else Transfer(newImage);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1035,12 +1035,12 @@ bool CxImage::Resample2(
   CxImage* const iDst,
   bool const disableAveraging)
 {
-	if (newx<=0 || newy<=0 || !pDib) return false;
+	if (newx<=0 || newy<=0 || !pDib) return FALSE;
 	
 	if (head.biWidth==newx && head.biHeight==newy) {
 		//image already correct size (just copy and return)
 		if (iDst) iDst->Copy(*this);
-		return true;
+		return TRUE;
 	}//if
 	
 	//calculate scale of new image (less than 1 for enlarge)
@@ -1053,7 +1053,7 @@ bool CxImage::Resample2(
 	newImage.CopyInfo(*this);
 	newImage.Create(newx,newy,head.biBitCount,GetType());
 	newImage.SetPalette(GetPalette());
-	if (!newImage.IsValid()) return false;
+	if (!newImage.IsValid()) return FALSE;
 	
 	//and alpha channel if required
 #if CXIMAGE_SUPPORT_ALPHA
@@ -1098,7 +1098,7 @@ bool CxImage::Resample2(
 				sY = (dY + 0.5f) * yScale - 0.5f;
 				for(dX=0; dX<newx; dX++){
 					sX = (dX + 0.5f) * xScale - 0.5f;
-					newImage.SetPixelColor(dX,dY,GetPixelColorInterpolated(sX,sY,inMethod,ofMethod,0),true);
+					newImage.SetPixelColor(dX,dY,GetPixelColorInterpolated(sX,sY,inMethod,ofMethod,0),TRUE);
 				}//for x
 			}//for y
 		}//if
@@ -1109,7 +1109,7 @@ bool CxImage::Resample2(
 			sY = (dY+0.5f) * yScale - 0.5f;
 			for(dX=0; dX<newx; dX++){
 				sX = (dX+0.5f) * xScale - 0.5f;
-				newImage.SetPixelColor(dX,dY,GetAreaColorInterpolated(sX, sY, xScale, yScale, inMethod, ofMethod,0),true);
+				newImage.SetPixelColor(dX,dY,GetAreaColorInterpolated(sX, sY, xScale, yScale, inMethod, ofMethod,0),TRUE);
 			}//for x
 		}//for y
 	}//if
@@ -1119,7 +1119,7 @@ bool CxImage::Resample2(
 		iDst->Transfer(newImage);
 	else 
 		Transfer(newImage);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1129,11 +1129,11 @@ bool CxImage::Resample2(
  */
 bool CxImage::DecreaseBpp(DWORD nbit, bool errordiffusion, RGBQUAD* ppal, DWORD clrimportant)
 {
-	if (!pDib) return false;
-	if (head.biBitCount <  nbit) return false;
+	if (!pDib) return FALSE;
+	if (head.biBitCount <  nbit) return FALSE;
 	if (head.biBitCount == nbit){
-		if (clrimportant==0) return true;
-		if (head.biClrImportant && (head.biClrImportant<clrimportant)) return true;
+		if (clrimportant==0) return TRUE;
+		if (head.biClrImportant && (head.biClrImportant<clrimportant)) return TRUE;
 	}
 
 	long er,eg,eb;
@@ -1143,7 +1143,7 @@ bool CxImage::DecreaseBpp(DWORD nbit, bool errordiffusion, RGBQUAD* ppal, DWORD 
 	tmp.CopyInfo(*this);
 	tmp.Create(head.biWidth,head.biHeight,(WORD)nbit,info.dwType);
 	if (clrimportant) tmp.SetClrImportant(clrimportant);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 #if CXIMAGE_SUPPORT_SELECTION
 	tmp.SelectionCopy(*this);
@@ -1170,7 +1170,7 @@ bool CxImage::DecreaseBpp(DWORD nbit, bool errordiffusion, RGBQUAD* ppal, DWORD 
 		else tmp.SetStdPalette();
 		break;
 	default:
-		return false;
+		return FALSE;
 	}
 
 	for (long y=0;y<head.biHeight;y++){
@@ -1219,7 +1219,7 @@ bool CxImage::DecreaseBpp(DWORD nbit, bool errordiffusion, RGBQUAD* ppal, DWORD 
 	}
 
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1228,18 +1228,18 @@ bool CxImage::DecreaseBpp(DWORD nbit, bool errordiffusion, RGBQUAD* ppal, DWORD 
  */
 bool CxImage::IncreaseBpp(DWORD nbit)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	switch (nbit){
 	case 4:
 		{
-			if (head.biBitCount==4) return true;
-			if (head.biBitCount>4) return false;
+			if (head.biBitCount==4) return TRUE;
+			if (head.biBitCount>4) return FALSE;
 
 			CxImage tmp;
 			tmp.CopyInfo(*this);
 			tmp.Create(head.biWidth,head.biHeight,4,info.dwType);
 			tmp.SetPalette(GetPalette(),GetNumColors());
-			if (!tmp.IsValid()) return false;
+			if (!tmp.IsValid()) return FALSE;
 
 
 #if CXIMAGE_SUPPORT_SELECTION
@@ -1257,18 +1257,18 @@ bool CxImage::IncreaseBpp(DWORD nbit)
 				}
 			}
 			Transfer(tmp);
-			return true;
+			return TRUE;
 		}
 	case 8:
 		{
-			if (head.biBitCount==8) return true;
-			if (head.biBitCount>8) return false;
+			if (head.biBitCount==8) return TRUE;
+			if (head.biBitCount>8) return FALSE;
 
 			CxImage tmp;
 			tmp.CopyInfo(*this);
 			tmp.Create(head.biWidth,head.biHeight,8,info.dwType);
 			tmp.SetPalette(GetPalette(),GetNumColors());
-			if (!tmp.IsValid()) return false;
+			if (!tmp.IsValid()) return FALSE;
 
 #if CXIMAGE_SUPPORT_SELECTION
 			tmp.SelectionCopy(*this);
@@ -1285,17 +1285,17 @@ bool CxImage::IncreaseBpp(DWORD nbit)
 				}
 			}
 			Transfer(tmp);
-			return true;
+			return TRUE;
 		}
 	case 24:
 		{
-			if (head.biBitCount==24) return true;
-			if (head.biBitCount>24) return false;
+			if (head.biBitCount==24) return TRUE;
+			if (head.biBitCount>24) return FALSE;
 
 			CxImage tmp;
 			tmp.CopyInfo(*this);
 			tmp.Create(head.biWidth,head.biHeight,24,info.dwType);
-			if (!tmp.IsValid()) return false;
+			if (!tmp.IsValid()) return FALSE;
 
 			if (info.nBkgndIndex>=0) //translate transparency
 				tmp.info.nBkgndColor=GetPaletteColor((BYTE)info.nBkgndIndex);
@@ -1312,14 +1312,14 @@ bool CxImage::IncreaseBpp(DWORD nbit)
 			for (long y=0;y<head.biHeight;y++){
 				if (info.nEscape) break;
 				for (long x=0;x<head.biWidth;x++){
-					tmp.SetPixelColor(x,y,GetPixelColor(x,y),true);
+					tmp.SetPixelColor(x,y,GetPixelColor(x,y),TRUE);
 				}
 			}
 			Transfer(tmp);
-			return true;
+			return TRUE;
 		}
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1335,15 +1335,15 @@ bool CxImage::IncreaseBpp(DWORD nbit)
  */
 bool CxImage::Dither(long method)
 {
-	if (!pDib) return false;
-	if (head.biBitCount == 1) return true;
+	if (!pDib) return FALSE;
+	if (head.biBitCount == 1) return TRUE;
 	
 	GrayScale();
 
 	CxImage tmp;
 	tmp.CopyInfo(*this);
 	tmp.Create(head.biWidth, head.biHeight, 1, info.dwType);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 #if CXIMAGE_SUPPORT_SELECTION
 	tmp.SelectionCopy(*this);
@@ -1859,7 +1859,7 @@ bool CxImage::Dither(long method)
 	tmp.SetPaletteColor(1,255,255,255);
 	Transfer(tmp);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1874,7 +1874,7 @@ bool CxImage::Dither(long method)
  */
 bool CxImage::CropRotatedRectangle( long topx, long topy, long width, long height, float angle, CxImage* iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	
 	long startx,starty,endx,endy;
@@ -1889,34 +1889,34 @@ bool CxImage::CropRotatedRectangle( long topx, long topy, long width, long heigh
 	endx   = topx + (long)(cos_angle*(double)width);
 	endy   = topy + (long)(cos_angle*(double)height + sin_angle*(double)width);
 	// check: corners of the rectangle must be inside
-	if ( IsInside( startx, topy )==false ||
-		 IsInside( endx, endy ) == false )
-		 return false;
+	if ( IsInside( startx, topy )==FALSE ||
+		 IsInside( endx, endy ) == FALSE )
+		 return FALSE;
 
 	// first crop to bounding rectangle
-	CxImage tmp(*this,false/*pSelection!=0*/,true,true);
-	tmp.Copy(*this, true, false, true);
-	if (!tmp.IsValid()) return false;
-    if ( false == tmp.Crop( startx, topy, endx, endy ) )
-		return false;
+	CxImage tmp(*this,FALSE/*pSelection!=0*/,TRUE,TRUE);
+	tmp.Copy(*this, TRUE, FALSE, TRUE);
+	if (!tmp.IsValid()) return FALSE;
+    if ( FALSE == tmp.Crop( startx, topy, endx, endy ) )
+		return FALSE;
 	
 	// the midpoint of the image now became the same as the midpoint of the rectangle
 	// rotate new image with minus angle amount
-    if ( false == tmp.Rotate( (float)(-angle*57.295779513082320877) ) ) // Rotate expects angle in degrees
-		return false;
+    if ( FALSE == tmp.Rotate( (float)(-angle*57.295779513082320877) ) ) // Rotate expects angle in degrees
+		return FALSE;
 
 	// crop rotated image to the original selection rectangle
     endx   = (tmp.head.biWidth+width)/2;
 	startx = (tmp.head.biWidth-width)/2;
 	starty = (tmp.head.biHeight+height)/2;
     endy   = (tmp.head.biHeight-height)/2;
-    if ( false == tmp.Crop( startx, starty, endx, endy ) )
-		return false;
+    if ( FALSE == tmp.Crop( startx, starty, endx, endy ) )
+		return FALSE;
 
 	if (iDst) iDst->Transfer(tmp);
 	else Transfer(tmp);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Crop(const RECT& rect, CxImage* iDst)
@@ -1926,20 +1926,20 @@ bool CxImage::Crop(const RECT& rect, CxImage* iDst)
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Crop(long left, long top, long right, long bottom, CxImage* iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long startx = max(0L,min(left,head.biWidth));
 	long endx = max(0L,min(right,head.biWidth));
 	long starty = head.biHeight - max(0L,min(top,head.biHeight));
 	long endy = head.biHeight - max(0L,min(bottom,head.biHeight));
 
-	if (startx==endx || starty==endy) return false;
+	if (startx==endx || starty==endy) return FALSE;
 
 	if (startx>endx) {long tmp=startx; startx=endx; endx=tmp;}
 	if (starty>endy) {long tmp=starty; starty=endy; endy=tmp;}
 
 	CxImage tmp(endx-startx,endy-starty,head.biBitCount,info.dwType);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 	tmp.SetPalette(GetPalette(),head.biClrUsed);
 	tmp.info.nBkgndIndex = info.nBkgndIndex;
 	tmp.info.nBkgndColor = info.nBkgndColor;
@@ -1974,7 +1974,7 @@ bool CxImage::Crop(long left, long top, long right, long bottom, CxImage* iDst)
 #if CXIMAGE_SUPPORT_ALPHA
 	if (AlphaIsValid()){ //<oboolo>
 		tmp.AlphaCreate();
-		if (!tmp.AlphaIsValid()) return false;
+		if (!tmp.AlphaIsValid()) return FALSE;
 		BYTE* pDest = tmp.pAlpha;
 		BYTE* pSrc = pAlpha + startx + starty*head.biWidth;
 		for (long y=starty; y<endy; y++){
@@ -1989,22 +1989,22 @@ bool CxImage::Crop(long left, long top, long right, long bottom, CxImage* iDst)
 	if (iDst) iDst->Transfer(tmp);
 	else Transfer(tmp);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * \param xgain, ygain : can be from 0 to 1.
  * \param xpivot, ypivot : is the center of the transformation.
- * \param bEnableInterpolation : if true, enables bilinear interpolation.
- * \return true if everything is ok 
+ * \param bEnableInterpolation : if TRUE, enables bilinear interpolation.
+ * \return TRUE if everything is ok 
  */
 bool CxImage::Skew(float xgain, float ygain, long xpivot, long ypivot, bool bEnableInterpolation)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	float nx,ny;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -2026,7 +2026,7 @@ bool CxImage::Skew(float xgain, float ygain, long xpivot, long ypivot, bool bEna
 				ny = y + (ygain*(x - xpivot));
 #if CXIMAGE_SUPPORT_INTERPOLATION
 				if (bEnableInterpolation){
-					tmp.SetPixelColor(x,y,GetPixelColorInterpolated(nx, ny, CxImage::IM_BILINEAR, CxImage::OM_BACKGROUND),true);
+					tmp.SetPixelColor(x,y,GetPixelColorInterpolated(nx, ny, CxImage::IM_BILINEAR, CxImage::OM_BACKGROUND),TRUE);
 				} else
 #endif //CXIMAGE_SUPPORT_INTERPOLATION
 				{
@@ -2043,7 +2043,7 @@ bool CxImage::Skew(float xgain, float ygain, long xpivot, long ypivot, bool bEna
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -2051,14 +2051,14 @@ bool CxImage::Skew(float xgain, float ygain, long xpivot, long ypivot, bool bEna
  * \param left, top, right, bottom = additional dimensions, should be greater than 0.
  * \param canvascolor = border color
  * \param iDst = pointer to destination image (if it's 0, this image is modified)
- * \return true if everything is ok 
+ * \return TRUE if everything is ok 
  * \author [Colin Urquhart]
  */
 bool CxImage::Expand(long left, long top, long right, long bottom, RGBQUAD canvascolor, CxImage* iDst)
 {
-    if (!pDib) return false;
+    if (!pDib) return FALSE;
 
-    if ((left < 0) || (right < 0) || (bottom < 0) || (top < 0)) return false;
+    if ((left < 0) || (right < 0) || (bottom < 0) || (top < 0)) return FALSE;
 
     long newWidth = head.biWidth + left + right;
     long newHeight = head.biHeight + top + bottom;
@@ -2067,7 +2067,7 @@ bool CxImage::Expand(long left, long top, long right, long bottom, RGBQUAD canva
     top = bottom + head.biHeight - 1;
     
     CxImage tmp(newWidth, newHeight, head.biBitCount, info.dwType);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
     tmp.SetPalette(GetPalette(),head.biClrUsed);
     tmp.info.nBkgndIndex = info.nBkgndIndex;
@@ -2121,16 +2121,16 @@ bool CxImage::Expand(long left, long top, long right, long bottom, RGBQUAD canva
     if (iDst) iDst->Transfer(tmp);
     else Transfer(tmp);
 
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::Expand(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst)
 {
 	//thanks to <Colin Urquhart>
 
-    if (!pDib) return false;
+    if (!pDib) return FALSE;
 
-    if ((newx < head.biWidth) || (newy < head.biHeight)) return false;
+    if ((newx < head.biWidth) || (newy < head.biHeight)) return FALSE;
 
     int nAddLeft = (newx - head.biWidth) / 2;
     int nAddTop = (newy - head.biHeight) / 2;
@@ -2143,17 +2143,17 @@ bool CxImage::Expand(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst)
  * \param newx, newy = thumbnail size.
  * \param canvascolor = border color.
  * \param iDst = pointer to destination image (if it's 0, this image is modified).
- * \return true if everything is ok.
+ * \return TRUE if everything is ok.
  * \author [Colin Urquhart]
  */
 bool CxImage::Thumbnail(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst)
 {
-    if (!pDib) return false;
+    if (!pDib) return FALSE;
 
-    if ((newx <= 0) || (newy <= 0)) return false;
+    if ((newx <= 0) || (newy <= 0)) return FALSE;
 
     CxImage tmp(*this);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
     // determine whether we need to shrink the image
     if ((head.biWidth > newx) || (head.biHeight > newy)) {
@@ -2173,7 +2173,7 @@ bool CxImage::Thumbnail(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst
     //select the destination
     if (iDst) iDst->Transfer(tmp);
     else Transfer(tmp);
-    return true;
+    return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -2191,13 +2191,13 @@ bool CxImage::Thumbnail(long newx, long newy, RGBQUAD canvascolor, CxImage* iDst
  */
 bool CxImage::CircleTransform(int type,long rmax,float Koeff)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long nx,ny;
 	double angle,radius,rnew;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax,xmid,ymid;
 	if (pSelection){
@@ -2258,7 +2258,7 @@ bool CxImage::CircleTransform(int type,long rmax,float Koeff)
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -2274,23 +2274,23 @@ bool CxImage::CircleTransform(int type,long rmax,float Koeff)
  * \param  newx, newy - size of destination image (must be smaller than original!)
  * \param  iDst - pointer to destination image (if it's 0, this image is modified)
  * 
- * \return true if everything is ok 
+ * \return TRUE if everything is ok 
  * \author [bd], 9.2004
  */
 bool CxImage::QIShrink(long newx, long newy, CxImage* const iDst)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	
 	if (newx>head.biWidth || newy>head.biHeight) { 
 		//let me repeat... this method can't enlarge image
 		strcpy(info.szLastError,"QIShrink can't enlarge image");
-		return false;
+		return FALSE;
 	}
 
 	if (newx==head.biWidth && newy==head.biHeight) {
 		//image already correct size (just copy and return)
 		if (iDst) iDst->Copy(*this);
-		return true;
+		return TRUE;
 	}//if
 	
 	//create temporary destination image
@@ -2298,7 +2298,7 @@ bool CxImage::QIShrink(long newx, long newy, CxImage* const iDst)
 	newImage.CopyInfo(*this);
 	newImage.Create(newx,newy,head.biBitCount,GetType());
 	newImage.SetPalette(GetPalette());
-	if (!newImage.IsValid()) return false;
+	if (!newImage.IsValid()) return FALSE;
 	
 	//and alpha channel if required
 #if CXIMAGE_SUPPORT_ALPHA
@@ -2391,7 +2391,7 @@ bool CxImage::QIShrink(long newx, long newy, CxImage* const iDst)
 			accuPtr=accu;                                                 //restart from beginning of accu
 			for(int x=0; x<oldx; x++){                                    //for all source columns
 				ex += newx;
-				rgb = GetPixelColor(x, y, true);
+				rgb = GetPixelColor(x, y, TRUE);
 				*accuPtr     += rgb.rgbBlue;                                  //add current pixel to current accu slot
 				*(accuPtr+1) += rgb.rgbRed;
 				*(accuPtr+2) += rgb.rgbGreen;
@@ -2431,7 +2431,7 @@ bool CxImage::QIShrink(long newx, long newy, CxImage* const iDst)
 		iDst->Transfer(newImage);
 	else 
 		Transfer(newImage);
-    return true;
+    return TRUE;
 
 }
 

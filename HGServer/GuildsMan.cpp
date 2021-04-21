@@ -326,7 +326,7 @@ void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
 			case DEF_XSOCKEVENT_CRITICALERROR:
 			case DEF_XSOCKEVENT_SOCKETCLOSED:
 				// ¸Þ½ÃÁö¸¦ º¸³¾¶§ ¿¡·¯°¡ ¹ß»ýÇß´Ù¸é Á¦°ÅÇÑ´Ù.
-				DeleteClient(i, TRUE, TRUE);
+				DeleteClient(i, true, true);
 				break;
 			}
 
@@ -347,12 +347,12 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 	SYSTEMTIME SysTime;
 	
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
-	if (m_bIsCrusadeMode == TRUE) return;
-	if (m_bIsHeldenianMode == TRUE) return;
-	if (m_bIsApocalypseMode == TRUE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
+	if (m_bIsCrusadeMode == true) return;
+	if (m_bIsHeldenianMode == true) return;
+	if (m_bIsApocalypseMode == true) return;
 
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
+	if ((m_bAdminSecurity == true) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
 
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	cp += 30;
@@ -388,7 +388,7 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 			case DEF_XSOCKEVENT_SOCKETERROR:
 			case DEF_XSOCKEVENT_CRITICALERROR:
 			case DEF_XSOCKEVENT_SOCKETCLOSED:
-				DeleteClient(iClientH, TRUE, TRUE);
+				DeleteClient(iClientH, true, true);
 				break;
 			}
 		}
@@ -428,7 +428,7 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 				case DEF_XSOCKEVENT_SOCKETERROR:
 				case DEF_XSOCKEVENT_CRITICALERROR:
 				case DEF_XSOCKEVENT_SOCKETCLOSED:
-					DeleteClient(iClientH, TRUE, TRUE);
+					DeleteClient(iClientH, true, true);
 					break;
 				}
 			}
@@ -579,9 +579,9 @@ void CGame::RequestDisbandGuildHandler(int iClientH, char* pData, DWORD dwMsgSiz
 {
 	char* cp, cGuildName[21], cTxt[120];
 
-	if (m_bIsCrusadeMode == TRUE) return;
-	if (m_bIsHeldenianMode == TRUE) return;
-	if (m_bIsApocalypseMode == TRUE) return;
+	if (m_bIsCrusadeMode == true) return;
+	if (m_bIsHeldenianMode == true) return;
+	if (m_bIsApocalypseMode == true) return;
 
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cGuildName, sizeof(cGuildName));
@@ -659,7 +659,7 @@ void CGame::ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize)
 			case DEF_XSOCKEVENT_CRITICALERROR:
 			case DEF_XSOCKEVENT_SOCKETCLOSED:
 				// �޽����� ������ ������ �߻��ߴٸ� �����Ѵ�.
-				DeleteClient(i, TRUE, TRUE);
+				DeleteClient(i, true, true);
 				break;
 			}
 			return;
@@ -673,10 +673,10 @@ void CGame::ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize)
 void CGame::JoinGuildApproveHandler(int iClientH, char* pName)
 {
 	int i;
-	bool bIsExist = FALSE;
+	bool bIsExist = false;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	// pNameÀ» °®´Â Å¬¶óÀÌ¾ðÆ®ÀÇ iClientH ±æµå¿¡ ´ëÇÑ °¡ÀÔ¿ä±¸°¡ ¼º°øÇÏ¿´´Ù.
 
@@ -721,7 +721,7 @@ void CGame::JoinGuildRejectHandler(int iClientH, char* pName)
 	int i;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	// pNameÀ» °®´Â Å¬¶óÀÌ¾ðÆ®ÀÇ iClientH ±æµå¿¡ ´ëÇÑ °¡ÀÔ ¿ä±¸°¡ ½ÇÆÐ ÇÏ¿´´Ù.
 
@@ -743,7 +743,7 @@ void CGame::DismissGuildApproveHandler(int iClientH, char* pName)
 
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, pName, 10) == 0)) {
 
@@ -768,7 +768,7 @@ void CGame::DismissGuildRejectHandler(int iClientH, char* pName)
 	int i;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	// pNameÀ» °®´Â Å¬¶óÀÌ¾ðÆ®ÀÇ iClientH ±æµå¿¡ ´ëÇÑ Å»Åð ¿ä±¸°¡ ½ÇÆÐ ÇÏ¿´´Ù.
 
@@ -794,7 +794,7 @@ void CGame::SendGuildMsg(int iClientH, WORD wNotifyMsgType, short sV1, short sV2
 
 	// °°Àº ±æµå¿øµé¿¡°Ô¸¸ º¸³»´Â ¸Þ½ÃÁöµé
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != NULL) &&
@@ -849,7 +849,7 @@ void CGame::SendGuildMsg(int iClientH, WORD wNotifyMsgType, short sV1, short sV2
 			case DEF_XSOCKEVENT_CRITICALERROR:
 			case DEF_XSOCKEVENT_SOCKETCLOSED:
 				// ¸Þ½ÃÁö¸¦ º¸³¾¶§ ¿¡·¯°¡ ¹ß»ýÇß´Ù¸é Á¦°ÅÇÑ´Ù.
-				DeleteClient(i, TRUE, TRUE);
+				DeleteClient(i, true, true);
 				break;
 			}
 		}
@@ -986,7 +986,7 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 	ZeroMemory(cGuildName, sizeof(cGuildName));
 	memcpy(cGuildName, m_pClientList[iClientH]->m_cGuildName, 21);
 	
-	bool bExiste = FALSE;
+	bool bExiste = false;
 	for (i = 0; i < DEF_MAXGUILDS; i++)
 	{
 		if (string(m_stSummonGuild[i].cGuildName) == "NONE") continue;
@@ -995,7 +995,7 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 			m_stSummonGuild[i].sX = pX;
 			m_stSummonGuild[i].sY = pY;
 			strcpy(m_stSummonGuild[i].cMap, cMapName);
-			bExiste = TRUE;
+			bExiste = true;
 			break;
 		}
 	}

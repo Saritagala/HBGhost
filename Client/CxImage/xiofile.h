@@ -19,14 +19,14 @@ public:
 //////////////////////////////////////////////////////////
 	bool Open(const char *filename, const char *mode)
 	{
-		if (m_fp) return false;	// Can't re-open without closing first
+		if (m_fp) return FALSE;	// Can't re-open without closing first
 
 		m_fp = fopen(filename, mode);
-		if (!m_fp) return false;
+		if (!m_fp) return FALSE;
 
-		m_bCloseFile = true;
+		m_bCloseFile = TRUE;
 
-		return true;
+		return TRUE;
 	}
 //////////////////////////////////////////////////////////
 	virtual bool Close()
@@ -53,7 +53,7 @@ public:
 //////////////////////////////////////////////////////////
 	virtual bool Seek(long offset, int origin)
 	{
-		if (!m_fp) return false;
+		if (!m_fp) return FALSE;
 		return (bool)(fseek(m_fp, offset, origin) == 0);
 	}
 //////////////////////////////////////////////////////////
@@ -76,13 +76,13 @@ public:
 //////////////////////////////////////////////////////////
 	virtual bool	Flush()
 	{
-		if (!m_fp) return false;
+		if (!m_fp) return FALSE;
 		return (bool)(fflush(m_fp) == 0);
 	}
 //////////////////////////////////////////////////////////
 	virtual bool	Eof()
 	{
-		if (!m_fp) return true;
+		if (!m_fp) return TRUE;
 		return (bool)(feof(m_fp) != 0);
 	}
 //////////////////////////////////////////////////////////
@@ -94,7 +94,7 @@ public:
 //////////////////////////////////////////////////////////
 	virtual bool PutC(unsigned char c)
 	{
-		if (!m_fp) return false;
+		if (!m_fp) return FALSE;
 		return (bool)(fputc(c, m_fp) == c);
 	}
 //////////////////////////////////////////////////////////

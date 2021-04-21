@@ -33,8 +33,8 @@ XSocket::XSocket(HWND hWnd, int iBlockLimit)
 	m_WSAErr = NULL;
 
 	m_hWnd = hWnd;
-	m_bIsAvailable = FALSE;
-	m_bIsWriteEnabled = FALSE;
+	m_bIsAvailable = false;
+	m_bIsWriteEnabled = false;
 
 	m_iBlockLimit = iBlockLimit;
 }
@@ -49,20 +49,20 @@ XSocket::~XSocket()
 	_CloseConn(); 
 }
 
-BOOL XSocket::bInitBufferSize(DWORD dwBufferSize)
+bool XSocket::bInitBufferSize(DWORD dwBufferSize)
 {
 	if (m_pRcvBuffer != NULL) delete[] m_pRcvBuffer;
 	if (m_pSndBuffer != NULL) delete[] m_pSndBuffer;
 
 	m_pRcvBuffer = new char[dwBufferSize+8];
-	if (m_pRcvBuffer == NULL) return FALSE;
+	if (m_pRcvBuffer == NULL) return false;
 	
 	m_pSndBuffer = new char[dwBufferSize+8];
-	if (m_pSndBuffer == NULL) return FALSE;
+	if (m_pSndBuffer == NULL) return false;
 
 	m_dwBufferSize = dwBufferSize;
 
-	return TRUE;
+	return true;
 }
 
 int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
@@ -78,12 +78,12 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 	switch (WSAEvent) {
 	case FD_CONNECT:
 		if (WSAGETSELECTERROR(lParam) != 0) { 
-			if (bConnect(m_pAddr, m_iPortNum, m_uiMsg) == FALSE) return DEF_XSOCKEVENT_SOCKETERROR;
+			if (bConnect(m_pAddr, m_iPortNum, m_uiMsg) == false) return DEF_XSOCKEVENT_SOCKETERROR;
 				
 			return DEF_XSOCKEVENT_RETRYINGCONNECTION;
 		}
 		else {
-			m_bIsAvailable = TRUE;
+			m_bIsAvailable = true;
 			return DEF_XSOCKEVENT_CONNECTIONESTABLISH;
 		}
 		break;
@@ -97,7 +97,7 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 		break;
 	
 	case FD_WRITE:
-		m_bIsWriteEnabled = TRUE;
+		m_bIsWriteEnabled = true;
 		return _iSendUnsentData();
 		break;
 
@@ -110,19 +110,19 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 	return DEF_XSOCKEVENT_UNKNOWN;
 }
 
-BOOL XSocket::bBlockConnect(char * pAddr, int iPort, unsigned int uiMsg)
+bool XSocket::bBlockConnect(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
  int             iRet;
  DWORD			 dwOpt;
  struct hostent * hp;
 
-	if (m_cType == DEF_XSOCK_LISTENSOCK) return FALSE;
+	if (m_cType == DEF_XSOCK_LISTENSOCK) return false;
 	if (m_Sock  != INVALID_SOCKET) closesocket(m_Sock);
 
 	m_Sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_Sock == INVALID_SOCKET) 
-		return FALSE;
+		return false;
 	
 	memset(&saTemp,0,sizeof(saTemp));
 	hp = gethostbyname(pAddr);
@@ -132,14 +132,14 @@ BOOL XSocket::bBlockConnect(char * pAddr, int iPort, unsigned int uiMsg)
 		saTemp.sin_port = htons(iPort);
 	}
 	else {
-		return FALSE;
+		return false;
 	}
 	
 	iRet = connect(m_Sock, (struct sockaddr *) &saTemp, sizeof(saTemp));
 	if (iRet == SOCKET_ERROR) {
 		if (WSAGetLastError() != WSAEWOULDBLOCK) {
 			m_WSAErr = WSAGetLastError();
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -153,23 +153,23 @@ BOOL XSocket::bBlockConnect(char * pAddr, int iPort, unsigned int uiMsg)
 	m_uiMsg = uiMsg;
 	m_cType = DEF_XSOCK_NORMALSOCK;
 
-	return TRUE;
+	return true;
 }
 
 
-BOOL XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
+bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
  u_long          arg;
  int             iRet;
  DWORD			 dwOpt;
 
-	if (m_cType == DEF_XSOCK_LISTENSOCK) return FALSE;
+	if (m_cType == DEF_XSOCK_LISTENSOCK) return false;
 	if (m_Sock  != INVALID_SOCKET) closesocket(m_Sock);
 
 	m_Sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_Sock == INVALID_SOCKET) 
-		return FALSE;
+		return false;
 	
 	arg = 1;
 		
@@ -184,7 +184,7 @@ BOOL XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 	if (iRet == SOCKET_ERROR) {
 		if (WSAGetLastError() != WSAEWOULDBLOCK) {
 			m_WSAErr = WSAGetLastError();
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -198,7 +198,7 @@ BOOL XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 	m_uiMsg = uiMsg;
 	m_cType = DEF_XSOCK_NORMALSOCK;
 
-	return TRUE;
+	return true;
 }
 
 
@@ -283,12 +283,12 @@ int XSocket::_iOnRead()
 
 
 
-int XSocket::_iSend(char * cData, int iSize, BOOL bSaveFlag)
+int XSocket::_iSend(char * cData, int iSize, bool bSaveFlag)
 {
  int  iOutLen, iRet, WSAErr;
 
 	if (m_pUnsentDataList[m_sHead] != NULL) {
-		if (bSaveFlag == TRUE) {
+		if (bSaveFlag == true) {
 			iRet = _iRegisterUnsentData(cData, iSize);
 			switch (iRet) {
 			case -1:
@@ -315,7 +315,7 @@ int XSocket::_iSend(char * cData, int iSize, BOOL bSaveFlag)
 				return DEF_XSOCKEVENT_SOCKETERROR;
 			}
 			else {
-				if (bSaveFlag == TRUE) {
+				if (bSaveFlag == true) {
 					iRet = _iRegisterUnsentData((cData + iOutLen), (iSize - iOutLen));
 					switch (iRet) {
 					case -1:
@@ -437,25 +437,25 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 		}
 	}
 	
-	if (m_bIsWriteEnabled == FALSE) {
+	if (m_bIsWriteEnabled == false) {
 		iRet = _iRegisterUnsentData(m_pSndBuffer, dwSize +3);
 	} 
-	else iRet = _iSend(m_pSndBuffer, dwSize + 3, TRUE);
+	else iRet = _iSend(m_pSndBuffer, dwSize + 3, true);
 
 	if (iRet < 0) return iRet;
 	else return (iRet - 3);
 }
 
-BOOL XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
+bool XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
 
-	if (m_cType != NULL) return FALSE;
+	if (m_cType != NULL) return false;
 	if (m_Sock  != INVALID_SOCKET) closesocket(m_Sock);
 
 	m_Sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_Sock == INVALID_SOCKET) 
-		return FALSE;
+		return false;
 	
 	memset(&saTemp,0,sizeof(saTemp));
 	saTemp.sin_family = AF_INET;
@@ -463,12 +463,12 @@ BOOL XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 	saTemp.sin_port = htons(iPort);
 	if ( bind(m_Sock, (PSOCKADDR)&saTemp, sizeof(saTemp)) == SOCKET_ERROR) {
 		closesocket(m_Sock);
-		return FALSE;
+		return false;
 	}
 	
 	if (listen(m_Sock, 5) == SOCKET_ERROR) {
 		closesocket(m_Sock);
-		return FALSE;
+		return false;
 	}
 
 	WSAAsyncSelect(m_Sock, m_hWnd, uiMsg, FD_ACCEPT);
@@ -476,23 +476,23 @@ BOOL XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 	m_uiMsg = uiMsg;
 	m_cType = DEF_XSOCK_LISTENSOCK;
 
-	return TRUE;
+	return true;
 }
 
-BOOL XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
+bool XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
 {
  SOCKET			AcceptedSock;
  sockaddr		Addr;
  int	iLength;
  DWORD			dwOpt;
 
-	if (m_cType != DEF_XSOCK_LISTENSOCK) return FALSE;
-	if (pXSock == NULL) return FALSE;
+	if (m_cType != DEF_XSOCK_LISTENSOCK) return false;
+	if (pXSock == NULL) return false;
 
 	iLength = sizeof(Addr); 
 	AcceptedSock = accept(m_Sock, (struct sockaddr FAR *)&Addr,(int FAR *)&iLength);
 	if (AcceptedSock == INVALID_SOCKET) 
-		return FALSE;
+		return false;
 		
 	pXSock->m_Sock = AcceptedSock;
 	WSAAsyncSelect(pXSock->m_Sock, m_hWnd, uiMsg, FD_READ | FD_WRITE | FD_CLOSE);
@@ -503,22 +503,22 @@ BOOL XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
 	setsockopt(pXSock->m_Sock, SOL_SOCKET, SO_RCVBUF, (const char FAR *)&dwOpt, sizeof(dwOpt));
 	setsockopt(pXSock->m_Sock, SOL_SOCKET, SO_SNDBUF, (const char FAR *)&dwOpt, sizeof(dwOpt));
 
-	return TRUE;
+	return true;
 }
 
 void XSocket::_CloseConn()
 {
  char cTmp[100];
- BOOL bFlag = TRUE;	
+ bool bFlag = true;	
  int  iRet;
 
 	if (m_Sock == INVALID_SOCKET) return;
 
 	shutdown(m_Sock, 0x01);
-	while (bFlag == TRUE) {
+	while (bFlag == true) {
 		iRet = recv(m_Sock, cTmp, sizeof(cTmp), 0);
-		if (iRet == SOCKET_ERROR) bFlag = FALSE;
-		if (iRet == 0) bFlag = FALSE;
+		if (iRet == SOCKET_ERROR) bFlag = false;
+		if (iRet == 0) bFlag = false;
 	}
 
 	closesocket(m_Sock);

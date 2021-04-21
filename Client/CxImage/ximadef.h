@@ -94,16 +94,16 @@ typedef DWORD          COLORREF;
 typedef unsigned int   HANDLE;
 typedef void*          HRGN;
 
-#ifndef BOOL
-#define	BOOL bool
+#ifndef bool
+#define	bool bool
 #endif
 
 #ifndef TRUE
-#define	TRUE true
+#define	TRUE TRUE
 #endif
 
 #ifndef FALSE
-#define	FALSE false
+#define	FALSE FALSE
 #endif
 
 #ifndef TCHAR

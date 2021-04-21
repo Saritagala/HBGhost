@@ -24,7 +24,7 @@ void CxImage::Startup(DWORD imagetype)
 	info.nQuality = 90;
 	info.nAlphaMax = 255;
 	info.nBkgndIndex = -1;
-	info.bEnabled = true;
+	info.bEnabled = TRUE;
 	SetXDPI(96);
 	SetYDPI(96);
 }
@@ -40,9 +40,9 @@ CxImage::CxImage(DWORD imagetype)
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Call this function to destroy image pixels, alpha channel, selection and sub layers.
- * - Attributes are not erased, but IsValid returns false.
+ * - Attributes are not erased, but IsValid returns FALSE.
  *
- * \return true if everything is freed, false if the image is a Ghost
+ * \return TRUE if everything is freed, FALSE if the image is a Ghost
  */
 bool CxImage::Destroy()
 {
@@ -55,9 +55,9 @@ bool CxImage::Destroy()
 		if (pSelection) {free(pSelection); pSelection=0;}
 		if (pAlpha) {free(pAlpha); pAlpha=0;}
 		if (pDib) {free(pDib); pDib=0;}
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -255,7 +255,7 @@ long CxImage::GetSize()
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Checks if the coordinates are inside the image
- * \return true if x and y are both inside the image
+ * \return TRUE if x and y are both inside the image
  */
 bool CxImage::IsInside(long x, long y)
 {
@@ -283,12 +283,12 @@ void CxImage::Clear(BYTE bval)
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Transfers the image from an existing source image. The source becomes empty.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Transfer(CxImage &from)
 {
 	if (!Destroy())
-		return false;
+		return FALSE;
 
 	memcpy(&head,&from.head,sizeof(BITMAPINFOHEADER));
 	memcpy(&info,&from.info,sizeof(CXIMAGEINFO));
@@ -302,7 +302,7 @@ bool CxImage::Transfer(CxImage &from)
 	memset(&from.info,0,sizeof(CXIMAGEINFO));
 	from.pDib = from.pSelection = from.pAlpha = NULL;
 	from.pLayers = NULL;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -390,15 +390,15 @@ void CxImage::Bitfield2RGB(BYTE *src, WORD redmask, WORD greenmask, WORD bluemas
  * \param dwBitsperpixel: can be 1,4,8,24,32
  * \param dwBytesperline: line alignment, in bytes, for a single row stored in pArray
  * \param bFlipImage: tune this parameter if the image is upsidedown
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::CreateFromArray(BYTE* pArray,DWORD dwWidth,DWORD dwHeight,DWORD dwBitsperpixel, DWORD dwBytesperline, bool bFlipImage)
 {
-	if (pArray==NULL) return false;
+	if (pArray==NULL) return FALSE;
 	if (!((dwBitsperpixel==1)||(dwBitsperpixel==4)||(dwBitsperpixel==8)||
-		(dwBitsperpixel==24)||(dwBitsperpixel==32))) return false;
+		(dwBitsperpixel==24)||(dwBitsperpixel==32))) return FALSE;
 
-	if (!Create(dwWidth,dwHeight,dwBitsperpixel)) return false;
+	if (!Create(dwWidth,dwHeight,dwBitsperpixel)) return FALSE;
 
 	if (dwBitsperpixel<24) SetGrayPalette();
 
@@ -425,7 +425,7 @@ bool CxImage::CreateFromArray(BYTE* pArray,DWORD dwWidth,DWORD dwHeight,DWORD dw
 			memcpy(dst,src,min(info.dwEffWidth,dwBytesperline));
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -433,11 +433,11 @@ bool CxImage::CreateFromArray(BYTE* pArray,DWORD dwWidth,DWORD dwHeight,DWORD dw
  */
 bool CxImage::CreateFromMatrix(BYTE** ppMatrix,DWORD dwWidth,DWORD dwHeight,DWORD dwBitsperpixel, DWORD dwBytesperline, bool bFlipImage)
 {
-	if (ppMatrix==NULL) return false;
+	if (ppMatrix==NULL) return FALSE;
 	if (!((dwBitsperpixel==1)||(dwBitsperpixel==4)||(dwBitsperpixel==8)||
-		(dwBitsperpixel==24)||(dwBitsperpixel==32))) return false;
+		(dwBitsperpixel==24)||(dwBitsperpixel==32))) return FALSE;
 
-	if (!Create(dwWidth,dwHeight,dwBitsperpixel)) return false;
+	if (!Create(dwWidth,dwHeight,dwBitsperpixel)) return FALSE;
 
 	if (dwBitsperpixel<24) SetGrayPalette();
 
@@ -466,7 +466,7 @@ bool CxImage::CreateFromMatrix(BYTE** ppMatrix,DWORD dwWidth,DWORD dwHeight,DWOR
 			}
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**

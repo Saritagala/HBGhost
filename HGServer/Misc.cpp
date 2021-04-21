@@ -235,14 +235,14 @@ bool CMisc::bEncode(char cKey, char *pStr)
  int i, iLen;
 
 	// !!
-	return TRUE;
+	return true;
 
 	iLen = strlen(pStr);
 	for (i = 0; i <= iLen-1; i++) {
 		pStr[i]  = pStr[i] ^ (cKey);
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -251,14 +251,14 @@ bool CMisc::bDecode(char cKey, char *pStr)
  int i, iLen;
 
 	// !!
-	return TRUE;
+	return true;
 
 	iLen = strlen(pStr);
 	for (i = 0; i <= iLen-1; i++) {
 		pStr[i]  = pStr[i] ^ (cKey);
 	}
 
-	return TRUE;
+	return true;
 }
 
 
@@ -273,7 +273,7 @@ bool CMisc::bCheckValidName(char *pStr)
 			 (pStr[i] == '\n') || (pStr[i] == '\t') || /*(pStr[i] == '.') ||*/
 			 (pStr[i] == '\\') || (pStr[i] == '/')  || (pStr[i] == ':') || 
 			 (pStr[i] == '*')  || (pStr[i] == '?')  || (pStr[i] == '<') || 
-			 (pStr[i] == '>')  || (pStr[i] == '|')  || (pStr[i] == '"') ) return FALSE;
+			 (pStr[i] == '>')  || (pStr[i] == '|')  || (pStr[i] == '"') ) return false;
 
 		if ((i <= iLen-2) && ((unsigned char)pStr[i] >= 128)) {
 			if (((unsigned char)pStr[i] == 164) && ((unsigned char)pStr[i+1] >= 161) && 
@@ -287,12 +287,12 @@ bool CMisc::bCheckValidName(char *pStr)
 				// 적합 
 				
 			}
-			else return FALSE;
+			else return false;
 			i++; // !!! 증가시켜야만 맞다.
 		}
 	}
 
-	return TRUE;
+	return true;
 }
 
 

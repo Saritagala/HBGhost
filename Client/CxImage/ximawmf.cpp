@@ -52,7 +52,7 @@
 /////////////////////////////////////////////////////////////////////
 bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	HENHMETAFILE	hMeta;
 	HDC				hDC;
@@ -76,7 +76,7 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 //								&emh); 					// address of buffer to receive data  
 //	if (!uRet){
 //		DeleteEnhMetaFile(hMeta);
-//		return false;
+//		return FALSE;
 //	}
 //	// calculate size
 //	cx = emh.rclBounds.right - emh.rclBounds.left;
@@ -104,7 +104,7 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 
 		if (!hMeta){
 			strcpy(info.szLastError,"corrupted WMF");
-			return false; // definitively give up
+			return FALSE; // definitively give up
 		}
 		// ok, it's an EMF
 		// calculate size
@@ -115,13 +115,13 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 	if (info.nEscape) {	// Check if cancelled
 		DeleteEnhMetaFile(hMeta);
 		strcpy(info.szLastError,"Cancelled");
-		return false;
+		return FALSE;
 	}
 
 	if (!cx || !cy)	{
 		DeleteEnhMetaFile(hMeta);
 		strcpy(info.szLastError,"empty WMF");
-		return false;
+		return FALSE;
 	}
 
 	if (nForceWidth) cx=nForceWidth;
@@ -162,7 +162,7 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 					DeleteDC(hDC);
 					DeleteEnhMetaFile(hMeta);
 					strcpy(info.szLastError,"Cancelled");
-					return false;
+					return FALSE;
 				} 
 
 				plogPal->palVersion = 0x300; 
@@ -179,7 +179,7 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 			} 
 			
 			// Play the Metafile into Memory DC
-			BOOL bRet = PlayEnhMetaFile(hDC,	// handle to a device context 
+			bool bRet = PlayEnhMetaFile(hDC,	// handle to a device context 
 									hMeta,	// handle to an enhanced metafile  
 									&rc); 	// pointer to bounding rectangle
 
@@ -190,7 +190,7 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 				DeleteObject(hBitmap);
 				DeleteDC(hDC);
 				strcpy(info.szLastError,"Cancelled");
-				return false;
+				return FALSE;
 			}
 
 			// the Bitmap now has the image.
@@ -198,7 +198,7 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 			if (!Create(cx, cy, bpp, CXIMAGE_FORMAT_WMF)) {
 				DeleteObject(hBitmap);
 				DeleteDC(hDC);
-				return false;
+				return FALSE;
 			}
 
 #if XMF_SUPPORT_TRANSPARENCY
@@ -226,21 +226,21 @@ bool CxImageWMF::Decode(CxFile *hFile, long nForceWidth, long nForceHeight)
 
 	DeleteEnhMetaFile(hMeta);
 
-	return false;
+	return FALSE;
 }
 
 /**********************************************************************
  Function:	CheckMetafileHeader
  Purpose:	Check if the Metafileheader of a file is valid
 **********************************************************************/
-BOOL CxImageWMF::CheckMetafileHeader(METAFILEHEADER *metafileheader)
+bool CxImageWMF::CheckMetafileHeader(METAFILEHEADER *metafileheader)
 {
 	WORD	*pw;
 	WORD	cs;
 	int		i;
 
 	// check magic #
-	if (metafileheader->key != 0x9ac6cdd7L)	return false;
+	if (metafileheader->key != 0x9ac6cdd7L)	return FALSE;
 
 	// test checksum of header
 	pw = (WORD *)metafileheader;
@@ -251,12 +251,12 @@ BOOL CxImageWMF::CheckMetafileHeader(METAFILEHEADER *metafileheader)
 		pw++;
 	}
 
-	if (cs != metafileheader->checksum)	return false;
+	if (cs != metafileheader->checksum)	return FALSE;
 
 	// check resolution
-	if ((metafileheader->inch <= 0) || (metafileheader->inch > 2540)) return false;
+	if ((metafileheader->inch <= 0) || (metafileheader->inch > 2540)) return FALSE;
 
-	return true;
+	return TRUE;
 }
 
 /**********************************************************************
@@ -426,9 +426,9 @@ HENHMETAFILE CxImageWMF::ConvertEmfFiletoEmf(CxFile *pFile, ENHMETAHEADER *pemfh
 /////////////////////////////////////////////////////////////////////
 bool CxImageWMF::Encode(CxFile * hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 	strcpy(info.szLastError, "Save WMF not supported");
-	return false;
+	return FALSE;
 }
 #endif	// CXIMAGE_SUPPORT_ENCODE
 /////////////////////////////////////////////////////////////////////

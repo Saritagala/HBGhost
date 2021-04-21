@@ -16,7 +16,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJBG::Decode(CxFile *hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	struct jbg_dec_state jbig_state;
 	unsigned long xmax = 4294967295UL, ymax = 4294967295UL;
@@ -91,16 +91,16 @@ bool CxImageJBG::Decode(CxFile *hFile)
 	strncpy(info.szLastError,message,255);
 	return FALSE;
   }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJBG::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	if (head.biBitCount != 1){
 		strcpy(info.szLastError,"JBG can save only 1-bpp images");
-		return false;
+		return FALSE;
 	}
 
 	int w, h, bpp, planes, ew, i, j, x, y;
@@ -118,7 +118,7 @@ bool CxImageJBG::Encode(CxFile * hFile)
 	BYTE *buffer = (BYTE*)malloc(ew*h*2);
 	if (!buffer) {
 		strcpy(info.szLastError,"Sorry, not enough memory available!");
-		return false;
+		return FALSE;
 	}
 
 	for (y=0; y<h; y++){
@@ -152,10 +152,10 @@ bool CxImageJBG::Encode(CxFile * hFile)
 
 	if (hFile->Error()){
 		strcpy(info.szLastError,"Problem while writing JBG file");
-		return false;
+		return FALSE;
 	}
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif 	// CXIMAGE_SUPPORT_JBG

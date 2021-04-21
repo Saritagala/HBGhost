@@ -73,8 +73,8 @@ void CGame::PoisonEffect(int iClientH, int iV1)
 
 	// Áßµ¶À¸·Î Á×Áö´Â ¾Ê´Â´Ù. ´Ù¸¸ Ã¼·ÂÀÌ °è¼Ó ±ïÀÌ°í ÃÖ¼Ò 1¸¸ ³²´Â´Ù. 
 	if (m_pClientList[iClientH] == NULL)     return;
-	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	iPoisonLevel = m_pClientList[iClientH]->m_iPoisonLevel;
 
@@ -91,9 +91,9 @@ void CGame::PoisonEffect(int iClientH, int iV1)
 	iProb = m_pClientList[iClientH]->m_cSkillMastery[23] + m_pClientList[iClientH]->m_iAddPR;
 	if (iProb <= 10) iProb = 10;
 	if (iDice(1, 100) <= iProb) {
-		m_pClientList[iClientH]->m_bIsPoisoned = FALSE;
+		m_pClientList[iClientH]->m_bIsPoisoned = false;
 		// Áßµ¶ÀÌ Ç®·ÈÀ½À» ¾Ë¸°´Ù. 
-		SetPoisonFlag(iClientH, DEF_OWNERTYPE_PLAYER, FALSE); // remove poison aura after effect complete
+		SetPoisonFlag(iClientH, DEF_OWNERTYPE_PLAYER, false); // remove poison aura after effect complete
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_MAGICEFFECTOFF, DEF_MAGICTYPE_POISON, NULL, NULL, NULL);
 	}
 }
@@ -104,25 +104,25 @@ bool CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 	// µ¶¼º ÀúÇ×ÀÌ ¼º°øÇß´ÂÁö¸¦ °è»êÇÑ´Ù. 
 	switch (cOwnerType) {
 	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[sOwnerH] == NULL) return FALSE;
+		if (m_pClientList[sOwnerH] == NULL) return false;
 		iResist = m_pClientList[sOwnerH]->m_cSkillMastery[23] + m_pClientList[sOwnerH]->m_iAddPR;
 		break;
 
 	case DEF_OWNERTYPE_NPC:
-		if (m_pNpcList[sOwnerH] == NULL) return FALSE;
+		if (m_pNpcList[sOwnerH] == NULL) return false;
 		iResist = 0;
 		break;
 	}
 
 	iResult = iDice(1, 1000);
 	if (iResult > iResist) // µ¶¼º ÀúÇ× ½ÇÆÐ. Áßµ¶µÈ´Ù.
-		return FALSE;
+		return false;
 
 	// µ¶¼º ÀúÇ× ¼º°ø. ÇÃ·¹ÀÌ¾î¶ó¸é ½ºÅ³À» ¿Ã¸°´Ù. 
 	if (cOwnerType == DEF_OWNERTYPE_PLAYER)
 		CalculateSSN_SkillIndex(sOwnerH, 23, 1);
 
-	return TRUE;
+	return true;
 }
 
 bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
@@ -147,11 +147,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 				switch (cReadModeB) {
 				case 1:
 					// ½ºÅ³ ¹øÈ£ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					if (m_pSkillConfigList[atoi(token)] != NULL) {
@@ -159,7 +159,7 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Duplicate magic number.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[atoi(token)] = new class CSkill;
 					iSkillConfigListIndex = atoi(token);
@@ -176,11 +176,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 3:
 					// ½ºÅ³ Á¾·ù m_sType
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sType = atoi(token);
 					cReadModeB = 4;
@@ -188,11 +188,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 4:
 					// m_sValue1
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sValue1 = atoi(token);
 					cReadModeB = 5;
@@ -200,11 +200,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 5:
 					// m_sValue2
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sValue2 = atoi(token);
 					cReadModeB = 6;
@@ -212,11 +212,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 6:
 					// m_sValue3
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sValue3 = atoi(token);
 					cReadModeB = 7;
@@ -224,11 +224,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 7:
 					// m_sValue4
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sValue4 = atoi(token);
 					cReadModeB = 8;
@@ -236,11 +236,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 8:
 					// m_sValue5
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sValue5 = atoi(token);
 					cReadModeB = 9;
@@ -248,11 +248,11 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 9:
 					// m_sValue6
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pSkillConfigList[iSkillConfigListIndex]->m_sValue6 = atoi(token);
 					cReadModeA = 0;
@@ -281,13 +281,13 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		PutLogList("(!!!) CRITICAL ERROR! SKILL configuration file contents error!");
-		return FALSE;
+		return false;
 	}
 
 	wsprintf(cTxt, "(!) SKILL(Total:%d) configuration - success!", iSkillConfigListIndex);
 	PutLogList(cTxt);
 
-	return TRUE;
+	return true;
 }
 
 void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int iSkillLevel)
@@ -298,11 +298,11 @@ void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int i
 	int   iRet;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if ((iSkillNum < 0) || (iSkillNum > 100)) return;
 	if ((iSkillLevel < 0) || (iSkillLevel > 100)) return;
 
-	if (bSuccess == TRUE) 
+	if (bSuccess == true) 
 	{
 		if (m_pClientList[iClientH]->m_cSkillMastery[iSkillNum] != 0) return;
 
@@ -333,7 +333,7 @@ void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int i
 		case DEF_XSOCKEVENT_CRITICALERROR:
 		case DEF_XSOCKEVENT_SOCKETCLOSED:
 			// �޽����� ������ ������ �߻��ߴٸ� �����Ѵ�.
-			DeleteClient(iClientH, TRUE, TRUE);
+			DeleteClient(iClientH, true, true);
 			break;
 		}
 	}
@@ -383,9 +383,9 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 	int   iOldSSN, iSSNpoint, iWeaponIndex;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_pClientList[iClientH]->m_pItemList[sWeaponIndex] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
+	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
 
 	sSkillIndex = m_pClientList[iClientH]->m_pItemList[sWeaponIndex]->m_sRelatedSkill;
 	if ((sSkillIndex < 0) || (sSkillIndex >= DEF_MAXSKILLTYPE)) return;
@@ -515,9 +515,9 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 	int   iOldSSN, iSSNpoint, iWeaponIndex;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if ((sSkillIndex < 0) || (sSkillIndex >= DEF_MAXSKILLTYPE)) return;
-	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
+	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
 
 	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 0) return;
 	
@@ -659,17 +659,17 @@ void CGame::ClearSkillUsingStatus(int iClientH)
 
 	if (m_pClientList[iClientH] == NULL) return;
 
-	if (m_pClientList[iClientH]->m_bSkillUsingStatus[19] == TRUE) {
+	if (m_pClientList[iClientH]->m_bSkillUsingStatus[19] == true) {
 		tX = m_pClientList[iClientH]->m_sX;
 		tY = m_pClientList[iClientH]->m_sY;
-		if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(tX, tY, NULL) == FALSE) {
+		if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(tX, tY, NULL) == false) {
 			fX = m_pClientList[iClientH]->m_sX + _tmp_cCorpseX[m_pClientList[iClientH]->m_cDir];
 			fY = m_pClientList[iClientH]->m_sY + _tmp_cCorpseY[m_pClientList[iClientH]->m_cDir];
-			if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(fX, fY, NULL) == FALSE) {
+			if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(fX, fY, NULL) == false) {
 				m_pClientList[iClientH]->m_cDir = iDice(1, 8);
 				fX = m_pClientList[iClientH]->m_sX + _tmp_cCorpseX[m_pClientList[iClientH]->m_cDir];
 				fY = m_pClientList[iClientH]->m_sY + _tmp_cCorpseY[m_pClientList[iClientH]->m_cDir];
-				if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(fX, fY, NULL) == FALSE) {
+				if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetMoveable(fX, fY, NULL) == false) {
 					return;
 				}
 			}
@@ -677,13 +677,13 @@ void CGame::ClearSkillUsingStatus(int iClientH)
 		}
 	}
 	// Taming
-	else if (m_pClientList[iClientH]->m_bSkillUsingStatus[22] == TRUE)
+	else if (m_pClientList[iClientH]->m_bSkillUsingStatus[22] == true)
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLUSINGEND, NULL, NULL, NULL, NULL);
 		bRemoveFromDelayEventList(iClientH, DEF_OWNERTYPE_PLAYER, DEF_DELAYEVENTTYPE_TAMING_SKILL);
 	}
 	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
-		m_pClientList[iClientH]->m_bSkillUsingStatus[i] = FALSE;
+		m_pClientList[iClientH]->m_bSkillUsingStatus[i] = false;
 		m_pClientList[iClientH]->m_iSkillUsingTimeID[i] = NULL;
 	}
 
@@ -728,7 +728,7 @@ int CGame::iCalculateUseSkillItemEffect(int iOwnerH, char cOwnerType, char cOwne
 	if (cOwnerSkill <= iResult)	return 0;  // ½ÇÆÐ´Ù.
 
 	// ¶¥¿¡¼­´Â ³¬½Ã°¡ ºÒ°¡´É 
-	if (m_pMapList[cMapIndex]->bGetIsWater(dX, dY) == FALSE) return 0;
+	if (m_pMapList[cMapIndex]->bGetIsWater(dX, dY) == false) return 0;
 
 	// ¼º°øÇßÀ¸¹Ç·Î ½ºÅ³ Ä«¿îÆ®¸¦ ¿Ã¸°´Ù.
 	if (cOwnerType == DEF_OWNERTYPE_PLAYER)
@@ -770,7 +770,7 @@ int CGame::iCalculateUseSkillItemEffect(int iOwnerH, char cOwnerType, char cOwne
 
 			pItem = new class CItem;
 			if (pItem == NULL) return 0;
-			if (_bInitItemAttr(pItem, cItemName) == TRUE) {
+			if (_bInitItemAttr(pItem, cItemName) == true) {
 				// ¾ÆÀÌÅÛÀ» ³õ´Â´Ù. 
 				m_pMapList[cMapIndex]->bSetItem(lX, lY, pItem);
 
@@ -795,12 +795,12 @@ void CGame::UseSkillHandler(int iClientH, int iV1, int iV2, int iV3)
 	int   iResult, iPlayerSkillLevel;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	if ((iV1 < 0) || (iV1 >= DEF_MAXSKILLTYPE)) return;
 	if (m_pSkillConfigList[iV1] == NULL) return;
 	// ÀÌ¹Ì ±â¼úÀ» »ç¿ëÁßÀÌ¶óµµ ¸®ÅÏ.
-	if (m_pClientList[iClientH]->m_bSkillUsingStatus[iV1] == TRUE) return;
+	if (m_pClientList[iClientH]->m_bSkillUsingStatus[iV1] == true) return;
 
 	// ÇÃ·¹ÀÌ¾îÀÇ ±â¼ú¼öÁØ¿¡ µû¶ó ¼º°ø¿©ºÎ¸¦ °è»êÇÑ´Ù. 
 	iPlayerSkillLevel = m_pClientList[iClientH]->m_cSkillMastery[iV1];
@@ -818,9 +818,9 @@ void CGame::UseSkillHandler(int iClientH, int iV1, int iV2, int iV3)
 
 	case DEF_SKILLEFFECTTYPE_TAMING: // Taming
 		if (((m_pClientList[iClientH]->m_iStatus & 0x00000010) == 0)      // Invi character can not tame !
-			&& (m_pClientList[iClientH]->m_bSkillUsingStatus[19] == FALSE)) // PretendCorpse character canot Tame
+			&& (m_pClientList[iClientH]->m_bSkillUsingStatus[19] == false)) // PretendCorpse character canot Tame
 		{
-			m_pClientList[iClientH]->m_bSkillUsingStatus[iV1] = TRUE;
+			m_pClientList[iClientH]->m_bSkillUsingStatus[iV1] = true;
 			m_pClientList[iClientH]->m_iSkillUsingTimeID[iV1] = (int)timeGetTime();
 			// Register delay to perform Taming
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_TAMING_SKILL // int iDelayType
@@ -844,7 +844,7 @@ void CGame::UseSkillHandler(int iClientH, int iV1, int iV2, int iV3)
 			// Á×ÀºÃ´ÇÏ±â ±â¼úÀÌ´Ù.	
 
 			// v1.44 »çÅõÀåÀÌ¸é Á×ÀºÃ´ÇÏ±â ¸øÇÑ´Ù.
-			if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsFightZone == TRUE) {
+			if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsFightZone == true) {
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILLUSINGEND, NULL, NULL, NULL, NULL);
 				return;
 			}
@@ -901,7 +901,7 @@ void CGame::UseSkillHandler(int iClientH, int iV1, int iV2, int iV3)
 
 	}
 
-	m_pClientList[iClientH]->m_bSkillUsingStatus[iV1] = TRUE;
+	m_pClientList[iClientH]->m_bSkillUsingStatus[iV1] = true;
 }
 
 void CGame::SetDownSkillIndexHandler(int iClientH, int iSkillIndex)
@@ -1129,12 +1129,12 @@ bool CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, 
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_iTotalAgriculture >= 200) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOMOREAGRICULTURE, NULL, NULL, NULL, NULL);
-		return FALSE;
+		return false;
 	}
 
 	if (iItemEffectValue2 > m_pClientList[iClientH]->m_cSkillMastery[2]) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_AGRICULTURESKILLLIMIT, NULL, NULL, NULL, NULL);
-		return FALSE;
+		return false;
 	}
 
 	iNamingValue = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->iGetEmptyNamingValue();
@@ -1144,12 +1144,12 @@ bool CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, 
 		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
 		if (sOwnerH != NULL && sOwnerH == DEF_OWNERTYPE_NPC && m_pNpcList[sOwnerH]->m_cActionLimit == 5) {
 			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_AGRICULTURENOAREA, NULL, NULL, NULL, NULL);
-			return FALSE;
+			return false;
 		}
 		else {
-			if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetIsFarm(dX, dY) == FALSE) {
+			if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetIsFarm(dX, dY) == false) {
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_AGRICULTURENOAREA, NULL, NULL, NULL, NULL);
-				return FALSE;
+				return false;
 			}
 
 			ZeroMemory(cNpcName, sizeof(cNpcName));
@@ -1163,8 +1163,8 @@ bool CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, 
 			tX = dX;
 			tY = dY;
 
-			bRet = bCreateNewNpc(cNpcName, cName, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, 0, 0, DEF_MOVETYPE_RANDOM, &tX, &tY, cNpcWaypointIndex, NULL, NULL, 0, FALSE, TRUE);
-			if (bRet == FALSE) {
+			bRet = bCreateNewNpc(cNpcName, cName, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, 0, 0, DEF_MOVETYPE_RANDOM, &tX, &tY, cNpcWaypointIndex, NULL, NULL, 0, false, true);
+			if (bRet == false) {
 				m_pMapList[iMapIndex]->SetNamingValueEmpty(iNamingValue);
 			}
 			else {
@@ -1191,11 +1191,11 @@ bool CGame::bPlantSeedBag(int iMapIndex, int dX, int dY, int iItemEffectValue1, 
 				SendEventToNearClient_TypeA(sOwnerH, DEF_OWNERTYPE_NPC, MSGID_EVENT_LOG, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL);
 				wsprintf(G_cTxt, "(skill:%d type:%d)plant(%s) Agriculture begin(%d,%d) sum(%d)!", m_pNpcList[sOwnerH]->m_cCropSkill, m_pNpcList[sOwnerH]->m_cCropType, cNpcName, tX, tY, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_iTotalAgriculture);
 				PutLogList(G_cTxt);
-				return TRUE;
+				return true;
 			}
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
@@ -1227,14 +1227,14 @@ void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 	}
 
 	pItem = new class CItem;
-	if (_bInitItemAttr(pItem, iItemID) == FALSE) {
+	if (_bInitItemAttr(pItem, iItemID) == false) {
 		delete pItem;
 	}
 	if (bType == 0) {
 		m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bSetItem(m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY, pItem);
 		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[sAttackerH]->m_cMapIndex,
 			m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY, pItem->m_sSprite,
-			pItem->m_sSpriteFrame, pItem->m_cItemColor, FALSE);*/
+			pItem->m_sSpriteFrame, pItem->m_cItemColor, false);*/
 
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[sAttackerH]->m_cMapIndex,
 			m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY,
@@ -1244,7 +1244,7 @@ void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 		m_pMapList[m_pNpcList[sTargetH]->m_cMapIndex]->bSetItem(m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY, pItem);
 		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[sTargetH]->m_cMapIndex,
 			m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY, pItem->m_sSprite,
-			pItem->m_sSpriteFrame, pItem->m_cItemColor, FALSE);*/
+			pItem->m_sSpriteFrame, pItem->m_cItemColor, false);*/
 		
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[sTargetH]->m_cMapIndex,
 			m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY,
@@ -1265,7 +1265,7 @@ void CGame::AutoSkill(int iClientH)
 		m_pClientList[iClientH]->m_cSkillMastery[i] = 100;
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SKILL, i, m_pClientList[iClientH]->m_cSkillMastery[i], NULL, NULL);
 	}
-	//m_pClientList[iClientH]->m_cMagicMastery[12] = TRUE;
+	//m_pClientList[iClientH]->m_cMagicMastery[12] = true;
 }
 
 void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)

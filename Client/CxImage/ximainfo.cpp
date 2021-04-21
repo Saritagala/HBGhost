@@ -47,7 +47,7 @@ bool CxImage::IsTransparent() const
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
- * Returns true if the image has 256 colors or less.
+ * Returns TRUE if the image has 256 colors or less.
  */
 bool CxImage::IsIndexed() const
 {
@@ -145,7 +145,7 @@ DWORD CxImage::GetCodecOption(DWORD imagetype)
  * - TIF : 0 = automatic (default), or a valid compression code as defined in "tiff.h" (COMPRESSION_NONE = 1, COMPRESSION_CCITTRLE = 2, ...)
  * - JPG : valid values stored in enum CODEC_OPTION ( ENCODE_BASELINE = 0x01, ENCODE_PROGRESSIVE = 0x10, ...)
  *
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SetCodecOption(DWORD opt, DWORD imagetype)
 {
@@ -154,9 +154,9 @@ bool CxImage::SetCodecOption(DWORD opt, DWORD imagetype)
 			imagetype = GetType();
 		}
 		info.dwCodecOpt[imagetype] = opt;
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**

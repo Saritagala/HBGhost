@@ -24,7 +24,7 @@ extern HWND	G_hWnd;
 //////////////////////////////////////////////////////////////////////
 
 CMap::CMap(class CGame * pGame)
-: m_bIsSnowEnabled(FALSE)
+: m_bIsSnowEnabled(false)
 {
  int i;
 
@@ -47,7 +47,7 @@ CMap::CMap(class CGame * pGame)
 	}
 
 	for (i = 0; i < DEF_MAXSPOTMOBGENERATOR; i++) {
-		m_stSpotMobGenerator[i].bDefined = FALSE;
+		m_stSpotMobGenerator[i].bDefined = false;
 		m_stSpotMobGenerator[i].iTotalActiveMob = 0;
 	}
 
@@ -67,7 +67,7 @@ CMap::CMap(class CGame * pGame)
 	}
  
 	for (i = 0; i < 15000; i++)
-		m_bNamingValueUsingStatus[i] = FALSE; //LifeX Fix Mobs Respawn Limit 01/01
+		m_bNamingValueUsingStatus[i] = false; //LifeX Fix Mobs Respawn Limit 01/01
 
 	for (i = 0; i < DEF_MAXOCCUPYFLAG; i++)
 		m_pOccupyFlag[i] = NULL;
@@ -82,13 +82,13 @@ CMap::CMap(class CGame * pGame)
 
 	m_cThunder = 0;
 	
-	m_bIsHeldenianMap = FALSE;
+	m_bIsHeldenianMap = false;
 	m_iTotalActiveObject = 0;
 	m_iTotalAliveObject  = 0;
 	m_iTotalItemEvents = 0;
 	sMobEventAmount = 15;
 
-	m_bIsFixedDayMode = FALSE;
+	m_bIsFixedDayMode = false;
 
 	m_iTotalFishPoint = 0;
 	m_iMaxFish = 0;
@@ -107,19 +107,19 @@ CMap::CMap(class CGame * pGame)
 	m_iApocalypseMobGenType = 0;
 	m_iLevelLimit = 0;
 	m_iUpperLevelLimit = 0; // v1.4
-	m_bMineralGenerator = FALSE;
+	m_bMineralGenerator = false;
 
 	m_iTotalOccupyFlags = 0;
 	
-	m_bIsAttackEnabled = TRUE;
+	m_bIsAttackEnabled = true;
 	m_cRandomMobGeneratorLevel = 0;
 
-	m_bIsFightZone = FALSE;
+	m_bIsFightZone = false;
 	
 	m_iTotalEnergySphereCreationPoint = 0;
 	m_iTotalEnergySphereGoalPoint = 0;
 
-	m_bIsEnergySphereGoalEnabled = FALSE;
+	m_bIsEnergySphereGoalEnabled = false;
 	m_iCurEnergySphereGoalPointIndex = -1;
 
 	for (int ix = 0; ix < DEF_MAXSECTORS; ix++)
@@ -161,7 +161,7 @@ CMap::CMap(class CGame * pGame)
 		ZeroMemory(m_stStrikePoint[i].cRelatedMapName, sizeof(m_stStrikePoint[i].cRelatedMapName));
 	}
 	m_iTotalStrikePoints = 0;
-	m_bIsDisabled = FALSE;
+	m_bIsDisabled = false;
 
 	for (i = 0; i < DEF_MAXCRUSADESTRUCTURES; i++) {
 		m_stCrusadeStructureInfo[i].cType = NULL;
@@ -171,8 +171,8 @@ CMap::CMap(class CGame * pGame)
 	}
 	m_iTotalCrusadeStructures = 0;
 	m_iTotalAgriculture = 0;
-	m_bIsGateAvailable = FALSE;
-	m_bIsApocalypseMobSpawn = FALSE;
+	m_bIsGateAvailable = false;
+	m_bIsApocalypseMobSpawn = false;
 	m_iApocalypseMobGenType = 0;
 	m_iApocalypseBossMobNpcID = 0;
 	m_cDynamicGateType = 0;
@@ -293,55 +293,55 @@ bool CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*
 {
  class CTile * pTile;	
 	
-	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return FALSE;
+	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return false;
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
 	if (pDOtype != NULL) *pDOtype = pTile->m_sDynamicObjectType;
 	//if (pTopItem != NULL) *pTopItem = pTile->m_cTotalItem;
 
-	if (pTile->m_sOwner != NULL) return FALSE;
-	if (pTile->m_bIsMoveAllowed == FALSE) return FALSE;
-	if (pTile->m_bIsTempMoveAllowed == FALSE) return FALSE;
+	if (pTile->m_sOwner != NULL) return false;
+	if (pTile->m_bIsMoveAllowed == false) return false;
+	if (pTile->m_bIsTempMoveAllowed == false) return false;
 	
-	return TRUE;
+	return true;
 }
 
 bool CMap::bGetMoveableArea(short sOwnerH, short dX, short dY)
 {
  class CTile * pTile;	
 	
-	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return FALSE;
+	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return false;
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
-	if ((pTile->m_sOwner == NULL) && (pTile->m_sOwner == sOwnerH)) return FALSE;
-	if (pTile->m_bIsMoveAllowed == FALSE) return FALSE;
-	if (pTile->m_bIsTempMoveAllowed == FALSE) return FALSE;
-	return TRUE;
+	if ((pTile->m_sOwner == NULL) && (pTile->m_sOwner == sOwnerH)) return false;
+	if (pTile->m_bIsMoveAllowed == false) return false;
+	if (pTile->m_bIsTempMoveAllowed == false) return false;
+	return true;
 }
 
 bool CMap::bGetIsMoveAllowedTile(short dX, short dY)
 {
  class CTile * pTile;	
 	
-	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return FALSE;
+	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return false;
 
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
-	if (pTile->m_bIsMoveAllowed == FALSE) return FALSE;
-	if (pTile->m_bIsTempMoveAllowed == FALSE) return FALSE;
+	if (pTile->m_bIsMoveAllowed == false) return false;
+	if (pTile->m_bIsTempMoveAllowed == false) return false;
 	
-	return TRUE;
+	return true;
 }
 
 bool CMap::bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short * tX, short * tY)
 {
  class CTile * pTile;	
 	
-	if (m_bIsGateAvailable == 0) return FALSE;
-	if ((dX < 14) || (dX >= m_sSizeX - 16) || (dY < 12) || (dY >= m_sSizeY - 14)) return FALSE;
+	if (m_bIsGateAvailable == 0) return false;
+	if ((dX < 14) || (dX >= m_sSizeX - 16) || (dY < 12) || (dY >= m_sSizeY - 14)) return false;
 
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
-	if (pTile->m_bIsApocalypseGate == TRUE) {
+	if (pTile->m_bIsApocalypseGate == true) {
 		if (cMapName != NULL) {
 			strlen(m_cDynamicGateDestMap);
 			memcpy(cMapName, m_cDynamicGateDestMap, pTile->m_cApocalypseGateMap); 
@@ -352,22 +352,22 @@ bool CMap::bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short 
 		if (tY != NULL) {
 			tY = (short *)m_sDynamicGateTgtY;
 		}
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 bool CMap::bGetIsTeleport(short dX, short dY)
 {
  class CTile * pTile;	
 	
-	if ((dX < 14) || (dX >= m_sSizeX - 16) || (dY < 12) || (dY >= m_sSizeY - 14)) return FALSE;
+	if ((dX < 14) || (dX >= m_sSizeX - 16) || (dY < 12) || (dY >= m_sSizeY - 14)) return false;
 
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
-	if (pTile->m_bIsTeleport == FALSE) return FALSE;
+	if (pTile->m_bIsTeleport == false) return false;
 	
-	return TRUE;
+	return true;
 }
 
 void CMap::ClearOwner(int iDebugCode, short sOwnerH, char cOwnerType, short sX, short sY)
@@ -420,7 +420,7 @@ bool CMap::bSetItem(short sX, short sY, class CItem * pItem)
 		pTile->m_pItem[i+1] = pTile->m_pItem[i];
 
 	pTile->m_pItem[0] = pItem;
-	return TRUE;
+	return true;
 }
 
 /*class CItem * CMap::pGetItem(short sX, short sY, short * pRemainItemSprite, short * pRemainItemSpriteFrame, char * pRemainItemColor) //v1.4 color
@@ -507,8 +507,8 @@ int CMap::iCheckItem(short sX, short sY)
 
 bool CMap::bIsValidLoc(short sX, short sY)
 {
-	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return FALSE;
-	return TRUE;
+	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return false;
+	return true;
 }
 
 bool CMap::bInit(char * pName)
@@ -520,13 +520,13 @@ bool CMap::bInit(char * pName)
 
 	ZeroMemory(m_cLocationName, sizeof(m_cLocationName));
 
-	if (_bDecodeMapDataFileContents() == FALSE) 
-		return FALSE;	
+	if (_bDecodeMapDataFileContents() == false) 
+		return false;	
 
 	for (i = 0; i < DEF_MAXTELEPORTLOC; i++)
 		m_pTeleportLoc[i] = NULL;
 
-	return TRUE;
+	return true;
 }
 
 bool CMap::_bDecodeMapDataFileContents()
@@ -547,7 +547,7 @@ bool CMap::_bDecodeMapDataFileContents()
 	strcat(cMapFileName, ".amd");
 	
 	hFile = CreateFile(cMapFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE) return FALSE;
+	if (hFile == INVALID_HANDLE_VALUE) return false;
 	dwFileSize = GetFileSize(hFile, NULL);
 	
 	ZeroMemory(cHeader, sizeof(cHeader));
@@ -600,27 +600,27 @@ bool CMap::_bDecodeMapDataFileContents()
 		pTile = (class CTile *)(m_pTile + ix + iy*m_sSizeY);
 		if ((cTemp[8] & 0x80) != 0) {
 			// �������� �Ӽ��� ��Ʈ�Ǿ� �ִ�.
-			 pTile->m_bIsMoveAllowed = FALSE;
+			 pTile->m_bIsMoveAllowed = false;
 		}
-		else pTile->m_bIsMoveAllowed = TRUE;
+		else pTile->m_bIsMoveAllowed = true;
 
 		if ((cTemp[8] & 0x40) != 0) {
 			// �ڷ���Ʈ �Ӽ��� ��Ʈ�Ǿ� �ִ�.
-			 pTile->m_bIsTeleport = TRUE;
+			 pTile->m_bIsTeleport = true;
 		}
-		else pTile->m_bIsTeleport = FALSE;
+		else pTile->m_bIsTeleport = false;
 
 		if ((cTemp[8] & 0x20) != 0) {
-			 pTile->m_bIsFarm = TRUE;
+			 pTile->m_bIsFarm = true;
 		}
-		else pTile->m_bIsFarm = FALSE;
+		else pTile->m_bIsFarm = false;
 
 		sp = (short *)&cTemp[0];
 		if (*sp == 19) {
 			// �� Ÿ���̴�. 
-			 pTile->m_bIsWater = TRUE;
+			 pTile->m_bIsWater = true;
 		}
-		else pTile->m_bIsWater = FALSE;
+		else pTile->m_bIsWater = false;
 
 
 	}
@@ -628,7 +628,7 @@ bool CMap::_bDecodeMapDataFileContents()
 	CloseHandle(hFile);
 
 	if (pStrTok != NULL) delete pStrTok;
-	return TRUE;
+	return true;
 }
 
 bool CMap::bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int * pDy, char * pDir)
@@ -642,10 +642,10 @@ bool CMap::bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int *
 		*pDx  = m_pTeleportLoc[i]->m_sDestX;
 		*pDy  = m_pTeleportLoc[i]->m_sDestY;
 		*pDir = m_pTeleportLoc[i]->m_cDir;
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 void CMap::SetDynamicObject(WORD wID, short sType, short sX, short sY, DWORD dwRegisterTime)
@@ -667,7 +667,7 @@ bool CMap::bGetDynamicObject(short sX, short sY, short *pType, DWORD *pRegisterT
  class CTile * pTile;	
 
 	
-	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return FALSE; 
+	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return false; 
 
 	pTile = (class CTile *)(m_pTile + sX + sY*m_sSizeY);
 
@@ -675,7 +675,7 @@ bool CMap::bGetDynamicObject(short sX, short sY, short *pType, DWORD *pRegisterT
 	*pRegisterTime = pTile->m_dwDynamicObjectRegisterTime;
 	if (pIndex != NULL) *pIndex = pTile->m_wDynamicObjectID;
 
-	return TRUE;
+	return true;
 }
 
 int CMap::iGetEmptyNamingValue()
@@ -683,9 +683,9 @@ int CMap::iGetEmptyNamingValue()
   int i;
 
 	for (i = 0; i < 15000; i++) //LifeX Fix Mobs Respawn Limit 01/01
-	if (m_bNamingValueUsingStatus[i] == FALSE) 
+	if (m_bNamingValueUsingStatus[i] == false) 
 	{
-		m_bNamingValueUsingStatus[i] = TRUE;
+		m_bNamingValueUsingStatus[i] = true;
 		return i;
 	}
 
@@ -694,20 +694,20 @@ int CMap::iGetEmptyNamingValue()
 
 void CMap::SetNamingValueEmpty(int iValue)
 {
-	m_bNamingValueUsingStatus[iValue] = FALSE;
+	m_bNamingValueUsingStatus[iValue] = false;
 }
 
 bool CMap::bGetIsWater(short dX, short dY)
 {
  class CTile * pTile;	
 	
-	if ((dX < 14) || (dX >= m_sSizeX - 16) || (dY < 12) || (dY >= m_sSizeY - 14)) return FALSE;
+	if ((dX < 14) || (dX >= m_sSizeX - 16) || (dY < 12) || (dY >= m_sSizeY - 14)) return false;
 
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
-	if (pTile->m_bIsWater == FALSE) return FALSE;
+	if (pTile->m_bIsWater == false) return false;
 	
-	return TRUE;
+	return true;
 }
 
 //v2.19 2002-12-16 ��� ��ų ����
@@ -720,9 +720,9 @@ bool CMap::bRemoveCropsTotalSum()
 		{
 			m_iTotalAgriculture = 0;
 		}
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 //v2.19 2002-12-16 ��� ��ų ����
@@ -731,22 +731,22 @@ bool CMap::bAddCropsTotalSum()
 	if(m_iTotalAgriculture < DEF_MAXAGRICULTURE)
 	{
 		m_iTotalAgriculture++;
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 bool CMap::bGetIsFarm(short tX, short tY)
 {
  class CTile * pTile;	
 	
-	if ((tX < 14) || (tX >= m_sSizeX - 16) || (tY < 12) || (tY >= m_sSizeY - 14)) return FALSE;
+	if ((tX < 14) || (tX >= m_sSizeX - 16) || (tY < 12) || (tY >= m_sSizeY - 14)) return false;
 
 	pTile = (class CTile *)(m_pTile + tX + tY*m_sSizeY);
 	
-	if (pTile->m_bIsFarm == FALSE) return FALSE;
+	if (pTile->m_bIsFarm == false) return false;
 	
-	return TRUE;
+	return true;
 }
 
 int CMap::iAnalyze(char cType, int * pX, int * pY, int * pV1, int * pV2, int * pV3)
@@ -849,10 +849,10 @@ bool CMap::bAddCrusadeStructureInfo(char cType, short sX, short sY, char cSide)
 		m_stCrusadeStructureInfo[i].sY = sY;
 
 		m_iTotalCrusadeStructures++;
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 bool CMap::bRemoveCrusadeStructureInfo(short sX, short sY)
@@ -868,7 +868,7 @@ bool CMap::bRemoveCrusadeStructureInfo(short sX, short sY)
 		goto RCSI_REARRANGE;
 	}
 
-	return FALSE;
+	return false;
 
 RCSI_REARRANGE:;
 
@@ -886,7 +886,7 @@ RCSI_REARRANGE:;
 	}
 
 	m_iTotalCrusadeStructures--;
-	return TRUE;
+	return true;
 }
 
 
@@ -963,13 +963,13 @@ bool CMap::bApocalypseGate()
 		for (LR = cLeft; LR <= cRight; LR++) {
 			for (TB = cTop; TB <= cBottom; TB++) {
 				pTile = (class CTile *)(m_pTile + TB + LR*m_sSizeY);
-				pTile->m_bIsApocalypseGate = TRUE;
+				pTile->m_bIsApocalypseGate = true;
 				pTile->m_cApocalypseGateMap = i;
 			}
 		}
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 // SNoopy: Prevent characters to stay behind crusade structures
@@ -981,12 +981,12 @@ void CMap::SetStayAllowedFlag(int dX, int dY, bool bFlag)
 }
 bool CMap::bGetIsStayAllowedTile(short dX, short dY) // Staying there, and suffer damage....
 { class CTile * pTile;		
-	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return FALSE;
+	if ((dX < 20) || (dX >= m_sSizeX - 20) || (dY < 20) || (dY >= m_sSizeY - 20)) return false;
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);	
-	if (pTile->m_bIsMoveAllowed == FALSE) return FALSE;
-	if (pTile->m_bIsTempMoveAllowed == FALSE) return FALSE;
-	if (pTile->m_bCanStayHere == FALSE) return FALSE;
-	return TRUE;
+	if (pTile->m_bIsMoveAllowed == false) return false;
+	if (pTile->m_bIsTempMoveAllowed == false) return false;
+	if (pTile->m_bCanStayHere == false) return false;
+	return true;
 }
 
 bool CGame::__bReadMapInfo(int iMapIndex)
@@ -1030,10 +1030,10 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 	ZeroMemory(m_pMapList[iMapIndex]->m_cDynamicGateCoordDestMap, sizeof(m_pMapList[iMapIndex]->m_cDynamicGateCoordDestMap));
 	m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtX = 0;
 	m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtY = 0;
-	m_pMapList[iMapIndex]->m_bIsRecallImpossible = FALSE;	// 30 Recal impossible
-	m_pMapList[iMapIndex]->m_bIsApocalypseMap = FALSE;		// 31 ApocalypseMap 
+	m_pMapList[iMapIndex]->m_bIsRecallImpossible = false;	// 30 Recal impossible
+	m_pMapList[iMapIndex]->m_bIsApocalypseMap = false;		// 31 ApocalypseMap 
 
-	m_pMapList[iMapIndex]->m_bIsHeldenianMap = FALSE;		// 33 HeldenianMap	
+	m_pMapList[iMapIndex]->m_bIsHeldenianMap = false;		// 33 HeldenianMap	
 	for (i = 0; i < DEF_MAXHELDENIANTOWER; i++)				// 34 HeldenianTower
 	{
 		m_pMapList[iMapIndex]->m_stHeldenianTower[i].sTypeID = 0;
@@ -1053,10 +1053,10 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 	// »çÅõÀåÀÎÁö¸¦ ÆÇ´Ü.
 	if (memcmp(m_pMapList[iMapIndex]->m_cName, "fightzone", 9) == 0)
-		m_pMapList[iMapIndex]->m_bIsFightZone = TRUE;
+		m_pMapList[iMapIndex]->m_bIsFightZone = true;
 
 	if (memcmp(m_pMapList[iMapIndex]->m_cName, "icebound", 8) == 0)
-		m_pMapList[iMapIndex]->m_bIsSnowEnabled = TRUE;
+		m_pMapList[iMapIndex]->m_bIsSnowEnabled = true;
 
 	ZeroMemory(cFn, sizeof(cFn));
 	strcat(cFn, "mapdata\\");
@@ -1064,7 +1064,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 	strcat(cFn, ".txt");
 
 	hFile = CreateFile(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	if (hFile == INVALID_HANDLE_VALUE) return FALSE;
+	if (hFile == INVALID_HANDLE_VALUE) return false;
 	dwFileSize = GetFileSize(hFile, NULL);
 	CloseHandle(hFile);
 
@@ -1077,7 +1077,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 		// ¸Ê Á¤º¸ÆÄÀÏÀ»  ÀÐÀ» ¼ö ¾ø´Ù.
 		wsprintf(cTxt, "(!) Cannot open file : %s", cFn);
 		PutLogList(cTxt);
-		return FALSE;
+		return false;
 	}
 	else {
 		wsprintf(cTxt, "(!) Reading Map info file : %s", cFn);
@@ -1095,11 +1095,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// ÅÚ·¹Æ÷Æ® ¼Ò½º ÁÂÇ¥ X  
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 1 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_pTeleportLoc[iTeleportLocIndex]->m_sSrcX = atoi(token);
@@ -1108,11 +1108,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 2:
 					// ÅÚ·¹Æ÷Æ® ¼Ò½º ÁÂÇ¥ Y 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 2 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_pTeleportLoc[iTeleportLocIndex]->m_sSrcY = atoi(token);
@@ -1128,11 +1128,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 4:
 					// ÅÚ·¹Æ÷Æ® ¸ñÀûÁö À§Ä¡ X 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 3 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_pTeleportLoc[iTeleportLocIndex]->m_sDestX = atoi(token);
@@ -1141,11 +1141,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 5:
 					// ÅÚ·¹Æ÷Æ® ¸ñÀûÁö À§Ä¡ Y 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 4 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_pTeleportLoc[iTeleportLocIndex]->m_sDestY = atoi(token);
@@ -1154,11 +1154,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 6:
 					// ÅÚ·¹Æ÷Æ® ÈÄ ¹æÇâ  
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 5 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_pTeleportLoc[iTeleportLocIndex]->m_cDir = atoi(token);
@@ -1173,11 +1173,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// waypoint ¹øÈ£   
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 6 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iWayPointCfgIndex = atoi(token);
 
@@ -1186,18 +1186,18 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 7 - Duplicated waypoint");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					cReadModeB = 2;
 					break;
 
 				case 2:
 					// waypoint ÁýÇÕ Á¤ÀÇ X  
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 8 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_WaypointList[iWayPointCfgIndex].x = atoi(token);
 					cReadModeB = 3;
@@ -1205,11 +1205,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 3:
 					// waypoint ÁýÇÕ Á¤ÀÇ Y  
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 9 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_WaypointList[iWayPointCfgIndex].y = atoi(token);
 					cReadModeA = 0;
@@ -1229,22 +1229,22 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 				case 2:
 					// NpcMoveType
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 10 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					cNpcMoveType = atoi(token);
 					cReadModeB = 3;
 					break;
 				default:
 					// WayPoint0~waypoint9
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 11 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					cNpcWaypointIndex[cReadModeB - 3] = atoi(token);
 					cReadModeB++;
@@ -1264,7 +1264,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						cName[0] = cNamePrefix;
 						cName[1] = iMapIndex + 65;
 
-						if (bCreateNewNpc(cNpcName, cName, m_pMapList[iMapIndex]->m_cName, 0, 0, cNpcMoveType, NULL, NULL, cNpcWaypointIndex, NULL, NULL, -1, FALSE) == FALSE) {
+						if (bCreateNewNpc(cNpcName, cName, m_pMapList[iMapIndex]->m_cName, 0, 0, cNpcMoveType, NULL, NULL, cNpcWaypointIndex, NULL, NULL, -1, false) == false) {
 							// ½ÇÆÐÇßÀ¸¹Ç·Î ¿¹¾àµÈ NameValue¸¦ ÇØÁ¦½ÃÅ²´Ù.
 							m_pMapList[iMapIndex]->SetNamingValueEmpty(iNamingValue);
 						}
@@ -1280,11 +1280,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// Random-Mob-Generator »ç¿ë ¿©ºÎ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 12 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_bRandomMobGenerator = (bool)atoi(token);
 					cReadModeB = 2;
@@ -1292,11 +1292,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 2:
 					// Mob- Level
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 13 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_cRandomMobGeneratorLevel = atoi(token);
 					cReadModeA = 0;
@@ -1307,11 +1307,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 			case 5:
 				// Maximum object
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error 14 - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 
 				m_pMapList[iMapIndex]->m_iMaximumObject = atoi(token);
@@ -1324,11 +1324,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// Rect ¹øÈ£ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 15 - Wrong Data format(MGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iMGARCfgIndex = atoi(token);
 
@@ -1337,7 +1337,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 16 - Duplicated Mob Gen Rect Number!");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					cReadModeB = 2;
@@ -1345,11 +1345,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 2:
 					// left
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 17 - Wrong Data format(MGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcMobGenAvoidRect[iMGARCfgIndex].left = atoi(token);
 					cReadModeB = 3;
@@ -1357,11 +1357,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 3:
 					// top
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 18 - Wrong Data format(MGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcMobGenAvoidRect[iMGARCfgIndex].top = atoi(token);
 					cReadModeB = 4;
@@ -1369,11 +1369,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 4:
 					// right
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 19 - Wrong Data format(MGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcMobGenAvoidRect[iMGARCfgIndex].right = atoi(token);
 					cReadModeB = 5;
@@ -1381,11 +1381,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 5:
 					// bottom
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 20 - Wrong Data format(MGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcMobGenAvoidRect[iMGARCfgIndex].bottom = atoi(token);
 					cReadModeA = 0;
@@ -1399,31 +1399,31 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// Rect ¹øÈ£ m_stSpotMobGenerator[]
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 21 - Wrong Data format(MGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iSMGRCfgIndex = atoi(token);
 
-					if (m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].bDefined == TRUE) {
+					if (m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].bDefined == true) {
 						// ÀÌ¹Ì ÇÒ´çµÇ¾îÀÖ´Â ¸÷ Á¦³Ê·¹ÀÌÅÍ ¹øÈ£ÀÌ´Ù.
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error - ");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					cReadModeB = 2;
-					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].bDefined = TRUE;
+					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].bDefined = true;
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 22 - Wrong Data format(SMGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].cType = atoi(token);
 
@@ -1435,11 +1435,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 3:
 					// left
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 23 - Wrong Data format(SMGAR num).");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].rcRect.left = atoi(token);
 					cReadModeB = 4;
@@ -1447,11 +1447,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 4:
 					// top
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 24 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].rcRect.top = atoi(token);
 					cReadModeB = 5;
@@ -1459,11 +1459,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 5:
 					// right
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 25 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].rcRect.right = atoi(token);
 					cReadModeB = 6;
@@ -1471,11 +1471,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 6:
 					// bottom
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 26 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].rcRect.bottom = atoi(token);
 					cReadModeB = 7;
@@ -1483,11 +1483,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 7:
 					// spot mob type
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 27 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].iMobType = atoi(token);
 					cReadModeB = 8;
@@ -1495,11 +1495,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 8:
 					// Max Mobs
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 28 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].iMaxMobs = atoi(token);
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].iCurMobs = 0;
@@ -1509,11 +1509,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				default:
 					// WayPoint0~waypoint9
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 29 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].cWaypoint[cReadModeB - 9] = atoi(token);
 					cReadModeB++;
@@ -1521,22 +1521,22 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 19:
 					// spot mob type
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 30 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].iMobType = atoi(token);
 					cReadModeB = 20;
 					break;
 
 				case 20:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 31 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].iMaxMobs = atoi(token);
 					m_pMapList[iMapIndex]->m_stSpotMobGenerator[iSMGRCfgIndex].iCurMobs = 0;
@@ -1558,29 +1558,29 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// Initial-Point Index
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 32:1 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					sIPindex = atoi(token);
 					if (m_pMapList[iMapIndex]->m_pInitialPoint[sIPindex].x != -1) {
 						PutLogList("(!!!) CRITICAL ERROR! Duplicate Initial Point Index!");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					cReadModeB = 2;
 					break;
 
 				case 2:
 					// Initial-Point X
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 32 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_pInitialPoint[sIPindex].x = atoi(token);
 					cReadModeB = 3;
@@ -1588,11 +1588,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 				case 3:
 					// Initial-Point Y
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 33 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_pInitialPoint[sIPindex].y = atoi(token);
 					cReadModeA = 0;
@@ -1606,11 +1606,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				switch (cReadModeB) {
 				case 1:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 34 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iNMRCfgIndex = atoi(token);
 
@@ -1619,50 +1619,50 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 35 - Duplicate No-Magic-Rect number");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					cReadModeB = 2;
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 36 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcNoAttackRect[iNMRCfgIndex].left = atoi(token);
 					cReadModeB = 3;
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 37 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcNoAttackRect[iNMRCfgIndex].top = atoi(token);
 					cReadModeB = 4;
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 38 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcNoAttackRect[iNMRCfgIndex].right = atoi(token);
 					cReadModeB = 5;
 					break;
 
 				case 5:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 39 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_rcNoAttackRect[iNMRCfgIndex].bottom = atoi(token);
 					cReadModeA = 0;
@@ -1673,19 +1673,19 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 			case 11:
 				m_pMapList[iMapIndex]->m_bIsFixedDayMode = (bool)atoi(token);
-				if (m_pMapList[iMapIndex]->m_bIsFixedDayMode == TRUE)
-					m_pMapList[iMapIndex]->m_bIsSnowEnabled = FALSE;
+				if (m_pMapList[iMapIndex]->m_bIsFixedDayMode == true)
+					m_pMapList[iMapIndex]->m_bIsSnowEnabled = false;
 				cReadModeA = 0;
 				break;
 
 			case 12:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 40 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iFishPointIndex = atoi(token);
 
@@ -1694,7 +1694,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 41 - Duplicate FishPoint number");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_iTotalFishPoint++;
@@ -1702,11 +1702,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 42 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_FishPointList[iFishPointIndex].x = atoi(token);
 
@@ -1714,11 +1714,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 43 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_FishPointList[iFishPointIndex].y = atoi(token);
 
@@ -1729,11 +1729,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 13:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error 44 - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_iMaxFish = atoi(token);
 
@@ -1741,11 +1741,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 14:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error 45 - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_cType = atoi(token);
 
@@ -1753,11 +1753,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 15:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error 46 - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_iLevelLimit = atoi(token);
 
@@ -1768,22 +1768,22 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				// ±¤¹° Á¦³×·¹ÀÌÅÍÀÇ Á¸ÀçÀ¯¹«¿Í µî±Þ 
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 47 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_bMineralGenerator = (bool)atoi(token);
 					cReadModeB = 2;
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 48 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_cMineralGeneratorLevel = atoi(token);
 					cReadModeA = 0;
@@ -1795,11 +1795,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 17:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 49 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iMineralPointIndex = atoi(token);
 
@@ -1808,7 +1808,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 50 - Duplicate MineralPoint number");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_iTotalMineralPoint++;
@@ -1816,11 +1816,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 51 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_MineralPointList[iMineralPointIndex].x = atoi(token);
 
@@ -1828,11 +1828,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 52 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_MineralPointList[iMineralPointIndex].y = atoi(token);
 
@@ -1843,11 +1843,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 18:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error 53 - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_iMaxMineral = atoi(token);
 
@@ -1855,11 +1855,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 19:
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error 54 - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_iUpperLevelLimit = atoi(token);
 
@@ -1869,11 +1869,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 20:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 55 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iStrategicPointIndex = atoi(token);
 
@@ -1882,7 +1882,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 56 - Duplicate Strategic Point number");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_pStrategicPointList[iStrategicPointIndex] = new class CStrategicPoint;
@@ -1890,11 +1890,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 57 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_pStrategicPointList[iStrategicPointIndex]->m_iSide = atoi(token);
 
@@ -1902,11 +1902,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 58 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_pStrategicPointList[iStrategicPointIndex]->m_iValue = atoi(token);
 
@@ -1914,11 +1914,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 59 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_pStrategicPointList[iStrategicPointIndex]->m_iX = atoi(token);
 
@@ -1926,11 +1926,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 5:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 60 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_pStrategicPointList[iStrategicPointIndex]->m_iY = atoi(token);
 
@@ -1943,11 +1943,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 21:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 61 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iIndex = atoi(token);
 
@@ -1956,7 +1956,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 62 - Duplicate EnergySphereCreation number");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_iTotalEnergySphereCreationPoint++;
@@ -1964,11 +1964,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 63 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereCreationList[iIndex].cType = atoi(token);
 
@@ -1976,11 +1976,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 64 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereCreationList[iIndex].sX = atoi(token);
 
@@ -1988,11 +1988,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 65 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereCreationList[iIndex].sY = atoi(token);
 
@@ -2005,11 +2005,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 22:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 66 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iIndex = atoi(token);
 
@@ -2019,7 +2019,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList(G_cTxt);
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_iTotalEnergySphereGoalPoint++;
@@ -2027,11 +2027,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 68 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereGoalList[iIndex].cResult = atoi(token);
 
@@ -2039,11 +2039,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 69 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereGoalList[iIndex].aresdenX = atoi(token);
 
@@ -2051,11 +2051,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 70 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereGoalList[iIndex].aresdenY = atoi(token);
 
@@ -2063,11 +2063,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 5:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 71 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereGoalList[iIndex].elvineX = atoi(token);
 
@@ -2075,11 +2075,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 6:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 72 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stEnergySphereGoalList[iIndex].elvineY = atoi(token);
 
@@ -2092,11 +2092,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 23:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 73 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iIndex = atoi(token);
 
@@ -2106,18 +2106,18 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList(G_cTxt);
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					cReadModeB = 2;
 					break;
 
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 75 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].dX = atoi(token);
 
@@ -2125,11 +2125,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 76 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].dY = atoi(token);
 
@@ -2137,11 +2137,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iHP = atoi(token);
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iInitHP = atoi(token);
@@ -2150,11 +2150,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 
 
 				case 5:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectX[0] = atoi(token);
 
@@ -2162,11 +2162,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 6:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectY[0] = atoi(token);
 
@@ -2174,11 +2174,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 7:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectX[1] = atoi(token);
 
@@ -2186,11 +2186,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 8:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectY[1] = atoi(token);
 
@@ -2198,11 +2198,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 9:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectX[2] = atoi(token);
 
@@ -2210,11 +2210,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 10:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectY[2] = atoi(token);
 
@@ -2222,11 +2222,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 11:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectX[3] = atoi(token);
 
@@ -2234,11 +2234,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 12:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectY[3] = atoi(token);
 
@@ -2246,11 +2246,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 13:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectX[4] = atoi(token);
 
@@ -2258,11 +2258,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 14:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 77 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stStrikePoint[iIndex].iEffectY[4] = atoi(token);
 
@@ -2284,11 +2284,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 24:
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 78 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					iIndex = atoi(token);
 
@@ -2298,7 +2298,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 						PutLogList(G_cTxt);
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					m_pMapList[iMapIndex]->m_iTotalItemEvents++;
@@ -2311,11 +2311,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 81 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stItemEventList[iIndex].iAmount = atoi(token);
 
@@ -2323,11 +2323,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 4:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 82 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stItemEventList[iIndex].iTotalNum = atoi(token);
 
@@ -2335,11 +2335,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 5:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 83 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stItemEventList[iIndex].iMonth = atoi(token);
 
@@ -2347,11 +2347,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 6:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 83 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stItemEventList[iIndex].iDay = atoi(token);
 
@@ -2364,11 +2364,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 25: //mobevent-amount
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error 78 - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->sMobEventAmount = atoi(token);
 					cReadModeB = 0;
@@ -2377,11 +2377,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 26: // ApocalypseMobGenType
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseMobGenType - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_iApocalypseMobGenType = atoi(token);
 				cReadModeA = 0;
@@ -2391,51 +2391,51 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 27: // ApocalypseBossMob //SNOOPY replaced coord by RECT structure.
 				switch (cReadModeB) {
 				case 1: // 3CB6Ch m_pMapList[]->m_ApocalypseBossMobNpcID
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_iApocalypseBossMobNpcID = atoi(token);
 					cReadModeB = 2;
 					break;
 				case 2: // 3CB70h m_pMapList[]->ApocalypseBossMobRectX1
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sApocalypseBossMobRect.left = atoi(token);
 					cReadModeB = 3;
 					break;
 				case 3: // 3CB74h m_pMapList[]->ApocalypseBossMobRectY1
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sApocalypseBossMobRect.top = atoi(token);
 					cReadModeB = 4;
 					break;
 				case 4: // 3CB78h m_pMapList[]->ApocalypseBossMobRectX2
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sApocalypseBossMobRect.right = atoi(token);
 					cReadModeB = 5;
 					break;
 				case 5: // 3CB7Ch m_pMapList[]->ApocalypseBossMobRectY2
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sApocalypseBossMobRect.bottom = atoi(token);
 					cReadModeA = 0;
@@ -2445,11 +2445,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 28: //DynamicGateType // 28
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error DynamicGateType - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_cDynamicGateType = atoi(token);
 				// DynamicGateType = 1: Opens Gate when Apoc begins
@@ -2466,44 +2466,44 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				// DynamicGateCoord	= 59 196 60 197        abaddon	   -1  -1
 				switch (cReadModeB) {
 				case 1: // 3CA20h
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX1 = atoi(token);
 					cReadModeB = 2;
 					break;
 
 				case 2: // 3CA24h
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY1 = atoi(token);
 					cReadModeB = 3;
 					break;
 
 				case 3: // 3CA28h
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sDynamicGateCoordRectX2 = atoi(token);
 					cReadModeB = 4;
 					break;
 
 				case 4: // 3CA2Ch
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sDynamicGateCoordRectY2 = atoi(token);
 					cReadModeB = 5;
@@ -2516,22 +2516,22 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 					break;
 
 				case 6: // 3CA3Ch
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtX = atoi(token);
 					cReadModeB = 7;
 					break;
 
 				case 7: // (ty = 3CB60h) unknown (3CA3Eh)
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseBossMob - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sDynamicGateCoordTgtY = atoi(token);
 					cReadModeA = 0;
@@ -2541,11 +2541,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 30: // RecallImpossible // 30
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error RecallImpossible -  Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_bIsRecallImpossible = (bool)atoi(token);
 				cReadModeA = 0;
@@ -2553,11 +2553,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 31: // ApocalypseMap // 31
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error ApocalypseMap -  Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_bIsApocalypseMap = (bool)atoi(token);
 				cReadModeA = 0;
@@ -2565,11 +2565,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 32: // CitizenLimit // 32
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error CitizenLimit -  Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_bIsCitizenLimit = atoi(token);
 				cReadModeA = 0;
@@ -2577,12 +2577,12 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 33: // HeldenianMap
-				if (_bGetIsStringIsNumber(token) == FALSE)
+				if (_bGetIsStringIsNumber(token) == false)
 				{
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error CitizenLimit -  Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_bIsHeldenianMap = atoi(token);
 				cReadModeA = 0;
@@ -2592,41 +2592,41 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 34: // HeldenianTower
 				switch (cReadModeB) {
 				case 1: // NpcID
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian tower type id - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianTower[iIndexHT].sTypeID = atoi(token);
 					cReadModeB = 2;
 					break;
 				case 2: // side 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian Tower Side - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianTower[iIndexHT].cSide = atoi(token);
 					cReadModeB = 3;
 					break;
 				case 3: // sX
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian Tower X pos - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianTower[iIndexHT].dX = atoi(token);
 					cReadModeB = 4;
 					break;
 				case 4: // sY
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian Tower Y pos - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianTower[iIndexHT].dY = atoi(token);
 					iIndexHT++;
@@ -2637,11 +2637,11 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 				break;
 
 			case 35: // HeldenianModeMap
-				if (_bGetIsStringIsNumber(token) == FALSE) {
+				if (_bGetIsStringIsNumber(token) == false) {
 					PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian Map Mode - Wrong Data format.");
 					delete[] pContents;
 					delete pStrTok;
-					return FALSE;
+					return false;
 				}
 				m_pMapList[iMapIndex]->m_cHeldenianModeMap = atoi(token);
 				cReadModeA = 0;
@@ -2651,21 +2651,21 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 36: // HeldenianWinningZone
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian Map Mode - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sHeldenianWinningZoneX = atoi(token);
 					cReadModeB = 2;
 					break;
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Hedenian Map Mode - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_sHeldenianWinningZoneY = atoi(token);
 					cReadModeA = 0;
@@ -2677,31 +2677,31 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			case 37: // HeldenianGateDoor // 37
 				switch (cReadModeB) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Heldenian Door Direction - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianGateDoor[iIndexGD].cDir = atoi(token);
 					cReadModeB = 2;
 					break;
 				case 2:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Heldenian Door X pos - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianGateDoor[iIndexGD].dX = atoi(token);
 					cReadModeB = 3;
 					break;
 				case 3:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! Map Info file error Heldenian Door Y pos - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pMapList[iMapIndex]->m_stHeldenianGateDoor[iIndexGD].dY = atoi(token);
 					iIndexGD++;
@@ -2814,7 +2814,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 			if (memcmp(token, "energy-sphere-auto-creation", 27) == 0) {
 				cReadModeA = 0;
 				cReadModeB = 0;
-				m_pMapList[iMapIndex]->m_bIsEnergySphereAutoCreation = TRUE;
+				m_pMapList[iMapIndex]->m_bIsEnergySphereAutoCreation = true;
 			}
 
 			if (memcmp(token, "mobevent-amount", 15) == 0) {
@@ -2898,7 +2898,7 @@ RMI_SKIPDECODING:;
 
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		PutLogList("(!!!) CRITICAL ERROR! map info file contents error!");
-		return FALSE;
+		return false;
 	}
 
 	wsprintf(cTxt, "(!) Map info file decoding(%s) - success! TL(%d) WP(%d) LNPC(%d) MXO(%d) RMG(%d / %d)", cFn, iTeleportLocIndex, iWayPointCfgIndex, iTotalNpcSetting, m_pMapList[iMapIndex]->m_iMaximumObject, m_pMapList[iMapIndex]->m_bRandomMobGenerator, m_pMapList[iMapIndex]->m_cRandomMobGeneratorLevel);
@@ -2906,7 +2906,7 @@ RMI_SKIPDECODING:;
 	m_pMapList[iMapIndex]->_SetupNoAttackArea();
 	m_pMapList[iMapIndex]->bApocalypseGate();
 
-	return TRUE;
+	return true;
 }
 
 int CGame::iRequestPanningMapDataRequest(int iClientH, char* pData)
@@ -2918,9 +2918,9 @@ int CGame::iRequestPanningMapDataRequest(int iClientH, char* pData)
 	int   iRet, iSize;
 
 	if (m_pClientList[iClientH] == NULL) return 0;
-	if (m_pClientList[iClientH]->m_bIsObserverMode == FALSE) return 0;
-	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return 0;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return 0;
+	if (m_pClientList[iClientH]->m_bIsObserverMode == false) return 0;
+	if (m_pClientList[iClientH]->m_bIsKilled == true) return 0;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return 0;
 
 	dX = m_pClientList[iClientH]->m_sX;
 	dY = m_pClientList[iClientH]->m_sY;
@@ -2982,7 +2982,7 @@ int CGame::iRequestPanningMapDataRequest(int iClientH, char* pData)
 	case DEF_XSOCKEVENT_CRITICALERROR:
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
 		// ¸Þ½ÃÁö¸¦ º¸³¾¶§ ¿¡·¯°¡ ¹ß»ýÇß´Ù¸é Á¦°ÅÇÑ´Ù.
-		DeleteClient(iClientH, TRUE, TRUE);
+		DeleteClient(iClientH, true, true);
 		return 0;
 	}
 
@@ -3041,7 +3041,7 @@ void CGame::ClearMap()
 			RequestTeleportHandler(i, "2 ", m_pClientList[i]->m_cMapName, m_pClientList[i]->m_sX, m_pClientList[i]->m_sY);
 		}
 	}
-	m_iNotifyCleanMap = TRUE;
+	m_iNotifyCleanMap = true;
 }
 
 /*********************************************************************************************************************
@@ -3428,10 +3428,10 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		case DEF_OBJECTDAMAGE:
 		case DEF_OBJECTDYING:
 		case DEF_MSGTYPE_CONFIRM:
-			cOwnerSend = TRUE;
+			cOwnerSend = true;
 			break;
 		default:
-			cOwnerSend = FALSE;
+			cOwnerSend = false;
 			break;
 		}
 
@@ -3489,7 +3489,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		iTemp3 = m_pClientList[sOwnerH]->m_iStatus & 0x0F0FFFF7F;
 
 		if (wMsgType == DEF_OBJECTNULLACTION) {
-			if (m_pClientList[sOwnerH]->m_bIsKilled == TRUE)
+			if (m_pClientList[sOwnerH]->m_bIsKilled == true)
 				*cp_a = 1;
 			else *cp_a = 0;
 		}
@@ -3541,13 +3541,13 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		*sp = sV3;
 		cp_sv += 2;
 
-		bFlag = TRUE;
+		bFlag = true;
 		iShortCutIndex = 0;
 		while (bFlag) {
 			i = m_iClientShortCut[iShortCutIndex];
 			iShortCutIndex++;
-			if (i == 0) bFlag = FALSE;
-			if ((bFlag == TRUE) && (m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == TRUE))
+			if (i == 0) bFlag = false;
+			if ((bFlag == true) && (m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true))
 
 				if ((m_pClientList[i]->m_cMapIndex == m_pClientList[sOwnerH]->m_cMapIndex) &&
 					(m_pClientList[i]->m_sX >= m_pClientList[sOwnerH]->m_sX - 12 - sRange) &&
@@ -3583,7 +3583,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 						case DEF_MSGTYPE_CONFIRM:
 						case DEF_MSGTYPE_REJECT:
 						case DEF_OBJECTNULLACTION:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_All, 43, cKey);
 							else
 								if (i != sOwnerH)
@@ -3592,7 +3592,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 
 						case DEF_OBJECTATTACK:
 						case DEF_OBJECTATTACKMOVE:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt_Av, 13, cKey);
 							else
 								if (i != sOwnerH)
@@ -3602,7 +3602,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							/*case DEF_OBJECTMAGIC:
 							case DEF_OBJECTDAMAGE:
 							case DEF_OBJECTDAMAGEMOVE:
-								if (cOwnerSend == TRUE)
+								if (cOwnerSend == true)
 									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
 								else
 									if (i != sOwnerH)
@@ -3610,7 +3610,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 								break;
 
 							case DEF_OBJECTDYING:
-								if (cOwnerSend == TRUE)
+								if (cOwnerSend == true)
 									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
 								else
 									if (i != sOwnerH)
@@ -3619,7 +3619,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 
 								//50Cent - No Critical Damage Limit
 						case DEF_OBJECTMAGIC:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
 							else
 								if (i != sOwnerH)
@@ -3627,7 +3627,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							break;
 						case DEF_OBJECTDAMAGE:
 						case DEF_OBJECTDAMAGEMOVE:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 14, cKey);
 							else
 								if (i != sOwnerH)
@@ -3635,7 +3635,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							break;
 
 						case DEF_OBJECTDYING:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 18, cKey);//50Cent - No Critical Damage Limit 15
 							else
 								if (i != sOwnerH)
@@ -3643,7 +3643,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							break;
 
 						default:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 9, cKey);
 							else
 								if (i != sOwnerH)
@@ -3656,7 +3656,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 						case DEF_MSGTYPE_CONFIRM:
 						case DEF_MSGTYPE_REJECT:
 						case DEF_OBJECTNULLACTION:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_All, 43, cKey);
 							else
 								if (i != sOwnerH)
@@ -3665,7 +3665,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 
 						case DEF_OBJECTATTACK:
 						case DEF_OBJECTATTACKMOVE:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt_Av, 13, cKey);
 							else
 								if (i != sOwnerH)
@@ -3675,7 +3675,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							/*case DEF_OBJECTMAGIC:
 							case DEF_OBJECTDAMAGE:
 							case DEF_OBJECTDAMAGEMOVE:
-								if (cOwnerSend == TRUE)
+								if (cOwnerSend == true)
 									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
 								else
 									if (i != sOwnerH)
@@ -3683,7 +3683,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 								break;
 
 							case DEF_OBJECTDYING:
-								if (cOwnerSend == TRUE)
+								if (cOwnerSend == true)
 									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
 								else
 									if (i != sOwnerH)
@@ -3692,7 +3692,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 
 								//50Cent - No Critical Damage Limit
 						case DEF_OBJECTMAGIC:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
 							else
 								if (i != sOwnerH)
@@ -3700,7 +3700,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							break;
 						case DEF_OBJECTDAMAGE:
 						case DEF_OBJECTDAMAGEMOVE:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 14, cKey);
 							else
 								if (i != sOwnerH)
@@ -3708,7 +3708,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							break;
 
 						case DEF_OBJECTDYING:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 18, cKey);//50Cent - No Critical Damage Limit 15
 							else
 								if (i != sOwnerH)
@@ -3716,7 +3716,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 							break;
 
 						default:
-							if (cOwnerSend == TRUE)
+							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_All, 43, cKey);
 							else
 								if (i != sOwnerH)
@@ -3764,7 +3764,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		cp_a += 4;
 
 		if (wMsgType == DEF_OBJECTNULLACTION) {
-			if (m_pNpcList[sOwnerH]->m_bIsKilled == TRUE)
+			if (m_pNpcList[sOwnerH]->m_bIsKilled == true)
 				*cp_a = 1;
 			else *cp_a = 0;
 		}
@@ -3811,14 +3811,14 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		*sp = sV3;
 		cp_sv += 2;
 
-		bFlag = TRUE;
+		bFlag = true;
 		iShortCutIndex = 0;
 
 		while (bFlag) {
 			i = m_iClientShortCut[iShortCutIndex];
 			iShortCutIndex++;
-			if (i == 0) bFlag = FALSE;
-			if ((bFlag == TRUE) && (m_pClientList[i] != NULL))
+			if (i == 0) bFlag = false;
+			if ((bFlag == true) && (m_pClientList[i] != NULL))
 				if ((m_pClientList[i]->m_cMapIndex == m_pNpcList[sOwnerH]->m_cMapIndex) &&
 					(m_pClientList[i]->m_sX >= m_pNpcList[sOwnerH]->m_sX - 12 - sRange) &&
 					(m_pClientList[i]->m_sX <= m_pNpcList[sOwnerH]->m_sX + 12 + sRange) &&
@@ -3947,14 +3947,14 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	dwTime = timeGetTime();
 
 	//for (i = 1; i < DEF_MAXCLIENTS; i++)
-	bFlag = TRUE;
+	bFlag = true;
 	iShortCutIndex = 0;
-	while (bFlag == TRUE) {
+	while (bFlag == true) {
 		i = m_iClientShortCut[iShortCutIndex];
 		iShortCutIndex++;
-		if (i == 0) bFlag = FALSE;
+		if (i == 0) bFlag = false;
 
-		if ((bFlag == TRUE) && (m_pClientList[i] != NULL)) {
+		if ((bFlag == true) && (m_pClientList[i] != NULL)) {
 			if ((m_pClientList[i]->m_cMapIndex == cMapIndex) &&
 				(m_pClientList[i]->m_sX >= sX - 12) &&
 				(m_pClientList[i]->m_sX <= sX + 12) &&
@@ -4015,14 +4015,14 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	dwTime = timeGetTime();
 
 	//for (i = 1; i < DEF_MAXCLIENTS; i++)
-	bFlag = TRUE;
+	bFlag = true;
 	iShortCutIndex = 0;
-	while (bFlag == TRUE) {
+	while (bFlag == true) {
 		i = m_iClientShortCut[iShortCutIndex];
 		iShortCutIndex++;
-		if (i == 0) bFlag = FALSE;
+		if (i == 0) bFlag = false;
 
-		if ((bFlag == TRUE) && (m_pClientList[i] != NULL)) {
+		if ((bFlag == true) && (m_pClientList[i] != NULL)) {
 			if ((m_pClientList[i]->m_cMapIndex == cMapIndex) &&
 				(m_pClientList[i]->m_sX >= sX - 12) &&
 				(m_pClientList[i]->m_sX <= sX + 12) &&
@@ -4047,7 +4047,7 @@ bool CGame::_bRegisterMap(char* pName)
 		if ((m_pMapList[i] != NULL) && (memcmp(m_pMapList[i]->m_cName, cTmpName, 10) == 0)) {
 			wsprintf(cTxt, "(!!!) CRITICAL ERROR! Map (%s) is already installed! cannot add.", cTmpName);
 			PutLogList(cTxt);
-			return FALSE;
+			return false;
 		}
 	}
 	for (i = 0; i < DEF_MAXMAPS; i++) {
@@ -4055,9 +4055,9 @@ bool CGame::_bRegisterMap(char* pName)
 			m_pMapList[i] = (class CMap*)new class CMap(this);
 			wsprintf(cTxt, "(*) Add map (%s) - Loading map info files...", pName);
 			PutLogList(cTxt);
-			if (m_pMapList[i]->bInit(pName) == FALSE) {
+			if (m_pMapList[i]->bInit(pName) == false) {
 				PutLogList("(!!!) Data file loading fail!");
-				return FALSE;
+				return false;
 			}
 			PutLogList("(*) Data file loading success.");
 			if ((m_iMiddlelandMapIndex == -1) && (strcmp("middleland", pName) == 0)) m_iMiddlelandMapIndex = i;
@@ -4068,12 +4068,12 @@ bool CGame::_bRegisterMap(char* pName)
 			if ((m_iRampartMapIndex == -1) && (strcmp("HRampart", pName) == 0)) m_iRampartMapIndex = i;
 			
 			m_iTotalMaps++;
-			return TRUE;
+			return true;
 		}
 	}
 	wsprintf(cTxt, "(!!!) CRITICAL ERROR! Map (%s) cannot be added - no more map space.", pName);
 	PutLogList(cTxt);
-	return FALSE;
+	return false;
 }
 
 void CGame::GetMapInitialPoint(int iMapIndex, short* pX, short* pY, char* pPlayerLocation)

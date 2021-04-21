@@ -146,7 +146,7 @@ bool CxImagePNG::Decode(CxFile *hFile)
 			if (info_ptr->num_trans==1 && pal[0].rgbReserved==0){
 				info.nBkgndIndex = 0;
 			} else {
-				info.bAlphaPaletteEnabled=true;
+				info.bAlphaPaletteEnabled=TRUE;
 				for (;ip<head.biClrUsed;ip++)
 					pal[ip].rgbReserved=255;
 			}
@@ -268,7 +268,7 @@ bool CxImagePNG::Decode(CxFile *hFile)
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImagePNG::Encode(CxFile *hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	CImageIterator iter(this);
 	BYTE trans[256];	//for transparency (don't move)
@@ -398,16 +398,16 @@ bool CxImagePNG::Encode(CxFile *hFile)
 
 #if CXIMAGE_SUPPORT_ALPHA	// <vho>
 	//Merge the transparent color with the alpha channel
-	bool bNeedTempAlpha = false;
+	bool bNeedTempAlpha = FALSE;
 	if (head.biBitCount==24 && info.nBkgndIndex>=0){
 		if (!AlphaIsValid()){
-			bNeedTempAlpha = true;
+			bNeedTempAlpha = TRUE;
 			AlphaCreate();
 		}
 		RGBQUAD c,ct=GetTransColor();
 		for(long y=0; y < head.biHeight; y++){
 			for(long x=0; x < head.biWidth ; x++){
-				c=GetPixelColor(x,y,false);
+				c=GetPixelColor(x,y,FALSE);
 				if (*(long*)&c==*(long*)&ct)
 					AlphaSet(x,y,0);
 		}}

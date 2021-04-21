@@ -14,17 +14,17 @@
  * Converts the image to B&W.
  * The Mean() function can be used for calculating the optimal threshold.
  * \param level: the lightness threshold.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Threshold(BYTE level)
 {
-	if (!pDib) return false;
-	if (head.biBitCount == 1) return true;
+	if (!pDib) return FALSE;
+	if (head.biBitCount == 1) return TRUE;
 
 	GrayScale();
 
 	CxImage tmp(head.biWidth,head.biHeight,1);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 	for (long y=0;y<head.biHeight;y++){
 		info.nProgress = (long)(100*y/head.biHeight);
@@ -39,18 +39,18 @@ bool CxImage::Threshold(BYTE level)
 	tmp.SetPaletteColor(0,0,0,0);
 	tmp.SetPaletteColor(1,255,255,255);
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Extract RGB channels from the image. Each channel is an 8 bit grayscale image. 
  * \param r,g,b: pointers to CxImage objects, to store the splited channels
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SplitRGB(CxImage* r,CxImage* g,CxImage* b)
 {
-	if (!pDib) return false;
-	if (r==NULL && g==NULL && b==NULL) return false;
+	if (!pDib) return FALSE;
+	if (r==NULL && g==NULL && b==NULL) return FALSE;
 
 	CxImage tmpr(head.biWidth,head.biHeight,8);
 	CxImage tmpg(head.biWidth,head.biHeight,8);
@@ -81,18 +81,18 @@ bool CxImage::SplitRGB(CxImage* r,CxImage* g,CxImage* b)
 	if (g) g->Transfer(tmpg);
 	if (b) b->Transfer(tmpb);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Extract CMYK channels from the image. Each channel is an 8 bit grayscale image. 
  * \param c,m,y,k: pointers to CxImage objects, to store the splited channels
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SplitCMYK(CxImage* c,CxImage* m,CxImage* y,CxImage* k)
 {
-	if (!pDib) return false;
-	if (c==NULL && m==NULL && y==NULL && k==NULL) return false;
+	if (!pDib) return FALSE;
+	if (c==NULL && m==NULL && y==NULL && k==NULL) return FALSE;
 
 	CxImage tmpc(head.biWidth,head.biHeight,8);
 	CxImage tmpm(head.biWidth,head.biHeight,8);
@@ -120,18 +120,18 @@ bool CxImage::SplitCMYK(CxImage* c,CxImage* m,CxImage* y,CxImage* k)
 	if (y) y->Transfer(tmpy);
 	if (k) k->Transfer(tmpk);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Extract YUV channels from the image. Each channel is an 8 bit grayscale image. 
  * \param y,u,v: pointers to CxImage objects, to store the splited channels
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SplitYUV(CxImage* y,CxImage* u,CxImage* v)
 {
-	if (!pDib) return false;
-	if (y==NULL && u==NULL && v==NULL) return false;
+	if (!pDib) return FALSE;
+	if (y==NULL && u==NULL && v==NULL) return FALSE;
 
 	CxImage tmpy(head.biWidth,head.biHeight,8);
 	CxImage tmpu(head.biWidth,head.biHeight,8);
@@ -155,18 +155,18 @@ bool CxImage::SplitYUV(CxImage* y,CxImage* u,CxImage* v)
 	if (u) u->Transfer(tmpu);
 	if (v) v->Transfer(tmpv);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Extract YIQ channels from the image. Each channel is an 8 bit grayscale image. 
  * \param y,i,q: pointers to CxImage objects, to store the splited channels
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SplitYIQ(CxImage* y,CxImage* i,CxImage* q)
 {
-	if (!pDib) return false;
-	if (y==NULL && i==NULL && q==NULL) return false;
+	if (!pDib) return FALSE;
+	if (y==NULL && i==NULL && q==NULL) return FALSE;
 
 	CxImage tmpy(head.biWidth,head.biHeight,8);
 	CxImage tmpi(head.biWidth,head.biHeight,8);
@@ -190,18 +190,18 @@ bool CxImage::SplitYIQ(CxImage* y,CxImage* i,CxImage* q)
 	if (i) i->Transfer(tmpi);
 	if (q) q->Transfer(tmpq);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Extract XYZ channels from the image. Each channel is an 8 bit grayscale image. 
  * \param x,y,z: pointers to CxImage objects, to store the splited channels
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SplitXYZ(CxImage* x,CxImage* y,CxImage* z)
 {
-	if (!pDib) return false;
-	if (x==NULL && y==NULL && z==NULL) return false;
+	if (!pDib) return FALSE;
+	if (x==NULL && y==NULL && z==NULL) return FALSE;
 
 	CxImage tmpx(head.biWidth,head.biHeight,8);
 	CxImage tmpy(head.biWidth,head.biHeight,8);
@@ -225,18 +225,18 @@ bool CxImage::SplitXYZ(CxImage* x,CxImage* y,CxImage* z)
 	if (y) y->Transfer(tmpy);
 	if (z) z->Transfer(tmpz);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Extract HSL channels from the image. Each channel is an 8 bit grayscale image. 
  * \param h,s,l: pointers to CxImage objects, to store the splited channels
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::SplitHSL(CxImage* h,CxImage* s,CxImage* l)
 {
-	if (!pDib) return false;
-	if (h==NULL && s==NULL && l==NULL) return false;
+	if (!pDib) return FALSE;
+	if (h==NULL && s==NULL && l==NULL) return FALSE;
 
 	CxImage tmph(head.biWidth,head.biHeight,8);
 	CxImage tmps(head.biWidth,head.biHeight,8);
@@ -267,7 +267,7 @@ bool CxImage::SplitHSL(CxImage* h,CxImage* s,CxImage* l)
 	if (s) s->Transfer(tmps);
 	if (l) l->Transfer(tmpl);
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #define  HSLMAX   255	/* H,L, and S vary over 0-HSLMAX */
@@ -314,7 +314,7 @@ RGBQUAD CxImage::RGBtoHSL(RGBQUAD lRGBColor)
 		else /* B == cMax */
 			H = (BYTE)(((2*HSLMAX)/3) + Gdelta - Rdelta);
 
-//		if (H < 0) H += HSLMAX;     //always false
+//		if (H < 0) H += HSLMAX;     //always FALSE
 		if (H > HSLMAX) H -= HSLMAX;
 	}
 	RGBQUAD hsl={L,S,H,0};
@@ -511,19 +511,19 @@ void CxImage::HuePalette(float correction)
  * \param hue: hue
  * \param sat: saturation
  * \param blend: can be from 0 (no effect) to 1 (full effect)
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Colorize(BYTE hue, BYTE sat, float blend)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	if (blend < 0.0f) blend = 0.0f;
 	if (blend > 1.0f) blend = 1.0f;
 	int a0 = (int)(256*blend);
 	int a1 = 256 - a0;
 
-	bool bFullBlend = false;
-	if (blend > 0.999f)	bFullBlend = true;
+	bool bFullBlend = FALSE;
+	if (blend > 0.999f)	bFullBlend = TRUE;
 
 	RGBQUAD color,hsl;
 	if (head.biClrUsed==0){
@@ -587,18 +587,18 @@ bool CxImage::Colorize(BYTE hue, BYTE sat, float blend)
 		}
 	}
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Changes the brightness and the contrast of the image. 
  * \param brightness: can be from -255 to 255, if brightness is negative, the image becomes dark.
  * \param contrast: can be from -100 to 100, the neutral value is 0.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Light(long brightness, long contrast)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	float c=(100 + contrast)/100.0f;
 	brightness+=128;
 
@@ -617,8 +617,8 @@ float CxImage::Mean()
 {
 	if (!pDib) return 0;
 
-	CxImage tmp(*this,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	tmp.GrayScale();
 	float sum=0;
@@ -657,19 +657,19 @@ float CxImage::Mean()
 	1 8 1
 	1 1 1
  the function needs: kernel={1,1,1,1,8,1,1,1,1}; Ksize=3; Kfactor=16; Koffset=0; \endverbatim
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Filter(long* kernel, long Ksize, long Kfactor, long Koffset)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long k2 = Ksize/2;
 	long kmax= Ksize-k2;
 	long r,g,b,i;
 	RGBQUAD c;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -757,25 +757,25 @@ bool CxImage::Filter(long* kernel, long Ksize, long Kfactor, long Koffset)
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Enhance the dark areas of the image
  * \param Ksize: size of the kernel.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Erode(long Ksize)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long k2 = Ksize/2;
 	long kmax= Ksize-k2;
 	BYTE r,g,b;
 	RGBQUAD c;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -811,25 +811,25 @@ bool CxImage::Erode(long Ksize)
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Enhance the light areas of the image
  * \param Ksize: size of the kernel.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Dilate(long Ksize)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long k2 = Ksize/2;
 	long kmax= Ksize-k2;
 	BYTE r,g,b;
 	RGBQUAD c;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -865,7 +865,7 @@ bool CxImage::Dilate(long Ksize)
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -873,19 +873,19 @@ bool CxImage::Dilate(long Ksize)
  * Similar results can be achieved using Filter(),
  * but the algorithms are different both in Edge() and in Contour().
  * \param Ksize: size of the kernel.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Edge(long Ksize)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long k2 = Ksize/2;
 	long kmax= Ksize-k2;
 	BYTE r,g,b,rr,gg,bb;
 	RGBQUAD c;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -926,7 +926,7 @@ bool CxImage::Edge(long Ksize)
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -934,8 +934,8 @@ bool CxImage::Edge(long Ksize)
  * \param imgsrc2: image to be mixed with this
  * \param op: blending method; see ImageOpType
  * \param lXOffset, lYOffset: image displacement
- * \param bMixAlpha: if true and imgsrc2 has a valid alpha layer, it will be mixed in the destination image.
- * \return true if everything is ok
+ * \param bMixAlpha: if TRUE and imgsrc2 has a valid alpha layer, it will be mixed in the destination image.
+ * \return TRUE if everything is ok
  *
  * thanks to Mwolski
  */
@@ -947,7 +947,7 @@ void CxImage::Mix(CxImage & imgsrc2, ImageOpType op, long lXOffset, long lYOffse
 
 	bool bEditAlpha = imgsrc2.AlphaIsValid() & bMixAlpha;
 
-	if (bEditAlpha && AlphaIsValid()==false){
+	if (bEditAlpha && AlphaIsValid()==FALSE){
 		AlphaCreate();
 	}
 
@@ -1105,11 +1105,11 @@ void CxImage::MixFrom(CxImage & imagesrc2, long lXOffset, long lYOffset)
 /**
  * Adjusts separately the red, green, and blue values in the image.
  * \param r, g, b: can be from -255 to +255.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::ShiftRGB(long r, long g, long b)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	RGBQUAD color;
 	if (head.biClrUsed==0){
 
@@ -1145,17 +1145,17 @@ bool CxImage::ShiftRGB(long r, long g, long b)
 			SetPaletteColor((BYTE)j,color);
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Adjusts the color balance of the image
  * \param gamma can be from 0.1 to 5.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Gamma(float gamma)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	double dinvgamma = 1/gamma;
 	double dMax = pow(255.0, dinvgamma) / 255.0;
@@ -1172,11 +1172,11 @@ bool CxImage::Gamma(float gamma)
 /**
  * Adjusts the intensity of each pixel to the median intensity of its surrounding pixels.
  * \param Ksize: size of the kernel.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Median(long Ksize)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long k2 = Ksize/2;
 	long kmax= Ksize-k2;
@@ -1184,8 +1184,8 @@ bool CxImage::Median(long Ksize)
 
 	RGBQUAD* kernel = (RGBQUAD*)malloc(Ksize*Ksize*sizeof(RGBQUAD));
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -1215,18 +1215,18 @@ bool CxImage::Median(long Ksize)
 	}
 	free(kernel);
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 #endif //CXIMAGE_SUPPORT_WINCE
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Adds an uniform noise to the image
  * \param level: can be from 0 (no noise) to 255 (lot of noise).
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Noise(long level)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	RGBQUAD color;
 
 	long xmin,xmax,ymin,ymax,n;
@@ -1256,7 +1256,7 @@ bool CxImage::Noise(long level)
 			}
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1270,15 +1270,15 @@ bool CxImage::Noise(long level)
  * \param srcReal, srcImag: source images: One can be NULL, but not both
  * \param dstReal, dstImag: destination images. Can be NULL.
  * \param direction: 1 = forward, -1 = inverse.
- * \param bForceFFT: if true, the images are resampled to make the dimensions a power of 2.
- * \param bMagnitude: if true, the real part returns the magnitude, the imaginary part returns the phase
- * \return true if everything is ok
+ * \param bForceFFT: if TRUE, the images are resampled to make the dimensions a power of 2.
+ * \param bMagnitude: if TRUE, the real part returns the magnitude, the imaginary part returns the phase
+ * \return TRUE if everything is ok
  */
 bool CxImage::FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage* dstImag,
 				   long direction, bool bForceFFT, bool bMagnitude)
 {
 	//check if there is something to convert
-	if (srcReal==NULL && srcImag==NULL) return false;
+	if (srcReal==NULL && srcImag==NULL) return FALSE;
 
 	long w,h;
 	//get width and height
@@ -1299,12 +1299,12 @@ bool CxImage::FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage
 		i=0;
 		while((1<<i)<w) i++;
 		w=1<<i;
-		bXpow2=true;
+		bXpow2=TRUE;
 
 		i=0;
 		while((1<<i)<h) i++;
 		h=1<<i;
-		bYpow2=true;
+		bYpow2=TRUE;
 	}
 
 	// I/O images for FFT
@@ -1315,8 +1315,8 @@ bool CxImage::FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage
 	tmpImag = (dstImag) ? dstImag : srcImag;
 
 	// src!=dst -> copy the image
-	if (srcReal && dstReal) tmpReal->Copy(*srcReal,true,false,false);
-	if (srcImag && dstImag) tmpImag->Copy(*srcImag,true,false,false);
+	if (srcReal && dstReal) tmpReal->Copy(*srcReal,TRUE,FALSE,FALSE);
+	if (srcImag && dstImag) tmpImag->Copy(*srcImag,TRUE,FALSE,FALSE);
 
 	// dst&&src are empty -> create new one, else turn to GrayScale
 	if (srcReal==0 && dstReal==0){
@@ -1337,7 +1337,7 @@ bool CxImage::FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage
 	if (!(tmpReal->IsValid() && tmpImag->IsValid())){
 		if (srcReal==0 && dstReal==0) delete tmpReal;
 		if (srcImag==0 && dstImag==0) delete tmpImag;
-		return false;
+		return FALSE;
 	}
 
 	//resample for FFT, if necessary 
@@ -1450,15 +1450,15 @@ bool CxImage::FFT2(CxImage* srcReal, CxImage* srcImag, CxImage* dstReal, CxImage
 	if (srcReal==0 && dstReal==0) delete tmpReal;
 	if (srcImag==0 && dstImag==0) delete tmpImag;
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::IsPowerof2(long x)
 {
 	long i=0;
 	while ((1<<i)<x) i++;
-	if (x==(1<<i)) return true;
-	return false;
+	if (x==(1<<i)) return TRUE;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1535,7 +1535,7 @@ bool CxImage::FFT(int dir,int m,double *x,double *y)
 		}
 	}
 
-   return true;
+   return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1573,7 +1573,7 @@ bool CxImage::DFT(int dir,long m,double *x1,double *y1,double *x2,double *y2)
       }
    }
    
-   return true;
+   return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1581,11 +1581,11 @@ bool CxImage::DFT(int dir,long m,double *x1,double *y1,double *x2,double *y2)
  * \param r,g,b: color channels
  * \param a: alpha layer, can be NULL
  * \param colorspace: 0 = RGB, 1 = HSL, 2 = YUV, 3 = YIQ, 4 = XYZ 
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Combine(CxImage* r,CxImage* g,CxImage* b,CxImage* a, long colorspace)
 {
-	if (r==0 || g==0 || b==0) return false;
+	if (r==0 || g==0 || b==0) return FALSE;
 
 	long w = r->GetWidth();
 	long h = r->GetHeight();
@@ -1631,7 +1631,7 @@ bool CxImage::Combine(CxImage* r,CxImage* g,CxImage* b,CxImage* a, long colorspa
 		}
 	}
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -1639,11 +1639,11 @@ bool CxImage::Combine(CxImage* r,CxImage* g,CxImage* b,CxImage* a, long colorspa
  * \param radius: normally between 0.01 and 0.5
  * \param niterations: should be trimmed with radius, to avoid blurring should be (radius*niterations)<1
  * \param colorspace: 0 = RGB, 1 = HSL, 2 = YUV, 3 = YIQ, 4 = XYZ 
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Repair(float radius, long niterations, long colorspace)
 {
-	if (!IsValid()) return false;
+	if (!IsValid()) return FALSE;
 
 	long w = GetWidth();
 	long h = GetHeight();
@@ -1689,15 +1689,15 @@ bool CxImage::Repair(float radius, long niterations, long colorspace)
 
 	delete a;
 
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImage::RepairChannel(CxImage *ch, float radius)
 {
-	if (ch==NULL) return false;
+	if (ch==NULL) return FALSE;
 
 	CxImage tmp(*ch);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 	long w = ch->GetWidth()-1;
 	long h = ch->GetHeight()-1;
@@ -1737,18 +1737,18 @@ bool CxImage::RepairChannel(CxImage *ch, float radius)
 		tmp.SetPixelIndex(w,y,ch->GetPixelIndex(w,y));
 	}
 	ch->Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Enhance the variations between adjacent pixels.
  * Similar results can be achieved using Filter(),
  * but the algorithms are different both in Edge() and in Contour().
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Contour()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long Ksize = 3;
 	long k2 = Ksize/2;
@@ -1757,8 +1757,8 @@ bool CxImage::Contour()
 	BYTE maxr,maxg,maxb;
 	RGBQUAD pix1,pix2;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -1795,22 +1795,22 @@ bool CxImage::Contour()
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Adds a random offset to each pixel in the image
  * \param radius: maximum pixel displacement
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Jitter(long radius)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	long nx,ny;
 
-	CxImage tmp(*this,pSelection!=0,true,true);
-	if (!tmp.IsValid()) return false;
+	CxImage tmp(*this,pSelection!=0,TRUE,TRUE);
+	if (!tmp.IsValid()) return FALSE;
 
 	long xmin,xmax,ymin,ymax;
 	if (pSelection){
@@ -1847,7 +1847,7 @@ bool CxImage::Jitter(long radius)
 		}
 	}
 	Transfer(tmp);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /** 
@@ -2071,13 +2071,13 @@ void CxImage::blur_line (float *ctable, float *cmatrix, int cmatrix_length, BYTE
  */
 bool CxImage::UnsharpMask(float radius /*= 5.0*/, float amount /*= 0.5*/, int threshold /*= 0*/)
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 
 	if (!(head.biBitCount == 24 || IsGrayScale()))
-		return false;
+		return FALSE;
 
 	CxImage tmp(*this);
-	if (!tmp.IsValid()) return false;
+	if (!tmp.IsValid()) return FALSE;
 
 	CImageIterator itSrc(this);
 	CImageIterator itDst(&tmp);
@@ -2169,11 +2169,11 @@ bool CxImage::UnsharpMask(float radius /*= 5.0*/, float amount /*= 0.5*/, int th
 /**
  * Apply a look up table to the image. 
  * \param pLut: BYTE[256] look up table
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Lut(BYTE* pLut)
 {
-	if (!pDib || !pLut) return false;
+	if (!pDib || !pLut) return FALSE;
 	RGBQUAD color;
 
 	double dbScaler;
@@ -2189,7 +2189,7 @@ bool CxImage::Lut(BYTE* pLut)
 			for(unsigned long i=0; i < head.biSizeImage ; i++){
 				*iSrc++ = pLut[*iSrc];
 			}
-			return true;
+			return TRUE;
 		}
 
 		dbScaler = 100.0/ymax;
@@ -2235,18 +2235,18 @@ bool CxImage::Lut(BYTE* pLut)
 			SetPaletteColor((BYTE)j,color);
 		}
 	}
-	return true;
+	return TRUE;
 
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
  * Apply an indipendent look up table for each channel
  * \param pLutR, pLutG, pLutB, pLutA: BYTE[256] look up tables
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::Lut(BYTE* pLutR, BYTE* pLutG, BYTE* pLutB, BYTE* pLutA)
 {
-	if (!pDib || !pLutR || !pLutG || !pLutB) return false;
+	if (!pDib || !pLutR || !pLutG || !pLutB) return FALSE;
 	RGBQUAD color;
 
 	double dbScaler;
@@ -2275,7 +2275,7 @@ bool CxImage::Lut(BYTE* pLutR, BYTE* pLutG, BYTE* pLutB, BYTE* pLutA)
 					color.rgbGreen = pLutG[color.rgbGreen];
 					color.rgbBlue =  pLutB[color.rgbBlue];
 					if (pLutA) color.rgbReserved=pLutA[color.rgbReserved];
-					SetPixelColor(x,y,color,true);
+					SetPixelColor(x,y,color,TRUE);
 				}
 			}
 		}
@@ -2289,7 +2289,7 @@ bool CxImage::Lut(BYTE* pLutR, BYTE* pLutG, BYTE* pLutB, BYTE* pLutA)
 		}
 	}
 
-	return true;
+	return TRUE;
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -2297,11 +2297,11 @@ bool CxImage::Lut(BYTE* pLutR, BYTE* pLutG, BYTE* pLutB, BYTE* pLutA)
  * Use the RedEyeRemove function to remove the red-eye effect that frequently
  * occurs in photographs of humans and animals. You must select the region 
  * where the function will filter the red channel.
- * \return true if everything is ok
+ * \return TRUE if everything is ok
  */
 bool CxImage::RedEyeRemove()
 {
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
 	RGBQUAD color;
 
 	long xmin,xmax,ymin,ymax;
@@ -2325,7 +2325,7 @@ bool CxImage::RedEyeRemove()
 			}
 		}
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -2337,9 +2337,9 @@ bool CxImage::RedEyeRemove()
 /*bool CxImage::FloodFill(int x, int y, RGBQUAD FillColor)
 {
 	//<JDL>
-	if (!pDib) return false;
+	if (!pDib) return FALSE;
     FloodFill2(x,y,GetPixelColor(x,y),FillColor);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImage::FloodFill2(int x, int y, RGBQUAD old_color, RGBQUAD new_color)

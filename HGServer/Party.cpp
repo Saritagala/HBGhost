@@ -39,7 +39,7 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 	int i;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
+	if ((m_bAdminSecurity == true) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
 		return;
@@ -140,7 +140,7 @@ void CGame::RequestCreatePartyHandler(int iClientH)
 	WORD* wp;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
@@ -587,7 +587,7 @@ void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_pClientList[iClientH] == NULL) return;
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_NULL) return;
 	if ((dwMsgSize) <= 0) return;
-	if ((m_bAdminSecurity == TRUE) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
+	if ((m_bAdminSecurity == true) && (m_pClientList[iClientH]->m_iAdminUserLevel > 0 && m_pClientList[iClientH]->m_iAdminUserLevel < 7)) return;
 
 	if (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bMapParty == false) {
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Party mode is disabled in this map.");
@@ -894,7 +894,7 @@ void CGame::RefreshPartyStatus(int iClientH)
 	if ((m_pClientList[iClientH]->m_iPartyID != NULL) && (m_pClientList[iClientH]->m_iPartyStatus == DEF_PARTYSTATUS_CONFIRM))
 	{
 		HPParty = m_pClientList[iClientH]->m_iHP;
-		MaxHpParty = iGetMaxHP(iClientH, FALSE);
+		MaxHpParty = iGetMaxHP(iClientH, false);
 		MPParty = m_pClientList[iClientH]->m_iMP;
 		MaxMpParty = iGetMaxMP(iClientH);
 		PartySex = m_pClientList[iClientH]->m_cSex;

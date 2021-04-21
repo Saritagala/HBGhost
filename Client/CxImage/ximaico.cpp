@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageICO::Decode(CxFile *hFile)
 {
-	if (hFile==NULL) return false;
+	if (hFile==NULL) return FALSE;
 
 	DWORD off = hFile->Tell(); //<yuandi>
 	int	page=info.nFrame;	//internal icon structure indexes
@@ -77,27 +77,27 @@ bool CxImageICO::Decode(CxFile *hFile)
 			BYTE *mask = (BYTE *)malloc(masksize);
 			if (hFile->Read(mask, masksize, 1)){
 
-				bool bGoodMask=false;
+				bool bGoodMask=FALSE;
 				for (int im=0;im<masksize;im++){
 					if (mask[im]!=255){
-						bGoodMask=true;
+						bGoodMask=TRUE;
 						break;
 					}
 				}
 
 				if (bGoodMask){
 #if CXIMAGE_SUPPORT_ALPHA
-					bool bNeedAlpha = false;
+					bool bNeedAlpha = FALSE;
 					if (!AlphaIsValid()){
 						AlphaCreate();
 					} else { 
-						bNeedAlpha=true; //32bit icon
+						bNeedAlpha=TRUE; //32bit icon
 					}
 					for (int y = 0; y < head.biHeight; y++) {
 						for (int x = 0; x < head.biWidth; x++) {
 							if (((mask[y*maskwdt+(x>>3)]>>(7-x%8))&0x01)){
 								AlphaSet(x,y,0);
-								bNeedAlpha=true;
+								bNeedAlpha=TRUE;
 							}
 						}
 					}
@@ -112,7 +112,7 @@ bool CxImageICO::Decode(CxFile *hFile)
 						for (int y = 0; y < head.biHeight; y++){
 							for (int x = 0; x < head.biWidth; x++){
 								if (((mask[y*maskwdt+(x>>3)] >> (7-x%8)) & 0x01)){
-									cc = GetPixelColor(x,y,false);
+									cc = GetPixelColor(x,y,FALSE);
 									if (nTransColors==0){
 										nTransColors++;
 										ct = cc;
@@ -158,14 +158,14 @@ bool CxImageICO::Decode(CxFile *hFile)
 
 						// Go thru image and set unused color as transparent index if needed
 						if (iTransIdx >= 0){
-							bool bNeedTrans = false;
+							bool bNeedTrans = FALSE;
 							for (int y = 0; y < head.biHeight; y++){
 								for (int x = 0; x < head.biWidth; x++){
 									// AND mask (Each Byte represents 8 Pixels)
 									if (((mask[y*maskwdt+(x>>3)] >> (7-x%8)) & 0x01)){
 										// AND mask is set (!=0). This is a transparent part
 										SetPixelIndex(x, y, iTransIdx);
-										bNeedTrans = true;
+										bNeedTrans = TRUE;
 									}
 								}
 							}
@@ -185,28 +185,28 @@ bool CxImageICO::Decode(CxFile *hFile)
 
 			free(icon_list);
 			// icon has been loaded successfully!
-			return true;
+			return TRUE;
 		}
 		free(icon_list);
 	}
-	return false;
+	return FALSE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #if CXIMAGE_SUPPORT_ENCODE
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageICO::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	//check format limits
 	if ((head.biWidth>255)||(head.biHeight>255)){
 		strcpy(info.szLastError,"Can't save this image as icon");
-		return false;
+		return FALSE;
 	}
 
 	//prepare the palette struct
 	RGBQUAD* pal=GetPalette();
-	if (head.biBitCount<=8 && pal==NULL) return false;
+	if (head.biBitCount<=8 && pal==NULL) return FALSE;
 
 	int maskwdt=((head.biWidth+31)/32)*4; //mask line width
 	int masksize=head.biHeight * maskwdt; //size of mask
@@ -257,7 +257,7 @@ bool CxImageICO::Encode(CxFile * hFile)
 
 	//save transparency mask
 	BYTE* mask=(BYTE*)calloc(masksize,1);	//create empty AND/XOR masks
-	if (!mask) return false;
+	if (!mask) return FALSE;
 
 	//prepare the variables to build the mask
 	BYTE* iDst;
@@ -279,7 +279,7 @@ bool CxImageICO::Encode(CxFile * hFile)
 			if (bAlphaIsValid && AlphaGet(x,y)==0) i=1;
 			if (bAlphaPaletteIsValid && GetPixelColor(x,y).rgbReserved==0) i=1;
 #endif
-			c=GetPixelColor(x,y,false);
+			c=GetPixelColor(x,y,FALSE);
 			if (bTransparent && *pc==*pct) i=1;
 			iDst = mask + y*maskwdt + (x>>3);
 			pos = 7-x%8;
@@ -290,7 +290,7 @@ bool CxImageICO::Encode(CxFile * hFile)
 	//write AND/XOR masks
 	hFile->Write(mask,masksize,1);
 	free(mask);
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE

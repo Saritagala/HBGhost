@@ -37,11 +37,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 				switch (cReadModeB) {
 				case 1:
 					// Äù½ºÆ® ¹øÈ£ 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 
 					if (m_pQuestConfigList[atoi(token)] != NULL) {
@@ -49,7 +49,7 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Duplicate quest number.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[atoi(token)] = new class CQuest;
 					iQuestConfigListIndex = atoi(token);
@@ -59,11 +59,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 2:
 					// Äù½ºÆ® »çÀÌµå  
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_cSide = atoi(token);
 					cReadModeB = 3;
@@ -71,11 +71,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 3:
 					// Äù½ºÆ® Á¾·ù  
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iType = atoi(token);
 					cReadModeB = 4;
@@ -83,11 +83,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 4:
 					// TargetType
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iTargetType = atoi(token);
 					cReadModeB = 5;
@@ -95,11 +95,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 5:
 					// MaxCount
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iMaxCount = atoi(token);
 					cReadModeB = 6;
@@ -107,11 +107,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 6:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iFrom = atoi(token);
 					cReadModeB = 7;
@@ -119,11 +119,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 7:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iMinLevel = atoi(token);
 					cReadModeB = 8;
@@ -131,11 +131,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 8:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iMaxLevel = atoi(token);
 					cReadModeB = 9;
@@ -143,11 +143,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 9:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRequiredSkillNum = atoi(token);
 					cReadModeB = 10;
@@ -155,11 +155,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 10:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRequiredSkillLevel = atoi(token);
 					cReadModeB = 11;
@@ -167,11 +167,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 11:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iTimeLimit = atoi(token);
 					cReadModeB = 12;
@@ -179,11 +179,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 12:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iAssignType = atoi(token);
 					cReadModeB = 13;
@@ -191,11 +191,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 13:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRewardType[1] = atoi(token);
 					cReadModeB = 14;
@@ -203,11 +203,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 14:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRewardAmount[1] = atoi(token);
 					cReadModeB = 15;
@@ -215,11 +215,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 15:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRewardType[2] = atoi(token);
 					cReadModeB = 16;
@@ -227,11 +227,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 16:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRewardAmount[2] = atoi(token);
 					cReadModeB = 17;
@@ -239,11 +239,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 17:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRewardType[3] = atoi(token);
 					cReadModeB = 18;
@@ -251,11 +251,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 18:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRewardAmount[3] = atoi(token);
 					cReadModeB = 19;
@@ -263,11 +263,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 19:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iContribution = atoi(token);
 					cReadModeB = 20;
@@ -275,11 +275,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 20:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iContributionLimit = atoi(token);
 					cReadModeB = 21;
@@ -287,11 +287,11 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 				case 21:
 					// 
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iResponseMode = atoi(token);
 					cReadModeB = 22;
@@ -304,55 +304,55 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 					break;
 
 				case 23:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_sX = atoi(token);
 					cReadModeB = 24;
 					break;
 
 				case 24:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_sY = atoi(token);
 					cReadModeB = 25;
 					break;
 
 				case 25:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iRange = atoi(token);
 					cReadModeB = 26;
 					break;
 
 				case 26:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iQuestID = atoi(token);
 					cReadModeB = 27;
 					break;
 
 				case 27:
-					if (_bGetIsStringIsNumber(token) == FALSE) {
+					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file error - Wrong Data format.");
 						delete[] pContents;
 						delete pStrTok;
-						return FALSE;
+						return false;
 					}
 					m_pQuestConfigList[iQuestConfigListIndex]->m_iReqContribution = atoi(token);
 					cReadModeA = 0;
@@ -380,13 +380,13 @@ bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		PutLogList("(!!!) CRITICAL ERROR! QUEST configuration file contents error!");
-		return FALSE;
+		return false;
 	}
 
 	wsprintf(cTxt, "(!) QUEST(Total:%d) configuration - success!", iQuestConfigListIndex);
 	PutLogList(cTxt);
 
-	return TRUE;
+	return true;
 }
 
 
@@ -415,8 +415,8 @@ int CGame::__iSearchForQuest(int iClientH, int iWho, int* pQuestType, int* pMode
 					m_pQuestConfigList[i]->m_iRequiredSkillLevel) goto SFQ_SKIP;
 			}
 
-			if ((m_bIsCrusadeMode == TRUE) && (m_pQuestConfigList[i]->m_iAssignType != 1)) goto SFQ_SKIP;
-			if ((m_bIsCrusadeMode == FALSE) && (m_pQuestConfigList[i]->m_iAssignType == 1)) goto SFQ_SKIP;
+			if ((m_bIsCrusadeMode == true) && (m_pQuestConfigList[i]->m_iAssignType != 1)) goto SFQ_SKIP;
+			if ((m_bIsCrusadeMode == false) && (m_pQuestConfigList[i]->m_iAssignType == 1)) goto SFQ_SKIP;
 
 			if (m_pQuestConfigList[i]->m_iContributionLimit < m_pClientList[iClientH]->m_iContribution) goto SFQ_SKIP;
 
@@ -486,7 +486,7 @@ void CGame::QuestAcceptedHandler(int iClientH)
 				iIndex = m_pClientList[iClientH]->m_iQuest[i];
 				m_pClientList[iClientH]->m_iQuestID[i] = m_pQuestConfigList[iIndex]->m_iQuestID;
 				m_pClientList[iClientH]->m_iCurQuestCount[i] = 0;
-				m_pClientList[iClientH]->m_bIsQuestCompleted[i] = FALSE;
+				m_pClientList[iClientH]->m_bIsQuestCompleted[i] = false;
 
 				//Magn0S:: Fix
 				m_pClientList[iClientH]->m_iQuestRewardType[i] = m_pQuestConfigList[iIndex]->m_iRewardType[1]; // Sempre a 1º
@@ -514,7 +514,7 @@ void CGame::QuestAcceptedHandler(int iClientH)
 void CGame::_SendQuestContents(int iClientH)
 {
 	int iWho, iIndex, iQuestType, iContribution, iTargetType, iTargetCount, iX, iY, iRange, iQuestCompleted, i, iAmount;
-	char cTargetName[11];
+	char cTargetName[21];
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -535,7 +535,7 @@ void CGame::_SendQuestContents(int iClientH)
 				iY = m_pQuestConfigList[iIndex]->m_sY;
 				iRange = m_pQuestConfigList[iIndex]->m_iRange;
 				ZeroMemory(cTargetName, sizeof(cTargetName));
-				memcpy(cTargetName, m_pQuestConfigList[iIndex]->m_cTargetName, 10);
+				memcpy(cTargetName, m_pQuestConfigList[iIndex]->m_cTargetName, 20);
 				iQuestCompleted = (int)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCONTENTS, iWho, iQuestType, iContribution, NULL,
@@ -598,8 +598,8 @@ void CGame::_CheckQuestEnvironment(int iClientH)
 				ZeroMemory(cTargetName, sizeof(cTargetName));
 				memcpy(cTargetName, m_pQuestConfigList[iIndex]->m_cTargetName, 20);
 				if (memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0)
-					m_pClientList[iClientH]->m_bQuestMatchFlag_Loc = TRUE;
-				else m_pClientList[iClientH]->m_bQuestMatchFlag_Loc = FALSE;
+					m_pClientList[iClientH]->m_bQuestMatchFlag_Loc = true;
+				else m_pClientList[iClientH]->m_bQuestMatchFlag_Loc = false;
 				break;
 			}
 	//	}
@@ -611,33 +611,33 @@ bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 	int iQuestIndex;
 	char cTargetName[21];
 
-	if (m_pClientList[iClientH] == NULL) return FALSE;
+	if (m_pClientList[iClientH] == NULL) return false;
 
 	//Magn0S:: Multi Quest
 	//for (i = 0; i < DEF_MAXQUEST; i++) {
 		//if (m_pClientList[iClientH]->m_iQuest[i] != NULL) {
-			if (m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] == TRUE) return FALSE;
+			if (m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] == true) return false;
 
 			iQuestIndex = m_pClientList[iClientH]->m_iQuest[iQuest];
-			if (iQuestIndex == NULL) return FALSE;
+			if (iQuestIndex == NULL) return false;
 
 			if (m_pQuestConfigList[iQuestIndex] != NULL) {
 				switch (m_pQuestConfigList[iQuestIndex]->m_iType) {
 				case DEF_QUESTTYPE_MONSTERHUNT:
-				//	if ((m_pClientList[iClientH]->m_bQuestMatchFlag_Loc == TRUE) &&
+				//	if ((m_pClientList[iClientH]->m_bQuestMatchFlag_Loc == true) &&
 						ZeroMemory(cTargetName, sizeof(cTargetName));
 						memcpy(cTargetName, m_pQuestConfigList[iQuestIndex]->m_cTargetName, 20);
 						if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) &&
 						(m_pClientList[iClientH]->m_iCurQuestCount[iQuest] >= m_pQuestConfigList[iQuestIndex]->m_iMaxCount)) {
-						m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = TRUE;
+						m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = true;
 						m_pClientList[iClientH]->m_iCurQuestCount[iQuest] = m_pQuestConfigList[iQuestIndex]->m_iMaxCount;
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOMPLETED, iQuest, NULL, NULL, NULL);
-						return TRUE;
+						return true;
 					}
 					break;
 
 				case DEF_QUESTTYPE_GOPLACE:
-					//if ((m_pClientList[iClientH]->m_bQuestMatchFlag_Loc == TRUE) &&
+					//if ((m_pClientList[iClientH]->m_bQuestMatchFlag_Loc == true) &&
 					ZeroMemory(cTargetName, sizeof(cTargetName));
 					memcpy(cTargetName, m_pQuestConfigList[iQuestIndex]->m_cTargetName, 20);
 					if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) &&
@@ -645,9 +645,9 @@ bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 						(m_pClientList[iClientH]->m_sX <= m_pQuestConfigList[iQuestIndex]->m_sX + m_pQuestConfigList[iQuestIndex]->m_iRange) &&
 						(m_pClientList[iClientH]->m_sY >= m_pQuestConfigList[iQuestIndex]->m_sY - m_pQuestConfigList[iQuestIndex]->m_iRange) &&
 						(m_pClientList[iClientH]->m_sY <= m_pQuestConfigList[iQuestIndex]->m_sY + m_pQuestConfigList[iQuestIndex]->m_iRange)) {
-						m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = TRUE;
+						m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = true;
 						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCOMPLETED, iQuest, NULL, NULL, NULL);
-						return TRUE;
+						return true;
 					}
 					break;
 				}
@@ -655,7 +655,7 @@ bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 		//}
 	//}
 
-	return FALSE;
+	return false;
 }
 
 int CGame::_iTalkToNpcResult_Cityhall(int iClientH, int* pQuestType, int* pMode, int* pRewardType, int* pRewardAmount, int* pContribution, char* pTargetName, int* pTargetType, int* pTargetCount, int* pX, int* pY, int* pRange)
@@ -676,13 +676,13 @@ int CGame::_iTalkToNpcResult_Cityhall(int iClientH, int* pQuestType, int* pMode,
 		if (m_pClientList[iClientH]->m_iQuest[i] != NULL) {
 			if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]] == NULL) return -4;
 			else if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iFrom == 4) {
-				if (m_pClientList[iClientH]->m_bIsQuestCompleted[i] == TRUE) {
+				if (m_pClientList[iClientH]->m_bIsQuestCompleted[i] == true) {
 					if ((m_pClientList[iClientH]->m_iQuestRewardType > 0) &&
 						(m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]] != NULL)) {
 						pItem = new class CItem;
 						_bInitItemAttr(pItem, m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]]->m_cName);
 						pItem->m_dwCount = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
-						if (_bCheckItemReceiveCondition(iClientH, pItem) == TRUE) {
+						if (_bCheckItemReceiveCondition(iClientH, pItem) == true) {
 							_bAddClientItemList(iClientH, pItem, &iEraseReq);
 							SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, NULL);
 							if (iEraseReq == 1) delete pItem;
@@ -769,7 +769,7 @@ void CGame::_ClearQuestStatus(int iClientH, int iQuest)
 		m_pClientList[iClientH]->m_iQuestID[iQuest] = NULL;
 		m_pClientList[iClientH]->m_iQuestRewardType[iQuest] = NULL;
 		m_pClientList[iClientH]->m_iQuestRewardAmount[iQuest] = NULL;
-		m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = FALSE;
+		m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = false;
 
 		//Magn0S:: Update quest list after finising
 		_SendQuestContents(iClientH);
@@ -787,9 +787,9 @@ void CGame::CancelQuestHandler(int iClientH, int iQuest)
 void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
-	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
-	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == TRUE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
+	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
+	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == true) return;
 
 	char* cp, cData[5000];
 	int  iRet;
@@ -824,7 +824,7 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 				(m_pQuestConfigList[index]->m_iQuestID != m_pClientList[iClientH]->m_iQuest[index]) &&
 				(m_pQuestConfigList[index]->m_iReqContribution <= m_pClientList[iClientH]->m_iContribution) &&
 				(m_pQuestConfigList[index]->m_iContributionLimit >= m_pClientList[iClientH]->m_iContribution) &&
-				(m_bIsCrusadeMode == FALSE))
+				(m_bIsCrusadeMode == false))
 			{
 				ip = (int*)cp;
 				*ip = index;
@@ -863,8 +863,8 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 				}
 				cp += 20;
 
-				memcpy(cp, m_pQuestConfigList[index]->m_cTargetName, 10);
-				cp += 10;
+				memcpy(cp, m_pQuestConfigList[index]->m_cTargetName, 20);
+				cp += 20;
 
 				(*listCount)++;
 			}
@@ -872,14 +872,14 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 	}
 	if ((*listCount) == 0)*wp = DEF_MSGTYPE_REJECT;
 	// Quest List
-	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 10 + (*listCount) * 46);
+	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 10 + (*listCount) * 56);
 	switch (iRet)
 	{
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
 	case DEF_XSOCKEVENT_CRITICALERROR:
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
-		DeleteClient(iClientH, TRUE, TRUE);
+		DeleteClient(iClientH, true, true);
 		return;
 	}
 }
@@ -891,9 +891,9 @@ int iEraseReq, iExp;
 class CItem* pItem;
 
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
-	if (m_pClientList[iClientH]->m_bIsKilled == TRUE) return;
-	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == TRUE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
+	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
+	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == true) return;
 
 	if (m_pClientList[iClientH]->m_iQuest[iQuest] != NULL) {
 		if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]] == NULL)
@@ -902,7 +902,7 @@ class CItem* pItem;
 		}
 		else if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[iQuest]]->m_iFrom == 4)
 		{
-			if (m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] == TRUE)
+			if (m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] == true)
 			{
 				if ((m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[iQuest]] != NULL) && // Quest Reward = ITEM
 					(m_pClientList[iClientH]->m_iQuestRewardType[iQuest] > 0))
@@ -911,7 +911,7 @@ class CItem* pItem;
 					_bInitItemAttr(pItem, m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[iQuest]]->m_cName);
 					pItem->m_dwCount = m_pClientList[iClientH]->m_iQuestRewardAmount[iQuest];
 
-					if (_bCheckItemReceiveCondition(iClientH, pItem) == TRUE)
+					if (_bCheckItemReceiveCondition(iClientH, pItem) == true)
 					{
 						_bAddClientItemList(iClientH, pItem, &iEraseReq);
 						SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, NULL);

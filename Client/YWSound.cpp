@@ -34,14 +34,14 @@ bool YWSound::Create(HWND hWnd)
 	if(rval != DS_OK)
 	{
 		OutputDebugString("DirectSoundCreate error...\n");
-		return FALSE;
+		return false;
 	}
 	
 	rval = m_lpDS->SetCooperativeLevel(hWnd, DSSCL_PRIORITY);
 	if(rval != DS_OK)
 	{
 		OutputDebugString("DirectSoundCreate error...\n");
-		return FALSE;
+		return false;
 	}
 	
 	memset(&dsbdesc, 0, sizeof(DSBUFFERDESC));
@@ -59,7 +59,7 @@ bool YWSound::Create(HWND hWnd)
 	wfm.nAvgBytesPerSec = wfm.nSamplesPerSec * wfm.nBlockAlign;
 
 	rval = m_lpDS->CreateSoundBuffer(&dsbdesc, &lpDsb, NULL);
-	if (rval != DS_OK) return FALSE;
+	if (rval != DS_OK) return false;
 	
 	lpDsb->SetFormat(&wfm);
 
@@ -67,8 +67,8 @@ bool YWSound::Create(HWND hWnd)
 	if(rval != DS_OK)
 	{
 		OutputDebugString("DirectSoundCreate error...\n");
-		return FALSE;
+		return false;
 	}
 	
-	return TRUE;
+	return true;
 }

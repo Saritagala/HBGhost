@@ -25,7 +25,7 @@ bool CxImageGIF::Decode(CxFile *fp)
 	struct_image image;
 	struct_TabCol TabCol;
 
-	if (fp == NULL) return false;
+	if (fp == NULL) return FALSE;
 
 	fp->Read(&dscgif,/*sizeof(dscgif)*/13,1);
 	//if (strncmp(dscgif.header,"GIF8",3)!=0) {
@@ -35,7 +35,7 @@ bool CxImageGIF::Decode(CxFile *fp)
 		// Return output dimensions only
 		head.biWidth = dscgif.scrwidth;
 		head.biHeight = dscgif.scrheight;
-		return true;
+		return TRUE;
 	}
 
 	/* AD - for interlace */
@@ -59,21 +59,21 @@ bool CxImageGIF::Decode(CxFile *fp)
 	int iImage = 0;
 	info.nNumFrames=get_num_frames(fp,&TabCol,&dscgif);
 
-	if ((info.nFrame<0)||(info.nFrame>=info.nNumFrames)) return false;
+	if ((info.nFrame<0)||(info.nFrame>=info.nNumFrames)) return FALSE;
 
-	//it cannot be a true color GIF with only one frame
+	//it cannot be a TRUE color GIF with only one frame
 	if (info.nNumFrames == 1)
 		bTrueColor=0;
 
 	char ch;
-	bool bPreviousWasNull = true;
+	bool bPreviousWasNull = TRUE;
 	int  prevdispmeth = 0;
 
-	for (BOOL bContinue = TRUE; bContinue; )
+	for (bool bContinue = TRUE; bContinue; )
 	{
 		if (fp->Read(&ch, sizeof(ch), 1) != 1) {break;}
 
-		if (info.nEscape > 0) return false; // <vho> - cancel decoding
+		if (info.nEscape > 0) return FALSE; // <vho> - cancel decoding
 		if (bPreviousWasNull || ch==0)
 		{
 			switch (ch)
@@ -190,7 +190,7 @@ bool CxImageGIF::Decode(CxFile *fp)
 				decoder(fp, iter, image.w, badcode);
 				delete iter;
 
-				if (info.nEscape) return false; // <vho> - cancel decoding
+				if (info.nEscape) return FALSE; // <vho> - cancel decoding
 
 				if (bTrueColor<2 ){ //standard GIF: mix frame with background
 					backimage.GifMix(*this,image);
@@ -219,12 +219,12 @@ bool CxImageGIF::Decode(CxFile *fp)
 					fp->Seek(-(ibfmax - ibf - 1), SEEK_CUR);
 				}
 				
-				if (info.nFrame==iImage) bContinue=false; else iImage++;
+				if (info.nFrame==iImage) bContinue=FALSE; else iImage++;
 
 				break;
 				}
 			case ';': //terminator
-				bContinue=false;
+				bContinue=FALSE;
 				break;
 			default:
 				bPreviousWasNull = (ch==0);
@@ -242,7 +242,7 @@ bool CxImageGIF::Decode(CxFile *fp)
 	}
 	delete imaRGB;
 
-	return true;
+	return TRUE;
 
 }
 ////////////////////////////////////////////////////////////////////////////////
@@ -379,7 +379,7 @@ int CxImageGIF::out_line(CImageIterator* iter, unsigned char *pixels, int linele
 // R.Spann@ConnRiver.net
 bool CxImageGIF::Encode(CxFile * fp)
 {
-	if (EncodeSafeCheck(fp)) return false;
+	if (EncodeSafeCheck(fp)) return FALSE;
 
 	if(head.biBitCount > 8)	{
 		//strcpy(info.szLastError,"GIF Images must be 8 bit or less");
@@ -397,7 +397,7 @@ bool CxImageGIF::Encode(CxFile * fp)
 
 	fp->PutC(';'); // Write the GIF file terminator
 
-	return true; // done!
+	return TRUE; // done!
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageGIF::Encode(CxFile * fp, CxImage ** pImages, int pagecount, bool bLocalColorMap)
@@ -438,9 +438,9 @@ bool CxImageGIF::Encode(CxFile * fp, CxImage ** pImages, int pagecount, bool bLo
 
   } catch (char *message) {
 	  strncpy(info.szLastError,message,255);
-	  return false;
+	  return FALSE;
   }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImageGIF::EncodeHeader(CxFile *fp)
@@ -603,13 +603,13 @@ bool CxImageGIF::EncodeRGB(CxFile *fp)
 
 			tmp.SetOffset(x,y);
 			tmp.EncodeExtension(fp);
-			tmp.EncodeBody(fp,true);
+			tmp.EncodeBody(fp,TRUE);
 		}
 	}
 
 	fp->PutC(';'); // Write the GIF file terminator
 
-	return true; // done!
+	return TRUE; // done!
 }
 ////////////////////////////////////////////////////////////////////////////////
 #endif // CXIMAGE_SUPPORT_ENCODE
@@ -1142,9 +1142,9 @@ int CxImageGIF::get_num_frames(CxFile *fp,struct_TabCol* TabColSrc,struct_dscgif
 	memcpy(&TempTabCol,TabColSrc,sizeof(struct_TabCol));
 
 	char ch;
-	bool bPreviousWasNull = true;
+	bool bPreviousWasNull = TRUE;
 
-	for (BOOL bContinue = TRUE; bContinue; )
+	for (bool bContinue = TRUE; bContinue; )
 	{
 		if (fp->Read(&ch, sizeof(ch), 1) != 1) {break;}
 
@@ -1217,7 +1217,7 @@ int CxImageGIF::get_num_frames(CxFile *fp,struct_TabCol* TabColSrc,struct_dscgif
 				break;
 				}
 			case ';': //terminator
-				bContinue=false;
+				bContinue=FALSE;
 				break;
 			default:
 				bPreviousWasNull = (ch==0);

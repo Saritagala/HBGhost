@@ -11,7 +11,7 @@ public:
 	~CxMemFile();
 
 	bool Open();
-	BYTE* GetBuffer(bool bDetachBuffer = true);
+	BYTE* GetBuffer(bool bDetachBuffer = TRUE);
 
 	virtual bool	Close();
 	virtual size_t	Read(void *buffer, size_t size, size_t count);

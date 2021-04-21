@@ -14,7 +14,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJ2K::Decode(CxFile *hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
   try
   {
@@ -85,16 +85,16 @@ bool CxImageJ2K::Decode(CxFile *hFile)
 	strncpy(info.szLastError,message,255);
 	return FALSE;
   }
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJ2K::Encode(CxFile * hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	if (head.biClrUsed!=0 && !IsGrayScale()){
 		strcpy(info.szLastError,"J2K can save only RGB or GrayScale images");
-		return false;
+		return FALSE;
 	}
 
     int i,x,y;

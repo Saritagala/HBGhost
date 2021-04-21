@@ -32,7 +32,7 @@ bool CxImage::LayerCreate(long position)
 	if ( position < 0 || position > info.nNumLayers ) position = info.nNumLayers;
 
 	CxImage** ptmp = (CxImage**)malloc((info.nNumLayers + 1)*sizeof(CxImage**));
-	if (ptmp==0) return false;
+	if (ptmp==0) return FALSE;
 
 	int i=0;
 	for (int n=0; n<info.nNumLayers; n++){
@@ -48,13 +48,13 @@ bool CxImage::LayerCreate(long position)
 		ptmp[position]->info.pParent = this;
 	} else {
 		free(ptmp);
-		return false;
+		return FALSE;
 	}
 
 	info.nNumLayers++;
 	if (pLayers) free(pLayers);
 	pLayers = ptmp;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 /**
@@ -62,11 +62,11 @@ bool CxImage::LayerCreate(long position)
  */
 bool CxImage::LayerDelete(long position)
 {
-	if ( position >= info.nNumLayers ) return false;
+	if ( position >= info.nNumLayers ) return FALSE;
 	if ( position < 0) position = info.nNumLayers - 1;
 
 	CxImage** ptmp = (CxImage**)malloc((info.nNumLayers - 1)*sizeof(CxImage**));
-	if (ptmp==0) return false;
+	if (ptmp==0) return FALSE;
 
 	int i=0;
 	for (int n=0; n<(info.nNumLayers - 1); n++){
@@ -81,7 +81,7 @@ bool CxImage::LayerDelete(long position)
 	info.nNumLayers--;
 	if (pLayers) free(pLayers);
 	pLayers = ptmp;
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 void CxImage::LayerDeleteAll()

@@ -12,7 +12,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJAS::Decode(CxFile *hFile, DWORD imagetype)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	jas_image_t *image=0;
 	jas_stream_t *in=0;
@@ -131,11 +131,11 @@ bool CxImageJAS::Decode(CxFile *hFile, DWORD imagetype)
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageJAS::Encode(CxFile * hFile, DWORD imagetype)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	if (head.biClrUsed!=0 && !IsGrayScale()){
 		strcpy(info.szLastError,"JasPer can save only RGB or GrayScale images");
-		return false;
+		return FALSE;
 	}
 
 	jas_image_t *image=0;
@@ -166,7 +166,7 @@ bool CxImageJAS::Encode(CxFile * hFile, DWORD imagetype)
 		cmptparm->width = head.biWidth;
 		cmptparm->height = head.biHeight;
 		cmptparm->prec = 8;
-		cmptparm->sgnd = false;
+		cmptparm->sgnd = FALSE;
 	}
 
 	/* Create image object. */

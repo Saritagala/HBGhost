@@ -170,7 +170,7 @@ void CxImageMNG::SetCallbacks(mng_handle mng)
 // can't use the CxImage implementation because it looses mnginfo
 bool CxImageMNG::Load(const char * imageFileName){
 		FILE* hFile;	//file handle to read the image
-		if ((hFile=fopen(imageFileName,"rb"))==NULL)  return false;
+		if ((hFile=fopen(imageFileName,"rb"))==NULL)  return FALSE;
 		bool bOK = Decode(hFile);
 		fclose(hFile);
 		return bOK;
@@ -178,7 +178,7 @@ bool CxImageMNG::Load(const char * imageFileName){
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageMNG::Decode(CxFile *hFile)
 {
-	if (hFile == NULL) return false;
+	if (hFile == NULL) return FALSE;
 
 	try {
 		// set up the mng decoder for our stream
@@ -248,14 +248,14 @@ bool CxImageMNG::Decode(CxFile *hFile)
 
 	} catch (char *message) {
 		strncpy(info.szLastError,message,255);
-		return false;
+		return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 bool CxImageMNG::Encode(CxFile *hFile)
 {
-	if (EncodeSafeCheck(hFile)) return false;
+	if (EncodeSafeCheck(hFile)) return FALSE;
 
 	try {
 		if (head.biClrUsed != 0) throw "MNG encoder can save only RGB images";
@@ -287,9 +287,9 @@ bool CxImageMNG::Encode(CxFile *hFile)
 
 	} catch (char *message) {
 		strncpy(info.szLastError,message,255);
-		return false;
+		return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 ////////////////////////////////////////////////////////////////////////////////
 // Writes a single PNG datastream
