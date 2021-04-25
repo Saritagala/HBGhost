@@ -48,6 +48,5 @@ spot-mob-generator	= 4   1    152 138 172 163        74  20	// Giant CrayFish
 no-attack-area          =  1       104 125 112 133
 
 maximum-object		= 150
-random-mob-generator	= 1  18
 
 [END-MAP-INFO]

@@ -38,6 +38,7 @@ CGame::CGame()
 	bChangeBigItems = false;
 	
 	m_bGrid = false; //Grid - by luqah
+	m_bNpcMap = false;
 
 	m_iTotalUsers = 0;
 	m_iPing = 0;
@@ -759,349 +760,351 @@ bool CGame::_bDecodeItemConfigFileContents(char* pFileName)
 		pContents = new char[dwFileSize + 1];
 		ZeroMemory(pContents, dwFileSize + 1);
 		fread(pContents, dwFileSize, 1, pFile);
-		fclose(pFile);
-	}
 
-	pStrTok = new class CStrTok(pContents, seps);
-	token = pStrTok->pGet();
-	//token = strtok( pContents, seps );   
-	while (token != NULL) {
-		if (cReadModeA != 0) {
-			switch (cReadModeA) {
-			case 1:
-				switch (cReadModeB) {
+
+		pStrTok = new class CStrTok(pContents, seps);
+		token = pStrTok->pGet();
+		//token = strtok( pContents, seps );   
+		while (token != NULL) {
+			if (cReadModeA != 0) {
+				switch (cReadModeA) {
 				case 1:
-					if (_bGetIsStringIsNumber(token) == false) {
-						//PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemIDnumber");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					iItemConfigListIndex = atoi(token);
+					switch (cReadModeB) {
+					case 1:
+						if (_bGetIsStringIsNumber(token) == false) {
+							//PutLogList("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemIDnumber");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						iItemConfigListIndex = atoi(token);
 
-					// ¸¸¾à ÀÌ¹Ì ÀÌ·± ¾ÆÀÌ °ªÀ» °¡Áø ¾ÆÀÌÅÛÀÌ Á¤ÀÇµÇ¾î ÀÖ´Ù¸é ¿¡·¯ÀÌ´Ù.
-					if (m_pItemConfigList[iItemConfigListIndex] != NULL) {
-						// ÀÌ¹Ì °°Àº °íÀ¯¹øÈ£¸¦ °¡Áø ¾ÆÀÌÅÛÀÌ Á¤ÀÇµÇ¾î ÀÖ´Ù. Áßº¹ Á¤ÀÇ ¿¡·¯!
-						wsprintf(G_cTxt, "(!!!) CRITICAL ERROR! Duplicate ItemIDnum(%d)", iItemConfigListIndex);
-						DebugLog(G_cTxt);
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex] = new class CItem;
-					m_pItemConfigList[iItemConfigListIndex]->m_sIDnum = iItemConfigListIndex;
-					cReadModeB = 2;
-					break;
-				case 2:
-					// m_cName 
-					ZeroMemory(m_pItemConfigList[iItemConfigListIndex]->m_cName, sizeof(m_pItemConfigList[iItemConfigListIndex]->m_cName));
-					memcpy(m_pItemConfigList[iItemConfigListIndex]->m_cName, token, strlen(token));
-					cReadModeB = 3;
-					break;
-				case 3:
-					// m_cItemType
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemType");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cItemType = atoi(token);
-					cReadModeB = 4;
-					break;
-				case 4:
-					// m_cEquipPos
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - EquipPos");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cEquipPos = atoi(token);
-					cReadModeB = 5;
-					break;
-				case 5:
-					// m_sItemEffectType
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectType");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectType = atoi(token);
-					cReadModeB = 6;
-					break;
-				case 6:
-					// m_sItemEffectValue1
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue1");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue1 = atoi(token);
-					cReadModeB = 7;
-					break;
-				case 7:
-					// m_sItemEffectValue2
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue2");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue2 = atoi(token);
-					cReadModeB = 8;
-					break;
-				case 8:
-					// m_sItemEffectValue3
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue3");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue3 = atoi(token);
-					cReadModeB = 9;
-					break;
-				case 9:
-					// m_sItemEffectValue4
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue4");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue4 = atoi(token);
-					cReadModeB = 10;
-					break;
-				case 10:
-					// m_sItemEffectValue5
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue5");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue5 = atoi(token);
-					cReadModeB = 11;
-					break;
-				case 11:
-					// m_sItemEffectValue6
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue6");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue6 = atoi(token);
-					cReadModeB = 12;
-					break;
-				case 12:
-					// m_wMaxLifeSpan
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - MaxLifeSpan");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_wMaxLifeSpan = (WORD)atoi(token);
-					cReadModeB = 13;
-					break;
-				case 13:
-					// m_sSpecialEffect
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - MaxFixCount");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffect = atoi(token);
-					cReadModeB = 14;
-					break;
-				case 14:
-					// m_sSprite
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Sprite");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sSprite = atoi(token);
-					cReadModeB = 15;
-					break;
-				case 15:
-					// m_sSpriteFrame
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - SpriteFrame");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sSpriteFrame = atoi(token);
-					cReadModeB = 16;
-					break;
-				case 16:
-					// m_wPrice
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Price");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					iTemp = atoi(token);
-					if (iTemp < 0)
-						m_pItemConfigList[iItemConfigListIndex]->m_bIsForSale = false;
-					else m_pItemConfigList[iItemConfigListIndex]->m_bIsForSale = true;
+						// ¸¸¾à ÀÌ¹Ì ÀÌ·± ¾ÆÀÌ °ªÀ» °¡Áø ¾ÆÀÌÅÛÀÌ Á¤ÀÇµÇ¾î ÀÖ´Ù¸é ¿¡·¯ÀÌ´Ù.
+						if (m_pItemConfigList[iItemConfigListIndex] != NULL) {
+							// ÀÌ¹Ì °°Àº °íÀ¯¹øÈ£¸¦ °¡Áø ¾ÆÀÌÅÛÀÌ Á¤ÀÇµÇ¾î ÀÖ´Ù. Áßº¹ Á¤ÀÇ ¿¡·¯!
+							wsprintf(G_cTxt, "(!!!) CRITICAL ERROR! Duplicate ItemIDnum(%d)", iItemConfigListIndex);
+							DebugLog(G_cTxt);
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex] = new class CItem;
+						m_pItemConfigList[iItemConfigListIndex]->m_sIDnum = iItemConfigListIndex;
+						cReadModeB = 2;
+						break;
+					case 2:
+						// m_cName 
+						ZeroMemory(m_pItemConfigList[iItemConfigListIndex]->m_cName, sizeof(m_pItemConfigList[iItemConfigListIndex]->m_cName));
+						memcpy(m_pItemConfigList[iItemConfigListIndex]->m_cName, token, strlen(token));
+						cReadModeB = 3;
+						break;
+					case 3:
+						// m_cItemType
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemType");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cItemType = atoi(token);
+						cReadModeB = 4;
+						break;
+					case 4:
+						// m_cEquipPos
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - EquipPos");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cEquipPos = atoi(token);
+						cReadModeB = 5;
+						break;
+					case 5:
+						// m_sItemEffectType
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectType");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectType = atoi(token);
+						cReadModeB = 6;
+						break;
+					case 6:
+						// m_sItemEffectValue1
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue1");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue1 = atoi(token);
+						cReadModeB = 7;
+						break;
+					case 7:
+						// m_sItemEffectValue2
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue2");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue2 = atoi(token);
+						cReadModeB = 8;
+						break;
+					case 8:
+						// m_sItemEffectValue3
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue3");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue3 = atoi(token);
+						cReadModeB = 9;
+						break;
+					case 9:
+						// m_sItemEffectValue4
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue4");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue4 = atoi(token);
+						cReadModeB = 10;
+						break;
+					case 10:
+						// m_sItemEffectValue5
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue5");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue5 = atoi(token);
+						cReadModeB = 11;
+						break;
+					case 11:
+						// m_sItemEffectValue6
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ItemEffectValue6");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sItemEffectValue6 = atoi(token);
+						cReadModeB = 12;
+						break;
+					case 12:
+						// m_wMaxLifeSpan
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - MaxLifeSpan");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_wMaxLifeSpan = (WORD)atoi(token);
+						cReadModeB = 13;
+						break;
+					case 13:
+						// m_sSpecialEffect
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - MaxFixCount");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffect = atoi(token);
+						cReadModeB = 14;
+						break;
+					case 14:
+						// m_sSprite
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Sprite");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sSprite = atoi(token);
+						cReadModeB = 15;
+						break;
+					case 15:
+						// m_sSpriteFrame
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - SpriteFrame");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sSpriteFrame = atoi(token);
+						cReadModeB = 16;
+						break;
+					case 16:
+						// m_wPrice
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Price");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						iTemp = atoi(token);
+						if (iTemp < 0)
+							m_pItemConfigList[iItemConfigListIndex]->m_bIsForSale = false;
+						else m_pItemConfigList[iItemConfigListIndex]->m_bIsForSale = true;
 
-					m_pItemConfigList[iItemConfigListIndex]->m_wPrice = abs(iTemp);
-					cReadModeB = 17;
-					break;
-				case 17:
-					// m_wWeight
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Weight");
-						delete pContents;
-						delete pStrTok;
-						return false;
+						m_pItemConfigList[iItemConfigListIndex]->m_wPrice = abs(iTemp);
+						cReadModeB = 17;
+						break;
+					case 17:
+						// m_wWeight
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Weight");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_wWeight = atoi(token);
+						cReadModeB = 18;
+						break;
+					case 18:
+						// Appr Value
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ApprValue");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cApprValue = atoi(token);
+						cReadModeB = 19;
+						break;
+					case 19:
+						// m_cSpeed
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Speed");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cSpeed = atoi(token);
+						cReadModeB = 20;
+						break;
+
+					case 20:
+						// m_sLevelLimit
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - LevelLimit");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sLevelLimit = atoi(token);
+						cReadModeB = 21;
+						break;
+
+					case 21:
+						// m_cGederLimit
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - GenderLimit");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cGenderLimit = atoi(token);
+						cReadModeB = 22;
+						break;
+
+					case 22:
+						// m_sSpecialEffectValue1
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - SM_HitRatio");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffectValue1 = atoi(token);
+						cReadModeB = 23;
+						break;
+
+					case 23:
+						// m_sSpecialEffectValue2
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - L_HitRatio");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffectValue2 = atoi(token);
+						cReadModeB = 24;
+						break;
+
+					case 24:
+						// m_sRelatedSkill
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - RelatedSkill");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_sRelatedSkill = atoi(token);
+						cReadModeB = 25;
+						break;
+
+					case 25:
+						// m_cCategory
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Category");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cCategory = atoi(token);
+						cReadModeB = 26;
+						break;
+
+					case 26:
+						// m_cItemColor
+						if (_bGetIsStringIsNumber(token) == false) {
+							DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Category");
+							delete[] pContents;
+							delete pStrTok;
+							return false;
+						}
+						m_pItemConfigList[iItemConfigListIndex]->m_cItemColor = atoi(token);
+						cReadModeA = 0;
+						cReadModeB = 0;
+						break;
 					}
-					m_pItemConfigList[iItemConfigListIndex]->m_wWeight = atoi(token);
-					cReadModeB = 18;
-					break;
-				case 18:
-					// Appr Value
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - ApprValue");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cApprValue = atoi(token);
-					cReadModeB = 19;
-					break;
-				case 19:
-					// m_cSpeed
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Speed");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cSpeed = atoi(token);
-					cReadModeB = 20;
 					break;
 
-				case 20:
-					// m_sLevelLimit
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - LevelLimit");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sLevelLimit = atoi(token);
-					cReadModeB = 21;
-					break;
-
-				case 21:
-					// m_cGederLimit
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - GenderLimit");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cGenderLimit = atoi(token);
-					cReadModeB = 22;
-					break;
-
-				case 22:
-					// m_sSpecialEffectValue1
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - SM_HitRatio");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffectValue1 = atoi(token);
-					cReadModeB = 23;
-					break;
-
-				case 23:
-					// m_sSpecialEffectValue2
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - L_HitRatio");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sSpecialEffectValue2 = atoi(token);
-					cReadModeB = 24;
-					break;
-
-				case 24:
-					// m_sRelatedSkill
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - RelatedSkill");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_sRelatedSkill = atoi(token);
-					cReadModeB = 25;
-					break;
-
-				case 25:
-					// m_cCategory
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Category");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cCategory = atoi(token);
-					cReadModeB = 26;
-					break;
-
-				case 26:
-					// m_cItemColor
-					if (_bGetIsStringIsNumber(token) == false) {
-						DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file error - Category");
-						delete pContents;
-						delete pStrTok;
-						return false;
-					}
-					m_pItemConfigList[iItemConfigListIndex]->m_cItemColor = atoi(token);
-					cReadModeA = 0;
-					cReadModeB = 0;
+				default:
 					break;
 				}
-				break;
+			}
+			else {
+				if (memcmp(token, "Item", 4) == 0) {
+					cReadModeA = 1;
+					cReadModeB = 1;
+				}
 
-			default:
-				break;
+				if (memcmp(token, "[ENDITEMLIST]", 13) == 0) {
+					cReadModeA = 0;
+					cReadModeB = 0;
+					goto DICFC_STOPDECODING;
+				}
 			}
+			token = pStrTok->pGet();
+			//token = strtok( NULL, seps );
 		}
-		else {
-			if (memcmp(token, "Item", 4) == 0) {
-				cReadModeA = 1;
-				cReadModeB = 1;
-			}
-
-			if (memcmp(token, "[ENDITEMLIST]", 13) == 0) {
-				cReadModeA = 0;
-				cReadModeB = 0;
-				goto DICFC_STOPDECODING;
-			}
-		}
-		token = pStrTok->pGet();
-		//token = strtok( NULL, seps );
 	}
 
 DICFC_STOPDECODING:;
 
 	delete pStrTok;
 	delete[]pContents;
+	
+	fclose(pFile);
 
 	if ((cReadModeA != 0) || (cReadModeB != 0)) {
 		DebugLog("(!!!) CRITICAL ERROR! ITEM configuration file contents error!");
@@ -1210,7 +1213,11 @@ void CGame::SaveGameConfigFile()
 	strcat(cFn2, "show-grid = ");
 	wsprintf(cBuffer, "%d", (int)m_bGrid);
 	strcat(cFn2, cBuffer);
-	//strcat(cFn2, "\n");
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-npc = ");
+	wsprintf(cBuffer, "%d", (int)m_bNpcMap);
+	strcat(cFn2, cBuffer);
 
 	fwrite(cFn2, 1, strlen(cFn2), pFile);
 
@@ -1312,7 +1319,10 @@ bool CGame::bReadGameConfigFile(char* cFn)
 					m_bGrid = (bool)atoi(token);
 					cReadMode = 0;
 					break;
-
+				case 17:
+					m_bNpcMap = (bool)atoi(token);
+					cReadMode = 0;
+					break;
 
 				}
 			}
@@ -1333,13 +1343,15 @@ bool CGame::bReadGameConfigFile(char* cFn)
 				if (memcmp(token, "show-party", 10) == 0)			cReadMode = 14;
 				if (memcmp(token, "show-events", 11) == 0)			cReadMode = 15;
 				if (memcmp(token, "show-grid", 9) == 0)				cReadMode = 16;
+				if (memcmp(token, "show-npc", 8) == 0)				cReadMode = 17;
 			}
 			token = pStrTok->pGet();
 		}
 		delete pStrTok;
-		delete cp;
+		delete[] cp;
+		fclose(pFile);
 	}
-	if (pFile != NULL) fclose(pFile);
+	
 	return true;
 }
 
@@ -30162,7 +30174,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 	sY = m_stDialogBoxInfo[2].sY;
 
 	//Magn0S:: Add to Equip Full set with Ctrl Pressed.
-	if (m_bCtrlPressed == true) {
+	/*if (m_bCtrlPressed == true) {
 		for (i = 0; i < DEF_MAXITEMS; i++) {
 			cItemID = m_cItemOrder[DEF_MAXITEMS - 1 - i];
 			if (m_pItemList[cItemID] == NULL) continue;
@@ -30185,7 +30197,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}
 		}
 		return;
-	}
+	}*/
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{	if (m_cItemOrder[DEF_MAXITEMS - 1 - i] == -1) continue;

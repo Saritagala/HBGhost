@@ -2058,7 +2058,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					iGenLevel = 4;
 					break;
 
-				case 72: // Claw-Turtle
+				
 				case 76: // Giant-Plant
 				case 74: // Giant-Crayfish
 				case 13: // Cyclops
@@ -2074,15 +2074,14 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				case 48: // Stalker
 				case 54: // Dark-Elf
 				case 65: // Ice-Golem
-				case 78: // Minotaurus
+				
 					iGenLevel = 6;
 					break;
 
-				case 70: // Balrogs
-				case 71: // Centaurus
+				
 				case 30: // Liche
 				case 63: // Frost
-				case 79: // Nizie
+				
 					iGenLevel = 7;
 					break;
 
@@ -2098,9 +2097,14 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					iGenLevel = 9;
 					break;
 
+				case 72: // Claw-Turtle
 				case 77: // MasterMage-Orc
 				case 59: // Ettin
 				case 75: // Lizards
+				case 70: // Balrogs
+				case 71: // Centaurus
+				case 79: // Nizie
+				case 78: // Minotaurus
 					iGenLevel = 10;
 					break;
 

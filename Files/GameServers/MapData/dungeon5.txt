@@ -58,23 +58,8 @@ spot-mob-generator	     = 16 1    57 122 49 151       66  1 0 //IceWyvern
 
 //-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
 
-// from DOTD to Abbadons Lair
-teleport-loc     =     141 130     abbylair             49 28    5
-teleport-loc     =     142 130     abbylair             49 28    5
-teleport-loc     =     140 131     abbylair             49 28    5
-teleport-loc     =     141 131     abbylair             49 28    5
-teleport-loc     =     142 131     abbylair             49 28    5
-teleport-loc     =     143 131     abbylair             49 28    5
-teleport-loc     =     140 132     abbylair             49 28    5
-teleport-loc     =     141 132     abbylair             49 28    5
-teleport-loc     =     142 132     abbylair             49 28    5
-teleport-loc     =     143 132     abbylair             49 28    5
-teleport-loc     =     141 133     abbylair             49 28    5
-teleport-loc     =     141 134     abbylair             49 28    5
-
 
 maximum-object		= 400
-//random-mob-generator	= 1  7
 
 fixed-dayornight-mode = 1
 

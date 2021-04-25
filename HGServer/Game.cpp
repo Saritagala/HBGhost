@@ -6534,9 +6534,9 @@ DPDC_STOP_DECODING:;
 	/*int cStatPointTotal = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
 		m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma;
 	
-	if ((cStatPointTotal + (m_pClientList[iClientH]->m_iLU_Pool-3)) != ((m_pClientList[iClientH]->m_iLevel-1)*3 + 70)) {
-		if (cStatPointTotal > ((m_pClientList[iClientH]->m_iLevel-1)*3 + 70)) return false;
-		m_pClientList[iClientH]->m_iLU_Pool = ((m_pClientList[iClientH]->m_iLevel-1)*3 + 73) - ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit + m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma));
+	if ((cStatPointTotal + (m_pClientList[iClientH]->m_iLU_Pool-3)) != ((m_pClientList[iClientH]->m_iLevel)*3 + 70)) {
+		if (cStatPointTotal > ((m_pClientList[iClientH]->m_iLevel)*3 + 70)) return false;
+		m_pClientList[iClientH]->m_iLU_Pool = ((m_pClientList[iClientH]->m_iLevel)*3 + 73) - ((m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit + m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma));
 	}*/
 	
 	if (m_Misc.bCheckValidName(m_pClientList[iClientH]->m_cAccountName) == false) return false;
@@ -10835,25 +10835,25 @@ void CGame::LevelUpSettingsHandler(int iClientH, char * pData, DWORD dwMsgSize)
 	if ((m_pClientList[iClientH]->m_iCharisma + cChar > m_sCharStatLimit) || (cChar < 0))
 		return;
 
-	/*int iTotalSetting = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit + 
+	int iTotalSetting = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
 		m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma;
 
-	//(·¹º§ Æ¯¼º°ª + ·¹º§¾÷ Æ÷ÀÎÆ® > ·¹º§¾÷ Æ¯¼º°ª Á¤»óÄ¡)¸é ºñÁ¤»óÀÌ´Ù.. Ã³¸® ºÒ°¡.. ·¹º§¾÷ Æ÷ÀÎÆ®¸¦ Á¤»óÄ¡·Î ¸¶Ãß°í Ã³¸® ºÒ°¡..
-	if (iTotalSetting + m_pClientList[iClientH]->m_iLU_Pool -3 > ((m_pClientList[iClientH]->m_iLevel-1)*3 + 70))
+	if (iTotalSetting + m_pClientList[iClientH]->m_iLU_Pool - 3 > ((m_pClientList[iClientH]->m_iLevel - 1) * 3 + 70))
 	{
-		
-		m_pClientList[iClientH]->m_iLU_Pool = 3 + (m_pClientList[iClientH]->m_iLevel-1)*3 + 70 - iTotalSetting;
+		m_pClientList[iClientH]->m_iLU_Pool = 3 + (m_pClientList[iClientH]->m_iLevel - 1) * 3 + 70 - iTotalSetting;
 
+		if (m_pClientList[iClientH]->m_iLU_Pool < 3)
+			m_pClientList[iClientH]->m_iLU_Pool = 3;
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_FAILED, NULL, NULL, NULL, NULL);
-		return ;
+		return;
 	}
 
 	//(·¹º§ Æ¯¼º°ª + ·¹º§¾÷ ½ÃÅ³ Æ÷ÀÎÆ® ÁD > ·¹º§¾÷ Æ¯¼º°ª Á¤»óÄ¡)ÀÌ¸é Ã³¸® ºÒ°¡..
-	if (iTotalSetting + (cStr + cVit + cDex + cInt + cMag + cChar) >	((m_pClientList[iClientH]->m_iLevel-1)*3 + 70)) 
+	if (iTotalSetting + (cStr + cVit + cDex + cInt + cMag + cChar) >	((m_pClientList[iClientH]->m_iLevel)*3 + 70)) 
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SETTING_FAILED, NULL, NULL, NULL, NULL);
 		return;
-	}*/
+	}
 
 	m_pClientList[iClientH]->m_iLU_Pool -= (cStr + cVit + cDex + cInt + cMag + cChar);
 
@@ -30188,27 +30188,41 @@ void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	m_pClientList[iClientH]->m_iClass = iClass;
 	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 500;
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, iClass + 10, NULL, NULL);
+	
 	switch (iClass) {
-	case 1: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Warrior!"); break;
-	case 2: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!"); break;
-	case 3: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now an Archer!"); break;
+	case 1: 
+		m_pClientList[iClientH]->m_iStr = 14;
+		m_pClientList[iClientH]->m_iDex = 14;
+		m_pClientList[iClientH]->m_iVit = 12;
+		m_pClientList[iClientH]->m_iInt = 10;
+		m_pClientList[iClientH]->m_iMag = 10;
+		m_pClientList[iClientH]->m_iCharisma = 10;
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Warrior!"); 
+		break;
+	case 2: 
+		m_pClientList[iClientH]->m_iStr = 10;
+		m_pClientList[iClientH]->m_iDex = 10;
+		m_pClientList[iClientH]->m_iVit = 12;
+		m_pClientList[iClientH]->m_iInt = 14;
+		m_pClientList[iClientH]->m_iMag = 14;
+		m_pClientList[iClientH]->m_iCharisma = 10;
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!"); 
+		break;
+	case 3: 
+		m_pClientList[iClientH]->m_iStr = 10;
+		m_pClientList[iClientH]->m_iDex = 14;
+		m_pClientList[iClientH]->m_iVit = 12;
+		m_pClientList[iClientH]->m_iInt = 10;
+		m_pClientList[iClientH]->m_iMag = 10;
+		m_pClientList[iClientH]->m_iCharisma = 14;
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now an Archer!"); 
+		break;
 	}
 
-	iStr = m_pClientList[iClientH]->m_iStr;
-	iDex = m_pClientList[iClientH]->m_iDex;
-	iVit = m_pClientList[iClientH]->m_iVit;
-	iInt = m_pClientList[iClientH]->m_iInt;
-	iMag = m_pClientList[iClientH]->m_iMag;
-	iChar = m_pClientList[iClientH]->m_iCharisma;
+	int iStats = (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
+		m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma);
 
-	m_pClientList[iClientH]->m_iLU_Pool += (iStr - 10) + (iDex - 10) + (iVit - 10) + (iInt - 10) + (iMag - 10) + (iChar - 10);
-
-	m_pClientList[iClientH]->m_iStr = 10;
-	m_pClientList[iClientH]->m_iDex = 10;
-	m_pClientList[iClientH]->m_iVit = 10;
-	m_pClientList[iClientH]->m_iInt = 10;
-	m_pClientList[iClientH]->m_iMag = 10;
-	m_pClientList[iClientH]->m_iCharisma = 10;
+	m_pClientList[iClientH]->m_iLU_Pool = m_pClientList[iClientH]->m_iLevel * 3 - (iStats - 70) - 3;
 
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++)
 	{

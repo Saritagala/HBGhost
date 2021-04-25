@@ -153,6 +153,8 @@ class CGame
 {
 public:
 
+	bool m_bNpcMap;
+
 	void DrawDialogBox_SummonGuild(short msX, short msY);
 	void DlgBoxClick_SummonGuild(short msX, short msY);
 

@@ -94,8 +94,6 @@ teleport-loc     =     37     279     icebound            264     260    5
 teleport-loc     =     38     279     icebound            264     260    5
 teleport-loc     =     39     279     icebound            264     260    5
 
-264 260
-
 teleport-loc     =     78     210     middled1n           181     124    5
 teleport-loc     =     78     211     middled1n           181     124    5
 teleport-loc     =     79     209     middled1n           181     124    5
@@ -143,7 +141,6 @@ no-attack-area           = 8       253 115 259 120
 
 
 maximum-object		= 500
-//random-mob-generator	= 1  1
 
 
 //Npc 생성 금지구역
@@ -158,18 +155,13 @@ spot-mob-generator	= 5  1    186 227 224 236    54   35 // Dark Elf Abajo Medio 
 spot-mob-generator	= 6  1    253 189 264 208    11   40 // Skeleton abajo derecha
 spot-mob-generator	= 7  1    109 49 126 50      18   60 // Zombies Arriba derecha
 
-
-
-
-
-
 // 경비병 고정 지역 
-spot-mob-generator	= 9  1    135 44 146 55      24  3 
-spot-mob-generator	= 10 1    63 121 74 131      24  3
-spot-mob-generator	= 11 1    165 140 176 151    24  3
-spot-mob-generator	= 12 1    135 201 145 210    24  3
-spot-mob-generator	= 13 1    111 241 121 250    24  3
-spot-mob-generator	= 14 1    250 112 261 123    24  3 
+spot-mob-generator	= 8  1    135 44 146 55      24  3 
+spot-mob-generator	= 9 1    63 121 74 131      24  3
+spot-mob-generator	= 10 1    165 140 176 151    24  3
+spot-mob-generator	= 11 1    135 201 145 210    24  3
+spot-mob-generator	= 12 1    111 241 121 250    24  3
+spot-mob-generator	= 13 1    250 112 261 123    24  3 
 
 
 

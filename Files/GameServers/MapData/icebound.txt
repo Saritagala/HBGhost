@@ -40,7 +40,6 @@ no-attack-area           = 1       258 258 272 264
 // Appearing Monsters:
 // DireBoar, Rudolf, Frost, Beholder, Ice Golem, Skell, Stone Golem, Frog, 
 // Wyverns & some rabbits 
-random-mob-generator	= 1  17
 maximum-object		= 400
 
 //-----------------------Num-Type-RECT------------------Mob-MobNum
@@ -60,36 +59,36 @@ spot-mob-generator	= 6    1    102 219 164 277	57	8
 spot-mob-generator	= 7    1    103 220 163 276	53	5
 
 // Pit Grass NorthEast: 10 Ruddolfs + 5 BB + 5 Frogs
-spot-mob-generator	= 9    1    174  26 236  83	61	10
-spot-mob-generator	= 10   1    178  26 232  79	53	5
-spot-mob-generator	= 11   1    174  26 236  83	57	5
+spot-mob-generator	= 8    1    174  26 236  83	61	10
+spot-mob-generator	= 9   1    178  26 232  79	53	5
+spot-mob-generator	= 10   1    174  26 236  83	57	5
 
 // NorthWest pit near TWs 10 Frosts + 10 Ices
-spot-mob-generator	= 12   1    51  85 105 136	63	10
-spot-mob-generator	= 13   1    50  72  86 137	65	10
+spot-mob-generator	= 11   1    51  85 105 136	63	10
+spot-mob-generator	= 12   1    50  72  86 137	65	10
 
 // SouthWest small BB pit
-spot-mob-generator	= 14   1     45 202  83 233	53	5
+spot-mob-generator	= 13   1     45 202  83 233	53	5
 
 // North pits 6 BBs + 6 Frosts
-spot-mob-generator	= 15   1    179  77 237 113	53	6
-spot-mob-generator	= 16   1    159  79 197 171	63	6
+spot-mob-generator	= 14   1    179  77 237 113	53	6
+spot-mob-generator	= 15   1    159  79 197 171	63	6
 
 // Ruddolf West
-spot-mob-generator	= 17   1     89 148 127 176	61	5
+spot-mob-generator	= 16   1     89 148 127 176	61	5
 
 // Frost NorthEast
-spot-mob-generator	= 18   1    225  63 269 109	63	8
+spot-mob-generator	= 17   1    225  63 269 109	63	8
 
 // SouthEast hill -> IceGolem 
-spot-mob-generator	= 19   1    198 170 243 206	65	10
+spot-mob-generator	= 18   1    198 170 243 206	65	10
 
-spot-mob-generator	= 20    1    190 224 221 256	65	60 // Ice Golem Primer Pit Abajo
-spot-mob-generator	= 21    1    220 251 139 157	65	60 // Ice Golem Segundo Pit Abajo
-spot-mob-generator	= 22    1    199 37  218 51	63	40 // Frost Arriba Derecha
-spot-mob-generator	= 23    1    137 57  161 71	79	40 // Nizzie al medio
-spot-mob-generator	= 24    1    43  35  70  58	66	2  //Wyvern
-spot-mob-generator	= 25    1    227 139 252 161	65	50  //Ice Golem MEDIO
+spot-mob-generator	= 19    1    190 224 221 256	65	60 // Ice Golem Primer Pit Abajo
+spot-mob-generator	= 20    1    220 251 139 157	65	60 // Ice Golem Segundo Pit Abajo
+spot-mob-generator	= 21    1    199 37  218 51	63	40 // Frost Arriba Derecha
+spot-mob-generator	= 22    1    137 57  161 71	79	40 // Nizzie al medio
+spot-mob-generator	= 23    1    43  35  70  58	66	2  //Wyvern
+spot-mob-generator	= 24    1    227 139 252 161	65	50  //Ice Golem MEDIO
 
 
 [END-MAP-INFO]

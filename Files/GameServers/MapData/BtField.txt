@@ -8,8 +8,6 @@ t//ype 			= 2
 initial-point 	= 1  264 260
 maximum-object	= 350
 
-random-mob-generator 	= 1  20
-
 //-WayPoint-Set---------Num-----X-----Y----;
 waypoint          =     0       55    94
 waypoint          =     1       113   76

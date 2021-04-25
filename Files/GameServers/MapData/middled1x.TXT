@@ -31,7 +31,6 @@ no-attack-area           = 1       64 75 79 113
 fixed-dayornight-mode = 1
 
 maximum-object		= 150
-random-mob-generator	= 1 5
 
 
 mineral-generator = 1 6

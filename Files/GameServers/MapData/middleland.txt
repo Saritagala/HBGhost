@@ -56,9 +56,9 @@ teleport-loc	=	318	20	elvine	254	267	1
 teleport-loc	=	319	20	elvine	254	267	1
 teleport-loc	=	320	20	elvine	254	267	1
 
-teleport-loc	=	199	235	middled1x	70	108	1
-teleport-loc	=	200	235	middled1x	70	108	1
-teleport-loc	=	200	234	middled1x	70	108	1
+teleport-loc	=	199	235	middled1x 	70	108	1
+teleport-loc	=	200	235	middled1x	 	70	108	1
+teleport-loc	=	200	234	middled1x	 	70	108	1
 
 
 
@@ -94,8 +94,7 @@ waypoint          =     18      400   455
 waypoint          =     19      450   525			
 
 
-maximum-object	=	750
-random-mob-generator	=	1	3							
+maximum-object	=	750						
 
 //-----------------------Num-Type-RECT---------------Mob-MobNum									
 //	ogre								
@@ -191,10 +190,6 @@ fish-point = 11  424 289
 fish-point = 12  435 263
 fish-point = 13  461 260
 fish-point = 14  469 291
-
-//energy-sphere
-energy-sphere-creation-point = 1 1 161 219
-energy-sphere-goal-point     = 1 1 237 182 179 284
 
 
 

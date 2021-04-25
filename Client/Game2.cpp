@@ -2900,7 +2900,8 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 
 			string st1 = m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName;
 			if (memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroSword", 9) == 0 ||
-				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroWand", 8) == 0)
+				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroWand", 8) == 0 ||
+				memcmp(m_pItemList[m_stDialogBoxInfo[34].sV1]->m_cName, "HeroBow", 7) == 0)
 			{
 				PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, "Required: 20.000 EKs");
 			}
@@ -3260,8 +3261,6 @@ int CGame::iGetManaCost(int iMagicNo)
 			else if (strcmp(m_pItemList[i]->m_cName, "MagicWand(MS60-LLF)") == 0) iManaSave += 60;
 		}
 	}
-	//Magn0S:: Added to fix the right value.
-	iManaCost = m_iManaSaveRatio;
 	// Snoopy: MS max = 80%
 	if (iManaSave > 80) iManaSave = 80;
 	iManaCost = m_pMagicCfgList[iMagicNo]->m_sValue1;
@@ -3984,24 +3983,30 @@ int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 	case 3:
 		if ((cArmor == 8) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Warr elv M
 		if ((cArmor == 9) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Warr ares M
-		//if ((cArmor == 14) && (cLeg == 5) && (cHat == 9) && (cBerk == 3)) return (1); // Archer Elvine M
-		//if ((cArmor == 15) && (cLeg == 6) && (cHat == 10) && (cBerk == 4)) return (1); // Archer Aresden M
-		if ((cArmor == 13) && (cLeg == 7) && (cHat == 14) && (cBerk == 5)) return (1); // Warr God M
+		if ((cArmor == 13) && (cLeg == 7) && (cHat == 14) && (cBerk == 5)) return (1); // Warr Ghost M
+		
 		if ((cArmor == 10) && (cLeg == 5) && (cHat == 11) && (cBerk == 3)) return (2); // Mage elv M
 		if ((cArmor == 11) && (cLeg == 6) && (cHat == 12) && (cBerk == 4)) return (2); // Mage ares M
-		if ((cArmor == 12) && (cLeg == 7) && (cHat == 13) && (cBerk == 5)) return (2); // Mage God M
+		if ((cArmor == 12) && (cLeg == 7) && (cHat == 13) && (cBerk == 5)) return (2); // Mage Ghost M
+
+		if ((cArmor == 8) && (cLeg == 5) && (cHat == 11) && (cBerk == 3)) return (1); // Archer elv M
+		if ((cArmor == 9) && (cLeg == 6) && (cHat == 12) && (cBerk == 4)) return (1); // Archer ares M
+		if ((cArmor == 13) && (cLeg == 7) && (cHat == 13) && (cBerk == 5)) return (1); // Archer God M
 		break;
 	case 4:
 	case 5:
 	case 6: // fixed
 		if ((cArmor == 9) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //War Elvine W
-		//if ((cArmor == 15) && (cLeg == 6) && (cHat == 9) && (cBerk == 4)) return (1); //Archer Elvine W
 		if ((cArmor == 10) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //War Aresden W
-		//if ((cArmor == 13) && (cLeg == 7) && (cHat == 10) && (cBerk == 5)) return (1); //Archer Aresden W
-		if ((cArmor == 14) && (cLeg == 8) && (cHat == 14) && (cBerk == 6)) return (1); //War Ultimate W
+		if ((cArmor == 14) && (cLeg == 8) && (cHat == 14) && (cBerk == 6)) return (1); //War Ghost W
+		
 		if ((cArmor == 11) && (cLeg == 6) && (cHat == 11) && (cBerk == 4)) return (2); //Mage Elvine W
 		if ((cArmor == 12) && (cLeg == 7) && (cHat == 12) && (cBerk == 5)) return (2); //Mage Aresden W
-		if ((cArmor == 13) && (cLeg == 8) && (cHat == 13) && (cBerk == 6)) return (2); //Mage Ultimate W
+		if ((cArmor == 13) && (cLeg == 8) && (cHat == 13) && (cBerk == 6)) return (2); //Mage Ghost W
+
+		if ((cArmor == 9) && (cLeg == 6) && (cHat == 11) && (cBerk == 4)) return (1); //War Elvine W
+		if ((cArmor == 10) && (cLeg == 7) && (cHat == 12) && (cBerk == 5)) return (1); //War Aresden W
+		if ((cArmor == 14) && (cLeg == 8) && (cHat == 13) && (cBerk == 6)) return (1); //War Ghost W
 		break;
 	}
 	return 0;
@@ -19523,6 +19528,45 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			m_dwMonsterEventTime = 0;
 			m_sMonsterID = 0;
 		}
+
+		if (m_bNpcMap) {
+			if (m_cMapIndex == 11) { // Aresden
+	 // Slime
+				if (141 >= shX && 141 <= shX + 128 && 240 >= shY && 240 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 10, m_dwCurTime);
+				if (253 >= shX && 253 <= shX + 128 && 203 >= shY && 203 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 10, m_dwCurTime);
+				if (43 >= shX && 43 <= shX + 128 && 182 >= shY && 182 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 182 - shY, 10, m_dwCurTime);
+				if (122 >= shX && 122 <= shX + 128 && 50 >= shY && 50 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 50 - shY, 10, m_dwCurTime);
+				// Snake
+				if (203 >= shX && 203 <= shX + 128 && 236 >= shY && 236 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 22, m_dwCurTime);
+				// Scorpion
+				if (102 >= shX && 102 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 102 - shX, sY + 36 - shY, 17, m_dwCurTime);
+			}
+			else if (m_cMapIndex == 3) { // Elvine
+			// Slime
+				if (154 >= shX && 154 <= shX + 128 && 38 >= shY && 38 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 154 - shX, sY + 38 - shY, 10, m_dwCurTime);
+				if (54 >= shX && 54 <= shX + 128 && 65 >= shY && 65 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 54 - shX, sY + 65 - shY, 10, m_dwCurTime);
+				if (135 >= shX && 135 <= shX + 128 && 248 >= shY && 248 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 10, m_dwCurTime);
+				if (240 >= shX && 240 <= shX + 128 && 214 >= shY && 214 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 10, m_dwCurTime);
+				if (260 >= shX && 260 <= shX + 128 && 184 >= shY && 184 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 260 - shX, sY + 184 - shY, 10, m_dwCurTime);
+				// Snake
+				if (48 >= shX && 48 <= shX + 128 && 202 >= shY && 202 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 22, m_dwCurTime);
+				// Scorpion
+				if (127 >= shX && 127 <= shX + 128 && 34 >= shY && 34 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 127 - shX, sY + 34 - shY, 17, m_dwCurTime);
+			}
+		}
 	}
 	else // Sans zoom
 	{
@@ -19660,7 +19704,31 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			m_sMonsterID = 0;
 		}
 
-		
+		if (m_bNpcMap) {
+			if (m_cMapIndex == 11) { // Aresden
+	 // Slime
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((182 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((50 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				// Snake
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 22, m_dwCurTime);
+				// Scorpion
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((102 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 17, m_dwCurTime);
+			}
+			else if (m_cMapIndex == 3) { // Elvine
+			// Slime
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((54 * 128) / m_pMapData->m_sMapSizeX), sY + ((65 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((260 * 128) / m_pMapData->m_sMapSizeX), sY + ((184 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				// Snake
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 22, m_dwCurTime);
+				// Scorpion
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((127 * 128) / m_pMapData->m_sMapSizeX), sY + ((34 * 128) / m_pMapData->m_sMapSizeX), 17, m_dwCurTime);
+			}
+		}
 	}
 	if (cLB != 0) return;
 	if (msX >= sX && msX < sX + szY && msY >= sY && msY < sY + szY)
@@ -21984,6 +22052,10 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 			if (m_bGrid) m_bGrid = false; else m_bGrid = true;
 
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (m_bNpcMap) m_bNpcMap = false; else m_bNpcMap = true;
+
 		//Back
 		if ((msX > sX + 220) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
 			m_stDialogBoxInfo[53].cMode = 0; // Return
@@ -22505,6 +22577,16 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 19, 104, 169);
 
 		if (m_bGrid) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext += 1;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show NPC", 19, 104, 169);
+
+		if (m_bNpcMap) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 
 		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))

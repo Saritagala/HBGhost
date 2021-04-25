@@ -2283,8 +2283,51 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 
 	iValue = (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 
+	// HeroBow
+	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 1010)
+	{
+		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
+		{
+			iItemX = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x;
+			iItemY = m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y;
+			delete m_pClientList[iClientH]->m_pItemList[iItemIndex];
+			m_pClientList[iClientH]->m_pItemList[iItemIndex] = NULL;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex] = new class CItem;
+			m_pClientList[iClientH]->m_ItemPosList[iItemIndex].x = iItemX;
+			m_pClientList[iClientH]->m_ItemPosList[iItemIndex].y = iItemY;
+			if (_bInitItemAttr(m_pClientList[iClientH]->m_pItemList[iItemIndex], 1011) == false)
+			{
+				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, NULL, NULL);
+				return;
+			}
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 = m_pClientList[iClientH]->m_sCharIDnum1;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 = m_pClientList[iClientH]->m_sCharIDnum2;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 = m_pClientList[iClientH]->m_sCharIDnum3;
+			dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+			dwTemp = dwTemp & 0x0FFFFFFF;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMCANGE, iItemIndex,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wCurLifeSpan,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSprite,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sSpriteFrame,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemSpecEffectValue2,
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute);
+			_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
+		}
+		else
+		{
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, NULL, NULL, NULL);
+			_bItemLog(DEF_ITEMLOG_UPGRADEFAIL, iClientH, -1, m_pClientList[iClientH]->m_pItemList[iItemIndex], false);
+		}
+		return;
+	}
+
 	// HeroSword & HeroWand
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 1003)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 1003)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2326,7 +2369,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 		return;
 	}
 
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 988)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 988)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2369,7 +2412,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Helm (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 403 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 405)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 403 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 405)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2412,7 +2455,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Helm (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 404 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 406)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 404 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 406)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2455,7 +2498,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Cap (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 407 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 409)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 407 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 409)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2498,7 +2541,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Cap (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 408 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 410)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 408 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 410)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2541,7 +2584,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Armor (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 411 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 413)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 411 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 413)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2584,7 +2627,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Armor (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 412 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 414)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 412 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 414)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2627,7 +2670,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Robe (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 415 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 417)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 415 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 417)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2670,7 +2713,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Robe (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 416 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 418)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 416 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 418)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2713,7 +2756,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Hauberk (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 419 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 421)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 419 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 421)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2756,7 +2799,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Hauberk (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 420 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 422)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 420 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 422)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2799,7 +2842,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Leggings (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 423 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 425)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 423 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 425)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2842,7 +2885,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Leggings (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 424 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 426)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 424 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 426)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2885,7 +2928,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Hood (M)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 392 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 394)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 392 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 394)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -2928,7 +2971,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 	}
 
 	// Hero Hood (W)
-	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 393 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 395)
+	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 393 || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum == 395)
 	{
 		if (iUpgradeHeroItemRequirements(iClientH, iItemIndex))
 		{
@@ -4425,6 +4468,12 @@ bool CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
 	else if (iBeforeItemID == 988) {
 		
 		iAfterItemID = 1005;
+		iStoneNumber = 656;
+		iRequiredEnemyKills = 20000;
+	}
+
+	else if (iBeforeItemID == 1010) {
+		iAfterItemID = 1011;
 		iStoneNumber = 656;
 		iRequiredEnemyKills = 20000;
 	}
