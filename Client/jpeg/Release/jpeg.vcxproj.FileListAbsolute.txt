@@ -1,1 +1,2 @@
 C:\Users\centu\Desktop\HBGhost\Client\jpeg\Release\jpeg.lib
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\jpeg\Release\jpeg.lib

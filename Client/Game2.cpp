@@ -19529,42 +19529,37 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			m_sMonsterID = 0;
 		}
 
-		if (m_bNpcMap) {
+		if (m_bNpcMap) {//MAPA GRANDE
 			if (m_cMapIndex == 11) { // Aresden
 	 // Slime
-				if (141 >= shX && 141 <= shX + 128 && 240 >= shY && 240 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 141 - shX, sY + 240 - shY, 10, m_dwCurTime);
-				if (253 >= shX && 253 <= shX + 128 && 203 >= shY && 203 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 203 - shY, 10, m_dwCurTime);
-				if (43 >= shX && 43 <= shX + 128 && 182 >= shY && 182 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 43 - shX, sY + 182 - shY, 10, m_dwCurTime);
-				if (122 >= shX && 122 <= shX + 128 && 50 >= shY && 50 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 50 - shY, 10, m_dwCurTime);
-				// Snake
-				if (203 >= shX && 203 <= shX + 128 && 236 >= shY && 236 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 203 - shX, sY + 236 - shY, 22, m_dwCurTime);
-				// Scorpion
-				if (102 >= shX && 102 <= shX + 128 && 36 >= shY && 36 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 102 - shX, sY + 36 - shY, 17, m_dwCurTime);
+				if (88 >= shX && 88 <= shX + 128 && 31 >= shY && 31 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 88 - shX, sY + 31 - shY, 17, m_dwCurTime);
+				if (30 >= shX && 30 <= shX + 128 && 170 >= shY && 170 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 30 - shX, sY + 170 - shY, 12, m_dwCurTime);
+				if (134 >= shX && 134 <= shX + 128 && 234 >= shY && 234 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 134 - shX, sY + 234 - shY, 10, m_dwCurTime);
+				if (186 >= shX && 186 <= shX + 128 && 227 >= shY && 227 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 186 - shX, sY + 227 - shY, 54, m_dwCurTime);
+				if (253 >= shX && 253 <= shX + 128 && 189 >= shY && 189 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 253 - shX, sY + 189 - shY, 11, m_dwCurTime);
+				if (109 >= shX && 109 <= shX + 128 && 49 >= shY && 49 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 109 - shX, sY + 49 - shY, 18, m_dwCurTime);
 			}
 			else if (m_cMapIndex == 3) { // Elvine
 			// Slime
-				if (154 >= shX && 154 <= shX + 128 && 38 >= shY && 38 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 154 - shX, sY + 38 - shY, 10, m_dwCurTime);
-				if (54 >= shX && 54 <= shX + 128 && 65 >= shY && 65 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 54 - shX, sY + 65 - shY, 10, m_dwCurTime);
-				if (135 >= shX && 135 <= shX + 128 && 248 >= shY && 248 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 135 - shX, sY + 248 - shY, 10, m_dwCurTime);
-				if (240 >= shX && 240 <= shX + 128 && 214 >= shY && 214 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 240 - shX, sY + 214 - shY, 10, m_dwCurTime);
-				if (260 >= shX && 260 <= shX + 128 && 184 >= shY && 184 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 260 - shX, sY + 184 - shY, 10, m_dwCurTime);
-				// Snake
-				if (48 >= shX && 48 <= shX + 128 && 202 >= shY && 202 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 48 - shX, sY + 202 - shY, 22, m_dwCurTime);
-				// Scorpion
-				if (127 >= shX && 127 <= shX + 128 && 34 >= shY && 34 <= shY + 128)
-					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 127 - shX, sY + 34 - shY, 17, m_dwCurTime);
+				if (148 >= shX && 148 <= shX + 128 && 29 >= shY && 29 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 148 - shX, sY + 29 - shY, 17, m_dwCurTime);
+				if (123 >= shX && 123 <= shX + 128 && 28 >= shY && 28 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 123 - shX, sY + 28 - shY, 11, m_dwCurTime);
+				if (46 >= shX && 46 <= shX + 128 && 56 >= shY && 56 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 46 - shX, sY + 56 - shY, 18, m_dwCurTime);
+				if (31 >= shX && 31 <= shX + 128 && 176 >= shY && 176 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 31 - shX, sY + 176 - shY, 12, m_dwCurTime);
+				if (122 >= shX && 122 <= shX + 128 && 234 >= shY && 234 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 122 - shX, sY + 234 - shY, 10, m_dwCurTime);
+				if (234 >= shX && 234 <= shX + 128 && 201 >= shY && 201 <= shY + 128)
+					m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + 234 - shX, sY + 201 - shY, 54, m_dwCurTime);
+		
 			}
 		}
 	}
@@ -19704,29 +19699,26 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			m_sMonsterID = 0;
 		}
 
-		if (m_bNpcMap) {
+		if (m_bNpcMap) {//MAPA CHICO
 			if (m_cMapIndex == 11) { // Aresden
-	 // Slime
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((141 * 128) / m_pMapData->m_sMapSizeX), sY + ((240 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((203 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((43 * 128) / m_pMapData->m_sMapSizeX), sY + ((182 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((50 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				// Snake
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((203 * 128) / m_pMapData->m_sMapSizeX), sY + ((236 * 128) / m_pMapData->m_sMapSizeX), 22, m_dwCurTime);
-				// Scorpion
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((102 * 128) / m_pMapData->m_sMapSizeX), sY + ((36 * 128) / m_pMapData->m_sMapSizeX), 17, m_dwCurTime);
+	 
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((83 * 128) / m_pMapData->m_sMapSizeX), sY + ((31 * 128) / m_pMapData->m_sMapSizeX), 17, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((30 * 128) / m_pMapData->m_sMapSizeX), sY + ((170 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((133 * 128) / m_pMapData->m_sMapSizeX), sY + ((234 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((186 * 128) / m_pMapData->m_sMapSizeX), sY + ((227 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((253 * 128) / m_pMapData->m_sMapSizeX), sY + ((189 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((109 * 128) / m_pMapData->m_sMapSizeX), sY + ((49 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
+			
 			}
 			else if (m_cMapIndex == 3) { // Elvine
-			// Slime
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((154 * 128) / m_pMapData->m_sMapSizeX), sY + ((38 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((54 * 128) / m_pMapData->m_sMapSizeX), sY + ((65 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((135 * 128) / m_pMapData->m_sMapSizeX), sY + ((248 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((240 * 128) / m_pMapData->m_sMapSizeX), sY + ((214 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((260 * 128) / m_pMapData->m_sMapSizeX), sY + ((184 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
-				// Snake
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((48 * 128) / m_pMapData->m_sMapSizeX), sY + ((202 * 128) / m_pMapData->m_sMapSizeX), 22, m_dwCurTime);
-				// Scorpion
-				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((127 * 128) / m_pMapData->m_sMapSizeX), sY + ((34 * 128) / m_pMapData->m_sMapSizeX), 17, m_dwCurTime);
+			
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((148 * 128) / m_pMapData->m_sMapSizeX), sY + ((29 * 128) / m_pMapData->m_sMapSizeX), 17, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((123 * 128) / m_pMapData->m_sMapSizeX), sY + ((28 * 128) / m_pMapData->m_sMapSizeX), 11, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((46 * 128) / m_pMapData->m_sMapSizeX), sY + ((56 * 128) / m_pMapData->m_sMapSizeX), 18, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((31 * 128) / m_pMapData->m_sMapSizeX), sY + ((176 * 128) / m_pMapData->m_sMapSizeX), 12, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((122 * 128) / m_pMapData->m_sMapSizeX), sY + ((234 * 128) / m_pMapData->m_sMapSizeX), 10, m_dwCurTime);
+				m_pSprite[DEF_SPRID_INTERFACE_MONSTER]->PutSpriteFast(sX + ((234 * 128) / m_pMapData->m_sMapSizeX), sY + ((201 * 128) / m_pMapData->m_sMapSizeX), 54, m_dwCurTime);
+				
 			}
 		}
 	}

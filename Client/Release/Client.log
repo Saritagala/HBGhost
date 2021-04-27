@@ -1,0 +1,49 @@
+﻿  Game2.cpp
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(1142,29): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(3232,31): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(3301,30): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(3308,29): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(3352,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(3429,29): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(10378,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(10379,31): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(10401,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(12351,79): warning C4305: 'argumento': truncamiento de 'int' a 'bool'
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15164,30): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15164,92): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15169,58): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15173,59): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15214,58): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15240,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15294,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15319,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15338,54): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15339,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15344,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15349,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15354,31): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15388,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15390,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15396,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15403,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15641,36): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15642,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15647,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15653,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(15876,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(16208,34): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(16218,35): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(16691,39): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(16814,39): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(16943,39): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(17740,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(20422,31): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21766,67): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21901,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21909,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21917,32): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21925,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21936,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Game2.cpp(21944,33): warning C4805: '==': combinación no segura del tipo 'int' y el tipo 'bool' en la operación
+     Creando biblioteca .\Release\Game.lib y objeto .\Release\Game.exp
+  Client.vcxproj -> C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\Release\Game.exe
