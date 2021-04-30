@@ -48,10 +48,10 @@ unsigned __stdcall  ThreadProc(void *ch)
 	iCurrentUserTime = 0 ;
 	i = 0;
 	while (G_bThreadFlag == true) {
-		Sleep(100);
+		Sleep(1000);
 
 		iCurrentUserTime++ ; 
-		if (iCurrentUserTime > 60*1) {
+		if (iCurrentUserTime > 60) {
 			// 1분마다 한번씩 현재 사용자 기록함  
 			ZeroMemory(cTemp,sizeof(cTemp)) ;
 
@@ -159,7 +159,7 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
  char cTitle[100];
 	
 	// 서버 부팅시간 기록 
-	wsprintf(cTitle, "Helbreath GateServer V3.51 by Centu", 0);
+	wsprintf(cTitle, "Helbreath Gate-Server V3.51 by Centu", 0);
 	
 	G_hWnd = CreateWindowEx(0,  // WS_EX_TOPMOST,
         szAppClass,
@@ -236,7 +236,7 @@ void Initialize()
 	// 서버 검사용 타이머 시작 
 	G_mmTimer0 = _StartTimer(3000);
 
-	PutLogList("(!) Gate Server Listening...");
+	PutLogList("(!) Gate-Server Listening...");
 }
 
 

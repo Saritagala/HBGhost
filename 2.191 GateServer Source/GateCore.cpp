@@ -66,7 +66,7 @@ bool CGateCore::bInit()
 {
 	if (bReadProgramConfigFile("GateServer.cfg") == false) return false;
 
-	unsigned uAddr;
+	unsigned int uAddr;
 	_beginthreadex(0, 0, ThreadProc, 0, 0, &uAddr);
 
 	return true;
@@ -110,7 +110,7 @@ bool CGateCore::bReadProgramConfigFile(char * cFn)
 				
 				
 					m_iGateServerPort = atoi(token);
-					wsprintf(cTxt, "(*) Gate server port : %d", m_iGateServerPort);
+					wsprintf(cTxt, "(*) Gate-server port : %d", m_iGateServerPort);
 					PutLogList(cTxt);
 					cReadMode = 0;
 					break;
@@ -132,7 +132,7 @@ bool CGateCore::bReadProgramConfigFile(char * cFn)
 					ZeroMemory(m_cGateServerAddr, sizeof(m_cGateServerAddr));
 					
 					strcpy(m_cGateServerAddr,token );
-					wsprintf(cTxt, "(*) Gate server address : %s", m_cGateServerAddr);
+					wsprintf(cTxt, "(*) Gate-server address : %s", m_cGateServerAddr);
 					PutLogList(cTxt);
 					cReadMode = 0;
 					break;
@@ -150,9 +150,9 @@ bool CGateCore::bReadProgramConfigFile(char * cFn)
 			token = strtok( NULL, seps );
 		}
 
-		delete cp;
+		delete[] cp;
+		fclose(pFile);
 	}
-	if (pFile != NULL) fclose(pFile);
 
 
 	//2003-1-17일 문성훈 추가 게이트 서버 아이피를 않넣어 주는 경우 
@@ -775,7 +775,7 @@ void CGateCore::SendMsgToMonitor(DWORD dwMsg, WORD wMsgType, char *  pGameServer
 				delete m_pClientList[i];
 				m_pClientList[i] = NULL;
 		
-				wsprintf(cTxt,"(*** CRITICAL ERROR! Monitor(%d) connection lost!!! ***", i);
+				wsprintf(cTxt,"*** CRITICAL ERROR! Monitor(%d) connection lost!!! ***", i);
 				PutLogList(cTxt);
 				return;
 			}
@@ -805,7 +805,7 @@ void CGateCore::SendMsgToMonitor(char * pData, DWORD dwMsgSize)
 				delete m_pClientList[i];
 				m_pClientList[i] = NULL;
 		
-				wsprintf(cTxt,"(*** CRITICAL ERROR! Monitor(%d) connection lost!!! ***", i);
+				wsprintf(cTxt,"*** CRITICAL ERROR! Monitor(%d) connection lost!!! ***", i);
 				PutLogList(cTxt);
 				return;
 			}

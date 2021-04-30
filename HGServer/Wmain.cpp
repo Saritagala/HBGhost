@@ -76,7 +76,7 @@ unsigned __stdcall ThreadProc(void* ch)
 	class CTile* pTile;
 	while (G_bIsThread)
 	{
-		Sleep(100); // centu - 10000 -> 100
+		Sleep(1000); // centu - 10000 -> 1000
 
 		for (int a = 0; a < DEF_MAXMAPS; a++)
 		{

@@ -4343,7 +4343,9 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite( "MHelm4", DEF_SPRID_HEAD_M + 15*4, 12, true);
 			MakeSprite( "MHCap1", DEF_SPRID_HEAD_M + 15*11, 12, true);
 			MakeSprite( "MHCap2", DEF_SPRID_HEAD_M + 15*12, 12, true);
-			MakeSprite("GodCap", DEF_SPRID_HEAD_M + 15 * 13, 12, true);
+
+			MakeSprite("GodCap", DEF_SPRID_HEAD_M + 15 * 15, 12, true);
+			
 			MakeSprite( "MHHelm1", DEF_SPRID_HEAD_M + 15*9, 12, true);
 			MakeSprite( "MHHelm2", DEF_SPRID_HEAD_M + 15*10, 12, true);
 			MakeSprite("GodHelm", DEF_SPRID_HEAD_M + 15 * 14, 12, true);
@@ -4504,11 +4506,15 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 			MakeSprite("GodHelmW", DEF_SPRID_HEAD_W + 15 * 14, 12, true);
 			MakeSprite( "WHCap1",	 DEF_SPRID_HEAD_W + 15*11, 12, true);
 			MakeSprite( "WHCap2",	 DEF_SPRID_HEAD_W + 15*12, 12, true);
-			MakeSprite("GodCapW", DEF_SPRID_HEAD_W + 15 * 13, 12, true);
+			MakeSprite("GodCapW", DEF_SPRID_HEAD_W + 15 * 15, 12, true);
 			MakeSprite( "NWHelm1",	 DEF_SPRID_HEAD_W + 15*5, 12, true);
 			MakeSprite( "NWHelm2",	 DEF_SPRID_HEAD_W + 15*6, 12, true);
 			MakeSprite( "NWHelm3",	 DEF_SPRID_HEAD_W + 15*7, 12, true);
 			MakeSprite( "NWHelm4",	 DEF_SPRID_HEAD_W + 15*8, 12, true);
+
+			// centuu - ghost set
+			MakeSprite("WGodCap", DEF_SPRID_HEAD_W + 15 * 13, 12, true);
+			MakeSprite("WGodHelm", DEF_SPRID_HEAD_W + 15 * 14, 12, true);
 			m_cLoading = 96;
 		}
 		break;
@@ -7871,6 +7877,24 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			break;
 
+			//HellFire Rain
+		case 85:
+		case 86:
+		case 87:
+			m_pEffectList[i]->m_mX = sX;
+			m_pEffectList[i]->m_mY = sY;
+			m_pEffectList[i]->m_cMaxFrame = 14;
+			m_pEffectList[i]->m_dwFrameTime = 35;
+			lPan = -(((m_sViewPointX / 32) + 10) - dX) * 1000;
+			PlaySound('E', 4, sDist, lPan);
+			SetCameraShakingEffect(sDist + 1, 2);
+			break;
+
+		case 190: //HELLFIRE!
+			m_pEffectList[i]->m_cMaxFrame = 30;
+			m_pEffectList[i]->m_dwFrameTime = 35;
+			break;
+
 		case 110: // Energy-Bolt
 			m_pEffectList[i]->m_mX     = sX*32;
 			m_pEffectList[i]->m_mY     = sY*32 - 40;
@@ -7994,7 +8018,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 		case 177: // Illusion-Movement
 		case 180: // Illusion
 		case 183: // Inhibition-Casting
-		case 190: // Mass-Illusion
+		case 184: // Mass-Illusion
 		case 195: // Mass-Illusion-Movement
 			m_pEffectList[i]->m_cMaxFrame   = 11;
 			m_pEffectList[i]->m_dwFrameTime = 100;
@@ -8480,6 +8504,138 @@ void CGame::DrawEffects()
 				dX, dY,
 				m_pEffectList[i]->m_rX, m_pEffectList[i]->m_rY, 1);
 
+			break;
+
+			//HELLFIRE
+		case 85:
+			//AddEventList("Effect 1");
+			cTempFrame = m_pEffectList[i]->m_cFrame;
+			if (cTempFrame < 0) break;
+			dX = m_pEffectList[i]->m_mX;
+			dY = m_pEffectList[i]->m_mY;
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 30, dY - 155, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 20, dY - 105, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 10, dY - 55, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX, dY - 5, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[3]->PutTransSprite_NoColorKey(dX, dY, cTempFrame, dwTime);
+			//else m_pEffectSpr[3]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime);
+			bAddNewEffect(10, dX, dY, NULL, NULL, 0, 0);
+			break;
+
+		case 86:
+			//AddEventList("Effect 2");
+			cTempFrame = m_pEffectList[i]->m_cFrame;
+			if (cTempFrame < 0) break;
+			dX = m_pEffectList[i]->m_mX;
+			dY = m_pEffectList[i]->m_mY;
+			m_pEffectSpr[134]->PutTransSprite_NoColorKey(dX - 140, dY - 150, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[134]->PutTransSprite_NoColorKey(dX - 110, dY - 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[134]->PutTransSprite_NoColorKey(dX - 80, dY - 502, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[134]->PutTransSprite_NoColorKey(dX - 50, dY, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 50, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 50, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[3]->PutTransSprite_NoColorKey(dX, dY, cTempFrame, dwTime);
+			//else m_pEffectSpr[3]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime);
+			bAddNewEffect(10, dX, dY, NULL, NULL, 0, 0);
+			break;
+
+		case 87:
+			//AddEventList("Effect 3");
+			cTempFrame = m_pEffectList[i]->m_cFrame;
+			if (cTempFrame < 0) break;
+			dX = m_pEffectList[i]->m_mX;
+			dY = m_pEffectList[i]->m_mY;
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 115, dY - 150, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 85, dY - 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 55, dY - 50, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 20, dY, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 110, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 110, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+
+			//else m_pEffectSpr[3]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime);
+			bAddNewEffect(10, dX, dY, NULL, NULL, 0, 0);
+			break;
+
+		case 190://HELLFIRE	
+
+			cTempFrame = m_pEffectList[i]->m_cFrame;
+			if (cTempFrame < 0) break;
+			dX = (m_pEffectList[i]->m_dX * 32) - m_sViewPointX;
+			dY = (m_pEffectList[i]->m_dY * 32) - m_sViewPointY;
+			//Timed Logic
+			if ((timeGetTime() - m_pEffectList[i]->m_dwLoopEndTime) > 20)
+			{
+				int dwRand, dwOffsetX, dwOffsetY, dwSoundLoop;
+				dwSoundLoop = 0;
+				dwRand = dice(1, 3);
+				m_pEffectList[i]->m_dwLoopEndTime = timeGetTime();
+
+				//Randomize the offsets of the X and Y
+				dwOffsetX = dice(1, 100);
+				dwOffsetY = dice(1, 80);
+				switch (dwRand)
+				{
+				case 1:
+					//AddEventList("test 1");
+					switch (dice(1, 4)) {
+					case 1:
+						bAddNewEffect(85, dX + dwOffsetX, dY + dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 2:
+						bAddNewEffect(85, dX - dwOffsetX, dY - dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 3:
+						bAddNewEffect(85, dX + dwOffsetX, dY - dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 4:
+						bAddNewEffect(85, dX - dwOffsetX, dY + dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					}
+					break;
+				case 2:
+					//AddEventList("test 2");
+					switch (dice(1, 4)) {
+					case 1:
+						bAddNewEffect(86, dX + dwOffsetX, dY + dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 2:
+						bAddNewEffect(86, dX - dwOffsetX, dY - dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 3:
+						bAddNewEffect(86, dX + dwOffsetX, dY - dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 4:
+						bAddNewEffect(86, dX - dwOffsetX, dY + dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					}
+					break;
+				case 3:
+					//AddEventList("test 3");
+					switch (dice(1, 4)) {
+					case 1:
+						bAddNewEffect(87, dX + dwOffsetX, dY + dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 2:
+						bAddNewEffect(87, dX - dwOffsetX, dY - dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 3:
+						bAddNewEffect(87, dX + dwOffsetX, dY - dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					case 4:
+						bAddNewEffect(87, dX - dwOffsetX, dY + dwOffsetY, NULL, NULL, 0, dwSoundLoop);
+						break;
+					}
+					break;
+				}
+			}
 			break;
 
 		case 34: // absent (220 et 351)
@@ -9034,7 +9190,7 @@ void CGame::DrawEffects()
 			m_pEffectSpr[96]->PutTransSprite(dX, dY, m_pEffectList[i]->m_cFrame, dwTime, 0);
 			break;
 
-		case 190: // Mass-Illusion
+		case 184: // Mass-Illusion
 		case 195: // Mass-Illusion-Movement
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			if (cTempFrame < 0) break;
@@ -9283,7 +9439,7 @@ void CGame::DrawEffectLights()
 			break;
 
 		case 180: // Ilusion
-		case 190: // Mass Illusion
+		case 184: // Mass Illusion
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			dX  = (m_pEffectList[i]->m_dX*32)  - m_sViewPointX;
 			dY  = (m_pEffectList[i]->m_dY*32)  - m_sViewPointY;
@@ -21050,8 +21206,9 @@ int CGame::_iCalcTotalWeight()
 	{	if (   (m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_CONSUME)
 			|| (m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_ARROW) )
 		{	iTemp = m_pItemList[i]->m_wWeight * m_pItemList[i]->m_dwCount;
-			if (strcmp(m_pItemList[i]->m_cName, "Gold") == 0) iTemp = 0;
-			if (strcmp(m_pItemList[i]->m_cName, "Arrow") == 0) iTemp = 0;
+			if (strcmp(m_pItemList[i]->m_cName, "Gold") == 0) iTemp = 1;
+			if (strcmp(m_pItemList[i]->m_cName, "Arrow") == 0) iTemp = 1;
+			if (strcmp(m_pItemList[i]->m_cName, "Coin") == 0) iTemp = 1;
 			iWeight += iTemp;
 		}else iWeight += m_pItemList[i]->m_wWeight;
 		iCnt++;

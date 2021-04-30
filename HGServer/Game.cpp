@@ -25711,7 +25711,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 				case 2: iMagicType = 93; break; // Mass Blizzard
 				case 3: iMagicType = 81; break; // Metoer Strike
 				case 4: iMagicType = 98; break; // Strike of the Ghosts
-				case 5: iMagicType = 99; break; // Call of the Ghosts
+				case 5: iMagicType = 99; break; // Hell-Fire
 				case 6: iMagicType = 92; break; // Fiery Shock Wave
 				case 7: iMagicType = 97; break; // Fury of Thor
 				case 8:

@@ -3991,7 +3991,7 @@ int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 
 		if ((cArmor == 8) && (cLeg == 5) && (cHat == 11) && (cBerk == 3)) return (1); // Archer elv M
 		if ((cArmor == 9) && (cLeg == 6) && (cHat == 12) && (cBerk == 4)) return (1); // Archer ares M
-		if ((cArmor == 13) && (cLeg == 7) && (cHat == 13) && (cBerk == 5)) return (1); // Archer God M
+		if ((cArmor == 13) && (cLeg == 7) && (cHat == 15) && (cBerk == 5)) return (1); // Archer God M
 		break;
 	case 4:
 	case 5:
@@ -4006,7 +4006,7 @@ int CGame::bHasHeroSet(short Appr3, short Appr4, char OwnerType)
 
 		if ((cArmor == 9) && (cLeg == 6) && (cHat == 11) && (cBerk == 4)) return (1); //War Elvine W
 		if ((cArmor == 10) && (cLeg == 7) && (cHat == 12) && (cBerk == 5)) return (1); //War Aresden W
-		if ((cArmor == 14) && (cLeg == 8) && (cHat == 13) && (cBerk == 6)) return (1); //War Ghost W
+		if ((cArmor == 14) && (cLeg == 8) && (cHat == 15) && (cBerk == 6)) return (1); //War Ghost W
 		break;
 	}
 	return 0;
@@ -9373,37 +9373,36 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 
 
 	if (0 == memcmp(pItem->m_cName, "AcientTablet", 12)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "NecklaceOf", 10)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "DarkElfBow", 10)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "DarkExecutor", 12)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "The_Devastator", 14)) m_bIsRare = true;
-	else if (0 == memcmp(pItem->m_cName, "DemonSlayer", 10)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "LightingBlade", 12)) m_bIsSpecial = true;
+	else if (0 == memcmp(pItem->m_cName, "NecklaceOf", 10)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "DarkElfBow", 10)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "DarkExecutor", 12)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "The_Devastator", 14)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "DemonSlayer", 10)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "LightingBlade", 12)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(pItem->m_cName, "5thAnniversary", 13)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "RubyRing", 8)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "SapphireRing", 12)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "Ringof", 6)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "MagicNecklace", 13)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "MagicWand(M.Shield)", 19)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "MagicWand(MS30-LLF)", 19)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "Merien", 6)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "BerserkWand", 11)) m_bIsRare = true;
-	else if (0 == memcmp(pItem->m_cName, "ResurWand", 9)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "Blood", 5)) m_bIsSpecial = true;
+	else if (0 == memcmp(pItem->m_cName, "MagicWand(M.Shield)", 19)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "MagicWand(MS30-LLF)", 19)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "Merien", 6)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "BerserkWand", 11)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "ResurWand", 9)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "Blood", 5)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(pItem->m_cName, "Swordof", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "StoneOf", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "ZemstoneofSacrifice", 19)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "StormBringer", 12)) m_bIsRare = true;
+	else if (0 == memcmp(pItem->m_cName, "StormBringer", 12)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(pItem->m_cName, "Aresden", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "Elvine", 6)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "EmeraldRing", 11)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "Excaliber", 9)) m_bIsSpecial = true;
 	else if (0 == memcmp(pItem->m_cName, "Xelima", 6)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "Kloness", 7)) m_bIsSpecial = true;
-	else if (0 == memcmp(pItem->m_cName, "aHeroOf", 7)) m_bIsRare = true;
-	else if (0 == memcmp(pItem->m_cName, "eHeroOf", 7)) m_bIsRare = true;
-	else if (0 == memcmp(pItem->m_cName, "Kloness", 7)) m_bIsRare = true;
-	else if (0 == memcmp(pItem->m_cName, "DKloness", 8)) m_bIsRare = true;
+	else if (0 == memcmp(pItem->m_cName, "Ghost", 5)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "aHeroOf", 7)) m_bIsSpecial = true; 
+	else if (0 == memcmp(pItem->m_cName, "eHeroOf", 7)) m_bIsSpecial = true; 
+	else if (0 == memcmp(pItem->m_cName, "Kloness", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
 
 	if ((pItem->m_dwAttribute & 0x00000001) != 0)
 	{
@@ -9704,35 +9703,36 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 	}
 
 	if (0 == memcmp(cItemName, "AcientTablet", 12)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "NecklaceOf", 10)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "DarkElfBow", 10)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "DarkExecutor", 12)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "The_Devastator", 14)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "DemonSlayer", 10)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "LightingBlade", 12)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "5thAnniversary", 13)) m_bIsSpecial = true;
+	else if (0 == memcmp(cItemName, "NecklaceOf", 10)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "DarkElfBow", 10)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "DarkExecutor", 12)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "The_Devastator", 14)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "DemonSlayer", 10)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "LightingBlade", 12)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "Ghost", 5)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(cItemName, "RubyRing", 8)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "SapphireRing", 12)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Ringof", 6)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "MagicNecklace", 13)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "MagicWand(M.Shield)", 19)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "MagicWand(MS30-LLF)", 19)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "Merien", 6)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "BerserkWand", 11)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "ResurWand", 9)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "Blood", 5)) m_bIsSpecial = true;
+	else if (0 == memcmp(cItemName, "MagicWand(M.Shield)", 19)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "MagicWand(MS30-LLF)", 19)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "Merien", 6)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "BerserkWand", 11)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "ResurWand", 9)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "Blood", 5)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(cItemName, "Swordof", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "StoneOf", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "ZemstoneofSacrifice", 19)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "StormBringer", 12)) m_bIsSpecial = true;
+	else if (0 == memcmp(cItemName, "StormBringer", 12)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(cItemName, "Aresden", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Elvine", 6)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "EmeraldRing", 11)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Excaliber", 9)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Xelima", 6)) m_bIsSpecial = true;
-	else if (0 == memcmp(cItemName, "Kloness", 7)) m_bIsSpecial = true;
+	else if (0 == memcmp(cItemName, "Kloness", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(cItemName, "aHeroOf", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "eHeroOf", 7)) m_bIsSpecial = true;
+	
 	strcpy(pStr1, cName);
 
 	if ((dwAttribute & 0x00F0F000) != 0)
@@ -10151,12 +10151,25 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 					bFlag = true;
 					PutAlignedString(sX, sX + szX, sY + 110 + j * 15, cStr1, 255, 255, 255);
 					if (m_bIsSpecial)
+					{
+						// VAMP - gold items
 						if (m_bIsRare)
 						{
 							PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 255, 208, 60);
 						}
-						else PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 0, 255, 50);
-					else PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 255, 255, 255);
+						else if (m_bIsFragile)
+						{
+							PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 50, 255, 255);
+						}
+						else
+						{
+							PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 0, 255, 50);
+						}
+					}
+					else
+					{
+						PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 255, 255, 255);
+					}
 					if (strlen(cStr2) > 0)
 					{
 						iLoc += 15;
@@ -10199,12 +10212,25 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 				else
 				{
 					if (m_bIsSpecial)
+					{
+						// VAMP - gold items
 						if (m_bIsRare)
 						{
 							PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 255, 208, 60);
 						}
-						else PutAlignedString(sX, sX + szX, sY + 110 + j * 15, cStr1, 0, 255, 50);
-					else PutAlignedString(sX, sX + szX, sY + 110 + j * 15, cStr1, 0, 0, 0);
+						else if (m_bIsFragile)
+						{
+							PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 50, 255, 255);
+						}
+						else
+						{
+							PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 0, 255, 50);
+						}
+					}
+					else
+					{
+						PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 0, 0, 0);
+					}
 				}
 				j++;
 			}
@@ -11758,13 +11784,28 @@ void CGame::DrawDialogBox_Exchange(short msX, short msY)
 					wsprintf(cTxt, "%s", cNameStr);
 					if (m_bIsSpecial)
 					{
-						PutAlignedString(sX + 15, sX + 155, sY + 225, cTxt, 50, 225, 50);
-						PutAlignedString(sX + 16, sX + 156, sY + 225, cTxt, 50, 225, 50);
+						// VAMP - gold items
+						if (m_bIsRare)
+						{
+							PutAlignedString(sX + 15, sX + 255, sY + 215, cTxt, 255, 208, 60);
+							PutAlignedString(sX + 16, sX + 256, sY + 215, cTxt, 255, 208, 60);
+						}
+						else if (m_bIsFragile)
+						{
+							PutAlignedString(sX + 15, sX + 255, sY + 215, cTxt, 50, 255, 255);
+							PutAlignedString(sX + 16, sX + 256, sY + 215, cTxt, 50, 255, 255);
+						}
+						else
+						{
+							PutAlignedString(sX + 15, sX + 255, sY + 215, cTxt, 0, 255, 50);
+							PutAlignedString(sX + 16, sX + 256, sY + 215, cTxt, 0, 255, 50);
+
+						}
 					}
 					else
 					{
-						PutAlignedString(sX + 15, sX + 155, sY + 225, cTxt, 35, 35, 35);
-						PutAlignedString(sX + 16, sX + 156, sY + 225, cTxt, 35, 35, 35);
+						PutAlignedString(sX + 15, sX + 255, sY + 215, cTxt, 35, 35, 35);
+						PutAlignedString(sX + 16, sX + 256, sY + 215, cTxt, 35, 35, 35);
 					}
 					iLoc = 0;
 					if (strlen(cSubStr1) != 0)
@@ -11918,13 +11959,28 @@ void CGame::DrawDialogBox_Exchange(short msX, short msY)
 					wsprintf(cTxt, "%s", cNameStr);
 					if (m_bIsSpecial)
 					{
-						PutAlignedString(sX + 15, sX + 155, sY + 225, cTxt, 50, 225, 50);
-						PutAlignedString(sX + 16, sX + 156, sY + 225, cTxt, 50, 225, 50);
+						// VAMP - gold items
+						if (m_bIsRare)
+						{
+							PutAlignedString(sX + 15, sX + 155, sY + 215, cTxt, 255, 208, 60);
+							PutAlignedString(sX + 16, sX + 156, sY + 215, cTxt, 255, 208, 60);
+						}
+						else if (m_bIsFragile)
+						{
+							PutAlignedString(sX + 15, sX + 155, sY + 215, cTxt, 50, 255, 255);
+							PutAlignedString(sX + 16, sX + 156, sY + 215, cTxt, 50, 255, 255);
+						}
+						else
+						{
+							PutAlignedString(sX + 15, sX + 155, sY + 215, cTxt, 0, 255, 50);
+							PutAlignedString(sX + 16, sX + 156, sY + 215, cTxt, 0, 255, 50);
+
+						}
 					}
 					else
 					{
-						PutAlignedString(sX + 15, sX + 155, sY + 225, cTxt, 35, 35, 35);
-						PutAlignedString(sX + 16, sX + 156, sY + 225, cTxt, 35, 35, 35);
+						PutAlignedString(sX + 15, sX + 155, sY + 215, cTxt, 35, 35, 35);
+						PutAlignedString(sX + 16, sX + 156, sY + 215, cTxt, 35, 35, 35);
 					}
 					iLoc = 0;
 					if (strlen(cSubStr1) != 0)
@@ -13694,13 +13750,25 @@ void CGame::DrawDialogBox_SellList(short msX, short msY)
 				else
 				{
 					if (m_bIsSpecial)
+					{
+						// VAMP - gold items
 						if (m_bIsRare)
 						{
 							PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cTemp, 255, 208, 60);
 						}
-						else PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cTemp, 0, 255, 50);
+						else if (m_bIsFragile)
+						{
+							PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cTemp, 50, 255, 255);
+						}
+						else
+						{
+							PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cTemp, 0, 255, 50);
+						}
+					}
 					else
-						PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cTemp, 45, 25, 25);
+					{
+						PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cTemp, 255, 255, 255);
+					}
 				}
 			}
 			else
@@ -13733,13 +13801,25 @@ void CGame::DrawDialogBox_SellList(short msX, short msY)
 					if ((strlen(cStr2) == 0) && (strlen(cStr3) == 0))
 					{
 						if (m_bIsSpecial)
+						{
+							// VAMP - gold items
 							if (m_bIsRare)
 							{
 								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 255, 208, 60);
 							}
-							else PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 0, 255, 50);
+							else if (m_bIsFragile)
+							{
+								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 50, 255, 255);
+							}
+							else
+							{
+								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 0, 255, 50);
+							}
+						}
 						else
-							PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 45, 25, 25);
+						{
+							PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 255, 255, 255);
+						}
 					}
 					else
 					{
@@ -13750,25 +13830,49 @@ void CGame::DrawDialogBox_SellList(short msX, short msY)
 							else wsprintf(G_cTxt, "%s(%s%s)", cStr1, cStr2, cStr3);
 
 							if (m_bIsSpecial)
+							{
+								// VAMP - gold items
 								if (m_bIsRare)
 								{
 									PutAlignedString(sX, sX + szX, sY + 55 + i * 15, G_cTxt, 255, 208, 60);
 								}
-								else PutAlignedString(sX, sX + szX, sY + 55 + i * 15, G_cTxt, 0, 255, 50);
+								else if (m_bIsFragile)
+								{
+									PutAlignedString(sX, sX + szX, sY + 55 + i * 15, G_cTxt, 50, 255, 255);
+								}
+								else
+								{
+									PutAlignedString(sX, sX + szX, sY + 55 + i * 15, G_cTxt, 0, 255, 50);
+								}
+							}
 							else
-								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, G_cTxt, 45, 25, 25);
+							{
+								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, G_cTxt, 255, 255, 255);
+							}
 
 						}
 						else
 						{
 							if (m_bIsSpecial)
+							{
+								// VAMP - gold items
 								if (m_bIsRare)
 								{
 									PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 255, 208, 60);
 								}
-								else PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 0, 255, 50);
+								else if (m_bIsFragile)
+								{
+									PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 50, 255, 255);
+								}
+								else
+								{
+									PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 0, 255, 50);
+								}
+							}
 							else
-								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 45, 25, 25);
+							{
+								PutAlignedString(sX, sX + szX, sY + 55 + i * 15, cStr1, 255, 255, 255);
+							}
 						}
 					}
 				}
@@ -23797,4 +23901,19 @@ void CGame::GoHomepage()
 			}
 		}
 	}
+}
+
+int CGame::dice(int _throw, int range)
+{
+	int i, ret;
+
+	if (range <= 0 || _throw <= 0) return 0;
+
+	ret = 0;
+	for (i = 1; i <= _throw; i++) {
+
+		ret += (rand() % range) + 1;
+	}
+
+	return ret;
 }

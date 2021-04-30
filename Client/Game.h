@@ -153,6 +153,8 @@ class CGame
 {
 public:
 
+	int dice(int _throw, int range);
+
 	bool m_bNpcMap;
 
 	void DrawDialogBox_SummonGuild(short msX, short msY);

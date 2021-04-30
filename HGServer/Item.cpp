@@ -648,6 +648,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] += iTemp;
 						m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
 					}
+					if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 				}
 				break;
 
@@ -958,6 +959,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
 					m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
 					m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
+
+					if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
+					if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 					break;
 				/*case DEF_EQUIPPOS_BODY:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
@@ -8584,7 +8588,7 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 	if (m_pClientList[iClientH]->m_pItemList[sItemIndex] == NULL) return;
 	if ((iAmount != -1) && (iAmount < 0)) return;
 
-	if (_drop_inhib || m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
+	if (m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
 		return;
 
 	// Amount°¡ -1ÀÌ°í ¼Ò¸ðÇ°ÀÌ¸é ¼ö·®ÀÇ ÀüºÎ¸¦ ¶³¾î¶ß¸°´Ù.
@@ -9743,7 +9747,7 @@ void CGame::_PenaltyItemDrop(int iClientH, int iTotal, bool bIsSAattacked)
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
 	// kazin
-	if (_drop_inhib || m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
+	if (m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
 		return;
 
 	// SNOOPY: Lucky effect will prevent drops,  even of a ZEM.
@@ -10890,7 +10894,7 @@ int CGame::iGetItemWeight(CItem* pItem, int iCount)
 	iWeight = pItem->m_wWeight;
 	if (iCount < 0) iCount = 1;
 	iWeight = iWeight * iCount;
-	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77 || pItem->m_sIDnum == 1002) iWeight = 0; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
+	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77 || pItem->m_sIDnum == 1002) iWeight = 1; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
 	if (iWeight < 0) iWeight = 1;
 
 	return iWeight;
