@@ -396,13 +396,13 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
 					
 					case 8:  
-						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
 						break;
 
 					case 9:
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					//Magn0S:: Magic Abs by elements
@@ -745,11 +745,11 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
 					case 8:  
 						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
-						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 						break;
 					case 9:  
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					//Magn0S:: Add elemental abs
@@ -884,7 +884,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += (int)dwSWEValue * 3;
 						else
 						{*/
-							m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100); //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100); //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
 							if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 
 						//}
@@ -901,7 +901,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
 						}
 						break;*/
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 3) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
@@ -6633,7 +6633,7 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 			//Heldenian Price Fix Thing
 			/*if (m_pClientList[iClientH]->m_cSide == m_sLastHeldenianWinner) 
 			{
-				iCost = (int)((float)(pItem->m_wPrice) * 0.9f + 0.5f);
+				iCost = (int)((double)(pItem->m_wPrice) * 0.9f + 0.5f);
 				iCost = iCost * pItem->m_dwCount;
 				iCost2 = pItem->m_wPrice * pItem->m_dwCount;
 			}

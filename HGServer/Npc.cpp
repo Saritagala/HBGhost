@@ -1734,7 +1734,7 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 					switch (iRewardType) {
 						// SNOOPY Strange here !
 
-					case -1: strcpy(cRewardName, "Exp Points"); break;
+					case -1: strcpy(cRewardName, "Exp"); break;
 					}
 				}
 
@@ -2093,18 +2093,19 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					iGenLevel = 8;
 					break;
 
+				case 59: // Ettin
 				case 58: // MountainGiant
+				case 72: // Claw-Turtle
+				case 78: // Minotaurus
 					iGenLevel = 9;
 					break;
 
-				case 72: // Claw-Turtle
+				
 				case 77: // MasterMage-Orc
-				case 59: // Ettin
 				case 75: // Lizards
 				case 70: // Balrogs
 				case 71: // Centaurus
 				case 79: // Nizie
-				case 78: // Minotaurus
 					iGenLevel = 10;
 					break;
 
@@ -2235,7 +2236,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							}
 							break;
 
-						case 10: // Ettin
+						case 10: 
 							switch (iDice(1, 7)) {
 								case 1: iItemID = 46;  break; // Claymore
 								case 2: iItemID = 31;  break; // Esterk
@@ -2364,21 +2365,21 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 					// Centu - Mountain-Giant, Ettin, MasterMage-Orc, Giant-Lizard
 					case 9:
-					case 10:
+					
 						switch (iDice(1, 23)) {
 						case 1: iItemID = 456; break; // ChainMail(M)
 						case 2: iItemID = 476; break; // ChainMail(W)
 						case 3: iItemID = 458; break; // PlateMail(M)
 						case 4: iItemID = 478; break; // PlateMail(W)
 						case 5: iItemID = 85; break; // LagiShield
-						case 6: iItemID = 750; break; // Horned-Helm(M)
-						case 7: iItemID = 751; break; // Wings-Helm(M)
-						case 8: iItemID = 754; break; // Horned-Helm(W)
-						case 9: iItemID = 755; break; // Wings-Helm(W)
+						case 6: iItemID = 600; break; // Horned-Helm(M)
+						case 7: iItemID = 601; break; // Wings-Helm(M)
+						case 8: iItemID = 602; break; // Horned-Helm(W)
+						case 9: iItemID = 603; break; // Wings-Helm(W)
 						case 10: iItemID = 752; break; // Wizard-Cap(M) 
-						case 11: iItemID = 753; break; // Wizard-Hat(M)
+						case 11: break;
 						case 12: iItemID = 756; break; // Wizard-Cap(W) 
-						case 13: iItemID = 757; break; // Wizard-Hat(W) 
+						case 13: break;
 						case 14: iItemID = 454; break; // Hauberk(M)
 						case 15: iItemID = 472; break; // Hauberk(W)
 						case 16: iItemID = 461; break; // ChainHose(M)
@@ -2389,6 +2390,35 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 21: iItemID = 475; break; // LeatherArmor(W)
 						case 22: iItemID = 462; break; // PlateLeggings(M)
 						case 23: iItemID = 483; break; // PlateLeggings(W)
+
+						}
+						break;
+
+					case 10:
+						switch (iDice(1, 23)) {
+						case 1: iItemID = 685; break; // WizardRobe(M)
+						case 2: iItemID = 686; break; // WizardRobe(W)
+						case 3: iItemID = 675; break; // KnightPlateMail(M)
+						case 4: iItemID = 676; break; // KnightPlateMail(W)
+						case 5: iItemID = 87; break; // TowerShield
+						case 6: iItemID = 750; break; // Horned-Helm(M)
+						case 7: iItemID = 751; break; // Wings-Helm(M)
+						case 8: iItemID = 754; break; // Horned-Helm(W)
+						case 9: iItemID = 755; break; // Wings-Helm(W)
+						case 10: iItemID = 752; break; // Wizard-Cap(M) 
+						case 11: iItemID = 753; break; // Wizard-Hat(M)
+						case 12: iItemID = 756; break; // Wizard-Cap(W) 
+						case 13: iItemID = 757; break; // Wizard-Hat(W) 
+						case 14: iItemID = 681; break; // WizardHauberk(M)
+						case 15: iItemID = 682; break; // WizardHauberk(W)
+						case 16: iItemID = 687; break; // KnightHauberk(M)
+						case 17: iItemID = 688; break; // KnightHauberk(W)
+						case 18: iItemID = 662; break; // ArcherHood(M)
+						case 19: iItemID = 664; break; // ArcherHood(W)
+						case 20: iItemID = 661; break; // ArcherArmor(M)
+						case 21: iItemID = 663; break; // ArcherArmor(W)
+						case 22: iItemID = 677; break; // KnightPlateLeg(M)
+						case 23: iItemID = 678; break; // KnightPlateLeg(W)
 
 						}
 						break;

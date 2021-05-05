@@ -5196,7 +5196,7 @@ bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bo
 
 			m_pClientList[iClientH]->m_cMagicMastery[iRet] = 1;
 			// Snoopy: notify sender function off the succes.
-			bSucces = true;
+			//bSucces = true;
 			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);

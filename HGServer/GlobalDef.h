@@ -1,4 +1,4 @@
-#define VK_1 0x31
+ï»¿#define VK_1 0x31
 #define VK_2 0x32
 #define VK_3 0x33
 #define VK_4 0x34
@@ -36,26 +36,26 @@
 #define DEF_MAXDELAYEVENTS		60000
 #define DEF_GUILDSTARTRANK		12
 
-#define DEF_SSN_LIMIT_MULTIPLY_VALUE	2	// SSN-limit °öÇÏ´Â ¼ö 
+#define DEF_SSN_LIMIT_MULTIPLY_VALUE	2	// SSN-limit ê³±í•˜ëŠ” ìˆ˜ 
 
 #define DEF_MAXNOTIFYMSGS		1000
 #define DEF_NIGHTTIME			40
 
-#define DEF_CHARPOINTLIMIT		9999		// °¢°¢ÀÇ Æ¯¼ºÄ¡ÀÇ ÃÖ´ë°ª								m_sCharStatLimit
-#define DEF_RAGPROTECTIONTIME	7000		// ¸î ÃÊ ÀÌ»ó Áö³ª¸é ·¢À¸·Î ºÎÅÍ º¸È£¸¦ ¹Þ´ÂÁö 
+#define DEF_CHARPOINTLIMIT		9999		// ê°ê°ì˜ íŠ¹ì„±ì¹˜ì˜ ìµœëŒ€ê°’								m_sCharStatLimit
+#define DEF_RAGPROTECTIONTIME	7000		// ëª‡ ì´ˆ ì´ìƒ ì§€ë‚˜ë©´ ëž™ìœ¼ë¡œ ë¶€í„° ë³´í˜¸ë¥¼ ë°›ëŠ”ì§€ 
 
 
-#define DEF_ATTACKAI_NORMAL				1	// ¹«Á¶°Ç °ø°Ý 
-#define DEF_ATTACKAI_EXCHANGEATTACK		2	// ±³È¯ °ø°Ý - ÈÄÅð 
-#define DEF_ATTACKAI_TWOBYONEATTACK		3	// 2-1 °ø°Ý, ÈÄÅð 
+#define DEF_ATTACKAI_NORMAL				1	// ë¬´ì¡°ê±´ ê³µê²© 
+#define DEF_ATTACKAI_EXCHANGEATTACK		2	// êµí™˜ ê³µê²© - í›„í‡´ 
+#define DEF_ATTACKAI_TWOBYONEATTACK		3	// 2-1 ê³µê²©, í›„í‡´ 
 
 #define DEF_MAXFISHS					200
 #define DEF_MAXMINERALS					200
 #define	DEF_MAXCROPS					200
-#define DEF_MAXENGAGINGFISH				30  // ÇÑ ¹°°í±â¿¡ ³¬½Ã¸¦ ½ÃµµÇÒ ¼ö ÀÖ´Â ÃÖ´ë ÀÎ¿ø 
-#define DEF_MAXPOTIONTYPES				500 // ÃÖ´ë Æ÷¼Ç Á¤ÀÇ °¹¼ö 
+#define DEF_MAXENGAGINGFISH				30  // í•œ ë¬¼ê³ ê¸°ì— ë‚šì‹œë¥¼ ì‹œë„í•  ìˆ˜ ìžˆëŠ” ìµœëŒ€ ì¸ì› 
+#define DEF_MAXPOTIONTYPES				500 // ìµœëŒ€ í¬ì…˜ ì •ì˜ ê°¯ìˆ˜ 
 
-#define DEF_SPECIALEVENTTIME			300000 //600000 // 10ºÐ
+#define DEF_SPECIALEVENTTIME			300000 //600000 // 10ë¶„
 #define DEF_MAXQUESTTYPE				200
 #define DEF_DEF_MAXHELDENIANDOOR			10
 
@@ -87,8 +87,8 @@
 
 #define DEF_MAXDUPITEMID				100
 
-#define DEF_MAXGUILDS					1000 // µ¿½Ã¿¡ Á¢¼ÓÇÒ ¼ö ÀÖ´Â ±æµå¼ö 
-#define DEF_MAXONESERVERUSERS			800	// 800 // ÇÑ ¼­¹ö¿¡¼­ Çã¿ëÇÒ ¼ö ÀÖ´Â ÃÖ´ë »ç¿ëÀÚ¼ö. ÃÊ°úµÈ °æ¿ì ºÎÈ°Á¸ È¤Àº ºí¸®µù ¾ÆÀÏ, ³ó°æÁö·Î º¸³»Áø´Ù.
+#define DEF_MAXGUILDS					1000 // ë™ì‹œì— ì ‘ì†í•  ìˆ˜ ìžˆëŠ” ê¸¸ë“œìˆ˜ 
+#define DEF_MAXONESERVERUSERS			800	// 800 // í•œ ì„œë²„ì—ì„œ í—ˆìš©í•  ìˆ˜ ìžˆëŠ” ìµœëŒ€ ì‚¬ìš©ìžìˆ˜. ì´ˆê³¼ëœ ê²½ìš° ë¶€í™œì¡´ í˜¹ì€ ë¸”ë¦¬ë”© ì•„ì¼, ë†ê²½ì§€ë¡œ ë³´ë‚´ì§„ë‹¤.
 
 #define DEF_MAXGATESERVERSTOCKMSGSIZE	30000
 
@@ -97,24 +97,24 @@
 #define DEF_MAXAPOCALYPSE				7
 #define DEF_MAXHELDENIAN				10
 
-//v1.4311-3  »çÅõÀåÀÇ ÃÖ´ë ¼ýÀÚ
+//v1.4311-3  ì‚¬íˆ¬ìž¥ì˜ ìµœëŒ€ ìˆ«ìž
 #define DEF_MAXFIGHTZONE 10 
 
 //============================
-#define DEF_LEVELLIMIT		20				// Ã¼ÇèÆÇ ·¹º§ Á¦ÇÑÄ¡!!!			
+#define DEF_LEVELLIMIT		20				// ì²´í—˜íŒ ë ˆë²¨ ì œí•œì¹˜!!!			
 //============================
 
 //============================
-#define DEF_MINIMUMHITRATIO 15				// ÃÖÀú ¸íÁß È®·ü 
+#define DEF_MINIMUMHITRATIO 15				// ìµœì € ëª…ì¤‘ í™•ë¥  
 //============================		
 
 //============================
-#define DEF_MAXIMUMHITRATIO	100				// ÃÖ´ë ¸íÁß È®·ü
+#define DEF_MAXIMUMHITRATIO	100				// ìµœëŒ€ ëª…ì¤‘ í™•ë¥ 
 //============================
 
 //============================
 // New Changed 12/05/2004
-#define DEF_GMGMANACONSUMEUNIT	15			// Grand Magic Generator ¸¶³ª Èí¼ö ´ÜÀ§.
+#define DEF_GMGMANACONSUMEUNIT	15			// Grand Magic Generator ë§ˆë‚˜ í¡ìˆ˜ ë‹¨ìœ„.
 //============================
 
 
@@ -148,9 +148,9 @@
 #define DEF_MSGBUFFERSIZE	30000
 #define DEF_MAXITEMS		50
 #define DEF_MAXBANKITEMS	240 // 120 -> 240
-#define DEF_MAXGUILDSMAN	128 // ÃÖ´ë ±æµå¿ø ¼ö 
+#define DEF_MAXGUILDSMAN	128 // ìµœëŒ€ ê¸¸ë“œì› ìˆ˜ 
 
-#define	DEF_MAXMAGICTYPE	100	// º¯°æÇÏ·Á¸é ·Î±×¼­¹ö³»¿ëµµ ¹Ù²Ù¾î¾ß ÇÑ´Ù.
+#define	DEF_MAXMAGICTYPE	100	// ë³€ê²½í•˜ë ¤ë©´ ë¡œê·¸ì„œë²„ë‚´ìš©ë„ ë°”ê¾¸ì–´ì•¼ í•œë‹¤.
 #define DEF_MAXSKILLTYPE	60
 
 #define DEF_MAXPARTYMEMBERS	8
@@ -186,7 +186,7 @@
 #define DEF_EQUIPPOS_BACK		12  //680h
 #define DEF_EQUIPPOS_RELEASEALL	13	//682h
 
-#define DEF_ITEMTYPE_NOTUSED	-1	// v1.4 ±âÁ¸¿¡ »ç¿ëµÇ¾úÀ¸³ª ÇöÀç·Î¼­´Â »ç¿ëµÇÁö ¾Ê´Â ¾ÆÀÌÅÛ: Æ÷»ó±ÝÀ¸·Î ´ëÃ¼µÈ´Ù.
+#define DEF_ITEMTYPE_NOTUSED	-1	// v1.4 ê¸°ì¡´ì— ì‚¬ìš©ë˜ì—ˆìœ¼ë‚˜ í˜„ìž¬ë¡œì„œëŠ” ì‚¬ìš©ë˜ì§€ ì•ŠëŠ” ì•„ì´í…œ: í¬ìƒê¸ˆìœ¼ë¡œ ëŒ€ì²´ëœë‹¤.
 #define DEF_ITEMTYPE_NONE		 0
 #define DEF_ITEMTYPE_EQUIP		 1
 #define DEF_ITEMTYPE_APPLY		 2
@@ -386,13 +386,13 @@
 
 #define DEF_MAXWAYPOINTS			10
 
-#define DEF_MOVETYPE_STOP			0		// Á¤ÁöÇØ ÀÖ´Â´Ù. ÃÊ±âÈ­µÈ NPCÀÇ ±âº» Çàµ¿.
-#define DEF_MOVETYPE_SEQWAYPOINT	1		// ÀÌµ¿°æ·Î¸¦ ¼øÂ÷ÀûÀ¸·Î ÀÌµ¿. ¸Ç ¸¶Áö¸· ÀÌµ¿°æ·Î¿¡¼­ ÇØ´ç Çàµ¿À» °è¼ÓÇÑ´Ù.
-#define DEF_MOVETYPE_RANDOMWAYPOINT	2		// ÀÌµ¿°æ·Î¸¦ ·£´ýÇÏ°Ô ¼±ÅÃÇÏ¿© ¿òÁ÷ÀÎ´Ù.
-#define DEF_MOVETYPE_FOLLOW			3		// Æ¯Á¤ ´ë»óÀ» µû¶ó ¿òÁ÷ÀÎ´Ù. 
-#define DEF_MOVETYPE_RANDOMAREA		4		// ÁöÁ¤µÈ ¿µ¿ª ¾È¿¡¼­ ·£´ýÇÑ °÷À¸·Î ¿òÁ÷ÀÎ´Ù.
-#define DEF_MOVETYPE_RANDOM			5		// ¸Ê ³»ÀÇ ¾Æ¹«¿µ¿ªÀ¸·Î³ª ¿òÁ÷ÀÎ´Ù.
-#define DEF_MOVETYPE_GUARD			6		// Ã³À½ »ý¼ºµÉ ´ç½ÃÀÇ À§Ä¡¿¡ Á¤ÁöÇØ ÀÖÀ¸³ª ¸ñÇ¥¹° ¹ß°ß½Ã´Â Ãß°ÝÇÑ´Ù.
+#define DEF_MOVETYPE_STOP			0		// ì •ì§€í•´ ìžˆëŠ”ë‹¤. ì´ˆê¸°í™”ëœ NPCì˜ ê¸°ë³¸ í–‰ë™.
+#define DEF_MOVETYPE_SEQWAYPOINT	1		// ì´ë™ê²½ë¡œë¥¼ ìˆœì°¨ì ìœ¼ë¡œ ì´ë™. ë§¨ ë§ˆì§€ë§‰ ì´ë™ê²½ë¡œì—ì„œ í•´ë‹¹ í–‰ë™ì„ ê³„ì†í•œë‹¤.
+#define DEF_MOVETYPE_RANDOMWAYPOINT	2		// ì´ë™ê²½ë¡œë¥¼ ëžœë¤í•˜ê²Œ ì„ íƒí•˜ì—¬ ì›€ì§ì¸ë‹¤.
+#define DEF_MOVETYPE_FOLLOW			3		// íŠ¹ì • ëŒ€ìƒì„ ë”°ë¼ ì›€ì§ì¸ë‹¤. 
+#define DEF_MOVETYPE_RANDOMAREA		4		// ì§€ì •ëœ ì˜ì—­ ì•ˆì—ì„œ ëžœë¤í•œ ê³³ìœ¼ë¡œ ì›€ì§ì¸ë‹¤.
+#define DEF_MOVETYPE_RANDOM			5		// ë§µ ë‚´ì˜ ì•„ë¬´ì˜ì—­ìœ¼ë¡œë‚˜ ì›€ì§ì¸ë‹¤.
+#define DEF_MOVETYPE_GUARD			6		// ì²˜ìŒ ìƒì„±ë  ë‹¹ì‹œì˜ ìœ„ì¹˜ì— ì •ì§€í•´ ìžˆìœ¼ë‚˜ ëª©í‘œë¬¼ ë°œê²¬ì‹œëŠ” ì¶”ê²©í•œë‹¤.
 
 #define DEF_BEHAVIOR_STOP			0
 #define DEF_BEHAVIOR_MOVE			1
@@ -400,23 +400,23 @@
 #define DEF_BEHAVIOR_FLEE			3
 #define DEF_BEHAVIOR_DEAD			4
 
-#define DEF_QUESTTYPE_MONSTERHUNT				1		// ÀÏ¹ÝÀûÀÎ ¸ó½ºÅÍ ÇåÆÃ 
-#define DEF_QUESTTYPE_MONSTERHUNT_TIMELIMIT		2		// ½Ã°£ Á¦ÇÑÀÌ °É·ÁÀÖ´Â ¸ó½ºÅÍ ÇåÆÃ 
-#define DEF_QUESTTYPE_ASSASSINATION 			3		// ¾Ï»ì 
-#define DEF_QUESTTYPE_DELIVERY					4		// ¹è´Þ: Æ¯Á¤ Àå¼Ò·Î ¾ÆÀÌÅÛÀ» ¹è´ÞÇÑ´Ù.
-#define DEF_QUESTTYPE_ESCORT					5		// º¸È£: Æ¯Á¤ Ä³¸¯ÅÍ¸¦ º¸È£ÇÑ´Ù.
-#define DEF_QUESTTYPE_GUARD						6		// Æ¯Á¤ Áö¿ªÀ» ÀûÀÇ °ø°ÝÀ¸·ÎºÎÅÍ ¹æ¾îÇÑ´Ù. 
-#define DEF_QUESTTYPE_GOPLACE					7		// Æ¯Á¤ Àå¼Ò·Î °£´Ù. Àû±¹ Ä§Åõ 
-#define DEF_QUESTTYPE_BUILDSTRUCTURE			8		// ±¸Á¶¹° ¼³Ä¡ ÀÓ¹«
-#define DEF_QUESTTYPE_SUPPLYBUILDSTRUCTURE		9		// ±¸Á¶¹° ¼³Ä¡ º¸±Þ ÀÓ¹«
-#define DEF_QUESTTYPE_STRATEGICSTRIKE			10		// Àü¼úÀû Æø°ÝÀÓ¹« 
-#define DEF_QUESTTYPE_SENDTOBATTLE				11		// °ð¹Ù·Î ±³ÀüÀå¼Ò Âü°¡ÇÏ´Â ÀÓ¹«
-#define DEF_QUESTTYPE_SETOCCUPYFLAG				12		// ¿µÅä Á¡·É ±ê¹ßÀ» ¼³Ä¡ÇÏ´Â ÀÓ¹« 
+#define DEF_QUESTTYPE_MONSTERHUNT				1		// ì¼ë°˜ì ì¸ ëª¬ìŠ¤í„° í—ŒíŒ… 
+#define DEF_QUESTTYPE_MONSTERHUNT_TIMELIMIT		2		// ì‹œê°„ ì œí•œì´ ê±¸ë ¤ìžˆëŠ” ëª¬ìŠ¤í„° í—ŒíŒ… 
+#define DEF_QUESTTYPE_ASSASSINATION 			3		// ì•”ì‚´ 
+#define DEF_QUESTTYPE_DELIVERY					4		// ë°°ë‹¬: íŠ¹ì • ìž¥ì†Œë¡œ ì•„ì´í…œì„ ë°°ë‹¬í•œë‹¤.
+#define DEF_QUESTTYPE_ESCORT					5		// ë³´í˜¸: íŠ¹ì • ìºë¦­í„°ë¥¼ ë³´í˜¸í•œë‹¤.
+#define DEF_QUESTTYPE_GUARD						6		// íŠ¹ì • ì§€ì—­ì„ ì ì˜ ê³µê²©ìœ¼ë¡œë¶€í„° ë°©ì–´í•œë‹¤. 
+#define DEF_QUESTTYPE_GOPLACE					7		// íŠ¹ì • ìž¥ì†Œë¡œ ê°„ë‹¤. ì êµ­ ì¹¨íˆ¬ 
+#define DEF_QUESTTYPE_BUILDSTRUCTURE			8		// êµ¬ì¡°ë¬¼ ì„¤ì¹˜ ìž„ë¬´
+#define DEF_QUESTTYPE_SUPPLYBUILDSTRUCTURE		9		// êµ¬ì¡°ë¬¼ ì„¤ì¹˜ ë³´ê¸‰ ìž„ë¬´
+#define DEF_QUESTTYPE_STRATEGICSTRIKE			10		// ì „ìˆ ì  í­ê²©ìž„ë¬´ 
+#define DEF_QUESTTYPE_SENDTOBATTLE				11		// ê³§ë°”ë¡œ êµì „ìž¥ì†Œ ì°¸ê°€í•˜ëŠ” ìž„ë¬´
+#define DEF_QUESTTYPE_SETOCCUPYFLAG				12		// ì˜í†  ì ë ¹ ê¹ƒë°œì„ ì„¤ì¹˜í•˜ëŠ” ìž„ë¬´ 
 
 
-#define DEF_SKILLEFFECTTYPE_GET			    1		// ¾ò´Â´Ù. ¹°°í±â³ª ±¤¹°µî 
-#define DEF_SKILLEFFECTTYPE_PRETEND			2		// ...ÇÑ Ã¼ ÇÏ´Ù 
-#define DEF_SKILLEFFECTTYPE_TAMING			3		//  ±æµéÀÌ±â °è¿­	
+#define DEF_SKILLEFFECTTYPE_GET			    1		// ì–»ëŠ”ë‹¤. ë¬¼ê³ ê¸°ë‚˜ ê´‘ë¬¼ë“± 
+#define DEF_SKILLEFFECTTYPE_PRETEND			2		// ...í•œ ì²´ í•˜ë‹¤ 
+#define DEF_SKILLEFFECTTYPE_TAMING			3		//  ê¸¸ë“¤ì´ê¸° ê³„ì—´	
 
 
 #define WM_USER_STARTGAMESIGNAL	WM_USER + 10
@@ -427,7 +427,7 @@
 #define WM_ONGATESOCKETEVENT	WM_USER + 1000
 #define WM_ONBOTSOCKETEVENT		WM_USER + 2000
 
-// Å¬¶óÀÌ¾ðÆ®°¡ 1100¹ø ÀÌÇÏ¸¦ Á¡À¯ÇÏ¹Ç·Î ÀÌ ÀÌÈÄ·Î ¸Þ½ÃÁö°¡ Á¤ÀÇµÇ¾î¼­´Â ¾ÈµÈ´Ù. 
+// í´ë¼ì´ì–¸íŠ¸ê°€ 1100ë²ˆ ì´í•˜ë¥¼ ì ìœ í•˜ë¯€ë¡œ ì´ ì´í›„ë¡œ ë©”ì‹œì§€ê°€ ì •ì˜ë˜ì–´ì„œëŠ” ì•ˆëœë‹¤. 
 #define WM_ONCLIENTSOCKETEVENT	WM_USER + 1100
 
 #define DEF_UPPERVERSION		"3"
@@ -449,21 +449,21 @@
 #define DEF_XSOCKSTATUS_READINGHEADER	11
 #define DEF_XSOCKSTATUS_READINGBODY		12
 
-#define DEF_XSOCKEVENT_SOCKETMISMATCH			-121	// ¼ÒÄÏ ÀÌº¥Æ®¿Í ¼ÒÄÏÀÌ ¼­·Î ´Ù¸£´Ù. (ÀÌ·± °æ¿ì°¡?)
-#define DEF_XSOCKEVENT_CONNECTIONESTABLISH		-122	// Á¢¼ÓÀÌ ÀÌ·ç¾î Á³´Ù.
-#define DEF_XSOCKEVENT_RETRYINGCONNECTION		-123	// Á¢¼ÓÀ» ´Ù½Ã ½ÃµµÇÏ´Â ÁßÀÌ´Ù.
-#define DEF_XSOCKEVENT_ONREAD					-124	// ¸Þ½ÃÁö¸¦ ÀÐ´Â ÁßÀÌ´Ù. 
-#define DEF_XSOCKEVENT_READCOMPLETE				-125	// ÇÏ³ªÀÇ ¸Þ½ÃÁö¸¦ ¿ÏÀüÈ÷ ¼ö½ÅÇß´Ù.
-#define DEF_XSOCKEVENT_UNKNOWN					-126	// ¾Ë¼ö¾ø´Â ÀÌº¥Æ®ÀÌ´Ù.
-#define DEF_XSOCKEVENT_SOCKETCLOSED				-127	// ¼ÒÄÏÀÌ ´ÝÇû´Ù. 
-#define DEF_XSOCKEVENT_BLOCK					-128	// ¸Þ½ÃÁö¸¦ º¸³»´Ù°¡ ¼ÒÄÏÀÌ ºí·°µÈ »óÅÂÀÌ´Ù.
-#define DEF_XSOCKEVENT_SOCKETERROR				-129	// ¼ÒÄÏ¿¡ ¿¡·¯°¡ ¹ß»ýÇß´Ù. ÀÌ°æ¿ì Å¬·¡½º¸¦ »èÁ¦ÇÏ¿©¾ß ÇÑ´Ù.
-#define DEF_XSOCKEVENT_CRITICALERROR			-130    // Ä¡¸íÀûÀÎ ¿¡·¯·Î ÇÁ·Î±×·¥ ÀüÃ¼°¡ ¸ØÃç¾ß ÇÑ´Ù.
-#define DEF_XSOCKEVENT_NOTINITIALIZED			-131	// Å¬·¡½º°¡ ÃÊ±âÈ­ µÇÁö ¾ÊÀº »óÅÂ·Î »ç¿ëµÆ´Ù.
-#define DEF_XSOCKEVENT_MSGSIZETOOLARGE			-132	// º¸³»°íÀÚ ÇÏ´Â ¸Þ½ÃÁöÀÇ »çÀÌÁî°¡ ³Ê¹« Å©´Ù.
-#define DEF_XSOCKEVENT_CONFIRMCODENOTMATCH		-133	// È®ÀÎÄÚµå°¡ ÀÏÄ¡ÇÏÁö ¾Ê´Â´Ù. »èÁ¦µÇ¾î¾ß ÇÑ´Ù.
-#define DEF_XSOCKEVENT_QUENEFULL                -134    // ºí·Ï Å¥ÀÇ °ø°£ÀÌ ¾ø´Ù.
-#define DEF_XSOCKEVENT_UNSENTDATASENDBLOCK		-135    // Å¥¿¡ ÀÖ´Â µ¥ÀÌÅÍ¸¦ º¸³»´Ù°¡ ¶Ç ºí·ÏÀÌ °É·È´Ù. 
-#define DEF_XSOCKEVENT_UNSENTDATASENDCOMPLETE	-136	// Å¥¿¡ ÀÖ´Â ¸ðµç µ¥ÀÌÅÍ¸¦ º¸³Â´Ù.
+#define DEF_XSOCKEVENT_SOCKETMISMATCH			-121	// ì†Œì¼“ ì´ë²¤íŠ¸ì™€ ì†Œì¼“ì´ ì„œë¡œ ë‹¤ë¥´ë‹¤. (ì´ëŸ° ê²½ìš°ê°€?)
+#define DEF_XSOCKEVENT_CONNECTIONESTABLISH		-122	// ì ‘ì†ì´ ì´ë£¨ì–´ ì¡Œë‹¤.
+#define DEF_XSOCKEVENT_RETRYINGCONNECTION		-123	// ì ‘ì†ì„ ë‹¤ì‹œ ì‹œë„í•˜ëŠ” ì¤‘ì´ë‹¤.
+#define DEF_XSOCKEVENT_ONREAD					-124	// ë©”ì‹œì§€ë¥¼ ì½ëŠ” ì¤‘ì´ë‹¤. 
+#define DEF_XSOCKEVENT_READCOMPLETE				-125	// í•˜ë‚˜ì˜ ë©”ì‹œì§€ë¥¼ ì™„ì „ížˆ ìˆ˜ì‹ í–ˆë‹¤.
+#define DEF_XSOCKEVENT_UNKNOWN					-126	// ì•Œìˆ˜ì—†ëŠ” ì´ë²¤íŠ¸ì´ë‹¤.
+#define DEF_XSOCKEVENT_SOCKETCLOSED				-127	// ì†Œì¼“ì´ ë‹«í˜”ë‹¤. 
+#define DEF_XSOCKEVENT_BLOCK					-128	// ë©”ì‹œì§€ë¥¼ ë³´ë‚´ë‹¤ê°€ ì†Œì¼“ì´ ë¸”ëŸ­ëœ ìƒíƒœì´ë‹¤.
+#define DEF_XSOCKEVENT_SOCKETERROR				-129	// ì†Œì¼“ì— ì—ëŸ¬ê°€ ë°œìƒí–ˆë‹¤. ì´ê²½ìš° í´ëž˜ìŠ¤ë¥¼ ì‚­ì œí•˜ì—¬ì•¼ í•œë‹¤.
+#define DEF_XSOCKEVENT_CRITICALERROR			-130    // ì¹˜ëª…ì ì¸ ì—ëŸ¬ë¡œ í”„ë¡œê·¸ëž¨ ì „ì²´ê°€ ë©ˆì¶°ì•¼ í•œë‹¤.
+#define DEF_XSOCKEVENT_NOTINITIALIZED			-131	// í´ëž˜ìŠ¤ê°€ ì´ˆê¸°í™” ë˜ì§€ ì•Šì€ ìƒíƒœë¡œ ì‚¬ìš©ëë‹¤.
+#define DEF_XSOCKEVENT_MSGSIZETOOLARGE			-132	// ë³´ë‚´ê³ ìž í•˜ëŠ” ë©”ì‹œì§€ì˜ ì‚¬ì´ì¦ˆê°€ ë„ˆë¬´ í¬ë‹¤.
+#define DEF_XSOCKEVENT_CONFIRMCODENOTMATCH		-133	// í™•ì¸ì½”ë“œê°€ ì¼ì¹˜í•˜ì§€ ì•ŠëŠ”ë‹¤. ì‚­ì œë˜ì–´ì•¼ í•œë‹¤.
+#define DEF_XSOCKEVENT_QUENEFULL                -134    // ë¸”ë¡ íì˜ ê³µê°„ì´ ì—†ë‹¤.
+#define DEF_XSOCKEVENT_UNSENTDATASENDBLOCK		-135    // íì— ìžˆëŠ” ë°ì´í„°ë¥¼ ë³´ë‚´ë‹¤ê°€ ë˜ ë¸”ë¡ì´ ê±¸ë ¸ë‹¤. 
+#define DEF_XSOCKEVENT_UNSENTDATASENDCOMPLETE	-136	// íì— ìžˆëŠ” ëª¨ë“  ë°ì´í„°ë¥¼ ë³´ëƒˆë‹¤.
 
-#define DEF_XSOCKBLOCKLIMIT						300		// ÀÌ Å¬·¡½º ¼ÒÄÏÀº ?¹øÀÌ»ó ºí·ÏµÇ¸é ´õÀÌ»ó µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ ¼ö ¾ø´Ù. 	
+#define DEF_XSOCKBLOCKLIMIT						300		// ì´ í´ëž˜ìŠ¤ ì†Œì¼“ì€ ?ë²ˆì´ìƒ ë¸”ë¡ë˜ë©´ ë”ì´ìƒ ë°ì´í„°ë¥¼ ì €ìž¥í•  ìˆ˜ ì—†ë‹¤. 

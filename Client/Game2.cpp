@@ -9542,9 +9542,9 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 				case 6:  wsprintf(cTxt, GET_ITEM_NAME29, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;//"MPrec
 				case 7:  wsprintf(cTxt, GET_ITEM_NAME30, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true; break;
+				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3);  if(dwValue2 > 11) m_bIsRare = true;  break;
+				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);  if(dwValue2 > 11) m_bIsRare = true;  break;
 					//Magn0S:: Added magic abs by elements
 					/*switch (pItem->m_sNewEffect1)
 					{
@@ -9847,9 +9847,9 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 				case 6:  wsprintf(cTxt, GET_ITEM_NAME29, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
 				case 7:  wsprintf(cTxt, GET_ITEM_NAME30, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 3);  if (dwValue2 > 11) m_bIsRare = true; break;
+				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3);   if(dwValue2 > 11) m_bIsRare = true;  break;
+				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);   if(dwValue2 > 11) m_bIsRare = true;  break;
 					//Magn0S:: Added magic abs by elements
 					/*switch (sEffect1) //m_sItemSpecEffectValue2
 					{
@@ -10065,17 +10065,17 @@ void CGame::PointCommandHandler(int indexX, int indexY, char cItemID)
 		}
 	}
 	else if (m_iPointCommandType == 267) { // Ban player
-	if ((strlen(m_cMCName) == 0) || (strcmp(m_cMCName, m_cPlayerName) == 0) || (m_cMCName[0] == '_')) {
-		AddEventList("Please, select a valid player.", 10);
-		PlaySound('E', 24, 5);
-	}
-	else {
-		ZeroMemory(cCharSelection, sizeof(cCharSelection));
-		strcpy(cCharSelection, m_cMCName);
-		m_stDialogBoxInfo[56].cMode = 10; // Ban player
-		//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 10, NULL, NULL, m_cMCName);
-		PlaySound('E', 14, 5);
-	}
+		if ((strlen(m_cMCName) == 0) || (strcmp(m_cMCName, m_cPlayerName) == 0) || (m_cMCName[0] == '_')) {
+			AddEventList("Please, select a valid player.", 10);
+			PlaySound('E', 24, 5);
+		}
+		else {
+			ZeroMemory(cCharSelection, sizeof(cCharSelection));
+			strcpy(cCharSelection, m_cMCName);
+			m_stDialogBoxInfo[56].cMode = 10; // Ban player
+			//bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, NULL, 10, NULL, NULL, m_cMCName);
+			PlaySound('E', 14, 5);
+		}
 	}
 }
 
@@ -10151,25 +10151,12 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 					bFlag = true;
 					PutAlignedString(sX, sX + szX, sY + 110 + j * 15, cStr1, 255, 255, 255);
 					if (m_bIsSpecial)
-					{
-						// VAMP - gold items
 						if (m_bIsRare)
 						{
 							PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 255, 208, 60);
 						}
-						else if (m_bIsFragile)
-						{
-							PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 50, 255, 255);
-						}
-						else
-						{
-							PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 0, 255, 50);
-						}
-					}
-					else
-					{
-						PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 255, 255, 255);
-					}
+						else PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 0, 255, 50);
+					else PutAlignedString(sX + 70, sX + szX, sY + iLoc, cStr1, 255, 255, 255);
 					if (strlen(cStr2) > 0)
 					{
 						iLoc += 15;
@@ -10212,25 +10199,12 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 				else
 				{
 					if (m_bIsSpecial)
-					{
-						// VAMP - gold items
 						if (m_bIsRare)
 						{
 							PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 255, 208, 60);
 						}
-						else if (m_bIsFragile)
-						{
-							PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 50, 255, 255);
-						}
-						else
-						{
-							PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 0, 255, 50);
-						}
-					}
-					else
-					{
-						PutAlignedString(sX, sX + szX, sY + 110 + i * 15, cStr1, 0, 0, 0);
-					}
+						else PutAlignedString(sX, sX + szX, sY + 110 + j * 15, cStr1, 0, 255, 50);
+					else PutAlignedString(sX, sX + szX, sY + 110 + j * 15, cStr1, 0, 0, 0);
 				}
 				j++;
 			}
@@ -15857,7 +15831,6 @@ void CGame::DlgBoxClick_Bank(short msX, short msY)
 	if ((msX >= sX + 218) && (msX <= sX + 239) && (msY >= sY + 300) && (msY <= sY + 300 + 15))
 		m_stDialogBoxInfo[14].sV14 = 9;
 }
-
 // centu
 void CGame::DlgBoxClick_GuildBank(short msX, short msY)
 {

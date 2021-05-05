@@ -848,7 +848,7 @@ void CGame::DisplayInfo(HDC hdc)
 	TextOut(hdc, 735, 55, cTxt, strlen(cTxt));
 
 	TextOut(hdc, 605, 70, "Max Absorption:", 16);
-	wsprintf(cTxt, "%d%%", m_iMaxAbs * 3);
+	wsprintf(cTxt, "%d%%", m_iMaxAbs * 7);
 	TextOut(hdc, 735, 70, cTxt, strlen(cTxt));
 
 	TextOut(hdc, 605, 85, "Max Recovery:", 14);
@@ -6893,7 +6893,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 
 	strcat(pData, "character-quest-completed = ");
 	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_bIsQuestCompleted[i]);
+		wsprintf(cTxt, "%d ", (int)m_pClientList[iClientH]->m_bIsQuestCompleted[i]);
 		strcat(pData, cTxt);
 	}
 	strcat(pData, "\n");
@@ -11814,25 +11814,25 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 861 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 862) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 1.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 865 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 866) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 0.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 988) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 2.0f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1005) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 2.1f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
@@ -12394,24 +12394,24 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 			sItemIndex = m_pClientList[sAttackerH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 			if ((sItemIndex != -1) && (m_pClientList[sAttackerH]->m_pItemList[sItemIndex] != NULL)) {
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 861 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 862) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 1.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 865 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 866) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 0.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 988) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 2.0f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
 
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1005) {
-					float damageTemp = (float)iDamage;
+					double damageTemp = (double)iDamage;
 					damageTemp *= 2.1f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iDamage = (int)damageTemp;
 				}
@@ -20274,7 +20274,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 861) || // BerserkWand(MS.20)
 					(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 862)) { // BerserkWand(MS.10)
-					float damageTemp = (float)iAttackerHitRatio;
+					double damageTemp = (double)iAttackerHitRatio;
 					damageTemp *= 1.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iAttackerHitRatio = (int)damageTemp;
 					iAP_SM++;
@@ -20282,21 +20282,21 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				}
 				if ((m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || // BerserkWand(MS.20)
 					(m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) { // BerserkWand(MS.10)
-					float damageTemp = (float)iAttackerHitRatio;
+					double damageTemp = (double)iAttackerHitRatio;
 					damageTemp *= 0.5f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iAttackerHitRatio = (int)damageTemp;
 					iAP_SM++;
 					iAP_L++;
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 988) { // BerserkWand(MS.10)
-					float damageTemp = (float)iAttackerHitRatio;
+					double damageTemp = (double)iAttackerHitRatio;
 					damageTemp *= 2.0f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iAttackerHitRatio = (int)damageTemp;
 					iAP_SM++;
 					iAP_L++;
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 1005) { // BerserkWand(MS.10)
-					float damageTemp = (float)iAttackerHitRatio;
+					double damageTemp = (double)iAttackerHitRatio;
 					damageTemp *= 2.1f; // O el valor con punto flotante que ustedes dispongan... JustThink
 					iAttackerHitRatio = (int)damageTemp;
 					iAP_SM++;
@@ -26129,7 +26129,7 @@ bool CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 	}
 	else {
 		int		iProb = 100;
-		float	fProb, fProbA, fProbB, fProbC;
+		double	fProb, fProbA, fProbB, fProbC;
 		int		iItemID;
 		int		iNum = 0;
 
@@ -26137,7 +26137,7 @@ bool CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 		{
 			if (i > iMin) iProb = iProbability;
 
-			fProb = (float)(100 - iProb) / 10.0f;	//WyvernÀÇ Æò±Õ 50
+			fProb = (double)(100 - iProb) / 10.0f;	//WyvernÀÇ Æò±Õ 50
 			if (fProb < 1.0f) fProb = 1.0f;
 
 			fProbA = fProb * 8.0f;
