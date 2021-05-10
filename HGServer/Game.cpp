@@ -188,6 +188,8 @@ CGame::CGame(HWND hWnd)
 	m_iCurMsgs = 0;
 	m_iMaxMsgs = 0;
 	m_pNoticementData = 0;
+
+	m_sJailTime = 0;
 	
 	m_iAutoRebootingCount	= 0;
 	m_bReceivedItemList = false;
@@ -2626,7 +2628,7 @@ void CGame::DeleteClient(int iClientH, bool bSave, bool bNotify, bool bCountLogo
 
 					if (strcmp(cTmpMap, "elvine") == 0){
 						strcpy(m_pClientList[iClientH]->m_cLockedMapName, "elvjail");
-						m_pClientList[iClientH]->m_iLockedMapTime = 60 ;
+						m_pClientList[iClientH]->m_iLockedMapTime = m_sJailTime;
 						memcpy(m_pClientList[iClientH]->m_cMapName, "elvjail", 7);
 					}else memcpy(m_pClientList[iClientH]->m_cMapName, "cityhall_1", 10);
 				}
@@ -2644,7 +2646,7 @@ void CGame::DeleteClient(int iClientH, bool bSave, bool bNotify, bool bCountLogo
 					}
 					if (strcmp(cTmpMap, "aresden") == 0){
 						strcpy(m_pClientList[iClientH]->m_cLockedMapName, "arejail");
-						m_pClientList[iClientH]->m_iLockedMapTime = 60 ;
+						m_pClientList[iClientH]->m_iLockedMapTime = m_sJailTime;
 						memcpy(m_pClientList[iClientH]->m_cMapName, "arejail", 7);
 
 					}else memcpy(m_pClientList[iClientH]->m_cMapName, "cityhall_2", 10);
@@ -11166,7 +11168,7 @@ void CGame::ApplyPKpenalty(short sAttackerH, short sVictumH)
 				// v2.16 ¼ºÈÄ´Ï ¼öÁ¤
 				ZeroMemory(m_pClientList[sAttackerH]->m_cLockedMapName, sizeof(m_pClientList[sAttackerH]->m_cLockedMapName));
 				strcpy(m_pClientList[sAttackerH]->m_cLockedMapName, "arejail");
-				m_pClientList[sAttackerH]->m_iLockedMapTime = 60*3;
+				m_pClientList[sAttackerH]->m_iLockedMapTime = m_sJailTime;
 				RequestTeleportHandler(sAttackerH, "2   ", "arejail", -1, -1);
 						
 			}
@@ -11178,7 +11180,7 @@ void CGame::ApplyPKpenalty(short sAttackerH, short sVictumH)
 				// ¿¤¹ÙÀÎ ±Ù±³¿¡¼­ PK¸¦ Çß´Ù. ºí¸®µù ÅÚ·¹Æ÷Æ® 5ºÐ
 				ZeroMemory(m_pClientList[sAttackerH]->m_cLockedMapName, sizeof(m_pClientList[sAttackerH]->m_cLockedMapName));
 				strcpy(m_pClientList[sAttackerH]->m_cLockedMapName, "elvjail");
-				m_pClientList[sAttackerH]->m_iLockedMapTime = 60*3;
+				m_pClientList[sAttackerH]->m_iLockedMapTime = m_sJailTime;
 				RequestTeleportHandler(sAttackerH, "2   ", "elvjail", -1, -1);
 					
 			}
@@ -11839,13 +11841,13 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864) {
 					if (m_pClientList[sAttackerH]->m_iRating > 0) {
-						iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
+						iRepDamage = m_pClientList[sAttackerH]->m_iRating/200;
 						iDamage += iRepDamage;
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
 							if (m_pClientList[sTargetH]->m_iRating < 0) {
-								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/200);
 								iDamage += iRepDamage;
 							}
 						}
@@ -11858,7 +11860,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
 							if (m_pClientList[sTargetH]->m_iRating < 0) {
-								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 200);
 								iDamage += iRepDamage;
 							}
 						}
@@ -12417,13 +12419,13 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				}
 				if (m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 863 || m_pClientList[sAttackerH]->m_pItemList[sItemIndex]->m_sIDnum == 864) {
 					if (m_pClientList[sAttackerH]->m_iRating > 0) {
-						iRepDamage = m_pClientList[sAttackerH]->m_iRating/100;
+						iRepDamage = m_pClientList[sAttackerH]->m_iRating/200;
 						iDamage += iRepDamage;
 					}
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
 							if (m_pClientList[sTargetH]->m_iRating < 0) {
-								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/100);
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating)/200);
 								iDamage += iRepDamage;
 							}
 						}
@@ -12436,7 +12438,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] != NULL) {
 							if (m_pClientList[sTargetH]->m_iRating < 0) {
-								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
+								iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 200);
 								iDamage += iRepDamage;
 							}
 						}
@@ -20399,7 +20401,7 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 					if (cTargetType == DEF_OWNERTYPE_PLAYER) {
 						if (m_pClientList[sTargetH] == NULL) return 0;
 						if (m_pClientList[sTargetH]->m_iRating < 0) {
-							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 100);
+							iRepDamage = (abs(m_pClientList[sTargetH]->m_iRating) / 200);
 							iAP_SM += iRepDamage;
 							iAP_L += iRepDamage;
 						}
@@ -22507,6 +22509,11 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 				m_iMaxHPCrit = atoi(token);
 				cReadMode = 0;
 				break;
+
+			case 43:
+				m_sJailTime = (short)atoi(token);
+				cReadMode = 0;
+				break;
 			}
          } 
          else { 
@@ -22554,6 +22561,8 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 			if (strcmp(token, "fragile-drop-rate") == 0)			 cReadMode = 40;
 			if (strcmp(token, "max-recovery") == 0)			 cReadMode = 41;
 			if (strcmp(token, "max-hpcrit") == 0)			 cReadMode = 42;
+
+			if (strcmp(token, "jail-time") == 0)			 cReadMode = 43;
 		 } 
 
          token = pStrTok->pGet(); 
@@ -24927,7 +24936,7 @@ void CGame::RequestRestartHandler(int iClientH)
 				else if (strcmp(cTmpMap, "elvine") == 0){
 					memcpy(m_pClientList[iClientH]->m_cMapName, "elvjail", 7);
 					strcpy(m_pClientList[iClientH]->m_cLockedMapName, "elvjail");
-					m_pClientList[iClientH]->m_iLockedMapTime = 180 ;	
+					m_pClientList[iClientH]->m_iLockedMapTime = m_sJailTime;
 				}
 				else  {
 					memcpy(m_pClientList[iClientH]->m_cMapName, "cityhall_1", 10);
@@ -24949,7 +24958,7 @@ void CGame::RequestRestartHandler(int iClientH)
 				if (strcmp(cTmpMap, "aresden") == 0){
 					memcpy(m_pClientList[iClientH]->m_cMapName, "arejail", 7);
 					strcpy(m_pClientList[iClientH]->m_cLockedMapName, "arejail");
-					m_pClientList[iClientH]->m_iLockedMapTime = 180;
+					m_pClientList[iClientH]->m_iLockedMapTime = m_sJailTime;
 				}
 				else {
 					memcpy(m_pClientList[iClientH]->m_cMapName, "cityhall_2", 10);

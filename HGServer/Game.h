@@ -114,6 +114,8 @@ public:
 
 private:
 
+	short m_sJailTime;
+
 	void ShowSpellEffect2(int iClientH, short sType, int ownertype);
 
 	void GenerateMonsterSlaves(int MapIndex, int iX, int iY, int iOrder);

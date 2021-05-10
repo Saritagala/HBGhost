@@ -580,7 +580,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 			iResult -= abs(abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle] - (int)dV4);
 		}
 		else {
-			iResult += 5 * abs(sMagicCircle - sLevelMagic);
+			iResult += 5 * abs(sMagicCircle - sLevelMagic); 
 		}
 	}
 
@@ -1303,7 +1303,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 			sX = m_pClientList[iClientH]->m_sX;
 			sY = m_pClientList[iClientH]->m_sY;
 
-			for (i = 2; i < 10; i++) {
+			for (i = 2; i < 4; i++) { 
 				iErr = 0;
 				m_Misc.GetPoint2(sX, sY, dX, dY, &tX, &tY, &iErr, i);
 
@@ -1956,7 +1956,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 			sX = m_pClientList[iClientH]->m_sX;
 			sY = m_pClientList[iClientH]->m_sY;
 
-			for (i = 2; i < 10; i++) {
+			for (i = 2; i < 4; i++) {
 				iErr = 0;
 				m_Misc.GetPoint2(sX, sY, dX, dY, &tX, &tY, &iErr, i);
 
