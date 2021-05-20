@@ -18,6 +18,8 @@ CClient::CClient(HWND hWnd)
 {
  int i;	
 
+	m_dwCharID = 0;
+
 	m_pXSock = NULL;
 	m_pXSock = new class XSocket(hWnd, DEF_CLIENTSOCKETBLOCKLIMIT);
 	m_pXSock->bInitBufferSize(DEF_MSGBUFFERSIZE);

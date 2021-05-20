@@ -17,7 +17,7 @@ extern class	XSocket * G_pListenSock;
 extern class	XSocket * G_pXWorldLogSock;
 extern char		G_cTxt[500];
 extern char		G_cData50000[50000];
-extern BOOL		G_bIsMainLogActive;
+extern bool		G_bIsMainLogActive;
 int			G_cClientCheckCount;
 bool			G_bDBMode = true; // false
 
@@ -37,7 +37,7 @@ dwTime = timeGetTime();
 	for (i = 0; i < DEF_MAXGAMESERVERS; i++) m_pGameList[i] = NULL;
 	for (i = 0; i < DEF_MAXGAMESERVERSMAPS; i++) m_cMapList[i] = NULL;
 	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) m_pMainLogSock[i] = NULL;
-	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) m_bisMainRegistered[i] = FALSE;
+	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) m_bisMainRegistered[i] = false;
 	for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) m_pAccountList[i] = NULL;
 	for (i = 0; i < DEF_MAXITEMS; i++) m_pItemList[i] = NULL;
 	ZeroMemory(m_cWorldLogName, sizeof(m_cWorldLogName));
@@ -55,7 +55,7 @@ dwTime = timeGetTime();
 	m_cBackupDrive = 0;
 	m_iActiveMainLogSock = 0;
 	m_iCurMainLogSockIndex = 0;
-	m_bIsWorldRegistered = FALSE;
+	m_bIsWorldRegistered = false;
 	m_iTotalMainLogSock = 0;
 	m_cGMLogCount = 0;
 	ZeroMemory(m_cGMLogBuffer, sizeof(m_cGMLogBuffer));
@@ -66,7 +66,7 @@ dwTime = timeGetTime();
 	ZeroMemory(m_sGameServerList, sizeof(m_sGameServerList));
 
 	// customization
-	m_bGameServerList = FALSE;
+	m_bGameServerList = false;
 
 	G_cClientCheckCount = 0;
 	m_dwGameTime1 = dwTime;
@@ -110,8 +110,8 @@ bool CWorldLog::bInit()
 {
  int i;
 
-	if (bReadServerConfigFile("WLserver.cfg") == FALSE) return FALSE;
-	//if (bReadServerConfigFile("GateServer.cfg") == 0) return FALSE;
+	if (bReadServerConfigFile("WLserver.cfg") == false) return false;
+	//if (bReadServerConfigFile("GateServer.cfg") == 0) return false;
 
 	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) {
 		Sleep(200);
@@ -122,11 +122,11 @@ bool CWorldLog::bInit()
 		PutLogList(G_cTxt);
 	}
 
-	//if (bInitSQLServer() == NULL) return FALSE;
+	//if (bInitSQLServer() == NULL) return false;
 	m_iTotalMainLogSock = 0;
-	if (bReadItemConfigFile("Item.cfg") == FALSE) return FALSE;
-	if (bReadItemConfigFile("Item2.cfg") == FALSE) return FALSE;
-	if (bReadItemConfigFile("Item3.cfg") == FALSE) return FALSE;
+	if (bReadItemConfigFile("Item.cfg") == false) return false;
+	if (bReadItemConfigFile("Item2.cfg") == false) return false;
+	if (bReadItemConfigFile("Item3.cfg") == false) return false;
 
 	// VAMP - sql connection
 	try
@@ -143,12 +143,12 @@ bool CWorldLog::bInit()
 		ZeroMemory(cTemp, sizeof(cTemp));
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR: %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
-		return FALSE;
+		return false;
 	}
 
 	PutLogList("(!) SQL SERVER CONNECTED: @HBGhost");
 
-	return TRUE;
+	return true;
 }
 
 bool CWorldLog::bInitSQLServer(void)
@@ -168,9 +168,9 @@ bool CWorldLog::bInitSQLServer(void)
 
 void CWorldLog::CleanupLogFiles()
 {
-	PutGMLogData(NULL, NULL, TRUE);
-	PutItemLogData(NULL, NULL, TRUE);
-	PutCrusadeLogData(NULL, NULL, TRUE);
+	PutGMLogData(NULL, NULL, true);
+	PutItemLogData(NULL, NULL, true);
+	PutCrusadeLogData(NULL, NULL, true);
 }
 
 bool CWorldLog::bReadServerConfigFile(char *cFn)
@@ -191,7 +191,7 @@ bool CWorldLog::bReadServerConfigFile(char *cFn)
 	pFile = fopen(cFn, "rt");
 	if (pFile == NULL) {
 		PutLogList("(!) Cannot open configuration file.");
-		return FALSE;
+		return false;
 	}
 	else {
 		PutLogList("(!) Reading configuration file...");
@@ -267,7 +267,7 @@ bool CWorldLog::bReadServerConfigFile(char *cFn)
 					wsprintf(G_cTxt, "Permitted Game Server Address: %s", m_sGameServerList[cTotalList << 4]);
 					PutLogList(G_cTxt);
 					cTotalList++;
-					m_bGameServerList = TRUE;
+					m_bGameServerList = true;
 					cReadMode = 0;
 					break;
 				case 9:
@@ -300,16 +300,16 @@ bool CWorldLog::bReadServerConfigFile(char *cFn)
 		fclose(pFile);
 	}
 	PutLogList(" ");
-	return TRUE;
+	return true;
 }
 
-BOOL CWorldLog::bAccept(class XSocket * pXSock, BOOL bCheck)
+bool CWorldLog::bAccept(class XSocket * pXSock, bool bCheck)
 {
  int i, x;
  class XSocket * pTmpSock;
- BOOL bFlag;
+ bool bFlag;
 
-	bFlag = FALSE;
+	bFlag = false;
 	for (i = 1; i < DEF_MAXCLIENTSOCK; i++) { //loop 1
 		if (m_pClientList[i] == NULL) { //if client null
 			m_pClientList[i] = new class CClient(m_hWnd);
@@ -317,31 +317,31 @@ BOOL CWorldLog::bAccept(class XSocket * pXSock, BOOL bCheck)
 			m_pClientList[i]->m_pXSock->bInitBufferSize(DEF_MSGBUFFERSIZE);
 			ZeroMemory(m_pClientList[i]->m_cIPaddress, sizeof(m_pClientList[i]->m_cIPaddress));
 			m_pClientList[i]->m_pXSock->iGetPeerAddress(m_pClientList[i]->m_cIPaddress);
-			if (bCheck == FALSE) { //if client checked already
+			if (bCheck == false) { //if client checked already
 				for (x = 0; x < DEF_MAXHGSERVERLIST; x++) { //loop 2
 					if (memcmp(m_sGameServerList[x << 4], m_pClientList[i]->m_cIPaddress, 16) == 0) { // if ip = accepted HG
-						bFlag = TRUE;
+						bFlag = true;
 						m_pClientList[i]->m_cMode = 2;
 					} //end if HG server matched server accepted
 				} //end loop 2
-				if (bFlag != TRUE) { //if HG not accepted
+				if (bFlag != true) { //if HG not accepted
 					wsprintf(G_cTxt, "<%d> <%s> Unauthorized Access", i, m_pClientList[i]->m_cIPaddress);
 					PutEventLog(G_cTxt);
 					PutLogList(G_cTxt);
 					delete m_pClientList[i];
 					m_pClientList[i] = NULL;
-					return FALSE;
+					return false;
 				} //end if hg not accepted
 			} //end client checked
 			wsprintf(G_cTxt,"Client Accepted(%d)", i);
 			PutLogList(G_cTxt);
-			return TRUE;
+			return true;
 		} //end client == null
 	} //end loop 1
 	pTmpSock = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 	pXSock->bAccept(pTmpSock, NULL); 
 	delete pTmpSock;
-	return FALSE;
+	return false;
 }
 
 void CWorldLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam) //if client not HG handler
@@ -394,12 +394,12 @@ void CWorldLog::OnClientRead(int iClientH)
 	pData = m_pClientList[iClientH]->m_pXSock->pGetRcvDataPointer(&dwMsgSize, &cKey);
 	
 	if (m_pClientList[iClientH]->m_cMode == 2) {
-		if (bPutMsgQuene(DEF_MSGFROM_CLIENT, pData, dwMsgSize, iClientH, cKey) == FALSE) {
+		if (bPutMsgQuene(DEF_MSGFROM_CLIENT, pData, dwMsgSize, iClientH, cKey) == false) {
 			PutLogList("@@@@@@ CRITICAL ERROR in CLIENT MsgQuene!!! @@@@@@");
 		}
 		return;
 	}
-	if (bPutMsgQuene(DEF_MSGFROM_BOT, pData, dwMsgSize, iClientH, cKey) == FALSE) {
+	if (bPutMsgQuene(DEF_MSGFROM_BOT, pData, dwMsgSize, iClientH, cKey) == false) {
 		PutLogList("@@@@@@ CRITICAL ERROR in BOT MsgQuene!!! @@@@@@");
 	}
 	return;
@@ -421,8 +421,8 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 		wsprintf(G_cTxt, "(!) Main-log-socket(%d) connected.", iMainH);
 		PutLogList(G_cTxt);
 		m_iActiveMainLogSock++;
-		if (m_bIsWorldRegistered == FALSE) {
-			m_bIsWorldRegistered = TRUE;
+		if (m_bIsWorldRegistered == false) {
+			m_bIsWorldRegistered = true;
 			RegisterWorldServer(iMainH);
 			RegisterWorldGameServer();
 		}
@@ -433,7 +433,7 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 
 	case DEF_XSOCKEVENT_READCOMPLETE:
 		pData = m_pMainLogSock[iMainH]->pGetRcvDataPointer(&dwMsgSize, &cKey);
-		if (bPutMsgQuene(DEF_MSGFROM_LOGSERVER, pData, dwMsgSize, iMainH, cKey) == FALSE) {
+		if (bPutMsgQuene(DEF_MSGFROM_LOGSERVER, pData, dwMsgSize, iMainH, cKey) == false) {
 			PutLogList("@@@@@@ CRITICAL ERROR in LOGSERVER MsgQuene!!! @@@@@@");
 		}
 		break;
@@ -463,31 +463,31 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 		m_pMainLogSock[iMainH]= new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 		m_pMainLogSock[iMainH]->bConnect(m_cMainLogAddress, m_iMainLogPort, (WM_ONMAINLOGSOCKETEVENT + iMainH));
 		m_pMainLogSock[iMainH]->bInitBufferSize(DEF_MSGBUFFERSIZE);
-		m_bisMainRegistered[iMainH] = FALSE;
-		if ((m_iActiveMainLogSock <= 0) && (m_bIsWorldRegistered == TRUE)) m_bIsWorldRegistered = FALSE;
+		m_bisMainRegistered[iMainH] = false;
+		if ((m_iActiveMainLogSock <= 0) && (m_bIsWorldRegistered == true)) m_bIsWorldRegistered = false;
 		break;
 	}
 }
 
-BOOL CWorldLog::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey)
+bool CWorldLog::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey)
 {
-	if (m_pMsgQueue[m_iQueueTail] != NULL) return FALSE;
+	if (m_pMsgQueue[m_iQueueTail] != NULL) return false;
 
 	m_pMsgQueue[m_iQueueTail] = new class CMsg;
-	if (m_pMsgQueue[m_iQueueTail] == NULL) return FALSE;
+	if (m_pMsgQueue[m_iQueueTail] == NULL) return false;
 
-	if (m_pMsgQueue[m_iQueueTail]->bPut(cFrom, pData, dwMsgSize, iIndex, cKey) == FALSE) return FALSE;
+	if (m_pMsgQueue[m_iQueueTail]->bPut(cFrom, pData, dwMsgSize, iIndex, cKey) == false) return false;
 
 	m_iQueueTail++;
 	if (m_iQueueTail >= DEF_MSGQUEUESIZE) m_iQueueTail = 0;
 	
-	return TRUE;
+	return true;
 }
 
-BOOL CWorldLog::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
+bool CWorldLog::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
 {
 
-	if (m_pMsgQueue[m_iQueueHead] == NULL) return FALSE;
+	if (m_pMsgQueue[m_iQueueHead] == NULL) return false;
 
 	m_pMsgQueue[m_iQueueHead]->Get(pFrom, pData, pMsgSize, pIndex, pKey);
 
@@ -497,7 +497,7 @@ BOOL CWorldLog::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int *
 	m_iQueueHead++;
 	if (m_iQueueHead >= DEF_MSGQUEUESIZE) m_iQueueHead = 0;
 
-	return TRUE;
+	return true;
 }
 
 void CWorldLog::OnTimer()
@@ -521,7 +521,7 @@ void CWorldLog::MsgProcess()
 
 	ZeroMemory(m_pMsgBuffer, DEF_MSGBUFFERSIZE+1);
 	pData = (char *)m_pMsgBuffer;
-	while (bGetMsgQuene(&cFrom, pData, &dwMsgSize, &iClientH, &cKey) == TRUE) {
+	while (bGetMsgQuene(&cFrom, pData, &dwMsgSize, &iClientH, &cKey) == true) {
 		dwpMsgID   = (DWORD *)(pData + DEF_INDEX4_MSGID);
 		//wsprintf(G_cTxt, "(X) Recieved Message (0x%.8X)", *dwpMsgID);
 		//PutLogList(G_cTxt);
@@ -655,11 +655,11 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
  DWORD *dwp;
  char cData[1110];
  int i, x;
- BOOL bBool;
- BOOL bCheckHGServer;
+ bool bBool;
+ bool bCheckHGServer;
 
-	bBool = TRUE;
-	bCheckHGServer = FALSE;
+	bBool = true;
+	bCheckHGServer = false;
 	if (m_pClientList[iClientH] == NULL) return;
 	ZeroMemory(cGameServerName, sizeof(cGameServerName));
 	ZeroMemory(cGameServerIP, sizeof(cGameServerIP));
@@ -690,33 +690,33 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 	// Hypnotoad - fix preventing extasis hack from getting config files and connecting
 	for (i = 0; i < DEF_MAXHGSERVERLIST; i++) {
 		if (memcmp(m_sGameServerList[i << 4], cGameServerIP, 16) == 0) {
-			bCheckHGServer = TRUE;
+			bCheckHGServer = true;
 		}
 	}
 	/*if((memcmp(cGameServerSecurity, cGameSecurity, strlen(cGameServerSecurity)) != 0)) {
 		wsprintf(G_cTxt,"(XXX) Unauthorized Access! Name(%s) Addr(%s)- security fail(%s) - != 0", cGameServerName, cGameServerIP, cGameSecurity);
 		PutLogList(G_cTxt);		
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		return;
 	}
 	if(strlen(cGameServerSecurity) <= 0) {
 		wsprintf(G_cTxt,"(XXX) Unauthorized Access! Name(%s) Addr(%s)- security fail(%s) - <= 0", cGameServerName, cGameServerIP, cGameSecurity);
 		PutLogList(G_cTxt);		
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		return;
 }*/
 	//end security
-	if ((bCheckHGServer == FALSE) && (m_bGameServerList == TRUE)) {
+	if ((bCheckHGServer == false) && (m_bGameServerList == true)) {
 		wsprintf(G_cTxt,"(XXX) Unauthorized Access! Name(%s) Addr(%s) Port(%d) Maps(%d)", cGameServerName, cGameServerIP, iGameServerPort, iTotalMaps);
 		PutLogList(G_cTxt);		
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		return;
 	}
 	
 	for (i = 0; i < DEF_MAXGAMESERVERS; i++) {
 		if (m_pGameList[i] != NULL) {
 			if (memcmp(m_pGameList[i]->m_cGameServerName, cGameServerName, 10) == 0) {
-				ResponseRegisterGameServer(iClientH, FALSE);
+				ResponseRegisterGameServer(iClientH, false);
 				wsprintf(G_cTxt, "(!) Game Server Registration - fail : Server-Name(%s) already exists.", cGameServerName);
 				PutLogList(G_cTxt);
 				return;
@@ -730,11 +730,11 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 			m_pGameList[i] = new class CGame(iClientH, cGameServerName, cGameServerIP, iGameServerPort, cGameServerLanAddress);
 			for (x = 0; x < iTotalMaps; x++) {
 				if (bClientRegisterMaps(i, cp) == 0) {
-					bBool = FALSE;
+					bBool = false;
 				}
 				cp += 11;
 			}
-			if (bBool == TRUE) {
+			if (bBool == true) {
 				// thanks SlammeR for providing 3.51 config files
 				if (!bSendClientConfig(iClientH, "Npc.cfg") || 
 					!bSendClientConfig(iClientH, "Item.cfg") ||
@@ -751,7 +751,7 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 					!bSendClientConfig(iClientH, "Potion.cfg")) {
 					wsprintf(G_cTxt, "(X) Game Server(%s) Registration - Fail: Cannot send configuration data!", cGameServerName);
 					PutLogList(G_cTxt);
-					ResponseRegisterGameServer(iClientH, FALSE);
+					ResponseRegisterGameServer(iClientH, false);
 					return;
 				}
 				/*bSendClientConfig(iClientH, "GameData\\ElvineOccupyFlag.txt");
@@ -759,7 +759,7 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 				
 				wsprintf(G_cTxt, "(O) Game Server Registration - Success( Name: %s | Addr: %s | Port: %d )", cGameServerName, cGameServerIP, iGameServerPort);
 				PutLogList(G_cTxt);
-				ResponseRegisterGameServer(iClientH, TRUE);
+				ResponseRegisterGameServer(iClientH, true);
 
 				ZeroMemory(cData, sizeof(cData));
 	
@@ -793,19 +793,19 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 			else {
 				wsprintf(G_cTxt, "(X) Game Server(%s) Registration - Fail: Map Duplicated!", cGameServerName);
 				PutLogList(G_cTxt);
-				ResponseRegisterGameServer(iClientH, FALSE);
+				ResponseRegisterGameServer(iClientH, false);
 				return;
 			}
 		return;
 	}
 	if((m_pGameList[i] != NULL)&& (i >= DEF_MAXGAMESERVERS)) {
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		PutLogList("(!) Game Server Registeration - Fail : No more Game Server can be connected.");
 		}
 	}
 }
 
-void CWorldLog::ResponseRegisterGameServer(int iClientH, BOOL bSuccesfull)
+void CWorldLog::ResponseRegisterGameServer(int iClientH, bool bSuccesfull)
 {
  int iRet;
  DWORD * dwp;
@@ -1133,10 +1133,10 @@ void CWorldLog::RequestPlayerData(int iClientH, char *pData)
  int iRet, iSize;
  HANDLE hFile;
  DWORD dwFileSize, dwVerifyGuildGUID, dwGuildGUID, lpNumberOfBytesRead;
- BOOL bGuildCheck;
+ bool bGuildCheck;
 
 	pFile = NULL;
-	bGuildCheck = FALSE;
+	bGuildCheck = false;
 	if (m_pClientList[iClientH] == NULL) return;
 
 	ZeroMemory(G_cData50000, sizeof(G_cData50000));
@@ -1154,7 +1154,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char *pData)
 	if (strlen(cCharacterName) == 0) PutLogList("(X) CharName NULL!");
 	if (strlen(cAccountName) == 0) PutLogList("(X) AccountName NULL!");
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		// todo: add SQL Code Here
 		ZeroMemory(G_cData50000, sizeof(G_cData50000));
 		iSize = -1;
@@ -1235,7 +1235,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char *pData)
 			if (cGuildRank >= 0) {
 				VerifyGuildIntegrity(cGuildName, &dwVerifyGuildGUID);
 				if (dwVerifyGuildGUID == dwGuildGUID) {
-					bGuildCheck = TRUE;
+					bGuildCheck = true;
 				}
 			}
 			
@@ -1303,10 +1303,10 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 	long iSize;
 	HANDLE hFile;
 	DWORD dwFileSize, dwVerifyGuildGUID, dwGuildGUID, lpNumberOfBytesRead, dwTime;
-	BOOL bGuildCheck;
+	bool bGuildCheck;
 
 	pFile = NULL;
-	bGuildCheck = FALSE;
+	bGuildCheck = false;
 	if (m_pClientList[iClientH] == NULL) return;
 
 	ZeroMemory(G_cData50000, sizeof(G_cData50000));
@@ -1329,7 +1329,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 	int accDBID = iGetAccountDatabaseID(cAccountName);
 
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		ZeroMemory(G_cData50000, sizeof(G_cData50000));
 		iSize = -1;
 
@@ -1870,7 +1870,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 			if (cGuildRank >= 0) {
 				VerifyGuildIntegrity(cGuildName, &dwVerifyGuildGUID);
 				if (dwVerifyGuildGUID == dwGuildGUID) {
-					bGuildCheck = TRUE;
+					bGuildCheck = true;
 				}
 			}
 
@@ -1944,7 +1944,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 			if (cGuildRank >= 0) {
 				VerifyGuildIntegrity(cGuildName, &dwVerifyGuildGUID);
 				if (dwVerifyGuildGUID == dwGuildGUID) {
-					bGuildCheck = TRUE;
+					bGuildCheck = true;
 				}
 			}
 
@@ -2005,7 +2005,7 @@ bool CWorldLog::bVerifyCharacterGuildSQL(char *pData, DWORD dwGuildGUID)
 	// PutGameLogData(cTxt);
 	// MessageBox(m_hWnd, cTxt, "DB connect Error", MB_OK+MB_ICONERROR);
 	// if (????? != dwGuildGUID) return 0;
-	return TRUE;
+	return true;
 
 }
 
@@ -2036,7 +2036,7 @@ void CWorldLog::SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD 
 
 	memcpy((char*)cp, pData, dwMsgSize);
 
-	if ((m_bisMainRegistered[m_iCurMainLogSockIndex] == TRUE) || (iMainH != -1)) {
+	if ((m_bisMainRegistered[m_iCurMainLogSockIndex] == true) || (iMainH != -1)) {
 		iRet = m_pMainLogSock[m_iCurMainLogSockIndex]->iSendMsg(G_cData50000, dwMsgSize + 6, DEF_USE_ENCRYPTION);
 		switch (iRet) {
 		case DEF_XSOCKEVENT_QUENEFULL:
@@ -2047,7 +2047,7 @@ void CWorldLog::SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD 
 			PutLogList(G_cTxt);
 			delete m_pMainLogSock[m_iCurMainLogSockIndex];
 			m_pMainLogSock[m_iCurMainLogSockIndex] = NULL;
-			m_bisMainRegistered[m_iCurMainLogSockIndex] = FALSE;
+			m_bisMainRegistered[m_iCurMainLogSockIndex] = false;
 			m_iActiveMainLogSock--;
 			m_pMainLogSock[m_iCurMainLogSockIndex] = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 			m_pMainLogSock[m_iCurMainLogSockIndex]->bConnect(m_cMainLogAddress, m_iMainLogPort, (WM_ONMAINLOGSOCKETEVENT + m_iCurMainLogSockIndex));
@@ -2181,7 +2181,7 @@ void CWorldLog::CharInfoList(int iClientH, char *pData)
 		memcpy(cp, cCharName, 10);
 		cp += 10;
 
-		if ((iGetCharacterData(cCharName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+		if ((iGetCharacterData(cCharName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 			*cp = 0;
 			cp += 40;
 			break;
@@ -2417,7 +2417,7 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 	if (iSaveDay != 0) *iSaveDay = 0;
 	if (iSaveHour != 0) *iSaveHour = 0;
 	if (iSaveMinute !=  0) *iSaveMinute = 0;
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		SACommand com;
 
 		try
@@ -2548,13 +2548,13 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 					*iSaveMinute = atoi(cTemp);
 
 					com.Close();
-					return TRUE;
+					return true;
 				}
 			}
 			else
 			{
 				com.Close();
-				return FALSE;
+				return false;
 			}
 		}
 		catch (SAException& x)
@@ -2572,7 +2572,7 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (iGetCharacterData): %s", (const char*)x.ErrText());
 			PutLogList(cTemp);
 
-			return FALSE;
+			return false;
 		}
 	}
 	else {
@@ -2740,11 +2740,11 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 		delete pStrTok;
 		delete cp;
 	}
-	return TRUE;
+	return true;
 }
 
 /*
-void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize, BOOL bVar1, BOOL bVar2)
+void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize, bool bVar1, bool bVar2)
 {
  char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256];
  char *cp;
@@ -2756,7 +2756,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize
  char cDir[63];
  HANDLE hFile;
  DWORD  dwFileSize, dwCharID;
- BOOL bFlag;
+ bool bFlag;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	ZeroMemory(cAccountName, sizeof(cAccountName));
@@ -2776,20 +2776,20 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize
 	memcpy(cAccountPassword, cp, 10);
 	cp += 10;
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		dwp = (DWORD *)cp;
 		dwCharID = *dwp;
 		cp += 4;
 	}
 		
-	bFlag = (BOOL)*cp;
+	bFlag = (bool)*cp;
 	cp++;
 	
 	if ((dwMsgSize - 40) <= 0) {
 		PutLogList("(X) Character data body empty: Cannot create & save data file.");
 		return;
 	}
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		// todo: add SQL Code Here
 		//iSaveCharacterSQL(dwCharID, cp-40)
 	}
@@ -2820,7 +2820,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize
 			if (pFile != NULL) fclose(pFile);
 		}
 	}
-	if ((bVar1 == TRUE) && (bFlag == 1)) {
+	if ((bVar1 == true) && (bFlag == 1)) {
 		ZeroMemory(cData, sizeof(cData));
 
 		cp = (char *)cData;
@@ -2833,7 +2833,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize
 		SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cData, 10, -1);
 		OnPlayerAccountMessage(DEF_MSGACCOUNTSET_NULL, cAccountName, 0, 0, 0);
 	}
-	if (bVar2 == TRUE) {
+	if (bVar2 == true) {
 		ZeroMemory(cData, sizeof(cData));
 	
 		dwp = (DWORD *)(cData);
@@ -2861,7 +2861,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize
 	}
 }
 */
-void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize, BOOL bVar1, BOOL bVar2)
+void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize, bool bVar1, bool bVar2)
 {
 	char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256], cTemp[25000], cProfile[31], cLocation[11], cGuildName[21];
 	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51];
@@ -2884,7 +2884,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	char cDir[63];
 	HANDLE hFile;
 	DWORD  dwFileSize, dwCharID, dwTime, dwCrusadeGUID;
-	BOOL bFlag;
+	bool bFlag;
 	char cCommand[25000], cValues[256];
 	int iItemID, iItemNum1, iItemNum2, iItemNum3, iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9, iItemNum10, iItemAttribute, iItemElement;
 
@@ -2923,7 +2923,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 
 	if (iCharDBID < 0 || iCharDBID > 100000) return;
 
-	bFlag = (BOOL)*cp;
+	bFlag = (bool)*cp;
 	cp++;
 
 	memcpy(cProfile, cp, 30);
@@ -3146,7 +3146,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 		PutLogList("(X) Character data body empty: Cannot create & save data file.");
 		return;
 	}
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 
 		//iCharDBID = iGetCharacterDatabaseID(cCharName);
 		int iItems = 1, iBItems = 1;
@@ -3434,7 +3434,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			fclose(pFile);
 		}
 	}
-	if ((bVar1 == TRUE) && (bFlag == 1)) {
+	if ((bVar1 == true) && (bFlag == 1)) {
 		ZeroMemory(cData, sizeof(cData));
 
 		cp = (char*)cData;
@@ -3447,7 +3447,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 		SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cData, 10, -1);
 		OnPlayerAccountMessage(DEF_MSGACCOUNTSET_NULL, cAccountName, 0, 0, 0);
 	}
-	if (bVar2 == TRUE) {
+	if (bVar2 == true) {
 		ZeroMemory(cData, sizeof(cData));
 
 		dwp = (DWORD*)(cData);
@@ -3526,7 +3526,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
  DWORD *dwp;
  int i;
  bool bflag;
- bflag = FALSE;
+ bflag = false;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	ZeroMemory(cData, sizeof(cData));
@@ -3556,7 +3556,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 	PutLogList(G_cTxt);
 	//game char fix
 		for (i = 0; i < DEF_MAXGAMESERVERSMAPS; i++)
-		if((m_cMapList[i] != NULL) && (strcmp(m_cMapList[i]->m_cName, cMapName) == 0)) bflag = TRUE;
+		if((m_cMapList[i] != NULL) && (strcmp(m_cMapList[i]->m_cName, cMapName) == 0)) bflag = true;
 		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++)
 			if((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == 0)) m_pAccountList[i]->Timeout = 20;
 
@@ -3569,7 +3569,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		*cp = 3;
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 7, DEF_USE_ENCRYPTION);
 
-	if(bflag == FALSE) {
+	if(bflag == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3588,7 +3588,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		*cp = 5;
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 7, DEF_USE_ENCRYPTION);
 		
-	if(bflag == FALSE) {
+	if(bflag == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3599,7 +3599,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		}
 	}
 	else {
-		if (iGetCharacterInformation(cAccountName, cCharNameCheck, &iLevel) == FALSE) {
+		if (iGetCharacterInformation(cAccountName, cCharNameCheck, &iLevel) == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3789,7 +3789,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char *pData)
 	sAppr1 = sAppr1 | (iTempAppr2 << 8);
 	sAppr1 = sAppr1 | (iTempAppr3 << 4);
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		// todo: add SQL Code Here
 	
 	}
@@ -3889,7 +3889,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char *pData)
 		ZeroMemory(cCharacterName, sizeof(cCharacterName));
 		memcpy(cCharacterName, &cTotalCharNames[i*11], 10);
 
-		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 			*cp = 0;
 			cp += 40;
 			break;
@@ -4019,7 +4019,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char *pData)
 
 	memcpy(cInfo, cp, cTotalChar*11);
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		// todo: add SQL Code Here
 		
 	}
@@ -4070,7 +4070,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char *pData)
 			memcpy(cp, &cInfo[i*11], 10);
 			cp += 10;
 				
-			if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+			if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 				*cp = 0;
 				cp += 40;
 				break;
@@ -4275,8 +4275,8 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 	sAppr1 = sAppr1 | (iTempAppr2 << 8);
 	sAppr1 = sAppr1 | (iTempAppr3 << 4);
 
-	if (G_bDBMode == TRUE) {
-		BOOL exists = bCheckCharacterExists(cNewCharName);
+	if (G_bDBMode == true) {
+		bool exists = bCheckCharacterExists(cNewCharName);
 
 		int iAccountDBid = iGetAccountDatabaseID(cAccountName);
 
@@ -4519,7 +4519,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 		ZeroMemory(cCharacterName, sizeof(cCharacterName));
 		memcpy(cCharacterName, &cTotalCharNames[i * 11], 10);
 
-		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 			*cp = 0;
 			cp += 40;
 			break;
@@ -4650,7 +4650,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 
 	memcpy(cInfo, cp, cTotalChar * 11);
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		SACommand com;
 
 		try
@@ -4696,7 +4696,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 				memcpy(cp, &cInfo[i * 11], 10);
 				cp += 10;
 
-				if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+				if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 					*cp = 0;
 					cp += 40;
 					break;
@@ -4856,7 +4856,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 			memcpy(cp, &cInfo[i * 11], 10);
 			cp += 10;
 
-			if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+			if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 				*cp = 0;
 				cp += 40;
 				break;
@@ -5080,7 +5080,7 @@ void CWorldLog::RequestCreateNewGuild(int iClientH, char *pData)
  	dwGuildGUID = *dwp;
 	cp += 4;
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		// todo: add sql code here
 		
 	}
@@ -5225,7 +5225,7 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char *pData)
 	memcpy(cGuildName, cp, 20);
 	cp += 20;
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		// todo: add sql code here
 		
 	}
@@ -5336,8 +5336,8 @@ void CWorldLog::RequestCreateNewGuild(int iClientH, char* pData)
 	dwGuildGUID = *dwp;
 	cp += 4;
 
-	if (G_bDBMode == TRUE) {
-		BOOL exists = bCheckGuildExists(cGuildName);
+	if (G_bDBMode == true) {
+		bool exists = bCheckGuildExists(cGuildName);
 
 		if (exists)
 		{
@@ -5572,7 +5572,7 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 	memcpy(cGuildName, cp, 20);
 	cp += 20;
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		SACommand com;
 
 		try
@@ -5823,7 +5823,7 @@ int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char *
 						m_pAccountList[i]->m_iLevel = iLevel;
 						iClientH = -1;
 						for (x = 0; x < DEF_MAXGAMESERVERS; x++) { //5
-							if ((m_pGameList[x] != NULL) && (strcmp(m_pGameList[x]->m_cGameServerName, m_pAccountList[i]->m_cOnGameServer) == FALSE)) {//6
+							if ((m_pGameList[x] != NULL) && (strcmp(m_pGameList[x]->m_cGameServerName, m_pAccountList[i]->m_cOnGameServer) == false)) {//6
 								iClientH = m_pGameList[x]->m_iTrackSock;
 							}//6
 						}//5
@@ -6037,14 +6037,14 @@ void CWorldLog::ForceDisconnectAccount(int iClientH, char *pData)
 
 	for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) {
 		if (m_pAccountList[i] != NULL) {
-			if (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == TRUE) {
+			if (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == true) {
 				if (m_pAccountList[i]->cAccountType == 1) return;
 				if (m_pAccountList[i]->cAccountType == 2) return;
 				ZeroMemory(cGameServerName, sizeof(cGameServerName));
 				strcpy(cGameServerName, m_pAccountList[i]->m_cOnGameServer);
 				for (x = 0; x < DEF_MAXGAMESERVERS; x++) {
 					if (m_pGameList[x] != NULL) {
-						if (strcmp(m_pGameList[x]->m_cGameServerName, cGameServerName) == TRUE) {
+						if (strcmp(m_pGameList[x]->m_cGameServerName, cGameServerName) == true) {
 							iClientH = m_pGameList[x]->m_iTrackSock;
 
 							ZeroMemory(cData, sizeof(cData));
@@ -6167,7 +6167,7 @@ void CWorldLog::RegisterWorldGameServer()
 
 void CWorldLog::ClientMSLConfirmed(int iClientH)
 {
-	m_bisMainRegistered[iClientH] = TRUE;
+	m_bisMainRegistered[iClientH] = true;
 	wsprintf(G_cTxt, "(O) Client(%d) MLS-socket confirmed.", iClientH);
 	PutLogList(G_cTxt);
 }
@@ -6220,7 +6220,7 @@ int CWorldLog::iSaveCharacterSQL(DWORD dwCharID, char *pData)
 	return -1;
 }
 
-BOOL CWorldLog::bReadItemConfigFile(char *cFn)
+bool CWorldLog::bReadItemConfigFile(char *cFn)
 {
  FILE * pFile;
  HANDLE hFile;
@@ -6240,7 +6240,7 @@ BOOL CWorldLog::bReadItemConfigFile(char *cFn)
 	if (pFile == NULL) {
 		wsprintf(G_cTxt, "(X) CRITICAL ERROR! Cannot open (%s) file !", cFn);
 		PutLogList(G_cTxt);
-		return FALSE;
+		return false;
 	}
 	else {
 		wsprintf(G_cTxt, "(!) Reading %s config file...", cFn);
@@ -6262,7 +6262,7 @@ BOOL CWorldLog::bReadItemConfigFile(char *cFn)
 							PutLogList(G_cTxt);
 							delete cp;
 							delete pStrTok;
-							return FALSE;
+							return false;
 						}
 						m_pItemList[iItemH] = new class CItem();
 						cReadModeB = 2;
@@ -6305,7 +6305,7 @@ BOOL CWorldLog::bReadItemConfigFile(char *cFn)
 	}
 	
 	PutLogList(" ");
-	return TRUE;
+	return true;
 }
 
 int CWorldLog::iGetItemNumber(char *cItemName)
@@ -6322,7 +6322,7 @@ int CWorldLog::iGetItemNumber(char *cItemName)
 	return 0;
 }
 
-void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
+void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, bool bIsSave)
 {
  FILE * pFile;
  char cBuffer[512];
@@ -6348,7 +6348,7 @@ void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 		GetLocalTime(&SysTime);
 	}
 	if ((m_cGMLogCount < 30) && ((dwTime - m_dwGMLogTime) <= 5000)) {
-		bIsSave = TRUE;
+		bIsSave = true;
 		return;
 	}
 	ZeroMemory(cBuffer, sizeof(cBuffer));
@@ -6363,7 +6363,7 @@ void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 
 }
 
-void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
+void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, bool bIsSave)
 {
  FILE * pFile;
  char cBuffer[512];
@@ -6389,7 +6389,7 @@ void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
 		GetLocalTime(&SysTime);
 	}
 	if ((m_cItemLogCount < 150) && ((dwTime - m_dwItemLogTime) <= 5000)) {
-		bIsSave = TRUE;
+		bIsSave = true;
 		return;
 	}
 	ZeroMemory(cBuffer, sizeof(cBuffer));
@@ -6403,7 +6403,7 @@ void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
 	ZeroMemory(m_cItemLogBuffer, sizeof(m_cItemLogBuffer));
 }
 
-void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
+void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, bool bIsSave)
 {
  FILE * pFile;
  char cBuffer[512];
@@ -6429,7 +6429,7 @@ void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 		GetLocalTime(&SysTime);
 	}
 	if ((m_cCrusadeLogCount < 100) && ((dwTime - m_dwCrusadeLogTime) <= 5000)) {
-		bIsSave = TRUE;
+		bIsSave = true;
 		return;
 	}
 	ZeroMemory(cBuffer, sizeof(cBuffer));
@@ -6848,7 +6848,7 @@ void CWorldLog::VerifyCharacterIntegrity(char* cCharacterName, char* cAccountNam
 	char cDir[63];
 	char cCharacterMap[11];
 
-	if (G_bDBMode == TRUE)
+	if (G_bDBMode == true)
 	{
 		SACommand com;
 
@@ -7017,7 +7017,7 @@ void CWorldLog::VerifyGuildIntegrity(char* cGuildName, DWORD* dwGuildGUID)
 	char cDir[63];
 
 
-	if (G_bDBMode == TRUE)
+	if (G_bDBMode == true)
 	{
 		SACommand com;
 
@@ -7115,7 +7115,7 @@ void CWorldLog::VerifyGuildIntegrity(char* cGuildName, DWORD* dwGuildGUID)
 	return;
 }
 
-BOOL CWorldLog::bCheckCharacterExists(char* cCharacterName)
+bool CWorldLog::bCheckCharacterExists(char* cCharacterName)
 {
 	SACommand com;
 
@@ -7131,13 +7131,13 @@ BOOL CWorldLog::bCheckCharacterExists(char* cCharacterName)
 		{
 			while (com.FetchNext())
 			{
-				if (com.Field(1).asLong() > 0) return TRUE;
-				else return FALSE;
+				if (com.Field(1).asLong() > 0) return true;
+				else return false;
 			}
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	catch (SAException& x)
@@ -7155,11 +7155,11 @@ BOOL CWorldLog::bCheckCharacterExists(char* cCharacterName)
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR (bCheckCharacterExists): %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
 
-		return TRUE;
+		return true;
 	}
 }
 
-BOOL CWorldLog::bCheckGuildExists(char* cGuildName)
+bool CWorldLog::bCheckGuildExists(char* cGuildName)
 {
 	SACommand com;
 
@@ -7175,13 +7175,13 @@ BOOL CWorldLog::bCheckGuildExists(char* cGuildName)
 		{
 			while (com.FetchNext())
 			{
-				if (com.Field(1).asLong() > 0) return TRUE;
-				else return FALSE;
+				if (com.Field(1).asLong() > 0) return true;
+				else return false;
 			}
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	catch (SAException& x)
@@ -7199,7 +7199,7 @@ BOOL CWorldLog::bCheckGuildExists(char* cGuildName)
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR (bCheckGuildExists): %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
 
-		return TRUE;
+		return true;
 	}
 }
 void CWorldLog::PutPacketLogData(DWORD dwMsgID, char *cData, DWORD dwMsgSize)
@@ -7239,7 +7239,7 @@ void CWorldLog::ServerList(bool Client)
 {
 	int i, j, maps;
 	maps = 0;
-	if(Client == TRUE) {
+	if(Client == true) {
 	for (j = 0; j < DEF_MAXGAMESERVERSMAPS; j++);
 		for (i = 0; i < DEF_MAXGAMESERVERS; i++);
 		if (m_pGameList[i] != NULL && (m_cMapList[j] != NULL)) {
@@ -7248,7 +7248,7 @@ wsprintf(G_cTxt, "Name(%s) IP(%s) Maps(%d)", m_pGameList[i]->m_cGameServerName, 
 PutLogServ(G_cTxt);
 		}
 	}
-if(Client == FALSE) {
+if(Client == false) {
 for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++);
 			if (m_pAccountList[i] != NULL) {
 wsprintf(G_cTxt, "Name(%s)", m_pAccountList[i]->cAccountName);
@@ -7262,21 +7262,21 @@ char   seps[] = "= \t\n";
 char   * token, * token2;
 class  CStrTok * pStrTok;
 char buff[100];
-BOOL bFlag;
+bool bFlag;
 if (pMsg == NULL) return;
 pStrTok = new class CStrTok(pMsg, seps);
 token = pStrTok->pGet();
 token2 = pStrTok->pGet();
-bFlag = TRUE;
+bFlag = true;
 if (memcmp(pMsg,"",1) == 0) {
-bFlag = FALSE;
+bFlag = false;
 wsprintf(buff,"(!!!) invalid Message");
 PutLogServ(buff);
 return;
 }
 if (memcmp(pMsg,"/kick ",6) == 0) {
-bFlag = TRUE;
-if(dlb == TRUE) return;
+bFlag = true;
+if(dlb == true) return;
 if(token == NULL) return;
 int i;
 char cTargetName[11];
@@ -7287,7 +7287,7 @@ ZeroMemory(cTargetName, sizeof(cTargetName));
 			 memcpy(cTargetName, token, 10);
 		else memcpy(cTargetName, token, strlen(token));
 	}
-	if(dlb == FALSE) {
+	if(dlb == false) {
 for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) 
 if ((m_pAccountList[i] != NULL) && (memcmp(m_pAccountList[i]->cAccountName, cTargetName, strlen(cTargetName)) == 0)) {	
 SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, m_pAccountList[i]->cAccountName, 10, -1);
@@ -7303,8 +7303,8 @@ PutLogServ(buff);
 return;
 }
 if (memcmp(pMsg,"/ban ",5) == 0) {
-bFlag = TRUE;
-if(dlb == FALSE) return;
+bFlag = true;
+if(dlb == false) return;
 if(token == NULL) return;
 int i;
 char cTargetName[11];
@@ -7315,7 +7315,7 @@ ZeroMemory(cTargetName, sizeof(cTargetName));
 			 memcpy(cTargetName, token, 10);
 		else memcpy(cTargetName, token, strlen(token));
 	}
-	if(dlb == TRUE) {
+	if(dlb == true) {
 for (i = 0; i < DEF_MAXGAMESERVERS; i++)
 if ((m_pGameList[i] != NULL) && (memcmp(m_pGameList[i]->m_cGameServerName, cTargetName, strlen(cTargetName)) == 0)) {
 	//write to Wlsrver.cfg then refresh the .cfg before delete.

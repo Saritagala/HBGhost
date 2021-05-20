@@ -2271,10 +2271,10 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, bool bI
 		m_pClientList[iClientH]->m_iStatus = m_pClientList[iClientH]->m_iStatus | 0x00040000;
 	}
 
-	AutoSkill(iClientH);
-
+	
 	if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
+		AutoSkill(iClientH);
 		SetClass(iClientH);
 	}
 	// new
@@ -3618,14 +3618,25 @@ bool CGame::bSendMsgToLS(DWORD dwMsg, int iClientH, bool bFlag, char* pData)
 		memcpy((char *)cp, cAccountPassword, 10);
 		cp += 10;
 
+#ifdef DEF_DBGAMESERVER
+		// v2.14 DB 저장 속도 향상 
+		dwp = (DWORD*)cp;
+		*dwp = m_pClientList[iClientH]->m_dwCharID;
+		cp += 4;
+#endif
+
 		*cp = (char)bFlag;
 		cp++;
 
 		iSize = _iComposePlayerDataFileContents(iClientH, cp);
 
+#ifdef DEF_DBGAMESERVER
+		iRet = m_pSubLogSock[m_iCurSubLogSockIndex]->iSendMsg(G_cData50000, 41 + iSize);
+		iSendSize = 41 + iSize;
+#else
 		iRet = m_pSubLogSock[m_iCurSubLogSockIndex]->iSendMsg(G_cData50000, 37 + iSize);
 		iSendSize = 37 + iSize;
-
+#endif
 		break;
 		
 	case MSGID_GAMEMASTERLOG:
@@ -6317,7 +6328,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				if (_bGetIsStringIsNumber(token) == false) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
 					PutLogList(cTxt);
-					delete pContents;
+					delete[] pContents;
 					delete pStrTok;
 					return false;
 				}
@@ -6330,7 +6341,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				if (_bGetIsStringIsNumber(token) == false) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
 					PutLogList(cTxt);
-					delete pContents;
+					delete[] pContents;
 					delete pStrTok;
 					return false;
 				}
@@ -6340,15 +6351,17 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				break;
 
 			case 94:
-				/*if (_bGetIsStringIsNumber(token) == false) {
+#ifdef DEF_DBGAMESERVER
+				if (_bGetIsStringIsNumber(token) == false) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - Connection closed. ", m_pClientList[iClientH]->m_cCharName);
 					PutLogList(cTxt);
-					delete pContents;
+					delete[] pContents;
 					delete pStrTok;
 					return false;
 				}
 
-				m_pClientList[iClientH]->m_dwGold = atoi(token);*/
+				m_pClientList[iClientH]->m_dwCharID = atoi(token);
+#endif
 				cReadModeA = 0;
 				break;
 				
@@ -6497,7 +6510,10 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 
 			if (memcmp(token, "character-team", 14) == 0)    cReadModeA = 92;
 			if (memcmp(token, "character-class", 15) == 0)    cReadModeA = 93;
-			//if (memcmp(token, "character-gold", 14) == 0)    cReadModeA = 94;
+			
+#ifdef DEF_DBGAMESERVER
+			if (memcmp(token, "character-id", 12) == 0)    cReadModeA = 94;
+#endif
 
 			if (memcmp(token, "[EOF]", 5) == 0) goto DPDC_STOP_DECODING;
 		}
@@ -6603,7 +6619,523 @@ DPDC_STOP_DECODING:;
 	return true;
 }
 
+#ifdef DEF_DBGAMESERVER
+int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
+{
 
+	char sql[256];
+	char  cTxt[120], cTmp[21];
+	char* cp;
+
+	int   i, * ip;
+	short* sp, * pIDX;
+	short Skillidx, Itemidx, BankItemidx;
+	int   iFlag = 0;
+	BOOL	bFind = FALSE;
+	DWORD* dwp, dTemp;
+
+	if (m_pClientList[iClientH] == NULL) return 0;
+
+	cp = pData;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sCharIDnum1;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sCharIDnum2;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sCharIDnum3;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iLevel;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iStr;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iVit;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iDex;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iInt;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iMag;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iCharisma;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iExp;
+	cp += 4;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cLU_Str;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cLU_Vit;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cLU_Dex;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cLU_Int;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cLU_Mag;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cLU_Char;
+	cp += 2;
+
+	*cp = (char)m_pClientList[iClientH]->m_cSex;
+	cp++;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cSkin;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cHairStyle;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cHairColor;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_cUnderwear;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iApprColor;
+	cp += 4;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sAppr1;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sAppr2;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sAppr3;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sAppr4;
+	cp += 2;
+
+	memcpy(cp, m_pClientList[iClientH]->m_cLocation, 10);
+	cp += 10;
+
+	memcpy(cp, m_pClientList[iClientH]->m_cMapName, 10);
+	cp += 10;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sX;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_sY;
+	cp += 2;
+
+	if (strlen(m_pClientList[iClientH]->m_cProfile) == 0) {
+		strcpy(cp, "__________");
+	}
+	else strcpy(cp, m_pClientList[iClientH]->m_cProfile);
+
+	cp += 100;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iAdminUserLevel;
+	cp += 2;
+
+	if (m_pClientList[iClientH]->m_iContribution < 0) m_pClientList[iClientH]->m_iContribution = 0;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iContribution;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iSpecialAbilityTime;
+	cp += 4;
+
+	memcpy(cp, m_pClientList[iClientH]->m_cLockedMapName, 10);
+	cp += 10;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iLockedMapTime;
+	cp += 4;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iPenaltyBlockYear;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iPenaltyBlockMonth;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iPenaltyBlockDay;
+	cp += 2;
+
+
+	if (m_pClientList[iClientH]->m_iGuildRank != -1) {
+		// GuildRank가 -1이면 길드이름은 무의미하다.
+		memcpy(cp, m_pClientList[iClientH]->m_cGuildName, 20);
+	}
+	else strcpy(cp, "NONE");
+	cp += 20;
+
+	if (m_pClientList[iClientH]->m_iGuildRank != -1) {
+		// GuildRank가 -1이면 길드GUID는 무의미하다.
+		ip = (int*)cp;
+		*ip = (int)m_pClientList[iClientH]->m_iGuildGUID;
+	}
+	else {
+		ip = (int*)cp;
+		*ip = (int)-1;
+	}
+	cp += 4;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iGuildRank;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iFightzoneNumber;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iReserveTime;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iFightZoneTicketNumber;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iQuest;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iQuestID;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iCurQuestCount;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iQuestRewardType;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iQuestRewardAmount;
+	cp += 2;
+
+	*cp = (char)m_pClientList[iClientH]->m_bIsQuestCompleted;
+	cp++;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iSpecialEventID;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iWarContribution;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iCrusadeDuty;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_dwCrusadeGUID;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iConstructionPoint;
+	cp += 4;
+
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iRating;
+	cp += 4;
+
+	if (m_pClientList[iClientH]->m_iHP <= 0)
+		m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iHP;
+	cp += 4;
+
+	if (m_pClientList[iClientH]->m_iMP <= 0)
+		m_pClientList[iClientH]->m_iMP = 30;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iMP;
+	cp += 4;
+
+	if (m_pClientList[iClientH]->m_iSP < 0)
+		m_pClientList[iClientH]->m_iSP = 20;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iSP;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iEnemyKillCount;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iPKCount;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iRewardGold;
+	cp += 4;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iHungerStatus;
+	cp += 2;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iSuperAttackLeft;
+	cp += 2;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iTimeLeft_ShutUp;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iTimeLeft_Rating;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iTimeLeft_ForceRecall;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar;
+	cp += 4;
+
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iDeadPenaltyTime;
+	cp += 4;
+
+	// V2.1 성후니 파티제를 위해서 추가 
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iPartyID;
+	cp += 4;
+
+	// v2.15 지존 패치를 위해 추가 
+	ip = (int*)cp;
+	*ip = (int)m_pClientList[iClientH]->m_iGizonItemUpgradeLeft;
+	cp += 4;
+
+	ZeroMemory(cTxt, sizeof(cTxt));
+
+	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
+		wsprintf(cTmp, "%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
+		strcat(cTxt, cTmp);
+	}
+
+	memcpy(cp, cTxt, 100);
+	cp += 100;
+
+	sp = (short*)cp;
+	*sp = (short)m_pClientList[iClientH]->m_iDownSkillIndex; ;
+	cp += 2;
+
+	pIDX = (short*)cp;
+	cp += 2;
+
+	Skillidx = 0;
+
+	for (i = 0; i < 60; i++) {
+		if (m_pClientList[iClientH]->m_cSkillMastery[i] > 0) {
+			sp = (short*)cp;
+			*sp = (short)i;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_cSkillMastery[i];
+			cp += 2;
+
+			ip = (int*)cp;
+			*ip = (int)m_pClientList[iClientH]->m_iSkillSSN[i];
+			cp += 4;
+
+			Skillidx++;
+		}
+	}
+
+	*pIDX = (short)Skillidx;
+
+	Itemidx = 0;
+
+	pIDX = (short*)cp;
+	cp += 2;
+
+	for (i = 0; i < DEF_MAXITEMS; i++) {
+		if (m_pClientList[iClientH]->m_pItemList[i] != NULL) {
+
+			memcpy(cp, m_pClientList[iClientH]->m_pItemList[i]->m_cName, 20);
+			cp += 20;
+
+			dwp = (DWORD*)cp;
+			*dwp = (DWORD)m_pClientList[iClientH]->m_pItemList[i]->m_dwCount;
+			cp += 4;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3;
+			cp += 2;
+
+			ip = (int*)cp;
+			*ip = (int)m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan;
+			cp += 4;
+
+			ip = (int*)cp;
+			*ip = (int)m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute;
+			cp += 4;
+
+			*cp = (char)m_pClientList[iClientH]->m_bIsItemEquipped[i];
+			cp++;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_ItemPosList[i].x;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_ItemPosList[i].y;
+			cp += 2;
+
+			Itemidx++;
+		}
+	}
+
+	// v2.13 성후니 추가 DB 부하를 줄이기 위한 변수
+	*cp = (char)m_pClientList[iClientH]->m_bIsBankModified;
+	cp++;
+
+	*pIDX = (short)Itemidx;
+	pIDX = (short*)cp;
+	cp += 2;
+
+	BankItemidx = 0;
+
+	for (i = 0; i < DEF_MAXBANKITEMS; i++) {
+
+		if (m_pClientList[iClientH]->m_pItemInBankList[i] != NULL) {
+			memcpy(cp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName, 20);
+			cp += 20;
+
+			dwp = (DWORD*)cp;
+			*dwp = (DWORD)m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount;
+			cp += 4;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3;
+			cp += 2;
+
+			ip = (int*)cp;
+			*ip = (int)m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan;
+			cp += 4;
+
+			ip = (int*)cp;
+			*ip = (int)m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute;
+			cp += 4;
+
+			BankItemidx++;
+		}
+	}
+
+	*pIDX = (short)BankItemidx;
+
+	iFlag += m_pClientList[iClientH]->m_sCharIDnum1 + m_pClientList[iClientH]->m_iGuildGUID + m_pClientList[iClientH]->m_iDownSkillIndex + Skillidx + Itemidx + BankItemidx;
+
+	//	ip = (int *) cp ;
+	//	*ip = (int) iFlag ;
+
+	return (582 + 4 + 8 * Skillidx + 2 + 55 * Itemidx + 2 + 50 * BankItemidx + 4);
+}
+#else
 int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 {
  SYSTEMTIME SysTime;
@@ -7270,7 +7802,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
 
 	return strlen(pData);
 }
-
+#endif
 /*********************************************************************************************************************
 **  bool CGame::_bGetIsStringIsNumber(char * pStr)																	**
 **  DESCRIPTION			:: checks if valid ASCII value																**
@@ -25024,9 +25556,9 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 	iTemp = iTemp | (iTemp2 << 28);
 	m_pClientList[iClientH]->m_iStatus = iTemp;
 
-	AutoSkill(iClientH);
 	if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
+		AutoSkill(iClientH);
 		SetClass(iClientH);
 	}
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {

@@ -1,2 +1,2 @@
 #define DEF_UPERVERSION				3
-#define DEF_LOWERVERSION			51
+#define DEF_LOWERVERSION			82

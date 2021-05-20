@@ -24,6 +24,8 @@ class CClient
 {
 public:
 
+	DWORD m_dwCharID;
+
 	int GetItemCount()
 	{
 		int t = 0;
