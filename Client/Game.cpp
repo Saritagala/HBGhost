@@ -7073,7 +7073,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			m_pEffectList[i]->m_dwFrameTime = 100;
 			break;
 		case 199: // VAMP: Call-Of-The-Gods
-			m_pEffectList[i]->m_mX = sX * 32;
+			/*m_pEffectList[i]->m_mX = sX * 32;
 			m_pEffectList[i]->m_mY = sY * 32;
 			m_pEffectList[i]->m_iErr = 0;
 			m_pEffectList[i]->m_cMaxFrame = 8;
@@ -7082,7 +7082,7 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sAbsY = abs(300 - (sY - m_sViewPointY));
 			if (sAbsX > sAbsY) sDist = sAbsX;
 			else sDist = sAbsY;
-			sDist = sDist / 32;
+			sDist = sDist / 32;*/
 			break;
 
 		case 6:	 // Energy Bolt
@@ -7877,22 +7877,23 @@ void CGame::bAddNewEffect(short sType, int sX, int sY, int dX, int dY, char cSta
 			sDist = sDist / 32;
 			break;
 
-			//HellFire Rain
+			//HellFire Fix by NomaD
 		case 85:
 		case 86:
 		case 87:
 			m_pEffectList[i]->m_mX = sX;
 			m_pEffectList[i]->m_mY = sY;
 			m_pEffectList[i]->m_cMaxFrame = 14;
-			m_pEffectList[i]->m_dwFrameTime = 35;
-			lPan = -(((m_sViewPointX / 32) + 10) - dX) * 1000;
+			m_pEffectList[i]->m_dwFrameTime = 12;
+			lPan = -(((m_sViewPointX / 32) + 12) - dX) * 1000;
 			PlaySound('E', 4, sDist, lPan);
 			SetCameraShakingEffect(sDist + 1, 2);
 			break;
 
-		case 190: //HELLFIRE!
-			m_pEffectList[i]->m_cMaxFrame = 30;
-			m_pEffectList[i]->m_dwFrameTime = 35;
+		case 190: //HellFire Fix by NomaD
+			m_pEffectList[i]->m_cMaxFrame = 18;
+			m_pEffectList[i]->m_dwFrameTime = 12;
+			SetCameraShakingEffect(sDist, 4);
 			break;
 
 		case 110: // Energy-Bolt
@@ -8506,28 +8507,24 @@ void CGame::DrawEffects()
 
 			break;
 
-			//HELLFIRE
+			//HellFire Fix by NomaD
 		case 85:
-			//AddEventList("Effect 1");
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			if (cTempFrame < 0) break;
 			dX = m_pEffectList[i]->m_mX;
 			dY = m_pEffectList[i]->m_mY;
-			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 30, dY - 155, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 20, dY - 105, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 10, dY - 55, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX, dY - 5, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 115, dY - 150, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 85, dY - 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 55, dY - 50, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 20, dY, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 110, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 110, m_pEffectList[i]->m_cFrame, dwTime);
 			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[3]->PutTransSprite_NoColorKey(dX, dY, cTempFrame, dwTime);
-			//else m_pEffectSpr[3]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime);
-			bAddNewEffect(10, dX, dY, NULL, NULL, 0, 0);
+			m_pEffectSpr[136]->PutRevTransSprite(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
 			break;
 
+			//HellFire Fix by NomaD
 		case 86:
-			//AddEventList("Effect 2");
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			if (cTempFrame < 0) break;
 			dX = m_pEffectList[i]->m_mX;
@@ -8540,32 +8537,26 @@ void CGame::DrawEffects()
 			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
 			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 50, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
 			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 50, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[3]->PutTransSprite_NoColorKey(dX, dY, cTempFrame, dwTime);
-			//else m_pEffectSpr[3]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime);
-			bAddNewEffect(10, dX, dY, NULL, NULL, 0, 0);
 			break;
 
+			//HellFire Fix by NomaD
 		case 87:
-			//AddEventList("Effect 3");
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			if (cTempFrame < 0) break;
 			dX = m_pEffectList[i]->m_mX;
 			dY = m_pEffectList[i]->m_mY;
-			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 115, dY - 150, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 85, dY - 100, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 55, dY - 50, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[133]->PutTransSprite_NoColorKey(dX + 20, dY, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 110, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 110, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 30, dY - 155, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 20, dY - 105, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX + 10, dY - 55, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[135]->PutTransSprite_NoColorKey(dX, dY - 5, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 80, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
+			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 100, m_pEffectList[i]->m_cFrame, dwTime);
 			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
-			m_pEffectSpr[136]->PutTransSprite_NoColorKey(dX + 60, dY + 120, m_pEffectList[i]->m_cFrame, dwTime);
-
-			//else m_pEffectSpr[3]->PutTransSpriteRGB(dX, dY, cTempFrame, iDvalue, iDvalue, iDvalue, dwTime);
-			bAddNewEffect(10, dX, dY, NULL, NULL, 0, 0);
 			break;
 
-		case 190://HELLFIRE	
-
+			//HellFire Fix by NomaD
+		case 190:
 			cTempFrame = m_pEffectList[i]->m_cFrame;
 			if (cTempFrame < 0) break;
 			dX = (m_pEffectList[i]->m_dX * 32) - m_sViewPointX;
@@ -8579,8 +8570,8 @@ void CGame::DrawEffects()
 				m_pEffectList[i]->m_dwLoopEndTime = timeGetTime();
 
 				//Randomize the offsets of the X and Y
-				dwOffsetX = dice(1, 100);
-				dwOffsetY = dice(1, 80);
+				dwOffsetX = dice(1, 50);
+				dwOffsetY = dice(1, 20);
 				switch (dwRand)
 				{
 				case 1:

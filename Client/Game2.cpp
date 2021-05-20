@@ -18295,6 +18295,34 @@ bool CGame::bEffectFrameCounter()
 					}
 					break;
 
+					//HellFire Fix by NomaD
+				case 85:
+				case 86:
+				case 87:
+					if (m_pEffectList[i]->m_cFrame > m_pEffectList[i]->m_cMaxFrame)
+					{
+						delete m_pEffectList[i];
+						m_pEffectList[i] = NULL;
+					}
+					break;
+					//HellFire Fix by NomaD
+				case 190:
+					if (m_pEffectList[i]->m_cFrame > m_pEffectList[i]->m_cMaxFrame)
+					{
+						delete m_pEffectList[i];
+						m_pEffectList[i] = NULL;
+					}
+					else 
+					{
+						sAbsX = abs(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						sAbsY = abs(((m_sViewPointY / 32) + 9) - m_pEffectList[i]->m_dY);
+						if (sAbsX > sAbsY) sDist = sAbsX;
+						else sDist = sAbsY;
+						lPan = -(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
+						PlaySound('E', 4, sDist, lPan);
+					}
+					break;
+
 				case 4: // Gold Drop ,33,69,70
 				case 33: //
 				case 69:
@@ -18381,7 +18409,7 @@ bool CGame::bEffectFrameCounter()
 					}
 					break;
 				case 199: // VAMP - Call-Of-The-Gods
-					m_Misc.GetPoint(m_pEffectList[i]->m_mX
+					/*m_Misc.GetPoint(m_pEffectList[i]->m_mX
 						, m_pEffectList[i]->m_mY
 						, m_pEffectList[i]->m_dX * 32
 						, m_pEffectList[i]->m_dY * 32
@@ -18407,7 +18435,7 @@ bool CGame::bEffectFrameCounter()
 						else sDist = sAbsY - 10;
 						lPan = -(((m_sViewPointX / 32) + 12) - m_pEffectList[i]->m_dX);
 						PlaySound('E', 1, sDist, lPan);
-					}
+					}*/
 
 					break;
 
@@ -19386,7 +19414,7 @@ bool CGame::bEffectFrameCounter()
 				case 180:
 				case 183: //
 				case 184: // EP's Magic Drain
-				case 190:
+				
 				//case 192:
 				//case 193:
 				case 194:

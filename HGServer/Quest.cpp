@@ -539,7 +539,7 @@ void CGame::_SendQuestContents(int iClientH)
 				iQuestCompleted = (int)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
 
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_QUESTCONTENTS, iWho, iQuestType, iContribution, NULL,
-					iTargetType, iTargetCount, iX, iY, iRange, iQuestCompleted, cTargetName, i);
+					iTargetType, iTargetCount, iX, iY, iRange, iQuestCompleted, cTargetName, i);// Centu - crash point
 
 				//------------------------------------------------------------------------------------------------------
 				if (m_pClientList[iClientH]->m_iQuestRewardType[i] > 0) {
