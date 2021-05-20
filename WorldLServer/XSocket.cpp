@@ -33,9 +33,11 @@ XSocket::XSocket(HWND hWnd, int iBlockLimit)
 	m_WSAErr = NULL;
 
 	m_hWnd = hWnd;
-	m_bIsAvailable = false;
+	m_bIsAvailable = FALSE;
 
 	m_iBlockLimit = iBlockLimit;
+
+	m_bWriteMessage = FALSE;
 }
 
 XSocket::~XSocket()
@@ -52,20 +54,20 @@ XSocket::~XSocket()
 	_CloseConn(); 
 }
 
-bool XSocket::bInitBufferSize(DWORD dwBufferSize)
+BOOL XSocket::bInitBufferSize(DWORD dwBufferSize)
 {
 	if (m_pRcvBuffer != NULL) delete m_pRcvBuffer;
 	if (m_pSndBuffer != NULL) delete m_pSndBuffer;
 
 	m_pRcvBuffer = new char[dwBufferSize+8];
-	if (m_pRcvBuffer == NULL) return false;
+	if (m_pRcvBuffer == NULL) return FALSE;
 	
 	m_pSndBuffer = new char[dwBufferSize+8];
-	if (m_pSndBuffer == NULL) return false;
+	if (m_pSndBuffer == NULL) return FALSE;
 
 	m_dwBufferSize = dwBufferSize;
 
-	return true;
+	return TRUE;
 }
 
 int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
@@ -84,12 +86,12 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 	case FD_CONNECT:
 		if (WSAGETSELECTERROR(lParam) != 0) { 
 			// 이 소켓의 접속이 실패했으므로 재접속을 시도한다.
-			if (bConnect(m_pAddr, m_iPortNum, m_uiMsg) == false) return DEF_XSOCKEVENT_SOCKETERROR;
+			if (bConnect(m_pAddr, m_iPortNum, m_uiMsg) == FALSE) return DEF_XSOCKEVENT_SOCKETERROR;
 				
 			return DEF_XSOCKEVENT_RETRYINGCONNECTION;
 		}
 		else {
-			m_bIsAvailable = true;
+			m_bIsAvailable = TRUE;
 			return DEF_XSOCKEVENT_CONNECTIONESTABLISH;
 		}
 		break;
@@ -104,6 +106,7 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 		break;
 	
 	case FD_WRITE:
+		m_bWriteMessage = TRUE;
 		return _iSendUnsentData();
 		break;
 
@@ -116,7 +119,7 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 	return DEF_XSOCKEVENT_UNKNOWN;
 }
 
-bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
+BOOL XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
  u_long          arg;
@@ -124,12 +127,12 @@ bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
  DWORD			 dwOpt;
 
 	// 리스닝 소켓으로 초기화된 클래스는 이 함수를 사용할 수 없다.
-	if (m_cType == DEF_XSOCK_LISTENSOCK) return false;
+	if (m_cType == DEF_XSOCK_LISTENSOCK) return FALSE;
 	if (m_Sock  != INVALID_SOCKET) closesocket(m_Sock);
 
 	m_Sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_Sock == INVALID_SOCKET) 
-		return false;
+		return FALSE;
 	
 	// 소켓을 논블록킹 모드로 
 	arg = 1;
@@ -145,7 +148,7 @@ bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 	if (iRet == SOCKET_ERROR) {
 		if (WSAGetLastError() != WSAEWOULDBLOCK) {
 			m_WSAErr = WSAGetLastError();
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -162,7 +165,7 @@ bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 	m_uiMsg = uiMsg;
 	m_cType = DEF_XSOCK_NORMALSOCK;
 
-	return true;
+	return TRUE;
 }
 
 int XSocket::_iOnRead()
@@ -254,12 +257,12 @@ int XSocket::_iOnRead()
 
 
 
-int XSocket::_iSend(char * cData, int iSize, bool bSaveFlag)
+int XSocket::_iSend(char * cData, int iSize, BOOL bSaveFlag)
 {
  int  iOutLen, iRet, WSAErr;
 
 	if (m_pUnsentDataList[m_sHead] != NULL) {
-		if (bSaveFlag == true) {
+		if (bSaveFlag == TRUE) {
 			// 만약 대기열에 데이터가 남아 있고 꼭 보내야 하는 데이터라면 
 			// 메시지의 순서를 맞추기 위해 무조건 대기열에 저장해야 한다. 
 			iRet = _iRegisterUnsentData(cData, iSize);
@@ -293,7 +296,7 @@ int XSocket::_iSend(char * cData, int iSize, bool bSaveFlag)
 			}
 			else {
 				// 블럭상태이면 더이상 보낼 수 없으므로 남아있는 데이터를 리스트에 등록하고 리턴 
-				if (bSaveFlag == true) {
+				if (bSaveFlag == TRUE) {
 					iRet = _iRegisterUnsentData((cData + iOutLen), (iSize - iOutLen));
 					switch (iRet) {
 					case -1:
@@ -438,23 +441,28 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 		}
 	}
 	
-	iRet = _iSend(m_pSndBuffer, dwSize + 3, true);
+	if (m_bWriteMessage == FALSE) { // 2020
+		iRet = _iRegisterUnsentData(m_pSndBuffer, dwSize + 3);
+	}
+	else {
+		iRet = _iSend(m_pSndBuffer, dwSize + 3, TRUE);
+	}
 
 	if (iRet < 0) return iRet;
 	else return (iRet - 3);
 }
 
-bool XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
+BOOL XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
 
-	if (m_cType != NULL) return false;
+	if (m_cType != NULL) return FALSE;
 	if (m_Sock  != INVALID_SOCKET) closesocket(m_Sock);
 
 	// 소켓을 생성한다. 
 	m_Sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (m_Sock == INVALID_SOCKET) 
-		return false;
+		return FALSE;
 	
 	// 주소를 바인드한다.
 	memset(&saTemp,0,sizeof(saTemp));
@@ -463,12 +471,12 @@ bool XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 	saTemp.sin_port = htons(iPort);
 	if ( bind(m_Sock, (PSOCKADDR)&saTemp, sizeof(saTemp)) == SOCKET_ERROR) {
 		closesocket(m_Sock);
-		return false;
+		return FALSE;
 	}
 	
 	if (listen(m_Sock, 5) == SOCKET_ERROR) {
 		closesocket(m_Sock);
-		return false;
+		return FALSE;
 	}
 
 	WSAAsyncSelect(m_Sock, m_hWnd, uiMsg, FD_ACCEPT);
@@ -476,24 +484,24 @@ bool XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 	m_uiMsg = uiMsg;
 	m_cType = DEF_XSOCK_LISTENSOCK;
 
-	return true;
+	return TRUE;
 }
 
-bool XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
+BOOL XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
 {
  SOCKET			AcceptedSock;
  sockaddr		Addr;
  int	iLength;
  DWORD			dwOpt;
 
-	if (m_cType != DEF_XSOCK_LISTENSOCK) return false;
-	if (pXSock == NULL) return false;
+	if (m_cType != DEF_XSOCK_LISTENSOCK) return FALSE;
+	if (pXSock == NULL) return FALSE;
 
 	iLength = sizeof(Addr);
 	// 클라이언트의 접속을 받는다 . 
 	AcceptedSock = accept(m_Sock, (struct sockaddr FAR *)&Addr,(int FAR *)&iLength);
 	if (AcceptedSock == INVALID_SOCKET) 
-		return false;
+		return FALSE;
 		
 	pXSock->m_Sock = AcceptedSock;
 	WSAAsyncSelect(pXSock->m_Sock, m_hWnd, uiMsg, FD_READ | FD_WRITE | FD_CLOSE);
@@ -507,22 +515,22 @@ bool XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
 	setsockopt(pXSock->m_Sock, SOL_SOCKET, SO_RCVBUF, (const char FAR *)&dwOpt, sizeof(dwOpt));
 	setsockopt(pXSock->m_Sock, SOL_SOCKET, SO_SNDBUF, (const char FAR *)&dwOpt, sizeof(dwOpt));
 
-	return true;
+	return TRUE;
 }
 
 void XSocket::_CloseConn()
 {
  char cTmp[100];
- bool bFlag = true;	
+ BOOL bFlag = TRUE;	
  int  iRet;
 
 	if (m_Sock == INVALID_SOCKET) return; // v1.4
 
 	shutdown(m_Sock, 0x01);
-	while (bFlag == true) {
+	while (bFlag == TRUE) {
 		iRet = recv(m_Sock, cTmp, sizeof(cTmp), 0);
-		if (iRet == SOCKET_ERROR) bFlag = false;
-		if (iRet == 0) bFlag = false;
+		if (iRet == SOCKET_ERROR) bFlag = FALSE;
+		if (iRet == 0) bFlag = FALSE;
 	}
 
 	closesocket(m_Sock);
@@ -566,7 +574,7 @@ DWORD  dwSize;
 
 ///  
 
-bool _InitWinsock()
+BOOL _InitWinsock()
 {
  int     iErrCode;
  WORD	 wVersionRequested;
@@ -575,9 +583,9 @@ bool _InitWinsock()
 	// 소켓의 버젼을 체크한다.
 	wVersionRequested = MAKEWORD( 2, 2 ); 
 	iErrCode = WSAStartup( wVersionRequested, &wsaData );
-	if ( iErrCode ) return false;
+	if ( iErrCode ) return FALSE;
 
-	return true;
+	return TRUE;
 }
 
 

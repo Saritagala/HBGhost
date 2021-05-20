@@ -13,7 +13,7 @@ WSADATA		wsInfo;
 //MSG			msg;
 
 //Message Processing On Screen
-bool G_cMsgUpdated = false;
+BOOL G_cMsgUpdated = FALSE;
 char G_cMsgList[120*50];
 char            G_cTxt[500];
 //Main Processing Class .....WORLDLOG!!!!
@@ -43,7 +43,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 	case WM_COMMAND:
 		switch(wParam){
 			case 1010:
-					G_cMsgUpdated = true;
+					G_cMsgUpdated = TRUE;
 					SendMessage(List1,(UINT)LB_RESETCONTENT, 0, 0);
 					ItemCount = 0;
 					PutLogList("Cleared");
@@ -52,7 +52,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				 /*char pData[120];
 	G_pMainLog->UpdateNoticement(wParam);
 		if (!G_bIsMainLogActive) {
-			G_bIsMainLogActive = true;
+			G_bIsMainLogActive = TRUE;
 			G_pXMainLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 			G_pXMainLogSock->bListen(G_pMainLog->m_cWorldServerAddress, G_pMainLog->m_iWorldServerPort, WM_WORLD_LOG_LISTENER);
 			PutLogList("(!) Log-Socket Listening... Server Activated.");
@@ -90,7 +90,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 	case WM_USER_ACCEPT: //from anything
 		//PutLogList("Message From somewere");
-		G_pMainLog->bAccept(G_pXMainLogSock, false);
+		G_pMainLog->bAccept(G_pXMainLogSock, FALSE);
 		break;
 	case WM_ONCLIENTSOCKETEVENT: //from WLserver after connection
 		//PutLogList("Message From WLserver -Connection required");
@@ -115,15 +115,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
 
-	wsprintf(szAppClass, "Main-Log-Server%d", hInstance);
-	if (!InitApplication( hInstance)) return (false);
-	if (!InitInstance(hInstance, nCmdShow)) return (false);
+	wsprintf(szAppClass, "World Log Server%d", hInstance);
+	if (!InitApplication( hInstance)) return (FALSE);
+	if (!InitInstance(hInstance, nCmdShow)) return (FALSE);
 	Initialize();
 	EventLoop();
 	return 0;
 }
 
-bool InitApplication( HINSTANCE hInstance)
+BOOL InitApplication( HINSTANCE hInstance)
 {     
  WNDCLASS  wc;
 
@@ -142,11 +142,11 @@ bool InitApplication( HINSTANCE hInstance)
 	return (RegisterClass(&wc));
 }
 
-bool InitInstance( HINSTANCE hInstance, int nCmdShow )
+BOOL InitInstance( HINSTANCE hInstance, int nCmdShow )
 {
  char cTitle[100];
 
-	wsprintf(cTitle, "Helbreath Main-Log-Server V%d.%d", DEF_UPERVERSION, DEF_LOWERVERSION);
+	wsprintf(cTitle, "Helbreath Main-Log-Server V%d.%d - Marleythe9", DEF_UPERVERSION, DEF_LOWERVERSION);
 
 	G_hWnd = CreateWindowEx(0,  // WS_EX_TOPMOST,
 		szAppClass,
@@ -165,7 +165,7 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 		hInstance,
 		NULL );
 
-	if (!G_hWnd) return (false);
+	if (!G_hWnd) return (FALSE);
 	//MAJORHG - CLEROTH - 26/03/05
     WNDCLASS Wc;
 	strcpy(BCX_ClassName,"ListBox1");
@@ -190,7 +190,7 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 
 	ShowWindow(G_hWnd, nCmdShow);    
 	UpdateWindow(G_hWnd);            
-	return (true);                 
+	return (TRUE);                 
 }
 
 int EventLoop()
@@ -213,7 +213,7 @@ int EventLoop()
 void Initialize()
 {
 
-	if (_InitWinsock() == false) {
+	if (_InitWinsock() == FALSE) {
 		MessageBox(G_hWnd, "Socket 1.1 not found! Cannot execute program.","ERROR", MB_ICONEXCLAMATION | MB_OK);
 		PostQuitMessage(0);
 		return;
@@ -224,7 +224,7 @@ void Initialize()
 		MessageBox(G_hWnd, "Init fail - Invalid WorldLServer!","ERROR",MB_OK+MB_ICONERROR);
 		return;
 	}
-	if (G_pMainLog->bInit() == false) {
+	if (G_pMainLog->bInit() == FALSE) {
 		MessageBox(G_hWnd, "Init fail","ERROR",MB_OK+MB_ICONERROR);
 		return;
 	}
@@ -249,9 +249,9 @@ void OnDestroy()
 
 void UpdateScreen()
 {
-	if (G_cMsgUpdated == true) {
-		InvalidateRect(G_hWnd, NULL, true);
-		G_cMsgUpdated = false;
+	if (G_cMsgUpdated == TRUE) {
+		InvalidateRect(G_hWnd, NULL, TRUE);
+		G_cMsgUpdated = FALSE;
 	}
 }
 
@@ -268,7 +268,7 @@ void OnPaint()
 		cMsg = (char *)(G_cMsgList + i*120);
 		TextOut(hdc, 5, 5 + 660 - i*16, cMsg, strlen(cMsg));
 	}
-	if (G_bIsMainLogActive == true) {
+	if (G_bIsMainLogActive == TRUE) {
 		wsprintf(G_cTxt,"Total World(%d) / Game(%d) / Valid Accounts(%d)", G_pMainLog->m_iTotalWorld,  G_pMainLog->m_iTotalGame, G_pMainLog->m_iValidAccounts);
 	}
 	else {
@@ -343,15 +343,14 @@ void PutEventLog(char * cMsg)
 
 void PutLogList(char * cMsg)
 {
-	//char cTemp[120*50];
+	char cTemp[120*50];
 
-	G_cMsgUpdated = true;
+	G_cMsgUpdated = TRUE;
 	/*ZeroMemory(cTemp, sizeof(cTemp));
 	memcpy((cTemp + 120), G_cMsgList, 5880);
 	memcpy(cTemp, cMsg, strlen(cMsg));
 	memcpy(G_cMsgList, cTemp, 6000);
 	PutEventLog(cMsg);*/
-	
 	SendMessage(List1,(UINT)LB_ADDSTRING,(WPARAM)0,(LPARAM)cMsg);
 	SendMessage(List1,(UINT)LB_SETCURSEL,ItemCount,0);
 	ItemCount++;
@@ -394,7 +393,7 @@ int i;
 
 	case VK_HOME:
 		if (!G_bIsMainLogActive) {
-			G_bIsMainLogActive = true;
+			G_bIsMainLogActive = TRUE;
 			G_pXMainLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 			G_pXMainLogSock->bListen(G_pMainLog->m_cMainServerAddress, G_pMainLog->m_iMainServerPort, WM_USER_ACCEPT);
 			PutLogList("");
@@ -433,7 +432,7 @@ HWND BCX_Listbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
         X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,
         hWnd,(HMENU)id,BCX_hInstance,NULL);
         SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject
-        (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
+        (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
         return A;
 }
 HWND BCX_Button(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
@@ -447,7 +446,7 @@ HWND BCX_Button(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,in
         X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,
         hWnd,(HMENU)id,BCX_hInstance,NULL);
         SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject
-        (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
+        (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
         return A;
 }
 HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,int Exstyle)
@@ -461,6 +460,6 @@ HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
         X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,
         hWnd,(HMENU)id,BCX_hInstance,NULL);
         SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject
-        (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
+        (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(FALSE,0));
         return A;
 }

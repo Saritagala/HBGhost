@@ -281,3 +281,24 @@ Statement(s) could not be prepared.
 (2021: 5:20:12: 1) - (*) Backup Drive Letter : C
 (2021: 5:20:12: 1) - (*) Main-Server Internal port : 2848
 (2021: 5:20:12: 1) - (!!!) SQL SERVER ERROR: Cannot open database "HBGhost" requested by the login. The login failed.
+(2021: 5:20:13:31) - (!) Reading configuration file...
+(2021: 5:20:13:31) - (*) Main-Log-Server Address : 192.168.0.53
+(2021: 5:20:13:31) - (*) Main-Server Internal port : 3840
+(2021: 5:20:13:31) - (*) Backup Drive Letter : C
+(2021: 5:20:13:31) - (*) Main-Server Internal port : 2848
+(2021: 5:20:13:31) - (!) SQL SERVER CONNECTED: LOCALHOST\SQLEXPRESS@HBGhost
+(2021: 5:20:13:31) - (!) Internal-log-Socket Listening...
+(2021: 5:20:13:31) - 
+(2021: 5:20:13:31) - (!) Log-Socket Listening... Server Activated.
+(2021: 5:20:13:31) - (!) Log-Socket2 Listening... Server Activated.
+(2021: 5:20:13:31) - (!) Log-Socket3 Listening... Server Activated.
+(2021: 5:20:13:31) - 
+(2021: 5:20:13:34) - (OOO) World Server(WS1:192.168.0.53) registration success!
+(2021: 5:20:13:34) - (O) Client (7) is socket to World Server(WS1)
+(2021: 5:20:13:34) - (O) Client (9) is socket to World Server(WS1)
+(2021: 5:20:13:34) -  
+(2021: 5:20:13:34) - (!) WorldServer(WS1) Activated
+(2021: 5:20:13:35) - (X) World-Server-socket(7) error!
+(2021: 5:20:13:35) - (X) World-Server-socket(9) error!
+(2021: 5:20:13:35) -  
+(2021: 5:20:13:35) - (X) World-Server(WS1) Deleted!

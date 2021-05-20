@@ -36,8 +36,8 @@ public:
 	int iGetCharacterDatabaseID(char* cCharName);
 	int iGetAccountDatabaseID(char* cCharName);
 
-	bool bCheckCharacterExists(char* cCharacterName);
-	bool bCheckGuildExists(char* cGuildName);
+	BOOL bCheckCharacterExists(char* cCharacterName);
+	BOOL bCheckGuildExists(char* cGuildName);
 
 	void UpdateLastLoginTime(char* cCharacterName);
 	
@@ -48,10 +48,11 @@ public:
 	void ShutdownGameServer(int iClientH);
 	void RequestSaveOccupyFlag(int iClientH, char *pData, char cType);
 	int RequestSetAccountWaitStatus(char *pData);
-	bool bReadItemConfigFile(char *cFn);
-	void PutGMLogData(char * pData, DWORD dwMsgSize, bool bIsSave);
-	void PutItemLogData(char * pData, DWORD dwMsgSize, bool bIsSave);
-	void PutCrusadeLogData(char * pData, DWORD dwMsgSize, bool bIsSave);
+	BOOL bReadItemConfigFile(char *cFn);
+	void PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave);
+	void PutItemLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave);
+	void PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave);
+	BOOL CWorldLog::bAccept(class XSocket * pXSock, BOOL bBool);
 	int OnPlayerAccountMessage(DWORD dwMsgID, char * pData, char * pData2, int iLevel, char * pData3);
 	bool bReadServerConfigFile(char *cFn);
 	void EnterGame(int iClientH, char * pData);
@@ -64,13 +65,13 @@ public:
 	void RequestNoSaveLogout(int iClientH, char *pData);
 	void VerifyCharacterIntegrity(char *cCharacterName, char *cAccountName, int *iLevel, char *cGuildName, char *cGuildRank, DWORD *dwGuildGUID);
 	void VerifyGuildIntegrity(char *cGuildName, DWORD *dwGuildGUID);
-	bool bAccept(class XSocket * pXSock, bool bCheck);
+	BOOL bAccept(class XSocket * pXSock, bool bCheck);
 	bool bClientRegisterMaps(int iClientH, char *pData);
 	void DeleteClient(int iClientH, short Mod);
 	// complete ascii but uncoded sql:
 	void RequestPlayerData(int iClientH, char *pData);
 	int iGetCharacterData(char * cCharName, char * cMapName, short * sAppr1, short * sAppr2, short * sAppr3, short * sAppr4, int * iApprColor, char * cSex, char * cSkin, int * iLevel, int * iExp, int * iStr, int * iVit, int * iDex, int * iInt, int * iMag, int * iCharisma, int * iSaveYear, int * iSaveMonth, int * iSaveDay, int * iSaveHour, int * iSaveMinute);
-	void RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize, bool bVar1, bool bVar2);
+	void RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize, BOOL bVar1, BOOL bVar2);
 	void RequestCreateNewCharacter(int iClientH, char *pData);
 	void RequestDeleteCharacter(int iClientH, char *pData);
 	void RequestCreateNewGuild(int iClientH, char *pData);
@@ -92,15 +93,15 @@ public:
 	void CharInfoList(int iClientH, char *pData);
 	void CleanupLogFiles();
 	bool bSendClientConfig(int iClientH, char *cFile);
-	void ResponseRegisterGameServer(int iClientH, bool bSuccesfull);
+	void ResponseRegisterGameServer(int iClientH, BOOL bSuccesfull);
 	void ClientRegisterGameserver(int iClientH, char * pData);
 	void ClientMSLConfirmed(int iClientH);
 	void SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char * pData, DWORD dwMsgSize, int iMainH);
 	void CheckClientTimeout();
 	void MsgProcess();
 	void OnTimer();
-	bool bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey);
-	bool bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey);
+	BOOL bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey);
+	BOOL bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey);
 	void OnClientRead(int iClientH);
 	void RegisterWorldServerSocket(int iMainH);
 	void RegisterWorldGameServer();
@@ -136,7 +137,7 @@ public:
 	int   m_iQueueTail;											// 1AA10h
 	char  * m_pMsgBuffer[30000];								// 1AA14h
 	class XSocket 	* m_pMainLogSock[DEF_MAXMAINLOGSOCK];		// 29478h
-	bool  m_bisMainRegistered[DEF_MAXMAINLOGSOCK];				// 294A0h
+	BOOL  m_bisMainRegistered[DEF_MAXMAINLOGSOCK];				// 294A0h
 	int   m_iActiveMainLogSock;									// 294C8h
 	int   m_iCurMainLogSockIndex;								// 294CCh
 	int   m_iTotalMainLogSock;									// 294D0h
@@ -149,10 +150,10 @@ public:
 	char  m_cCrusadeLogBuffer[DEF_MSGBUFFERSIZE];				// 37F44h
 	char  m_cCrusadeLogCount;									// 3F474h
 	DWORD m_dwCrusadeLogTime;									// 3F478h
-	bool  m_bIsWorldRegistered;									// 3F47Ch	
+	BOOL  m_bIsWorldRegistered;									// 3F47Ch	
 
 	// customized
-	bool  m_bGameServerList;
+	BOOL  m_bGameServerList;
 	void ServerList(bool Client);
 	void ParseCommand(bool dlb, char* pMsg);
 	char cGameSecurity[11];

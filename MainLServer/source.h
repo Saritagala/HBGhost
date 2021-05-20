@@ -4,8 +4,8 @@
 
 
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam);
-bool InitApplication( HINSTANCE hInstance);
-bool InitInstance( HINSTANCE hInstance, int nCmdShow );
+BOOL InitApplication( HINSTANCE hInstance);
+BOOL InitInstance( HINSTANCE hInstance, int nCmdShow );
 int EventLoop();
 void Initialize();
 void UpdateScreen();
@@ -22,7 +22,7 @@ void PutEventLog(char * cMsg);
 void OnKeyUp(WPARAM wParam, LPARAM lParam);
 
 //Global Defs'
-bool G_bIsMainLogActive;
+BOOL G_bIsMainLogActive;
 char G_cData50000[50000];
 
 //Socket to listen for clients!
