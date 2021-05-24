@@ -1311,7 +1311,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-location = %d", com.Field("Character-Location").asLong());
+					wsprintf(cTemp, "character-location = %s", com.Field("Character-Location").asString());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1336,12 +1336,6 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 					ZeroMemory(cTemp, sizeof(cTemp));
 					wsprintf(cTemp, "character-reward-gold = %d", com.Field("Character-Reward-Gold").asLong());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "skill-SSN = %s", com.Field("Character-Skill-SSN").asString());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1656,6 +1650,12 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 					ZeroMemory(cTemp, sizeof(cTemp));
 					wsprintf(cTemp, "skill-mastery = %s", com.Field("Character-Skill-Mastery").asString());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "skill-SSN = %s", com.Field("Character-Skill-SSN").asString());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -2758,90 +2758,126 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 
 			if (iNumItems > 0)
 			{
-				wsprintf(cCommand, "INSERT INTO CharItems([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) ");
-
-				for (i = 0; i < iNumItems; i++)
+				try
 				{
-					iItemID = i + 1;
+					//wsprintf(cCommand, "INSERT INTO CharItems([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) ");
 
-					ZeroMemory(cItemName, sizeof(cItemName));
-					memcpy(cItemName, cp, 20);
-					cp += 20;
+					com2.setConnection(&con);
+					for (i = 0; i < iNumItems; i++)
+					{
+						//iItemID = i + 1;
 
-					dwp = (DWORD*)cp;
-					iItemNum1 = *dwp;
-					cp += 4;
+						ZeroMemory(cItemName, sizeof(cItemName));
+						memcpy(cItemName, cp, 20);
+						cp += 20;
 
-					sp = (short*)cp;
-					iItemNum2 = *sp;
-					cp += 2;
+						dwp = (DWORD*)cp;
+						iItemNum1 = *dwp;
+						cp += 4;
 
-					sp = (short*)cp;
-					iItemNum3 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum2 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum4 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum3 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum5 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum4 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemColour = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum5 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum7 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemColour = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum8 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum7 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum9 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum8 = *sp;
+						cp += 2;
 
-					wp = (WORD*)cp;
-					iItemNum10 = *wp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum9 = *sp;
+						cp += 2;
 
-					dwp = (DWORD*)cp;
-					iItemAttribute = *dwp;
-					cp += 4;
+						wp = (WORD*)cp;
+						iItemNum10 = *wp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemElement1 = *sp;
-					cp += 2;
+						dwp = (DWORD*)cp;
+						iItemAttribute = *dwp;
+						cp += 4;
 
-					sp = (short*)cp;
-					iItemElement2 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemElement1 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemElement3 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemElement2 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemElement4 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemElement3 = *sp;
+						cp += 2;
 
-					wsprintf(cValues, "VALUES(%d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
-						iItemID, iCharDBID, cItemName, iItemNum1, iItemNum2, iItemNum3,
-						iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9,
-						iItemNum10, iItemAttribute, iItemElement1, iItemElement2, iItemElement3, iItemElement4);
+						sp = (short*)cp;
+						iItemElement4 = *sp;
+						cp += 2;
 
-					strcat(cCommand, cValues);
+						/*
+						wsprintf(cValues, "VALUES(%d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
+							iItemID, iCharDBID, cItemName, iItemNum1, iItemNum2, iItemNum3,
+							iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9,
+							iItemNum10, iItemAttribute, iItemElement1, iItemElement2, iItemElement3, iItemElement4);
 
-					if (i == iNumItems - 1) {}// strcat(cCommand, "GO");
-					//else strcat(cCommand, "UNION ALL");
+						strcat(cCommand, cValues);
+
+						if (i == iNumItems - 1) {}// strcat(cCommand, "GO");
+						//else strcat(cCommand, "UNION ALL");
+						*/
+
+						com2.setCommandText("INSERT INTO CharItems([Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17)");
+						com2.Param(1).setAsLong() = iCharDBID;
+						com2.Param(2).setAsString() = cItemName;
+						com2.Param(3).setAsLong() = iItemNum1;
+						com2.Param(4).setAsLong() = iItemNum2;
+						com2.Param(5).setAsLong() = iItemNum3;
+						com2.Param(6).setAsLong() = iItemNum4;
+						com2.Param(7).setAsLong() = iItemNum5;
+						com2.Param(8).setAsLong() = iItemColour;
+						com2.Param(9).setAsLong() = iItemNum7;
+						com2.Param(10).setAsLong() = iItemNum8;
+						com2.Param(11).setAsLong() = iItemNum9;
+						com2.Param(12).setAsLong() = iItemNum10;
+						com2.Param(13).setAsLong() = iItemAttribute;
+						com2.Param(14).setAsLong() = iItemElement1;
+						com2.Param(15).setAsLong() = iItemElement2;
+						com2.Param(16).setAsLong() = iItemElement3;
+						com2.Param(17).setAsLong() = iItemElement4;
+
+						com2.Execute();
+					}
+
+					
+					//com2.setCommandText(cCommand);
+					
 				}
+				catch (SAException& x)
+				{
+					con.Rollback();
 
-				com2.setConnection(&con);
-				com2.setCommandText(cCommand);
-				com2.Execute();
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestSavePlayerData - CharItem): %s", (const char*)x.ErrText());
+					PutLogList(cTemp);
+					
+				}
 			}
 
 			com5.setConnection(&con);
@@ -2850,98 +2886,132 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 
 			com5.Execute();
 
-			ZeroMemory(cCommand, sizeof(cCommand));
+			//ZeroMemory(cCommand, sizeof(cCommand));
 
 			sp = (short*)cp;
 			iNumBankItems = *sp;
 			cp += 2;
 
 			if (iNumBankItems > 0)
-			{
-				wsprintf(cCommand, "INSERT INTO BankItems([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) ");
-
-				for (i = 0; i < iNumBankItems; i++)
+			{ 
+				try
 				{
-					iItemID = i + 1;
+					//wsprintf(cCommand, "INSERT INTO BankItems([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) ");
 
-					ZeroMemory(cItemName, sizeof(cItemName));
-					memcpy(cItemName, cp, 20);
-					cp += 20;
+					com4.setConnection(&con);
+					for (i = 0; i < iNumBankItems; i++)
+					{
+						//iItemID = i + 1;
 
-					dwp = (DWORD*)cp;
-					iItemNum1 = *dwp;
-					cp += 4;
+						ZeroMemory(cItemName, sizeof(cItemName));
+						memcpy(cItemName, cp, 20);
+						cp += 20;
 
-					sp = (short*)cp;
-					iItemNum2 = *sp;
-					cp += 2;
+						dwp = (DWORD*)cp;
+						iItemNum1 = *dwp;
+						cp += 4;
 
-					sp = (short*)cp;
-					iItemNum3 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum2 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum4 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum3 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum5 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum4 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemColour = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum5 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum7 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemColour = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum8 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum7 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemNum9 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum8 = *sp;
+						cp += 2;
 
-					wp = (WORD*)cp;
-					iItemNum10 = *wp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemNum9 = *sp;
+						cp += 2;
 
-					dwp = (DWORD*)cp;
-					iItemAttribute = *dwp;
-					cp += 4;
+						wp = (WORD*)cp;
+						iItemNum10 = *wp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemElement1 = *sp;
-					cp += 2;
+						dwp = (DWORD*)cp;
+						iItemAttribute = *dwp;
+						cp += 4;
 
-					sp = (short*)cp;
-					iItemElement2 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemElement1 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemElement3 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemElement2 = *sp;
+						cp += 2;
 
-					sp = (short*)cp;
-					iItemElement4 = *sp;
-					cp += 2;
+						sp = (short*)cp;
+						iItemElement3 = *sp;
+						cp += 2;
 
-					wsprintf(cValues, "VALUES(%d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
-						iItemID, iCharDBID, cItemName, iItemNum1, iItemNum2, iItemNum3,
-						iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9,
-						iItemNum10, iItemAttribute, iItemElement1, iItemElement2, iItemElement3, iItemElement4);
+						sp = (short*)cp;
+						iItemElement4 = *sp;
+						cp += 2;
 
-					strcat(cCommand, cValues);
+						/*
+						wsprintf(cValues, "VALUES (%d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
+							iItemID, iCharDBID, cItemName, iItemNum1, iItemNum2, iItemNum3,
+							iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9,
+							iItemNum10, iItemAttribute, iItemElement1, iItemElement2, iItemElement3, iItemElement4);
 
-					if (i == iNumBankItems - 1) {} //strcat(cCommand, ";");
-					//else strcat(cCommand, "UNION ALL");
+						strcat(cCommand, cValues);
+
+						if (i == iNumBankItems - 1) {} //strcat(cCommand, ";");
+						//else strcat(cCommand, "UNION ALL");
+						*/
+
+						com4.setCommandText("INSERT INTO BankItems([Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17)");
+						com4.Param(1).setAsLong() = iCharDBID;
+						com4.Param(2).setAsString() = cItemName;
+						com4.Param(3).setAsLong() = iItemNum1;
+						com4.Param(4).setAsLong() = iItemNum2;
+						com4.Param(5).setAsLong() = iItemNum3;
+						com4.Param(6).setAsLong() = iItemNum4;
+						com4.Param(7).setAsLong() = iItemNum5;
+						com4.Param(8).setAsLong() = iItemColour;
+						com4.Param(9).setAsLong() = iItemNum7;
+						com4.Param(10).setAsLong() = iItemNum8;
+						com4.Param(11).setAsLong() = iItemNum9;
+						com4.Param(12).setAsLong() = iItemNum10;
+						com4.Param(13).setAsLong() = iItemAttribute;
+						com4.Param(14).setAsLong() = iItemElement1;
+						com4.Param(15).setAsLong() = iItemElement2;
+						com4.Param(16).setAsLong() = iItemElement3;
+						com4.Param(17).setAsLong() = iItemElement4;
+						com4.Execute();
+					}
+
+					//com4.setCommandText(cCommand);
+					
 				}
+				catch (SAException& x)
+				{
+					con.Rollback();
 
-				com4.setConnection(&con);
-				com4.setCommandText(cCommand);
-				com4.Execute();
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestSavePlayerData - BankItem): %s", (const char*)x.ErrText());
+					PutLogList(cTemp);
+					
+				}
 			}
 
 			com.setConnection(&con);
@@ -4818,7 +4888,7 @@ void CWorldLog::VerifyCharacterIntegrity(char* cCharacterName, char* cAccountNam
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM Characters WHERE [Character-Name] = :1");
+			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM Characters WHERE [Character-Name] = :1");
 			com.Param(1).setAsString() = cCharacterName;
 
 			com.Execute();

@@ -6512,7 +6512,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 			if (memcmp(token, "character-class", 15) == 0)    cReadModeA = 93;
 			
 #ifdef DEF_DBGAMESERVER
-			if (memcmp(token, "character-id", 12) == 0)    cReadModeA = 94;
+			if (memcmp(token, "character-dbid", 14) == 0)    cReadModeA = 94;
 #endif
 
 			if (memcmp(token, "[EOF]", 5) == 0) goto DPDC_STOP_DECODING;
