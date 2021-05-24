@@ -17,7 +17,7 @@ extern class	XSocket * G_pListenSock;
 extern class	XSocket * G_pXWorldLogSock;
 extern char		G_cTxt[500];
 extern char		G_cData50000[50000];
-extern BOOL		G_bIsMainLogActive;
+extern bool		G_bIsMainLogActive;
 int			G_cClientCheckCount;
 bool			G_bDBMode = true; // false
 
@@ -37,7 +37,7 @@ dwTime = timeGetTime();
 	for (i = 0; i < DEF_MAXGAMESERVERS; i++) m_pGameList[i] = NULL;
 	for (i = 0; i < DEF_MAXGAMESERVERSMAPS; i++) m_cMapList[i] = NULL;
 	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) m_pMainLogSock[i] = NULL;
-	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) m_bisMainRegistered[i] = FALSE;
+	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) m_bisMainRegistered[i] = false;
 	for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) m_pAccountList[i] = NULL;
 	for (i = 0; i < DEF_MAXITEMS; i++) m_pItemList[i] = NULL;
 	ZeroMemory(m_cWorldLogName, sizeof(m_cWorldLogName));
@@ -55,7 +55,7 @@ dwTime = timeGetTime();
 	m_cBackupDrive = 0;
 	m_iActiveMainLogSock = 0;
 	m_iCurMainLogSockIndex = 0;
-	m_bIsWorldRegistered = FALSE;
+	m_bIsWorldRegistered = false;
 	m_iTotalMainLogSock = 0;
 	m_cGMLogCount = 0;
 	ZeroMemory(m_cGMLogBuffer, sizeof(m_cGMLogBuffer));
@@ -66,7 +66,7 @@ dwTime = timeGetTime();
 	ZeroMemory(m_sGameServerList, sizeof(m_sGameServerList));
 
 	// customization
-	m_bGameServerList = FALSE;
+	m_bGameServerList = false;
 
 	G_cClientCheckCount = 0;
 	m_dwGameTime1 = dwTime;
@@ -110,8 +110,8 @@ bool CWorldLog::bInit()
 {
  int i;
 
-	if (bReadServerConfigFile("WLserver.cfg") == FALSE) return FALSE;
-	//if (bReadServerConfigFile("GateServer.cfg") == 0) return FALSE;
+	if (bReadServerConfigFile("WLserver.cfg") == false) return false;
+	//if (bReadServerConfigFile("GateServer.cfg") == 0) return false;
 
 	for (i = 0; i < DEF_MAXMAINLOGSOCK; i++) {
 		Sleep(200);
@@ -122,11 +122,11 @@ bool CWorldLog::bInit()
 		PutLogList(G_cTxt);
 	}
 
-	//if (bInitSQLServer() == NULL) return FALSE;
+	//if (bInitSQLServer() == NULL) return false;
 	m_iTotalMainLogSock = 0;
-	if (bReadItemConfigFile("Item.cfg") == FALSE) return FALSE;
-	if (bReadItemConfigFile("Item2.cfg") == FALSE) return FALSE;
-	if (bReadItemConfigFile("Item3.cfg") == FALSE) return FALSE;
+	if (bReadItemConfigFile("Item.cfg") == false) return false;
+	if (bReadItemConfigFile("Item2.cfg") == false) return false;
+	if (bReadItemConfigFile("Item3.cfg") == false) return false;
 
 	// VAMP - sql connection
 	try
@@ -143,34 +143,25 @@ bool CWorldLog::bInit()
 		ZeroMemory(cTemp, sizeof(cTemp));
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR: %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
-		return FALSE;
+		return false;
 	}
 
 	PutLogList("(!) SQL SERVER CONNECTED: @HBGhost");
 
-	return TRUE;
+	return true;
 }
 
 bool CWorldLog::bInitSQLServer(void)
 {
 	// hypnotoad: uncoded sql initialization
-	/*
-	CoInitialize(NULL);
-	"<Data Source=character;User ID=sa;pwd=SQL_axszdc;Provider=MSDASQL.1;>"
-	wsprintf(G_cTxt, "select * from CHARACTER_T where CharID = (select MAX(CharID) from CHARACTER_T)", ??????);
-	PutLogList("(!) Success Connect Database!");
-	wsprintf(G_cTxt, "Can't Connect Database (%x)", ??????);
-	MessageBox(m_hWnd, G_cTxt, "DB connect Error", MB_OK+MB_ICONERROR);
-	return 0;
-	*/
 	return true;
 }
 
 void CWorldLog::CleanupLogFiles()
 {
-	PutGMLogData(NULL, NULL, TRUE);
-	PutItemLogData(NULL, NULL, TRUE);
-	PutCrusadeLogData(NULL, NULL, TRUE);
+	PutGMLogData(NULL, NULL, true);
+	PutItemLogData(NULL, NULL, true);
+	PutCrusadeLogData(NULL, NULL, true);
 }
 
 bool CWorldLog::bReadServerConfigFile(char *cFn)
@@ -191,7 +182,7 @@ bool CWorldLog::bReadServerConfigFile(char *cFn)
 	pFile = fopen(cFn, "rt");
 	if (pFile == NULL) {
 		PutLogList("(!) Cannot open configuration file.");
-		return FALSE;
+		return false;
 	}
 	else {
 		PutLogList("(!) Reading configuration file...");
@@ -258,7 +249,7 @@ bool CWorldLog::bReadServerConfigFile(char *cFn)
 					wsprintf(G_cTxt, "Permitted Game Server Address: %s", m_sGameServerList[cTotalList << 4]);
 					PutLogList(G_cTxt);
 					cTotalList++;
-					m_bGameServerList = TRUE;
+					m_bGameServerList = true;
 					cReadMode = 0;
 					break;
 				case 9:
@@ -291,16 +282,16 @@ bool CWorldLog::bReadServerConfigFile(char *cFn)
 		fclose(pFile);
 	}
 	PutLogList(" ");
-	return TRUE;
+	return true;
 }
 
-BOOL CWorldLog::bAccept(class XSocket * pXSock, BOOL bCheck)
+bool CWorldLog::bAccept(class XSocket * pXSock, bool bCheck)
 {
  int i, x;
  class XSocket * pTmpSock;
- BOOL bFlag;
+ bool bFlag;
 
-	bFlag = FALSE;
+	bFlag = false;
 	for (i = 1; i < DEF_MAXCLIENTSOCK; i++) { //loop 1
 		if (m_pClientList[i] == NULL) { //if client null
 			m_pClientList[i] = new class CClient(m_hWnd);
@@ -308,31 +299,31 @@ BOOL CWorldLog::bAccept(class XSocket * pXSock, BOOL bCheck)
 			m_pClientList[i]->m_pXSock->bInitBufferSize(DEF_MSGBUFFERSIZE);
 			ZeroMemory(m_pClientList[i]->m_cIPaddress, sizeof(m_pClientList[i]->m_cIPaddress));
 			m_pClientList[i]->m_pXSock->iGetPeerAddress(m_pClientList[i]->m_cIPaddress);
-			if (bCheck == FALSE) { //if client checked already
+			if (bCheck == false) { //if client checked already
 				for (x = 0; x < DEF_MAXHGSERVERLIST; x++) { //loop 2
 					if (memcmp(m_sGameServerList[x << 4], m_pClientList[i]->m_cIPaddress, 16) == 0) { // if ip = accepted HG
-						bFlag = TRUE;
+						bFlag = true;
 						m_pClientList[i]->m_cMode = 2;
 					} //end if HG server matched server accepted
 				} //end loop 2
-				if (bFlag != TRUE) { //if HG not accepted
+				if (bFlag != true) { //if HG not accepted
 					wsprintf(G_cTxt, "<%d> <%s> Unauthorized Access", i, m_pClientList[i]->m_cIPaddress);
 					PutEventLog(G_cTxt);
 					PutLogList(G_cTxt);
 					delete m_pClientList[i];
 					m_pClientList[i] = NULL;
-					return FALSE;
+					return false;
 				} //end if hg not accepted
 			} //end client checked
 			wsprintf(G_cTxt,"Client Accepted(%d)", i);
 			PutLogList(G_cTxt);
-			return TRUE;
+			return true;
 		} //end client == null
 	} //end loop 1
 	pTmpSock = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 	pXSock->bAccept(pTmpSock, NULL); 
 	delete pTmpSock;
-	return FALSE;
+	return false;
 }
 
 void CWorldLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam) //if client not HG handler
@@ -351,7 +342,7 @@ void CWorldLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lP
 
 	case DEF_XSOCKEVENT_BLOCK:
 		m_iBlockCount++;
-		wsprintf(G_cTxt, "<%d> Client Socket BLOCKED! (total blocks: %s)", iClientH, m_iBlockCount);
+		wsprintf(G_cTxt, "<%d> Client Socket BLOCKED! (total blocks: %d)", iClientH, m_iBlockCount);
 		PutLogList(G_cTxt);
 		break;
 
@@ -385,12 +376,12 @@ void CWorldLog::OnClientRead(int iClientH)
 	pData = m_pClientList[iClientH]->m_pXSock->pGetRcvDataPointer(&dwMsgSize, &cKey);
 	
 	if (m_pClientList[iClientH]->m_cMode == 2) {
-		if (bPutMsgQuene(DEF_MSGFROM_CLIENT, pData, dwMsgSize, iClientH, cKey) == FALSE) {
+		if (bPutMsgQuene(DEF_MSGFROM_CLIENT, pData, dwMsgSize, iClientH, cKey) == false) {
 			PutLogList("@@@@@@ CRITICAL ERROR in CLIENT MsgQuene!!! @@@@@@");
 		}
 		return;
 	}
-	if (bPutMsgQuene(DEF_MSGFROM_BOT, pData, dwMsgSize, iClientH, cKey) == FALSE) {
+	if (bPutMsgQuene(DEF_MSGFROM_BOT, pData, dwMsgSize, iClientH, cKey) == false) {
 		PutLogList("@@@@@@ CRITICAL ERROR in BOT MsgQuene!!! @@@@@@");
 	}
 	return;
@@ -412,8 +403,8 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 		wsprintf(G_cTxt, "(!) Main-log-socket(%d) connected.", iMainH);
 		PutLogList(G_cTxt);
 		m_iActiveMainLogSock++;
-		if (m_bIsWorldRegistered == FALSE) {
-			m_bIsWorldRegistered = TRUE;
+		if (m_bIsWorldRegistered == false) {
+			m_bIsWorldRegistered = true;
 			RegisterWorldServer(iMainH);
 			RegisterWorldGameServer();
 		}
@@ -424,14 +415,14 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 
 	case DEF_XSOCKEVENT_READCOMPLETE:
 		pData = m_pMainLogSock[iMainH]->pGetRcvDataPointer(&dwMsgSize, &cKey);
-		if (bPutMsgQuene(DEF_MSGFROM_LOGSERVER, pData, dwMsgSize, iMainH, cKey) == FALSE) {
+		if (bPutMsgQuene(DEF_MSGFROM_LOGSERVER, pData, dwMsgSize, iMainH, cKey) == false) {
 			PutLogList("@@@@@@ CRITICAL ERROR in LOGSERVER MsgQuene!!! @@@@@@");
 		}
 		break;
 
 	case DEF_XSOCKEVENT_BLOCK:
 		m_iBlockCount++;
-		wsprintf(G_cTxt, "<%d> MainLog Socket BLOCKED! (total blocks: %s)", iMainH, m_iBlockCount);
+		wsprintf(G_cTxt, "<%d> MainLog Socket BLOCKED! (total blocks: %d)", iMainH, m_iBlockCount);
 		PutLogList(G_cTxt);
 		break;
 
@@ -454,31 +445,31 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 		m_pMainLogSock[iMainH]= new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 		m_pMainLogSock[iMainH]->bConnect(m_cMainLogAddress, m_iMainLogPort, (WM_ONMAINLOGSOCKETEVENT + iMainH));
 		m_pMainLogSock[iMainH]->bInitBufferSize(DEF_MSGBUFFERSIZE);
-		m_bisMainRegistered[iMainH] = FALSE;
-		if ((m_iActiveMainLogSock <= 0) && (m_bIsWorldRegistered == TRUE)) m_bIsWorldRegistered = FALSE;
+		m_bisMainRegistered[iMainH] = false;
+		if ((m_iActiveMainLogSock <= 0) && (m_bIsWorldRegistered == true)) m_bIsWorldRegistered = false;
 		break;
 	}
 }
 
-BOOL CWorldLog::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey)
+bool CWorldLog::bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey)
 {
-	if (m_pMsgQueue[m_iQueueTail] != NULL) return FALSE;
+	if (m_pMsgQueue[m_iQueueTail] != NULL) return false;
 
 	m_pMsgQueue[m_iQueueTail] = new class CMsg;
-	if (m_pMsgQueue[m_iQueueTail] == NULL) return FALSE;
+	if (m_pMsgQueue[m_iQueueTail] == NULL) return false;
 
-	if (m_pMsgQueue[m_iQueueTail]->bPut(cFrom, pData, dwMsgSize, iIndex, cKey) == FALSE) return FALSE;
+	if (m_pMsgQueue[m_iQueueTail]->bPut(cFrom, pData, dwMsgSize, iIndex, cKey) == false) return false;
 
 	m_iQueueTail++;
 	if (m_iQueueTail >= DEF_MSGQUEUESIZE) m_iQueueTail = 0;
 	
-	return TRUE;
+	return true;
 }
 
-BOOL CWorldLog::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
+bool CWorldLog::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey)
 {
 
-	if (m_pMsgQueue[m_iQueueHead] == NULL) return FALSE;
+	if (m_pMsgQueue[m_iQueueHead] == NULL) return false;
 
 	m_pMsgQueue[m_iQueueHead]->Get(pFrom, pData, pMsgSize, pIndex, pKey);
 
@@ -488,7 +479,7 @@ BOOL CWorldLog::bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int *
 	m_iQueueHead++;
 	if (m_iQueueHead >= DEF_MSGQUEUESIZE) m_iQueueHead = 0;
 
-	return TRUE;
+	return true;
 }
 
 void CWorldLog::OnTimer()
@@ -512,7 +503,7 @@ void CWorldLog::MsgProcess()
 
 	ZeroMemory(m_pMsgBuffer, DEF_MSGBUFFERSIZE+1);
 	pData = (char *)m_pMsgBuffer;
-	while (bGetMsgQuene(&cFrom, pData, &dwMsgSize, &iClientH, &cKey) == TRUE) {
+	while (bGetMsgQuene(&cFrom, pData, &dwMsgSize, &iClientH, &cKey) == true) {
 		dwpMsgID   = (DWORD *)(pData + DEF_INDEX4_MSGID);
 		//wsprintf(G_cTxt, "(X) Recieved Message (0x%.8X)", *dwpMsgID);
 		//PutLogList(G_cTxt);
@@ -646,11 +637,11 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
  DWORD *dwp;
  char cData[1110];
  int i, x;
- BOOL bBool;
- BOOL bCheckHGServer;
+ bool bBool;
+ bool bCheckHGServer;
 
-	bBool = TRUE;
-	bCheckHGServer = FALSE;
+	bBool = true;
+	bCheckHGServer = false;
 	if (m_pClientList[iClientH] == NULL) return;
 	ZeroMemory(cGameServerName, sizeof(cGameServerName));
 	ZeroMemory(cGameServerIP, sizeof(cGameServerIP));
@@ -681,33 +672,33 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 	// Hypnotoad - fix preventing extasis hack from getting config files and connecting
 	for (i = 0; i < DEF_MAXHGSERVERLIST; i++) {
 		if (memcmp(m_sGameServerList[i << 4], cGameServerIP, 16) == 0) {
-			bCheckHGServer = TRUE;
+			bCheckHGServer = true;
 		}
 	}
 	/*if((memcmp(cGameServerSecurity, cGameSecurity, strlen(cGameServerSecurity)) != 0)) {
 		wsprintf(G_cTxt,"(XXX) Unauthorized Access! Name(%s) Addr(%s)- security fail(%s) - != 0", cGameServerName, cGameServerIP, cGameSecurity);
 		PutLogList(G_cTxt);		
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		return;
 	}
 	if(strlen(cGameServerSecurity) <= 0) {
 		wsprintf(G_cTxt,"(XXX) Unauthorized Access! Name(%s) Addr(%s)- security fail(%s) - <= 0", cGameServerName, cGameServerIP, cGameSecurity);
 		PutLogList(G_cTxt);		
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		return;
 }*/
 	//end security
-	if ((bCheckHGServer == FALSE) && (m_bGameServerList == TRUE)) {
+	if ((bCheckHGServer == false) && (m_bGameServerList == true)) {
 		wsprintf(G_cTxt,"(XXX) Unauthorized Access! Name(%s) Addr(%s) Port(%d) Maps(%d)", cGameServerName, cGameServerIP, iGameServerPort, iTotalMaps);
 		PutLogList(G_cTxt);		
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		return;
 	}
 	
 	for (i = 0; i < DEF_MAXGAMESERVERS; i++) {
 		if (m_pGameList[i] != NULL) {
 			if (memcmp(m_pGameList[i]->m_cGameServerName, cGameServerName, 10) == 0) {
-				ResponseRegisterGameServer(iClientH, FALSE);
+				ResponseRegisterGameServer(iClientH, false);
 				wsprintf(G_cTxt, "(!) Game Server Registration - fail : Server-Name(%s) already exists.", cGameServerName);
 				PutLogList(G_cTxt);
 				return;
@@ -721,11 +712,11 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 			m_pGameList[i] = new class CGame(iClientH, cGameServerName, cGameServerIP, iGameServerPort, cGameServerLanAddress);
 			for (x = 0; x < iTotalMaps; x++) {
 				if (bClientRegisterMaps(i, cp) == 0) {
-					bBool = FALSE;
+					bBool = false;
 				}
 				cp += 11;
 			}
-			if (bBool == TRUE) {
+			if (bBool == true) {
 				// thanks SlammeR for providing 3.51 config files
 				if (!bSendClientConfig(iClientH, "Npc.cfg") || 
 					!bSendClientConfig(iClientH, "Item.cfg") ||
@@ -742,7 +733,7 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 					!bSendClientConfig(iClientH, "Potion.cfg")) {
 					wsprintf(G_cTxt, "(X) Game Server(%s) Registration - Fail: Cannot send configuration data!", cGameServerName);
 					PutLogList(G_cTxt);
-					ResponseRegisterGameServer(iClientH, FALSE);
+					ResponseRegisterGameServer(iClientH, false);
 					return;
 				}
 				/*bSendClientConfig(iClientH, "GameData\\ElvineOccupyFlag.txt");
@@ -750,7 +741,7 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 				
 				wsprintf(G_cTxt, "(O) Game Server Registration - Success( Name: %s | Addr: %s | Port: %d )", cGameServerName, cGameServerIP, iGameServerPort);
 				PutLogList(G_cTxt);
-				ResponseRegisterGameServer(iClientH, TRUE);
+				ResponseRegisterGameServer(iClientH, true);
 
 				ZeroMemory(cData, sizeof(cData));
 	
@@ -784,19 +775,19 @@ void CWorldLog::ClientRegisterGameserver(int iClientH, char * pData)
 			else {
 				wsprintf(G_cTxt, "(X) Game Server(%s) Registration - Fail: Map Duplicated!", cGameServerName);
 				PutLogList(G_cTxt);
-				ResponseRegisterGameServer(iClientH, FALSE);
+				ResponseRegisterGameServer(iClientH, false);
 				return;
 			}
 		return;
 	}
 	if((m_pGameList[i] != NULL)&& (i >= DEF_MAXGAMESERVERS)) {
-		ResponseRegisterGameServer(iClientH, FALSE);
+		ResponseRegisterGameServer(iClientH, false);
 		PutLogList("(!) Game Server Registeration - Fail : No more Game Server can be connected.");
 		}
 	}
 }
 
-void CWorldLog::ResponseRegisterGameServer(int iClientH, BOOL bSuccesfull)
+void CWorldLog::ResponseRegisterGameServer(int iClientH, bool bSuccesfull)
 {
  int iRet;
  DWORD * dwp;
@@ -1097,7 +1088,7 @@ void CWorldLog::EnterGameConfirm(int iClientH, char *pData)
 				DeleteClient(iClientH, 0);
 				delete m_pClientList[iClientH];
 				m_pClientList[iClientH] = NULL;
-				return;
+				break;
 			}					
 			return;
 		}	
@@ -1110,175 +1101,6 @@ if((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAcco
 	return;
 }
 
-/*
-void CWorldLog::RequestPlayerData(int iClientH, char *pData)
-{
- char cCharacterName[11], cAccountName[11], cFileName[255], cDir[63];
- char *cp, *cp2;
- DWORD *dwp;
- WORD *wp;
- char cVerifyAccountName[11];
- char cGuildName[21], cGuildRank;
- int iVerifyLevel;
- FILE * pFile;
- int iRet, iSize;
- HANDLE hFile;
- DWORD dwFileSize, dwVerifyGuildGUID, dwGuildGUID, lpNumberOfBytesRead;
- BOOL bGuildCheck;
-
-	pFile = NULL;
-	bGuildCheck = FALSE;
-	if (m_pClientList[iClientH] == NULL) return;
-
-	ZeroMemory(G_cData50000, sizeof(G_cData50000));
-	ZeroMemory(cCharacterName, sizeof(cCharacterName));
-	ZeroMemory(cAccountName, sizeof(cAccountName));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-
-	memcpy(cCharacterName, cp, 10);
-	cp += 10;
-
-	memcpy(cAccountName, cp, 10);
-	cp += 10;
-
-	if (strlen(cCharacterName) == 0) PutLogList("(X) CharName NULL!");
-	if (strlen(cAccountName) == 0) PutLogList("(X) AccountName NULL!");
-
-	if (G_bDBMode == TRUE) {
-		// todo: add SQL Code Here
-		ZeroMemory(G_cData50000, sizeof(G_cData50000));
-		iSize = -1;
-		//iSize = iCreateNewCharacterSQL(cCharacterName, cAccountName, G_cData50000, bGuildCheck);
-		if (iSize == -1) {
-			wsprintf(G_cTxt, "(TestLog) Send character data error(%s) data...", cCharacterName);
-			PutLogList(G_cTxt);
-
-			dwp = (DWORD *)(G_cData50000);
-			*dwp = MSGID_RESPONSE_PLAYERDATA;
-			
-			wp  = (WORD *)(G_cData50000 + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp  = (char *)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cCharacterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, 16, DEF_USE_ENCRYPTION);
-		}
-		else {
-			
-		}
-	}
-	else {	
-		VerifyCharacterIntegrity(cCharacterName, cVerifyAccountName, &iVerifyLevel, cGuildName, &cGuildRank, &dwGuildGUID);
-
-		ZeroMemory(cFileName, sizeof(cFileName));
-		ZeroMemory(cDir, sizeof(cDir));
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
- 		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cCharacterName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cCharacterName);	
-		strcat(cFileName, ".txt");	
-
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		dwFileSize = GetFileSize(hFile, NULL);
-		if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-
-		pFile = fopen(cFileName, "rt");
-		if ((pFile != NULL) && (strcmp(cAccountName, cVerifyAccountName) == 0)) {
-
-			if(dwFileSize > 30000) { //file size
-			dwp = (DWORD *)(G_cData50000);
-			*dwp = MSGID_RESPONSE_PLAYERDATA;
-			
-			wp  = (WORD *)(G_cData50000 + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp  = (char *)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cCharacterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, 16, DEF_USE_ENCRYPTION);
-
-			wsprintf(G_cTxt, "(TestLog) Character(%s) data size to big", cCharacterName);
-			PutLogList(G_cTxt);
-			} //file size to big
-					
-			dwp = (DWORD *)(G_cData50000);
-			*dwp = MSGID_RESPONSE_PLAYERDATA;
-			
-			wp  = (WORD *)(G_cData50000 + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_CONFIRM; //send character daata
-
-			cp  = (char *)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cCharacterName, 10);
-			cp += 10;
-			
-			// HGServer 2.0+ doesnt use this anymore
-			//*cp = 2; //2.0+ fix
-			//cp++; //2.0+ fix
-			
-			if (cGuildRank >= 0) {
-				VerifyGuildIntegrity(cGuildName, &dwVerifyGuildGUID);
-				if (dwVerifyGuildGUID == dwGuildGUID) {
-					bGuildCheck = TRUE;
-				}
-			}
-			
-			*cp = bGuildCheck;
-			cp++;			
-
-			// can cause hgserver to crash because of this packet packet size!!!
-			// need to make fix in hgserver in regards to MSGID_RESPONSE_PLAYERDATA's dwSize
-			// eg if (dwSize > BUFFER) return; or something this is extremely exploitable
-			// all you have to do is send a huge txt file or packet to the server and crash
-			cp2 = new char[dwFileSize+1];
-			ZeroMemory(cp2, dwFileSize+1);
-			ReadFile(hFile, cp2, dwFileSize, &lpNumberOfBytesRead, NULL);
-			CloseHandle(hFile);
-
-			memcpy(cp, cp2, dwFileSize + 1);
-			cp += dwFileSize + 1;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, dwFileSize + 19, DEF_USE_ENCRYPTION);
-
-			wsprintf(G_cTxt, "(TestLog) Send character(%s) data...", cCharacterName);
-			PutLogList(G_cTxt);
-		}
-		else {
-			wsprintf(G_cTxt, "(X) RequestPlayerData Error! Fn(%s) Account(%s, %s)", cFileName, cAccountName, cVerifyAccountName);
-			PutLogList(G_cTxt);
-			
-			dwp = (DWORD *)(G_cData50000);
-			*dwp = MSGID_RESPONSE_PLAYERDATA;
-			
-			wp  = (WORD *)(G_cData50000 + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT; //player data error
-			
-			cp  = (char *)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cCharacterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, 16, DEF_USE_ENCRYPTION);
-		}
-	}
-	switch(iRet) {
-	case DEF_XSOCKEVENT_QUENEFULL:
-	case DEF_XSOCKEVENT_SOCKETERROR:
-	case DEF_XSOCKEVENT_CRITICALERROR:
-	case DEF_XSOCKEVENT_SOCKETCLOSED:
-		DeleteClient(iClientH, 0);
-		delete m_pClientList[iClientH];
-		m_pClientList[iClientH] = NULL;
-		return;
-	}	
-}
-*/
 void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 {
 	char cCharacterName[11], cAccountName[11], cFileName[255], cDir[63];
@@ -1294,10 +1116,10 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 	long iSize;
 	HANDLE hFile;
 	DWORD dwFileSize, dwVerifyGuildGUID, dwGuildGUID, lpNumberOfBytesRead, dwTime;
-	BOOL bGuildCheck;
+	bool bGuildCheck;
 
 	pFile = NULL;
-	bGuildCheck = FALSE;
+	bGuildCheck = false;
 	if (m_pClientList[iClientH] == NULL) return;
 
 	ZeroMemory(G_cData50000, sizeof(G_cData50000));
@@ -1320,7 +1142,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 	int accDBID = iGetAccountDatabaseID(cAccountName);
 
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		ZeroMemory(G_cData50000, sizeof(G_cData50000));
 		iSize = -1;
 
@@ -1332,7 +1154,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour], [Character-Magic-Mastery], [Character-Skill-Mastery], [Character-Skill-SSN], [Character-Equip-Status], [Character-Item-Pos-X], [Character-Item-Pos-Y]  FROM         Characters WHERE     ([Character-Name] = :1 AND [Account-ID] = :2)");
+			com.setCommandText("SELECT [Character-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Quest-Number1], [Character-Quest-ID1], [Character-Quest-Count1], [Character-Quest-Reward1], [Character-Quest-Amount1], [Character-Quest-Completed1], [Character-Quest-Number2], [Character-Quest-ID2], [Character-Quest-Count2], [Character-Quest-Reward2], [Character-Quest-Amount2], [Character-Quest-Completed2], [Character-Quest-Number3], [Character-Quest-ID3], [Character-Quest-Count3], [Character-Quest-Reward3], [Character-Quest-Amount3], [Character-Quest-Completed3], [Character-Quest-Number4], [Character-Quest-ID4], [Character-Quest-Count4], [Character-Quest-Reward4], [Character-Quest-Amount4], [Character-Quest-Completed4], [Character-Quest-Number5], [Character-Quest-ID5], [Character-Quest-Count5], [Character-Quest-Reward5], [Character-Quest-Amount5], [Character-Quest-Completed5], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour], [Character-Magic-Mastery], [Character-Skill-Mastery], [Character-Skill-SSN], [Character-Equip-Status], [Character-Item-Pos-X], [Character-Item-Pos-Y], [Character-Deaths], [Character-TotalDGKills], [Character-DGPoints], [Character-TotalDGDeaths], [Character-DGKills], [Character-Max-Ek], [Character-Heldenian-GUID], [Character-Wanted-Level], [Character-Coin-Points], [Character-Team], [Character-Class] FROM Characters WHERE [Character-Name] = :1 AND [Account-ID] = :2");
 			com.Param(1).setAsString() = cCharacterName;
 			com.Param(2).setAsLong() = accDBID;
 
@@ -1348,9 +1170,10 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 				while (com.FetchNext())
 				{
+					iCharacterDBid = com.Field("Character-ID").asLong();
+
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-dbid = %s", com.Field("Character-ID").asString());
-					iCharacterDBid = atoi(com.Field("Character-ID").asString());
+					wsprintf(cTemp, "character-dbid = %d", iCharacterDBid);
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1362,43 +1185,43 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-loc-x = %s", com.Field("Character-Loc-X").asString());
+					wsprintf(cTemp, "character-loc-x = %d", com.Field("Character-Loc-X").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-loc-y = %s", com.Field("Character-Loc-Y").asString());
+					wsprintf(cTemp, "character-loc-y = %d", com.Field("Character-Loc-Y").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "sex-status = %s", com.Field("Character-Sex").asString());
+					wsprintf(cTemp, "sex-status = %d", com.Field("Character-Sex").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "skin-status = %s", com.Field("Character-Skin").asString());
+					wsprintf(cTemp, "skin-status = %d", com.Field("Character-Skin").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "hairstyle-status = %s", com.Field("Character-Hair-Style").asString());
+					wsprintf(cTemp, "hairstyle-status = %d", com.Field("Character-Hair-Style").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "haircolor-status = %s", com.Field("Character-Hair-Colour").asString());
+					wsprintf(cTemp, "haircolor-status = %d", com.Field("Character-Hair-Colour").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "underwear-status = %s", com.Field("Character-Underwear").asString());
+					wsprintf(cTemp, "underwear-status = %d", com.Field("Character-Underwear").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1410,109 +1233,109 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-guild-rank = %s", com.Field("Character-Guild-Rank").asString());
+					wsprintf(cTemp, "character-guild-rank = %d", com.Field("Character-Guild-Rank").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-HP = %s", com.Field("Character-HP").asString());
+					wsprintf(cTemp, "character-HP = %d", com.Field("Character-HP").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-LEVEL = %s", com.Field("Character-Level").asString());
+					wsprintf(cTemp, "character-MP = %d", com.Field("Character-MP").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-STR = %s", com.Field("Character-Strength").asString());
+					wsprintf(cTemp, "character-SP = %d", com.Field("Character-SP").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-INT = %s", com.Field("Character-Intelligence").asString());
+					wsprintf(cTemp, "character-LEVEL = %d", com.Field("Character-Level").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-DEX = %s", com.Field("Character-Dexterity").asString());
+					wsprintf(cTemp, "character-STR = %d", com.Field("Character-Strength").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-MAG = %s", com.Field("Character-Magic").asString());
+					wsprintf(cTemp, "character-VIT = %d", com.Field("Character-Vitality").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-VIT = %s", com.Field("Character-Vitality").asString());
+					wsprintf(cTemp, "character-DEX = %d", com.Field("Character-Dexterity").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-CHARISMA = %s", com.Field("Character-Charisma").asString());
+					wsprintf(cTemp, "character-INT = %d", com.Field("Character-Intelligence").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-LUCK = %s", com.Field("Character-Luck").asString());
+					wsprintf(cTemp, "character-MAG = %d", com.Field("Character-Magic").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-EXP = %s", com.Field("Character-Experience").asString());
+					wsprintf(cTemp, "character-CHARISMA = %d", com.Field("Character-Charisma").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-location = %s", com.Field("Character-Location").asString());
+					wsprintf(cTemp, "character-LUCK = %d", com.Field("Character-Luck").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-MP = %s", com.Field("Character-MP").asString());
+					wsprintf(cTemp, "character-EXP = %d", com.Field("Character-Experience").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-SP = %s", com.Field("Character-SP").asString());
+					wsprintf(cTemp, "character-location = %d", com.Field("Character-Location").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-LU_Pool = %s", com.Field("Character-LU-Pool").asString());
+					wsprintf(cTemp, "character-LU_Pool = %d", com.Field("Character-LU-Pool").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-EK-Count = %s", com.Field("Character-Ek-Count").asString());
+					wsprintf(cTemp, "character-EK-Count = %d", com.Field("Character-Ek-Count").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-PK-Count = %s", com.Field("Character-Pk-Count").asString());
+					wsprintf(cTemp, "character-PK-Count = %d", com.Field("Character-Pk-Count").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-reward-gold = %s", com.Field("Character-Reward-Gold").asString());
+					wsprintf(cTemp, "character-reward-gold = %d", com.Field("Character-Reward-Gold").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1524,140 +1347,133 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-profile = %s", com.Field("Character-Profile").asString());
+					wsprintf(cTemp, "hunger-status = %d", com.Field("Character-Hunger").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "hunger-status = %s", com.Field("Character-Hunger").asString());
+					wsprintf(cTemp, "admin-user-level = %d", com.Field("Character-Admin-Level").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "admin-user-level = %s", com.Field("Character-Admin-Level").asString());
+					wsprintf(cTemp, "timeleft-shutup = %d", com.Field("Character-Shutup-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "timeleft-shutup = %s", com.Field("Character-Shutup-Time").asString());
+					wsprintf(cTemp, "timeleft-rating = %d", com.Field("Character-Rating-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "timeleft-rating = %s", com.Field("Character-Rating-Time").asString());
-					strcat(cp2, cTemp);
-					strcat(cp2, "  ");
-					iSize += (strlen(cTemp) + 2);
-
-
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-RATING = %s", com.Field("Character-Rating").asString());
+					wsprintf(cTemp, "character-RATING = %d", com.Field("Character-Rating").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-guild-GUID = %s", com.Field("Character-Guild-GUID").asString());
+					wsprintf(cTemp, "character-guild-GUID = %d", com.Field("Character-Guild-GUID").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-downskillindex = %s", com.Field("Character-Down-Skill-Index").asString());
+					wsprintf(cTemp, "character-IDnum1 = %d", com.Field("Character-ID1").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-IDnum1 = %s", com.Field("Character-ID1").asString());
+					wsprintf(cTemp, "character-IDnum2 = %d", com.Field("Character-ID2").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-IDnum2 = %s", com.Field("Character-ID2").asString());
+					wsprintf(cTemp, "character-IDnum3 = %d", com.Field("Character-ID3").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-IDnum3 = %s", com.Field("Character-ID3").asString());
+					wsprintf(cTemp, "character-quest-number = %d %d %d %d %d", com.Field("Character-Quest-Number1").asLong(), com.Field("Character-Quest-Number2").asLong(), com.Field("Character-Quest-Number3").asLong(), com.Field("Character-Quest-Number4").asLong(), com.Field("Character-Quest-Number5").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "penalty-block-date = %s", com.Field("Character-Block-Date").asString());
+					wsprintf(cTemp, "character-quest-ID = %d %d %d %d %d", com.Field("Character-Quest-ID1").asLong(), com.Field("Character-Quest-ID2").asLong(), com.Field("Character-Quest-ID3").asLong(), com.Field("Character-Quest-ID4").asLong(), com.Field("Character-Quest-ID5").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-quest-number = %s", com.Field("Character-Quest-Number").asString());
+					wsprintf(cTemp, "current-quest-count = %d %d %d %d %d", com.Field("Character-Quest-Count1").asLong(), com.Field("Character-Quest-Count2").asLong(), com.Field("Character-Quest-Count3").asLong(), com.Field("Character-Quest-Count4").asLong(), com.Field("Character-Quest-Count5").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "quest-reward-type = %s", com.Field("Character-Quest-Reward").asString());
+					wsprintf(cTemp, "quest-reward-type = %d %d %d %d %d", com.Field("Character-Quest-Reward1").asLong(), com.Field("Character-Quest-Reward2").asLong(), com.Field("Character-Quest-Reward3").asLong(), com.Field("Character-Quest-Reward4").asLong(), com.Field("Character-Quest-Reward5").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "quest-reward-amount = %s", com.Field("Character-Quest-Amount").asString());
+					wsprintf(cTemp, "quest-reward-amount = %d %d %d %d %d", com.Field("Character-Quest-Amount1").asLong(), com.Field("Character-Quest-Amount2").asLong(), com.Field("Character-Quest-Amount3").asLong(), com.Field("Character-Quest-Amount4").asLong(), com.Field("Character-Quest-Amount5").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-contribution = %s", com.Field("Character-Contribution").asString());
+					wsprintf(cTemp, "character-quest-completed = %d %d %d %d %d", com.Field("Character-Quest-Completed1").asLong(), com.Field("Character-Quest-Completed2").asLong(), com.Field("Character-Quest-Completed3").asLong(), com.Field("Character-Quest-Completed4").asLong(), com.Field("Character-Quest-Completed5").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-quest-ID = %s", com.Field("Character-Quest-ID").asString());
+					wsprintf(cTemp, "character-contribution = %d", com.Field("Character-Contribution").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "timeleft-force-recall = %s", com.Field("Character-Force-Time").asString());
+					wsprintf(cTemp, "timeleft-force-recall = %d", com.Field("Character-Force-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "special-event-id = %s", com.Field("Character-Event-ID").asString());
+					wsprintf(cTemp, "timeleft-firm-staminar = %d", com.Field("Character-SP-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "super-attack-left = %s", com.Field("Character-Criticals").asString());
+					wsprintf(cTemp, "special-event-id = %d", com.Field("Character-Event-ID").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "reserved-fightzone-id = %s", com.Field("Character-Fightzone-ID").asString());
+					wsprintf(cTemp, "super-attack-left = %d", com.Field("Character-Criticals").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "special-ability-time = %s", com.Field("Character-Ability-Time").asString());
+					wsprintf(cTemp, "special-ability-time = %d", com.Field("Character-Ability-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "character-war-contribution = %s", com.Field("Character-War-Contribution").asString());
+					wsprintf(cTemp, "character-war-contribution = %d", com.Field("Character-War-Contribution").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1669,43 +1485,109 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "locked-map-time = %s", com.Field("Character-Lock-Time").asString());
+					wsprintf(cTemp, "locked-map-time = %d", com.Field("Character-Lock-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "crusade-job = %s", com.Field("Character-Crusade-Job").asString());
+					wsprintf(cTemp, "crusade-job = %d", com.Field("Character-Crusade-Job").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "construct-point = %s", com.Field("Character-Construct-Points").asString());
+					wsprintf(cTemp, "construct-point = %d", com.Field("Character-Construct-Points").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "crusade-GUID = %s", com.Field("Character-Crusade-GUID").asString());
+					wsprintf(cTemp, "crusade-GUID = %d", com.Field("Character-Crusade-GUID").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "dead-penalty-time = %s", com.Field("Character-Death-Time").asString());
+					wsprintf(cTemp, "dead-penalty-time = %d", com.Field("Character-Death-Time").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "party-id = %s", com.Field("Character-Party-ID").asString());
+					wsprintf(cTemp, "party-id = %d", com.Field("Character-Party-ID").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
 
 					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "gizon-item-upgade-left = %s", com.Field("Character-Majestics").asString());
+					wsprintf(cTemp, "gizon-item-upgrade-left = %d", com.Field("Character-Majestics").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-Deaths = %d", com.Field("Character-Deaths").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-TotalDGKills = %d", com.Field("Character-TotalDGKills").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-DGPoints = %d", com.Field("Character-DGPoints").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-TotalDGDeaths = %d", com.Field("Character-TotalDGDeaths").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-DGKills = %d", com.Field("Character-DGKills").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "max-ek = %d", com.Field("Character-Max-Ek").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "heldenian-GUID = %d", com.Field("Character-Heldenian-GUID").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-wanted-level = %d", com.Field("Character-Wanted-Level").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "coin-points = %d", com.Field("Character-Coin-Points").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-team = %d", com.Field("Character-Team").asLong());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "character-class = %d", com.Field("Character-Class").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1821,7 +1703,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, 16, DEF_USE_ENCRYPTION);
 
-				delete cp2;
+				delete[] cp2;
 
 				return;
 			}
@@ -1861,7 +1743,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 			if (cGuildRank >= 0) {
 				VerifyGuildIntegrity(cGuildName, &dwVerifyGuildGUID);
 				if (dwVerifyGuildGUID == dwGuildGUID) {
-					bGuildCheck = TRUE;
+					bGuildCheck = true;
 				}
 			}
 
@@ -1894,88 +1776,9 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, 16, DEF_USE_ENCRYPTION);
 		}
 
-		delete cp2;
+		delete[] cp2;
 	}
-	else {
-		VerifyCharacterIntegrity(cCharacterName, cVerifyAccountName, &iVerifyLevel, cGuildName, &cGuildRank, &dwGuildGUID);
-
-		ZeroMemory(cFileName, sizeof(cFileName));
-		ZeroMemory(cDir, sizeof(cDir));
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cCharacterName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cCharacterName);
-		strcat(cFileName, ".txt");
-
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		dwFileSize = GetFileSize(hFile, NULL);
-		if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-
-		pFile = fopen(cFileName, "rt");
-		if ((pFile != NULL) && (strcmp(cAccountName, cVerifyAccountName) == 0)) {
-
-			dwp = (DWORD*)(G_cData50000);
-			*dwp = MSGID_RESPONSE_PLAYERDATA;
-
-			wp = (WORD*)(G_cData50000 + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_CONFIRM;
-
-			cp = (char*)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cCharacterName, 10);
-			cp += 10;
-
-			// HGServer 2.0+ doesnt use this anymore
-			*cp = 2;
-			cp++;
-
-			if (cGuildRank >= 0) {
-				VerifyGuildIntegrity(cGuildName, &dwVerifyGuildGUID);
-				if (dwVerifyGuildGUID == dwGuildGUID) {
-					bGuildCheck = TRUE;
-				}
-			}
-
-			*cp = bGuildCheck;
-			cp++;
-
-			// can cause hgserver to crash because of this packet packet size!!!
-			// need to make fix in hgserver in regards to MSGID_RESPONSE_PLAYERDATA's dwSize
-			// eg if (dwSize > BUFFER) return; or something this is extremely exploitable
-			// all you have to do is send a huge txt file or packet to the server and crash
-			cp2 = new char[dwFileSize + 1];
-			ZeroMemory(cp2, dwFileSize + 1);
-			ReadFile(hFile, cp2, dwFileSize, &lpNumberOfBytesRead, NULL);
-			CloseHandle(hFile);
-
-			memcpy(cp, cp2, dwFileSize + 1);
-			cp += dwFileSize + 1;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, dwFileSize + 19, DEF_USE_ENCRYPTION);
-
-			wsprintf(G_cTxt, "(TestLog) Send character(%s) data...", cCharacterName);
-			PutLogList(G_cTxt);
-		}
-		else {
-			wsprintf(G_cTxt, "(X) RequestPlayerData Error! Fn(%s) Account(%s, %s)", cFileName, cAccountName, cVerifyAccountName);
-			PutLogList(G_cTxt);
-
-			dwp = (DWORD*)(G_cData50000);
-			*dwp = MSGID_RESPONSE_PLAYERDATA;
-
-			wp = (WORD*)(G_cData50000 + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp = (char*)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cCharacterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, 16, DEF_USE_ENCRYPTION);
-		}
-	}
+	
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -1984,20 +1787,12 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 		DeleteClient(iClientH, 0);
 		delete m_pClientList[iClientH];
 		m_pClientList[iClientH] = NULL;
-		return;
+		break;
 	}
 }
 bool CWorldLog::bVerifyCharacterGuildSQL(char *pData, DWORD dwGuildGUID)
 {
-
-	// if (strcmp("NONE", pData) == 0) return 0;
-	// wsprintf(cTxt, "select * from GUILD_T where cGuildName '%s'", pData);
-	// wsprintf(cTxt, "%x-(1241) sql (%s)"
-	// PutGameLogData(cTxt);
-	// MessageBox(m_hWnd, cTxt, "DB connect Error", MB_OK+MB_ICONERROR);
-	// if (????? != dwGuildGUID) return 0;
-	return TRUE;
-
+	return true;
 }
 
 void CWorldLog::SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD dwMsgSize, int iMainH)
@@ -2027,7 +1822,7 @@ void CWorldLog::SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD 
 
 	memcpy((char*)cp, pData, dwMsgSize);
 
-	if ((m_bisMainRegistered[m_iCurMainLogSockIndex] == TRUE) || (iMainH != -1)) {
+	if ((m_bisMainRegistered[m_iCurMainLogSockIndex] == true) || (iMainH != -1)) {
 		iRet = m_pMainLogSock[m_iCurMainLogSockIndex]->iSendMsg(G_cData50000, dwMsgSize + 6, DEF_USE_ENCRYPTION);
 		switch (iRet) {
 		case DEF_XSOCKEVENT_QUENEFULL:
@@ -2038,7 +1833,7 @@ void CWorldLog::SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD 
 			PutLogList(G_cTxt);
 			delete m_pMainLogSock[m_iCurMainLogSockIndex];
 			m_pMainLogSock[m_iCurMainLogSockIndex] = NULL;
-			m_bisMainRegistered[m_iCurMainLogSockIndex] = FALSE;
+			m_bisMainRegistered[m_iCurMainLogSockIndex] = false;
 			m_iActiveMainLogSock--;
 			m_pMainLogSock[m_iCurMainLogSockIndex] = new class XSocket(m_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 			m_pMainLogSock[m_iCurMainLogSockIndex]->bConnect(m_cMainLogAddress, m_iMainLogPort, (WM_ONMAINLOGSOCKETEVENT + m_iCurMainLogSockIndex));
@@ -2051,7 +1846,6 @@ void CWorldLog::SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD 
 	else {
 		wsprintf(G_cTxt, "(X) No MLS-Socket Available!  MsgID(%x)", dwMsgID);
 		PutLogList(G_cTxt);
-		return;
 	}
 }
 
@@ -2172,7 +1966,7 @@ void CWorldLog::CharInfoList(int iClientH, char *pData)
 		memcpy(cp, cCharName, 10);
 		cp += 10;
 
-		if ((iGetCharacterData(cCharName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+		if ((iGetCharacterData(cCharName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 			*cp = 0;
 			cp += 40;
 			break;
@@ -2282,7 +2076,7 @@ int CWorldLog::iGetCharacterDatabaseID(char* cCharName)
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("SELECT     [Character-ID] FROM         Characters WHERE     ([Character-Name] = :1)");
+		com.setCommandText("SELECT [Character-ID] FROM Characters WHERE [Character-Name] = :1");
 		com.Param(1).setAsString() = cCharName;
 
 		com.Execute();
@@ -2326,7 +2120,7 @@ int CWorldLog::iGetAccountDatabaseID(char* cAccName)
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("SELECT     [Account-ID] FROM         Accounts WHERE     ([Account-Name] = :1)");
+		com.setCommandText("SELECT [Account-ID] FROM Accounts WHERE [Account-Name] = :1");
 		com.Param(1).setAsString() = cAccName;
 
 		com.Execute();
@@ -2370,7 +2164,7 @@ void CWorldLog::UpdateLastLoginTime(char* cCharacterName)
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("UPDATE Characters SET [Character-Last-Login] = GETDATE() WHERE     ([Character-Name] = :1)");
+		com.setCommandText("UPDATE Characters SET [Character-Last-Login] = GETDATE() WHERE [Character-Name] = :1");
 		com.Param(1).setAsString() = cCharacterName;
 
 		com.Execute();
@@ -2393,7 +2187,7 @@ void CWorldLog::UpdateLastLoginTime(char* cCharacterName)
 	}
 }
 
-int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sAppr1, short * sAppr2, short * sAppr3, short * sAppr4, int * iApprColor, char * cSex, char * cSkin, int * iLevel, int * iExp, int * iStr, int * iVit, int * iDex, int * iInt, int * iMag, int * iCharisma, int * iSaveYear, int * iSaveMonth, int * iSaveDay, int * iSaveHour, int * iSaveMinute)
+bool CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sAppr1, short * sAppr2, short * sAppr3, short * sAppr4, int * iApprColor, char * cSex, char * cSkin, int * iLevel, int * iExp, int * iStr, int * iVit, int * iDex, int * iInt, int * iMag, int * iCharisma, int * iSaveYear, int * iSaveMonth, int * iSaveDay, int * iSaveHour, int * iSaveMinute)
 {
  DWORD dwFileSize, lpNumberOfBytesRead;
  char * cp, * token, cReadModeA, cReadModeB, cFileName[255], cDir[11];
@@ -2408,13 +2202,13 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 	if (iSaveDay != 0) *iSaveDay = 0;
 	if (iSaveHour != 0) *iSaveHour = 0;
 	if (iSaveMinute !=  0) *iSaveMinute = 0;
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		SACommand com;
 
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Character-Name] = :1)");
+			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM Characters WHERE [Character-Name] = :1");
 			com.Param(1).setAsString() = cCharName;
 
 			com.Execute();
@@ -2539,13 +2333,13 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 					*iSaveMinute = atoi(cTemp);
 
 					com.Close();
-					return TRUE;
+					return true;
 				}
 			}
 			else
 			{
 				com.Close();
-				return FALSE;
+				return false;
 			}
 		}
 		catch (SAException& x)
@@ -2563,331 +2357,42 @@ int CWorldLog::iGetCharacterData(char * cCharName, char * cMapName, short * sApp
 			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (iGetCharacterData): %s", (const char*)x.ErrText());
 			PutLogList(cTemp);
 
-			return FALSE;
+			return false;
 		}
 	}
-	else {
-		ZeroMemory(cFileName, sizeof(cFileName));
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
- 		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cCharName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
- 		strcat(cFileName, "\\");
-		strcat(cFileName, cCharName);	
-		strcat(cFileName, ".txt");
-		wsprintf(G_cTxt, "(TestLog) Getting character file %s", cFileName);
-		PutLogList(G_cTxt);
-
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		if (hFile == INVALID_HANDLE_VALUE) return -1;
-		dwFileSize = GetFileSize(hFile, NULL);
-		cp = new char[dwFileSize+1];
-		ZeroMemory(cp, dwFileSize+1);
-		ReadFile(hFile, cp, dwFileSize, &lpNumberOfBytesRead, NULL);
-		CloseHandle(hFile);
-		pStrTok = new class CStrTok(cp, seps);
-		cReadModeA = 0;
-		token = pStrTok->pGet();
-		while (token != NULL) {
-			if (cReadModeA != 0) {
-				switch (cReadModeA) {
-				case 1: // appr1
-					*sAppr1 = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 2: // appr2
-					*sAppr2 = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 3: // appr3
-					*sAppr3 = atoi(token);
-					cReadModeA = 0;
-					break;
-					
-				case 4: // appr4
-					*sAppr4 = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 5: // sex-status
-					*cSex = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 6: // skin-status
-					*cSkin = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 7: // character-LEVEL
-					*iLevel = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 8: // character-STR
-					*iStr = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 9: // character-VIT
-					*iVit = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 10: // character-DEX
-					*iDex = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 11: // character-INT
-					*iInt = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 12: // character-MAG
-					*iMag = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 13: // character-CHARISMA
-					*iCharisma = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 14: // character-EXP
-					*iExp = atoi(token);
-					cReadModeA = 0;
-					break;
-
-				case 15: // appr-color
-					*iApprColor = atoi(token);
-					cReadModeA = 0;
-					break;
-					
-				case 16: // file-saved-date
-					switch (cReadModeB) {
-					case 1:
-						if (iSaveYear != 0) *iSaveYear = atoi(token);
-						cReadModeB = 2;
-						break;
-
-					case 2:
-						if (iSaveMonth != 0) *iSaveMonth = atoi(token);
-						cReadModeB = 3;
-						break;
-
-					case 3:
-						if (iSaveDay != 0) *iSaveDay = atoi(token);
-						cReadModeB = 4;
-						break;
-
-					case 4:
-						if (iSaveHour != 0) *iSaveHour = atoi(token);
-						cReadModeB = 5;
-						break;
-
-					case 5:
-						if (iSaveMinute != 0) *iSaveMinute = atoi(token);
-						cReadModeA = 0;
-						cReadModeB = 0;
-						break;
-					}
-					break;
-
-				case 17: // character-loc-map
-					strcpy(cMapName, token);
-					cReadModeA = 0;
-					break;
-				}
-			}	
-			else {
-				if (memcmp(token, "appr1", 5) == 0)					cReadModeA = 1;
-				if (memcmp(token, "appr2", 5) == 0)					cReadModeA = 2;
-				if (memcmp(token, "appr3", 5) == 0)					cReadModeA = 3;
-				if (memcmp(token, "appr4", 5) == 0)					cReadModeA = 4;
-				if (memcmp(token, "sex-status", 10) == 0)			cReadModeA = 5;
-				if (memcmp(token, "skin-status", 11) == 0)			cReadModeA = 6;
-				if (memcmp(token, "character-LEVEL", 15) == 0)		cReadModeA = 7;
-				if (memcmp(token, "character-STR", 13) == 0)		cReadModeA = 8;
-				if (memcmp(token, "character-VIT", 13) == 0)		cReadModeA = 9;
-				if (memcmp(token, "character-DEX", 13) == 0)		cReadModeA = 10;
-				if (memcmp(token, "character-INT", 13) == 0)		cReadModeA = 11;
-				if (memcmp(token, "character-MAG", 13) == 0)		cReadModeA = 12;
-				if (memcmp(token, "character-CHARISMA", 18) == 0)	cReadModeA = 13;
-				if (memcmp(token, "character-EXP", 13) == 0)		cReadModeA = 14;
-				if (memcmp(token, "appr-color", 10) == 0)			cReadModeA = 15;
-				if (memcmp(token, "file-saved-date:", 16) == 0) {	
-					cReadModeA = 16; 
-					cReadModeB = 1;
-				}
-				if (memcmp(token, "character-loc-map", 17) == 0)	cReadModeA = 17;
-			}
-			token = pStrTok->pGet();
-		}
-		delete pStrTok;
-		delete cp;
-	}
-	return TRUE;
+	
+	return true;
 }
 
-/*
-void CWorldLog::RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize, BOOL bVar1, BOOL bVar2)
+void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize, bool bVar1, bool bVar2)
 {
- char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256];
- char *cp;
- DWORD *dwp;
- WORD *wp;
- int iRet;
- FILE * pFile;
- char cFileName[255];
- char cDir[63];
- HANDLE hFile;
- DWORD  dwFileSize, dwCharID;
- BOOL bFlag;
-
-	if (m_pClientList[iClientH] == NULL) return;
-	ZeroMemory(cAccountName, sizeof(cAccountName));
-	ZeroMemory(cCharName, sizeof(cCharName));
-	ZeroMemory(cAccountPassword, sizeof(cAccountPassword));
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cDir, sizeof(cDir));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-
-	memcpy(cCharName, cp, 10);
-	cp += 10;
-
-	memcpy(cAccountName, cp, 10);
-	cp += 10;
-
-	memcpy(cAccountPassword, cp, 10);
-	cp += 10;
-
-	if (G_bDBMode == TRUE) {
-		dwp = (DWORD *)cp;
-		dwCharID = *dwp;
-		cp += 4;
-	}
-		
-	bFlag = (BOOL)*cp;
-	cp++;
-	
-	if ((dwMsgSize - 40) <= 0) {
-		PutLogList("(X) Character data body empty: Cannot create & save data file.");
-		return;
-	}
-	if (G_bDBMode == TRUE) {
-		// todo: add SQL Code Here
-		//iSaveCharacterSQL(dwCharID, cp-40)
-	}
-	else {
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
- 		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cCharName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cCharName);	
-		strcat(cFileName, ".txt");
-
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		dwFileSize = GetFileSize(hFile, NULL);
-		if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-
-		pFile = fopen(cFileName, "wt");
-		if (pFile == NULL) {
-			wsprintf(G_cTxt, "(X) Cannot create character data file : Name(%s)", cCharName);
-			PutLogList(G_cTxt);
-		}
-		else {
-			wsprintf(G_cTxt, "(O) Character data file saved : Name(%s)", cCharName);
-			PutLogList(G_cTxt);
-			fwrite(cp, 1, strlen(cp), pFile);
-			if (pFile != NULL) fclose(pFile);
-		}
-	}
-	if ((bVar1 == TRUE) && (bFlag == 1)) {
-		ZeroMemory(cData, sizeof(cData));
-
-		cp = (char *)cData;
-		memcpy(cp, cAccountName, 10);
-		cp += 10;
-
-		wsprintf(G_cTxt, "(TestLog) Account(%s) log out request to MLS...", cAccountName);
-		PutLogList(G_cTxt);
-
-		SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cData, 10, -1);
-		OnPlayerAccountMessage(DEF_MSGACCOUNTSET_NULL, cAccountName, 0, 0, 0);
-	}
-	if (bVar2 == TRUE) {
-		ZeroMemory(cData, sizeof(cData));
-	
-		dwp = (DWORD *)(cData);
-		*dwp = MSGID_RESPONSE_SAVEPLAYERDATA_REPLY;
-		
-		wp  = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
-		*wp = DEF_MSGTYPE_CONFIRM;
-		
-		cp  = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
-		memcpy(cp, cCharName, 10);
-		cp += 10;
-
-		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-
-		switch(iRet) {
-		case DEF_XSOCKEVENT_QUENEFULL:
-		case DEF_XSOCKEVENT_SOCKETERROR:
-		case DEF_XSOCKEVENT_CRITICALERROR:
-		case DEF_XSOCKEVENT_SOCKETCLOSED:
-			DeleteClient(iClientH, 0);
-			delete m_pClientList[iClientH];
-			m_pClientList[iClientH] = NULL;
-			return;
-		}
-	}
-}
-*/
-void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize, BOOL bVar1, BOOL bVar2)
-{
-	char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256], cTemp[25000], cProfile[31], cLocation[11], cGuildName[21];
+	char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256], cTemp[128], cLocation[11], cGuildName[21];
 	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51];
-	int iGuildGUID, iGuildRank, isX, isY, iHP, iMP, iSP, iLevel, iRating, iStr, iInt, iDex, iVit, iMag, iCharisma, iExp, iLU_Pool;
+	int iGuildGUID, iGuildRank, iHP, iMP, iSP, iLevel, iRating, iStr, iInt, iDex, iVit, iMag, iCharisma, iExp, iLU_Pool;
 	int iEK, iPK, iHunger, iShutUp, iRatingTime, iForceRecall, iContribution, iCrits, iAbilityTime, iMajestics, iApprColour;
-	int iRewardGold, i, iNumItems, iNumBankItems, iWarContribution, iCrusadeDuty, iConstructPts;
-	short sSex, sSkin, sHairStyle, sHairColour, sUnderwear, sAppr1, sAppr2, sAppr3, sAppr4, sCharID1, sCharID2, sCharID3;
+	int iRewardGold, i, iWarContribution, iCrusadeDuty, iConstructPts;
+	short sAppr1, sAppr2, sAppr3, sAppr4, sCharID1, sCharID2, sCharID3, isX, isY, iNumItems, iNumBankItems;
 
-	char* pContents, * token;
-	char   seps[] = "= \t\n";
-	class  CStrTok* pStrTok;
-	char   cReadModeA, cReadModeB;
-	char* cp;
+	short iItemElement1, iItemElement2, iItemElement3, iItemElement4;
+
+	char* cp, sSex, sSkin, sHairStyle, sHairColour, sUnderwear;
 	DWORD* dwp;
 	WORD* wp;
 	int* ip, iRet, iCharDBID;
 	short* sp;
-	FILE* pFile;
-	char cFileName[255];
-	char cDir[63];
-	HANDLE hFile;
-	DWORD  dwFileSize, dwCharID, dwTime, dwCrusadeGUID;
-	BOOL bFlag;
-	char cCommand[25000], cValues[256];
-	int iItemID, iItemNum1, iItemNum2, iItemNum3, iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9, iItemNum10, iItemAttribute, iItemElement;
-
+	DWORD  dwCharID, dwTime, dwCrusadeGUID;
+	bool bFlag;
+	char cValues[256], cCommand[512];
+	
+	int iItemID, iItemNum2, iItemNum3, iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9, iItemAttribute, iItemElement;
+	DWORD iItemNum1;
+	WORD iItemNum10;
 
 	if (m_pClientList[iClientH] == NULL) return;
 
 	ZeroMemory(cAccountName, sizeof(cAccountName));
 	ZeroMemory(cCharName, sizeof(cCharName));
 	ZeroMemory(cAccountPassword, sizeof(cAccountPassword));
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cDir, sizeof(cDir));
-	ZeroMemory(cProfile, sizeof(cProfile));
 	ZeroMemory(cLocation, sizeof(cLocation));
 	ZeroMemory(cGuildName, sizeof(cGuildName));
 	ZeroMemory(cMapName, sizeof(cMapName));
@@ -2912,28 +2417,10 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	iCharDBID = *ip;
 	cp += 4;
 
-	if (iCharDBID < 0 || iCharDBID > 100000) return;
-
-	bFlag = (BOOL)*cp;
+	bFlag = (bool)*cp;
 	cp++;
 
-	memcpy(cProfile, cp, 30);
-	cp += 30;
-
-	memcpy(cLocation, cp, 10);
-	cp += 10;
-
-	memcpy(cGuildName, cp, 20);
-	cp += 20;
-
-	ip = (int*)cp;
-	iGuildGUID = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iGuildRank = *ip;
-	cp += 4;
-
+	//-----------------------------------------------------
 	sp = (short*)cp;
 	sCharID1 = *sp;
 	cp += 2;
@@ -2946,35 +2433,8 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	sCharID3 = *sp;
 	cp += 2;
 
-	memcpy(cMapName, cp, 10);
-	cp += 10;
-
-	ip = (int*)cp;
-	isX = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	isY = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iHP = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iMP = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iSP = *ip;
-	cp += 4;
-
 	ip = (int*)cp;
 	iLevel = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iRating = *ip;
 	cp += 4;
 
 	ip = (int*)cp;
@@ -2982,7 +2442,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	cp += 4;
 
 	ip = (int*)cp;
-	iInt = *ip;
+	iVit = *ip;
 	cp += 4;
 
 	ip = (int*)cp;
@@ -2990,7 +2450,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	cp += 4;
 
 	ip = (int*)cp;
-	iVit = *ip;
+	iInt = *ip;
 	cp += 4;
 
 	ip = (int*)cp;
@@ -3009,72 +2469,23 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	iLU_Pool = *ip;
 	cp += 4;
 
-	ip = (int*)cp;
-	iEK = *ip;
-	cp += 4;
+	sSex = *cp;
+	cp++;
+
+	sSkin = *cp;
+	cp++;
+
+	sHairStyle = *cp;
+	cp++;
+
+	sHairColour = *cp;
+	cp++;
+
+	sUnderwear = *cp;
+	cp++;
 
 	ip = (int*)cp;
-	iPK = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iRewardGold = *ip;
-	cp += 4;
-
-	sp = (short*)cp;
-	sSex = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	sSkin = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	sHairStyle = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	sHairColour = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	sUnderwear = *sp;
-	cp += 2;
-
-	ip = (int*)cp;
-	iHunger = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iShutUp = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iRatingTime = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iForceRecall = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iContribution = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iCrits = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iAbilityTime = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iMajestics = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iCrits = *ip;
+	iApprColour = *ip;
 	cp += 4;
 
 	sp = (short*)cp;
@@ -3093,8 +2504,85 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	sAppr4 = *sp;
 	cp += 2;
 
+	memcpy(cLocation, cp, 10);
+	cp += 10;
+
+	memcpy(cMapName, cp, 10);
+	cp += 10;
+
+	sp = (short*)cp;
+	isX = *sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	isY = *sp;
+	cp += 2;
+
 	ip = (int*)cp;
-	iApprColour = *ip;
+	int iAdminUserLevel = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iContribution = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iAbilityTime = *ip;
+	cp += 4;
+
+	char cLockedMapName[11];
+	ZeroMemory(cLockedMapName, sizeof(cLockedMapName));
+	memcpy(cLockedMapName, cp, 10);
+	cp += 10;
+
+	ip = (int*)cp;
+	int iLockedMapTime = *ip;
+	cp += 4;
+
+	//Penalty Block
+
+	memcpy(cGuildName, cp, 20);
+	cp += 20;
+
+	ip = (int*)cp;
+	iGuildGUID = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iGuildRank = *ip;
+	cp += 4;
+
+	int iQuest[5], iQuestID[5], iCurQuestCount[5], iQuestRewardType[5], iQuestRewardAmount[5];
+	bool bIsQuestCompleted[5];
+
+	for (i = 0; i < 5; i++)
+	{
+		ip = (int*)cp;
+		iQuest[i] = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iQuestID[i] = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iCurQuestCount[i] = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iQuestRewardType[i] = *ip;
+		cp += 4;
+
+		ip = (int*)cp;
+		iQuestRewardAmount[i] = *ip;
+		cp += 4;
+
+		bIsQuestCompleted[i] = (bool)*cp;
+		cp++;
+	}
+
+	ip = (int*)cp;
+	int iSpecialEventID = *ip;
 	cp += 4;
 
 	ip = (int*)cp;
@@ -3113,39 +2601,142 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	iConstructPts = *ip;
 	cp += 4;
 
+	ip = (int*)cp;
+	iRating = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iHP = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iMP = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iSP = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iEK = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iPK = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iRewardGold = *ip;
+	cp += 4;
+
+	sp = (short*)cp;
+	iHunger = (int)*sp;
+	cp += 2;
+
+	sp = (short*)cp;
+	iCrits = (int)*sp;
+	cp += 2;
+
+	ip = (int*)cp;
+	iShutUp = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iRatingTime = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iForceRecall = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iSPTime = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iDeadTime = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iPartyID = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	iMajestics = *ip;
+	cp += 4;
+
+	//
+	ip = (int*)cp;
+	int iDeaths = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iTotalDGKills = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iDGPoints = *ip;
+	cp += 4;
+	
+	ip = (int*)cp;
+	int iTotalDGDeaths = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iDGKills = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iMaxEK = *ip;
+	cp += 4;
+
+	dwp = (DWORD*)cp;
+	DWORD dwHeldenianGUID = *dwp;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iWantedLevel = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iCoinPoints = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iTeam = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iClass = *ip;
+	cp += 4;
+
 	memcpy(cMagicM, cp, 100);
 	cp += 100;
 
+	memcpy(cEquipStatus, cp, 50);
+	cp += 50;
+	
 	memcpy(cItemX, cp, 200);
 	cp += 200;
 
 	memcpy(cItemY, cp, 200);
 	cp += 200;
 
-	memcpy(cEquipStatus, cp, 50);
-	cp += 50;
-
-	ip = (int*)cp;
-	iNumItems = *ip;
-	cp += 4;
-
-	ip = (int*)cp;
-	iNumBankItems = *ip;
-	cp += 4;
+	// Skill
 
 	if ((dwMsgSize - 40) <= 0) {
 		PutLogList("(X) Character data body empty: Cannot create & save data file.");
 		return;
 	}
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 
 		//iCharDBID = iGetCharacterDatabaseID(cCharName);
 		int iItems = 1, iBItems = 1;
 
-		char cMsgTemp[120];
+		/*char cMsgTemp[120];
 		ZeroMemory(cMsgTemp, sizeof(cMsgTemp));
 		wsprintf(cMsgTemp, "Char ID: %d", iCharDBID);
-		PutLogList(cMsgTemp);
+		PutLogList(cMsgTemp);*/
 
 		SACommand com;
 		SACommand com2;
@@ -3156,81 +2747,96 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 		try
 		{
 			com3.setConnection(&con);
-			com3.setCommandText("DELETE FROM CharItems WHERE ([Character-ID] = :1)");
+			com3.setCommandText("DELETE FROM CharItems WHERE [Character-ID] = :1");
 			com3.Param(1).setAsLong() = iCharDBID;
 
 			com3.Execute();
 
+			sp = (short*)cp;
+			iNumItems = *sp;
+			cp += 2;
+
 			if (iNumItems > 0)
 			{
-				wsprintf(cCommand, "INSERT INTO CharItems ([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element]) ");
-
+				wsprintf(cCommand, "INSERT INTO CharItems([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) ");
 
 				for (i = 0; i < iNumItems; i++)
 				{
+					iItemID = i + 1;
+
 					ZeroMemory(cItemName, sizeof(cItemName));
 					memcpy(cItemName, cp, 20);
 					cp += 20;
 
-					iItemID = i + 1;
-
-					ip = (int*)cp;
-					iItemNum1 = *ip;
+					dwp = (DWORD*)cp;
+					iItemNum1 = *dwp;
 					cp += 4;
 
-					ip = (int*)cp;
-					iItemNum2 = *ip;
+					sp = (short*)cp;
+					iItemNum2 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum3 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum4 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum5 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemColour = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum7 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum8 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum9 = *sp;
+					cp += 2;
+
+					wp = (WORD*)cp;
+					iItemNum10 = *wp;
+					cp += 2;
+
+					dwp = (DWORD*)cp;
+					iItemAttribute = *dwp;
 					cp += 4;
 
-					ip = (int*)cp;
-					iItemNum3 = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement1 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemNum4 = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement2 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemNum5 = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement3 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemColour = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement4 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemNum7 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemNum8 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemNum9 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemNum10 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemAttribute = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemElement = *ip;
-					cp += 4;
-
-					wsprintf(cValues, " SELECT %d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d ",
+					wsprintf(cValues, "VALUES(%d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
 						iItemID, iCharDBID, cItemName, iItemNum1, iItemNum2, iItemNum3,
 						iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9,
-						iItemNum10, iItemAttribute, iItemElement);
+						iItemNum10, iItemAttribute, iItemElement1, iItemElement2, iItemElement3, iItemElement4);
 
 					strcat(cCommand, cValues);
 
 					if (i == iNumItems - 1) {}// strcat(cCommand, "GO");
-					else strcat(cCommand, "UNION ALL");
+					//else strcat(cCommand, "UNION ALL");
 				}
 
 				com2.setConnection(&con);
@@ -3239,83 +2845,98 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			}
 
 			com5.setConnection(&con);
-			com5.setCommandText("DELETE FROM BankItems WHERE ([Character-ID] = :1)");
+			com5.setCommandText("DELETE FROM BankItems WHERE [Character-ID] = :1");
 			com5.Param(1).setAsLong() = iCharDBID;
 
 			com5.Execute();
 
 			ZeroMemory(cCommand, sizeof(cCommand));
 
+			sp = (short*)cp;
+			iNumBankItems = *sp;
+			cp += 2;
+
 			if (iNumBankItems > 0)
 			{
-				wsprintf(cCommand, "INSERT INTO BankItems ([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element]) ");
-
+				wsprintf(cCommand, "INSERT INTO BankItems([Item-ID], [Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) ");
 
 				for (i = 0; i < iNumBankItems; i++)
 				{
+					iItemID = i + 1;
+
 					ZeroMemory(cItemName, sizeof(cItemName));
 					memcpy(cItemName, cp, 20);
 					cp += 20;
 
-					iItemID = i + 1;
-
-					ip = (int*)cp;
-					iItemNum1 = *ip;
+					dwp = (DWORD*)cp;
+					iItemNum1 = *dwp;
 					cp += 4;
 
-					ip = (int*)cp;
-					iItemNum2 = *ip;
+					sp = (short*)cp;
+					iItemNum2 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum3 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum4 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum5 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemColour = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum7 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum8 = *sp;
+					cp += 2;
+
+					sp = (short*)cp;
+					iItemNum9 = *sp;
+					cp += 2;
+
+					wp = (WORD*)cp;
+					iItemNum10 = *wp;
+					cp += 2;
+
+					dwp = (DWORD*)cp;
+					iItemAttribute = *dwp;
 					cp += 4;
 
-					ip = (int*)cp;
-					iItemNum3 = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement1 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemNum4 = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement2 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemNum5 = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement3 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemColour = *ip;
-					cp += 4;
+					sp = (short*)cp;
+					iItemElement4 = *sp;
+					cp += 2;
 
-					ip = (int*)cp;
-					iItemNum7 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemNum8 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemNum9 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemNum10 = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemAttribute = *ip;
-					cp += 4;
-
-					ip = (int*)cp;
-					iItemElement = *ip;
-					cp += 4;
-
-					wsprintf(cValues, " SELECT %d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d ",
+					wsprintf(cValues, "VALUES(%d, %d, '%s', %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
 						iItemID, iCharDBID, cItemName, iItemNum1, iItemNum2, iItemNum3,
 						iItemNum4, iItemNum5, iItemColour, iItemNum7, iItemNum8, iItemNum9,
-						iItemNum10, iItemAttribute, iItemElement);
+						iItemNum10, iItemAttribute, iItemElement1, iItemElement2, iItemElement3, iItemElement4);
 
 					strcat(cCommand, cValues);
 
 					if (i == iNumBankItems - 1) {} //strcat(cCommand, ";");
-					else strcat(cCommand, "UNION ALL");
+					//else strcat(cCommand, "UNION ALL");
 				}
 
 				com4.setConnection(&con);
@@ -3324,68 +2945,118 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			}
 
 			com.setConnection(&con);
-			com.setCommandText("UPDATE Characters SET [Character-Construct-Points] = :54, [Character-Crusade-GUID] = :53, [Character-Crusade-Job] = :52, [Character-War-Contribution] = :51, [Character-ID3] = :50, [Character-ID2] = :49, [Character-ID1] = :48, [Character-Equip-Status] = :47, [Character-Item-Pos-Y] = :46, [Character-Item-Pos-X] = :45,  [Character-Magic-Mastery] = :44, [Character-Appr-Colour] = :43, [Character-Appr4] = :42, [Character-Appr3] = :41, [Character-Appr2] = :40, [Character-Appr1] = :39, [Character-Majestics] = :38, [Character-Ability-Time] = :37, [Character-Criticals] = :36, [Character-Contribution] = :35, [Character-Force-Time] = :34, [Character-Rating-Time] = :33, [Character-Shutup-Time] = :32, [Character-Hunger] = :31, [Character-Underwear] = :30, [Character-Hair-Colour] = :29, [Character-Hair-Style] = :28, [Character-Skin] = :27, [Character-Sex] = :26, [Character-Reward-Gold] = :25, [Character-PK-Count] = :24, [Character-EK-Count] = :23, [Character-LU-Pool] = :22, [Character-Experience] = :21, [Character-Charisma] = :20, [Character-Magic] = :19, [Character-Vitality] = :18, [Character-Dexterity] = :17, [Character-Intelligence] = :16, [Character-Strength] = :15, [Character-Rating] = :14, [Character-Level] = :13, [Character-SP] = :12, [Character-MP] = :11, [Character-HP] = :10, [Character-Loc-Y] = :9, [Character-Loc-X] = :8, [Character-Loc-Map] = :7, [Character-Guild-Rank] = :6, [Character-Guild-GUID] = :5, [Character-Guild-Name] = :4, [Character-Location] = :3, [Character-Profile] = :2 WHERE ([Character-Name] = :1)");
-			com.Param(1).setAsString() = cCharName;
-			com.Param(2).setAsString() = cProfile;
-			com.Param(3).setAsString() = cLocation;
-			com.Param(4).setAsString() = cGuildName;
-			com.Param(5).setAsLong() = iGuildGUID;
-			com.Param(6).setAsLong() = iGuildRank;
-			com.Param(7).setAsString() = cMapName;
-			com.Param(8).setAsLong() = isX;
-			com.Param(9).setAsLong() = isY;
-			com.Param(10).setAsLong() = iHP;
-			com.Param(11).setAsLong() = iMP;
-			com.Param(12).setAsLong() = iSP;
-			com.Param(13).setAsLong() = iLevel;
-			com.Param(14).setAsLong() = iRating;
-			com.Param(15).setAsLong() = iStr;
-			com.Param(16).setAsLong() = iInt;
-			com.Param(17).setAsLong() = iDex;
-			com.Param(18).setAsLong() = iVit;
-			com.Param(19).setAsLong() = iMag;
-			com.Param(20).setAsLong() = iCharisma;
-			com.Param(21).setAsLong() = iExp;
-			com.Param(22).setAsLong() = iLU_Pool;
-			com.Param(23).setAsLong() = iEK;
-			com.Param(24).setAsLong() = iPK;
-			com.Param(25).setAsLong() = iRewardGold;
-			com.Param(26).setAsLong() = sSex;
-			com.Param(27).setAsLong() = sSkin;
-			com.Param(28).setAsLong() = sHairStyle;
-			com.Param(29).setAsLong() = sHairColour;
-			com.Param(30).setAsLong() = sUnderwear;
-			com.Param(31).setAsLong() = iHunger;
-			com.Param(32).setAsLong() = iShutUp;
-			com.Param(33).setAsLong() = iRatingTime;
-			com.Param(34).setAsLong() = iForceRecall;
-			com.Param(35).setAsLong() = iContribution;
-			com.Param(36).setAsLong() = iCrits;
-			com.Param(37).setAsLong() = iAbilityTime;
-			com.Param(38).setAsLong() = iMajestics;
-			com.Param(39).setAsLong() = sAppr1;
-			com.Param(40).setAsLong() = sAppr2;
-			com.Param(41).setAsLong() = sAppr3;
-			com.Param(42).setAsLong() = sAppr4;
-			com.Param(43).setAsLong() = iApprColour;
-			com.Param(44).setAsString() = cMagicM;
-			com.Param(45).setAsString() = cItemX;
-			com.Param(46).setAsString() = cItemY;
-			com.Param(47).setAsString() = cEquipStatus;
-			com.Param(48).setAsLong() = sCharID1;
-			com.Param(49).setAsLong() = sCharID2;
-			com.Param(50).setAsLong() = sCharID3;
-			com.Param(51).setAsLong() = iWarContribution;
-			com.Param(52).setAsLong() = iCrusadeDuty;
-			com.Param(53).setAsLong() = dwCrusadeGUID;
-			com.Param(54).setAsLong() = iConstructPts;
+			
+			com.setCommandText("UPDATE Characters SET [Character-ID1] = :2, [Character-ID2] = :3, [Character-ID3] = :4, [Character-Level] = :5, [Character-Strength] = :6, [Character-Vitality] = :7, [Character-Dexterity] = :8, [Character-Intelligence] = :9, [Character-Magic] = :10, [Character-Charisma] = :11, [Character-Experience] = :12, [Character-LU-Pool] = :13, [Character-Sex] = :14, [Character-Skin] = :15, [Character-Hair-Style] = :16, [Character-Hair-Colour] = :17, [Character-Underwear] = :18, [Character-Appr-Colour] = :19, [Character-Appr1] = :20, [Character-Appr2] = :21, [Character-Appr3] = :22, [Character-Appr4] = :23, [Character-Location] = :24, [Character-Loc-Map] = :25, [Character-Loc-X] = :26, [Character-Loc-Y] = :27, [Character-Admin-Level] = :28, [Character-Contribution] = :29, [Character-Ability-Time] = :30, [Character-Lock-Map] = :31, [Character-Lock-Time] = :32, [Character-Guild-Name] = :33, [Character-Guild-GUID] = :34, [Character-Guild-Rank] = :35, [Character-Quest-Number1] = :36, [Character-Quest-ID1] = :37, [Character-Quest-Count1] = :38, [Character-Quest-Reward1] = :39, [Character-Quest-Amount1] = :40, [Character-Quest-Completed1] = :41, [Character-Quest-Number2] = :42, [Character-Quest-ID2] = :43, [Character-Quest-Count2] = :44, [Character-Quest-Reward2] = :45, [Character-Quest-Amount2] = :46, [Character-Quest-Completed2] = :47, [Character-Quest-Number3] = :48, [Character-Quest-ID3] = :49, [Character-Quest-Count3] = :50, [Character-Quest-Reward3] = :51, [Character-Quest-Amount3] = :52, [Character-Quest-Completed3] = :53, [Character-Quest-Number4] = :54, [Character-Quest-ID4] = :55, [Character-Quest-Count4] = :56, [Character-Quest-Reward4] = :57, [Character-Quest-Amount4] = :58, [Character-Quest-Completed4] = :59, [Character-Quest-Number5] = :60, [Character-Quest-ID5] = :61, [Character-Quest-Count5] = :62, [Character-Quest-Reward5] = :63, [Character-Quest-Amount5] = :64, [Character-Quest-Completed5] = :65, [Character-Event-ID] = :66, [Character-War-Contribution] = :67, [Character-Crusade-Job] = :68, [Character-Crusade-GUID] = :69, [Character-Construct-Points] = :70, [Character-Rating] = :71, [Character-HP] = :72, [Character-MP] = :73, [Character-SP] = :74, [Character-EK-Count] = :75, [Character-PK-Count] = :76, [Character-Reward-Gold] = :77, [Character-Hunger] = :78, [Character-Criticals] = :79, [Character-Shutup-Time] = :80, [Character-Rating-Time] = :81, [Character-Force-Time] = :82, [Character-SP-Time] = :83, [Character-Death-Time] = :84, [Character-Party-ID] = :85, [Character-Majestics] = :86, [Character-Deaths] = :87, [Character-TotalDGKills] = :88, [Character-DGPoints] = :89, [Character-TotalDGDeaths] = :90, [Character-DGKills] = :91, [Character-Max-Ek] = :92, [Character-Heldenian-GUID] = :93, [Character-Wanted-Level] = :94, [Character-Coin-Points] = :95, [Character-Team] = :96, [Character-Class] = :97, [Character-Magic-Mastery] = :98, [Character-Equip-Status] = :99, [Character-Item-Pos-X] = :100, [Character-Item-Pos-Y] = :101 WHERE [Character-Name] = :1");
+			
+			com.Param(1).setAsString() = cCharName; // fijo
+
+			com.Param(2).setAsLong() = sCharID1;
+			com.Param(3).setAsLong() = sCharID2;
+			com.Param(4).setAsLong() = sCharID3;
+			com.Param(5).setAsLong() = iLevel;
+			com.Param(6).setAsLong() = iStr;
+			com.Param(7).setAsLong() = iVit;
+			com.Param(8).setAsLong() = iDex;
+			com.Param(9).setAsLong() = iInt;
+			com.Param(10).setAsLong() = iMag;
+			com.Param(11).setAsLong() = iCharisma;
+			com.Param(12).setAsLong() = iExp;
+			com.Param(13).setAsLong() = iLU_Pool;
+			com.Param(14).setAsLong() = sSex;
+			com.Param(15).setAsLong() = sSkin;
+			com.Param(16).setAsLong() = sHairStyle;
+			com.Param(17).setAsLong() = sHairColour;
+			com.Param(18).setAsLong() = sUnderwear;
+			com.Param(19).setAsLong() = iApprColour;
+			com.Param(20).setAsLong() = sAppr1;
+			com.Param(21).setAsLong() = sAppr2;
+			com.Param(22).setAsLong() = sAppr3;
+			com.Param(23).setAsLong() = sAppr4;
+			com.Param(24).setAsString() = cLocation;
+			com.Param(25).setAsString() = cMapName;
+			com.Param(26).setAsLong() = isX;
+			com.Param(27).setAsLong() = isY;
+			com.Param(28).setAsLong() = iAdminUserLevel;
+			com.Param(29).setAsLong() = iContribution;
+			com.Param(30).setAsLong() = iAbilityTime;
+			com.Param(31).setAsString() = cLockedMapName;
+			com.Param(32).setAsLong() = iLockedMapTime;
+			com.Param(33).setAsString() = cGuildName;
+			com.Param(34).setAsLong() = iGuildGUID;
+			com.Param(35).setAsLong() = iGuildRank;
+			com.Param(36).setAsLong() = iQuest[0];
+			com.Param(37).setAsLong() = iQuestID[0];
+			com.Param(38).setAsLong() = iCurQuestCount[0];
+			com.Param(39).setAsLong() = iQuestRewardType[0];
+			com.Param(40).setAsLong() = iQuestRewardAmount[0];
+			com.Param(41).setAsLong() = (char)bIsQuestCompleted[0];
+			com.Param(42).setAsLong() = iQuest[1];
+			com.Param(43).setAsLong() = iQuestID[1];
+			com.Param(44).setAsLong() = iCurQuestCount[1];
+			com.Param(45).setAsLong() = iQuestRewardType[1];
+			com.Param(46).setAsLong() = iQuestRewardAmount[1];
+			com.Param(47).setAsLong() = (char)bIsQuestCompleted[1];
+			com.Param(48).setAsLong() = iQuest[2];
+			com.Param(49).setAsLong() = iQuestID[2];
+			com.Param(50).setAsLong() = iCurQuestCount[2];
+			com.Param(51).setAsLong() = iQuestRewardType[2];
+			com.Param(52).setAsLong() = iQuestRewardAmount[2];
+			com.Param(53).setAsLong() = (char)bIsQuestCompleted[2];
+			com.Param(54).setAsLong() = iQuest[3];
+			com.Param(55).setAsLong() = iQuestID[3];
+			com.Param(56).setAsLong() = iCurQuestCount[3];
+			com.Param(57).setAsLong() = iQuestRewardType[3];
+			com.Param(58).setAsLong() = iQuestRewardAmount[3];
+			com.Param(59).setAsLong() = (char)bIsQuestCompleted[3];
+			com.Param(60).setAsLong() = iQuest[4];
+			com.Param(61).setAsLong() = iQuestID[4];
+			com.Param(62).setAsLong() = iCurQuestCount[4];
+			com.Param(63).setAsLong() = iQuestRewardType[4];
+			com.Param(64).setAsLong() = iQuestRewardAmount[4];
+			com.Param(65).setAsLong() = (char)bIsQuestCompleted[4];
+			com.Param(66).setAsLong() = iSpecialEventID;
+			com.Param(67).setAsLong() = iWarContribution;
+			com.Param(68).setAsLong() = iCrusadeDuty;
+			com.Param(69).setAsLong() = dwCrusadeGUID;
+			com.Param(70).setAsLong() = iConstructPts;
+			com.Param(71).setAsLong() = iRating;
+			com.Param(72).setAsLong() = iHP;
+			com.Param(73).setAsLong() = iMP;
+			com.Param(74).setAsLong() = iSP;
+			com.Param(75).setAsLong() = iEK;
+			com.Param(76).setAsLong() = iPK;
+			com.Param(77).setAsLong() = iRewardGold;
+			com.Param(78).setAsLong() = iHunger;
+			com.Param(79).setAsLong() = iCrits;
+			com.Param(80).setAsLong() = iShutUp;
+			com.Param(81).setAsLong() = iRatingTime;
+			com.Param(82).setAsLong() = iForceRecall;
+			com.Param(83).setAsLong() = iSPTime;
+			com.Param(84).setAsLong() = iDeadTime;
+			com.Param(85).setAsLong() = iPartyID;
+			com.Param(86).setAsLong() = iMajestics;
+			com.Param(87).setAsLong() = iDeaths;
+			com.Param(88).setAsLong() = iTotalDGKills;
+			com.Param(89).setAsLong() = iDGPoints;
+			com.Param(90).setAsLong() = iTotalDGDeaths;
+			com.Param(91).setAsLong() = iDGKills;
+			com.Param(92).setAsLong() = iMaxEK;
+			com.Param(93).setAsLong() = dwHeldenianGUID;
+			com.Param(94).setAsLong() = iWantedLevel;
+			com.Param(95).setAsLong() = iCoinPoints;
+			com.Param(96).setAsLong() = iTeam;
+			com.Param(97).setAsLong() = iClass;
+			com.Param(98).setAsString() = cMagicM;
+			com.Param(99).setAsString() = cEquipStatus;
+			com.Param(100).setAsString() = cItemX;
+			com.Param(101).setAsString() = cItemY;
 			
 			com.Execute();
 
 			long affected = com.RowsAffected();
 
 			ZeroMemory(cTemp, sizeof(cTemp));
-			wsprintf(cTemp, "(!) Saved Player Data to SQL (%s)   %i ms", cCharName, (int)(timeGetTime() - dwTime));
+			wsprintf(cTemp, "(!) Saved Player Data to SQL (%s)", cCharName);
 			PutLogList(cTemp);
 		}
 		catch (SAException& x)
@@ -3393,39 +3064,12 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			con.Rollback();
 
 			ZeroMemory(cTemp, sizeof(cTemp));
-			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestSavePlayerData(item)): %s", (const char*)x.ErrText());
+			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestSavePlayerData): %s", (const char*)x.ErrText());
 			PutLogList(cTemp);
 			return;
 		}
 	}
-	else {
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cCharName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cCharName);
-		strcat(cFileName, ".txt");
-
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		dwFileSize = GetFileSize(hFile, NULL);
-		if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-
-		pFile = fopen(cFileName, "wt");
-		if (pFile == NULL) {
-			wsprintf(G_cTxt, "(X) Cannot create character data file : Name(%s)", cCharName);
-			PutLogList(G_cTxt);
-		}
-		else {
-			wsprintf(G_cTxt, "(O) Character data file saved : Name(%s)", cCharName);
-			PutLogList(G_cTxt);
-			fwrite(cp, 1, strlen(cp), pFile);
-			fclose(pFile);
-		}
-	}
-	if ((bVar1 == TRUE) && (bFlag == 1)) {
+	if ((bVar1 == true) && (bFlag == 1)) {
 		ZeroMemory(cData, sizeof(cData));
 
 		cp = (char*)cData;
@@ -3438,7 +3082,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 		SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cData, 10, -1);
 		OnPlayerAccountMessage(DEF_MSGACCOUNTSET_NULL, cAccountName, 0, 0, 0);
 	}
-	if (bVar2 == TRUE) {
+	if (bVar2 == true) {
 		ZeroMemory(cData, sizeof(cData));
 
 		dwp = (DWORD*)(cData);
@@ -3461,7 +3105,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			DeleteClient(iClientH, 0);
 			delete m_pClientList[iClientH];
 			m_pClientList[iClientH] = NULL;
-			return;
+			break;
 		}
 	}
 }
@@ -3470,27 +3114,6 @@ void CWorldLog::WriteOccupyFlagFile(char *cFn)
 {
 	// INCOMPLETE
 	// hypnotoad: useless function? write flag is obsolete
-/* HANDLE hFile;
- DWORD dwFileSize;
- char cTempFile[256];
-
-	hFile = CreateFile(cFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, 0);
-	if (hFile == INVALID_HANDLE_VALUE) return;
-	dwFileSize = GetFileSize(hFile, NULL);
-	CloseHandle(hFile);
-	ZeroMemory(cTempFile, sizeof(cTempFile));
-	strcpy(cTempFile, cFn);
-	for (i = 0; i < (strlen(cTempFile)-1); i++) {
-		ZeroMemory(cBuffer, sizeof(dwFileSize+1));
-		pFile = fopen(cFn, "rt");
-		fread(cBuffer, dwFileSize, 1, pFile);
-		fclose(pFile);
-		pFile = fopen(cTempFile, "wt");
-		fwrite(cBuffer, dwFileSize, 1, pFile);
-		fclose(pFile);
-		delete cBuffer;
-		return;
-	}*/
 }
 
 void CWorldLog::UpdateNoticement(WPARAM wParam)
@@ -3517,7 +3140,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
  DWORD *dwp;
  int i;
  bool bflag;
- bflag = FALSE;
+ bflag = false;
 
 	if (m_pClientList[iClientH] == NULL) return;
 	ZeroMemory(cData, sizeof(cData));
@@ -3547,7 +3170,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 	PutLogList(G_cTxt);
 	//game char fix
 		for (i = 0; i < DEF_MAXGAMESERVERSMAPS; i++)
-		if((m_cMapList[i] != NULL) && (strcmp(m_cMapList[i]->m_cName, cMapName) == 0)) bflag = TRUE;
+		if((m_cMapList[i] != NULL) && (strcmp(m_cMapList[i]->m_cName, cMapName) == 0)) bflag = true;
 		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++)
 			if((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == 0)) m_pAccountList[i]->Timeout = 20;
 
@@ -3560,7 +3183,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		*cp = 3;
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 7, DEF_USE_ENCRYPTION);
 
-	if(bflag == FALSE) {
+	if(bflag == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3579,7 +3202,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		*cp = 5;
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 7, DEF_USE_ENCRYPTION);
 		
-	if(bflag == FALSE) {
+	if(bflag == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3590,7 +3213,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		}
 	}
 	else {
-		if (iGetCharacterInformation(cAccountName, cCharNameCheck, &iLevel) == FALSE) {
+		if (iGetCharacterInformation(cAccountName, cCharNameCheck, &iLevel) == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3622,7 +3245,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
 		delete m_pClientList[iClientH];
 		m_pClientList[iClientH] = NULL;
-		return;
+		break;
 	}
 }
 
@@ -3683,485 +3306,9 @@ void CWorldLog::RequestNoSaveLogout(int iClientH, char *pData)
 	}
 }
 
-/*
-void CWorldLog::RequestCreateNewCharacter(int iClientH, char *pData)
-{
- char cData[3000], cFileName[255], cCharacterName[111], cTotalCharNames[111], cNewCharName[11], cAccountName[11], cPassword[11], cUnknown1[31], cTxt[11], cTxt2[120], cMapName[11], cDir[11];
- char *cp;
- DWORD *dwp, dwCharID;
- WORD *wp;
- short sAppr1, sAppr2, sAppr3, sAppr4;
- char cSex, cSkin, cTotalChar, cNewGender, cNewSkin, cNewStr, cNewVit, cNewDex, cNewInt, cNewMag, cNewChr; 
- int iTempAppr2, iTempAppr3, iTempAppr1, i, iLevel, iStr, iVit, iInt, iDex, iMag, iCharisma, iExp, iApprColor, iSaveYear, iSaveMonth, iSaveDay, iSaveHour, iSaveMinute;
- int *ip;
- FILE * pFile;
-
-	pFile = 0;
-	sAppr1 = 0;
-	sAppr2 = 0;
-	sAppr3 = 0;
-	sAppr4 = 0;
-	ZeroMemory(cData, sizeof(cData));
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cCharacterName, sizeof(cCharacterName));
-	ZeroMemory(cNewCharName, sizeof(cNewCharName));
-	ZeroMemory(cAccountName, sizeof(cAccountName));
-	ZeroMemory(cPassword, sizeof(cPassword));
-	ZeroMemory(cDir, sizeof(cDir));
-	ZeroMemory(cTxt, sizeof(cTxt));
-	ZeroMemory(cTotalCharNames, sizeof(cTotalCharNames));
-	ZeroMemory(cUnknown1, sizeof(cUnknown1));	
-	ZeroMemory(cTxt2, sizeof(cTxt2));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	memcpy(cNewCharName, cp, 10);
-	cp += 10;
-
-	memcpy(cAccountName, cp, 10);
-	cp += 10;
-
-	memcpy(cPassword, cp, 10);
-	cp += 10;
-
-	memcpy(cUnknown1, cp, 30);
-	cp += 30;
-
-	wsprintf(G_cTxt, "(TestLog) Request create new character(%s). Account(%s) Password(%s) OtherChars(%s)", cNewCharName, cAccountName, cPassword, cUnknown1);
-	PutLogList(G_cTxt);
-
-	cNewGender = *cp;
-	cp++;
-
-	cNewSkin = *cp;
-	cp++; 
-
-	iTempAppr2 = *cp;
-	cp++;
-
-	iTempAppr3 = *cp;
-	cp++;
-
-	iTempAppr1 = *cp;
-	cp++;
-
-	cNewStr = *cp;
-	cp++;
-
-	cNewVit = *cp;
-	cp++;
-
-	cNewDex = *cp;
-	cp++;
-
-	cNewInt = *cp;
-	cp++;
-
-	cNewMag = *cp;
-	cp++;
-
-	cNewChr = *cp;
-	cp++;
- 
-	dwp = (DWORD *)cp;
-	dwCharID = *dwp;
-	cp += 4;
-
-	cTotalChar = (char)*cp;
-	cp++;
-
-	wsprintf(G_cTxt, "CreateNewChar:(%s) Account:(%s) Str(%d)Int(%d)Vit(%d)Dex(%d)Mag(%d)Chr(%d)Gender(%d)", cNewCharName, cAccountName, cNewStr, cNewInt, cNewVit, cNewDex, cNewMag, cNewChr, cNewGender-1);
-	PutLogList(G_cTxt);
-
-	memcpy(cTotalCharNames, cp, cTotalChar*11);
-	cp += cTotalChar*11;
-
-	sAppr1 = 0;
-	sAppr1 = sAppr1 | iTempAppr1;
-	sAppr1 = sAppr1 | (iTempAppr2 << 8);
-	sAppr1 = sAppr1 | (iTempAppr3 << 4);
-
-	if (G_bDBMode == TRUE) {
-		// todo: add SQL Code Here
-	
-	}
-	else {
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt, "AscII%d", *cNewCharName);
-		strcat(cFileName, cTxt);
-		strcpy(cDir, cFileName);
-		strcat(cFileName,"\\");
-		strcat(cFileName,"\\");					  
-		strcat(cFileName, cNewCharName);
-		strcat(cFileName, ".txt");
-
-		_mkdir("Character");
-		_mkdir(cDir);
-
-		ZeroMemory(cData, sizeof(cData));
-		if (fopen(cFileName, "rt") != NULL) {
-		
-			wsprintf(G_cTxt, "(X) Cannot create new character - Already existing character(%s)", cFileName);
-			PutLogList(G_cTxt);
-					
-			cp		= (char *)(cData);
-			memcpy(cp, cAccountName, 10);
-			cp += 10;
-
-			dwp     = (DWORD *)(cData + 10);
-			*dwp    = dwCharID;
-			dwp		= (DWORD *)(cData + 14);
-			*dwp	= MSGID_RESPONSE_CHARACTERLOG;
-			wp		= (WORD *)(cData + 18);
-			*wp		= DEF_LOGRESMSGTYPE_ALREADYEXISTINGCHARACTER;
-
-			SendEventToMLS(MSGID_RESPONSE_CHARACTERLOG, DEF_LOGRESMSGTYPE_ALREADYEXISTINGCHARACTER, cData, 20, -1);
-			if (pFile != 0) fclose(pFile);
-			return;
-		}
-		pFile = fopen(cFileName, "wt");
-		if (pFile == NULL) {
-			wsprintf(cTxt, "(!) Cannot create new character - cannot create file : Name(%s)", cFileName);
-			PutLogList(cTxt);
-
-			cp		= (char *)(cData);
-			memcpy(cp, cAccountName, 10);
-			cp += 10;
-
-			dwp     = (DWORD *)(cData + 10);
-			*dwp    = dwCharID;
-			dwp		= (DWORD *)(cData + 14);
-			*dwp	= MSGID_RESPONSE_CHARACTERLOG;
-			wp		= (WORD *)(cData + 18);
-			*wp     = DEF_LOGRESMSGTYPE_NEWCHARACTERFAILED;
-		}
-		else {
-			CreateNewCharacterFile(pData, cFileName, cNewCharName, cAccountName, cPassword, cNewGender, cNewSkin, iTempAppr1, iTempAppr2, iTempAppr3, cNewStr, cNewVit, cNewDex, cNewInt, cNewMag, cNewChr, sAppr1, sAppr2, sAppr3, sAppr4);
-			fwrite(pData, 1, strlen(pData), pFile);
-			if (pFile != NULL) fclose(pFile);
-		}
-		
-		memcpy(&cTotalCharNames[cTotalChar*11], cNewCharName, 10);
-		cTotalChar += 1;
-
-	}
-	wsprintf(G_cTxt, "(O) New character(%s) created.", cNewCharName);
-	PutLogList(G_cTxt);
-		
-	ZeroMemory(cData, sizeof(cData));
-
-	cp = (char *)(cData);
-	memcpy(cData, cAccountName, 10);
-	cp += 10;
-
-	dwp  = (DWORD *)(cData + 10);
-	*dwp = dwCharID;
-
-	dwp  = (DWORD *)(cData + 14);
-	*dwp = MSGID_RESPONSE_CHARACTERLOG;
-
-	wp   = (WORD *)(cData + 18);
-	*wp  = DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED;
-
-	cp  = (char *)(cData + 20);
-
-	memcpy(cp, cNewCharName, 10);
-	cp += 10;
-
-	*cp = (char)cTotalChar;
-	cp++;
-
-	for (i = 0; i < cTotalChar; i++) {
-		
-		memcpy(cp, &cTotalCharNames[i*11], 10);
-		cp += 10;
-		
-		ZeroMemory(cCharacterName, sizeof(cCharacterName));
-		memcpy(cCharacterName, &cTotalCharNames[i*11], 10);
-
-		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
-			*cp = 0;
-			cp += 40;
-			break;
-		}
-		*cp = 1;
-		cp++;
-
-		wp = (WORD *)cp;
-		*wp = (int)sAppr1;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)sAppr2;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)sAppr3;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)sAppr4;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)cSex;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)cSkin;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iLevel;
-		cp += 2;
-
-		dwp = (DWORD *)cp;
-		*dwp = (int)iExp;
-		cp += 4;
-
-		wp = (WORD *)cp;
-		*wp = (int)iStr;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iVit;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iDex;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iInt;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iMag;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iCharisma;
-		cp += 2;
-
-		ip = (int *)cp;
-		*ip = iApprColor;
-		cp += 4;
-
-		wp = (WORD *)cp;
-		*wp = (int)iSaveYear;
-		cp += 2;
-		
-		wp = (WORD *)cp;
-		*wp = (int)iSaveMonth;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iSaveDay;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iSaveHour;
-		cp += 2;
-
-		wp = (WORD *)cp;
-		*wp = (int)iSaveMinute;
-		cp += 2;
-		
-		memcpy(cp, cMapName, 10);
-		cp += 10;
-	}
-
-	SendEventToMLS(MSGID_RESPONSE_CHARACTERLOG, DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, cData, (cTotalChar*65)+32, -1);
-
-}
-
-void CWorldLog::RequestDeleteCharacter(int iClientH, char *pData)
-{
- char cAccountName[11], cCharacterName[11], cInfo[111], cData[2000], cMapName[11], cCharList[256], cFileName[255], cTxt[100], cDir[100];
- char *cp;
- DWORD *dwp, dwCharID;
- WORD *wp;
- short sAppr1, sAppr2, sAppr3, sAppr4;
- char cSex, cSkin, cTotalChar; 
- int i, iLevel, iStr, iVit, iInt, iDex, iMag, iCharisma, iExp, iApprColor, iSaveYear, iSaveMonth, iSaveDay, iSaveHour, iSaveMinute;
- int *ip;
-
-	ZeroMemory(cAccountName, sizeof(cAccountName));
-	ZeroMemory(cCharacterName, sizeof(cCharacterName)); 
-	ZeroMemory(cInfo, sizeof(cInfo));
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cTxt, sizeof(cTxt));
-	ZeroMemory(cDir, sizeof(cDir));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	memcpy(cAccountName, cp, 10);
-	cp += 10;
-
-	dwp = (DWORD *)cp;
-	dwCharID = *dwp;
-	cp += 4;
-
-	memcpy(cCharacterName, cp, 10);
-	cp += 10;
-
-	cTotalChar = *cp;
-	cp++;
-
-	memcpy(cInfo, cp, cTotalChar*11);
-
-	if (G_bDBMode == TRUE) {
-		// todo: add SQL Code Here
-		
-	}
-	else {
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt, "AscII%d", *cCharacterName);
-		strcat(cFileName, cTxt);
-		strcpy(cDir, cFileName);
-		strcat(cFileName,"\\");
-		strcat(cFileName,"\\");					  
-		strcat(cFileName, cCharacterName);
-		strcat(cFileName, ".txt");
-
-		DeleteFile(cFileName);
-
-		wsprintf(G_cTxt, "Character(%s) deleted! Account(%s)", cCharacterName, cAccountName);
-		PutLogList(G_cTxt);
-		PutGameLogData(G_cTxt);
-
-		ZeroMemory(cData, sizeof(cData));
-
-		cp = (char *)(cData);
-		memcpy(cData, cAccountName, 10);
-		
-		dwp  = (DWORD *)(cData + 10);
-		*dwp = dwCharID;
-
-		dwp  = (DWORD *)(cData + 14);
-		*dwp = MSGID_RESPONSE_CHARACTERLOG;
-
-		wp   = (WORD *)(cData + 18);
-		*wp  = DEF_LOGRESMSGTYPE_NEWCHARACTERDELETED;
-
-		cp  = (char *)(cData + 20);
-		
-		*cp = 0;
-		cp++;
-
-		*cp = (char)cTotalChar;
-		cp++;
-
-		for (i = 0; i < cTotalChar; i++) {
-			ZeroMemory(cMapName, sizeof(cMapName));
-			ZeroMemory(cCharList, sizeof(cCharList));
-			memcpy(cCharList, &cInfo[i*11], 10);
-			memcpy(cp, &cInfo[i*11], 10);
-			cp += 10;
-				
-			if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
-				*cp = 0;
-				cp += 40;
-				break;
-			}
-			wsprintf(G_cTxt, "(TestLog) Account(%s) Char(%s)", cAccountName, cCharList);
-			PutLogList(G_cTxt);
-
-			*cp = 1;
-			cp++;
-
-			wp = (WORD *)cp;
-			*wp = (int)sAppr1;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)sAppr2;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)sAppr3;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)sAppr4;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)cSex;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)cSkin;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iLevel;
-			cp += 2;
-
-			dwp = (DWORD *)cp;
-			*dwp = (int)iExp;
-			cp += 4;
-
-			wp = (WORD *)cp;
-			*wp = (int)iStr;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iVit;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iDex;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iInt;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iMag;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iCharisma;
-			cp += 2;
-
-			ip = (int *)cp;
-			*ip = iApprColor;
-			cp += 4;
-
-			wp = (WORD *)cp;
-			*wp = (int)iSaveYear;
-			cp += 2;
-			
-			wp = (WORD *)cp;
-			*wp = (int)iSaveMonth;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iSaveDay;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iSaveHour;
-			cp += 2;
-
-			wp = (WORD *)cp;
-			*wp = (int)iSaveMinute;
-			cp += 2;
-			
-			memcpy(cp, cMapName, 10);
-		 	cp += 10;
-		}
-	}
-	SendEventToMLS(MSGID_RESPONSE_CHARACTERLOG, DEF_LOGRESMSGTYPE_NEWCHARACTERDELETED, cData, (cTotalChar*65)+20, -1);
-}
-*/
 void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 {
-	char cData[3000], cFileName[255], cCharacterName[111], cTotalCharNames[111], cNewCharName[11], cAccountName[11], cPassword[11], cUnknown1[31], cTxt[11], cTxt2[120], cMapName[11], cDir[11];
+	char cData[3000], cCharacterName[111], cTotalCharNames[111], cNewCharName[11], cAccountName[11], cPassword[11], cUnknown1[31], cTxt[11], cTxt2[120], cMapName[11];
 	char* cp;
 	DWORD* dwp, dwCharID, dwTime = timeGetTime();
 	WORD* wp;
@@ -4169,20 +3316,17 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 	char cSex, cSkin, cTotalChar, cNewGender, cNewSkin, cNewStr, cNewVit, cNewDex, cNewInt, cNewMag, cNewChr;
 	int iTempAppr2, iTempAppr3, iTempAppr1, i, iLevel, iStr, iVit, iInt, iDex, iMag, iCharisma, iExp, iApprColor, iSaveYear, iSaveMonth, iSaveDay, iSaveHour, iSaveMinute;
 	int* ip;
-	FILE* pFile;
 
-	pFile = 0;
 	sAppr1 = 0;
 	sAppr2 = 0;
 	sAppr3 = 0;
 	sAppr4 = 0;
 	ZeroMemory(cData, sizeof(cData));
-	ZeroMemory(cFileName, sizeof(cFileName));
 	ZeroMemory(cCharacterName, sizeof(cCharacterName));
 	ZeroMemory(cNewCharName, sizeof(cNewCharName));
 	ZeroMemory(cAccountName, sizeof(cAccountName));
 	ZeroMemory(cPassword, sizeof(cPassword));
-	ZeroMemory(cDir, sizeof(cDir));
+	
 	ZeroMemory(cTxt, sizeof(cTxt));
 	ZeroMemory(cTotalCharNames, sizeof(cTotalCharNames));
 	ZeroMemory(cUnknown1, sizeof(cUnknown1));
@@ -4266,8 +3410,8 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 	sAppr1 = sAppr1 | (iTempAppr2 << 8);
 	sAppr1 = sAppr1 | (iTempAppr3 << 4);
 
-	if (G_bDBMode == TRUE) {
-		BOOL exists = bCheckCharacterExists(cNewCharName);
+	if (G_bDBMode == true) {
+		bool exists = bCheckCharacterExists(cNewCharName);
 
 		int iAccountDBid = iGetAccountDatabaseID(cAccountName);
 
@@ -4302,7 +3446,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 			*wp = DEF_LOGRESMSGTYPE_ALREADYEXISTINGCHARACTER;
 
 			SendEventToMLS(MSGID_RESPONSE_CHARACTERLOG, DEF_LOGRESMSGTYPE_ALREADYEXISTINGCHARACTER, cData, 20, -1);
-			fclose(pFile);
+			
 			return;
 		}
 		else
@@ -4414,68 +3558,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 		}
 
 	}
-	else {
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt, "AscII%d", *cNewCharName);
-		strcat(cFileName, cTxt);
-		strcpy(cDir, cFileName);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cNewCharName);
-		strcat(cFileName, ".txt");
-
-		_mkdir("Character");
-		_mkdir(cDir);
-
-		ZeroMemory(cData, sizeof(cData));
-		if (fopen(cFileName, "rt") != NULL) {
-
-			wsprintf(G_cTxt, "(X) Cannot create new character - Already existing character(%s)", cFileName);
-			PutLogList(G_cTxt);
-
-			cp = (char*)(cData);
-			memcpy(cp, cAccountName, 10);
-			cp += 10;
-
-			dwp = (DWORD*)(cData + 10);
-			*dwp = dwCharID;
-			dwp = (DWORD*)(cData + 14);
-			*dwp = MSGID_RESPONSE_CHARACTERLOG;
-			wp = (WORD*)(cData + 18);
-			*wp = DEF_LOGRESMSGTYPE_ALREADYEXISTINGCHARACTER;
-
-			SendEventToMLS(MSGID_RESPONSE_CHARACTERLOG, DEF_LOGRESMSGTYPE_ALREADYEXISTINGCHARACTER, cData, 20, -1);
-			fclose(pFile);
-			return;
-		}
-		pFile = fopen(cFileName, "wt");
-		if (pFile == NULL) {
-			wsprintf(cTxt, "(!) Cannot create new character - cannot create file : Name(%s)", cFileName);
-			PutLogList(cTxt);
-
-			cp = (char*)(cData);
-			memcpy(cp, cAccountName, 10);
-			cp += 10;
-
-			dwp = (DWORD*)(cData + 10);
-			*dwp = dwCharID;
-			dwp = (DWORD*)(cData + 14);
-			*dwp = MSGID_RESPONSE_CHARACTERLOG;
-			wp = (WORD*)(cData + 18);
-			*wp = DEF_LOGRESMSGTYPE_NEWCHARACTERFAILED;
-		}
-		else {
-			CreateNewCharacterFile(pData, cFileName, cNewCharName, cAccountName, cPassword, cNewGender, cNewSkin, iTempAppr1, iTempAppr2, iTempAppr3, cNewStr, cNewVit, cNewDex, cNewInt, cNewMag, cNewChr, sAppr1, sAppr2, sAppr3, sAppr4);
-			fwrite(pData, 1, strlen(pData), pFile);
-			fclose(pFile);
-		}
-
-		memcpy(&cTotalCharNames[cTotalChar * 11], cNewCharName, 10);
-		cTotalChar++;
-
-	}
+	
 	wsprintf(G_cTxt, "(O) New character (%s) created.", cNewCharName);
 	PutLogList(G_cTxt);
 
@@ -4510,7 +3593,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 		ZeroMemory(cCharacterName, sizeof(cCharacterName));
 		memcpy(cCharacterName, &cTotalCharNames[i * 11], 10);
 
-		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+		if ((iGetCharacterData(cCharacterName, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 			*cp = 0;
 			cp += 40;
 			break;
@@ -4641,7 +3724,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 
 	memcpy(cInfo, cp, cTotalChar * 11);
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		SACommand com;
 
 		try
@@ -4687,7 +3770,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 				memcpy(cp, &cInfo[i * 11], 10);
 				cp += 10;
 
-				if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
+				if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 					*cp = 0;
 					cp += 40;
 					break;
@@ -4800,229 +3883,18 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 			return;
 		}
 	}
-	else {
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt, "AscII%d", *cCharacterName);
-		strcat(cFileName, cTxt);
-		strcpy(cDir, cFileName);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cCharacterName);
-		strcat(cFileName, ".txt");
-
-		DeleteFile(cFileName);
-
-		wsprintf(G_cTxt, "Character(%s) deleted! Account(%s)", cCharacterName, cAccountName);
-		PutLogList(G_cTxt);
-		PutGameLogData(G_cTxt);
-
-		ZeroMemory(cData, sizeof(cData));
-
-		cp = (char*)(cData);
-		memcpy(cData, cAccountName, 10);
-
-		dwp = (DWORD*)(cData + 10);
-		*dwp = dwCharID;
-
-		dwp = (DWORD*)(cData + 14);
-		*dwp = MSGID_RESPONSE_CHARACTERLOG;
-
-		wp = (WORD*)(cData + 18);
-		*wp = DEF_LOGRESMSGTYPE_NEWCHARACTERDELETED;
-
-		cp = (char*)(cData + 20);
-
-		*cp = 0;
-		cp++;
-
-		*cp = (char)cTotalChar;
-		cp++;
-
-		for (i = 0; i < cTotalChar; i++) {
-			ZeroMemory(cMapName, sizeof(cMapName));
-			ZeroMemory(cCharList, sizeof(cCharList));
-			memcpy(cCharList, &cInfo[i * 11], 10);
-			memcpy(cp, &cInfo[i * 11], 10);
-			cp += 10;
-
-			if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != TRUE) {
-				*cp = 0;
-				cp += 40;
-				break;
-			}
-			wsprintf(G_cTxt, "(TestLog) Account(%s) Char(%s)", cAccountName, cCharList);
-			PutLogList(G_cTxt);
-
-			*cp = 1;
-			cp++;
-
-			wp = (WORD*)cp;
-			*wp = (int)sAppr1;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)sAppr2;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)sAppr3;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)sAppr4;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)cSex;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)cSkin;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iLevel;
-			cp += 2;
-
-			dwp = (DWORD*)cp;
-			*dwp = (int)iExp;
-			cp += 4;
-
-			wp = (WORD*)cp;
-			*wp = (int)iStr;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iVit;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iDex;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iInt;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iMag;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iCharisma;
-			cp += 2;
-
-			ip = (int*)cp;
-			*ip = iApprColor;
-			cp += 4;
-
-			wp = (WORD*)cp;
-			*wp = (int)iSaveYear;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iSaveMonth;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iSaveDay;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iSaveHour;
-			cp += 2;
-
-			wp = (WORD*)cp;
-			*wp = (int)iSaveMinute;
-			cp += 2;
-
-			memcpy(cp, cMapName, 10);
-			cp += 10;
-		}
-	}
 	SendEventToMLS(MSGID_RESPONSE_CHARACTERLOG, DEF_LOGRESMSGTYPE_NEWCHARACTERDELETED, cData, (cTotalChar * 65) + 20, -1);
 }
 void CWorldLog::UpdateGuildsmanSQL(char *cMemberName, char *cGuildName, bool bUpdateType)
 {
-	/*
 	// NOTE: bUpdateType seems to me guildmaster delete or just member delete
 	// for example if updatetype = 0 then delete guild and all members --- only guildmaster can do this
-
-	// if (strcmp("NONE", cGuildName)== 0) return;
-	// memset(cTxt, 0, 256);
-	// memset(cTxt2, 0, 256);
-	if (bUpdateType == 0) {
-		// wsprintf(cTxt, "delete GUILD_T where cGuildName = '%s' ", cGuildName)
-		// wsprintf(cTxt2, "delete GUILDMEMBER_T where cGuildName = '%s' ", cGuildName)
-		// strcat(cTxt, cTxt2)
-	}
-	else {
-		// wsprintf(cTxt, "delete GUILDMEMBER_T where cMemberName = '%s' ", cMemberName)
-	}
-	if (bUpdateType != 0) {
-		// wsprintf(cTxt, "select * from GUILD_T where cGuildName = '%s' ", cGuildName)
-	}
-	else {
-		return;
-	}
-	// wsprintf(cTxt, "%x-(3057) sql (%s)", ??????);
-	// PutGameLogData(cTxt);
-	// MessageBox(m_hWnd, cTxt, "DB Error", MB_OK+MB_ICONERROR);
-	*/
-
 }
 
 int CWorldLog::UpdateGuildFile_NewGuildsMan(char * cFile, char * pData, char * cp)
 {
 	// INCOMPLETE
 	// hypnotoad: useless function?
-/* FILE * pFile;
- HANDLE hFile;
- DWORD dwFileSize;
- char cTxt[500];
- int iCount;
-
-	for (i = 0; i < DEF_MAXSUBLOGSOCK; i++) {
-
-
-	}
-		hFile = CreateFile(cFile, GENERIC_READ, 0, NULL, OPEN_EXISTING, 0, 0);
-		if (hFile == INVALID_HANDLE_VALUE) return -1;
-		dwFileSize = GetFileSize(hFile, NULL);
-		CloseHandle(hFile);
-		pFile = fopen(cFile, "rt");
-		if (pFile == NULL) return -1;
-		
-		cp = new char[dwFileSize+10];
-		ZeroMemory(cp, dwFileSize+10);
-
-		fread(cp, dwFileSize, 1, pFile);
-		fclose(pFile);
-		
-		ZeroMemory(cTxt, sizeof(cTxt));
-		
-		iCount = 0;
-		if (*cp != 0) {
-			*cp = pData;
-			strcat(cTxt, cData);
-			if (*cp == 10) {
-				if (strlen(cTxt)+1) <= 10) {
-
-				}
-			}
-		}
-		ZeroMemory(cp, dwFileSize+10);
-
-
-
-	fopen(cFile, "wt+");
-	fwrite(cp, 1, strlen(cp), pFile);
-	fclose(pFile);
-
-	delete cp;
-	return 0;*/
 	return 0;
 }
 
@@ -5033,263 +3905,6 @@ int CWorldLog::UpdateGuildFile_DeleteGuildsMan(char * cFile, char * pData, char 
 	return 0;
 }
 
-/*
-void CWorldLog::RequestCreateNewGuild(int iClientH, char *pData)
-{
- char cFileName[255], cData[500];
- char cTxt[500];
- char cTxt2[100];
- char cGuildMasterName[11], cGuildLocation[11], cDir[255], cGuildName[21];
- char *cp;
- DWORD *dwp, dwGuildGUID;
- WORD *wp;
- int iRet;
- SYSTEMTIME SysTime;
- FILE * pFile;
-
-	if (m_pClientList[iClientH] == NULL) return;
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cTxt, sizeof(cTxt));
-	ZeroMemory(cTxt2, sizeof(cTxt2));
- 	ZeroMemory(cDir, sizeof(cDir));
-	ZeroMemory(cData, sizeof(cData));
-	ZeroMemory(cGuildMasterName, sizeof(cGuildMasterName));
-	ZeroMemory(cGuildName, sizeof(cGuildName));
-	ZeroMemory(cGuildLocation, sizeof(cGuildLocation));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	memcpy(cGuildMasterName, cp, 10);
-	cp += 30;
-
-	memcpy(cGuildName, cp, 20);
-	cp += 20;
-
-	memcpy(cGuildLocation, cp, 10);
-	cp += 10;
-
-	dwp  = (DWORD *)cp;
- 	dwGuildGUID = *dwp;
-	cp += 4;
-
-	if (G_bDBMode == TRUE) {
-		// todo: add sql code here
-		
-	}
-	else {
-		strcat(cFileName, "Guild");
- 		strcat(cFileName, "\\");
-		wsprintf(cTxt2, "AscII%d", *cGuildName);
-		strcat(cFileName, cTxt2);
-		strcat(cDir, cFileName);
-		strcat(cFileName, "\\");
- 		strcat(cFileName, "\\");
-		strcat(cFileName, cGuildName);
-		strcat(cFileName, ".txt");
-
-		_mkdir("Guild");
-		_mkdir(cDir);
-
-		pFile = fopen(cFileName, "rt");
-		if (pFile != NULL) {
-			wsprintf(cTxt2, "(X) Cannot create new guild - Already existing guild name: Name(%s)", cFileName);
-			PutLogList(cTxt2);
-			
-			cp  = (char *)(cData + 16);
-
-			dwp  = (DWORD *)cData;
-			*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-			
-			wp  = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp  = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cGuildMasterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-			if (pFile != NULL) fclose(pFile);
-		}
-		else {
-			pFile = fopen(cFileName, "wt");
-			if (pFile == NULL) {
-				wsprintf(cTxt2, "(X) Cannot create new guild - cannot create file : Name(%s)", cFileName);
-				PutLogList(cTxt2);
-			
-				cp  = (char *)(cData + 16);
-				
-				dwp  = (DWORD *)cData;
-				*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-
-				wp  = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_REJECT;
-
-				cp  = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-			}
-			else {
-				wsprintf(cTxt2, "(O) New guild created : Name(%s)", cFileName);
-				PutLogList(cTxt2);
-				
-				ZeroMemory(cTxt2, sizeof(cTxt2));
-				ZeroMemory(cTxt, sizeof(cTxt));
-				GetLocalTime(&SysTime);
-					
-				wsprintf(cTxt, ";Guild file - Updated %4d/%2d/%2d/%2d/%2d", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
-				strcat(cTxt, "\n");
-				strcat(cTxt, ";Just created\n\n");
-						
-				strcat(cTxt, "[GUILD-INFO]\n\n");
-
-				strcat(cTxt, "guildmaster-name     = ");
-				strcat(cTxt, cGuildMasterName);
-				strcat(cTxt, "\n");
-
-				strcat(cTxt, "guild-GUID           = ");
-				wsprintf(cTxt2,"%d", dwGuildGUID);
-				strcat(cTxt, cTxt2);
-				strcat(cTxt, "\n");
-
-				strcat(cTxt, "guild-location       = ");
-				strcat(cTxt, cGuildLocation);
-				strcat(cTxt, "\n");
-
-				strcat(cTxt, "guild-level       = 0");
-				strcat(cTxt, "\n\n");
-
-				strcat(cTxt, "[GUILDSMAN]\n\n");
-
-				fwrite(cTxt, 1, strlen(cTxt), pFile);		
-				
-				dwp  = (DWORD *)cData;
-				*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-				
-				wp  = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_CONFIRM;
-
-				cp  = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-				if (pFile != NULL) fclose(pFile);
-			}
-		}
-		switch(iRet) {
-		case DEF_XSOCKEVENT_QUENEFULL:
-		case DEF_XSOCKEVENT_SOCKETERROR:
-		case DEF_XSOCKEVENT_CRITICALERROR:
-		case DEF_XSOCKEVENT_SOCKETCLOSED:
-			DeleteClient(iClientH, 0);
-			delete m_pClientList[iClientH];
-			m_pClientList[iClientH] = NULL;
-			return;
-		}	
-	}
-}
-
-void CWorldLog::RequestDisbandGuild(int iClientH, char *pData)
-{
- char cTemp[500];
- DWORD *dwp;
- WORD *wp;
- char *cp;
- char cFileName[255], cTxt[100], cDir[100];
- char cGuildMasterName[11], cGuildName[21];
- int iRet;
- FILE * pFile;
-
-	if (m_pClientList[iClientH] == NULL) return;
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cTxt, sizeof(cTxt));
-	ZeroMemory(cDir, sizeof(cDir));
-	ZeroMemory(cTemp, sizeof(cTemp));
-	ZeroMemory(cGuildMasterName, sizeof(cGuildMasterName));
-	ZeroMemory(cGuildName, sizeof(cGuildName));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	memcpy(cGuildMasterName, cp, 10);
-	cp += 30;
-
-	memcpy(cGuildName, cp, 20);
-	cp += 20;
-
-	if (G_bDBMode == TRUE) {
-		// todo: add sql code here
-		
-	}
-	else {
-		strcat(cFileName, "Guild");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt, "AscII%d", *cGuildName);
-		strcat(cFileName, cTxt);
-		strcat(cDir, cFileName);
-		strcat(cFileName, "\\");
- 		strcat(cFileName, "\\");
-		strcat(cFileName, cGuildName);
-		strcat(cFileName, ".txt");
-		
-		pFile = fopen(cFileName, "rt");
-		if (pFile != NULL) {
-			fclose(pFile);
-			wsprintf(G_cTxt, "(O) Disband Guild - Deleting guild file... : Name(%s)", cFileName);
-			PutLogList(G_cTxt);
-			if (DeleteFile(cFileName) != NULL) {
-				dwp = (DWORD *)(cTemp);
-				*dwp = MSGID_RESPONSE_DISBANDGUILD;
-
-				wp  = (WORD *)(cTemp + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_CONFIRM;
-
-				cp  = (char *)(cTemp + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
-			}
-			else {
-				dwp = (DWORD *)(cTemp);
-				*dwp = MSGID_RESPONSE_DISBANDGUILD;
-
-				wp  = (WORD *)(cTemp + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_REJECT;
-
-				cp  = (char *)(cTemp + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
-			}
-		}
-		else {
-			dwp = (DWORD *)(cTemp);
-			*dwp = MSGID_RESPONSE_DISBANDGUILD;
-
-			wp  = (WORD *)(cTemp + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp  = (char *)(cTemp + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cGuildMasterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
-		}
-	}
-	switch(iRet) {
-	case DEF_XSOCKEVENT_QUENEFULL:
-	case DEF_XSOCKEVENT_SOCKETERROR:
-	case DEF_XSOCKEVENT_CRITICALERROR:
-	case DEF_XSOCKEVENT_SOCKETCLOSED:
-		DeleteClient(iClientH, 0);
-		delete m_pClientList[iClientH];
-		m_pClientList[iClientH] = NULL;
-		return;
-	}
-}
-*/
 void CWorldLog::RequestCreateNewGuild(int iClientH, char* pData)
 {
 	char cFileName[255], cData[500];
@@ -5327,8 +3942,8 @@ void CWorldLog::RequestCreateNewGuild(int iClientH, char* pData)
 	dwGuildGUID = *dwp;
 	cp += 4;
 
-	if (G_bDBMode == TRUE) {
-		BOOL exists = bCheckGuildExists(cGuildName);
+	if (G_bDBMode == true) {
+		bool exists = bCheckGuildExists(cGuildName);
 
 		if (exists)
 		{
@@ -5420,119 +4035,7 @@ void CWorldLog::RequestCreateNewGuild(int iClientH, char* pData)
 			DeleteClient(iClientH, 0);
 			delete m_pClientList[iClientH];
 			m_pClientList[iClientH] = NULL;
-			return;
-		}
-
-	}
-	else {
-
-		strcat(cFileName, "Guild");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt2, "AscII%d", *cGuildName);
-		strcat(cFileName, cTxt2);
-		strcat(cDir, cFileName);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cGuildName);
-		strcat(cFileName, ".txt");
-
-		_mkdir("Guild");
-		_mkdir(cDir);
-
-		pFile = fopen(cFileName, "rt");
-		if (pFile != NULL) {
-			wsprintf(cTxt2, "(X) Cannot create new guild - Already existing guild name: Name(%s)", cFileName);
-			PutLogList(cTxt2);
-
-			cp = (char*)(cData + 16);
-
-			dwp = (DWORD*)cData;
-			*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cGuildMasterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-			fclose(pFile);
-		}
-		else {
-			pFile = fopen(cFileName, "wt");
-			if (pFile == NULL) {
-				wsprintf(cTxt2, "(X) Cannot create new guild - cannot create file : Name(%s)", cFileName);
-				PutLogList(cTxt2);
-
-				cp = (char*)(cData + 16);
-
-				dwp = (DWORD*)cData;
-				*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-
-				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_REJECT;
-
-				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-			}
-			else {
-				wsprintf(cTxt2, "(O) New guild created : Name(%s)", cFileName);
-				PutLogList(cTxt2);
-
-				ZeroMemory(cTxt2, sizeof(cTxt2));
-				ZeroMemory(cTxt, sizeof(cTxt));
-				GetLocalTime(&SysTime);
-
-				wsprintf(cTxt, ";Guild file - Updated %4d/%2d/%2d/%2d/%2d", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
-				strcat(cTxt, "\n");
-				strcat(cTxt, ";Just created\n\n");
-
-				strcat(cTxt, "[GUILD-INFO]\n\n");
-
-				strcat(cTxt, "guildmaster-name     = ");
-				strcat(cTxt, cGuildMasterName);
-				strcat(cTxt, "\n");
-
-				strcat(cTxt, "guild-GUID           = ");
-				wsprintf(cTxt2, "%d", dwGuildGUID);
-				strcat(cTxt, cTxt2);
-				strcat(cTxt, "\n");
-
-				strcat(cTxt, "guild-location       = ");
-				strcat(cTxt, cGuildLocation);
-				strcat(cTxt, "\n\n");
-
-				strcat(cTxt, "[GUILDSMAN]\n\n");
-
-				fwrite(cTxt, 1, strlen(cTxt), pFile);
-
-				dwp = (DWORD*)cData;
-				*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-
-				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_CONFIRM;
-
-				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
-				fclose(pFile);
-			}
-		}
-		switch (iRet) {
-		case DEF_XSOCKEVENT_QUENEFULL:
-		case DEF_XSOCKEVENT_SOCKETERROR:
-		case DEF_XSOCKEVENT_CRITICALERROR:
-		case DEF_XSOCKEVENT_SOCKETCLOSED:
-			DeleteClient(iClientH, 0);
-			delete m_pClientList[iClientH];
-			m_pClientList[iClientH] = NULL;
-			return;
+			break;
 		}
 	}
 }
@@ -5563,7 +4066,7 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 	memcpy(cGuildName, cp, 20);
 	cp += 20;
 
-	if (G_bDBMode == TRUE) {
+	if (G_bDBMode == true) {
 		SACommand com;
 
 		try
@@ -5621,64 +4124,7 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
 		}
 	}
-	else {
-		strcat(cFileName, "Guild");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cTxt, "AscII%d", *cGuildName);
-		strcat(cFileName, cTxt);
-		strcat(cDir, cFileName);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cGuildName);
-		strcat(cFileName, ".txt");
 
-		pFile = fopen(cFileName, "rt");
-		if (pFile != NULL) {
-			fclose(pFile);
-			wsprintf(G_cTxt, "(O) Disband Guild - Deleting guild file... : Name(%s)", cFileName);
-			PutLogList(G_cTxt);
-			if (DeleteFile(cFileName) != NULL) {
-				dwp = (DWORD*)(cTemp);
-				*dwp = MSGID_RESPONSE_DISBANDGUILD;
-
-				wp = (WORD*)(cTemp + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_CONFIRM;
-
-				cp = (char*)(cTemp + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
-			}
-			else {
-				dwp = (DWORD*)(cTemp);
-				*dwp = MSGID_RESPONSE_DISBANDGUILD;
-
-				wp = (WORD*)(cTemp + DEF_INDEX2_MSGTYPE);
-				*wp = DEF_MSGTYPE_REJECT;
-
-				cp = (char*)(cTemp + DEF_INDEX2_MSGTYPE + 2);
-				memcpy(cp, cGuildMasterName, 10);
-				cp += 10;
-
-				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
-			}
-		}
-		else {
-			dwp = (DWORD*)(cTemp);
-			*dwp = MSGID_RESPONSE_DISBANDGUILD;
-
-			wp = (WORD*)(cTemp + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_MSGTYPE_REJECT;
-
-			cp = (char*)(cTemp + DEF_INDEX2_MSGTYPE + 2);
-			memcpy(cp, cGuildMasterName, 10);
-			cp += 10;
-
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cTemp, 16, DEF_USE_ENCRYPTION);
-		}
-	}
 	switch (iRet) {
 	case DEF_XSOCKEVENT_QUENEFULL:
 	case DEF_XSOCKEVENT_SOCKETERROR:
@@ -5687,85 +4133,19 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 		DeleteClient(iClientH, 0);
 		delete m_pClientList[iClientH];
 		m_pClientList[iClientH] = NULL;
-		return;
+		break;
 	}
 }
 void CWorldLog::UpdateGuildInfoNewGuildsman(int iClientH, char *pData)
 {
 	// INCOMPLETE
 	// hypnotoad: useless function?
-/*
- char *cp;
- char cFileName[255], cTxt[30], cDir[100], cGuildMemberName[11], cGuildName[21];
-
-	if (m_pClientList[iClientH] == NULL) return;
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cTxt, sizeof(cTxt));
-	ZeroMemory(cDir, sizeof(cDir));
-	ZeroMemory(cGuildMemberName, sizeof(cGuildMemberName));
-	ZeroMemory(cGuildName, sizeof(cGuildName));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	
-	memcpy(cGuildMemberName, cp, 10);
-	cp += 10;
-
-	memcpy(cGuildName, cp, 20);
-	cp += 20;
-
-	strcat(cFileName, "Guild");
-	strcat(cFileName, "\\");
-	strcat(cFileName, "\\");
-	wsprintf(cTxt, "AscII%d", *cGuildName);
-	strcat(cFileName, cTxt);
-	strcat(cDir, cFileName);
-	strcat(cFileName, "\\");
- 	strcat(cFileName, "\\");
-	strcat(cFileName, cGuildName);
-	strcat(cFileName, ".txt");
-
-	ZeroMemory(cTxt, sizeof(cTxt));
-	wsprintf(cTxt, "guildsman-name       = %s", cGuildMemberName);
-	UpdateGuildFile_NewGuildsMan(cFileName, "[GUILDSMAN]", cGuildMemberName);*/
 }
 
 void CWorldLog::UpdateGuildInfoDeleteGuildman(int iClientH, char *pData)
 {
 	// INCOMPLETE
 	// hypnotoad: useless function?
-/*
- char *cp;
- char cFileName[255], cTxt[30], cDir[100], cGuildMemberName[11], cGuildName[21];
-
-	if (m_pClientList[iClientH] == NULL) return;
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cTxt, sizeof(cTxt));
-	ZeroMemory(cDir, sizeof(cDir));
-	ZeroMemory(cGuildMemberName, sizeof(cGuildMemberName));
-	ZeroMemory(cGuildName, sizeof(cGuildName));
-
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	
-	memcpy(cGuildMemberName, cp, 10);
-	cp += 10;
-
-	memcpy(cGuildName, cp, 20);
-	cp += 20;
-
-	strcat(cFileName, "Guild");
-	strcat(cFileName, "\\");
-	strcat(cFileName, "\\");
-	wsprintf(cTxt, "AscII%d", *cGuildName);
-	strcat(cFileName, cTxt);
-	strcat(cDir, cFileName);
-	strcat(cFileName, "\\");
- 	strcat(cFileName, "\\");
-	strcat(cFileName, cGuildName);
-	strcat(cFileName, ".txt");
-
-	ZeroMemory(cTxt, sizeof(cTxt));
-	wsprintf(cTxt, "guildsman-name       = %s", cGuildMemberName);
-	UpdateGuildFile_DeleteGuildsMan(cFileName, "[GUILDSMAN]", cGuildMemberName);*/
 }
 
 int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char * cPassword, int iLevel, char * pData3)
@@ -5802,7 +4182,7 @@ int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char *
 				}
 			}
 		}*/
-		return 0;
+		break;
 
 	case DEF_MSGACCOUNTSET_INIT:
 		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) { //1
@@ -5814,7 +4194,7 @@ int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char *
 						m_pAccountList[i]->m_iLevel = iLevel;
 						iClientH = -1;
 						for (x = 0; x < DEF_MAXGAMESERVERS; x++) { //5
-							if ((m_pGameList[x] != NULL) && (strcmp(m_pGameList[x]->m_cGameServerName, m_pAccountList[i]->m_cOnGameServer) == FALSE)) {//6
+							if ((m_pGameList[x] != NULL) && (strcmp(m_pGameList[x]->m_cGameServerName, m_pAccountList[i]->m_cOnGameServer) == false)) {//6
 								iClientH = m_pGameList[x]->m_iTrackSock;
 							}//6
 						}//5
@@ -5871,7 +4251,7 @@ int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char *
 				return 1;
 			}
 		}//1 end loop accounts
-		return 0;
+		break;
 
 	case DEF_MSGACCOUNTSET_WAIT:
 		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) {
@@ -5896,7 +4276,7 @@ int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char *
 				return 1;
 			}
 		}
-		return 0;
+		break;
 
 	case DEF_MSGACCOUNTSET_PLAYING:
 		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) {
@@ -5920,7 +4300,7 @@ int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char * cAccountName, char *
 				return 2;
 			}
 		}//account loop
-		return 0;
+		break;
 	}
 	return 0;
 }
@@ -5974,7 +4354,10 @@ if(m_pAccountList[i] != NULL) {
 	if(m_pAccountList[i]->Timeout < 0) break; //if timer set no wait
 	if(m_pAccountList[i]->Timeout == 0) { //client timedout
 			
-			memcpy(cp, m_pAccountList[i]->cAccountName, 10);
+		ZeroMemory(cData, sizeof(cData));
+
+		cp = (char*)(cData);
+		memcpy(cp, m_pAccountList[i]->cAccountName, 10);
 			cp += 10;
 			
 			wsprintf(G_cTxt, "(TestLog) Account(%s) TIMEOUT - Clear conn status request to MLS...", m_pAccountList[i]->cAccountName);
@@ -6028,14 +4411,14 @@ void CWorldLog::ForceDisconnectAccount(int iClientH, char *pData)
 
 	for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) {
 		if (m_pAccountList[i] != NULL) {
-			if (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == TRUE) {
+			if (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == true) {
 				if (m_pAccountList[i]->cAccountType == 1) return;
 				if (m_pAccountList[i]->cAccountType == 2) return;
 				ZeroMemory(cGameServerName, sizeof(cGameServerName));
 				strcpy(cGameServerName, m_pAccountList[i]->m_cOnGameServer);
 				for (x = 0; x < DEF_MAXGAMESERVERS; x++) {
 					if (m_pGameList[x] != NULL) {
-						if (strcmp(m_pGameList[x]->m_cGameServerName, cGameServerName) == TRUE) {
+						if (strcmp(m_pGameList[x]->m_cGameServerName, cGameServerName) == true) {
 							iClientH = m_pGameList[x]->m_iTrackSock;
 
 							ZeroMemory(cData, sizeof(cData));
@@ -6063,7 +4446,7 @@ void CWorldLog::ForceDisconnectAccount(int iClientH, char *pData)
 								DeleteClient(iClientH, 0);
 								delete m_pClientList[iClientH];
 								m_pClientList[iClientH] = NULL;
-								return;
+								break;
 							}					
 							return;
 						}
@@ -6158,7 +4541,7 @@ void CWorldLog::RegisterWorldGameServer()
 
 void CWorldLog::ClientMSLConfirmed(int iClientH)
 {
-	m_bisMainRegistered[iClientH] = TRUE;
+	m_bisMainRegistered[iClientH] = true;
 	wsprintf(G_cTxt, "(O) Client(%d) MLS-socket confirmed.", iClientH);
 	PutLogList(G_cTxt);
 }
@@ -6176,42 +4559,15 @@ void CWorldLog::SendServerShutdownMessage()
 int CWorldLog::iCreateNewCharacterSQL(char * cCharacterName, char * cAccountName, char *pData, bool bGuildCheck)
 {
 	// REFERENCE: sub_414DB0
-	// wsprintf(cTxt, "select * from CHARACTER_T where upper(cCharName) = upper('%s') and left(cCharName,1) = '%c'", cCharacterName);
-	// wsprintf(cTxt, "select * from CHARACTER_T where cCharName = ('%s')", cCharacterName);
-	// wsprintf(G_cTxt, "CharName(%s) have unknown ItemID (%d)", cCharacterName, ???????);
-	// PutLogList(G_cTxt);
-	// wsprintf(cTxt, ""select * from BANKITEM_T where CharID = %ld", ??????);
-	// wsprintf(G_cTxt, "CharName(%s) have unknown BankItemID (%d)", cCharacterName, ???????);
-	// PutLogList(G_cTxt);
-	// wsprintf(cTxt, "%x-(6001) sql (%s)", ??????);
-	// PutGameLogData(cTxt);
-	// MessageBox(m_hWnd, cTxt, "DB Error", MB_OK+MB_ICONERROR);
 	return -1;
 }
 
 int CWorldLog::iSaveCharacterSQL(DWORD dwCharID, char *pData)
 {
-	// wsprintf(cTxt, "select * from CHARACTER_T where charID = %u", dwCharID);
-	// wsprintf(cTxt, "select * from SKILL_T where CharID = %ld", ?????);
-	// wsprintf(cTxt, "select * from ITEM_T where CharID = %ld", ?????);
-	// iGetItemNumber(cItemName);
-	// wsprintf(cTxt, "Over Item Count")
-	// PutGameLogData(cTxt);
-	// wsprintf(cTxt, "sql(%s)-5809 (%s)", ???????, ??????);
-	// PutGameLogData(cTxt);
-	// wsprintf(cTxt, "Over Item Count")
-	// wsprintf(cTxt, "sql(%s)-5896 (%s)", ???????, ??????);
-	// wsprintf(cTxt, "select * from BANKITEM_T where CharID = %ld", ???????);
-	// wsprintf(cTxt, "Over BankItem Count")
-	// PutGameLogData(cTxt);
-	// wsprintf(cTxt, "sql(%s)-6039 (%s)", ???????, ??????);
-	// wsprintf(cTxt, "Over BankItem Count")
-	// PutGameLogData(cTxt);
-	// wsprintf(cTxt, "sql(%s)-6119 (%s)", ???????, ??????);
 	return -1;
 }
 
-BOOL CWorldLog::bReadItemConfigFile(char *cFn)
+bool CWorldLog::bReadItemConfigFile(char *cFn)
 {
  FILE * pFile;
  HANDLE hFile;
@@ -6231,7 +4587,7 @@ BOOL CWorldLog::bReadItemConfigFile(char *cFn)
 	if (pFile == NULL) {
 		wsprintf(G_cTxt, "(X) CRITICAL ERROR! Cannot open (%s) file !", cFn);
 		PutLogList(G_cTxt);
-		return FALSE;
+		return false;
 	}
 	else {
 		wsprintf(G_cTxt, "(!) Reading %s config file...", cFn);
@@ -6251,9 +4607,9 @@ BOOL CWorldLog::bReadItemConfigFile(char *cFn)
 						if (m_pItemList[iItemH] != NULL) {
 							wsprintf(G_cTxt, "(!!!) CRITICAL ERROR! Duplicate ItemIDnum(%d)", iItemH);
 							PutLogList(G_cTxt);
-							delete cp;
+							delete[] cp;
 							delete pStrTok;
-							return FALSE;
+							return false;
 						}
 						m_pItemList[iItemH] = new class CItem();
 						cReadModeB = 2;
@@ -6291,12 +4647,12 @@ BOOL CWorldLog::bReadItemConfigFile(char *cFn)
 			token = pStrTok->pGet();
 		}
 		delete pStrTok;
-		delete cp;
+		delete[] cp;
 		fclose(pFile);
 	}
 	
 	PutLogList(" ");
-	return TRUE;
+	return true;
 }
 
 int CWorldLog::iGetItemNumber(char *cItemName)
@@ -6313,7 +4669,7 @@ int CWorldLog::iGetItemNumber(char *cItemName)
 	return 0;
 }
 
-void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
+void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, bool bIsSave)
 {
  FILE * pFile;
  char cBuffer[512];
@@ -6321,15 +4677,16 @@ void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
  DWORD dwTime;
 
 	pFile = NULL;
+	dwTime = timeGetTime();
 	if (bIsSave == 0) {
-		dwTime = timeGetTime();
+		
 		if (m_cGMLogCount == 0) m_dwGMLogTime = dwTime;
 		if (dwMsgSize <= 6) return;
 		*(pData + dwMsgSize) = 0;
 		m_cGMLogCount++;
 		GetLocalTime(&SysTime);
 		ZeroMemory(cBuffer, sizeof(cBuffer));
-		wsprintf(cBuffer, "%04d:%02d:%02d:%02d:%02d:%02d\t", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+		wsprintf(cBuffer, "%04d:%02d:%02d:%02d:%02d:%02d\t", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 		strcat(cBuffer, pData + 6);
 		strcat(cBuffer, "\n");
 		strcat(m_cGMLogBuffer, cBuffer);
@@ -6339,7 +4696,7 @@ void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 		GetLocalTime(&SysTime);
 	}
 	if ((m_cGMLogCount < 30) && ((dwTime - m_dwGMLogTime) <= 5000)) {
-		bIsSave = TRUE;
+		bIsSave = true;
 		return;
 	}
 	ZeroMemory(cBuffer, sizeof(cBuffer));
@@ -6354,7 +4711,7 @@ void CWorldLog::PutGMLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 
 }
 
-void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
+void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, bool bIsSave)
 {
  FILE * pFile;
  char cBuffer[512];
@@ -6362,15 +4719,16 @@ void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
  DWORD dwTime;
 
 	pFile = NULL;
+	dwTime = timeGetTime();
 	if (bIsSave == 0) {
-		dwTime = timeGetTime();
+		
 		if (m_cItemLogCount == 0) m_dwItemLogTime = dwTime;
 		if (dwMsgSize <= 6) return;
 		*(pData + dwMsgSize) = 0;
 		m_cItemLogCount++;
 		GetLocalTime(&SysTime);
 		ZeroMemory(cBuffer, sizeof(cBuffer));
-		wsprintf(cBuffer, "%04d:%02d:%02d:%02d:%02d:%02d\t", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+		wsprintf(cBuffer, "%04d:%02d:%02d:%02d:%02d:%02d\t", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 		strcat(cBuffer, pData + 6);
 		strcat(cBuffer, "\n");
 		strcat(m_cItemLogBuffer, cBuffer);
@@ -6380,7 +4738,7 @@ void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
 		GetLocalTime(&SysTime);
 	}
 	if ((m_cItemLogCount < 150) && ((dwTime - m_dwItemLogTime) <= 5000)) {
-		bIsSave = TRUE;
+		bIsSave = true;
 		return;
 	}
 	ZeroMemory(cBuffer, sizeof(cBuffer));
@@ -6394,7 +4752,7 @@ void CWorldLog::PutItemLogData (char * pData, DWORD dwMsgSize, BOOL bIsSave)
 	ZeroMemory(m_cItemLogBuffer, sizeof(m_cItemLogBuffer));
 }
 
-void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
+void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, bool bIsSave)
 {
  FILE * pFile;
  char cBuffer[512];
@@ -6402,15 +4760,16 @@ void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
  DWORD dwTime;
 
 	pFile = NULL;
+	dwTime = timeGetTime();
 	if (bIsSave == 0) {
-		dwTime = timeGetTime();
+		
 		if (m_cCrusadeLogCount == 0) m_dwItemLogTime = dwTime;
 		if (dwMsgSize <= 6) return;
 		*(pData + dwMsgSize) = 0;
 		m_cCrusadeLogCount++;
 		GetLocalTime(&SysTime);
 		ZeroMemory(cBuffer, sizeof(cBuffer));
-		wsprintf(cBuffer, "%04d:%02d:%02d:%02d:%02d:%02d\t", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
+		wsprintf(cBuffer, "%04d:%02d:%02d:%02d:%02d:%02d\t", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
 		strcat(cBuffer, pData + 6);
 		strcat(cBuffer, "\n");
 		strcat(m_cCrusadeLogBuffer, cBuffer);
@@ -6420,7 +4779,7 @@ void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 		GetLocalTime(&SysTime);
 	}
 	if ((m_cCrusadeLogCount < 100) && ((dwTime - m_dwCrusadeLogTime) <= 5000)) {
-		bIsSave = TRUE;
+		bIsSave = true;
 		return;
 	}
 	ZeroMemory(cBuffer, sizeof(cBuffer));
@@ -6436,397 +4795,10 @@ void CWorldLog::PutCrusadeLogData(char * pData, DWORD dwMsgSize, BOOL bIsSave)
 
 void CWorldLog::RequestSaveOccupyFlag(int iClientH, char *pData, char cType)
 {
- /*char cFileName[256];
- FILE * pFile;
- char *cp;
-
-	if (m_pClientList[iClientH] == NULL) return;
-	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	if (strlen(cp) <= 0) { 
-		PutLogList("(!) Occupy Flag Data Error! Data size 0"); 
-		return;
-	}
-	_mkdir("GameData");
-	ZeroMemory(cFileName, sizeof(cFileName));
-	strcat(cFileName, "GameData");
-	strcat(cFileName, "\\");
- 	strcat(cFileName, "\\");
-	if (cType = 1) {
-		strcat(cFileName, "AresdenOccupyFlag.Txt");
-	}
-	else {
-		strcat(cFileName, "ElvineOccupyFlag.Txt");
-	}
-	WriteOccupyFlagFile(cFileName);
-	pFile = fopen(cFileName, "wt");
-	if (pFile == NULL) {
-		wsprintf(G_cTxt, "(!) Cannot create OccupyFlag data file : Name(%s)", cFileName);
-		PutLogList(G_cTxt);
-	}
-	else if (strlen(cp) >= DEF_MSGBUFFERSIZE) {
-		wsprintf(G_cTxt, "(!) OccupyFlag data file saved : Name(%s)", cFileName);
-		PutLogList(G_cTxt);
-		fwrite(cp, 1, strlen(cp), pFile);
-	}
-	if (pFile != NULL) fclose(pFile);*/
-
+ 
 }
 
-void CWorldLog::CreateNewCharacterFile(char *pData, char *cFn, char * cNewCharName, char * cAccountName, char * cPassword, char cNewGender, char cNewSkin, int iTempAppr1, int iTempAppr2, int iTempAppr3, char cNewStr, char cNewVit, char cNewDex, char cNewInt, char cNewMag, char cNewChr, short sAppr1, short sAppr2, short sAppr3, short sAppr4)
-{
- SYSTEMTIME SysTime;
- char cTxt[120];
- int i, iRand;
 
-	ZeroMemory(cTxt, sizeof(cTxt));
-	GetLocalTime(&SysTime);
-	ZeroMemory(pData, sizeof(pData));
-	strcat(pData, "[FILE-DATE]\n\n");
-
-	wsprintf(cTxt, "file-saved-date:  Time(%d/%d/%d/%d/%d)", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
-	strcat(pData, cTxt);
-	strcat(pData, "\n\n");
-
-	strcat(pData, "[NAME-ACCOUNT]\n\n");
-
-	strcat(pData, "character-name     = ");
-	strcat(pData, cNewCharName);
-	strcat(pData, "\n");
-
-	strcat(pData, "account-name       = ");
-	strcat(pData, cAccountName);
-	strcat(pData, "\n");
-
-	strcat(pData, "account-password   = ");
-	strcat(pData, cPassword);
-	strcat(pData, "\n\n");
-
-	strcat(pData, "[STATUS]\n\n");
-
-	strcat(pData, "character-location   = NONE\n");
-	strcat(pData, "character-guild-name = NONE\n");
-	strcat(pData, "character-guild-rank = -1\n");
-	strcat(pData, "\n");
-
-	strcat(pData, "character-loc-map  = default\n");
-	strcat(pData, "character-loc-x\t  = -1\n");
-	strcat(pData, "character-loc-y\t  = -1\n\n");
-
-	wsprintf(cTxt, "character-HP       = %d", 37);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-MP       = %d", 27);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-SP       = %d", 22);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	strcat(pData, "character-DefenseRatio = 10\n");
-
-	strcat(pData, "character-LEVEL    = 1\n");
-	
-	wsprintf(cTxt, "character-STR      = %d", cNewStr);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-INT      = %d", cNewInt);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-VIT      = %d", cNewVit);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-DEX      = %d", cNewDex);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-MAG      = %d", cNewMag);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-CHARISMA = %d", cNewChr);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	strcat(pData, "character-LUCK     = 10");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-EXP      = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-LU_Str    = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-LU_Vit    = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-LU_Int    = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-LU_Mag    = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-LU_Char   = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-EK-Count  = 0");
-	strcat(pData,"\n");
-
-	strcat(pData, "character-PK-Count  = 0");
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "sex-status       = %d", cNewGender);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "skin-status      = %d", cNewSkin);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "hairstyle-status = %d", iTempAppr2);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "haircolor-status = %d", iTempAppr3);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "underwear-status = %d", iTempAppr1);
-	strcat(pData, cTxt);
-	strcat(pData,"\n\n");
-
-	wsprintf(cTxt, "appr1 = %d", sAppr1);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "appr2 = %d", sAppr2);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "appr3 = %d", sAppr3);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "appr4 = %d", sAppr4);
-	strcat(pData, cTxt);
-	strcat(pData,"\n\n");
-
-	strcat(pData, "[ITEMLIST]\n\n");
-	strcat(pData, "character-item = Dagger               1 0 0 0 0 0 0 0 0 300 0\n");
-	strcat(pData, "character-item = RecallScroll         1 0 0 0 0 0 0 0 0 300 0\n");
-	strcat(pData, "character-item = BigRedPotion         1 0 0 0 0 0 0 0 0 300 0\n");
-	strcat(pData, "character-item = BigGreenPotion	     1 0 0 0 0 0 0 0 0 300 0\n");
-	strcat(pData, "character-item = BigBluePotion        1 0 0 0 0 0 0 0 0 300 0\n");
-	strcat(pData, "character-item = Map			         1 0 0 0 0 0 0 0 0 300 0\n");
-
-	iRand = (rand() %16);
-	switch(iRand) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 7:
-		case 8:
-		case 15:
-			strcat(pData, "character-item = WoodShield           1 0 0 0 0 0  0 0 0 300 0\n");
-			break;
-				
-		default:
-			if (cNewGender == 1) {
-				wsprintf(cTxt, "character-item = KneeTrousers(M)     1 0 0 0 0 %d 0 0 0 300 0\n", iRand);
-			}
-			else {
-				wsprintf(cTxt, "character-item = Chemise(W)	         1 0 0 0 0 %d 0 0 0 300 0\n", iRand);
-			}
-			strcat(pData, cTxt);
-			strcat(pData,"\n");
-			break;
-	}
-	
-	strcat(pData, "[MAGIC-SKILL-MASTERY]\n\n");
-	strcat(pData, "magic-mastery     = 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-	strcat(pData,"\n\n");
-
-	strcat(pData, "skill-mastery     = 0 0 0 3 20 24 0 24 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ");
-//	for (i = 0; i < 60; i++) {
-		//ZeroMemory(cTxt, sizeof(cTxt));
-		//wsprintf(cTxt, "0 0 0 3 20 24 0 24 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ");
-		//strcat(pData, cTxt);
-//	}
-	strcat(pData,"\n");
-
-	strcat(pData, "skill-SSN     = ");
-	for (i = 0; i < 60; i++) {
-		strcat(pData, "0 ");
-	}
-	strcat(pData,"\n\n");
-	
-	strcat(pData, "[ITEM-EQUIP-STATUS]\n\n");
-	strcat(pData, "item-equip-status = 00000110000000000000000000000000000000000000000000");
-	strcat(pData,"\n\n");
-
-	strcat(pData,"[EOF]");
-	strcat(pData,"\n\n\n\n");
-}
-
-/*
-void CWorldLog::VerifyCharacterIntegrity(char *cCharacterName, char *cAccountName, int *iLevel, char * cGuildName, char *cGuildRank, DWORD *dwGuildGUID)
-{
- FILE * pFile;
- HANDLE hFile;
- DWORD  dwFileSize;
- char * cp, * token, cReadMode, cTotalList;
- char seps[] = "= \t\n";
- class CStrTok * pStrTok;
- char cFileName[255];
- char cDir[63];
- char cCharacterMap[11];
-
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cDir, sizeof(cDir));
-	strcat(cFileName, "Character");
-	strcat(cFileName, "\\");
- 	strcat(cFileName, "\\");
-	wsprintf(cDir, "AscII%d", *cCharacterName);
-	strcat(cFileName, cDir);
-	strcat(cFileName, "\\");
-	strcat(cFileName, "\\");
-	strcat(cFileName, cCharacterName);	
-	strcat(cFileName, ".txt");
-
-	wsprintf(G_cTxt, "(TestLog) Verify Character Integrity (%s)", cFileName);
-	PutLogList(G_cTxt);
-	
-	cTotalList  = 0;
-	cReadMode	= 0;
-	hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-	pFile = fopen(cFileName, "rt");
-	if (pFile != NULL) {
-		cp = new char[dwFileSize+1];
-		ZeroMemory(cp, dwFileSize+1);
-		fread(cp, dwFileSize, 1, pFile);
-		pStrTok = new class CStrTok(cp, seps);
-		token = pStrTok->pGet();
-		while (token != NULL) {
-			if (cReadMode != 0) {
-				switch (cReadMode) {
-				case 1:
-					strcpy(cCharacterMap, token);
-					cReadMode = 0;
-					break;
-
-				case 2:
-					strcpy(cAccountName, token);
-					cReadMode = 0;
-					break;
-
-				case 3:
-					*iLevel = atoi(token);
-					cReadMode = 0;
-					break;
-
-				case 4:
-					strcpy(cGuildName, token);
-					cReadMode = 0;
-					break;
-					
-				case 5:
-					*cGuildRank = atoi(token);
-					cReadMode = 0;
-					break;
-
-				case 6:
-					*dwGuildGUID = atoi(token);
-					cReadMode = 0;
-					break;
-
-				case 7:
-					break;
-				}
-			}
-			else {
-				if (memcmp(token, "character-loc-map", 17) == 0)			cReadMode = 1;
-				if (memcmp(token, "account-name", 12) == 0)					cReadMode = 2;
-				if (memcmp(token, "character-LEVEL", 15) == 0)				cReadMode = 3;
-				if (memcmp(token, "character-guild-name", 20) == 0)			cReadMode = 4;
-				if (memcmp(token, "character-guild-rank", 20) == 0)			cReadMode = 5;
-				if (memcmp(token, "character-guild-GUID", 20) == 0)			cReadMode = 6;
-				if (memcmp(token, "[EOF]", 5) == 0)							cReadMode = 7;
-			}
-			token = pStrTok->pGet();
-		}
-		delete pStrTok;
-		delete cp;
-	}
-	if (pFile != NULL) fclose(pFile);
-	return;
-}
-
-void CWorldLog::VerifyGuildIntegrity(char *cGuildName, DWORD *dwGuildGUID)
-{
- HANDLE hFile;
- DWORD  dwFileSize;
- char * cp, * token, cReadMode, cTotalList;
- char seps[] = "= \t\n";
- class CStrTok * pStrTok;
- char cFileName[255];
- char cDir[63];
- FILE * pFile;
-
-	ZeroMemory(cFileName, sizeof(cFileName));
-	ZeroMemory(cDir, sizeof(cDir));
-	strcat(cFileName, "Guild");
-	strcat(cFileName, "\\");
- 	strcat(cFileName, "\\");
-	wsprintf(cDir, "AscII%d", *cGuildName);
-	strcat(cFileName, cDir);
-	strcat(cFileName, "\\");
-	strcat(cFileName, "\\");
-	strcat(cFileName, cGuildName);	
-	strcat(cFileName, ".txt");
-
-	wsprintf(G_cTxt, "(TestLog) Verify Guild Integrity (%s)", cFileName);
-	PutLogList(G_cTxt);
-	
-	cTotalList  = 0;
-	cReadMode	= 0;
-	hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
-	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-	pFile = fopen(cFileName, "rt");
-	if (pFile != NULL) {
-		cp = new char[dwFileSize+1];
-		ZeroMemory(cp, dwFileSize+1);
-		fread(cp, dwFileSize, 1, pFile);
-		pStrTok = new class CStrTok(cp, seps);
-		token = pStrTok->pGet();
-		while (token != NULL) {
-			if (cReadMode != 0) {
-				switch (cReadMode) {
-				case 1:
-					*dwGuildGUID = atoi(token);
-					cReadMode = 0;
-					break;
-				}
-			}
-			else {
-				if (memcmp(token, "guild-GUID", 10) == 0)			cReadMode = 1;
-			}
-			token = pStrTok->pGet();
-		}
-		delete pStrTok;
-		delete cp;
-	}
-	if (pFile != NULL) fclose(pFile);
-	return;
-}
-*/
 void CWorldLog::VerifyCharacterIntegrity(char* cCharacterName, char* cAccountName, int* iLevel, char* cGuildName, char* cGuildRank, DWORD* dwGuildGUID)
 {
 	FILE* pFile;
@@ -6839,14 +4811,14 @@ void CWorldLog::VerifyCharacterIntegrity(char* cCharacterName, char* cAccountNam
 	char cDir[63];
 	char cCharacterMap[11];
 
-	if (G_bDBMode == TRUE)
+	if (G_bDBMode == true)
 	{
 		SACommand com;
 
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT     [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-Down-Skill-Index], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Block-Date], [Character-Quest-Number], [Character-Quest-ID], [Character-Quest-Reward], [Character-Quest-Amount], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Fightzone-ID], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM         Characters WHERE     ([Character-Name] = :1)");
+			com.setCommandText("SELECT [Character-ID], [Account-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Profile], [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM Characters WHERE [Character-Name] = :1");
 			com.Param(1).setAsString() = cCharacterName;
 
 			com.Execute();
@@ -6912,89 +4884,7 @@ void CWorldLog::VerifyCharacterIntegrity(char* cCharacterName, char* cAccountNam
 			return;
 		}
 	}
-	else
-	{
-		ZeroMemory(cFileName, sizeof(cFileName));
-		ZeroMemory(cDir, sizeof(cDir));
-		strcat(cFileName, "Character");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cCharacterName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cCharacterName);
-		strcat(cFileName, ".txt");
-
-		wsprintf(G_cTxt, "(TestLog) Verify Character Integrity (%s)", cFileName);
-		PutLogList(G_cTxt);
-
-		cTotalList = 0;
-		cReadMode = 0;
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		dwFileSize = GetFileSize(hFile, NULL);
-		if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-		pFile = fopen(cFileName, "rt");
-		if (pFile != NULL) {
-			cp = new char[dwFileSize + 1];
-			ZeroMemory(cp, dwFileSize + 1);
-			fread(cp, dwFileSize, 1, pFile);
-			pStrTok = new class CStrTok(cp, seps);
-			token = pStrTok->pGet();
-			while (token != NULL) {
-				if (cReadMode != 0) {
-					switch (cReadMode) {
-					case 1:
-						strcpy(cCharacterMap, token);
-						cReadMode = 0;
-						break;
-
-					case 2:
-						strcpy(cAccountName, token);
-						cReadMode = 0;
-						break;
-
-					case 3:
-						*iLevel = atoi(token);
-						cReadMode = 0;
-						break;
-
-					case 4:
-						strcpy(cGuildName, token);
-						cReadMode = 0;
-						break;
-
-					case 5:
-						*cGuildRank = atoi(token);
-						cReadMode = 0;
-						break;
-
-					case 6:
-						*dwGuildGUID = atoi(token);
-						cReadMode = 0;
-						break;
-
-					case 7:
-						break;
-					}
-				}
-				else {
-					if (memcmp(token, "character-loc-map", 17) == 0)			cReadMode = 1;
-					if (memcmp(token, "account-name", 12) == 0)					cReadMode = 2;
-					if (memcmp(token, "character-LEVEL", 15) == 0)				cReadMode = 3;
-					if (memcmp(token, "character-guild-name", 20) == 0)			cReadMode = 4;
-					if (memcmp(token, "character-guild-rank", 20) == 0)			cReadMode = 5;
-					if (memcmp(token, "character-guild-GUID", 20) == 0)			cReadMode = 6;
-					if (memcmp(token, "[EOF]", 5) == 0)							cReadMode = 7;
-				}
-				token = pStrTok->pGet();
-			}
-			delete pStrTok;
-			delete cp;
-			fclose(pFile);
-		}
-		return;
-	}
+	
 }
 
 void CWorldLog::VerifyGuildIntegrity(char* cGuildName, DWORD* dwGuildGUID)
@@ -7008,14 +4898,14 @@ void CWorldLog::VerifyGuildIntegrity(char* cGuildName, DWORD* dwGuildGUID)
 	char cDir[63];
 
 
-	if (G_bDBMode == TRUE)
+	if (G_bDBMode == true)
 	{
 		SACommand com;
 
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT     [Guild-GUID] FROM         Guilds WHERE     ([Guild-Name] = :1)");
+			com.setCommandText("SELECT [Guild-GUID] FROM Guilds WHERE [Guild-Name] = :1");
 			com.Param(1).setAsString() = cGuildName;
 
 			com.Execute();
@@ -7053,67 +4943,17 @@ void CWorldLog::VerifyGuildIntegrity(char* cGuildName, DWORD* dwGuildGUID)
 			return;
 		}
 	}
-	else
-	{
-		FILE* pFile;
-
-		ZeroMemory(cFileName, sizeof(cFileName));
-		ZeroMemory(cDir, sizeof(cDir));
-		strcat(cFileName, "Guild");
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		wsprintf(cDir, "AscII%d", *cGuildName);
-		strcat(cFileName, cDir);
-		strcat(cFileName, "\\");
-		strcat(cFileName, "\\");
-		strcat(cFileName, cGuildName);
-		strcat(cFileName, ".txt");
-
-		wsprintf(G_cTxt, "(TestLog) Verify Guild Integrity (%s)", cFileName);
-		PutLogList(G_cTxt);
-
-		cTotalList = 0;
-		cReadMode = 0;
-		hFile = CreateFileA(cFileName, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-		dwFileSize = GetFileSize(hFile, NULL);
-		if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
-		pFile = fopen(cFileName, "rt");
-		if (pFile != NULL) {
-			cp = new char[dwFileSize + 1];
-			ZeroMemory(cp, dwFileSize + 1);
-			fread(cp, dwFileSize, 1, pFile);
-			pStrTok = new class CStrTok(cp, seps);
-			token = pStrTok->pGet();
-			while (token != NULL) {
-				if (cReadMode != 0) {
-					switch (cReadMode) {
-					case 1:
-						*dwGuildGUID = atoi(token);
-						cReadMode = 0;
-						break;
-					}
-				}
-				else {
-					if (memcmp(token, "guild-GUID", 10) == 0)			cReadMode = 1;
-				}
-				token = pStrTok->pGet();
-			}
-			delete pStrTok;
-			delete cp;
-			fclose(pFile);
-		}
-	}
-	return;
+	
 }
 
-BOOL CWorldLog::bCheckCharacterExists(char* cCharacterName)
+bool CWorldLog::bCheckCharacterExists(char* cCharacterName)
 {
 	SACommand com;
 
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("SELECT     COUNT([Character-ID]) FROM         Characters WHERE     ([Character-Name] = :1)");
+		com.setCommandText("SELECT COUNT([Character-ID]) FROM Characters WHERE [Character-Name] = :1");
 		com.Param(1).setAsString() = cCharacterName;
 
 		com.Execute();
@@ -7122,13 +4962,13 @@ BOOL CWorldLog::bCheckCharacterExists(char* cCharacterName)
 		{
 			while (com.FetchNext())
 			{
-				if (com.Field(1).asLong() > 0) return TRUE;
-				else return FALSE;
+				if (com.Field(1).asLong() > 0) return true;
+				else return false;
 			}
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	catch (SAException& x)
@@ -7146,18 +4986,18 @@ BOOL CWorldLog::bCheckCharacterExists(char* cCharacterName)
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR (bCheckCharacterExists): %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
 
-		return TRUE;
+		return true;
 	}
 }
 
-BOOL CWorldLog::bCheckGuildExists(char* cGuildName)
+bool CWorldLog::bCheckGuildExists(char* cGuildName)
 {
 	SACommand com;
 
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("SELECT     COUNT([Guild-ID]) FROM         Guilds WHERE     ([Guild-Name] = :1)");
+		com.setCommandText("SELECT COUNT([Guild-ID]) FROM Guilds WHERE [Guild-Name] = :1");
 		com.Param(1).setAsString() = cGuildName;
 
 		com.Execute();
@@ -7166,13 +5006,13 @@ BOOL CWorldLog::bCheckGuildExists(char* cGuildName)
 		{
 			while (com.FetchNext())
 			{
-				if (com.Field(1).asLong() > 0) return TRUE;
-				else return FALSE;
+				if (com.Field(1).asLong() > 0) return true;
+				else return false;
 			}
 		}
 		else
 		{
-			return FALSE;
+			return false;
 		}
 	}
 	catch (SAException& x)
@@ -7190,7 +5030,7 @@ BOOL CWorldLog::bCheckGuildExists(char* cGuildName)
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR (bCheckGuildExists): %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
 
-		return TRUE;
+		return true;
 	}
 }
 void CWorldLog::PutPacketLogData(DWORD dwMsgID, char *cData, DWORD dwMsgSize)
@@ -7230,22 +5070,26 @@ void CWorldLog::ServerList(bool Client)
 {
 	int i, j, maps;
 	maps = 0;
-	if(Client == TRUE) {
-	for (j = 0; j < DEF_MAXGAMESERVERSMAPS; j++);
-		for (i = 0; i < DEF_MAXGAMESERVERS; i++);
-		if (m_pGameList[i] != NULL && (m_cMapList[j] != NULL)) {
-		if(m_cMapList[j]->iIndex == i) maps++;
-wsprintf(G_cTxt, "Name(%s) IP(%s) Maps(%d)", m_pGameList[i]->m_cGameServerName, m_pGameList[i]->m_cGameServerAddress, maps);
-PutLogServ(G_cTxt);
+	if (Client == true)
+	{
+		for (j = 0; j < DEF_MAXGAMESERVERSMAPS; j++) {
+			for (i = 0; i < DEF_MAXGAMESERVERS; i++) {
+				if (m_pGameList[i] != NULL && (m_cMapList[j] != NULL)) {
+					if (m_cMapList[j]->iIndex == i) maps++;
+					wsprintf(G_cTxt, "Name(%s) IP(%s) Maps(%d)", m_pGameList[i]->m_cGameServerName, m_pGameList[i]->m_cGameServerAddress, maps);
+					PutLogServ(G_cTxt);
+				}
+			}
 		}
 	}
-if(Client == FALSE) {
-for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++);
+	else {
+		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) {
 			if (m_pAccountList[i] != NULL) {
-wsprintf(G_cTxt, "Name(%s)", m_pAccountList[i]->cAccountName);
-PutLogServ(G_cTxt);
+				wsprintf(G_cTxt, "Name(%s)", m_pAccountList[i]->cAccountName);
+				PutLogServ(G_cTxt);
 			}
-}
+		}
+	}
 }
 //chat window
 void CWorldLog::ParseCommand(bool dlb, char* pMsg) {
@@ -7253,21 +5097,21 @@ char   seps[] = "= \t\n";
 char   * token, * token2;
 class  CStrTok * pStrTok;
 char buff[100];
-BOOL bFlag;
+bool bFlag;
 if (pMsg == NULL) return;
 pStrTok = new class CStrTok(pMsg, seps);
 token = pStrTok->pGet();
 token2 = pStrTok->pGet();
-bFlag = TRUE;
+bFlag = true;
 if (memcmp(pMsg,"",1) == 0) {
-bFlag = FALSE;
+bFlag = false;
 wsprintf(buff,"(!!!) invalid Message");
 PutLogServ(buff);
 return;
 }
 if (memcmp(pMsg,"/kick ",6) == 0) {
-bFlag = TRUE;
-if(dlb == TRUE) return;
+bFlag = true;
+if(dlb == true) return;
 if(token == NULL) return;
 int i;
 char cTargetName[11];
@@ -7278,7 +5122,7 @@ ZeroMemory(cTargetName, sizeof(cTargetName));
 			 memcpy(cTargetName, token, 10);
 		else memcpy(cTargetName, token, strlen(token));
 	}
-	if(dlb == FALSE) {
+	if(dlb == false) {
 for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) 
 if ((m_pAccountList[i] != NULL) && (memcmp(m_pAccountList[i]->cAccountName, cTargetName, strlen(cTargetName)) == 0)) {	
 SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, m_pAccountList[i]->cAccountName, 10, -1);
@@ -7294,8 +5138,8 @@ PutLogServ(buff);
 return;
 }
 if (memcmp(pMsg,"/ban ",5) == 0) {
-bFlag = TRUE;
-if(dlb == FALSE) return;
+bFlag = true;
+if(dlb == false) return;
 if(token == NULL) return;
 int i;
 char cTargetName[11];
@@ -7306,7 +5150,7 @@ ZeroMemory(cTargetName, sizeof(cTargetName));
 			 memcpy(cTargetName, token, 10);
 		else memcpy(cTargetName, token, strlen(token));
 	}
-	if(dlb == TRUE) {
+	if(dlb == true) {
 for (i = 0; i < DEF_MAXGAMESERVERS; i++)
 if ((m_pGameList[i] != NULL) && (memcmp(m_pGameList[i]->m_cGameServerName, cTargetName, strlen(cTargetName)) == 0)) {
 	//write to Wlsrver.cfg then refresh the .cfg before delete.

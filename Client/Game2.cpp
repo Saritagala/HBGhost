@@ -23684,7 +23684,7 @@ void CGame::ResetValues()
 		ZeroMemory(m_stArenaPlayers[i].cCharName, sizeof(m_stArenaPlayers[i].cCharName));
 	}
 
-	bReadGameConfigFile("GameConfig.cfg");
+	bReadGameConfigFile("CONTENTS\\GameConfig.cfg");
 }
 
 // Magn0S

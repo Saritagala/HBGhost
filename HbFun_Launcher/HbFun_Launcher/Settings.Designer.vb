@@ -24,6 +24,7 @@ Partial Class Settings
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Settings))
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.chkShowNPC = New System.Windows.Forms.CheckBox()
         Me.chkEvents = New System.Windows.Forms.CheckBox()
         Me.cboDetail = New System.Windows.Forms.ComboBox()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -52,6 +53,7 @@ Partial Class Settings
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkShowNPC)
         Me.GroupBox1.Controls.Add(Me.chkEvents)
         Me.GroupBox1.Controls.Add(Me.cboDetail)
         Me.GroupBox1.Controls.Add(Me.Label5)
@@ -69,15 +71,27 @@ Partial Class Settings
         Me.GroupBox1.Controls.Add(Me.Button1)
         Me.GroupBox1.Location = New System.Drawing.Point(12, 137)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(289, 190)
+        Me.GroupBox1.Size = New System.Drawing.Size(289, 211)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
         '
+        'chkShowNPC
+        '
+        Me.chkShowNPC.AutoSize = True
+        Me.chkShowNPC.Location = New System.Drawing.Point(2, 124)
+        Me.chkShowNPC.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.chkShowNPC.Name = "chkShowNPC"
+        Me.chkShowNPC.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.chkShowNPC.Size = New System.Drawing.Size(78, 17)
+        Me.chkShowNPC.TabIndex = 20
+        Me.chkShowNPC.Text = "Show NPC"
+        Me.chkShowNPC.UseVisualStyleBackColor = True
+        '
         'chkEvents
         '
         Me.chkEvents.AutoSize = True
-        Me.chkEvents.Location = New System.Drawing.Point(191, 56)
+        Me.chkEvents.Location = New System.Drawing.Point(194, 56)
         Me.chkEvents.Name = "chkEvents"
         Me.chkEvents.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkEvents.Size = New System.Drawing.Size(80, 17)
@@ -89,7 +103,7 @@ Partial Class Settings
         '
         Me.cboDetail.FormattingEnabled = True
         Me.cboDetail.Items.AddRange(New Object() {"Low", "Normal", "High"})
-        Me.cboDetail.Location = New System.Drawing.Point(85, 147)
+        Me.cboDetail.Location = New System.Drawing.Point(85, 162)
         Me.cboDetail.Name = "cboDetail"
         Me.cboDetail.Size = New System.Drawing.Size(76, 21)
         Me.cboDetail.TabIndex = 18
@@ -97,7 +111,7 @@ Partial Class Settings
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(42, 150)
+        Me.Label5.Location = New System.Drawing.Point(42, 164)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(37, 13)
         Me.Label5.TabIndex = 17
@@ -106,7 +120,7 @@ Partial Class Settings
         'chkGrid
         '
         Me.chkGrid.AutoSize = True
-        Me.chkGrid.Location = New System.Drawing.Point(226, 102)
+        Me.chkGrid.Location = New System.Drawing.Point(229, 102)
         Me.chkGrid.Name = "chkGrid"
         Me.chkGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkGrid.Size = New System.Drawing.Size(45, 17)
@@ -117,7 +131,7 @@ Partial Class Settings
         'chkWhisper
         '
         Me.chkWhisper.AutoSize = True
-        Me.chkWhisper.Location = New System.Drawing.Point(14, 102)
+        Me.chkWhisper.Location = New System.Drawing.Point(15, 102)
         Me.chkWhisper.Name = "chkWhisper"
         Me.chkWhisper.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkWhisper.Size = New System.Drawing.Size(65, 17)
@@ -128,7 +142,7 @@ Partial Class Settings
         'chkShout
         '
         Me.chkShout.AutoSize = True
-        Me.chkShout.Location = New System.Drawing.Point(217, 33)
+        Me.chkShout.Location = New System.Drawing.Point(220, 33)
         Me.chkShout.Name = "chkShout"
         Me.chkShout.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkShout.Size = New System.Drawing.Size(54, 17)
@@ -139,7 +153,7 @@ Partial Class Settings
         'chkDialog
         '
         Me.chkDialog.AutoSize = True
-        Me.chkDialog.Location = New System.Drawing.Point(85, 102)
+        Me.chkDialog.Location = New System.Drawing.Point(94, 102)
         Me.chkDialog.Name = "chkDialog"
         Me.chkDialog.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkDialog.Size = New System.Drawing.Size(89, 17)
@@ -150,7 +164,7 @@ Partial Class Settings
         'chkMap
         '
         Me.chkMap.AutoSize = True
-        Me.chkMap.Location = New System.Drawing.Point(193, 79)
+        Me.chkMap.Location = New System.Drawing.Point(196, 79)
         Me.chkMap.Name = "chkMap"
         Me.chkMap.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkMap.Size = New System.Drawing.Size(78, 17)
@@ -161,7 +175,7 @@ Partial Class Settings
         'chkParty
         '
         Me.chkParty.AutoSize = True
-        Me.chkParty.Location = New System.Drawing.Point(103, 79)
+        Me.chkParty.Location = New System.Drawing.Point(112, 79)
         Me.chkParty.Name = "chkParty"
         Me.chkParty.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkParty.Size = New System.Drawing.Size(71, 17)
@@ -172,7 +186,7 @@ Partial Class Settings
         'chkTrees
         '
         Me.chkTrees.AutoSize = True
-        Me.chkTrees.Location = New System.Drawing.Point(121, 56)
+        Me.chkTrees.Location = New System.Drawing.Point(130, 56)
         Me.chkTrees.Name = "chkTrees"
         Me.chkTrees.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkTrees.Size = New System.Drawing.Size(53, 17)
@@ -183,7 +197,7 @@ Partial Class Settings
         'chkFrames
         '
         Me.chkFrames.AutoSize = True
-        Me.chkFrames.Location = New System.Drawing.Point(114, 33)
+        Me.chkFrames.Location = New System.Drawing.Point(123, 33)
         Me.chkFrames.Name = "chkFrames"
         Me.chkFrames.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkFrames.Size = New System.Drawing.Size(60, 17)
@@ -194,7 +208,7 @@ Partial Class Settings
         'chkEmblems
         '
         Me.chkEmblems.AutoSize = True
-        Me.chkEmblems.Location = New System.Drawing.Point(11, 79)
+        Me.chkEmblems.Location = New System.Drawing.Point(12, 79)
         Me.chkEmblems.Name = "chkEmblems"
         Me.chkEmblems.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkEmblems.Size = New System.Drawing.Size(68, 17)
@@ -205,7 +219,7 @@ Partial Class Settings
         'chkSound
         '
         Me.chkSound.AutoSize = True
-        Me.chkSound.Location = New System.Drawing.Point(22, 56)
+        Me.chkSound.Location = New System.Drawing.Point(23, 56)
         Me.chkSound.Name = "chkSound"
         Me.chkSound.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkSound.Size = New System.Drawing.Size(57, 17)
@@ -216,7 +230,7 @@ Partial Class Settings
         'chkMusic
         '
         Me.chkMusic.AutoSize = True
-        Me.chkMusic.Location = New System.Drawing.Point(25, 33)
+        Me.chkMusic.Location = New System.Drawing.Point(26, 33)
         Me.chkMusic.Name = "chkMusic"
         Me.chkMusic.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkMusic.Size = New System.Drawing.Size(54, 17)
@@ -227,7 +241,7 @@ Partial Class Settings
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(212, 145)
+        Me.Button1.Location = New System.Drawing.Point(211, 159)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(59, 23)
         Me.Button1.TabIndex = 0
@@ -305,7 +319,7 @@ Partial Class Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(313, 337)
+        Me.ClientSize = New System.Drawing.Size(313, 357)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
@@ -348,4 +362,5 @@ Partial Class Settings
     Friend WithEvents chkShout As CheckBox
     Friend WithEvents chkDialog As CheckBox
     Friend WithEvents chkEvents As CheckBox
+    Friend WithEvents chkShowNPC As CheckBox
 End Class

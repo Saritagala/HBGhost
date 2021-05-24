@@ -18,26 +18,6 @@ Public Class Launcher
             File.Delete("Launcher.zip")
         End If
         Try
-            '
-            Dim requestStatus As HttpWebRequest = HttpWebRequest.Create("http://162.248.93.248/ServerStatus.php")
-            Dim responseStatus As HttpWebResponse = requestStatus.GetResponse()
-            Dim srStatus As New StreamReader(responseStatus.GetResponseStream())
-            Dim Status As String = srStatus.ReadToEnd()
-            If Status.Contains("Online") Then
-                Label4.ForeColor = Color.Lime
-                Label4.Text = "ONLINE"
-            Else
-                Label4.ForeColor = Color.Red
-                Label4.Text = "OFFLINE"
-            End If
-            '
-            '
-            'Dim requestPlayers As HttpWebRequest = HttpWebRequest.Create("http://162.248.93.248/UsersOnline.php")
-            'Dim responsePlayers As HttpWebResponse = requestPlayers.GetResponse()
-            'Dim srPlayers As New StreamReader(responsePlayers.GetResponseStream())
-            'Dim Players As String = srPlayers.ReadToEnd()
-            'Label6.Text = Players
-            '
             Dim currentversion As String = Assembly.GetExecutingAssembly.GetName.Version.Major & "." & Assembly.GetExecutingAssembly.GetName.Version.Minor
             Dim request As HttpWebRequest = HttpWebRequest.Create("http://" & ip & "/Launcher.txt")
             Dim response As HttpWebResponse = request.GetResponse()
@@ -130,7 +110,6 @@ Public Class Launcher
         DownloadVersion()
     End Sub
     Private Sub InstallClient()
-        File.Delete("Game.exe")
         Try
             Dim appPath As String = AppDomain.CurrentDomain.BaseDirectory()
             Dim archive As IArchive = ArchiveFactory.Open("Update.zip")
@@ -153,6 +132,6 @@ Public Class Launcher
         LiberarMemoria()
     End Sub
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        Settings.ShowDialog()
+        Settings.Show()
     End Sub
 End Class

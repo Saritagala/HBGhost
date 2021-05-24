@@ -22,3 +22,16 @@ C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CopyC
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.exe
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.xml
 C:\Users\centu\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.pdb
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.exe.config
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.exe
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.pdb
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\Updater.xml
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\bin\Release\SharpCompress.dll
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbprojAssemblyReference.cache
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.Resources.resources
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.GenerateResource.cache
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CoreCompileInputs.cache
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CopyComplete
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.exe
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.xml
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\task\obj\Release\Updater.pdb

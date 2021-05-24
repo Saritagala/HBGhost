@@ -1,8 +1,8 @@
 ﻿Imports System.IO
 Imports System.Text
 Public Class Settings
-    Dim actualText As String = ""
-    Dim FILE_NAME As String = Application.StartupPath & "\GameConfig.cfg"
+    Dim actualText As String
+    Dim FILE_NAME As String = Application.StartupPath & "\CONTENTS\GameConfig.cfg"
     Private Sub Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         actualText = Me.Text
         LoadSettings()
@@ -27,9 +27,10 @@ Public Class Settings
     End Sub
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         SaveSettings()
+        Me.Close()
     End Sub
     Private Sub SaveSettings()
-        Dim FileLine(15) As String
+        Dim FileLine(16) As String
         If Me.Text.Contains("*") Then
             Me.Text = actualText
             FileLine(0) = "[CONFIG]"
@@ -48,8 +49,9 @@ Public Class Settings
             FileLine(13) = "shout-mode = " & chkShout.CheckState
             FileLine(14) = "whisper-mode = " & chkWhisper.CheckState
             FileLine(15) = "show-grid = " & chkGrid.CheckState
+            FileLine(16) = "show-npc = " & chkShowNPC.CheckState
             Dim objWriter As New StreamWriter(FILE_NAME)
-            For i = 0 To 15
+            For i = 0 To 16
                 objWriter.WriteLine(FileLine(i))
             Next
             objWriter.Close()
@@ -57,10 +59,10 @@ Public Class Settings
         MsgBox("Changes saved!", vbOKOnly + vbInformation, "Done")
     End Sub
     Private Sub LoadSettings()
-        Dim FileLine(15) As String
+        Dim FileLine(16) As String
         Dim line As String()
         Dim reader As New StreamReader(FILE_NAME, Encoding.Default)
-        For i = 0 To 15
+        For i = 0 To 16
             line = reader.ReadLine().Split("=")
             If line.Contains("[CONFIG]") Then Continue For
             FileLine(i) = line(1)
@@ -81,6 +83,7 @@ Public Class Settings
         chkShout.CheckState = FileLine(13).Trim
         chkWhisper.CheckState = FileLine(14).Trim
         chkGrid.CheckState = FileLine(15).Trim
+        chkShowNPC.CheckState = FileLine(16).Trim
     End Sub
     Private Sub chkMusic_CheckedChanged(sender As Object, e As EventArgs) Handles chkMusic.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
@@ -119,6 +122,9 @@ Public Class Settings
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
     End Sub
     Private Sub chkEvents_CheckedChanged(sender As Object, e As EventArgs) Handles chkEvents.CheckedChanged
+        If Not Me.Text.Contains("*") Then Me.Text &= "*"
+    End Sub
+    Private Sub chkShowNPC_CheckedChanged(sender As Object, e As EventArgs) Handles chkShowNPC.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
     End Sub
 End Class

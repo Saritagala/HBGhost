@@ -1,2 +1,3 @@
 C:\Users\centu\Desktop\HBGhost\Client\CxImage\Release\CxImage.lib
 C:\Users\Usuario\Desktop\HBGhost\HBGhost\HBGhost\Client\CxImage\Release\CxImage.lib
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\Client\CxImage\Release\CxImage.lib

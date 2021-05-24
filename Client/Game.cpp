@@ -732,7 +732,7 @@ bool CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 
 	m_bFinishInit = true;
 
-	bReadGameConfigFile("GameConfig.cfg");
+	bReadGameConfigFile("CONTENTS\\GameConfig.cfg");
 	SaveGameConfigFile();
 
 	return true;

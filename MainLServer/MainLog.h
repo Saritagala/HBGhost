@@ -34,24 +34,23 @@ public:
 	SAConnection con;
 	int iGetAccountDatabaseID(char* cAccName);
 	void SendCharacterData(int iAccount, int iAccountID, char cTotalChar, int iClientH, char* cAccountName);
-	BOOL bCheckAccountExists(char* cAccountName);
+	bool bCheckAccountExists(char* cAccountName);
 
 	void MsgProcess();
-	BOOL bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey);
-	BOOL bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey);
+	bool bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey);
+	bool bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey);
 	void OnTimer();
-	BOOL bAccept(class XSocket * pXSock, bool bWorld);
+	bool bAccept(class XSocket * pXSock, bool bWorld);
 	bool bInit();
 	void OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	void SendEventToWLS(DWORD dwMsgID, WORD wMsgType, char * pData, DWORD dwMsgSize, int iWorldH);
 	void DeleteAccount(int iClientH, char cAccountName[11] = NULL);
-	BOOL SaveAccountInfo(int iAccount, char cAccountName[11] = NULL, char cTemp[11] = NULL, char cCharName[11] = NULL, char cMode = NULL, int iClientH = NULL);
-	void SaveInfo(char cFileName[255], char *pData,  DWORD dwStartSize);
+	
 	
 	//functions used for messages recieved
 	void RegisterSocketWL(int iClientH, char *pData, bool bRegister);
 	void RegisterGameServer(int iClientH, char *pData, bool bRegister);
-	BOOL bClientRegisterMaps(int iClientH, char *pData);
+	bool bClientRegisterMaps(int iClientH, char *pData);
 	void RequestLogin(int iClientH, char *pData);
 	void TotalChar(int iClientH, char *pData);
 	void ResponseCharacter(int iClientH, char *pData, char cMode = NULL);
@@ -64,7 +63,7 @@ public:
 
 	void PutPacketLogData(DWORD dwMsgID, char *cData, DWORD dwMsgSize);
 	void CleanupLogFiles();
-	BOOL bReadServerConfigFile(char *cFn);
+	bool bReadServerConfigFile(char *cFn);
 
 	CMainLog(HWND hWnd);
 	~CMainLog(void);
@@ -80,7 +79,7 @@ public:
 	HWND  m_hWnd;
 //	class XSocket 	* m_pMainLogSock[DEF_MAXMAINLOGSOCK];		// 29478h
 	int m_iTotalMainLogSock;
-	BOOL bMainActivation;
+	bool bMainActivation;
 	class CGame	* m_pGameList[DEF_MAXGAME];
 	class CMap	* m_pMapList[DEF_MAXMAPS];
 

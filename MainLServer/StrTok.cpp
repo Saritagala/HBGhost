@@ -27,7 +27,7 @@ char * CStrTok::pGet()
 {
  int i = 0;
  char cNextData;
- BOOL bFlag;
+ bool bFlag;
 
 	ZeroMemory(m_cToken, sizeof(m_cToken));
 
@@ -37,7 +37,7 @@ char * CStrTok::pGet()
 			 cNextData = m_pData[m_iCurLoc+1];
 		else cNextData = NULL;
 
-		if (_bIsSeperator(m_pData[m_iCurLoc], cNextData) == FALSE) {
+		if (_bIsSeperator(m_pData[m_iCurLoc], cNextData) == false) {
 			// separator가 아니면 토큰을 작성  
 			m_cToken[i] = m_pData[m_iCurLoc];
 			i++;
@@ -45,17 +45,17 @@ char * CStrTok::pGet()
 		}
 		else {
 			// 다음 토큰까지 포인터를 이동시킨후 토큰을 반환한다.
-			bFlag = FALSE;
-			while (bFlag == FALSE) {
+			bFlag = false;
+			while (bFlag == false) {
 				if (m_iCurLoc <= (m_iDataLength - 2))
 					 cNextData = m_pData[m_iCurLoc+1];
 				else cNextData = NULL;
-				if (_bIsSeperator(m_pData[m_iCurLoc], cNextData) == TRUE) {
+				if (_bIsSeperator(m_pData[m_iCurLoc], cNextData) == true) {
 					m_iCurLoc++;	
 				}
-				else bFlag = TRUE;
+				else bFlag = true;
 
-				if (m_iCurLoc >= (m_iDataLength-1)) bFlag = TRUE;
+				if (m_iCurLoc >= (m_iDataLength-1)) bFlag = true;
 			}
 			
 			return (char *)(&m_cToken);
@@ -66,18 +66,18 @@ char * CStrTok::pGet()
 	return NULL;
 }
 
-BOOL CStrTok::_bIsSeperator(char cData, char cNextData)
+bool CStrTok::_bIsSeperator(char cData, char cNextData)
 {
  int i = 0;
 	
-	if (cData == NULL) return TRUE;
-	if ((cData == 0x0D) && (cNextData == 0x0A)) return TRUE;
+	if (cData == NULL) return true;
+	if ((cData == 0x0D) && (cNextData == 0x0A)) return true;
 	
 	while (m_pSeps[i] != NULL) {
-		if (m_pSeps[i] == cData) return TRUE;
+		if (m_pSeps[i] == cData) return true;
 		i++;
 	}
 
-	return FALSE;
+	return false;
 }
 
