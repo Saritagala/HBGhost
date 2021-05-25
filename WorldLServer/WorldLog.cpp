@@ -1755,8 +1755,8 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(G_cData50000, iSize + 19, DEF_USE_ENCRYPTION);
 
-			wsprintf(G_cTxt, "(!) Send character(%s) data from SQL - %i ms", cCharacterName, (int)(timeGetTime() - dwTime));
-			PutLogList(G_cTxt);
+			//wsprintf(G_cTxt, "(!) Send character(%s) data from SQL - %i ms", cCharacterName, (int)(timeGetTime() - dwTime));
+			//PutLogList(G_cTxt);
 			UpdateLastLoginTime(cCharacterName);
 		}
 		else {
@@ -2629,13 +2629,13 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	iRewardGold = *ip;
 	cp += 4;
 
-	sp = (short*)cp;
-	iHunger = (int)*sp;
-	cp += 2;
+	ip = (int*)cp;
+	iHunger = *ip;
+	cp += 4;
 
-	sp = (short*)cp;
-	iCrits = (int)*sp;
-	cp += 2;
+	ip = (int*)cp;
+	iCrits = *ip;
+	cp += 4;
 
 	ip = (int*)cp;
 	iShutUp = *ip;
@@ -3125,9 +3125,9 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 
 			long affected = com.RowsAffected();
 
-			ZeroMemory(cTemp, sizeof(cTemp));
+			/*ZeroMemory(cTemp, sizeof(cTemp));
 			wsprintf(cTemp, "(!) Saved Player Data to SQL (%s)", cCharName);
-			PutLogList(cTemp);
+			PutLogList(cTemp);*/
 		}
 		catch (SAException& x)
 		{
@@ -3198,6 +3198,7 @@ void CWorldLog::UpdateNoticement(WPARAM wParam)
 			}
 		}
 		PutLogList("(!) Updating noticement contents(noticement.txt) to game servers...");
+		break;
 	}
 }
 
@@ -3239,10 +3240,11 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 	wsprintf(G_cTxt, "(TestLog) ReqEnterGame: Accnt(%s) Pass(%s) Char(%s) Map(%s) Addr(%s) Port(%d) Code(%d)", cAccountName, cAccountPassword, cCharacterName, cMapName, cAddress, iPort, iCode);
 	PutLogList(G_cTxt);
 	//game char fix
-		for (i = 0; i < DEF_MAXGAMESERVERSMAPS; i++)
+	for (i = 0; i < DEF_MAXGAMESERVERSMAPS; i++)
 		if((m_cMapList[i] != NULL) && (strcmp(m_cMapList[i]->m_cName, cMapName) == 0)) bflag = true;
-		for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++)
-			if((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == 0)) m_pAccountList[i]->Timeout = 20;
+		
+	for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++)
+		if((m_pAccountList[i] != NULL) && (strcmp(m_pAccountList[i]->cAccountName, cAccountName) == 0)) m_pAccountList[i]->Timeout = 20;
 
 	if (iCode == -1) {
 		dwp  = (DWORD *)(cData);
@@ -3253,7 +3255,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		*cp = 3;
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 7, DEF_USE_ENCRYPTION);
 
-	if(bflag == false) {
+		if(bflag == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3272,7 +3274,7 @@ void CWorldLog::EnterGame(int iClientH, char * pData)
 		*cp = 5;
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 7, DEF_USE_ENCRYPTION);
 		
-	if(bflag == false) {
+		if(bflag == false) {
 			wsprintf(G_cTxt, "(TestLog) ReqEnterGame Reject! Account(%s) status NULL", cAccountName);
 			PutLogList(G_cTxt);
 			SendEventToMLS(MSGID_REQUEST_CLEARACCOUNTSTATUS, DEF_MSGTYPE_CONFIRM, cAccountName, 10, -1);
@@ -3416,8 +3418,8 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 	memcpy(cUnknown1, cp, 30);
 	cp += 30;
 
-	wsprintf(G_cTxt, "(TestLog) Request create new character(%s). Account(%s) Password(%s) OtherChars(%s)", cNewCharName, cAccountName, cPassword, cUnknown1);
-	PutLogList(G_cTxt);
+	//wsprintf(G_cTxt, "(TestLog) Request create new character(%s). Account(%s) Password(%s) OtherChars(%s)", cNewCharName, cAccountName, cPassword, cUnknown1);
+	//PutLogList(G_cTxt);
 
 	cNewGender = *cp;
 	cp++;
@@ -3528,7 +3530,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 			try
 			{
 				com.setConnection(&con);
-				com.setCommandText("INSERT INTO Characters ([Account-ID], [Character-Name], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Strength], [Character-Vitality], [Character-Dexterity], [Character-Intelligence], [Character-Magic], [Character-Charisma], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4]) VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17)");
+				com.setCommandText("INSERT INTO Characters ([Account-ID], [Character-Name], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Strength], [Character-Vitality], [Character-Dexterity], [Character-Intelligence], [Character-Magic], [Character-Charisma], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Class]) VALUES(:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17, :18)");
 				com.Param(1).setAsLong() = iAccountDBid;
 				com.Param(2).setAsString() = cNewCharName;
 				com.Param(3).setAsLong() = cNewGender;
@@ -3547,10 +3549,23 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 				com.Param(16).setAsLong() = sAppr3;
 				com.Param(17).setAsLong() = sAppr4;
 
+				if (cNewStr == 14)
+				{
+					com.Param(18).setAsLong() = 1; // War
+				}
+				else if (cNewMag == 14)
+				{
+					com.Param(18).setAsLong() = 2; // Mage
+				}
+				else if (cNewChr == 14)
+				{
+					com.Param(18).setAsLong() = 3; // Archer
+				}
+
 				com.Execute();
 
 				int iCharDBID = 0;
-				char cItemName[11];
+				//char cItemName[11];
 
 				getID.setConnection(&con);
 				getID.setCommandText("SELECT [Character-ID] FROM Characters WHERE [Character-Name] LIKE :1");
@@ -3566,15 +3581,16 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 					}
 				}
 
-				ZeroMemory(cItemName, sizeof(cItemName));
-				strcpy(cItemName, "Gold");
+				//ZeroMemory(cItemName, sizeof(cItemName));
+				//strcpy(cItemName, "Dagger");
 
 				addGold.setConnection(&con);
-				addGold.setCommandText("INSERT INTO CharItems VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15)");
-				addGold.Param(1).setAsLong() = 1; // item id
-				addGold.Param(2).setAsLong() = iCharDBID; // char id
-				addGold.Param(3).setAsString() = cItemName; // item name
-				addGold.Param(4).setAsLong() = 400; // item number 1 (amount)
+				addGold.setCommandText("INSERT INTO CharItems([Character-ID], ItemName, ItemNum1, ItemNum2, ItemNum3, ItemNum4, ItemNum5, [Item-Colour], ItemNum7, ItemNum8, ItemNum9, ItemNum10, [Item-Attribute], [Item-Element1], [Item-Element2], [Item-Element3], [Item-Element4]) VALUES (:1, :2, :3, :4, :5, :6, :7, :8, :9, :10, :11, :12, :13, :14, :15, :16, :17)");
+				//addGold.Param(1).setAsLong() = 1; // item id
+				addGold.Param(1).setAsLong() = iCharDBID; // char id
+				addGold.Param(2).setAsString() = "Dagger"; // item name
+				addGold.Param(3).setAsLong() = 1; // item number 1 (amount)
+				addGold.Param(4).setAsLong() = 0;
 				addGold.Param(5).setAsLong() = 0;
 				addGold.Param(6).setAsLong() = 0;
 				addGold.Param(7).setAsLong() = 0;
@@ -3582,16 +3598,18 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 				addGold.Param(9).setAsLong() = 0;
 				addGold.Param(10).setAsLong() = 0;
 				addGold.Param(11).setAsLong() = 0;
-				addGold.Param(12).setAsLong() = 0;
+				addGold.Param(12).setAsLong() = 300;
 				addGold.Param(13).setAsLong() = 0;
 				addGold.Param(14).setAsLong() = 0;
 				addGold.Param(15).setAsLong() = 0;
+				addGold.Param(16).setAsLong() = 0;
+				addGold.Param(17).setAsLong() = 0;
 
 				addGold.Execute();
 
-				ZeroMemory(G_cTxt, sizeof(G_cTxt));
-				wsprintf(G_cTxt, "Character Created:(%s) Account:(%s) Str(%d)Int(%d)Vit(%d)Dex(%d)Mag(%d)Chr(%d)Gender(%d)", cNewCharName, cAccountName, cNewStr, cNewInt, cNewVit, cNewDex, cNewMag, cNewChr, cNewGender - 1);
-				PutLogList(G_cTxt);
+				//ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				//wsprintf(G_cTxt, "Character Created:(%s) Account:(%s) Str(%d)Int(%d)Vit(%d)Dex(%d)Mag(%d)Chr(%d)Gender(%d)", cNewCharName, cAccountName, cNewStr, cNewInt, cNewVit, cNewDex, cNewMag, cNewChr, cNewGender - 1);
+				//PutLogList(G_cTxt);
 
 				//ZeroMemory(G_cTxt, sizeof(G_cTxt));
 				//wsprintf(G_cTxt, "Character Created:(%s) - %i ms", (int)timeGetTime()-dwTime);
@@ -3629,7 +3647,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 
 	}
 	
-	wsprintf(G_cTxt, "(O) New character (%s) created.", cNewCharName);
+	wsprintf(G_cTxt, "(!) Character Created: %s", cNewCharName);
 	PutLogList(G_cTxt);
 
 	ZeroMemory(cData, sizeof(cData));

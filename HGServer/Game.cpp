@@ -2272,11 +2272,11 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, bool bI
 	}
 
 	
-	if (m_pClientList[iClientH]->m_iLevel == 1)
+	/*if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
 		AutoSkill(iClientH);
 		SetClass(iClientH);
-	}
+	}*/
 	// new
 	if ((m_pClientList[iClientH]->m_iLevel > 49) && (m_pClientList[iClientH]->m_bIsPlayerCivil)) {
 		ForceChangePlayMode(iClientH);
@@ -6905,15 +6905,15 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 	cp += 4;
 	iSize += 4;
 
-	sp = (short*)cp;
-	*sp = (short)m_pClientList[iClientH]->m_iHungerStatus;
-	cp += 2;
-	iSize += 2;
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iHungerStatus;
+	cp += 4;
+	iSize += 4;
 
-	sp = (short*)cp;
-	*sp = (short)m_pClientList[iClientH]->m_iSuperAttackLeft;
-	cp += 2;
-	iSize += 2;
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iSuperAttackLeft;
+	cp += 4;
+	iSize += 4;
 
 	ip = (int*)cp;
 	*ip = m_pClientList[iClientH]->m_iTimeLeft_ShutUp;
@@ -16638,6 +16638,10 @@ void CGame::LocalSavePlayerData(int iClientH)
 	// ·Î±× ¼­¹ö·ÎÀÇ ¿¬°áÀÌ Á¾·áµÇ¾î ÀÓ½Ã·Î °ÔÀÓ¼­¹ö ³»ÀÇ Æú´õ¿¡ ÀúÀåÇÑ´Ù. 
 	if (m_pClientList[iClientH] == NULL) return;
  
+#ifdef DEF_DBGAMESERVER
+	return;
+#endif
+
 	pData = new char[30000];
 	if (pData == NULL) return;
 	ZeroMemory(pData, 30000);
@@ -25692,11 +25696,11 @@ void CGame::InitPlayerData(int iClientH, char * pData, DWORD dwSize)
 	iTemp = iTemp | (iTemp2 << 28);
 	m_pClientList[iClientH]->m_iStatus = iTemp;
 
-	if (m_pClientList[iClientH]->m_iLevel == 1)
+	/*if (m_pClientList[iClientH]->m_iLevel == 1)
 	{
 		AutoSkill(iClientH);
 		SetClass(iClientH);
-	}
+	}*/
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {
 		ForceChangePlayMode(iClientH);
 	}
