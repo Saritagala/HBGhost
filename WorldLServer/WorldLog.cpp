@@ -1759,7 +1759,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 			//wsprintf(G_cTxt, "(!) Send character(%s) data from SQL - %i ms", cCharacterName, (int)(timeGetTime() - dwTime));
 			//PutLogList(G_cTxt);
-			UpdateLastLoginTime(cCharacterName);
+			UpdateLastLoginTime(iCharacterDBid);
 		}
 		else {
 			wsprintf(G_cTxt, "(X) RequestPlayerData Error! Account(%s, %s)", cAccountName, cVerifyAccountName);
@@ -2164,17 +2164,18 @@ int CWorldLog::iGetAccountDatabaseID(char* cAccName)
 	return -1;
 }
 
-void CWorldLog::UpdateLastLoginTime(char* cCharacterName)
+void CWorldLog::UpdateLastLoginTime(int iCharacterDBid)
 {
 	SACommand com;
 
 	try
 	{
 		com.setConnection(&con);
-		com.setCommandText("UPDATE Characters SET [Character-Last-Login] = GETDATE() WHERE [Character-Name] = :1");
-		com.Param(1).setAsString() = cCharacterName;
+		com.setCommandText("UPDATE Characters SET [Character-Last-Login] = GETDATE() WHERE [Character-ID] = :1");
+		com.Param(1).setAsLong() = iCharacterDBid;
 
 		com.Execute();
+		com.Close();
 
 	}
 	catch (SAException& x)
@@ -2748,6 +2749,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			com3.Param(1).setAsLong() = iCharDBID;
 
 			com3.Execute();
+			com3.Close();
 
 			sp = (short*)cp;
 			iNumItems = *sp;
@@ -2860,7 +2862,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 						com2.Execute();
 					}
 
-
+					com2.Close();
 					//com2.setCommandText(cCommand);
 
 				}
@@ -2880,6 +2882,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			com5.Param(1).setAsLong() = iCharDBID;
 
 			com5.Execute();
+			com5.Close();
 
 			//ZeroMemory(cCommand, sizeof(cCommand));
 
@@ -2992,7 +2995,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 						com4.Param(17).setAsLong() = iItemElement4;
 						com4.Execute();
 					}
-
+					com4.Close();
 					//com4.setCommandText(cCommand);
 
 				}
@@ -3115,8 +3118,8 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			com.Param(101).setAsString() = cItemY;
 
 			com.Execute();
-
-			long affected = com.RowsAffected();
+			com.Close();
+			//long affected = com.RowsAffected();
 
 			/*ZeroMemory(cTemp, sizeof(cTemp));
 			wsprintf(cTemp, "(!) Saved Player Data to SQL (%s)", cCharName);
@@ -3556,6 +3559,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 				}
 
 				com.Execute();
+				com.Close();
 
 				int iCharDBID = 0;
 				//char cItemName[11];
@@ -3573,6 +3577,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 						iCharDBID = getID.Field("Character-ID").asLong();
 					}
 				}
+				getID.Close();
 
 				//ZeroMemory(cItemName, sizeof(cItemName));
 				//strcpy(cItemName, "Dagger");
@@ -3687,7 +3692,7 @@ void CWorldLog::RequestCreateNewCharacter(int iClientH, char* pData)
 				addGold.Param(17).setAsLong() = 0;
 
 				addGold.Execute();
-
+				addGold.Close();
 				//ZeroMemory(G_cTxt, sizeof(G_cTxt));
 				//wsprintf(G_cTxt, "Character Created:(%s) Account:(%s) Str(%d)Int(%d)Vit(%d)Dex(%d)Mag(%d)Chr(%d)Gender(%d)", cNewCharName, cAccountName, cNewStr, cNewInt, cNewVit, cNewDex, cNewMag, cNewChr, cNewGender - 1);
 				//PutLogList(G_cTxt);
@@ -3904,7 +3909,9 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 
 			com.Execute();
 
-			long affected = com.RowsAffected();
+			//long affected = com.RowsAffected();
+
+			com.Close();
 
 			char cTemp[256];
 			ZeroMemory(cTemp, sizeof(cTemp));
@@ -4136,20 +4143,22 @@ void CWorldLog::RequestCreateNewGuild(int iClientH, char* pData)
 		{
 			SACommand com;
 
-			char cTemp[256];
+			/*char cTemp[256];
 			ZeroMemory(cTemp, sizeof(cTemp));
-			wsprintf(cTemp, "%d", dwGuildGUID);
+			wsprintf(cTemp, "%d", dwGuildGUID);*/
 
 			try
 			{
 				com.setConnection(&con);
 				com.setCommandText("INSERT INTO Guilds ([Guild-Name], [Guild-GUID], [Guild-Location], [Guild-Master]) VALUES (:1, :2, :3, :4)");
 				com.Param(1).setAsString() = cGuildName;
-				com.Param(2).setAsString() = cTemp;
+				com.Param(2).setAsLong() = dwGuildGUID;
 				com.Param(3).setAsString() = cGuildLocation;
 				com.Param(4).setAsString() = cGuildMasterName;
 
 				com.Execute();
+
+				com.Close();
 
 				dwp = (DWORD*)cData;
 				*dwp = MSGID_RESPONSE_CREATENEWGUILD;

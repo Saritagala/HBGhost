@@ -43,7 +43,7 @@ public:
 	bool bCheckCharacterExists(char* cCharacterName);
 	bool bCheckGuildExists(char* cGuildName);
 
-	void UpdateLastLoginTime(char* cCharacterName);
+	void UpdateLastLoginTime(int iCharacterDBid);
 	
 	// Hypnotoad
 	int iGetItemNumber(char *cItemName);
