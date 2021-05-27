@@ -159,7 +159,7 @@ public:
 	// customized
 	bool  m_bGameServerList;
 	void ServerList(bool Client);
-	void ParseCommand(bool dlb, char* pMsg);
+	//void ParseCommand(bool dlb, char* pMsg);
 	char cGameSecurity[11];
 	DWORD m_dwGameTime1;
 };

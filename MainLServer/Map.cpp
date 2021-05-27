@@ -1,5 +1,7 @@
 #include "Map.h"
 
+#pragma warning (disable : 4996)
+
 CMap::CMap(int iClientH, char *pData)
 {
 	ZeroMemory(m_cMapName, sizeof(m_cMapName));

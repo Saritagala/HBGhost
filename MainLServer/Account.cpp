@@ -1,5 +1,7 @@
 #include "Account.h"
 
+#pragma warning (disable : 4996)
+
 CAccount::CAccount(char * cDataName, char * m_cWorldName, int iClient)
 {
 	ZeroMemory(cAccountName, sizeof(cAccountName));	

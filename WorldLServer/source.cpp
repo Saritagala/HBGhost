@@ -6,6 +6,8 @@
 #include <direct.h>
 #include "resource.h"
 
+#pragma warning (disable : 4996 123)
+
 #define DEF_UPPERVERSION 3
 #define DEF_LOWERVERSION 51
 //Default stuff
@@ -120,7 +122,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
 
-	wsprintf(szAppClass, "World Log Server%d", hInstance);
+	wsprintf(szAppClass, "World-Log-Server%d", (int)hInstance);
 	if (!InitApplication( hInstance)) return (false);
 	if (!InitInstance(hInstance, nCmdShow)) return (false);
 	Initialize();
@@ -315,7 +317,7 @@ void PutGameLogData(char * cMsg)
 
 	pFile = NULL;
 	ZeroMemory(cBuffer, sizeof(cBuffer));
-	_mkdir("GameLogData");
+	//_mkdir("GameLogData");
 	GetLocalTime(&SysTime);
 	wsprintf(cBuffer, "GameLogData\\GameEvents%04d%02d%02d.log", SysTime.wYear, SysTime.wMonth, SysTime.wDay);
 	pFile = fopen(cBuffer, "at");
@@ -482,13 +484,13 @@ LRESULT CALLBACK Server(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			switch(wParam){
 			case IDC_REMOVE:
-			char cWhat[100];
+			/*char cWhat[100];
 			GetDlgItemText(hDlg, IDC_EDIT1, cWhat, 100);
 			if (cWhat != NULL) {
 				SetDlgItemText(hDlg, IDC_EDIT1, NULL);
 				SetFocus(hDlg);
 				G_pWorldLog->ParseCommand(true, cWhat);
-			}
+			}*/
 			break;
 			}
 			break;
@@ -515,13 +517,13 @@ LRESULT CALLBACK Clients(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 		case IDC_REMOVE:
 				//GetCurSel() - selected....
 				//LB_DELETESTRING
-			char cWhat[100];
+			/*char cWhat[100];
 			GetDlgItemText(hDlg, IDC_EDIT1, cWhat, 100);
 			if (cWhat != NULL) {
 				SetDlgItemText(hDlg, IDC_EDIT1, NULL);
 				SetFocus(hDlg);
 				G_pWorldLog->ParseCommand(false, cWhat);
-			}
+			}*/
 			break;
 
 			}

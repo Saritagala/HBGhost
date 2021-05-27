@@ -6542,6 +6542,8 @@ DPDC_STOP_DECODING:;
 	if (bRet == false) {
 		GetMapInitialPoint(m_pClientList[iClientH]->m_cMapIndex, &m_pClientList[iClientH]->m_sX, &m_pClientList[iClientH]->m_sY, m_pClientList[iClientH]->m_cLocation);
 	}
+	
+	/*
 	if ((m_pClientList[iClientH]->m_iStr < 10) || (m_pClientList[iClientH]->m_iStr > m_sCharStatLimit)) return false;
 	if ((m_pClientList[iClientH]->m_iDex < 10) || (m_pClientList[iClientH]->m_iDex > m_sCharStatLimit)) return false;
 	if ((m_pClientList[iClientH]->m_iVit < 10) || (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit)) return false;
@@ -6549,7 +6551,7 @@ DPDC_STOP_DECODING:;
 	if ((m_pClientList[iClientH]->m_iMag < 10) || (m_pClientList[iClientH]->m_iMag > m_sCharStatLimit)) return false;
 	if ((m_pClientList[iClientH]->m_iCharisma < 10) || (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit)) return false;
 	
-	/*int cStatPointTotal = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
+	int cStatPointTotal = m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
 		m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma;
 	
 	if ((cStatPointTotal + (m_pClientList[iClientH]->m_iLU_Pool-3)) != ((m_pClientList[iClientH]->m_iLevel)*3 + 70)) {
@@ -22636,14 +22638,24 @@ bool CGame::_bCheckCharacterData(int iClientH)
  int i;
  int iTotalPoints;
 
-	if (((m_pClientList[iClientH]->m_iStr) > m_sCharStatLimit) || (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit) || ((m_pClientList[iClientH]->m_iDex) > m_sCharStatLimit) ||
-        ((m_pClientList[iClientH]->m_iMag) > m_sCharStatLimit) || ((m_pClientList[iClientH]->m_iInt) > m_sCharStatLimit) || (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit)) {
-		wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) stat points are greater then server accepts.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
-		PutHackLogFileList(G_cTxt);
-		PutLogList(G_cTxt);
-		return false;
+	if (m_pClientList[iClientH]->m_iStr > m_sCharStatLimit) {
+        m_pClientList[iClientH]->m_iStr = m_sCharStatLimit;
 	}
-			
+	if (m_pClientList[iClientH]->m_iVit > m_sCharStatLimit) {
+		m_pClientList[iClientH]->m_iVit = m_sCharStatLimit;
+	}
+	if (m_pClientList[iClientH]->m_iDex > m_sCharStatLimit) {
+		m_pClientList[iClientH]->m_iDex = m_sCharStatLimit;
+	}
+	if (m_pClientList[iClientH]->m_iInt > m_sCharStatLimit) {
+		m_pClientList[iClientH]->m_iInt = m_sCharStatLimit;
+	}
+	if (m_pClientList[iClientH]->m_iMag > m_sCharStatLimit) {
+		m_pClientList[iClientH]->m_iMag = m_sCharStatLimit;
+	}
+	if (m_pClientList[iClientH]->m_iCharisma > m_sCharStatLimit) {
+		m_pClientList[iClientH]->m_iCharisma = m_sCharStatLimit;
+	}
 
 	iTotalPoints = 0;
 	for (i = 0; i <	DEF_MAXSKILLTYPE; i++) 
@@ -22672,7 +22684,6 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iLevel = m_iPlayerMaxLevel;
-		return true;
 	}
 
 	if (m_pClientList[iClientH]->m_iExp < 0) {
@@ -22680,7 +22691,6 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel];
-		return true;
 	}
 
 	if ((m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
@@ -22688,7 +22698,6 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
-		return true;
 	}
 
 	if ((m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
@@ -22696,7 +22705,6 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
-		return true;
 	}
 
 	if ((m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
@@ -22704,7 +22712,6 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
-		return true;
 	}
 
 	for (i = 0; i < DEF_MAXBANNED; i++) {
@@ -22829,14 +22836,15 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
             switch (cReadMode) { 
 
             case 1: 
-               if ((strlen(token) != 0) && (strlen(token) <= 10000) && (strlen(token) >= 1)) 
+               if ((strlen(token) != 0) && (strlen(token) <= 100) && (strlen(token) >= 1)) 
                { 
                   m_iPrimaryDropRate = atoi(token); 
                } 
                else 
                { 
-                  wsprintf(cTxt, "(!!!) Primary drop rate(%s) invalid must be between 1 to 10000", token); 
+                  wsprintf(cTxt, "(!!!) Primary drop rate(%s) invalid must be between 1 to 100", token); 
                   PutLogList(cTxt); 
+				  return false;
                } 
                wsprintf(cTxt, "(*) Primary drop rate: (%d)", m_iPrimaryDropRate); 
                PutLogList(cTxt); 
@@ -22844,14 +22852,15 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
                break; 
 
             case 2: 
-               if ((strlen(token) != 0) && (strlen(token) <= 10000) && (strlen(token) >= 1)) 
+               if ((strlen(token) != 0) && (strlen(token) <= 100) && (strlen(token) >= 1)) 
                { 
                   m_iSecondaryDropRate = atoi(token); 
                } 
                else 
                { 
-                  wsprintf(cTxt, "(!!!) Secondary drop rate(%s) invalid must be between 1 to 10000", token); 
-                  PutLogList(cTxt); 
+                  wsprintf(cTxt, "(!!!) Secondary drop rate(%s) invalid must be between 1 to 100", token); 
+                  PutLogList(cTxt);
+				  return false;
                } 
                wsprintf(cTxt, "(*) Secondary drop rate: (%d)", m_iSecondaryDropRate); 
                PutLogList(cTxt); 
@@ -22879,15 +22888,7 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
                break; 
 
             case 4: 
-               if ((strlen(token) != 0) && (strlen(token) <= 100) && (strlen(token) >= 1)) 
-               { 
-                  m_iEnemyKillAdjust = atoi(token); 
-               } 
-               else 
-               { 
-                  wsprintf(cTxt, "(!!!) ENEMY-KILL-ADJUST: (%s) invalid must be between 1 to 100", token); 
-                  PutLogList(cTxt); 
-               } 
+               m_iEnemyKillAdjust = atoi(token); 
                wsprintf(cTxt, "(*) Player gains (%d) EK.", m_iEnemyKillAdjust); 
                PutLogList(cTxt); 
                cReadMode = 0; 
@@ -23061,9 +23062,9 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 
 			case 25: 
 				
-					if ((strlen(token) < 1) || (strlen(token) > 10000)) 
+					if ((strlen(token) < 1) || (strlen(token) > 100)) 
 					{ 
-						PutLogList("(!!!) Rare drop rate invalid must be between 1 to 10000");
+						PutLogList("(!!!) Rare drop rate invalid must be between 1 to 100");
 						return false; 
 					} 
 					else 
@@ -23103,15 +23104,7 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
                break;
 
 			case 27:
-				if ((strlen(token) != 0) && (strlen(token) <= 100) && (strlen(token) >= 1))
-				{
-					m_iRatingAdjust = atoi(token);
-				}
-				else
-				{
-					wsprintf(cTxt, "(!!!) RATING-ADJUST: (%s) invalid must be between 1 to 100", token);
-					PutLogList(cTxt);
-				}
+				m_iRatingAdjust = atoi(token);
 				wsprintf(cTxt, "(*) Player gains (%d) REP.", m_iRatingAdjust);
 				PutLogList(cTxt);
 				cReadMode = 0;
@@ -23183,7 +23176,7 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 				break;
 
 			case 43:
-				m_sJailTime = (short)atoi(token);
+				m_sJailTime = atoi(token);
 				cReadMode = 0;
 				break;
 			}

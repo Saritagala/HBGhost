@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <direct.h>
 
+#pragma warning (disable : 4996)
+
 //Default stuff
 char		szAppClass[1000];
 WNDCLASS	wnd;
@@ -115,7 +117,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow){
 
-	wsprintf(szAppClass, "World Log Server%d", hInstance);
+	wsprintf(szAppClass, "Main-Log-Server%d", (int)hInstance);
 	if (!InitApplication( hInstance)) return (false);
 	if (!InitInstance(hInstance, nCmdShow)) return (false);
 	Initialize();
@@ -343,7 +345,6 @@ void PutEventLog(char * cMsg)
 
 void PutLogList(char * cMsg)
 {
-	char cTemp[120*50];
 
 	G_cMsgUpdated = true;
 	/*ZeroMemory(cTemp, sizeof(cTemp));
@@ -387,7 +388,7 @@ void _StopTimer(MMRESULT timerid)
 
 void OnKeyUp(WPARAM wParam, LPARAM lParam)
 {
-int i;
+
  char pData[120];
 	switch(wParam) {
 
