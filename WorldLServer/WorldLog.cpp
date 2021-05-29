@@ -134,9 +134,9 @@ bool CWorldLog::bInit()
 	try
 	{
 		con.Connect(
-			"JCCENTU92@HBGhost",
-			"sa",
-			"h3lbr34th_gh0s7",
+			"LOCALHOST\\SQLEXPRESS@HBGhost",//"JCCENTU92@HBGhost",
+			"",//"sa",
+			"",//"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -3916,22 +3916,27 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 			char cTemp[256];
 			ZeroMemory(cTemp, sizeof(cTemp));
 			wsprintf(cTemp, "(!) Deleted Character From SQL: (%s)", cCharacterName);
+			PutLogList(cTemp);
 
 			ZeroMemory(cData, sizeof(cData));
 
 			cp = (char*)(cData);
 			memcpy(cData, cAccountName, 10);
+			cp += 10;
 
-			dwp = (DWORD*)(cData + 10);
+			dwp = (DWORD*)cp; //(cData + 10);
 			*dwp = dwCharID;
+			cp += 4;
 
-			dwp = (DWORD*)(cData + 14);
+			dwp = (DWORD*)cp; // (cData + 14);
 			*dwp = MSGID_RESPONSE_CHARACTERLOG;
+			cp += 4;
 
-			wp = (WORD*)(cData + 18);
+			wp = (WORD*)cp; // (cData + 18);
 			*wp = DEF_LOGRESMSGTYPE_NEWCHARACTERDELETED;
+			cp += 2;
 
-			cp = (char*)(cData + 20);
+			//cp = (char*)(cData + 20);
 
 			*cp = 0;
 			cp++;
@@ -3943,16 +3948,16 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 				ZeroMemory(cMapName, sizeof(cMapName));
 				ZeroMemory(cCharList, sizeof(cCharList));
 				memcpy(cCharList, &cInfo[i * 11], 10);
-				memcpy(cp, &cInfo[i * 11], 10);
-				cp += 10;
+				memcpy(cp, &cInfo[i * 11], 11);
+				cp += 11;
 
 				if ((iGetCharacterData(cCharList, cMapName, &sAppr1, &sAppr2, &sAppr3, &sAppr4, &iApprColor, &cSex, &cSkin, &iLevel, &iExp, &iStr, &iVit, &iDex, &iInt, &iMag, &iCharisma, &iSaveYear, &iSaveMonth, &iSaveDay, &iSaveHour, &iSaveMinute)) != true) {
 					*cp = 0;
 					cp += 40;
 					break;
 				}
-				wsprintf(G_cTxt, "(TestLog) Account(%s) Char(%s)", cAccountName, cCharList);
-				PutLogList(G_cTxt);
+				//wsprintf(G_cTxt, "(TestLog) Account(%s) Char(%s)", cAccountName, cCharList);
+				//PutLogList(G_cTxt);
 
 				*cp = 1;
 				cp++;
@@ -4051,10 +4056,10 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 			{
 			}
 
-			char cTemp[256];
-			ZeroMemory(cTemp, sizeof(cTemp));
-			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestDeleteCharacter): %s", (const char*)x.ErrText());
-			PutLogList(cTemp);
+			char cTemp2[256];
+			ZeroMemory(cTemp2, sizeof(cTemp2));
+			wsprintf(cTemp2, "(!!!) SQL SERVER ERROR (RequestDeleteCharacter): %s", (const char*)x.ErrText());
+			PutLogList(cTemp2);
 
 			return;
 		}

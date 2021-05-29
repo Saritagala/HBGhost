@@ -33,7 +33,7 @@ public:
 	// VAMP - sql connection
 	SAConnection con;
 	int iGetAccountDatabaseID(char* cAccName);
-	void SendCharacterData(int iAccount, int iAccountID, char cTotalChar, int iClientH, char* cAccountName);
+	void SendCharacterData(int iAccount, int iAccountID, int iClientH, char* cAccountName);
 	bool bCheckAccountExists(char* cAccountName);
 
 	void MsgProcess();

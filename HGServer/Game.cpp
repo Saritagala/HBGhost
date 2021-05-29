@@ -22638,6 +22638,8 @@ bool CGame::_bCheckCharacterData(int iClientH)
  int i;
  int iTotalPoints;
 
+	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0) return true;
+
 	if (m_pClientList[iClientH]->m_iStr > m_sCharStatLimit) {
         m_pClientList[iClientH]->m_iStr = m_sCharStatLimit;
 	}
@@ -22660,7 +22662,7 @@ bool CGame::_bCheckCharacterData(int iClientH)
 	iTotalPoints = 0;
 	for (i = 0; i <	DEF_MAXSKILLTYPE; i++) 
 		iTotalPoints += m_pClientList[iClientH]->m_cSkillMastery[i];
-		if ((iTotalPoints-21 > m_sCharSkillLimit) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+		if (iTotalPoints-21 > m_sCharSkillLimit) {
 		wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) - has more than allowed skill points (%d).", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, iTotalPoints);
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);
@@ -22671,15 +22673,14 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		(strcmp(m_pClientList[iClientH]->m_cLocation, "elvhunter") != 0) && 
 		(strcmp(m_pClientList[iClientH]->m_cLocation, "arehunter") != 0) && 
 		(strcmp(m_pClientList[iClientH]->m_cLocation, "aresden") != 0) &&
-		(m_pClientList[iClientH]->m_iLevel >= 20) &&
-		(m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+		(m_pClientList[iClientH]->m_iLevel >= 20)) {
 		wsprintf(G_cTxt, "Traveller Hack: (%s) Player: (%s) is a traveller and is greater than level 19.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);
 		return false;
 	}
 
-	if ((m_pClientList[iClientH]->m_iLevel > m_iPlayerMaxLevel) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+	if (m_pClientList[iClientH]->m_iLevel > m_iPlayerMaxLevel) {
 		/*wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) level above max server level.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
@@ -22693,21 +22694,21 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		m_pClientList[iClientH]->m_iExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel];
 	}
 
-	if ((m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) {
 		/*wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) HP: current/maximum (%d/%d).", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_iHP, iGetMaxHP(iClientH));
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
 	}
 
-	if ((m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) {
 		/*wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) MP: current/maximum (%d/%d).", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_iMP, iGetMaxMP(iClientH));
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	}
 
-	if ((m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) && (m_pClientList[iClientH]->m_iAdminUserLevel == 0)) {
+	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) {
 		/*wsprintf(G_cTxt, "Packet Editing: (%s) Player: (%s) SP: current/maximum (%d/%d).", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName, m_pClientList[iClientH]->m_iSP, iGetMaxSP(iClientH));
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/

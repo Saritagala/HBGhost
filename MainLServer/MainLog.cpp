@@ -93,9 +93,9 @@ bool CMainLog::bInit()
 	try
 	{
 		con.Connect(
-			"JCCENTU92@HBGhost",
-			"sa",
-			"h3lbr34th_gh0s7",
+			"LOCALHOST\\SQLEXPRESS@HBGhost",//"JCCENTU92@HBGhost",
+			"",//"sa",
+			"",//"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -553,9 +553,12 @@ bool CMainLog::bClientRegisterMaps(int iClientH, char* pData)
 void CMainLog::RequestLogin(int iClientH, char* pData)
 {
 	int  iMessage, iAccount, i, iDBID = -1;
-	char cData[200], cMesg, cTotalChar;
+	char cData[200], cMesg;
+	DWORD* dwp;
+
+	char cTotalChar;
 	
-	char* cp, cAccountName[11], cAccountPass[11], cWorldName[30];
+	char* cp, cAccountName[11], cAccountPass[11], cWorldName[30], *cp2;
 	ZeroMemory(cAccountName, sizeof(cAccountName));
 	ZeroMemory(cAccountPass, sizeof(cAccountPass));
 	ZeroMemory(cWorldName, sizeof(cWorldName));
@@ -599,17 +602,15 @@ void CMainLog::RequestLogin(int iClientH, char* pData)
 	switch (cMesg) {
 	case 1:
 		SendEventToWLS(DEF_LOGRESMSGTYPE_NOTEXISTINGACCOUNT, DEF_LOGRESMSGTYPE_NOTEXISTINGACCOUNT, cData, 0, iClientH);
-		return;
 		break;
 	case 2:
 		SendEventToWLS(DEF_LOGRESMSGTYPE_NOTEXISTINGWORLDSERVER, DEF_LOGRESMSGTYPE_NOTEXISTINGWORLDSERVER, cData, 0, iClientH);
-		return;
 		break;
 	case 3:
 		SendEventToWLS(DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, cData, 0, iClientH);
-		return;
 		break;
 	case 0: //successful log on
+		
 		//GetLocalTime(&SysTime);
 		m_pAccountList[iAccount]->dAccountID = iDBID;//(int)(SysTime.wYear + SysTime.wMonth + SysTime.wDay + SysTime.wHour + SysTime.wMinute + timeGetTime());
 
@@ -619,20 +620,17 @@ void CMainLog::RequestLogin(int iClientH, char* pData)
 			return;
 		}
 
-		int iTotal = 0;
-
-		for (i = 0; i < DEF_MAXCHARACTER; i++)
+		/*for (i = 0; i < DEF_MAXCHARACTER; i++)
 		{
 			if ((m_pCharList[i] != NULL) && (m_pCharList[i]->iTracker == iDBID))
 			{
 				cTotalChar++;
-				iTotal++;
 			}
 
-			if (iTotal >= 4) break;
-		}
+			if (cTotalChar > 3) break;
+		}*/
 
-		SendCharacterData(iAccount, iDBID, cTotalChar, iClientH, cAccountName);
+		SendCharacterData(iAccount, iDBID, iClientH, cAccountName);
 		break;
 	}
 }
@@ -686,7 +684,7 @@ int CMainLog::iGetAccountDatabaseID(char* cAccName)
 
 }
 
-void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, int iClientH, char* cAccountName)
+void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, char* cAccountName)
 {
 	char* cp, cData[2000];
 	DWORD* dwp;
@@ -752,8 +750,11 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 	}
 
 
-	*cp = cTotalChar;
+	char* pTotal;
+	//*cp = cTotalChar;
+	pTotal = (char*)cp;
 	cp++;
+	
 	//18
 	int accDBID = iGetAccountDatabaseID(cAccountName);
 	iRows = 0;
@@ -924,10 +925,11 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 				cp += 10;
 
 				iRows++;
+				
 			}
 		}
 		com.Close();
-		
+		*pTotal = iRows;
 	}
 	catch (SAException& x)
 	{
@@ -969,7 +971,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, char cTotalChar, 
 			{
 				if (m_pAccountList[iAccount]->iClientH == iClientH)
 				{
-					SendEventToWLS(DEF_LOGRESMSGTYPE_CONFIRM, DEF_LOGRESMSGTYPE_CONFIRM, cData, 26 + (65 * cTotalChar), i);
+					SendEventToWLS(DEF_LOGRESMSGTYPE_CONFIRM, DEF_LOGRESMSGTYPE_CONFIRM, cData, 26 + (65 * iRows), i);
 					bConnected = true;
 					break;
 				}
@@ -1197,11 +1199,12 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 		cp = (char*)(pData + 26); //incomeing
 		memcpy(cAccountPass, cp, 10); //new char name
 		cp += 10;
+
 		cTotalChar = (char)*cp;
 
-		cp = (char*)(pData + 26); //incomeing
+		cp = (char*)(pData + 37); //incomeing
 		cp2 = (char*)(cData); //outgoing messag
-		memcpy(cp2, cp, 11 + (cTotalChar * 65)); // get message between total*
+		memcpy(cp2, cp, 10 + (cTotalChar * 65)); // get message between total*
 		cp2 += 11 + (cTotalChar * 65);
 
 		SendEventToWLS(DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, cData, 11 + (cTotalChar * 65), iTracker);
@@ -1325,10 +1328,12 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 				}
 			}
 		}
-		cp = (char*)(pData + 27); //incomeing
-		cTotalChar = *cp;
 
 		cp = (char*)(pData + 26); //incomeing
+		cTotalChar = *cp;
+
+		cp = (char*)(pData + 27); //incomeing
+		
 		cp2 = (char*)(cData); //outgoing messag
 		memcpy(cp2, cp, 2 + (cTotalChar * 65)); // get message between total*
 		cp2 += 2 + (cTotalChar * 65);
