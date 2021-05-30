@@ -147,7 +147,7 @@
 
 #define DEF_MSGBUFFERSIZE	30000
 #define DEF_MAXITEMS		50
-#define DEF_MAXBANKITEMS	120 // 120 -> 240
+#define DEF_MAXBANKITEMS	1000 // 120 -> 1000
 #define DEF_MAXGUILDSMAN	128 // 최대 길드원 수 
 
 #define	DEF_MAXMAGICTYPE	100	// 변경하려면 로그서버내용도 바꾸어야 한다.

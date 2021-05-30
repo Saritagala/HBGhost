@@ -93,9 +93,9 @@ bool CMainLog::bInit()
 	try
 	{
 		con.Connect(
-			"LOCALHOST\\SQLEXPRESS@HBGhost",//"JCCENTU92@HBGhost",
-			"",//"sa",
-			"",//"h3lbr34th_gh0s7",
+			"JCCENTU92@HBGhost",
+			"sa",
+			"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -689,24 +689,20 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 	char* cp, cData[2000];
 	DWORD* dwp;
 	WORD* wp;
-	short iUperVersion, iLowerVersion;
-	int iSpace1, iSpace2, i, iRows;
+	int i;
 	bool bConnected = false;
+	char iRows;
 
 	ZeroMemory(cData, sizeof(cData));
-	iUperVersion = DEF_UPERVERSION;
-	iLowerVersion = DEF_LOWERVERSION;
-	iSpace1 = 11758870;
-	iSpace2 = 11758874;
 
 	cp = (char*)(cData); //outgoing messag
 
 	dwp = (DWORD*)cp;
-	*dwp = iUperVersion;
+	*dwp = DEF_UPERVERSION;
 	cp += 2;
 	//2
 	dwp = (DWORD*)cp;
-	*dwp = iLowerVersion;
+	*dwp = DEF_LOWERVERSION;
 	cp += 2;
 	//4
 		//used for account status
@@ -736,6 +732,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 	*dwp = m_pAccountList[iAccount]->m_iPassDay;
 	cp += 2;
 	//17
+	
 	if (m_pAccountList[iAccount] != NULL) {
 
 		if (m_pClientList[iClientH] == NULL) {
@@ -749,13 +746,12 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 		}
 	}
 
-
 	char* pTotal;
 	//*cp = cTotalChar;
 	pTotal = (char*)cp;
 	cp++;
-	
 	//18
+
 	int accDBID = iGetAccountDatabaseID(cAccountName);
 	iRows = 0;
 
@@ -779,10 +775,10 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 				//strcpy(cTemp, com.Field("Character-Name").asString());
 				memcpy(cp, com.Field("Character-Name").asString(), 10);
 				cp += 10;
-
+				//10
 				*cp = 1;
 				cp++;
-
+				//11
 				// db character ID
 				/*ZeroMemory(cTemp, sizeof(cTemp));
 				strcpy(cTemp, com.Field("Character-ID").asString());
@@ -794,136 +790,136 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr1").asLong();
 				cp += 2;
-
+				//13
 				// char appr2
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Appr2").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr2").asLong();
 				cp += 2;
-
+				//15
 				// char appr3
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Appr3").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr3").asLong();
 				cp += 2;
-
+				//17
 				// char appr1
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Appr4").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr4").asLong();
 				cp += 2;
-
+				//19
 				// char gender
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Sex").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Sex").asLong();
 				cp += 2;
-
+				//21
 				// char skin
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Skin").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Skin").asLong();
 				cp += 2;
-
+				//23
 				// char level
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Level").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Level").asLong();
 				cp += 2;
-
+				//25
 				// char exp
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Experience").asString());
 				dwp = (DWORD*)cp;
 				*dwp = com.Field("Character-Experience").asLong();
 				cp += 4;
-
+				//29
 				// char str
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Strength").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Strength").asLong();
 				cp += 2;
-
+				//31
 				// char vit
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Vitality").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Vitality").asLong();
 				cp += 2;
-
+				//33
 				// char dex
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Dexterity").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Dexterity").asLong();
 				cp += 2;
-
+				//35
 				// char int
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Intelligence").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Intelligence").asLong();
 				cp += 2;
-
+				//37
 				// char mag
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Magic").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Magic").asLong();
 				cp += 2;
-
+				//39
 				// char charisma
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Charisma").asString());
 				wp = (WORD*)cp;
 				*wp = com.Field("Character-Charisma").asLong();
 				cp += 2;
-
+				//41
 				// char appr colour
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Appr-Colour").asString());
 				dwp = (DWORD*)cp;
 				*dwp = com.Field("Character-Appr-Colour").asLong();
 				cp += 4;
-
+				//45
 				// char save year
 				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
-
+				//47
 				// char save month
 				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
-
+				//49
 				// char save day
 				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
-
+				//51
 				// char save hour
 				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
-
+				//53
 				// char save minute
 				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
-
+				//55
 				// char map
 				//ZeroMemory(cTemp, sizeof(cTemp));
 				//strcpy(cTemp, com.Field("Character-Loc-Map").asString());
 				memcpy(cp, com.Field("Character-Loc-Map").asString(), 10);
 				cp += 10;
-
+				//65
 				iRows++;
 				
 			}
@@ -958,13 +954,13 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 	}*/
 
 	dwp = (DWORD*)cp;
-	*dwp = (DWORD)iSpace1;
+	*dwp = 11758870;
 	cp += 4;
-
+//22
 	dwp = (DWORD*)cp;
-	*dwp = (DWORD)iSpace2;
+	*dwp = 11758874;
 	cp += 4;
-
+//26
 	for (i = 0; i < DEF_MAXCLIENTSOCK; i++)
 		if ((m_pClientList[i] != NULL) && (strcmp(m_pClientList[i]->m_cWorldName, m_pAccountList[iAccount]->cAccountName) == 0)) {
 			if ((i == iClientH) && (strcmp(m_pClientList[iClientH]->m_cWorldName, m_pAccountList[iAccount]->cAccountName) == 0))
@@ -1196,7 +1192,7 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 			}
 		}
 
-		cp = (char*)(pData + 26); //incomeing
+		/*cp = (char*)(pData + 26); //incomeing
 		memcpy(cAccountPass, cp, 10); //new char name
 		cp += 10;
 
@@ -1205,9 +1201,213 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 		cp = (char*)(pData + 37); //incomeing
 		cp2 = (char*)(cData); //outgoing messag
 		memcpy(cp2, cp, 10 + (cTotalChar * 65)); // get message between total*
-		cp2 += 11 + (cTotalChar * 65);
+		cp2 += 11 + (cTotalChar * 65);*/
 
-		SendEventToWLS(DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, cData, 11 + (cTotalChar * 65), iTracker);
+		cp = (char*)(pData + 20); //incomeing
+		cp2 = (char*)(cData); //outgoing messag
+		memcpy(cp2, cp, 10); //new char name
+		cp2 += 10;
+
+		char* pTotal;
+		//*cp = cTotalChar;
+		pTotal = (char*)cp2;
+		cp2++;
+		//18
+
+		int accDBID = iGetAccountDatabaseID(cAccountName);
+		char iRows = 0;
+
+		SACommand com;
+
+		WORD* wp;
+		DWORD* dwp;
+
+		try
+		{
+			com.setConnection(&con);
+			com.setCommandText("SELECT [Character-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM Characters WHERE [Account-ID] = :1");
+			com.Param(1).setAsLong() = accDBID;
+
+			com.Execute();
+
+			if (com.isResultSet())
+			{
+				while (com.FetchNext())
+				{
+					// char map
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Name").asString());
+					memcpy(cp2, com.Field("Character-Name").asString(), 10);
+					cp2 += 10;
+					//10
+					*cp2 = 1;
+					cp2++;
+					//11
+					// db character ID
+					/*ZeroMemory(cTemp, sizeof(cTemp));
+					strcpy(cTemp, com.Field("Character-ID").asString());
+					iCharacterDBid = atoi(cTemp);*/
+
+					// char appr1
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr1").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr1").asLong();
+					cp2 += 2;
+					//13
+					// char appr2
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr2").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr2").asLong();
+					cp2 += 2;
+					//15
+					// char appr3
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr3").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr3").asLong();
+					cp2 += 2;
+					//17
+					// char appr1
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr4").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr4").asLong();
+					cp2 += 2;
+					//19
+					// char gender
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Sex").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Sex").asLong();
+					cp2 += 2;
+					//21
+					// char skin
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Skin").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Skin").asLong();
+					cp2 += 2;
+					//23
+					// char level
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Level").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Level").asLong();
+					cp2 += 2;
+					//25
+					// char exp
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Experience").asString());
+					dwp = (DWORD*)cp2;
+					*dwp = com.Field("Character-Experience").asLong();
+					cp2 += 4;
+					//29
+					// char str
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Strength").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Strength").asLong();
+					cp2 += 2;
+					//31
+					// char vit
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Vitality").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Vitality").asLong();
+					cp2 += 2;
+					//33
+					// char dex
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Dexterity").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Dexterity").asLong();
+					cp2 += 2;
+					//35
+					// char int
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Intelligence").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Intelligence").asLong();
+					cp2 += 2;
+					//37
+					// char mag
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Magic").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Magic").asLong();
+					cp2 += 2;
+					//39
+					// char charisma
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Charisma").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Charisma").asLong();
+					cp2 += 2;
+					//41
+					// char appr colour
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr-Colour").asString());
+					dwp = (DWORD*)cp2;
+					*dwp = com.Field("Character-Appr-Colour").asLong();
+					cp2 += 4;
+					//45
+					// char save year
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//47
+					// char save month
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//49
+					// char save day
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//51
+					// char save hour
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//53
+					// char save minute
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//55
+					// char map
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Loc-Map").asString());
+					memcpy(cp2, com.Field("Character-Loc-Map").asString(), 10);
+					cp2 += 10;
+					//65
+					iRows++;
+
+				}
+			}
+			com.Close();
+			*pTotal = iRows;
+		}
+		catch (SAException& x)
+		{
+			try
+			{
+				con.Rollback();
+			}
+			catch (SAException&)
+			{
+			}
+
+			char cTemp[256];
+			ZeroMemory(cTemp, sizeof(cTemp));
+			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (SendCharacterData): %s", (const char*)x.ErrText());
+			PutLogList(cTemp);
+		}
+
+		SendEventToWLS(DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, DEF_LOGRESMSGTYPE_NEWCHARACTERCREATED, cData, 11 + (iRows * 65), iTracker);
 		break;
 	}
 }
@@ -1329,16 +1529,222 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 			}
 		}
 
-		cp = (char*)(pData + 26); //incomeing
-		cTotalChar = *cp;
+		/*cp = (char*)(pData + 20); //incomeing
+		cp++;
 
-		cp = (char*)(pData + 27); //incomeing
-		
+		cTotalChar = *cp;
+		cp++;
+
+		for (i = 0; i < cTotalChar; i++)
+			cp += 65;
+
 		cp2 = (char*)(cData); //outgoing messag
 		memcpy(cp2, cp, 2 + (cTotalChar * 65)); // get message between total*
-		cp2 += 2 + (cTotalChar * 65);
+		cp2 += 2 + (cTotalChar * 65);*/
 
-		SendEventToWLS(DEF_LOGRESMSGTYPE_CHARACTERDELETED, DEF_LOGRESMSGTYPE_CHARACTERDELETED, cData, 2 + (cTotalChar * 65), iTracker);
+		cp2 = (char*)(cData);
+		cp2++;
+
+		char* pTotal;
+		//*cp = cTotalChar;
+		pTotal = (char*)cp2;
+		cp2++;
+		//18
+
+		int accDBID = iGetAccountDatabaseID(cAccountName);
+		char iRows = 0;
+
+		SACommand com;
+
+		WORD* wp;
+		DWORD* dwp;
+
+		try
+		{
+			com.setConnection(&con);
+			com.setCommandText("SELECT [Character-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour] FROM Characters WHERE [Account-ID] = :1");
+			com.Param(1).setAsLong() = accDBID;
+
+			com.Execute();
+
+			if (com.isResultSet())
+			{
+				while (com.FetchNext())
+				{
+					// char map
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Name").asString());
+					memcpy(cp2, com.Field("Character-Name").asString(), 10);
+					cp2 += 10;
+					//10
+					*cp2 = 1;
+					cp2++;
+					//11
+					// db character ID
+					/*ZeroMemory(cTemp, sizeof(cTemp));
+					strcpy(cTemp, com.Field("Character-ID").asString());
+					iCharacterDBid = atoi(cTemp);*/
+
+					// char appr1
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr1").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr1").asLong();
+					cp2 += 2;
+					//13
+					// char appr2
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr2").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr2").asLong();
+					cp2 += 2;
+					//15
+					// char appr3
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr3").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr3").asLong();
+					cp2 += 2;
+					//17
+					// char appr1
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr4").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Appr4").asLong();
+					cp2 += 2;
+					//19
+					// char gender
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Sex").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Sex").asLong();
+					cp2 += 2;
+					//21
+					// char skin
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Skin").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Skin").asLong();
+					cp2 += 2;
+					//23
+					// char level
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Level").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Level").asLong();
+					cp2 += 2;
+					//25
+					// char exp
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Experience").asString());
+					dwp = (DWORD*)cp2;
+					*dwp = com.Field("Character-Experience").asLong();
+					cp2 += 4;
+					//29
+					// char str
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Strength").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Strength").asLong();
+					cp2 += 2;
+					//31
+					// char vit
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Vitality").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Vitality").asLong();
+					cp2 += 2;
+					//33
+					// char dex
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Dexterity").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Dexterity").asLong();
+					cp2 += 2;
+					//35
+					// char int
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Intelligence").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Intelligence").asLong();
+					cp2 += 2;
+					//37
+					// char mag
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Magic").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Magic").asLong();
+					cp2 += 2;
+					//39
+					// char charisma
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Charisma").asString());
+					wp = (WORD*)cp2;
+					*wp = com.Field("Character-Charisma").asLong();
+					cp2 += 2;
+					//41
+					// char appr colour
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Appr-Colour").asString());
+					dwp = (DWORD*)cp2;
+					*dwp = com.Field("Character-Appr-Colour").asLong();
+					cp2 += 4;
+					//45
+					// char save year
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//47
+					// char save month
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//49
+					// char save day
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//51
+					// char save hour
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//53
+					// char save minute
+					wp = (WORD*)cp2;
+					*wp = 0;
+					cp2 += 2;
+					//55
+					// char map
+					//ZeroMemory(cTemp, sizeof(cTemp));
+					//strcpy(cTemp, com.Field("Character-Loc-Map").asString());
+					memcpy(cp2, com.Field("Character-Loc-Map").asString(), 10);
+					cp2 += 10;
+					//65
+					iRows++;
+
+				}
+			}
+			com.Close();
+			*pTotal = iRows;
+		}
+		catch (SAException& x)
+		{
+			try
+			{
+				con.Rollback();
+			}
+			catch (SAException&)
+			{
+			}
+
+			char cTemp[256];
+			ZeroMemory(cTemp, sizeof(cTemp));
+			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (SendCharacterData): %s", (const char*)x.ErrText());
+			PutLogList(cTemp);
+		}
+
+		SendEventToWLS(DEF_LOGRESMSGTYPE_CHARACTERDELETED, DEF_LOGRESMSGTYPE_CHARACTERDELETED, cData, 2 + (iRows * 65), iTracker);
 
 		break;
 	}
@@ -1597,7 +2003,11 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 
 		com.Execute();
 
-		if (com.RowsAffected() == 0) return 2;
+		if (com.RowsAffected() == 0)
+		{
+			com.Close();
+			return 1;
+		}
 
 		if (com.isResultSet())
 		{
@@ -1613,11 +2023,6 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 				iAccountDBid = com.Field("Account-ID").asLong();
 
 				*iDBID = iAccountDBid;
-
-				// find characters associated with this account
-				com2.setConnection(&con);
-				com2.setCommandText("SELECT RTRIM([Character-Name]) AS 'Character-Name' FROM Characters WHERE [Account-ID] = :1");
-				com2.Param(1).setAsLong() = iAccountDBid;
 
 				// account name
 				//ZeroMemory(cTemp, sizeof(cTemp));
@@ -1637,6 +2042,7 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 				if (m_pClientList[iClientH] == NULL)
 				{
 					DeleteAccount(iAccountid);
+					com.Close();
 					return 3;
 				}
 
@@ -1696,6 +2102,11 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 				strcpy(cTemp, com.Field("Account-Locked").asString());
 				m_pAccountList[iAccountid]->iLocked = atoi(cTemp);*/
 
+				// find characters associated with this account
+				com2.setConnection(&con);
+				com2.setCommandText("SELECT RTRIM([Character-Name]) AS 'Character-Name' FROM Characters WHERE [Account-ID] = :1");
+				com2.Param(1).setAsLong() = iAccountDBid;
+
 				com2.Execute();
 
 				if (com2.isResultSet())
@@ -1703,7 +2114,7 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 					while (com2.FetchNext())
 					{
 						ZeroMemory(cTemp, sizeof(cTemp));
-						strcpy(cTemp, com2.Field("Character-Name").asString());
+						memcpy(cTemp, com2.Field("Character-Name").asString(), 10);
 
 						int j;
 

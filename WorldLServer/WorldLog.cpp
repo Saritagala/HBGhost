@@ -134,9 +134,9 @@ bool CWorldLog::bInit()
 	try
 	{
 		con.Connect(
-			"LOCALHOST\\SQLEXPRESS@HBGhost",//"JCCENTU92@HBGhost",
-			"",//"sa",
-			"",//"h3lbr34th_gh0s7",
+			"JCCENTU92@HBGhost",
+			"sa",
+			"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -4143,6 +4143,7 @@ void CWorldLog::RequestCreateNewGuild(int iClientH, char* pData)
 			cp += 10;
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 16, DEF_USE_ENCRYPTION);
+			
 		}
 		else
 		{
@@ -4321,14 +4322,130 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 }
 void CWorldLog::UpdateGuildInfoNewGuildsman(int iClientH, char* pData)
 {
-	// INCOMPLETE
-	// hypnotoad: useless function?
+	char* cp, cCharacterName[11], cGuildName[21];
+	int iGuildID;
+
+	if (m_pClientList[iClientH] == NULL) return;
+
+	ZeroMemory(cCharacterName, sizeof(cCharacterName));
+	ZeroMemory(cGuildName, sizeof(cGuildName));
+	
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	
+	memcpy(cCharacterName, cp, 10);
+	cp += 10;
+
+	memcpy(cGuildName, cp, 20);
+	cp += 20;
+
+	if (G_bDBMode == true) 
+	{
+			SACommand com;
+			SACommand gid;
+
+			/*char cTemp[256];
+			ZeroMemory(cTemp, sizeof(cTemp));
+			wsprintf(cTemp, "%d", dwGuildGUID);*/
+
+			try
+			{
+				gid.setConnection(&con);
+				gid.setCommandText("SELECT [Guild-ID] FROM Guilds WHERE [Guild-Name] = :1");
+				gid.Param(1).setAsString() = cGuildName;
+
+				gid.Execute();
+				iGuildID = gid.Field("Guild-ID").asLong();
+				gid.Close();
+
+				com.setConnection(&con);
+				com.setCommandText("INSERT INTO GuildMembers ([Guild-ID], [Character-Name]) VALUES (:1, :2)");
+				com.Param(1).setAsLong() = iGuildID;
+				com.Param(2).setAsString() = cCharacterName;
+
+				com.Execute();
+
+				com.Close();
+
+				wsprintf(G_cTxt, "(!) New Guildsman added: (%s) Guild(%s)", cCharacterName, cGuildName);
+				PutLogList(G_cTxt);
+
+			}
+			catch (SAException& x)
+			{
+				try
+				{
+					con.Rollback();
+				}
+				catch (SAException&)
+				{
+				}
+
+				char cTemp[256];
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestCreateNewGuild): %s", (const char*)x.ErrText());
+				PutLogList(cTemp);
+			}
+		
+	}
 }
 
 void CWorldLog::UpdateGuildInfoDeleteGuildman(int iClientH, char* pData)
 {
-	// INCOMPLETE
-	// hypnotoad: useless function?
+	char* cp, cCharacterName[11], cGuildName[21];
+	int iGuildID;
+
+	if (m_pClientList[iClientH] == NULL) return;
+
+	ZeroMemory(cCharacterName, sizeof(cCharacterName));
+	ZeroMemory(cGuildName, sizeof(cGuildName));
+
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+
+	memcpy(cCharacterName, cp, 10);
+	cp += 10;
+
+	memcpy(cGuildName, cp, 20);
+	cp += 20;
+
+	if (G_bDBMode == true)
+	{
+		SACommand com;
+		
+		/*char cTemp[256];
+		ZeroMemory(cTemp, sizeof(cTemp));
+		wsprintf(cTemp, "%d", dwGuildGUID);*/
+
+		try
+		{
+			com.setConnection(&con);
+			com.setCommandText("DELETE FROM GuildMembers WHERE [Character-Name] = :1");
+			com.Param(1).setAsString() = cCharacterName;
+
+			com.Execute();
+
+			com.Close();
+
+			wsprintf(G_cTxt, "(!) Guildsman deleted: (%s) Guild(%s)", cCharacterName, cGuildName);
+			PutLogList(G_cTxt);
+
+		}
+		catch (SAException& x)
+		{
+			try
+			{
+				con.Rollback();
+			}
+			catch (SAException&)
+			{
+			}
+
+			char cTemp[256];
+			ZeroMemory(cTemp, sizeof(cTemp));
+			wsprintf(cTemp, "(!!!) SQL SERVER ERROR (RequestCreateNewGuild): %s", (const char*)x.ErrText());
+			PutLogList(cTemp);
+		}
+
+	}
 }
 
 int CWorldLog::OnPlayerAccountMessage(DWORD dwMsgID, char* cAccountName, char* cPassword, int iLevel, char* pData3)
