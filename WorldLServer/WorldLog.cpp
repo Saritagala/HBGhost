@@ -134,9 +134,9 @@ bool CWorldLog::bInit()
 	try
 	{
 		con.Connect(
-			"JCCENTU92@HBGhost",
-			"sa",
-			"h3lbr34th_gh0s7",
+			"LOCALHOST\\SQLEXPRESS@HBGhost",//"JCCENTU92@HBGhost",
+			"",//"sa",
+			"",//"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -333,7 +333,7 @@ void CWorldLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lP
 	int iClientH, iRet, iTmp;
 
 	iTmp = WM_ONCLIENTSOCKETEVENT;
-	iClientH = message - iTmp;
+	iClientH = (int)(message - iTmp);
 	if (m_pClientList[iClientH] == NULL) return;
 	iRet = m_pClientList[iClientH]->m_pXSock->iOnSocketEvent(wParam, lParam);
 	switch (iRet) {
@@ -396,7 +396,7 @@ void CWorldLog::OnMainSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPar
 	DWORD  dwMsgSize;
 
 	iTmp = WM_ONMAINLOGSOCKETEVENT;
-	iMainH = message - iTmp;
+	iMainH = (int)(message - iTmp);
 	if (m_pMainLogSock[iMainH] == NULL) return;
 	iRet = m_pMainLogSock[iMainH]->iOnSocketEvent(wParam, lParam);
 	switch (iRet) {
@@ -2375,9 +2375,9 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	short iItemElement1, iItemElement2, iItemElement3, iItemElement4;
 
 	char* cp, sSex, sSkin, sHairStyle, sHairColour, sUnderwear;
-	DWORD* dwp;
+	DWORD* dwp, iCharDBID;
 	WORD* wp;
-	int* ip, iRet, iCharDBID;
+	int* ip, iRet;
 	short* sp;
 	DWORD   dwTime, dwCrusadeGUID;
 	bool bFlag;
@@ -2411,8 +2411,8 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	memcpy(cAccountPassword, cp, 10);
 	cp += 10;
 
-	ip = (int*)cp;
-	iCharDBID = *ip;
+	dwp = (DWORD*)cp;
+	iCharDBID = *dwp;
 	cp += 4;
 
 	bFlag = (bool)*cp;
@@ -4323,7 +4323,7 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 void CWorldLog::UpdateGuildInfoNewGuildsman(int iClientH, char* pData)
 {
 	char* cp, cCharacterName[11], cGuildName[21];
-	int iGuildID;
+	int iGuildID = -1;
 
 	if (m_pClientList[iClientH] == NULL) return;
 
@@ -4354,7 +4354,15 @@ void CWorldLog::UpdateGuildInfoNewGuildsman(int iClientH, char* pData)
 				gid.Param(1).setAsString() = cGuildName;
 
 				gid.Execute();
-				iGuildID = gid.Field("Guild-ID").asLong();
+
+				if (gid.isResultSet())
+				{
+					while (gid.FetchNext())
+					{
+						iGuildID = gid.Field("Guild-ID").asLong();
+					}
+				}
+				
 				gid.Close();
 
 				com.setConnection(&con);

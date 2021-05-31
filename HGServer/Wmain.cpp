@@ -313,7 +313,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 {
 	// Install SEH
 	SetUnhandledExceptionFilter((LPTOP_LEVEL_EXCEPTION_FILTER)lpTopLevelExceptionFilter);
-	sprintf( szAppClass, "GameServer%d", (int)hInstance);
+	wsprintf( szAppClass, "Game-Server%d", (int)hInstance);
 	if (!InitApplication( hInstance))		return (false);
     if (!InitInstance(hInstance, nCmdShow)) return (false);
 	
@@ -354,7 +354,7 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 	
 
 	GetLocalTime(&SysTime);
-	wsprintf(cTitle, "Helbreath GameServer V%s.%s (Executed at: %d/%d/%d - %d:%d)", DEF_UPPERVERSION, DEF_LOWERVERSION, SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute);
+	wsprintf(cTitle, "Helbreath Game-Server V%s.%s (Executed at: %d/%d/%d - %d:%d)", DEF_UPPERVERSION, DEF_LOWERVERSION, SysTime.wDay, SysTime.wMonth, SysTime.wYear, SysTime.wHour, SysTime.wMinute);
 
 	G_hWnd = CreateWindowEx(0,  
         szAppClass,

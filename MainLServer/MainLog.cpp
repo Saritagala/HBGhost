@@ -93,9 +93,9 @@ bool CMainLog::bInit()
 	try
 	{
 		con.Connect(
-			"JCCENTU92@HBGhost",
-			"sa",
-			"h3lbr34th_gh0s7",
+			"LOCALHOST\\SQLEXPRESS@HBGhost",//"JCCENTU92@HBGhost",
+			"",//"sa",
+			"",//"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -350,14 +350,10 @@ void CMainLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPa
 	iTotalSock = 0;
 
 	iTmp = WM_ONCLIENTSOCKETEVENT;
-	iWorldH = message - iTmp;
+	iWorldH = (int)(message - iTmp);
 	if (m_pClientList[iWorldH] == NULL) return;
 	iRet = m_pClientList[iWorldH]->m_pXSock->iOnSocketEvent(wParam, lParam);
 	switch (iRet) {
-
-	case DEF_XSOCKEVENT_CONNECTIONESTABLISH:
-
-		break;
 
 	case DEF_XSOCKEVENT_READCOMPLETE:
 		pData = m_pClientList[iWorldH]->m_pXSock->pGetRcvDataPointer(&dwMsgSize, &cKey);
@@ -367,11 +363,14 @@ void CMainLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPa
 		break;
 
 	case DEF_XSOCKEVENT_BLOCK:
-
+		PutLogList("Socket BLOCKED!");
 		break;
 
 	case DEF_XSOCKEVENT_CONFIRMCODENOTMATCH:
-
+		wsprintf(G_cTxt, "<%d> Confirmcode notmatch!", iWorldH);
+		PutLogList(G_cTxt);
+		delete m_pClientList[iWorldH];
+		m_pClientList[iWorldH] = NULL;
 		break;
 
 	case DEF_XSOCKEVENT_MSGSIZETOOLARGE:
@@ -541,7 +540,7 @@ bool CMainLog::bClientRegisterMaps(int iClientH, char* pData)
 	for (i = 0; i < DEF_MAXMAPS; i++) {
 		if (m_pMapList[i] == NULL) {
 			m_pMapList[i] = new class CMap(iClientH, pData);
-			wsprintf(G_cTxt, "(!) Map(%s) registration: %s MapNum(%d)", pData, m_pGameList[iClientH]->m_cGameName, i);
+			wsprintf(G_cTxt, "(!) Map(%s) registration: %s MapNum(%d)", pData, m_pGameList[iClientH]->m_cGameName, i+1);
 			PutLogList(G_cTxt);
 			return true;
 		}

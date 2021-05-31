@@ -51,17 +51,14 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					PutLogList("Cleared");
 					break;
 			case 1011:
-				 /*char pData[120];
-	G_pMainLog->UpdateNoticement(wParam);
-		if (!G_bIsMainLogActive) {
-			G_bIsMainLogActive = true;
-			G_pXMainLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
-			G_pXMainLogSock->bListen(G_pMainLog->m_cWorldServerAddress, G_pMainLog->m_iWorldServerPort, WM_WORLD_LOG_LISTENER);
-			PutLogList("(!) Log-Socket Listening... Server Activated.");
-			ZeroMemory(pData, sizeof(pData));
-			memcpy(pData, G_pMainLog->m_cWorldLogName, 30);
-			G_pMainLog->SendEventToMLS(MSGID_WORLDSERVERACTIVATED, 0, pData, 30, -1);
-		}*/
+				if (!G_bIsMainLogActive) {
+					G_bIsMainLogActive = true;
+					G_pXMainLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
+					G_pXMainLogSock->bListen(G_pMainLog->m_cMainServerAddress, G_pMainLog->m_iMainServerPort, WM_USER_ACCEPT);
+					PutLogList("");
+					PutLogList("(!) Log-Socket Listening... Server Activated.");
+					PutLogList("");
+				}
 				break;
 	/*case IDM_SERVER:
 		DialogBox(hInst, (LPCTSTR)IDD_SERVERS, G_hWnd, (DLGPROC)Server);
@@ -73,7 +70,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				 break;
 
 	case WM_CLOSE:
-		if (MessageBox(hWnd, "Quit Main log server?", "", MB_YESNO + MB_ICONINFORMATION) == IDYES) {
+		if (MessageBox(hWnd, "Quit Main-Log-Server?", "", MB_YESNO + MB_ICONINFORMATION) == IDYES) {
 			return DefWindowProc(hWnd, WM_CLOSE, wParam, lParam);
 		}
 		break;
@@ -186,8 +183,8 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 	RegisterClass(&Wc);
 	//----------Main CMD--------//
 	List1=BCX_Listbox("",G_hWnd,1009,20,45,520,200);
-	//Button1=BCX_Button("",G_hWnd,1010,100,245,80,20);
-	//Button2=BCX_Button2("",G_hWnd,1011,20,245,80,20);
+	Button1=BCX_Button("",G_hWnd,1010,100,245,80,20);
+	Button2=BCX_Button2("",G_hWnd,1011,20,245,80,20);
 	//------------------------------//
 
 	ShowWindow(G_hWnd, nCmdShow);    
@@ -223,7 +220,7 @@ void Initialize()
 
 	G_pMainLog = new class CMainLog(G_hWnd);
 	if (G_pMainLog == NULL) {
-		MessageBox(G_hWnd, "Init fail - Invalid WorldLServer!","ERROR",MB_OK+MB_ICONERROR);
+		MessageBox(G_hWnd, "Init fail - Invalid MainLServer!","ERROR",MB_OK+MB_ICONERROR);
 		return;
 	}
 	if (G_pMainLog->bInit() == false) {
@@ -236,6 +233,12 @@ void Initialize()
 	PutLogList("(!) Internal-log-Socket Listening...");
 	G_mmTimer = _StartTimer(300);
 	
+	G_bIsMainLogActive = true;
+	G_pXMainLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
+	G_pXMainLogSock->bListen(G_pMainLog->m_cMainServerAddress, G_pMainLog->m_iMainServerPort, WM_USER_ACCEPT);
+	PutLogList("");
+	PutLogList("(!) Log-Socket Listening... Server Activated.");
+	PutLogList("");
 }
 
 void OnDestroy()
@@ -312,7 +315,7 @@ void PutGameLogData(char * cMsg)
 
 	pFile = NULL;
 	ZeroMemory(cBuffer, sizeof(cBuffer));
-	_mkdir("GameLogData");
+	
 	GetLocalTime(&SysTime);
 	wsprintf(cBuffer, "GameLogData\\GameEvents%04d%02d%02d.log", SysTime.wYear, SysTime.wMonth, SysTime.wDay);
 	pFile = fopen(cBuffer, "at");
@@ -389,7 +392,7 @@ void _StopTimer(MMRESULT timerid)
 void OnKeyUp(WPARAM wParam, LPARAM lParam)
 {
 
- char pData[120];
+	//char pData[120];
 	switch(wParam) {
 
 	case VK_HOME:
@@ -399,11 +402,11 @@ void OnKeyUp(WPARAM wParam, LPARAM lParam)
 			G_pXMainLogSock->bListen(G_pMainLog->m_cMainServerAddress, G_pMainLog->m_iMainServerPort, WM_USER_ACCEPT);
 			PutLogList("");
 			PutLogList("(!) Log-Socket Listening... Server Activated.");
-			PutLogList("(!) Log-Socket2 Listening... Server Activated.");
-			PutLogList("(!) Log-Socket3 Listening... Server Activated.");
+			//PutLogList("(!) Log-Socket2 Listening... Server Activated.");
+			//PutLogList("(!) Log-Socket3 Listening... Server Activated.");
 			PutLogList("");
-			ZeroMemory(pData, sizeof(pData));
-			/*for (i = 1; i < DEF_MAXMAINLOGSOCK; i++)
+			/*ZeroMemory(pData, sizeof(pData));
+			for (i = 1; i < DEF_MAXMAINLOGSOCK; i++)
 			if(G_pMainLog->m_pMainLogSock[i] == NULL) {
 			G_pMainLog->m_pMainLogSock[i] = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 			G_pMainLog->m_pMainLogSock[i]->bConnect(G_pMainLog->m_cMainServerAddress, G_pMainLog->m_iMainServerInternalPort, (WM_ONMAINLOGSOCKETEVENT + i));

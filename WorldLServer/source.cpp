@@ -46,6 +46,7 @@ class XSocket * G_pInternalLogSock = NULL;
 
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
+	char pData[120];
 	switch(uMsg){
 		//---------Buttons---------//
 	case WM_COMMAND:
@@ -57,17 +58,15 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 					PutLogList("Cleared");
 					break;
 			case 1011:
-				 /*char pData[120];
-	G_pWorldLog->UpdateNoticement(wParam);
-		if (!G_bIsMainLogActive) {
-			G_bIsMainLogActive = true;
-			G_pXWorldLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
-			G_pXWorldLogSock->bListen(G_pWorldLog->m_cWorldServerAddress, G_pWorldLog->m_iWorldServerPort, WM_WORLD_LOG_LISTENER);
-			PutLogList("(!) Log-Socket Listening... Server Activated.");
-			ZeroMemory(pData, sizeof(pData));
-			memcpy(pData, G_pWorldLog->m_cWorldLogName, 30);
-			G_pWorldLog->SendEventToMLS(MSGID_WORLDSERVERACTIVATED, 0, pData, 30, -1);
-		}*/
+				if (!G_bIsMainLogActive) {
+					G_bIsMainLogActive = true;
+					G_pXWorldLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
+					G_pXWorldLogSock->bListen(G_pWorldLog->m_cWorldServerAddress, G_pWorldLog->m_iWorldServerPort, WM_WORLD_LOG_LISTENER);
+					PutLogList("(!) Log-Socket Listening... Server Activated.");
+					ZeroMemory(pData, sizeof(pData));
+					memcpy(pData, G_pWorldLog->m_cWorldLogName, 30);
+					G_pWorldLog->SendEventToMLS(MSGID_WORLDSERVERACTIVATED, 0, pData, 30, -1);
+				}
 				break;
 	case IDM_SERVER:
 		DialogBox(hInst, (LPCTSTR)IDD_SERVERS, G_hWnd, (DLGPROC)Server);
@@ -79,7 +78,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 				 break;
 
 	case WM_CLOSE:
-		if (MessageBox(hWnd, "Quit World log server?", "WORLD-LOG", MB_YESNO + MB_ICONINFORMATION) == IDYES) {
+		if (MessageBox(hWnd, "Quit World-Log-Server?", "", MB_YESNO + MB_ICONINFORMATION) == IDYES) {
 			return DefWindowProc(hWnd, WM_CLOSE, wParam, lParam);
 		}
 		break;
@@ -240,7 +239,6 @@ void Initialize()
 	G_pInternalLogSock->bListen(G_pWorldLog->m_cWorldServerAddress, G_pWorldLog->m_iWorldServerInternalPort, WM_INTERNAL_LOG_ACCEPT);
 	PutLogList("(!) Internal-log-Socket Listening...");
 	G_mmTimer = _StartTimer(300);
-	
 }
 
 void OnDestroy()
