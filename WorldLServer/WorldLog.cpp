@@ -1613,8 +1613,8 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 					}
 
 					//com2.setConnection(&con);
-					com2.setCommandText("SELECT * FROM BankItems WHERE [Character-ID] = :1 ORDER BY [Item-ID]");
-					com2.Param(1).setAsLong() = iCharacterDBid;
+					com2.setCommandText("SELECT * FROM BankItems WHERE [Account-ID] = :1 ORDER BY [Item-ID]");
+					com2.Param(1).setAsLong() = accDBID;
 
 					com2.Execute();
 
