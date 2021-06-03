@@ -11286,9 +11286,12 @@ bool   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, bool 
 			break;
 		default:
 			if (m_cDetailLevel != 0)
-			{	if (sX < 50)
-					 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX, sY, _tmp_cFrame, dwTime);
-				else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX, sY, _tmp_cFrame, dwTime);
+			{
+				if (!bInv) {
+					if (sX < 50)
+						m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX, sY, _tmp_cFrame, dwTime);
+					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX, sY, _tmp_cFrame, dwTime);
+				}
 			}
 			break;
 		}
@@ -13224,10 +13227,11 @@ bool   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTr
 				break;
 			default:
 				if (m_cDetailLevel != 0) {
+					if (!bInv) {
 					if (sX < 50)
 						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
-				}
+				}	}
 				break;
 			}
 			if (_tmp_sOwnerType == 35)
@@ -13359,9 +13363,12 @@ bool   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTr
 				break;
 			default:
 				if (m_cDetailLevel != 0)
-				{	if (sX < 50)
-						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX+dx, sY+dy, _tmp_cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
+				{
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+					}
 				}
 				break;
 			}
@@ -13767,9 +13774,12 @@ bool CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool
 				break;
 			default:
 				if (m_cDetailLevel != 0)
-				{	if (sX < 50)
-						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX+dx, sY+dy, cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX+dx, sY+dy, cFrame, dwTime);
+				{
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, cFrame, dwTime);
+					}
 				}
 				break;
 			}
@@ -13880,9 +13890,12 @@ bool CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool
 				break;
 			default:
 				if (m_cDetailLevel != 0)
-				{	if (sX < 50)
-						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX+dx, sY+dy, cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX+dx, sY+dy, cFrame, dwTime);
+				{
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, cFrame, dwTime);
+					}
 				}
 				break;
 			}
@@ -14648,9 +14661,12 @@ bool   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTr
 				break;
 			default:
 				if (m_cDetailLevel != 0)
-				{	if (sX < 50)
-						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX, sY, _tmp_cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX, sY, _tmp_cFrame, dwTime);
+				{
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX, sY, _tmp_cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX, sY, _tmp_cFrame, dwTime);
+					}
 				}
 				break;
 			}
@@ -14785,9 +14801,12 @@ bool   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTr
 				break;
 			default:
 				if (m_cDetailLevel != 0)
-				{	if (sX < 50)
-						 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX, sY, _tmp_cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX, sY, _tmp_cFrame, dwTime);
+				{
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX, sY, _tmp_cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX, sY, _tmp_cFrame, dwTime);
+					}
 				}
 				break;
 			}
@@ -16307,9 +16326,11 @@ bool CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans
 			default:
 				if (m_cDetailLevel != 0)
 				{
-					if (sX < 50)
-						m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, _tmp_cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+					}
 				}
 				break;
 			}
@@ -16474,9 +16495,11 @@ bool CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans
 			default:
 				if (m_cDetailLevel != 0)
 				{
-					if (sX < 50)
-						m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, _tmp_cFrame, dwTime);
-					else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+					if (!bInv) {
+						if (sX < 50)
+							m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSpriteClip(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+						else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutShadowSprite(sX + dx, sY + dy, _tmp_cFrame, dwTime);
+					}
 				}
 				break;
 			}
