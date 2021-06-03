@@ -43,7 +43,7 @@ void CGame::ApocalypseStarter()
 			//GlobalStartApocalypseMode(i, 0);
 
 			dwApocalypseGUID = timeGetTime();
-			//if (dwApocalypseGUID < 10) dwApocalypseGUID += 10;
+			if (dwApocalypseGUID < 10) dwApocalypseGUID += 10;
 			ZeroMemory(cData, sizeof(cData));
 			cp = (char*)cData;
 			*cp = GSM_BEGINAPOCALYPSE;

@@ -16759,7 +16759,7 @@ void CGame::InitDataResponseHandler(char * pData)
 	}
 
 	// VAMP - arena
-	for (i = 0; i < 500; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		//m_stArenaPlayers[i].iTeam = 0;
 		m_stArenaPlayers[i].iKills = 0;
@@ -28676,7 +28676,7 @@ NMH_LOOPBREAK2:;
 		{
 			bool bFound = false;
 
-			for (i = 0; i < 500; i++)
+			for (i = 0; i < DEF_MAXCLIENTS; i++)
 			{
 				if (bFound) break;
 				if (strcmp(m_stArenaPlayers[i].cCharName, cTemp) == 0)
@@ -28689,7 +28689,7 @@ NMH_LOOPBREAK2:;
 			}
 			if (bFound == false)
 			{
-				for (i = 0; i < 500; i++)
+				for (i = 0; i < DEF_MAXCLIENTS; i++)
 				{
 					if (strlen(m_stArenaPlayers[i].cCharName) == 0)
 					{
@@ -28705,7 +28705,7 @@ NMH_LOOPBREAK2:;
 		}
 		else // player DC/Logout/Recall, remove from list 
 		{
-			for (i = 0; i < 500; i++)
+			for (i = 0; i < DEF_MAXCLIENTS; i++)
 			{
 				if (strcmp(m_stArenaPlayers[i].cCharName, cTemp) == 0)
 				{
@@ -29200,9 +29200,9 @@ void CGame::SortArenaPlayers()
 	//iArenaTeamKills[] = {0,0,0,0,0};
 	//iArenaTeamDeaths[] = {0,0,0,0,0};
 
-	for (int j = 0; j < 500; j++)
+	for (int j = 0; j < DEF_MAXCLIENTS; j++)
 	{
-		for (int k = j; k < 500 - 1; k++)
+		for (int k = j; k < DEF_MAXCLIENTS - 1; k++)
 		{
 			if (strlen(m_stArenaPlayers[j].cCharName) > 0 && strlen(m_stArenaPlayers[k].cCharName) > 0)
 			{
@@ -29715,7 +29715,7 @@ void CGame::RetrieveItemHandler(char *pData)
 			{	if (m_pItemList[cItemIndex]	== NULL) goto RIH_STEP2;
 				delete m_pBankList[cBankItemIndex];
 				m_pBankList[cBankItemIndex] = NULL;
-				for ( j = 0; j <= DEF_MAXBANKITEMS - 2; j++)
+				for ( j = 0; j < DEF_MAXBANKITEMS; j++)
 				{	if ((m_pBankList[j+1] != NULL) && (m_pBankList[j] == NULL))
 					{	m_pBankList[j] = m_pBankList[j+1];
 						m_pBankList[j+1] = NULL;
@@ -29746,7 +29746,7 @@ RIH_STEP2:;
 				m_bIsItemEquipped[cItemIndex] = false;
 				m_bIsItemDisabled[cItemIndex] = false;
 				m_pBankList[cBankItemIndex] = NULL;
-				for ( j = 0; j <= DEF_MAXBANKITEMS - 2; j++)
+				for ( j = 0; j < DEF_MAXBANKITEMS; j++)
 				{	if ((m_pBankList[j+1] != NULL) && (m_pBankList[j] == NULL))
 					{	m_pBankList[j] = m_pBankList[j+1];
 						m_pBankList[j+1] = NULL;
@@ -32122,10 +32122,11 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						if (bSummonGuild && !m_bIsDialogEnabled[47])
 						{
 							EnableDialogBox(47, NULL, NULL, NULL);
-							m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
-							return;
+							PlaySound('E', 14, 5);
 						}
 					}
+					m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+					return;
 					
 				}
 #ifdef RES_HIGH
@@ -32141,8 +32142,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						{
 							EnableDialogBox(12, NULL, NULL, NULL);
 							PlaySound('E', 14, 5);
-							m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
-							return;
+							
 						}
 					}
 					else // Centuu : restart
@@ -32150,7 +32150,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						if (strcmp(m_cMapName, "fightzone1") == 0 || strcmp(m_cMapName, "team") == 0)
 						{
 							EnableDialogBox(46, NULL, NULL, NULL);
-							
+							PlaySound('E', 14, 5);
 						}
 						else{
 							if (m_cRestartCount == -1)
@@ -32159,16 +32159,17 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 								m_dwRestartCountTime = timeGetTime();
 								wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 								AddEventList(G_cTxt, 10);
-								
+								PlaySound('E', 14, 5);
 
 							}
 						}
-						PlaySound('E', 14, 5);
-						m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
-						return;
+						
+						
 					}
-					
+					m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
+					return;
 				}
+				
 			}
 			else if (iRet == -1)
 			{
@@ -34011,7 +34012,7 @@ void CGame::UpdateScreen_OnGame()
 								break;
 
 							case 1002:
-								if (_iGetBankItemCount() >= (DEF_MAXBANKITEMS - 1)) AddEventList(DLGBOX_CLICK_NPCACTION_QUERY9, 10);
+								if (_iGetBankItemCount() >= (DEF_MAXBANKITEMS)) AddEventList(DLGBOX_CLICK_NPCACTION_QUERY9, 10);
 								else bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_GIVEITEMTOCHAR, m_stDialogBoxInfo[39].sV1, iAmount, m_stDialogBoxInfo[39].sV5, m_stDialogBoxInfo[39].sV6, m_pItemList[m_stDialogBoxInfo[39].sV1]->m_cName, m_stDialogBoxInfo[39].sV4); //v1.4
 								break;
 

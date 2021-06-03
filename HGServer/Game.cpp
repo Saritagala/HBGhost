@@ -574,46 +574,53 @@ bool CGame::bInit()
 	///////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////Modifications////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	for (i = 0; i < DEF_MAXAPOCALYPSE; i++) {
+	//Magn0S:: New events schedules
+	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+		
 		m_stApocalypseScheduleStart[i].iDay = -1;
 		m_stApocalypseScheduleStart[i].iHour = -1;
 		m_stApocalypseScheduleStart[i].iMinute = -1;
-	}
-	for (i = 0; i < DEF_MAXHELDENIAN; i++) {
+		
 		m_stHeldenianSchedule[i].iDay = -1;
 		m_stHeldenianSchedule[i].StartiHour = -1;
 		m_stHeldenianSchedule[i].StartiMinute = -1;
-	}
-
-	//Magn0S:: New events schedules
-	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
+	
 		m_stGladArenaSchedule[i].iDay = -1;
 		m_stGladArenaSchedule[i].iHour = -1;
 		m_stGladArenaSchedule[i].iMinute = -1;
+		
 		m_stCTFSchedule[i].iDay = -1;
 		m_stCTFSchedule[i].iHour = -1;
 		m_stCTFSchedule[i].iMinute = -1;
+		
 		m_stInvasionSchedule[i].iDay = -1;
 		m_stInvasionSchedule[i].iHour = -1;
 		m_stInvasionSchedule[i].iMinute = -1;
+		
 		m_stCandyFurySchedule[i].iDay = -1;
 		m_stCandyFurySchedule[i].iHour = -1;
 		m_stCandyFurySchedule[i].iMinute = -1;
+		
 		m_stBeholderSchedule[i].iDay = -1;
 		m_stBeholderSchedule[i].iHour = -1;
 		m_stBeholderSchedule[i].iMinute = -1;
+		
 		m_stBagProtectSchedule[i].iDay = -1;
 		m_stBagProtectSchedule[i].iHour = -1;
 		m_stBagProtectSchedule[i].iMinute = -1;
+		
 		m_stTeamArenaSchedule[i].iDay = -1;
 		m_stTeamArenaSchedule[i].iHour = -1;
 		m_stTeamArenaSchedule[i].iMinute = -1;
+		
 		m_stShinningSchedule[i].iDay = -1;
 		m_stShinningSchedule[i].iHour = -1;
 		m_stShinningSchedule[i].iMinute = -1;
+		
 		m_stHappyHourSchedule[i].iDay = -1;
 		m_stHappyHourSchedule[i].iHour = -1;
 		m_stHappyHourSchedule[i].iMinute = -1;
+		
 		m_stFuryHourSchedule[i].iDay = -1;
 		m_stFuryHourSchedule[i].iHour = -1;
 		m_stFuryHourSchedule[i].iMinute = -1;
@@ -18921,9 +18928,6 @@ void CGame::ForceChangePlayMode(int iClientH)
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CHANGEPLAYMODE, NULL, NULL, NULL, m_pClientList[iClientH]->m_cLocation);
 	SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 	
-	//DeleteClient(iClientH, true, true);
-	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, true);
-	//LocalSavePlayerData(iClientH);
 }
 
 // v2.15 2002-5-21
@@ -19223,7 +19227,7 @@ void CGame::bReadScheduleConfigFile(char *pFn)
 				case 4:
 					switch (cReadModeB) {
 					case 1:
-						if (iIndex >= DEF_MAXAPOCALYPSE) {
+						if (iIndex >= DEF_MAXSCHEDULE) {
 							PutLogList("(!) WARNING! Too many Apocalypse schedule!"); 
 							return;
 						}
@@ -19252,7 +19256,7 @@ void CGame::bReadScheduleConfigFile(char *pFn)
 				case 6:
 					switch (cReadModeB) {
 					case 1:
-						if (iIndex >= DEF_MAXHELDENIAN) {
+						if (iIndex >= DEF_MAXSCHEDULE) {
 							PutLogList("(!) WARNING! Too many Heldenian schedule!"); 
 							return;
 						}
@@ -19534,7 +19538,7 @@ void CGame::bReadScheduleConfigFile(char *pFn)
 					cReadModeA = 3;
 					cReadModeB = 1;
 				}
-				if (memcmp(token, "apocalypse-schedule-start", 25) == 0) {
+				if (memcmp(token, "apocalypse-schedule", 19) == 0) {
 					cReadModeA = 4;
 					cReadModeB = 1;
 				}

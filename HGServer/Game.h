@@ -1000,13 +1000,13 @@ private:
 		int iDay;
 		int iHour;
 		int iMinute;
-	} m_stApocalypseScheduleStart[DEF_MAXAPOCALYPSE];
+	} m_stApocalypseScheduleStart[DEF_MAXSCHEDULE];
 
 	struct {
 		int iDay;
 		int StartiHour;
 		int StartiMinute;
-	} m_stHeldenianSchedule[DEF_MAXHELDENIAN];
+	} m_stHeldenianSchedule[DEF_MAXSCHEDULE];
 
 	//Magn0S:: Added Schedules for events
 	struct {

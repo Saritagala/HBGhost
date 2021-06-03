@@ -88,10 +88,12 @@ using namespace std;
 #define DEF_CHATTIMEOUT_B		500
 #define DEF_CHATTIMEOUT_C		2000
 #define DEF_MAXITEMS			50
-#define DEF_MAXBANKITEMS		121 // v1.2 120+1
+#define DEF_MAXBANKITEMS		120 
 #define DEF_MAXGUILDSMAN		32
 #define DEF_MAXMENUITEMS		140  //v2.15  120 ->140
 #define DEF_TEXTDLGMAXLINES		300 //v2.18 3000->300
+
+#define DEF_MAXCLIENTS			2000
 
 #define DEF_MAXMAGICTYPE		100
 #define DEF_MAXSKILLTYPE		60
@@ -1266,7 +1268,7 @@ public:
 	int   m_iContributionPrice;
 
 		// VAMP - online users list
-	class OnlineUser * m_pOnlineUsersList[500];
+	class OnlineUser * m_pOnlineUsersList[DEF_MAXCLIENTS];
 	void ResponseOnlines(char * pData);
 	char m_cTakeHeroItemName[100]; //Drajwer - hero item str
 
@@ -1297,8 +1299,8 @@ public:
 		//int iTeam;
 		int iKills;
 		int iDeaths;
-		char cCharName[12];
-	} m_stArenaPlayers[500];
+		char cCharName[11];
+	} m_stArenaPlayers[DEF_MAXCLIENTS];
 
 	void SortArenaPlayers();
 	void DlgBoxClick_ArenaRestart(short msX, short msY);

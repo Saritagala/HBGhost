@@ -700,10 +700,10 @@ void CGame::JoinGuildApproveHandler(int iClientH, char* pName)
 			m_pClientList[i]->m_iGuildRank = DEF_GUILDSTARTRANK; //@@@  GuildRankÀÇ ½ÃÀÛÀº DEF_GUILDSTARTRANK
 
 			// °¡ÀÔ ½ÅÃ»ÀÚ¿¡°Ô °¡ÀÔÀÌ ¼º°øÇßÀ½À» ¾Ë¸®´Â ¸Þ½ÃÁö¸¦ º¸³»ÁØ´Ù.
-			SendNotifyMsg(iClientH, i, DEF_COMMONTYPE_JOINGUILDAPPROVE, NULL, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, i, DEF_COMMONTYPE_JOINGUILDAPPROVE, NULL, NULL, NULL, NULL);
 
 			// Æ¯¼ºÀÌ ¹Ù²î¹Ç·Î ¿Ü¾çÀ» »õ·Î º¸³½´Ù. 
-			SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
+			SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL); // Centuu - iClientH -> i
 
 			// ´Ù¸¥ ±æµå¿øµé¿¡°Ô »õ ±æµå¿øÀÌ ÀÖÀ½À» ¾Ë¸°´Ù.
 			SendGuildMsg(i, DEF_NOTIFY_NEWGUILDSMAN, NULL, NULL, NULL);
@@ -730,7 +730,7 @@ void CGame::JoinGuildRejectHandler(int iClientH, char* pName)
 		if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, pName, 10) == 0)) {
 
 			// °¡ÀÔ ½ÅÃ»ÀÚ¿¡°Ô °¡ÀÔÀÌ ½ÇÆÐÇßÀ½À» ¾Ë¸®´Â ¸Þ½ÃÁö¸¦ º¸³»ÁØ´Ù.
-			SendNotifyMsg(iClientH, i, DEF_COMMONTYPE_JOINGUILDREJECT, NULL, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, i, DEF_COMMONTYPE_JOINGUILDREJECT, NULL, NULL, NULL, NULL);
 			break;
 		}
 
@@ -755,9 +755,9 @@ void CGame::DismissGuildApproveHandler(int iClientH, char* pName)
 			m_pClientList[i]->m_iGuildRank = -1;
 			m_pClientList[i]->m_iGuildGUID = -1;
 
-			SendNotifyMsg(iClientH, i, DEF_COMMONTYPE_DISMISSGUILDAPPROVE, NULL, NULL, NULL, NULL);
+			SendNotifyMsg(NULL, i, DEF_COMMONTYPE_DISMISSGUILDAPPROVE, NULL, NULL, NULL, NULL);
 
-			SendEventToNearClient_TypeA(iClientH, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
+			SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
 			break;
 		}
 
@@ -939,7 +939,7 @@ void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, DWORD dwMsgSize)
 				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_SUCCESSBANGUILDMAN, NULL, NULL, NULL, NULL);
 
 				// °­Á¦ Å»ÅðµÈ ±æµå¿ø¿¡°Ô °­Á¦ Å»Åð µÇ¾úÀ½À» ¾Ë¸°´Ù.
-				SendNotifyMsg(iClientH, i, DEF_COMMONTYPE_BANGUILD, NULL, NULL, NULL, NULL);
+				SendNotifyMsg(NULL, i, DEF_COMMONTYPE_BANGUILD, NULL, NULL, NULL, NULL);
 
 				// Æ¯¼ºÀÌ ¹Ù²î¹Ç·Î ¿Ü¾çÀ» »õ·Î º¸³½´Ù. 
 				SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_PLAYER, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);

@@ -11,7 +11,7 @@
 #define DEF_SERVERSOCKETBLOCKLIMIT	300
 #define DEF_MAXBANNED				500
 #define DEF_MAXNPCITEMS				1000
-#define DEF_MAXCLIENTS				500		// 2000 -> 500
+#define DEF_MAXCLIENTS				2000		
 #define DEF_MAXNPCS					15000 //LifeX Fix Mobs Respawn Limit 01/01
 #define DEF_MAXITEMTYPES			5000
 #define DEF_CLIENTTIMEOUT			10000
@@ -147,7 +147,7 @@
 
 #define DEF_MSGBUFFERSIZE	30000
 #define DEF_MAXITEMS		50
-#define DEF_MAXBANKITEMS	1000 // 120 -> 1000
+#define DEF_MAXBANKITEMS	120
 #define DEF_MAXGUILDSMAN	128 // 최대 길드원 수 
 
 #define	DEF_MAXMAGICTYPE	100	// 변경하려면 로그서버내용도 바꾸어야 한다.
