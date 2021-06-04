@@ -43,6 +43,8 @@
 
 //#define DEF_WINDOWED_MODE														// Windowed Mode
 
+//#define DEF_USE_OLD_PANELS			// Centuu : Used for old style panels
+
 
 #define DEF_ANTI_HACK			// Snoopy: Mes antiHacks personels!
 								// changes CCM routine to send "real checked time" instead of "sending time". 

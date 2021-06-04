@@ -155,6 +155,8 @@ class CGame
 {
 public:
 
+	int chatmode = 99;
+
 	int dice(int _throw, int range);
 
 	bool m_bNpcMap;

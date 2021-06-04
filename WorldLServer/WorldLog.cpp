@@ -2744,22 +2744,9 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 		SACommand com4;
 		SACommand com5;
 
-		SACommand accID;
-
 		try
 		{
-			accID.setConnection(&con);
-			accID.setCommandText("SELECT [Account-ID] FROM Characters WHERE [Character-ID] = :1");
-			accID.Param(1).setAsLong() = iCharDBID;
-			accID.Execute();
-			if (accID.RowsAffected() > 0)
-			{
-				while (accID.FetchNext())
-				{
-					iAccountID = accID.Field("Account-ID").asLong();
-				}
-			}
-			accID.Close();
+			iAccountID = iGetAccountDatabaseID(cAccountName);
 
 			com3.setConnection(&con);
 			com3.setCommandText("DELETE FROM CharItems WHERE [Character-ID] = :1");

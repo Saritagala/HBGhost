@@ -12920,14 +12920,14 @@ void CGame::DrawDialogBox_NpcActionQuery(short msX, short msY)
 				PutString(sX + 29, sY + 55, DRAW_DIALOGBOX_NPCACTION_QUERY17, RGB(4, 0, 50));
 			}
 			// Centu - Guild Warehouse
-			if ((msX > sX + 152) && (msX < sX + 200) && (msY > sY + 23) && (msY < sY + 38)) {
+			/*if ((msX > sX + 152) && (msX < sX + 200) && (msY > sY + 23) && (msY < sY + 38)) {
 				PutString(sX + 155, sY + 23, "Guild", RGB(255, 255, 255));
 				PutString(sX + 156, sY + 23, "Guild", RGB(255, 255, 255));
 			}
 			else {
 				PutString(sX + 155, sY + 23, "Guild", RGB(4, 0, 50));
 				PutString(sX + 156, sY + 23, "Guild", RGB(4, 0, 50));
-			}
+			}*/
 		}
 		else if (m_stDialogBoxInfo[20].sV3 == 19) // CLEROTH: MAGICIAN
 		{   // LEARN
@@ -14341,6 +14341,7 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 	}
 }
 
+#ifdef DEF_USE_OLD_PANELS
 void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
@@ -14443,7 +14444,144 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 		break;
 	}
 }
+#else // Centuu : Skills
+void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
+{
+	short sX, sY;
+	int  i, iTotalLines, iPointerLoc;
+	char cTemp[255], cTemp2[255], cTemp3[255];
+	double d1, d2, d3;
 
+	sX = m_stDialogBoxInfo[15].sX;
+	sY = m_stDialogBoxInfo[15].sY;
+
+	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 0); // Normal Dialog
+	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 1); // Skill Dialog Title Bar
+
+	short limitX, limitY;
+	limitX = sX + m_stDialogBoxInfo[15].sSizeX + 20;
+	limitY = sY + m_stDialogBoxInfo[15].sSizeY + 25;
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	PutString_SprFont2(sX + 115, sY + 5, "Skills", 240, 240, 240);
+
+	PutString(sX + 30, sY + 15 + 15, "Name", RGB(0, 255, 0));
+	PutString(sX + 150, sY + 15 + 15, "Progress", RGB(0, 255, 0));
+	PutString(sX + 183 + 30 + 10, sY + 15 + 15, "Level", RGB(0, 255, 0));
+
+	switch (m_stDialogBoxInfo[15].cMode) {
+	case 0:
+		int x = 0;
+		for (i = 0; i < 24; i++)
+			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != NULL))
+			{
+				if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
+
+				ZeroMemory(cTemp, sizeof(cTemp));
+				wsprintf(cTemp, "%s", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName);
+				m_Misc.ReplaceString(cTemp, '-', ' ');
+				ZeroMemory(cTemp2, sizeof(cTemp2));
+				wsprintf(cTemp2, "%3d", m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel);
+
+				if (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel < 100) {
+					ZeroMemory(cTemp3, sizeof(cTemp3));
+					wsprintf(cTemp3, "%d/%d", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView], m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel + 1);
+				}
+				else
+				{
+					ZeroMemory(cTemp3, sizeof(cTemp3));
+					wsprintf(cTemp3, "%d/---", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+				}
+				if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
+				{
+					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
+					{
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 0));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 0);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 0));
+					}
+					else
+					{
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 255));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 255);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 255));
+					}
+				}
+				else
+				{
+					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
+					{
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(70, 130, 180));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 70, 130, 180);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(70, 130, 180));
+					}
+					else
+					{
+						PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 255));
+						PutAlignedString(sX + 153, sX + 153 + 40, sY + 30 + (x * 15) + 15, cTemp3, 255, 255, 255);
+						PutString(sX + 183 + 30 + 15, sY + 30 + (x * 15) + 15, cTemp2, RGB(255, 255, 255));
+					}
+				}
+
+				//if (m_iDownSkillIndex == (i + m_stDialogBoxInfo[15].sView))
+				//	m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutTransSpriteRGB(sX + 215, sY + 27 + (x * 15), 21, 50, 50, 50, m_dwTime);
+				//else m_pSprite[DEF_SPRID_INTERFACE_ADDINTERFACE]->PutSpriteFast(sX + 215, sY + 27 + (x * 15), 20, m_dwTime);
+
+				x++;
+			}
+
+		/*
+		iTotalLines = 0;
+		for (i = 0; i < DEF_MAXSKILLTYPE; i++)
+			if (m_pSkillCfgList[i] != NULL) iTotalLines++;
+		if (iTotalLines > 17)
+		{
+			d1 = (double)m_stDialogBoxInfo[15].sView;
+			d2 = (double)(iTotalLines - 17);
+			d3 = (274.0f * d1) / d2;
+			iPointerLoc = (int)d3;
+		}
+		else iPointerLoc = 0;
+		if (iTotalLines > 17)
+		{
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 1);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
+		}
+		if (cLB != 0 && iTotalLines > 17)
+		{
+			if ((iGetTopDialogBoxIndex() == 15))
+			{
+				if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 30) && (msY <= sY + 320))
+				{
+					d1 = (double)(msY - (sY + 35));
+					d2 = (double)(iTotalLines - 17);
+					d3 = (d1 * d2) / 274.0f;
+					iPointerLoc = (int)(d3 + 0.5f);
+					if (iPointerLoc > iTotalLines - 17) iPointerLoc = iTotalLines - 17;
+					m_stDialogBoxInfo[15].sView = iPointerLoc;
+				}
+			}
+		}
+		else m_stDialogBoxInfo[15].bIsScrollSelected = FALSE;
+		if (iGetTopDialogBoxIndex() == 15 && msZ != 0)
+		{
+			if (msZ > 0) m_stDialogBoxInfo[15].sView--;
+			if (msZ < 0) m_stDialogBoxInfo[15].sView++;
+			m_DInput.m_sZ = 0;
+		}
+		if (m_stDialogBoxInfo[15].sView < 0) m_stDialogBoxInfo[15].sView = 0;
+		if (iTotalLines > 17 && m_stDialogBoxInfo[15].sView > iTotalLines - 17) m_stDialogBoxInfo[15].sView = iTotalLines - 17;
+		*/
+		break;
+	}
+}
+#endif
 void CGame::DrawDialogBox_SkillDlg(short msX, short msY, short msZ, char cLB)
 {
 	int i, iLoc, iAdjX, iAdjY;
@@ -16265,6 +16403,7 @@ void CGame::DlgBoxClick_Shop(short msX, short msY)
 	}
 }
 
+#ifdef DEF_USE_OLD_PANELS
 void CGame::DlgBoxClick_Skill(short msX, short msY)
 {
 	int i;
@@ -16321,6 +16460,67 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 		break;
 	}
 }
+#else // Centuu : Skill
+void CGame::DlgBoxClick_Skill(short msX, short msY)
+{
+	int i;
+	short sX, sY;
+	sX = m_stDialogBoxInfo[15].sX;
+	sY = m_stDialogBoxInfo[15].sY;
+	switch (m_stDialogBoxInfo[15].cMode) {
+	case -1:
+		break;
+	case 0:
+		int x = 0;
+		for (i = 0; i < 24; i++)
+			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != NULL))
+			{
+				if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
+				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
+				{
+					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
+					{
+						if (m_bSkillUsingStatus == TRUE)
+						{
+							AddEventList(DLGBOX_CLICK_SKILL1, 10); // "You are already using other skill."
+							return;
+						}
+						if ((m_bCommandAvailable == FALSE) || (m_iHP <= 0))
+						{
+							AddEventList(DLGBOX_CLICK_SKILL2, 10); // "You can't use a skill while you are moving."
+							return;
+						}
+						if (m_bIsGetPointingMode == TRUE)
+						{
+							return;
+						}
+						switch (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cUseMethod) {
+						case 0:
+						case 2:
+							bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USESKILL, NULL, (i + m_stDialogBoxInfo[15].sView), NULL, NULL, NULL);
+							m_bSkillUsingStatus = TRUE;
+							DisableDialogBox(15);
+							PlaySound('E', 14, 5);
+							break;
+						}
+					}
+				}
+				/*else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
+				{
+					if (m_stDialogBoxInfo[15].bFlag == FALSE)
+					{
+						bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_SETDOWNSKILLINDEX, NULL, i + m_stDialogBoxInfo[15].sView, NULL, NULL, NULL);
+						PlaySound('E', 14, 5);
+						m_stDialogBoxInfo[15].bFlag = TRUE;
+					}
+				}*/
+				x++;
+			}
+		break;
+	}
+}
+#endif
 
 void CGame::DlgBoxClick_SkillDlg(short msX, short msY)
 {
@@ -20150,7 +20350,7 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 				break;
 
 			case 58: // Centu - Guild Warehouse
-				DrawDialogBox_GuildBank(msX, msY, msZ, cLB); //@@@
+				//DrawDialogBox_GuildBank(msX, msY, msZ, cLB); //@@@
 				break;
 
 			case 59:
@@ -21689,12 +21889,12 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 		break;
 
 	case 58: // Centuu : Guild Warehouse
-		EndInputString();
+		/*EndInputString();
 		if (m_bIsDialogEnabled[iBoxID] == false) {
 			m_stDialogBoxInfo[iBoxID].cMode = 0;
 			m_stDialogBoxInfo[iBoxID].sView = 0;
 			EnableDialogBox(2, NULL, NULL, NULL);
-		}
+		}*/
 		break;
 
 	case 59: // Magn0S - Quest List
