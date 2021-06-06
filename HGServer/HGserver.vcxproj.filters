@@ -215,9 +215,6 @@
     <ClCompile Include="XSocket.cpp">
       <Filter>source</Filter>
     </ClCompile>
-    <ClCompile Include="Apocalypse.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
     <ClCompile Include="Crusade.cpp">
       <Filter>source</Filter>
     </ClCompile>
@@ -238,6 +235,9 @@
     </ClCompile>
     <ClCompile Include="Team.cpp">
       <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="Apocalypse.cpp">
+      <Filter>header</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

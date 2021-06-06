@@ -114,6 +114,8 @@ public:
 
 private:
 
+	void ResetStatsHandler(int iClientH, char* pData, DWORD dwMsgSize);
+
 	short m_sJailTime;
 
 	void ShowSpellEffect2(int iClientH, short sType, int ownertype);

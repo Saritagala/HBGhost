@@ -1979,7 +1979,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			}
 
 			//Magn0S:: Multiplicador de Gold
-			//pItem->m_dwCount *= 10;
+			pItem->m_dwCount *= 10;
 		}
 		else {
 

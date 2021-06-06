@@ -4345,7 +4345,6 @@ void CWorldLog::UpdateGuildInfoNewGuildsman(int iClientH, char* pData)
 	if (G_bDBMode == true) 
 	{
 			SACommand com;
-			SACommand gid;
 
 			/*char cTemp[256];
 			ZeroMemory(cTemp, sizeof(cTemp));
@@ -4353,25 +4352,9 @@ void CWorldLog::UpdateGuildInfoNewGuildsman(int iClientH, char* pData)
 
 			try
 			{
-				gid.setConnection(&con);
-				gid.setCommandText("SELECT [Guild-ID] FROM Guilds WHERE [Guild-Name] = :1");
-				gid.Param(1).setAsString() = cGuildName;
-
-				gid.Execute();
-
-				if (gid.isResultSet())
-				{
-					while (gid.FetchNext())
-					{
-						iGuildID = gid.Field("Guild-ID").asLong();
-					}
-				}
-				
-				gid.Close();
-
 				com.setConnection(&con);
-				com.setCommandText("INSERT INTO GuildMembers ([Guild-ID], [Character-Name]) VALUES (:1, :2)");
-				com.Param(1).setAsLong() = iGuildID;
+				com.setCommandText("INSERT INTO GuildMembers ([Guild-Name], [Character-Name]) VALUES (:1, :2)");
+				com.Param(1).setAsString() = cGuildName;
 				com.Param(2).setAsString() = cCharacterName;
 
 				com.Execute();
@@ -4723,14 +4706,14 @@ void CWorldLog::ForceDisconnectAccount(int iClientH, char* pData)
 
 	for (i = 0; i < DEF_MAXPLAYERACCOUNTS; i++) {
 		if (m_pAccountList[i] != NULL) {
-			if (memcmp(m_pAccountList[i]->cAccountName, cAccountName, 10) != 0) { // == true
+			if (memcmp(m_pAccountList[i]->cAccountName, cAccountName, 10) == 0) { // == true
 				if (m_pAccountList[i]->cAccountType == 1) return;
 				if (m_pAccountList[i]->cAccountType == 2) return;
 				ZeroMemory(cGameServerName, sizeof(cGameServerName));
-				strcpy(cGameServerName, m_pAccountList[i]->m_cOnGameServer);
+				memcpy(cGameServerName, m_pAccountList[i]->m_cOnGameServer, 10);
 				for (x = 0; x < DEF_MAXGAMESERVERS; x++) {
 					if (m_pGameList[x] != NULL) {
-						if (memcmp(m_pGameList[x]->m_cGameServerName, cGameServerName, 10) != 0) { // == true
+						if (memcmp(m_pGameList[x]->m_cGameServerName, cGameServerName, 10) == 0) { // == true
 							iClientH = m_pGameList[x]->m_iTrackSock;
 
 							ZeroMemory(cData, sizeof(cData));

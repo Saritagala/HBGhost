@@ -1736,6 +1736,7 @@ bool CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
         iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
         break;
 
+	case DEF_REQUEST_RESET_STATS:
 	case DEF_REQUEST_CHANGE_CLASS:
 	case DEF_REQUEST_ANGEL:	// to Game Server
 		dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
@@ -2443,37 +2444,16 @@ bool CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 		// Diuuude
 		dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 		*dwp = dwMsgID;
-
 		wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 		*wp = NULL;
-
 		cp = (char*)(cMsg + DEF_INDEX2_MSGTYPE + 2);
-
-		sp = (short*)cp;
-		*sp = cStr;
-		cp += 2;
-
-		sp = (short*)cp;
-		*sp = cVit;
-		cp += 2;
-
-		sp = (short*)cp;
-		*sp = cDex;
-		cp += 2;
-
-		sp = (short*)cp;
-		*sp = cInt;
-		cp += 2;
-
-		sp = (short*)cp;
-		*sp = cMag;
-		cp += 2;
-
-		sp = (short*)cp;
-		*sp = cChar;
-		cp += 2;
-
-		iRet = m_pGSock->iSendMsg(cMsg, 18);
+		*cp = cStateChange1;
+		cp++;
+		*cp = cStateChange2;
+		cp++;
+		*cp = cStateChange3;
+		cp++;
+		iRet = m_pGSock->iSendMsg(cMsg, 12);
 		break;
 
 	default:
@@ -20708,14 +20688,15 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 		DisableDialogBox(12);
 		PlaySound('E', 14, 5);
 	}
-	/*if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+	if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 	{	// Change stats with Majestic
 		if (   (m_iGizonItemUpgradeLeft >0) && (m_iLU_Point <= 0)
 			&& (m_cLU_Str == 0)&&(m_cLU_Vit == 0)&&(m_cLU_Dex == 0)&&(m_cLU_Int == 0)&&(m_cLU_Mag == 0)&&(m_cLU_Char == 0))
 		{	DisableDialogBox(12);
 			iPrevGizon = m_iGizonItemUpgradeLeft;
 			EnableDialogBox(42, 0, 0, 0);
-	}	}*/
+			PlaySound('E', 14, 5);
+	}	}
 }
 
 void CGame::CannotConstruct(int iCode)
@@ -28887,7 +28868,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		break;
 
 	// MJ Stats Change - Diuuude: Erreur, ici il s'agit de sorts et skills, le serveur comme la v351 sont aussi bugués !
-	case DEF_NOTIFY_STATECHANGE_SUCCESS:	// 0x0BB5
+	case DEF_NOTIFY_STATECHANGE_SUCCESS2:	// 0x0BB5
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
 		
 		/*for (i = 0; i < DEF_MAXMAGICTYPE; i++)
@@ -28945,6 +28926,32 @@ void CGame::NotifyMsgHandler(char * pData)
 
 		AddEventList("Your stat has been changed.", 10); // "Your stat has been changed."
 
+		break;
+
+	case DEF_NOTIFY_STATECHANGE_SUCCESS:	// 0x0BB5
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		for (i = 0; i < DEF_MAXMAGICTYPE; i++)
+		{
+			m_cMagicMastery[i] = *cp;
+			cp++;
+		}
+		/*for (i = 0; i < DEF_MAXSKILLTYPE; i++)
+		{
+			m_cSkillMastery[i] = (unsigned char)*cp;
+			if (m_pSkillCfgList[i] != NULL)
+				m_pSkillCfgList[i]->m_iLevel = (int)*cp;
+			cp++;
+		}*/
+		// MJ Stats Change - Diuuude
+		m_iStr += m_cLU_Str;
+		m_iVit += m_cLU_Vit;
+		m_iDex += m_cLU_Dex;
+		m_iInt += m_cLU_Int;
+		m_iMag += m_cLU_Mag;
+		m_iCharisma += m_cLU_Char;
+		m_iLU_Point = m_iLevel * 3 - ((m_iStr + m_iVit + m_iDex + m_iInt + m_iMag + m_iCharisma) - 70) - 3;
+		m_cLU_Str = m_cLU_Vit = m_cLU_Dex = m_cLU_Int = m_cLU_Mag = m_cLU_Char = 0;
+		AddEventList("Your stat has been changed.", 10); // "Your stat has been changed."
 		break;
 
 	case DEF_NOTIFY_LEVELUP: // 0x0B16

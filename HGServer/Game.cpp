@@ -5424,15 +5424,17 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				break;
 
 			case 50:
-				if (_bGetIsStringIsNumber(token) == false) {
+				/*if (_bGetIsStringIsNumber(token) == false) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - m_ItemPosList[].x ", m_pClientList[iClientH]->m_cCharName); 
 					PutLogList(cTxt);
 					delete[] pContents;
 					delete pStrTok;
 					return false;
-				}
+				}*/
 
 				m_pClientList[iClientH]->m_ItemPosList[cReadModeB-1].x = atoi(token);
+				if (m_pClientList[iClientH]->m_ItemPosList[cReadModeB - 1].x < -10) m_pClientList[iClientH]->m_ItemPosList[cReadModeB - 1].x = -10;
+
 				cReadModeB++;
 				if (cReadModeB > 50) {
 					cReadModeA = 0;
@@ -5441,13 +5443,13 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				break;
 
 			case 51:
-				if (_bGetIsStringIsNumber(token) == false) {
+				/*if (_bGetIsStringIsNumber(token) == false) {
 					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - m_ItemPosList[].y ", m_pClientList[iClientH]->m_cCharName); 
 					PutLogList(cTxt);
 					delete[] pContents;
 					delete pStrTok;
 					return false;
-				}
+				}*/
 
 				m_pClientList[iClientH]->m_ItemPosList[cReadModeB-1].y = atoi(token);
 				// v1.3 Àß¸øµÈ À§Ä¡°ªÀ» º¸Á¤ÇÑ´Ù. 
@@ -9876,6 +9878,10 @@ DWORD * dwp, dwTimeRcv;
 				ChangeClassHandler(iClientH, pData, dwMsgSize);
 				break;
 
+			case DEF_REQUEST_RESET_STATS:
+				ResetStatsHandler(iClientH, pData, dwMsgSize);
+				break;
+
 			case MSGID_REQUEST_LEAVEARENA:
 				RequestLeaveArena(iClientH);
 				break;
@@ -11332,89 +11338,107 @@ int CGame::iGetLevelExp(int iLevel)
 /////////////////////////////////////////////////////////////////////////////////////
 void CGame::StateChangeHandler(int iClientH, char* pData, DWORD dwMsgSize)
 {
-	char* cp;
-	short* sp, cStr, cVit, cDex, cInt, cMag, cChar;
-
+	char* cp, cStateChange1, cStateChange2, cStateChange3;
+	char cStr, cVit, cDex, cInt, cMag, cChar;
+	int iOldStr, iOldVit, iOldDex, iOldInt, iOldMag, iOldChar;
 	if (m_pClientList[iClientH] == NULL) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
 	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0) return;
-
 	cStr = cVit = cDex = cInt = cMag = cChar = 0;
-
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	cStateChange1 = *cp;
+	cp++;
+	cStateChange2 = *cp;
+	cp++;
+	cStateChange3 = *cp;
+	cp++;
+	iOldStr = m_pClientList[iClientH]->m_iStr;
+	iOldVit = m_pClientList[iClientH]->m_iVit;
+	iOldDex = m_pClientList[iClientH]->m_iDex;
+	iOldInt = m_pClientList[iClientH]->m_iInt;
+	iOldMag = m_pClientList[iClientH]->m_iMag;
+	iOldChar = m_pClientList[iClientH]->m_iCharisma;
 
-	sp = (short*)cp;
-	cStr = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	cVit = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	cDex = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	cInt = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	cMag = *sp;
-	cp += 2;
-
-	sp = (short*)cp;
-	cChar = *sp;
-	cp += 2;
-
-	if (m_pClientList[iClientH]->m_iStr - cStr < 10)
+	if (!bChangeState(cStateChange1, &cStr, &cVit, &cDex, &cInt, &cMag, &cChar))
+	{	// SNOOPY: Stats order was wrong here !
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+		return;
+	}
+	if (!bChangeState(cStateChange2, &cStr, &cVit, &cDex, &cInt, &cMag, &cChar))
+	{	// SNOOPY: Stats order was wrong here !
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+		return;
+	}
+	if (!bChangeState(cStateChange3, &cStr, &cVit, &cDex, &cInt, &cMag, &cChar))
+	{	// SNOOPY: Stats order was wrong here !
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+		return;
+	}
+	/*if(m_pClientList[iClientH]->m_iGuildRank == 0 )
+	{	if(m_pClientList[iClientH]->m_iCharisma - cChar < 20)
+		{	// gm cn't drop charisma below 20
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+			return;
+	}	}
+	if(iOldStr +iOldVit	+iOldDex +iOldInt +iOldMag +iOldChar != ((m_iPlayerMaxLevel-1)*3 + 70))
+	{	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+		return;
+	}*/
+	if (cStr < 0 || cVit < 0 || cDex < 0 || cInt < 0 || cMag < 0 || cChar < 0
+		|| cStr + cVit + cDex + cInt + cMag + cChar != 3)
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if (m_pClientList[iClientH]->m_iVit - cVit < 10)
+	if ((m_pClientList[iClientH]->m_iStr - cStr > m_sCharStatLimit)
+		|| (m_pClientList[iClientH]->m_iStr - cStr < 10))
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if (m_pClientList[iClientH]->m_iDex - cDex < 10)
+	if ((m_pClientList[iClientH]->m_iVit - cVit > m_sCharStatLimit)
+		|| (m_pClientList[iClientH]->m_iVit - cVit < 10))
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if (m_pClientList[iClientH]->m_iInt - cInt < 10)
+	if ((m_pClientList[iClientH]->m_iDex - cDex > m_sCharStatLimit)
+		|| (m_pClientList[iClientH]->m_iDex - cDex < 10))
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if (m_pClientList[iClientH]->m_iMag - cMag < 10)
+	if ((m_pClientList[iClientH]->m_iInt - cInt > m_sCharStatLimit)
+		|| (m_pClientList[iClientH]->m_iInt - cInt < 10))
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-	if (m_pClientList[iClientH]->m_iCharisma - cChar < 10)
+	if ((m_pClientList[iClientH]->m_iMag - cMag > m_sCharStatLimit)
+		|| (m_pClientList[iClientH]->m_iMag - cMag < 10))
 	{
 		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
 		return;
 	}
-
-	m_pClientList[iClientH]->m_iLU_Pool += (cStr + cVit + cDex + cInt + cMag + cChar);
-	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= (cStr + cVit + cDex + cInt + cMag + cChar);
-
+	if ((m_pClientList[iClientH]->m_iCharisma - cChar > m_sCharStatLimit)
+		|| (m_pClientList[iClientH]->m_iCharisma - cChar < 10))
+	{
+		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_FAILED, NULL, NULL, NULL, NULL);
+		return;
+	}
+	m_pClientList[iClientH]->m_iLU_Pool += 3;
+	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft--;
 	m_pClientList[iClientH]->m_iStr -= cStr;
 	m_pClientList[iClientH]->m_iVit -= cVit;
 	m_pClientList[iClientH]->m_iDex -= cDex;
 	m_pClientList[iClientH]->m_iInt -= cInt;
 	m_pClientList[iClientH]->m_iMag -= cMag;
 	m_pClientList[iClientH]->m_iCharisma -= cChar;
-
 	if (cInt > 0) bCheckMagicInt(iClientH);
-
 	// Snoopy: Check max values here or character will be considered as hacker if reducing mana or vit
-	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, false);
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
-
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
 	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS, NULL, NULL, NULL, NULL);
 }
@@ -22641,6 +22665,17 @@ bool CGame::_bCheckCharacterData(int iClientH)
  int i;
  int iTotalPoints;
 
+	for (i = 0; i < DEF_MAXBANNED; i++) {
+		 if (strlen(m_stBannedList[i].m_cBannedIPaddress) == 0) break; //No more GM's on list
+		 if ((strlen(m_stBannedList[i].m_cBannedIPaddress)) == (strlen(m_pClientList[iClientH]->m_cIPaddress))) {
+			 if (memcmp(m_stBannedList[i].m_cBannedIPaddress, m_pClientList[iClientH]->m_cIPaddress, strlen(m_pClientList[iClientH]->m_cIPaddress)) == 0) {
+				 wsprintf(G_cTxt, "Client Rejected: Banned: (%s)", m_pClientList[iClientH]->m_cIPaddress);
+				 PutLogList(G_cTxt);
+				 return false;
+			 }
+		 }
+	}
+
 	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0) return true;
 
 	if (m_pClientList[iClientH]->m_iStr > m_sCharStatLimit) {
@@ -22716,17 +22751,6 @@ bool CGame::_bCheckCharacterData(int iClientH)
 		PutHackLogFileList(G_cTxt);
 		PutLogList(G_cTxt);*/
 		m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
-	}
-
-	for (i = 0; i < DEF_MAXBANNED; i++) {
-		if(strlen(m_stBannedList[i].m_cBannedIPaddress) == 0) break; //No more GM's on list
-		if ((strlen(m_stBannedList[i].m_cBannedIPaddress)) == (strlen(m_pClientList[iClientH]->m_cIPaddress))) {
-			if(memcmp(m_stBannedList[i].m_cBannedIPaddress, m_pClientList[iClientH]->m_cIPaddress, strlen(m_pClientList[iClientH]->m_cIPaddress)) == 0){
-				wsprintf(G_cTxt,"Client Rejected: Banned: (%s)", m_pClientList[iClientH]->m_cIPaddress);
-				PutLogList(G_cTxt);
-				return false;
-			}
-		}
 	}
 
 	return true;
@@ -24732,7 +24756,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 34);
 		break;
 
-	case DEF_NOTIFY_STATECHANGE_SUCCESS:
+	case DEF_NOTIFY_STATECHANGE_SUCCESS2:
 		ip = (int*)cp;
 		*ip = m_pClientList[iToH]->m_iStr;
 		cp += 4;
@@ -24765,6 +24789,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 30 + DEF_MAXMAGICTYPE);
 		break;
 
+	case DEF_NOTIFY_STATECHANGE_SUCCESS:
 	case DEF_NOTIFY_SETTING_SUCCESS:
 	case DEF_NOTIFY_LEVELUP:
 		ip = (int*)cp;
@@ -30920,7 +30945,81 @@ void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
 		}
 	}
 
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS, NULL, NULL, NULL, NULL);
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS2, NULL, NULL, NULL, NULL);
+}
+
+void CGame::ResetStatsHandler(int iClientH, char* pData, DWORD dwMsgSize)
+{
+	char* cp, cTmpName[5];
+	int   i, iClass, * ip, iStr = 0, iDex = 0, iVit = 0, iMag = 0, iChar = 0, iInt = 0;
+	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
+	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft < 500) return;
+	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+	ZeroMemory(cTmpName, sizeof(cTmpName));
+	strcpy(cTmpName, cp);
+	cp += 5;
+	ip = (int*)cp;
+	iClass = *ip; // 0x00 l a i
+	cp += 4;
+	//m_pClientList[iClientH]->m_iClass = iClass;
+	m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= 300;
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, NULL, NULL, NULL);
+
+	switch (iClass) {
+	case 1:
+		m_pClientList[iClientH]->m_iStr = 14;
+		m_pClientList[iClientH]->m_iDex = 14;
+		m_pClientList[iClientH]->m_iVit = 12;
+		m_pClientList[iClientH]->m_iInt = 10;
+		m_pClientList[iClientH]->m_iMag = 10;
+		m_pClientList[iClientH]->m_iCharisma = 10;
+		//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Warrior!");
+		break;
+	case 2:
+		m_pClientList[iClientH]->m_iStr = 10;
+		m_pClientList[iClientH]->m_iDex = 10;
+		m_pClientList[iClientH]->m_iVit = 12;
+		m_pClientList[iClientH]->m_iInt = 14;
+		m_pClientList[iClientH]->m_iMag = 14;
+		m_pClientList[iClientH]->m_iCharisma = 10;
+		//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now a Magician!");
+		break;
+	case 3:
+		m_pClientList[iClientH]->m_iStr = 10;
+		m_pClientList[iClientH]->m_iDex = 14;
+		m_pClientList[iClientH]->m_iVit = 12;
+		m_pClientList[iClientH]->m_iInt = 10;
+		m_pClientList[iClientH]->m_iMag = 10;
+		m_pClientList[iClientH]->m_iCharisma = 14;
+		//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "You're now an Archer!");
+		break;
+	}
+
+	int iStats = (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iDex + m_pClientList[iClientH]->m_iVit +
+		m_pClientList[iClientH]->m_iInt + m_pClientList[iClientH]->m_iMag + m_pClientList[iClientH]->m_iCharisma);
+
+	m_pClientList[iClientH]->m_iLU_Pool = m_pClientList[iClientH]->m_iLevel * 3 - (iStats - 70) - 3;
+
+	for (i = 0; i < DEF_MAXMAGICTYPE; i++)
+	{
+		m_pClientList[iClientH]->m_cMagicMastery[i] = 0;
+	}
+
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, false);
+	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
+	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		if (m_pClientList[iClientH]->m_bIsItemEquipped[i])
+		{
+			ReleaseItemHandler(iClientH, i, true);
+			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_pItemList[i]->m_cEquipPos, i, NULL, NULL);
+		}
+	}
+
+	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_STATECHANGE_SUCCESS2, NULL, NULL, NULL, NULL);
 }
 
 void CGame::DeathmatchStarter()

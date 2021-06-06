@@ -151,7 +151,7 @@
 #define DEF_MAXGUILDSMAN	128 // 최대 길드원 수 
 
 #define	DEF_MAXMAGICTYPE	100	// 변경하려면 로그서버내용도 바꾸어야 한다.
-#define DEF_MAXSKILLTYPE	24
+#define DEF_MAXSKILLTYPE	60
 
 #define DEF_MAXPARTYMEMBERS	8
 
