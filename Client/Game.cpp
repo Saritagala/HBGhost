@@ -33217,6 +33217,12 @@ bool CGame::bCheckLocalChatCommand(char * pMsg)
 		GoHomepage();
 		return true;
 	}
+	else if (memcmp(cBuff, "/tkt", 4) == 0)
+	{
+		sWebID = 5;
+		GoHomepage();
+		return true;
+	}
 	else if (memcmp(cBuff, "/staff", 6) == 0)
 	{
 		sWebID = 13;

@@ -24112,7 +24112,7 @@ void CGame::GoHomepage()
 		url = "http://www.helbreathghost.com/armors.html";
 		break;
 	case 5: // Ball Points
-		
+		url = "https://www.helbreathghost.com/helpdesk";
 		break;
 	case 6: // Maps Online
 		url = "http://www.helbreathghost.com/maps.html";
