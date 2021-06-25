@@ -1,6 +1,3 @@
 notify_msg = Welcome to Helbreath Ghost.-
 notify_msg = Any bug or suggestion please report on Discord.
 notify_msg = Don't forget to visit our Discord for news!
-notify_msg = Teleport to Barracks in Cityhall.
-notify_msg = Teleport to Barracks in Cityhall.
-notify_msg = Teleport to Barracks in Cityhall.

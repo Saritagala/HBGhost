@@ -1959,7 +1959,7 @@ void CGame::HeldenianEndWarNow()
 			m_cHeldenianWinner = m_sLastHeldenianWinner;
 		}
 	}
-	switch (m_cHeldenianWinner) {
+	/*switch (m_cHeldenianWinner) {
 	case 1:
 		PutLogList("Heldenian Terminated, Aresden's victory.");
 		break;
@@ -1969,7 +1969,7 @@ void CGame::HeldenianEndWarNow()
 	default:
 		PutLogList("Heldenian Terminated, Draw.");
 		break;
-	}
+	}*/
 
 	GlobalEndHeldenianMode();
 }
