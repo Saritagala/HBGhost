@@ -155,6 +155,8 @@ class CGame
 {
 public:
 
+	int m_iAddAbsHoly = 0, m_iAddAbsUnholy = 0;
+
 	int chatmode = 99;
 
 	int dice(int _throw, int range);

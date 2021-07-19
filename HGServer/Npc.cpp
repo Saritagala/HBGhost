@@ -38,16 +38,16 @@ CNpc::CNpc(char * pName5)
 	m_bIsSummoned       = false;
 	m_bIsPermAttackMode = false;
 
-	m_dwRegenTime = NULL;
+	m_dwRegenTime = 0;
 	m_bIsKilled   = false;
 
-	m_sOriginalType      = NULL;
-	m_iSummonControlMode = NULL;
+	m_sOriginalType      = 0;
+	m_iSummonControlMode = 0;
 	
-	m_cAttribute = NULL;
-	m_iAbsDamage = NULL;
-	m_iStatus    = NULL;
-	m_sAppr2     = NULL;
+	m_cAttribute = 0;
+	m_iAbsDamage = 0;
+	m_iStatus    = 0;
+	m_sAppr2     = 0;
 
 	m_iAttackRange    = 1;
 	m_cSpecialAbility = 0;
@@ -67,7 +67,7 @@ CNpc::CNpc(char * pName5)
 	m_cCropSkill = 0;
 
 	m_bIsMaster  = false;
-	m_iGuildGUID = NULL;
+	m_iGuildGUID = 0;
 	m_iV1 = 0;
 
 	m_iNpcItemType = 0;
@@ -86,9 +86,9 @@ CNpcItem::CNpcItem()
     ZeroMemory(m_cName, sizeof(m_cName));
     m_sItemID = 0;          // 2002-09-09 #1
     m_sFirstProbability = 0;
-    m_cFirstTargetValue = NULL;
+    m_cFirstTargetValue = 0;
     m_sSecondProbability = 0;
-    m_cSecondTargetValue = NULL;
+    m_cSecondTargetValue = 0;
 }
 
 void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
@@ -99,8 +99,8 @@ void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
 	char  cOwnerType, cTargetType, cTargetSide;
 	int   iInv;
 
-	sTargetOwner = NULL;
-	cTargetType = NULL;
+	sTargetOwner = 0;
+	cTargetType = 0;
 	sDistance = 100;
 
 	sX = m_pNpcList[iNpcH]->m_sX;
@@ -114,7 +114,7 @@ void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
 		for (iy = rY; iy < rY + m_pNpcList[iNpcH]->m_cTargetSearchRange * 2 + 1; iy++) {
 
 			m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->GetOwner(&sOwner, &cOwnerType, ix, iy);
-			if (sOwner != NULL) {
+			if (sOwner != 0) {
 				// ¹«¾ð°¡ ¹ß°ßµÇ¾ú´Ù. 
 				if ((sOwner == iNpcH) && (cOwnerType == DEF_OWNERTYPE_NPC)) break; // ÀÚ±â ÀÚ½ÅÀÌ¸é ¹«½Ã 
 
@@ -123,7 +123,7 @@ void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
 				iPKCount = 0;
 				switch (cOwnerType) {
 				case DEF_OWNERTYPE_PLAYER:
-					if (m_pClientList[sOwner] == NULL) {
+					if (m_pClientList[sOwner] == 0) {
 						// Àß¸øµÈ ÀÎµ¦½º¸¦ °¡Áø °ªÀÌ´Ù. Å¬¸®¾îÇÑ´Ù.	
 						m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->ClearOwner(5, sOwner, DEF_OWNERTYPE_PLAYER, ix, iy);
 					}
@@ -139,7 +139,7 @@ void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
 					break;
 
 				case DEF_OWNERTYPE_NPC:
-					if (m_pNpcList[sOwner] == NULL) {
+					if (m_pNpcList[sOwner] == 0) {
 						// Àß¸øµÈ ÀÎµ¦½º¸¦ °¡Áø °ªÀÌ´Ù. Å¬¸®¾îÇÑ´Ù.	
 						m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->ClearOwner(6, sOwner, DEF_OWNERTYPE_NPC, ix, iy);
 					}
@@ -153,8 +153,8 @@ void CGame::TargetSearch(int iNpcH, short* pTarget, char* pTargetType)
 						if (m_pNpcList[iNpcH]->m_sType == 21) {
 							// ¸¸¾à °æºñ°¡ NPC¸¦ ¸ñÇ¥¹°À» Ã£´Â °ÍÀÌ¶ó¸é NPCÁÖÀ§¿¡ ÇÃ·¹ÀÌ¾î°¡ ¸¹ÀÌ ÀÖ´Ù¸é °ø°ÝÇÏÁö ¾Ê´Â´Ù. 
 							if (_iCalcPlayerNum(m_pNpcList[sOwner]->m_cMapIndex, dX, dY, 2) != 0) {
-								sOwner = NULL;
-								cOwnerType = NULL;
+								sOwner = 0;
+								cOwnerType = 0;
 							}
 						}
 					}
@@ -224,9 +224,9 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 	{
 		DWORD dwTime = timeGetTime();
 		for (i = 0; i < DEF_MAXNPCS; i++)
-			if (m_pNpcList[i] != NULL)
+			if (m_pNpcList[i] != 0)
 			{
-				if ((m_pNpcList[i]->m_iGuildGUID != NULL)
+				if ((m_pNpcList[i]->m_iGuildGUID != 0)
 					&& (m_pClientList[sTargetH]->m_iGuildGUID == m_pNpcList[i]->m_iGuildGUID))
 				{
 					if (m_pNpcList[i]->m_cActionLimit < 2)
@@ -239,41 +239,41 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 	}
 
 	// If master was killed or deco set follower mode
-	if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (iCode == NULL))// not DEF_MAGICTYPE_INVISIBILITY neither DEF_MAGICTYPE_TELEPORT
+	if ((cTargetType == DEF_OWNERTYPE_PLAYER) && (iCode == 0))// not DEF_MAGICTYPE_INVISIBILITY neither DEF_MAGICTYPE_TELEPORT
 	{
 		for (i = 0; i < DEF_MAXNPCS; i++)
-			if (m_pNpcList[i] != NULL)
+			if (m_pNpcList[i] != 0)
 			{
 				if ((m_pNpcList[i]->m_bIsSummoned == true)
 					&& (m_pNpcList[i]->m_bIsKilled == false)
 					&& (m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER)
 					&& (m_pNpcList[i]->m_iFollowOwnerIndex == sTargetH))
 				{	// Client suposed to be disconnected and not dead.
-					if ((m_pClientList[sTargetH] != NULL)
+					if ((m_pClientList[sTargetH] != 0)
 						&& (m_pClientList[sTargetH]->m_bIsKilled == false))
 					{	// All Summons will live only 1 minute in ths case
 						// other summons will live for standard time				
 						m_pNpcList[i]->m_cFollowOwnerType = DEF_OWNERTYPE_PLAYER_WAITING;
-						m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+						m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 						m_pNpcList[i]->m_dwSummonWaitTime = timeGetTime();
 						m_pNpcList[i]->m_cMoveType = DEF_MOVETYPE_RANDOM;
 					}
 					// Client is dead
 					else if ((m_bIsHeldenianMode == true)
-						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex] != NULL)
+						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex] != 0)
 						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex]->m_bIsHeldenianMap == 1))
 					{
 						switch (m_cHeldenianSummonMode) {
 						case 0: // Mode 0, default, Kill the summon
-							NpcKilledHandler(NULL, NULL, i, 0);
+							NpcKilledHandler(0, 0, i, 0);
 							break;
 						case 1: // Mode 1: Summon will wait for his own master	
 							m_pNpcList[i]->m_cFollowOwnerType = DEF_OWNERTYPE_PLAYER_WAITING;
-							m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+							m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 							m_pNpcList[i]->m_dwSummonWaitTime = timeGetTime();
 							m_pNpcList[i]->m_cMoveType = DEF_MOVETYPE_RANDOM;
 							// Summon tries to avenge his master
-							if ((iAttackerH != NULL) && (cAttackerType != NULL))
+							if ((iAttackerH != 0) && (cAttackerType != 0))
 							{
 								m_pNpcList[i]->m_iSummonControlMode = 0;
 								m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_ATTACK;
@@ -285,10 +285,10 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 							break;
 						case 2: // Mode 3: Summon can be taken over by anybody else
 							m_pNpcList[i]->m_cFollowOwnerType = DEF_OWNERTYPE_PLAYER_FREE;
-							m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+							m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 							ZeroMemory(m_pNpcList[i]->m_cFollowOwnerCharName, sizeof(m_pNpcList[i]->m_cFollowOwnerCharName));
 							// Summon tries to avenge his master
-							if ((iAttackerH != NULL) && (cAttackerType != NULL))
+							if ((iAttackerH != 0) && (cAttackerType != 0))
 							{
 								m_pNpcList[i]->m_iSummonControlMode = 0;
 								m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_ATTACK;
@@ -303,12 +303,12 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 					else //Dead client, not Heldenian
 					{
 						m_pNpcList[i]->m_cFollowOwnerType = 0;	// No regain control possible
-						m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+						m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 						m_pNpcList[i]->m_cMoveType = DEF_MOVETYPE_RANDOM;
 						m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
 						ZeroMemory(m_pNpcList[i]->m_cFollowOwnerCharName, sizeof(m_pNpcList[i]->m_cFollowOwnerCharName));
 						// Summon tries to avenge his master
-						if ((iAttackerH != NULL) && (cAttackerType != NULL))
+						if ((iAttackerH != 0) && (cAttackerType != 0))
 						{
 							m_pNpcList[i]->m_iSummonControlMode = 0;
 							m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_ATTACK;
@@ -326,24 +326,24 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 					&& (m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER)
 					&& (m_pNpcList[i]->m_iFollowOwnerIndex == sTargetH))
 				{	// Client suposed to be disconnected and not dead.
-					if ((m_pClientList[sTargetH] != NULL)
+					if ((m_pClientList[sTargetH] != 0)
 						&& (m_pClientList[sTargetH]->m_bIsKilled == false))
 					{	// All Summons will live only 1 minute in ths case
 						// other summons will live for standard time				
 						m_pNpcList[i]->m_cFollowOwnerType = DEF_OWNERTYPE_PLAYER_WAITING;
-						m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+						m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 						m_pNpcList[i]->m_dwSummonWaitTime = timeGetTime();
 						m_pNpcList[i]->m_cMoveType = DEF_MOVETYPE_RANDOM;
 					}
 					else// Client is dead
 					{
 						m_pNpcList[i]->m_cFollowOwnerType = 0;	// No regain control possible
-						m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+						m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 						m_pNpcList[i]->m_cMoveType = DEF_MOVETYPE_RANDOM;
 						m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
 						ZeroMemory(m_pNpcList[i]->m_cFollowOwnerCharName, sizeof(m_pNpcList[i]->m_cFollowOwnerCharName));
 						// Summon tries to avenge his master
-						if ((iAttackerH != NULL) && (cAttackerType != NULL))
+						if ((iAttackerH != 0) && (cAttackerType != 0))
 						{
 							m_pNpcList[i]->m_iSummonControlMode = 0;
 							m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_ATTACK;
@@ -359,7 +359,7 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 
 	// Stop attack the disapeared/dead/teleported/deco target
 	for (i = 0; i < DEF_MAXNPCS; i++)
-		if (m_pNpcList[i] != NULL)
+		if (m_pNpcList[i] != 0)
 		{
 			if ((m_pNpcList[i]->m_iTargetIndex == sTargetH)
 				&& (m_pNpcList[i]->m_cTargetType == cTargetType))
@@ -371,16 +371,16 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 						if (m_pNpcList[i]->m_cSpecialAbility != 1)
 						{
 							m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
-							m_pNpcList[i]->m_iTargetIndex = NULL;
-							m_pNpcList[i]->m_cTargetType = NULL;
+							m_pNpcList[i]->m_iTargetIndex = 0;
+							m_pNpcList[i]->m_cTargetType = 0;
 						}
 					}
 					break;
 				case DEF_MAGICTYPE_TELEPORT:
 				default:
 					m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
-					m_pNpcList[i]->m_iTargetIndex = NULL;
-					m_pNpcList[i]->m_cTargetType = NULL;
+					m_pNpcList[i]->m_iTargetIndex = 0;
+					m_pNpcList[i]->m_cTargetType = 0;
 					break;
 				}
 			}
@@ -395,7 +395,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 	char* cp, cData[120], cTargetName[21];
 	int iExp;
 
-	if (m_pNpcList[iNpcH] == NULL) return;
+	if (m_pNpcList[iNpcH] == 0) return;
 	if (m_pNpcList[iNpcH]->m_bIsKilled == true) return;
 
 	m_pNpcList[iNpcH]->m_bIsKilled = true;
@@ -409,16 +409,16 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 
 	minimap_clear_apoc(iNpcH);
 
-	m_pNpcList[iNpcH]->m_cFollowOwnerType = NULL; // Snoopy's add
-	m_pNpcList[iNpcH]->m_iFollowOwnerIndex = NULL; // Snoopy's add
+	m_pNpcList[iNpcH]->m_cFollowOwnerType = 0; // Snoopy's add
+	m_pNpcList[iNpcH]->m_iFollowOwnerIndex = 0; // Snoopy's add
 
-	m_pNpcList[iNpcH]->m_iTargetIndex = NULL;
-	m_pNpcList[iNpcH]->m_cTargetType = NULL;
+	m_pNpcList[iNpcH]->m_iTargetIndex = 0;
+	m_pNpcList[iNpcH]->m_cTargetType = 0;
 	if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
 		sAttackerWeapon = ((m_pClientList[sAttackerH]->m_sAppr2 & 0x0FF0) >> 4);
 	}
 	else sAttackerWeapon = 1;
-	SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTDYING, sDamage, sAttackerWeapon, NULL);
+	SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTDYING, sDamage, sAttackerWeapon, 0);
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->ClearOwner(10, iNpcH, DEF_OWNERTYPE_NPC, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY);
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->SetDeadOwner(iNpcH, DEF_OWNERTYPE_NPC, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY);
 	m_pNpcList[iNpcH]->m_cBehavior = DEF_BEHAVIOR_DEAD;
@@ -430,12 +430,12 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 
 	NpcDeadItemGenerator(iNpcH, sAttackerH, cAttackerType);
 	if ((m_pNpcList[iNpcH]->m_bIsSummoned != true) && (cAttackerType == DEF_OWNERTYPE_PLAYER) &&
-		(m_pClientList[sAttackerH] != NULL)) {
+		(m_pClientList[sAttackerH] != 0)) {
 		iExp = (m_pNpcList[iNpcH]->m_iExp / 3);
 		if (m_pNpcList[iNpcH]->m_iNoDieRemainExp > 0)
 			iExp += m_pNpcList[iNpcH]->m_iNoDieRemainExp;
 
-		if (m_pClientList[sAttackerH]->m_iAddExp != NULL) {
+		if (m_pClientList[sAttackerH]->m_iAddExp != 0) {
 			dTmp1 = (double)m_pClientList[sAttackerH]->m_iAddExp;
 			dTmp2 = (double)iExp;
 			dTmp3 = (dTmp1 / 100.0f) * dTmp2;
@@ -451,8 +451,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 				, 0, m_pNpcList[iNpcH]->m_cMapIndex, 0, 0, 0, 0, 0);
 
 			/*for (i = 1; i < DEF_MAXCLIENTS; i++) {
-				if (m_pClientList[i] != NULL) {
-					SendNotifyMsg(sAttackerH, i, DEF_NOTIFY_ABADDONKILLED, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+				if (m_pClientList[i] != 0) {
+					SendNotifyMsg(sAttackerH, i, DEF_NOTIFY_ABADDONKILLED, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 				}
 			}*/
 		}
@@ -465,10 +465,10 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 		GetExp(sAttackerH, iExp, true);
 
 		for (j = 0; j < DEF_MAXQUEST; j++) { // Magn0S:: Multi Quest
-			if (m_pClientList[sAttackerH]->m_iQuest[j] != NULL) {
+			if (m_pClientList[sAttackerH]->m_iQuest[j] != 0) {
 				iQuestIndex = m_pClientList[sAttackerH]->m_iQuest[j];
-				if (iQuestIndex != NULL) {
-					if (m_pQuestConfigList[iQuestIndex] != NULL) {
+				if (iQuestIndex != 0) {
+					if (m_pQuestConfigList[iQuestIndex] != 0) {
 						switch (m_pQuestConfigList[iQuestIndex]->m_iType) {
 						case DEF_QUESTTYPE_MONSTERHUNT:
 							//if ((m_pClientList[sAttackerH]->m_bQuestMatchFlag_Loc == true) &&
@@ -480,8 +480,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 								(m_pQuestConfigList[iQuestIndex]->m_iTargetType == m_pNpcList[iNpcH]->m_sType)) {
 								m_pClientList[sAttackerH]->m_iCurQuestCount[j]++;
 								//cQuestRemain = (m_pQuestConfigList[m_pClientList[sAttackerH]->m_iQuest[j]]->m_iMaxCount - m_pClientList[sAttackerH]->m_iCurQuestCount[j]);
-								//SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, cQuestRemain, NULL, NULL);
-								SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, m_pClientList[sAttackerH]->m_iCurQuestCount[j], NULL, NULL);
+								//SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, cQuestRemain, 0, 0);
+								SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, m_pClientList[sAttackerH]->m_iCurQuestCount[j], 0, 0);
 								_bCheckIsQuestCompleted(sAttackerH, j);
 							}
 							break;
@@ -498,7 +498,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 		case 32:
 			m_pClientList[sAttackerH]->m_iRating -= 5;
 			// MORLA 2.4 - Actualizo la rep
-			SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[sAttackerH]->m_iDGPoints, m_pClientList[sAttackerH]->m_iTotalDGKills, m_pClientList[sAttackerH]->m_iRating, NULL);
+			SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[sAttackerH]->m_iDGPoints, m_pClientList[sAttackerH]->m_iTotalDGKills, m_pClientList[sAttackerH]->m_iRating, 0);
 			break;
 
 		case 33:
@@ -541,7 +541,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 		}
 
 		// Crusade
-		if (iConstructionPoint != NULL) {
+		if (iConstructionPoint != 0) {
 			switch (cAttackerType) {
 			case DEF_OWNERTYPE_PLAYER:
 				if (m_pClientList[sAttackerH]->m_cSide != m_pNpcList[iNpcH]->m_cSide) {
@@ -550,7 +550,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 					//wsprintf(G_cTxt, "Enemy Npc Killed by player! Construction: +%d WarContribution: +%d", iConstructionPoint, iWarContribution);
 					//PutLogList(G_cTxt);
 
-					SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, NULL, NULL);
+					SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, 0, 0);
 				}
 				else {
 					m_pClientList[sAttackerH]->m_iWarContribution -= (iWarContribution * 2);
@@ -559,21 +559,21 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 					//wsprintf(G_cTxt, "Friendly Npc Killed by player! WarContribution: -%d", iWarContribution);
 					//PutLogList(G_cTxt);
 
-					SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, NULL, NULL);
+					SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, 0, 0);
 				}
 				break;
 
 			case DEF_OWNERTYPE_NPC:
-				if (m_pNpcList[sAttackerH]->m_iGuildGUID != NULL) {
+				if (m_pNpcList[sAttackerH]->m_iGuildGUID != 0) {
 					if (m_pNpcList[sAttackerH]->m_cSide != m_pNpcList[iNpcH]->m_cSide) {
 						for (i = 1; i < DEF_MAXCLIENTS; i++)
-							if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_iGuildGUID == m_pNpcList[sAttackerH]->m_iGuildGUID) &&
+							if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_iGuildGUID == m_pNpcList[sAttackerH]->m_iGuildGUID) &&
 								(m_pClientList[i]->m_iCrusadeDuty == 3)) {
 
 								m_pClientList[i]->m_iConstructionPoint += iConstructionPoint;
 								//wsprintf(G_cTxt, "Enemy Npc Killed by Npc! Construct point +%d", iConstructionPoint);
 								//PutLogList(G_cTxt);
-								SendNotifyMsg(NULL, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, NULL, NULL);
+								SendNotifyMsg(0, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, 0);
 								goto NKH_GOTOPOINT1;
 							}
 
@@ -611,7 +611,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 				break;
 			}
 			if (iWarContribution > 0) m_pClientList[sAttackerH]->m_iWarContribution += iWarContribution;
-			SendNotifyMsg(NULL, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, 0, m_pClientList[sAttackerH]->m_iWarContribution, 1, 0, 0, 0);
+			SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, 0, m_pClientList[sAttackerH]->m_iWarContribution, 1, 0, 0, 0);
 		}
 	}
 
@@ -655,13 +655,13 @@ NKH_GOTOPOINT1:;
 	}
 	// if boss mob is killed and zone is RecallImpossible, recall all people inside place
 	if (m_pNpcList[iNpcH]->m_bIsBossMob == true) {
-		iMapIndex = NULL;
+		iMapIndex = 0;
 		for (i = 1; i < DEF_MAXCLIENTS; i++)
 			iMapIndex = m_pNpcList[iNpcH]->m_cMapIndex;
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true) && (iMapIndex >= 0) && (iMapIndex < DEF_MAXMAPS) && (m_pMapList[iMapIndex] != NULL) && (m_pMapList[iMapIndex]->m_bIsRecallImpossible == true)) {
+		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true) && (iMapIndex >= 0) && (iMapIndex < DEF_MAXMAPS) && (m_pMapList[iMapIndex] != 0) && (m_pMapList[iMapIndex]->m_bIsRecallImpossible == true)) {
 			m_pClientList[i]->m_iTimeLeft_ForceRecall = 200;
 			m_pClientList[i]->m_bIsImpossibleZone = true;
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_FORCERECALLTIME, m_pClientList[i]->m_iTimeLeft_ForceRecall, NULL, NULL, NULL);
+			SendNotifyMsg(0, i, DEF_NOTIFY_FORCERECALLTIME, m_pClientList[i]->m_iTimeLeft_ForceRecall, 0, 0, 0);
 		}
 	}
 	if ((m_bIsHeldenianMode == true) && (m_cHeldenianType == 1)
@@ -690,10 +690,10 @@ NKH_GOTOPOINT1:;
 
 	if (m_bIsApocalypseMode) {
 		for (i = 0; i < DEF_MAXCLIENTS; i++)
-			if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsOnApocMap == true) && (m_pClientList[i]->m_bIsInitComplete == true)) {
+			if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsOnApocMap == true) && (m_pClientList[i]->m_bIsInitComplete == true)) {
 				int iMonsterCount;
 				iMonsterCount = m_pMapList[m_pClientList[i]->m_cMapIndex]->m_iTotalAliveObject;
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, NULL, NULL, NULL);
+				SendNotifyMsg(0, i, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, 0, 0, 0);
 			}
 	}
 }
@@ -709,7 +709,7 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 	strcpy(cTmpName, pNpcName);
 
 	for (i = 0; i < DEF_MAXNPCTYPES; i++)
-		if (m_pNpcConfigList[i] != NULL) {
+		if (m_pNpcConfigList[i] != 0) {
 			if (memcmp(cTmpName, m_pNpcConfigList[i]->m_cNpcName, 20) == 0) {
 				// °°Àº ÀÌ¸§À» °¡Áø NPC ¼³Á¤À» Ã£¾Ò´Ù. ¼³Á¤°ªÀ¸·Î ÃÊ±âÈ­ÇÑ´Ù.
 				ZeroMemory(pNpc->m_cNpcName, sizeof(pNpc->m_cNpcName));
@@ -800,8 +800,8 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 				case 3: // Absorbing Physical Damage
 					if (pNpc->m_iAbsDamage > 0) {
 						// ±âº»ÀûÀ¸·Î ¸¶¹ý ´ë¹ÌÁö Àý°¨ ´É·ÂÀÌ ÀÖ´Â °æ¿ì ¹°¸® ´ë¹ÌÁö Àý°¨Àº Àû¿ëµÇÁö ¾Ê´Â´Ù. 
-						pNpc->m_cSpecialAbility = NULL;
-						cSA = NULL;
+						pNpc->m_cSpecialAbility = 0;
+						cSA = 0;
 					}
 					else {
 						iTemp = 20 + iDice(1, 60);
@@ -818,8 +818,8 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 				case 4: // Absorbing Magical Damage
 					if (pNpc->m_iAbsDamage < 0) {
 						// ±âº»ÀûÀ¸·Î ¹°¸® ´ë¹ÌÁö Àý°¨ ´É·ÂÀÌ ÀÖ´Â °æ¿ì ¸¶¹ý ´ë¹ÌÁö Àý°¨Àº Àû¿ëµÇÁö ¾Ê´Â´Ù. 
-						pNpc->m_cSpecialAbility = NULL;
-						cSA = NULL;
+						pNpc->m_cSpecialAbility = 0;
+						cSA = 0;
 					}
 					else {
 						iTemp = 20 + iDice(1, 60);
@@ -881,7 +881,7 @@ void CGame::ReleaseFollowMode(short sOwnerH)
 {
 	int i;
 	for (i = 0; i < DEF_MAXNPCS; i++)
-		if ((i != sOwnerH) && (m_pNpcList[i] != NULL))
+		if ((i != sOwnerH) && (m_pNpcList[i] != 0))
 		{
 			if ((m_pNpcList[i]->m_cMoveType == DEF_MOVETYPE_FOLLOW)
 				&& (m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_NPC)
@@ -974,7 +974,7 @@ void CGame::DeleteNpc(int iNpcH)
 	POINT ItemPositions[MAX_NPCITEMDROP];
 	char cTemp[256];
 	SYSTEMTIME SysTime;
-	if (m_pNpcList[iNpcH] == NULL) return;
+	if (m_pNpcList[iNpcH] == 0) return;
 
 	dwTime = timeGetTime();
 
@@ -983,7 +983,7 @@ void CGame::DeleteNpc(int iNpcH)
 	iItemID = 0; // No current item
 
 	//ì£½ì–´ìžˆë˜ ìœ„ì¹˜ì—ì„œ ì‚­ì œ 
-	SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_LOG, DEF_MSGTYPE_REJECT, NULL, NULL, NULL);
+	SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_LOG, DEF_MSGTYPE_REJECT, 0, 0, 0);
 	m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->ClearOwner(11, iNpcH, DEF_OWNERTYPE_NPC, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY);
 
 	ZeroMemory(cTmp, sizeof(cTmp));
@@ -1010,7 +1010,7 @@ void CGame::DeleteNpc(int iNpcH)
 	}
 
 	// Spot-mob-generatorì •ë³´ 
-	if (m_pNpcList[iNpcH]->m_iSpotMobIndex != NULL)
+	if (m_pNpcList[iNpcH]->m_iSpotMobIndex != 0)
 		m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_stSpotMobGenerator[m_pNpcList[iNpcH]->m_iSpotMobIndex].iCurMobs--;
 
 	RemoveFromTarget(iNpcH, DEF_OWNERTYPE_NPC);
@@ -1042,7 +1042,7 @@ void CGame::DeleteNpc(int iNpcH)
 	bool IsFragile = false;
 
 	// DelayEventë¥¼ ì‚­ì œ 
-	bRemoveFromDelayEventList(iNpcH, DEF_OWNERTYPE_NPC, NULL);
+	bRemoveFromDelayEventList(iNpcH, DEF_OWNERTYPE_NPC, 0);
 	if ((m_pNpcList[iNpcH]->m_bIsSummoned == false) && (m_pNpcList[iNpcH]->m_bIsUnsummoned == false)) {
 		// ì†Œí™˜ëª¹ì´ ì•„ë‹ˆë¼ë©´ ì—°ê¸ˆ ìž¬ë£Œê°€ ë‚˜ì˜¨ë‹¤.
 		pItem = new class CItem;
@@ -1286,7 +1286,7 @@ void CGame::DeleteNpc(int iNpcH)
 		if (iItemID < 0) 
 		{
 			delete m_pNpcList[iNpcH];
-			m_pNpcList[iNpcH] = NULL;
+			m_pNpcList[iNpcH] = 0;
 			return;
 		}
 
@@ -1295,13 +1295,13 @@ void CGame::DeleteNpc(int iNpcH)
 			GetLocalTime(&SysTime);
 			wsprintf(cTemp, "%d%02d%", SysTime.wMonth, SysTime.wDay);
 			for (int j = 0; j < iNumItem; j++) {
-				if (pItem == NULL) {
+				if (pItem == 0) {
 					pItem = new class CItem;
 				}
 				if (_bInitItemAttr(pItem, iItemIDs[j]) == false ||
 					m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bGetIsMoveAllowedTile((short)ItemPositions[j].x, (short)ItemPositions[j].y) == false) {
 					delete pItem;
-					pItem = NULL;
+					pItem = 0;
 				}
 				else {
 						if (iItemIDs[j] == 90)
@@ -1318,7 +1318,7 @@ void CGame::DeleteNpc(int iNpcH)
 							DWORD dwType = 4;
 							DWORD dwValue = 1;
 
-							pItem->m_dwAttribute = NULL;
+							pItem->m_dwAttribute = 0;
 							dwType = dwType << 20;
 							dwValue = dwValue << 16;
 							pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -1394,15 +1394,15 @@ void CGame::DeleteNpc(int iNpcH)
 					SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 						(short)ItemPositions[j].x, (short)ItemPositions[j].y, pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-					_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, m_pNpcList[iNpcH]->m_cNpcName, pItem);
-					pItem = NULL;
+					_bItemLog(DEF_ITEMLOG_NEWGENDROP, 0, m_pNpcList[iNpcH]->m_cNpcName, pItem);
+					pItem = 0;
 				}
 			}
 		}
 		else {
 			if (_bInitItemAttr(pItem, iItemID) == false) {
 				delete pItem;
-				pItem = NULL;
+				pItem = 0;
 			}
 			else {
 				pItem->m_dwCount = dwCount;
@@ -1416,7 +1416,7 @@ void CGame::DeleteNpc(int iNpcH)
 					DWORD dwType = 4;
 					DWORD dwValue = 1;
 
-					pItem->m_dwAttribute = NULL;
+					pItem->m_dwAttribute = 0;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -1492,7 +1492,7 @@ void CGame::DeleteNpc(int iNpcH)
 					m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
 					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-				_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, m_pNpcList[iNpcH]->m_cNpcName, pItem);
+				_bItemLog(DEF_ITEMLOG_NEWGENDROP, 0, m_pNpcList[iNpcH]->m_cNpcName, pItem);
 			}
 		}
 
@@ -1506,7 +1506,7 @@ void CGame::DeleteNpc(int iNpcH)
 			}
 			if (_bInitItemAttr(pItem2, iSlateID) == false) {
 				delete pItem2;
-				pItem2 = NULL;
+				pItem2 = 0;
 			}
 			else {
 				pItem2->m_dwCount = 1;
@@ -1522,13 +1522,13 @@ void CGame::DeleteNpc(int iNpcH)
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 					m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
 					pItem2->m_sIDnum, pItem2->m_sSpriteFrame, pItem2->m_cItemColor, pItem2->m_dwAttribute);
-				_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, m_pNpcList[iNpcH]->m_cNpcName, pItem2);
+				_bItemLog(DEF_ITEMLOG_NEWGENDROP, 0, m_pNpcList[iNpcH]->m_cNpcName, pItem2);
 			}
 		}*/
 	}
 
 	delete m_pNpcList[iNpcH];
-	m_pNpcList[iNpcH] = NULL;
+	m_pNpcList[iNpcH] = 0;
 }
 
 bool CGame::isLeap(int y)
@@ -1543,7 +1543,7 @@ int CGame::iGetFollowerNumber(short sOwnerH, char cOwnerType)
 	iTotal = 0;
 
 	for (i = 1; i < DEF_MAXNPCS; i++)
-		if ((m_pNpcList[i] != NULL) && (m_pNpcList[i]->m_cMoveType == DEF_MOVETYPE_FOLLOW)) {
+		if ((m_pNpcList[i] != 0) && (m_pNpcList[i]->m_cMoveType == DEF_MOVETYPE_FOLLOW)) {
 
 			if ((m_pNpcList[i]->m_iFollowOwnerIndex == sOwnerH) && (m_pNpcList[i]->m_cFollowOwnerType == cOwnerType))
 				iTotal++;
@@ -1557,7 +1557,7 @@ void CGame::bSetNpcAttackMode(char* cName, int iTargetH, char cTargetType, bool 
 	int i, iIndex;
 
 	for (i = 1; i < DEF_MAXNPCS; i++)
-		if ((m_pNpcList[i] != NULL) && (memcmp(m_pNpcList[i]->m_cName, cName, 5) == 0)) {
+		if ((m_pNpcList[i] != 0) && (memcmp(m_pNpcList[i]->m_cName, cName, 5) == 0)) {
 			iIndex = i;
 			goto NEXT_STEP_SNAM1;
 
@@ -1569,11 +1569,11 @@ NEXT_STEP_SNAM1:;
 
 	switch (cTargetType) {
 	case DEF_OWNERTYPE_PLAYER:
-		if (m_pClientList[iTargetH] == NULL) return;
+		if (m_pClientList[iTargetH] == 0) return;
 		break;
 
 	case DEF_OWNERTYPE_NPC:
-		if (m_pNpcList[iTargetH] == NULL) return;
+		if (m_pNpcList[iTargetH] == 0) return;
 		break;
 	}
 
@@ -1592,8 +1592,8 @@ int CGame::iGetNpcRelationship(int iWhatH, int iRecvH)
 {
 	int iRet;
 
-	if (m_pClientList[iRecvH] == NULL) return 0;
-	if (m_pNpcList[iWhatH] == NULL) return 0;
+	if (m_pClientList[iRecvH] == 0) return 0;
+	if (m_pNpcList[iWhatH] == 0) return 0;
 
 	iRet = 0;
 	switch (m_pNpcList[iWhatH]->m_cSide) {
@@ -1613,10 +1613,10 @@ int CGame::iGetNpcRelationship_SendEvent(int iNpcH, int iOpponentH)
 
 	// ¿©±â¼­ »çÀÌµå °è»êÇÏ´Â ¹æ¹ýÀº °üÁ¡ÀÌ ´Ù¸£¹Ç·Î ÁÖÀÇÇÑ´Ù. 
 	// ³»(NPC) µ¥ÀÌÅÍ¸¦ ÀÛ¼ºÇÏ´Â °ÍÀÌ ¾Æ´Ï¶ó ´Ù¸¥ ÀÌ¿¡°Ô º¸³»´Â µ¥ÀÌÅÍ¸¦ ÀÛ¼ºÇÏ´Â °ÍÀÓÀ» ÁÖÀÇ.
-	if (m_pClientList[iOpponentH] == NULL) return 0;
+	if (m_pClientList[iOpponentH] == 0) return 0;
 	if (m_pClientList[iOpponentH]->m_bIsInitComplete == false) return 0;
 
-	if (m_pNpcList[iNpcH] == NULL) return 0;
+	if (m_pNpcList[iNpcH] == 0) return 0;
 
 	iRet = 0;
 
@@ -1652,7 +1652,7 @@ void CGame::NpcRequestAssistance(int iNpcH)
 	char  cOwnerType;
 
 	// iNpc ±Ù¹æ¿¡ ÀÖ´Â ÀüÅõÁßÀÌ ¾Æ´Ñ NPC¿¡°Ô µµ¿òÀ» ¿äÃ»ÇÑ´Ù. 
-	if (m_pNpcList[iNpcH] == NULL) return;
+	if (m_pNpcList[iNpcH] == 0) return;
 
 	sX = m_pNpcList[iNpcH]->m_sX;
 	sY = m_pNpcList[iNpcH]->m_sY;
@@ -1660,7 +1660,7 @@ void CGame::NpcRequestAssistance(int iNpcH)
 	for (ix = sX - 8; ix <= sX + 8; ix++)
 		for (iy = sY - 8; iy <= sY + 8; iy++) {
 			m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->GetOwner(&sOwnerH, &cOwnerType, ix, iy);
-			if ((sOwnerH != NULL) && (m_pNpcList[sOwnerH] != NULL) && (cOwnerType == DEF_OWNERTYPE_NPC) &&
+			if ((sOwnerH != 0) && (m_pNpcList[sOwnerH] != 0) && (cOwnerType == DEF_OWNERTYPE_NPC) &&
 				(iNpcH != sOwnerH) && (m_pNpcList[sOwnerH]->m_cSide == m_pNpcList[iNpcH]->m_cSide) &&
 				(m_pNpcList[sOwnerH]->m_bIsPermAttackMode == false) && (m_pNpcList[sOwnerH]->m_cBehavior == DEF_BEHAVIOR_MOVE)) {
 
@@ -1682,7 +1682,7 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 
 	iQuestNum = 0;
 	/*ZeroMemory(cTargetName, sizeof(cTargetName));
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	switch (iWho) {
 	case 1: break;
 	case 2:	break;
@@ -1741,18 +1741,18 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 				m_pClientList[iClientH]->m_iAskedQuest = iQuestNum;
 				//m_pClientList[iClientH]->m_iQuestRewardType[i] = iRewardType;
 				//m_pClientList[iClientH]->m_iQuestRewardAmount[i] = iRewardAmount;
-				//SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_IPACCOUNTINFO, NULL, NULL, NULL, "Send Quest Data");
+				//SendNotifyMsg(0, iClientH, DEF_NOTIFY_IPACCOUNTINFO, 0, 0, 0, "Send Quest Data");
 
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, iQuestType, iResMode, iRewardAmount, cRewardName, iContribution,
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, iQuestType, iResMode, iRewardAmount, cRewardName, iContribution,
 					iTargetType, iTargetCount, iX, iY, iRange, cTargetName);
 			}
 			else {
 				switch (iQuestNum) {
-				case  0: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (iWho + 130), NULL, NULL, NULL, NULL); break;
+				case  0: SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (iWho + 130), 0, 0, 0, 0); break;
 				case -1:
 				case -2:
 				case -3:
-				case -4: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, 104, NULL, NULL, NULL, NULL); break;
+				case -4: SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, 104, 0, 0, 0, 0); break;
 				case -5: break;
 				}
 			}
@@ -1766,12 +1766,12 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 	char   seps[] = "= \t\n";
 	char* token, cTargetName[11], cBuff[256];
 	class  CStrTok* pStrTok;
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_cSide == 0) return;
 	switch (iMode) {
 	case 8: // Mobilize
 		if ((m_bIsHeldenianMode == true)
-			&& (m_pMapList[m_pClientList[iClientH]->m_cMapIndex] != NULL)
+			&& (m_pMapList[m_pClientList[iClientH]->m_cMapIndex] != 0)
 			&& (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsHeldenianMap == 1))
 		{
 			iRecoverFollowers(iClientH, true);
@@ -1780,7 +1780,7 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 	case 0: // Free �
 	case 1: // Hold �
 		for (i = 0; i < DEF_MAXNPCS; i++)
-			if (m_pNpcList[i] != NULL)
+			if (m_pNpcList[i] != 0)
 			{
 				if ((m_pNpcList[i]->m_iFollowOwnerIndex == iClientH)
 					&& ((m_pNpcList[i]->m_bIsSummoned == true) || (m_pNpcList[i]->m_dwTamingTime != 0))
@@ -1790,7 +1790,7 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 					m_pNpcList[i]->m_bIsPermAttackMode = false;
 					m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_MOVE;
 					m_pNpcList[i]->m_sBehaviorTurnCount = 0;
-					m_pNpcList[i]->m_iTargetIndex = NULL;
+					m_pNpcList[i]->m_iTargetIndex = 0;
 				}
 			}
 		break;
@@ -1802,7 +1802,7 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 		token = pStrTok->pGet();
 
 		iTargetIndex = 0;
-		if (token != NULL) {
+		if (token != 0) {
 			// token�� �� ������ ����� �̸� 
 			if (strlen(token) > 10)
 				memcpy(cTargetName, token, 10);
@@ -1811,7 +1811,7 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 			// 2002.8.17 ����ȣ ����
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
 			{
-				if ((m_pClientList[i] != NULL) &&
+				if ((m_pClientList[i] != 0) &&
 					(memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0) &&
 					(strcmp(m_pClientList[iClientH]->m_cMapName, m_pClientList[i]->m_cMapName) == 0)) // adamas(map�� ���ƾ� �Ѵ�.)
 				{
@@ -1828,7 +1828,7 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 			&& (m_pClientList[iTargetIndex]->m_cSide != m_pClientList[iClientH]->m_cSide))
 		{
 			for (i = 0; i < DEF_MAXNPCS; i++)
-				if (m_pNpcList[i] != NULL)
+				if (m_pNpcList[i] != 0)
 				{
 					if ((m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER)
 						&& ((m_pNpcList[i]->m_bIsSummoned == true) || (m_pNpcList[i]->m_dwTamingTime != 0))
@@ -1851,19 +1851,19 @@ void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* p
 int CGame::_iTalkToNpcResult_Guard(int iClientH, int* pQuestType, int* pMode, int* pRewardType, int* pRewardAmount, int* pContribution, char* pTargetName, int* pTargetType, int* pTargetCount, int* pX, int* pY, int* pRange)
 {
 	// °æºñº´°úÀÇ ´ëÈ­. ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡¿¡ ÀûÀýÇÑ ´ëÈ­ ¸Þ½ÃÁö¸¦ µð½ºÇÃ·¹ÀÌÇÑ´Ù.
-	if (m_pClientList[iClientH] == NULL) return 0;
+	if (m_pClientList[iClientH] == 0) return 0;
 
 	if (memcmp(m_pClientList[iClientH]->m_cLocation, "are", 3) == 0) {
 		// ¸» °Ç »ç¶÷ÀÌ ¾Æ·¹½ºµ§ ¼Ò¼Ó 
 		if (memcmp(m_pClientList[iClientH]->m_cMapName, "aresden", 7) == 0) {
 			// ÀÚ±â ¸¶À» °æºñ¿¡°Ô ¸»À» °É¾úÀ½.
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (200), NULL, NULL, NULL, NULL);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (200), 0, 0, 0, 0);
 			return 1000;
 		}
 		else
 			if (memcmp(m_pClientList[iClientH]->m_cMapName, "elv", 3) == 0) {
 				// ´Ù¸¥ ¸¶À» °æºñ¿¡°Ô ¸»À» °É¾úÀ½.	
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (201), NULL, NULL, NULL, NULL);
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (201), 0, 0, 0, 0);
 				return 1001;
 			}
 	}
@@ -1871,13 +1871,13 @@ int CGame::_iTalkToNpcResult_Guard(int iClientH, int* pQuestType, int* pMode, in
 		if (memcmp(m_pClientList[iClientH]->m_cLocation, "elv", 3) == 0) {
 			if (memcmp(m_pClientList[iClientH]->m_cMapName, "aresden", 7) == 0) {
 				// ´Ù¸¥ ¸¶À» °æºñ¿¡°Ô ¸»À» °É¾úÀ½.	
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (202), NULL, NULL, NULL, NULL);
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (202), 0, 0, 0, 0);
 				return 1002;
 			}
 			else
 				if (memcmp(m_pClientList[iClientH]->m_cMapName, "elv", 3) == 0) {
 					// ÀÚ±â ¸¶À» °æºñ¿¡°Ô ¸»À» °É¾úÀ½.
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (203), NULL, NULL, NULL, NULL);
+					SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (203), 0, 0, 0, 0);
 					return 1003;
 				}
 		}
@@ -1885,18 +1885,18 @@ int CGame::_iTalkToNpcResult_Guard(int iClientH, int* pQuestType, int* pMode, in
 			if (memcmp(m_pClientList[iClientH]->m_cLocation, "NONE", 4) == 0) {
 				if (memcmp(m_pClientList[iClientH]->m_cMapName, "aresden", 7) == 0) {
 					// Áß¸³ÀÌ ¾Æ·¹½ºµ§ °æºñ¿¡°Ô ¸»À» °É¾úÀ½
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (204), NULL, NULL, NULL, NULL);
+					SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (204), 0, 0, 0, 0);
 					return 1004;
 				}
 				else
 					if (memcmp(m_pClientList[iClientH]->m_cMapName, "elvine", 6) == 0) {
 						// Áß¸³ÀÌ ¿¤¹ÙÀÎ °æºñ¿¡°Ô ¸»À» °É¾úÀ½.
-						SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (205), NULL, NULL, NULL, NULL);
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (205), 0, 0, 0, 0);
 						return 1005;
 					}
 					else
 						if (memcmp(m_pClientList[iClientH]->m_cMapName, "default", 7) == 0) {
-							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NPCTALK, (206), NULL, NULL, NULL, NULL);
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, (206), 0, 0, 0, 0);
 							return 1006;
 						}
 			}
@@ -1940,7 +1940,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	double dTmp1, dTmp2, dTmp3;
 	short sElement;
 
-	if (m_pNpcList[iNpcH] == NULL) return;
+	if (m_pNpcList[iNpcH] == 0) return;
 	if ((cAttackerType != DEF_OWNERTYPE_PLAYER) || (m_pNpcList[iNpcH]->m_bIsSummoned == true)) return;
 	if (m_pNpcList[iNpcH]->m_bIsUnsummoned == true) return;
 
@@ -2502,7 +2502,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
 					// Main
-					pItem->m_dwAttribute = NULL;
+					pItem->m_dwAttribute = 0;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -2599,7 +2599,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					// Max = 7
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-					pItem->m_dwAttribute = NULL;
+					pItem->m_dwAttribute = 0;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -2693,7 +2693,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-					pItem->m_dwAttribute = NULL;
+					pItem->m_dwAttribute = 0;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -2791,7 +2791,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 					// Max = 7
 					if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-					pItem->m_dwAttribute = NULL;
+					pItem->m_dwAttribute = 0;
 					dwType = dwType << 20;
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -2908,7 +2908,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-		_bItemLog(DEF_ITEMLOG_NEWGENDROP, NULL, NULL, pItem);
+		_bItemLog(DEF_ITEMLOG_NEWGENDROP, 0, 0, pItem);
 	}
 }
 
@@ -2917,7 +2917,7 @@ void CGame::NpcBehavior_Dead(int iNpcH)
 {
 	DWORD dwTime;
 
-	if (m_pNpcList[iNpcH] == NULL) return;
+	if (m_pNpcList[iNpcH] == 0) return;
 
 	dwTime = timeGetTime();
 	m_pNpcList[iNpcH]->m_sBehaviorTurnCount++;
@@ -2941,14 +2941,14 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 	char cReadModeA = 0;
 	char cReadModeB = 0;
 	int  iNpcConfigListIndex = 0, k = 0;
-	class CNpcItem* pTempNpcItem = NULL;
+	class CNpcItem* pTempNpcItem = 0;
 
-	hFile = CreateFile(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
+	hFile = CreateFile(cFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+	dwFileSize = GetFileSize(hFile, 0);
 	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
 
 	pFile = fopen(cFn, "rt");
-	if (pFile != NULL) {
+	if (pFile != 0) {
 
 		PutLogList("(!) NpcItemConfig file contents received. Now decoding...");
 		cp = new char[dwFileSize + 2];
@@ -2957,7 +2957,7 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 
 		pStrTok = new class CStrTok(cp, seps);
 		token = pStrTok->pGet();
-		while (token != NULL) {
+		while (token != 0) {
 			if (cReadModeA != 0) {
 				switch (cReadModeA) {
 				case 1:
@@ -2973,7 +2973,7 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 							return false;
 						}
 						for (iNpcConfigListIndex = 0; iNpcConfigListIndex < DEF_MAXNPCTYPES; iNpcConfigListIndex++)
-							if (m_pNpcConfigList[iNpcConfigListIndex] != NULL) {
+							if (m_pNpcConfigList[iNpcConfigListIndex] != 0) {
 								if (strcmp(m_pNpcConfigList[iNpcConfigListIndex]->m_cNpcName, token) == 0) {
 									ZeroMemory(G_cTxt, sizeof(G_cTxt));
 									wsprintf(G_cTxt, "%s... Ok!", token);
@@ -3008,16 +3008,16 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 							delete pStrTok;
 							return false;
 						}
-						if (pTempNpcItem == NULL)
+						if (pTempNpcItem == 0)
 							pTempNpcItem = new class CNpcItem();
 
 						if (memcmp(token, "[ENDITEM]", 9) == 0) {
 							cReadModeA = 0;
 							cReadModeB = 0;
 
-							if (pTempNpcItem != NULL) {
+							if (pTempNpcItem != 0) {
 								delete pTempNpcItem;
-								pTempNpcItem = NULL;
+								pTempNpcItem = 0;
 							}
 							break;
 						}
@@ -3033,7 +3033,7 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 
 						for (k = 0; k < DEF_MAXITEMTYPES; k++)
 						{
-							if (m_pItemConfigList[k] == NULL)
+							if (m_pItemConfigList[k] == 0)
 								continue;
 
 							if (strcmp(token, m_pItemConfigList[k]->m_cName) == 0) {
@@ -3149,7 +3149,7 @@ bool CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 		bool	bFirstDice = false, bSecondDice = false;
 
 		for (iNpcIndex = 0; iNpcIndex < DEF_MAXNPCTYPES; iNpcIndex++) {
-			if (m_pNpcConfigList[iNpcIndex] != NULL) {
+			if (m_pNpcConfigList[iNpcIndex] != 0) {
 				if (m_pNpcConfigList[iNpcIndex]->m_sType == sNpcType) break;
 			}
 		}
@@ -3435,7 +3435,7 @@ bool CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 
 void CGame::RemoveEventNpc(int iNpcH)
 {
-	if (m_pNpcList[iNpcH] == NULL) return;
+	if (m_pNpcList[iNpcH] == 0) return;
 	if (m_pNpcList[iNpcH]->m_bIsKilled == true) return;
 
 	m_pNpcList[iNpcH]->m_bIsKilled = true;
@@ -3448,7 +3448,7 @@ void CGame::RemoveEventNpc(int iNpcH)
 	m_pNpcList[iNpcH]->m_iTargetIndex = 0;
 	m_pNpcList[iNpcH]->m_cTargetType = 0;
 
-	SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTDYING, NULL, 1, NULL);
+	SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTDYING, 0, 1, 0);
 	if (m_pNpcList[iNpcH]->m_sAreaSize == 0) {
 		m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->ClearOwner(10, iNpcH, DEF_OWNERTYPE_NPC, m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY);
 	}
@@ -3477,7 +3477,7 @@ bool CGame::_bDecodeNpcConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	pStrTok = new class CStrTok(pContents, seps);
 	token = pStrTok->pGet();
-	while (token != NULL) {
+	while (token != 0) {
 		if (cReadModeA != 0) {
 			switch (cReadModeA) {
 			case 1:
@@ -3867,11 +3867,11 @@ void CGame::MobGenerator()
 	
 	for (i = 0; i < DEF_MAXMAPS; i++) {
 
-		if (m_pMapList[i] != NULL) {
+		if (m_pMapList[i] != 0) {
 			iResultNum = m_pMapList[i]->m_iMaximumObject;
 		}
 
-		if ((m_pMapList[i] != NULL) && (m_pMapList[i]->m_bRandomMobGenerator == true) && (iResultNum > m_pMapList[i]->m_iTotalActiveObject)) {
+		if ((m_pMapList[i] != 0) && (m_pMapList[i]->m_bRandomMobGenerator == true) && (iResultNum > m_pMapList[i]->m_iTotalActiveObject)) {
 			if ((m_iMiddlelandMapIndex != -1) && (m_iMiddlelandMapIndex == i) && (m_bIsCrusadeMode == true)) continue;//break;
 
 			iNamingValue = m_pMapList[i]->iGetEmptyNamingValue();
@@ -4462,8 +4462,8 @@ void CGame::MobGenerator()
 
 				}
 
-				pX = NULL;
-				pY = NULL;
+				pX = 0;
+				pY = 0;
 
 				if ((m_bIsSpecialEventTime == true) && (iDice(1, 10) == 3)) bIsSpecialEvent = true;
 
@@ -4595,7 +4595,7 @@ void CGame::MobGenerator()
 					cSA = _cGetSpecialAbility(iKindSA);
 				}
 
-				bMaster = bCreateNewNpc(cNpcName, cName_Master, m_pMapList[i]->m_cName, (rand() % 3), cSA, DEF_MOVETYPE_RANDOM, &pX, &pY, cWaypoint, NULL, NULL, -1, false, false, bFirmBerserk, true);
+				bMaster = bCreateNewNpc(cNpcName, cName_Master, m_pMapList[i]->m_cName, (rand() % 3), cSA, DEF_MOVETYPE_RANDOM, &pX, &pY, cWaypoint, 0, 0, -1, false, false, bFirmBerserk, true);
 
 				if (!bMaster)
 				{
@@ -4737,8 +4737,8 @@ void CGame::MobGenerator()
 					if ((iResult != 35) && (iResult != 36) && (iResult != 37) && (iResult != 49)
 						&& (iResult != 51) && (iResult != 15) && (iResult != 16) && (iResult != 21)) iTotalMob = 12;
 					for (x = 1; x < DEF_MAXCLIENTS; x++)
-						if ((iNpcID != -1) && (m_pClientList[x] != NULL) && (m_pClientList[x]->m_bIsInitComplete == true)) {
-							SendNotifyMsg(NULL, x, DEF_NOTIFY_SPAWNEVENT, pX, pY, iNpcID, NULL, NULL, NULL);
+						if ((iNpcID != -1) && (m_pClientList[x] != 0) && (m_pClientList[x]->m_bIsInitComplete == true)) {
+							SendNotifyMsg(0, x, DEF_NOTIFY_SPAWNEVENT, pX, pY, iNpcID, 0, 0, 0);
 						}
 					break;
 
@@ -4768,7 +4768,7 @@ void CGame::MobGenerator()
 						cSA = _cGetSpecialAbility(iKindSA);
 					}
 
-					if (bCreateNewNpc(cNpcName, cName_Slave, m_pMapList[i]->m_cName, (rand() % 3), cSA, DEF_MOVETYPE_RANDOM, &pX, &pY, cWaypoint, NULL, NULL, -1, false, false, bFirmBerserk) == false) {
+					if (bCreateNewNpc(cNpcName, cName_Slave, m_pMapList[i]->m_cName, (rand() % 3), cSA, DEF_MOVETYPE_RANDOM, &pX, &pY, cWaypoint, 0, 0, -1, false, false, bFirmBerserk) == false) {
 						m_pMapList[i]->SetNamingValueEmpty(iNamingValue);
 					}
 					else {
@@ -4778,7 +4778,7 @@ void CGame::MobGenerator()
 			}
 		}
 
-		if ((m_pMapList[i] != NULL) && ((m_pMapList[i]->m_iMaximumObject) > m_pMapList[i]->m_iTotalActiveObject))
+		if ((m_pMapList[i] != 0) && ((m_pMapList[i]->m_iMaximumObject) > m_pMapList[i]->m_iTotalActiveObject))
 		{
 			for (j = 1; j < DEF_MAXSPOTMOBGENERATOR; j++)
 				if ((iDice(1, 3) == 2) && (m_pMapList[i]->m_stSpotMobGenerator[j].bDefined == true) &&
@@ -4918,7 +4918,7 @@ void CGame::MobGenerator()
 								break;
 
 							case 2:
-								if (bCreateNewNpc(cNpcName, cName_Master, m_pMapList[i]->m_cName, (rand() % 3), cSA, DEF_MOVETYPE_RANDOMWAYPOINT, NULL, NULL, m_pMapList[i]->m_stSpotMobGenerator[j].cWaypoint, NULL, j, -1, false, false, bFirmBerserk) == false) {
+								if (bCreateNewNpc(cNpcName, cName_Master, m_pMapList[i]->m_cName, (rand() % 3), cSA, DEF_MOVETYPE_RANDOMWAYPOINT, 0, 0, m_pMapList[i]->m_stSpotMobGenerator[j].cWaypoint, 0, j, -1, false, false, bFirmBerserk) == false) {
 									m_pMapList[i]->SetNamingValueEmpty(iNamingValue);
 								}
 								else {
@@ -4935,12 +4935,12 @@ void CGame::MobGenerator()
 // SNOOPY: reconnecting clients will recover summons 
 void CGame::iRecoverFollowers(int  iClientH, bool bControlAll)
 {
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	int i, iTotal;
 	char  cKillerMsg[128];
 	iTotal = 0;
 	for (i = 1; i < DEF_MAXNPCS; i++)
-		if ((m_pNpcList[i] != NULL)
+		if ((m_pNpcList[i] != 0)
 			&& (m_pNpcList[i]->m_cFollowOwnerType > 7)	// Reduce cases to process
 			&& ((m_pNpcList[i]->m_bIsSummoned == true) || (m_pNpcList[i]->m_dwTamingTime != 0))
 			&& (m_pNpcList[i]->m_bIsKilled == false))
@@ -4957,7 +4957,7 @@ void CGame::iRecoverFollowers(int  iClientH, bool bControlAll)
 					//Tell client				
 					ZeroMemory(cKillerMsg, sizeof(cKillerMsg));
 					wsprintf(cKillerMsg, "A %s soldier accepted to follow you.", m_pNpcList[i]->m_cNpcName);
-					SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cKillerMsg);
+					SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, cKillerMsg);
 				}
 				break;
 			case DEF_OWNERTYPE_PLAYER_WAITING:
@@ -4969,16 +4969,16 @@ void CGame::iRecoverFollowers(int  iClientH, bool bControlAll)
 					//Tell client				
 					ZeroMemory(cKillerMsg, sizeof(cKillerMsg));
 					if ((m_bIsHeldenianMode == true)
-						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex] != NULL)
+						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex] != 0)
 						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex]->m_bIsHeldenianMap == 1))
 					{
 						wsprintf(cKillerMsg, "Recovered control of a %s soldier.", m_pNpcList[i]->m_cNpcName);
-						SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cKillerMsg);
+						SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, cKillerMsg);
 					}
 					else
 					{
 						wsprintf(cKillerMsg, "Recovered control of a %s summon.", m_pNpcList[i]->m_cNpcName);
-						SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, cKillerMsg);
+						SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, cKillerMsg);
 					}
 				}
 				break;
@@ -5011,7 +5011,7 @@ bool CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerT
 	iMapIndex = -1;
 	iFollowIndex = -1;
 	for (i = 1; i < DEF_MAXNPCS; i++)
-		if ((m_pNpcList[i] != NULL) && (memcmp(m_pNpcList[i]->m_cName, pName, 5) == 0))
+		if ((m_pNpcList[i] != 0) && (memcmp(m_pNpcList[i]->m_cName, pName, 5) == 0))
 		{
 			iIndex = i;
 			iMapIndex = m_pNpcList[i]->m_cMapIndex;
@@ -5022,7 +5022,7 @@ bool CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerT
 	switch (cFollowOwnerType) {
 	case DEF_OWNERTYPE_NPC:
 		for (i = 1; i < DEF_MAXNPCS; i++)
-			if ((m_pNpcList[i] != NULL) && (memcmp(m_pNpcList[i]->m_cName, pFollowName, 5) == 0))
+			if ((m_pNpcList[i] != 0) && (memcmp(m_pNpcList[i]->m_cName, pFollowName, 5) == 0))
 			{
 				if (m_pNpcList[i]->m_cMapIndex != iMapIndex) return false;
 				m_pNpcList[iIndex]->m_cMoveType = DEF_MOVETYPE_FOLLOW;
@@ -5036,7 +5036,7 @@ bool CGame::bSetNpcFollowMode(char* pName, char* pFollowName, char cFollowOwnerT
 
 	case DEF_OWNERTYPE_PLAYER:
 		for (i = 1; i < DEF_MAXCLIENTS; i++)
-			if ((m_pClientList[i] != NULL) && (memcmp(m_pClientList[i]->m_cCharName, pFollowName, 10) == 0))
+			if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, pFollowName, 10) == 0))
 			{
 				if (m_pClientList[i]->m_cMapIndex != iMapIndex) return false;
 				iFollowIndex = i;
@@ -5081,7 +5081,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 	iMapIndex = -1;
 
 	for (i = 0; i < DEF_MAXMAPS; i++)
-		if (m_pMapList[i] != NULL) {
+		if (m_pMapList[i] != 0) {
 			if (memcmp(m_pMapList[i]->m_cName, cTmpName, 10) == 0)
 				iMapIndex = i;
 		}
@@ -5089,27 +5089,27 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 	if (iMapIndex == -1) return false;
 
 	for (i = 1; i < DEF_MAXNPCS; i++)
-		if (m_pNpcList[i] == NULL) {
+		if (m_pNpcList[i] == 0) {
 			m_pNpcList[i] = new class CNpc(pName);
 			if (_bInitNpcAttr(m_pNpcList[i], pNpcName, sClass, cSA) == false) {
 				wsprintf(cTxt, "(!) Not existing NPC creation request! (%s) Ignored.", pNpcName);
 				PutLogList(cTxt);
 
 				delete m_pNpcList[i];
-				m_pNpcList[i] = NULL;
+				m_pNpcList[i] = 0;
 				break;
 			}
 			if (m_pNpcList[i]->m_cDayOfWeekLimit < 10) {
 				if (m_pNpcList[i]->m_cDayOfWeekLimit != SysTime.wDayOfWeek) {
 					delete m_pNpcList[i];
-					m_pNpcList[i] = NULL;
+					m_pNpcList[i] = 0;
 					break;
 				}
 			}
 			switch (cMoveType) {
 			case DEF_MOVETYPE_GUARD:
 			case DEF_MOVETYPE_RANDOM:
-				if ((poX != NULL) && (poY != NULL) && (*poX != NULL) && (*poY != NULL)) {
+				if ((poX != 0) && (poY != 0) && (*poX != 0) && (*poY != 0)) {
 					sX = *poX;
 					sY = *poY;
 				}
@@ -5138,7 +5138,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 						if (bFlag == true) goto GET_VALIDLOC_SUCCESS;
 					}
 					delete m_pNpcList[i];
-					m_pNpcList[i] = NULL;
+					m_pNpcList[i] = 0;
 					return false;
 
 				GET_VALIDLOC_SUCCESS:;
@@ -5160,7 +5160,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 				break;
 
 			default:
-				if ((poX != NULL) && (poY != NULL) && (*poX != NULL) && (*poY != NULL)) {
+				if ((poX != 0) && (poY != 0) && (*poX != 0) && (*poY != 0)) {
 					sX = *poX;
 					sY = *poY;
 				}
@@ -5174,7 +5174,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 			if (m_pNpcList[i]->m_sAreaSize == 0) {
 				if (bGetEmptyPosition(&sX, &sY, iMapIndex) == false) {
 					delete m_pNpcList[i];
-					m_pNpcList[i] = NULL;
+					m_pNpcList[i] = 0;
 					break;
 				}
 			}
@@ -5182,18 +5182,18 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 				// new - checks if walk location is free for larger than 1x1 monsters
 				if (bGetNpcMovementArea(i, sX, sY, iMapIndex, m_pNpcList[i]->m_sAreaSize) == false) {
 					delete m_pNpcList[i];
-					m_pNpcList[i] = NULL;
+					m_pNpcList[i] = 0;
 					break;
 				}
 			}
 
 			if ((bHideGenMode == true) && (_iGetPlayerNumberOnSpot(sX, sY, iMapIndex, 7) != 0)) {
 				delete m_pNpcList[i];
-				m_pNpcList[i] = NULL;
+				m_pNpcList[i] = 0;
 				break;
 			}
 
-			if ((poX != NULL) && (poY != NULL)) {
+			if ((poX != 0) && (poY != 0)) {
 				*poX = sX;
 				*poY = sY;
 			}
@@ -5209,7 +5209,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 			for (t = 0; t < 10; t++)
 				if (m_pNpcList[i]->m_iWayPointIndex[t] != -1) m_pNpcList[i]->m_cTotalWaypoint++;
 
-			if (pArea != NULL) {
+			if (pArea != 0) {
 				SetRect(&m_pNpcList[i]->m_rcRandomArea, pArea->left, pArea->top, pArea->right, pArea->bottom);
 			}
 
@@ -5287,9 +5287,9 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 				break;
 			}
 
-			m_pNpcList[i]->m_iFollowOwnerIndex = NULL;
+			m_pNpcList[i]->m_iFollowOwnerIndex = 0;
 			ZeroMemory(m_pNpcList[i]->m_cFollowOwnerCharName, sizeof(m_pNpcList[i]->m_cFollowOwnerCharName));
-			m_pNpcList[i]->m_iTargetIndex = NULL;
+			m_pNpcList[i]->m_iTargetIndex = 0;
 			m_pNpcList[i]->m_cTurn = (rand() % 2);
 
 			switch (m_pNpcList[i]->m_sType) {
@@ -5377,7 +5377,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 				m_pMapList[iMapIndex]->bAddCropsTotalSum();
 				break;
 			}
-			SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_NPC, MSGID_EVENT_LOG, DEF_MSGTYPE_CONFIRM, NULL, NULL, NULL);
+			SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_NPC, MSGID_EVENT_LOG, DEF_MSGTYPE_CONFIRM, 0, 0, 0);
 			return true;
 		}
 	return false;
@@ -5400,7 +5400,7 @@ void CGame::NpcProcess()
 
 	dwTime = timeGetTime();
 	for (i = 1; i < DEF_MAXNPCS; i++) {
-		if (m_pNpcList[i] != NULL) {
+		if (m_pNpcList[i] != 0) {
 			if (m_pNpcList[i]->m_cBehavior == DEF_BEHAVIOR_ATTACK) {
 				switch (iDice(1, 7)) {
 				case 1: dwActionTime = m_pNpcList[i]->m_dwActionTime; break;
@@ -5421,7 +5421,7 @@ void CGame::NpcProcess()
 			if (m_pNpcList[i]->m_iHP <= 0) m_pNpcList[i]->m_cBehavior = DEF_BEHAVIOR_DEAD;
 		}
 		//SNOOPY Added here for ending Taming
-		if ((m_pNpcList[i] != NULL)
+		if ((m_pNpcList[i] != 0)
 			&& (m_pNpcList[i]->m_dwTamingTime != 0)
 			&& (m_pNpcList[i]->m_cOriginalSide != m_pNpcList[i]->m_cSide)
 			&& (dwTime > m_pNpcList[i]->m_dwTamingTime))
@@ -5429,9 +5429,9 @@ void CGame::NpcProcess()
 			m_pNpcList[i]->m_cSide = m_pNpcList[i]->m_cOriginalSide;
 			m_pNpcList[i]->m_dwTamingTime = 0;
 			m_pNpcList[i]->m_cMoveType = DEF_MOVETYPE_RANDOMWAYPOINT;
-			SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, NULL, NULL, NULL);
+			SendEventToNearClient_TypeA(i, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTNULLACTION, 0, 0, 0);
 		}
-		if ((m_pNpcList[i] != NULL) && ((dwTime - m_pNpcList[i]->m_dwTime) > dwActionTime)) {
+		if ((m_pNpcList[i] != 0) && ((dwTime - m_pNpcList[i]->m_dwTime) > dwActionTime)) {
 			m_pNpcList[i]->m_dwTime = dwTime;
 			if (abs(m_pNpcList[i]->m_cMagicLevel) > 0) {
 				if ((dwTime - m_pNpcList[i]->m_dwMPupTime) > DEF_MPUPTIME) {
@@ -5488,7 +5488,7 @@ void CGame::NpcProcess()
 				break;
 			}
 			//SNOOPY Added here for ending waiting for Tamed mobs
-			if ((m_pNpcList[i] != NULL) && (m_pNpcList[i]->m_iHP > 0)
+			if ((m_pNpcList[i] != 0) && (m_pNpcList[i]->m_iHP > 0)
 				&& (m_pNpcList[i]->m_dwTamingTime != 0)
 				&& (m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER_WAITING)
 				&& ((dwTime - m_pNpcList[i]->m_dwSummonWaitTime) > 1000 * 60)) // Wait 60sec for the character to connect again
@@ -5497,14 +5497,14 @@ void CGame::NpcProcess()
 				m_pNpcList[i]->m_iSummonControlMode = 0;
 			}
 			// !!! m_pNpcList
-			if ((m_pNpcList[i] != NULL) && (m_pNpcList[i]->m_iHP > 0) && (m_pNpcList[i]->m_bIsSummoned == true))
+			if ((m_pNpcList[i] != 0) && (m_pNpcList[i]->m_iHP > 0) && (m_pNpcList[i]->m_bIsSummoned == true))
 			{
 				switch (m_pNpcList[i]->m_sType) {
 				case 29: // Ogre summon popo:10 min
 				case 33: // WW summon popo		
 				case 31: // Demon summon popo
 					if ((dwTime - m_pNpcList[i]->m_dwSummonedTime) > 1000 * 60 * 10)
-						NpcKilledHandler(NULL, NULL, i, 0);
+						NpcKilledHandler(0, 0, i, 0);
 					else if ((m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER_WAITING)
 						&& ((dwTime - m_pNpcList[i]->m_dwSummonWaitTime) > 1000 * 60)) // Wait 60sec for the character to connect again
 					{
@@ -5518,7 +5518,7 @@ void CGame::NpcProcess()
 				case 46: // TK
 				case 47: // BG Crusade summons 10 min
 					if ((dwTime - m_pNpcList[i]->m_dwSummonedTime) > 1000 * 60 * 10)
-						NpcKilledHandler(NULL, NULL, i, 0);
+						NpcKilledHandler(0, 0, i, 0);
 					else if ((m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER_WAITING)
 						&& ((dwTime - m_pNpcList[i]->m_dwSummonWaitTime) > 1000 * 60)) // Wait 60sec for the character to connect again
 					{
@@ -5533,7 +5533,7 @@ void CGame::NpcProcess()
 				case 86: // HBT		
 				case 88: // Barbarian
 					if ((m_bIsHeldenianMode == true)
-						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex] != NULL)
+						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex] != 0)
 						&& (m_pMapList[m_pNpcList[i]->m_cMapIndex]->m_bIsHeldenianMap == 1))
 					{
 						if ((m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER_WAITING)
@@ -5541,7 +5541,7 @@ void CGame::NpcProcess()
 						{
 							switch (m_cHeldenianSummonMode) {
 							case 0: // Master has not connected again, remove summon
-								NpcKilledHandler(NULL, NULL, i, 0);
+								NpcKilledHandler(0, 0, i, 0);
 								break;
 							case 1: // Master has not connected again, wait forever			
 								m_pNpcList[i]->m_iSummonControlMode = 0; // Un"/hold"
@@ -5555,7 +5555,7 @@ void CGame::NpcProcess()
 						else break; // Keep them alive					
 					}
 					else if ((dwTime - m_pNpcList[i]->m_dwSummonedTime) > 1000 * 60 * 15)
-						NpcKilledHandler(NULL, NULL, i, 0);		// Heldenian soldiars limited to 15min if not Heldenian
+						NpcKilledHandler(0, 0, i, 0);		// Heldenian soldiars limited to 15min if not Heldenian
 					break;
 				case 36: // AGT         Those will last forever when summonned
 				case 37: // AGC
@@ -5575,7 +5575,7 @@ void CGame::NpcProcess()
 					break;
 				default: //other summons: 5 minutes
 					if ((dwTime - m_pNpcList[i]->m_dwSummonedTime) > DEF_SUMMONTIME)
-						NpcKilledHandler(NULL, NULL, i, 0);
+						NpcKilledHandler(0, 0, i, 0);
 					else if ((m_pNpcList[i]->m_cFollowOwnerType == DEF_OWNERTYPE_PLAYER_WAITING)
 						&& ((dwTime - m_pNpcList[i]->m_dwSummonWaitTime) > 1000 * 60)) // Wait 60sec for the character to connect again
 					{
@@ -5596,7 +5596,7 @@ int CGame::iGetDangerValue(int iNpcH, short dX, short dY)
 	char  cOwnerType;
 	DWORD dwRegisterTime;
 
-	if (m_pNpcList[iNpcH] == NULL) return false;
+	if (m_pNpcList[iNpcH] == 0) return false;
 
 	iDangerValue = 0;
 
@@ -5608,16 +5608,16 @@ int CGame::iGetDangerValue(int iNpcH, short dX, short dY)
 			if (sDOType == 1) iDangerValue++;
 
 			switch (cOwnerType) {
-			case NULL:
+			case 0:
 				break;
 			case DEF_OWNERTYPE_PLAYER:
-				if (m_pClientList[sOwner] == NULL) break;
+				if (m_pClientList[sOwner] == 0) break;
 				if (m_pNpcList[iNpcH]->m_cSide != m_pClientList[sOwner]->m_cSide)
 					iDangerValue++;
 				else iDangerValue--;
 				break;
 			case DEF_OWNERTYPE_NPC:
-				if (m_pNpcList[sOwner] == NULL) break;
+				if (m_pNpcList[sOwner] == 0) break;
 				if (m_pNpcList[iNpcH]->m_cSide != m_pNpcList[sOwner]->m_cSide)
 					iDangerValue++;
 				else iDangerValue--;
@@ -5741,12 +5741,12 @@ bool CGame::bDecodeDropManagerFile(char* pFn)
 
 	cReadModeA = 0;
 
-	hFile = CreateFile(pFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
+	hFile = CreateFile(pFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+	dwFileSize = GetFileSize(hFile, 0);
 	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
 
 	pFile = fopen(pFn, "rt");
-	if (pFile == NULL) {
+	if (pFile == 0) {
 
 		PutLogList("(!) Cannot open Drop Manager file.");
 		return false;

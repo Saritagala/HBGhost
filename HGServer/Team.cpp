@@ -132,7 +132,7 @@ void Team::Kill(int iattacker, int itarget)
 		att->m_iMaxEK = att->m_iEnemyKillCount;
 	}
 	//att->Send(iattacker, DEF_NOTIFY_ENEMYKILLREWARD, itarget);
-	g->SendNotifyMsg(NULL, iattacker, DEF_NOTIFY_ENEMYKILLS, att->m_iEnemyKillCount, att->m_iMaxEK, NULL, NULL);
+	g->SendNotifyMsg(0, iattacker, DEF_NOTIFY_ENEMYKILLS, att->m_iEnemyKillCount, att->m_iMaxEK, 0, 0);
 	g->calcularTop15HB(iattacker);
 	team[att->iteam].kills++;
 	NotifyPoints();
@@ -211,9 +211,9 @@ void Team::NotPoints(int client)
 	//{
 		//c_cmd->SendCommand(client, "/teamkills", i, team[i].kills, 0, 0);
 		//c_cmd->SendCommand(client, "/teammaxkills", team[i].maxkills, 0, 0, 0);
-		G_pGame->SendNotifyMsg(NULL, client, DEF_NOTIFY_TEAMARENA, team[0].kills
-			, team[1].kills, team[2].kills, NULL, team[3].kills
-			, NULL, NULL);
+		G_pGame->SendNotifyMsg(0, client, DEF_NOTIFY_TEAMARENA, team[0].kills
+			, team[1].kills, team[2].kills, 0, team[3].kills
+			, 0, 0);
 	//}
 
 }
@@ -229,9 +229,9 @@ void Team::NotifyPoints()
 		c_cmd->SendCommand(i, "/teamkills", 1, team[1].kills, 0, 0);
 		c_cmd->SendCommand(i, "/teamkills", 2, team[2].kills, 0, 0);
 		c_cmd->SendCommand(i, "/teamkills", 3, team[3].kills, 0, 0);*/
-		G_pGame->SendNotifyMsg(NULL, i, DEF_NOTIFY_TEAMARENA, team[0].kills
-			, team[1].kills, team[2].kills, NULL, team[3].kills
-			, NULL, NULL);
+		G_pGame->SendNotifyMsg(0, i, DEF_NOTIFY_TEAMARENA, team[0].kills
+			, team[1].kills, team[2].kills, 0, team[3].kills
+			, 0, 0);
 	}
 }
 
@@ -277,7 +277,7 @@ void Team::Reward(int iteam)
 		{
 			pi->m_iMaxEK = pi->m_iEnemyKillCount;
 		}
-		g->SendNotifyMsg(NULL, i, DEF_NOTIFY_ENEMYKILLS, pi->m_iEnemyKillCount, pi->m_iMaxEK, NULL, NULL);
+		g->SendNotifyMsg(0, i, DEF_NOTIFY_ENEMYKILLS, pi->m_iEnemyKillCount, pi->m_iMaxEK, 0, 0);
 		g->calcularTop15HB(i);
 		g->ShowClientMsg(i, "You've received 150 EKs for been in the winner team!");
 	}
@@ -420,7 +420,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 
 		if (iEraseReq == 1) {
 			delete pItem;
-			pItem = NULL;
+			pItem = 0;
 		}
 
 		iRet = p->m_pXSock->iSendMsg(cData, 54);
@@ -433,7 +433,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 		delete pItem;
 		return;
 	}
-	if (pStrTok != NULL) delete pStrTok;
+	if (pStrTok != 0) delete pStrTok;
 
 }
 
@@ -532,7 +532,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 
 		if (iEraseReq == 1) {
 			delete pItem;
-			pItem = NULL;
+			pItem = 0;
 		}
 
 		iRet = p->m_pXSock->iSendMsg(cData, 54);
@@ -545,7 +545,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 		delete pItem;
 		return;
 	}
-	if (pStrTok != NULL) delete pStrTok;
+	if (pStrTok != 0) delete pStrTok;
 
 }
 
@@ -592,7 +592,7 @@ void Team::EquipCape(int client)
 	if (index != -1)
 	{
 		g->bEquipItemHandler(client, index, true);
-		g->SendNotifyMsg(NULL, client, NOTIFY_EQUIPITEM2, index, NULL, 0, 0, 0, 0, 0);
+		g->SendNotifyMsg(0, client, NOTIFY_EQUIPITEM2, index, 0, 0, 0, 0, 0, 0);
 	}
 }
 
@@ -618,7 +618,7 @@ void Team::EquipBoots(int client)
 	if (index != -1)
 	{
 		g->bEquipItemHandler(client, index, true);
-		g->SendNotifyMsg(NULL, client, NOTIFY_EQUIPITEM2, index, NULL, 0, 0, 0, 0, 0);
+		g->SendNotifyMsg(0, client, NOTIFY_EQUIPITEM2, index, 0, 0, 0, 0, 0, 0);
 	}
 }
 

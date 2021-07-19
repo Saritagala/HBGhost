@@ -1,0 +1,140 @@
+﻿  BuildItem.cpp
+  CharInfo.cpp
+  CRCdemo.cpp
+  Curse.cpp
+  DXC_ddraw.cpp
+  DXC_dinput.cpp
+  DXC_dsound.cpp
+  Effect.cpp
+  Game.cpp
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(2196,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(2227,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(2460,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(3285,30): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(3287,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(7324,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(10360,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(17097,54): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(20784,102): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(20790,47): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(21508,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(21514,61): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(22259,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(22588,59): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(22594,59): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27119,35): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27190,34): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27234,29): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27240,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27249,62): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27260,61): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27275,29): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27279,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27288,62): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27299,61): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27310,35): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27311,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27370,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27497,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(27508,37): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(29132,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(29167,35): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(29170,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(29176,35): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(29179,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31249,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31259,61): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31440,34): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31443,60): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31774,28): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31881,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31899,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31918,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31964,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31968,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(31973,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(33276,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(33277,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(33328,29): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(33605,38): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(33717,35): warning C4805: '!=': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(33897,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(34684,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35309,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35322,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35327,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35333,35): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35340,34): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35340,70): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35340,106): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35599,34): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game.cpp(35600,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+  Game2.cpp
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(1142,29): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(3232,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(3301,30): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(3308,29): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(3352,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(3429,29): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(10387,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(10388,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(10410,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(12392,79): warning C4305: 'argument': truncation from 'int' to 'bool'
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15391,30): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15391,92): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15396,58): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15400,59): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15441,58): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15467,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15521,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15546,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15565,54): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15566,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15571,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15576,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15581,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15615,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15617,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15623,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15630,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15868,36): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15869,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15874,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(15880,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(16102,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(16979,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(17102,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(17231,39): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(18028,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(20800,31): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22144,67): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22279,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22287,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22295,32): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22303,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22314,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\Client\Game2.cpp(22322,33): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+  GameMonitor.cpp
+  Item.cpp
+  ItemName.cpp
+  Magic.cpp
+  MapData.cpp
+  Misc.cpp
+  MouseInterface.cpp
+  MP3.cpp
+  Msg.cpp
+  Mydib.cpp
+  Generating Code...
+  Compiling...
+  OnlineUser.cpp
+  Skill.cpp
+  SoundBuffer.cpp
+  Sprite.cpp
+  StrTok.cpp
+  Tile.cpp
+  TileSpr.cpp
+  Wmain.cpp
+  XSocket.cpp
+  YWSound.cpp
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'cximage\release\cximage.lib'

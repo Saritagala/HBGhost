@@ -6871,10 +6871,14 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d", m_iTotalDR);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		/*iNext += 1;
+		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddAbsMD);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Air Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsAir);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddAbsEarth);
@@ -6888,8 +6892,12 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d", m_iAddAbsWater);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Air Absorption:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d", m_iAddAbsAir);
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Holy Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsHoly);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Unholy Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsUnholy);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 
 		iNext += 1;
@@ -21467,7 +21475,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 			break;
 
 		case 7: 
-			if (m_pCharList[m_cCurFocus - 1] != NULL && m_pCharList[m_cCurFocus - 1]->m_sLevel <= 100)
+			if (m_pCharList[m_cCurFocus - 1] != NULL /*&& m_pCharList[m_cCurFocus - 1]->m_sLevel <= 100*/)
 			{
 				ChangeGameMode(DEF_GAMEMODE_ONQUERYDELETECHARACTER);
 				m_wEnterGameType = m_cCurFocus;
@@ -35653,7 +35661,7 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
 			iEntry++;
 			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
@@ -35798,7 +35806,7 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
 			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1); 
 			iLoc += 15;
 		}

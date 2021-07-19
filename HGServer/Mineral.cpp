@@ -53,7 +53,7 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	pStrTok = new class CStrTok(pContents, seps);
 	token = pStrTok->pGet();
-	while (token != NULL) {
+	while (token != 0) {
 		if (cReadModeA != 0) {
 			switch (cReadModeA) {
 			case 1:
@@ -366,7 +366,7 @@ bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
 						PutLogList(G_cTxt);
 
 						delete m_pBuildItemList[iIndex];
-						m_pBuildItemList[iIndex] = NULL;
+						m_pBuildItemList[iIndex] = 0;
 
 						delete[] pContents;
 						delete pStrTok;
@@ -418,7 +418,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	WORD   wTemp;
 	short sMagicLevel = 0;
 
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	m_pClientList[iClientH]->m_iSkillMsgRecvCount++;
 
 	cp = (char*)(pData + 11);
@@ -458,23 +458,23 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	iResult = iDice(1, 100);
 
 	if (iResult > iPlayerSkillLevel) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_BUILDITEMFAIL, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_BUILDITEMFAIL, 0, 0, 0, 0);
 		return;
 	}
 
 	for (i = 0; i < 6; i++) {
 		if (cElementItemID[i] != -1) {
 			if ((cElementItemID[i] < 0) || (cElementItemID[i] > DEF_MAXITEMS)) return;
-			if (m_pClientList[iClientH]->m_pItemList[cElementItemID[i]] == NULL) return;
+			if (m_pClientList[iClientH]->m_pItemList[cElementItemID[i]] == 0) return;
 		}
 	}
 	for (i = 0; i < DEF_MAXBUILDITEMS; i++) {
-		if (m_pBuildItemList[i] != NULL) {
+		if (m_pBuildItemList[i] != 0) {
 			if (memcmp(m_pBuildItemList[i]->m_cName, cName, 20) == 0) {
 				if (m_pBuildItemList[i]->m_iSkillLimit > m_pClientList[iClientH]->m_cSkillMastery[13]) return;
 
 				for (x = 0; x < DEF_MAXITEMS; x++) {
-					if (m_pClientList[iClientH]->m_pItemList[x] != NULL)
+					if (m_pClientList[iClientH]->m_pItemList[x] != 0)
 						iItemCount[x] = m_pClientList[iClientH]->m_pItemList[x]->m_dwCount;
 					else iItemCount[x] = 0;
 				}
@@ -511,7 +511,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 				}
 
 				if (iMatch != 6) {
-					SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_BUILDITEMFAIL, NULL, NULL, NULL, NULL);
+					SendNotifyMsg(0, iClientH, DEF_NOTIFY_BUILDITEMFAIL, 0, 0, 0, 0);
 					return;
 				}
 
@@ -689,7 +689,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						}
 						if (dwValue > 7) dwValue = 7;
 
-						pItem->m_dwAttribute = NULL;
+						pItem->m_dwAttribute = 0;
 						dwType = dwType << 20;
 						dwValue = dwValue << 16;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -735,7 +735,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						}
 						if (dwValue > 7) dwValue = 7;
 
-						pItem->m_dwAttribute = NULL;
+						pItem->m_dwAttribute = 0;
 						dwType = dwType << 20;
 						dwValue = dwValue << 16;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
@@ -814,12 +814,12 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 				wsprintf(G_cTxt, "Custom-Item(%s) Value(%d) Life(%d/%d)", pItem->m_cName, pItem->m_sItemSpecEffectValue2, pItem->m_wCurLifeSpan, pItem->m_wMaxLifeSpan);
 				PutLogList(G_cTxt);
 
-				bAddItem(iClientH, pItem, NULL);
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_BUILDITEMSUCCESS, pItem->m_sItemSpecEffectValue2, pItem->m_cItemType, NULL, NULL); // Integer¸¦ Àü´ÞÇÏ±â À§ÇØ
+				bAddItem(iClientH, pItem, 0);
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_BUILDITEMSUCCESS, pItem->m_sItemSpecEffectValue2, pItem->m_cItemType, 0, 0); // Integer¸¦ Àü´ÞÇÏ±â À§ÇØ
 
 				for (x = 0; x < 6; x++) {
 					if (cElementItemID[x] != -1) {
-						if (m_pClientList[iClientH]->m_pItemList[cElementItemID[x]] == NULL) {
+						if (m_pClientList[iClientH]->m_pItemList[cElementItemID[x]] == 0) {
 							wsprintf(G_cTxt, "(?) Char(%s) ElementItemID(%d)", m_pClientList[iClientH]->m_cCharName, cElementItemID[x]);
 							PutLogFileList(G_cTxt);
 						}
@@ -846,7 +846,7 @@ void CGame::MineralGenerator()
 	int i, iP, tX, tY, iRet;
 
 	for (i = 0; i < DEF_MAXMAPS; i++) {
-		if ((iDice(1, 4) == 1) && (m_pMapList[i] != NULL) &&
+		if ((iDice(1, 4) == 1) && (m_pMapList[i] != 0) &&
 			(m_pMapList[i]->m_bMineralGenerator == true) &&
 			(m_pMapList[i]->m_iCurMineral < m_pMapList[i]->m_iMaxMineral)) {
 
@@ -865,32 +865,32 @@ int CGame::iCreateMineral(char cMapIndex, int tX, int tY, char cLevel)
 {
 	int i, iDynamicHandle, iMineralType;
 
-	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return NULL;
-	if (m_pMapList[cMapIndex] == NULL) return NULL;
+	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return 0;
+	if (m_pMapList[cMapIndex] == 0) return 0;
 
 	for (i = 1; i < DEF_MAXMINERALS; i++)
-		if (m_pMineral[i] == NULL) {
+		if (m_pMineral[i] == 0) {
 			// ºó °ø°£¿¡ ±¤¹°µ¢ÀÌ¸¦ ¸¸µç´Ù.
 			iMineralType = iDice(1, cLevel);
 			m_pMineral[i] = new class CMineral(iMineralType, cMapIndex, tX, tY, 1);
-			if (m_pMineral[i] == NULL) return NULL;
+			if (m_pMineral[i] == 0) return 0;
 
-			iDynamicHandle = NULL;
+			iDynamicHandle = 0;
 			switch (iMineralType) {
 			default:
-				iDynamicHandle = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_MINERAL1, cMapIndex, tX, tY, NULL, i);
+				iDynamicHandle = iAddDynamicObjectList(0, 0, DEF_DYNAMICOBJECT_MINERAL1, cMapIndex, tX, tY, 0, i);
 				break;
 
 			case 5: // º¸¼®·ù 
 			case 6:
-				iDynamicHandle = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_MINERAL2, cMapIndex, tX, tY, NULL, i);
+				iDynamicHandle = iAddDynamicObjectList(0, 0, DEF_DYNAMICOBJECT_MINERAL2, cMapIndex, tX, tY, 0, i);
 				break;
 			}
 
-			if (iDynamicHandle == NULL) {
+			if (iDynamicHandle == 0) {
 				delete m_pMineral[i];
-				m_pMineral[i] = NULL;
-				return NULL;
+				m_pMineral[i] = 0;
+				return 0;
 			}
 			m_pMineral[i]->m_sDynamicObjectHandle = iDynamicHandle;
 			m_pMineral[i]->m_cMapIndex = cMapIndex;
@@ -912,7 +912,7 @@ int CGame::iCreateMineral(char cMapIndex, int tX, int tY, char cLevel)
 			return i;
 		}
 
-	return NULL;
+	return 0;
 }
 
 void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
@@ -923,7 +923,7 @@ void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 	class CItem* pItem;
 	WORD  wWeaponType;
 
-	if (m_pClientList[iClientH] == NULL)  return;
+	if (m_pClientList[iClientH] == 0)  return;
 
 	m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bGetDynamicObject(dX, dY, &sType, &dwRegisterTime, &iDynamicIndex);
 
@@ -944,7 +944,7 @@ void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 		iSkillLevel = m_pClientList[iClientH]->m_cSkillMastery[0];
 		if (iSkillLevel == 0) break;
 
-		if (m_pDynamicObjectList[iDynamicIndex] == NULL) break;
+		if (m_pDynamicObjectList[iDynamicIndex] == 0) break;
 		// Ä³´Â ±¤¹°ÀÇ ³­ÀÌµµ¸¸Å­ ½ºÅ³À» ³·Ãá´Ù.
 		iSkillLevel -= m_pMineral[m_pDynamicObjectList[iDynamicIndex]->m_iV1]->m_iDifficulty;
 		if (iSkillLevel <= 0) iSkillLevel = 1;
@@ -1171,7 +1171,7 @@ void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 
 				// µ¿Àû °´Ã¼ »èÁ¦
 				delete m_pDynamicObjectList[iDynamicIndex];
-				m_pDynamicObjectList[iDynamicIndex] = NULL;
+				m_pDynamicObjectList[iDynamicIndex] = 0;
 			}
 		}
 		break;
@@ -1188,15 +1188,15 @@ void CGame::bDeleteMineral(int iIndex)
 
 	dwTime = timeGetTime();
 
-	if (m_pMineral[iIndex] == NULL) return;
+	if (m_pMineral[iIndex] == 0) return;
 	iDynamicIndex = m_pMineral[iIndex]->m_sDynamicObjectHandle;
-	if (m_pDynamicObjectList[iDynamicIndex] == NULL) return;
+	if (m_pDynamicObjectList[iDynamicIndex] == 0) return;
 
 	SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iDynamicIndex]->m_cMapIndex,
 		m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY,
-		m_pDynamicObjectList[iDynamicIndex]->m_sType, iDynamicIndex, NULL, (short)0);
+		m_pDynamicObjectList[iDynamicIndex]->m_sType, iDynamicIndex, 0, (short)0);
 	// ¸Ê¿¡¼­ ±¤¹° µ¿Àû °´Ã¼¸¦ »èÁ¦ÇÑ´Ù.
-	m_pMapList[m_pDynamicObjectList[iDynamicIndex]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY, dwTime);
+	m_pMapList[m_pDynamicObjectList[iDynamicIndex]->m_cMapIndex]->SetDynamicObject(0, 0, m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY, dwTime);
 	// ±¤¹°ÀÌ »ç¶óÁ³À¸¹Ç·Î ÀÌµ¿ÀÌ °¡´ÉÇÏ°Ô ÇÑ´Ù. 
 	m_pMapList[m_pMineral[iIndex]->m_cMapIndex]->SetTempMoveAllowedFlag(m_pDynamicObjectList[iDynamicIndex]->m_sX, m_pDynamicObjectList[iDynamicIndex]->m_sY, true);
 
@@ -1205,5 +1205,5 @@ void CGame::bDeleteMineral(int iIndex)
 
 	// ±¤¹° °´Ã¼ »èÁ¦ 
 	delete m_pMineral[iIndex];
-	m_pMineral[iIndex] = NULL;
+	m_pMineral[iIndex] = 0;
 }

@@ -20,7 +20,7 @@ CClient::CClient(HWND hWnd)
 
 	m_dwCharID = 0;
 
-	m_pXSock = NULL;
+	m_pXSock = 0;
 	m_pXSock = new class XSocket(hWnd, DEF_CLIENTSOCKETBLOCKLIMIT);
 	m_pXSock->bInitBufferSize(DEF_MSGBUFFERSIZE);
 	ZeroMemory(m_cProfile, sizeof(m_cProfile));
@@ -49,24 +49,24 @@ CClient::CClient(HWND hWnd)
 		m_sItemEquipmentStatus[i] = -1;
 	}
 	for (i = 0; i < DEF_MAXITEMS; i++) {
-		m_pItemList[i]       = NULL;
+		m_pItemList[i]       = 0;
 		m_ItemPosList[i].x   = 40;
 		m_ItemPosList[i].y   = 30;
 		m_bIsItemEquipped[i] = false;
 	}
 	m_cArrowIndex = -1;
 	for (i = 0; i < DEF_MAXBANKITEMS; i++) {
-		m_pItemInBankList[i] = NULL;
+		m_pItemInBankList[i] = 0;
 	}
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
-		m_cMagicMastery[i] = NULL;
+		m_cMagicMastery[i] = 0;
 	}
 	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
-		m_cSkillMastery[i] = NULL;
+		m_cSkillMastery[i] = 0;
 	}
 	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
 		m_bSkillUsingStatus[i] = false;
-		m_iSkillUsingTimeID[i] = NULL;
+		m_iSkillUsingTimeID[i] = 0;
 	}
 	m_cMapIndex = -1;
 	m_sX = -1;
@@ -124,7 +124,7 @@ CClient::CClient(HWND hWnd)
 	m_sV1 = 0;
 	m_bIsOnServerChange = false;
 	m_iExpStock = 0;
-	m_iAllocatedFish = NULL;
+	m_iAllocatedFish = 0;
 	m_iFishChance = 0;
 
 	m_dwGold = 0;
@@ -200,7 +200,7 @@ CClient::CClient(HWND hWnd)
 	// <MISSING_VARIABLE_HERE> 0B8Ch 
 	// <MISSING_VARIABLE_HERE> 0B88h 
 	// <MISSING_VARIABLE_HERE> 0B84h
-	m_iExchangeH = NULL;
+	m_iExchangeH = 0;
 	for (i = 0; i < 8; i++) {
 		m_cExchangeItemIndex[i]  = 0;
 		m_iExchangeItemAmount[i] = 0; 
@@ -213,20 +213,20 @@ CClient::CClient(HWND hWnd)
 	m_iAlterItemDropIndex = -1;
 
 	//Magn0S:: Multi Quest
-	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuest[i] = NULL;
-	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestID[i] = NULL;
-	for (i = 0; i < DEF_MAXQUEST; i++) m_iCurQuestCount[i] = NULL;
-	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardType[i] = NULL;
-	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardAmount[i] = NULL;
+	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuest[i] = 0;
+	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestID[i] = 0;
+	for (i = 0; i < DEF_MAXQUEST; i++) m_iCurQuestCount[i] = 0;
+	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardType[i] = 0;
+	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardAmount[i] = 0;
 	for (i = 0; i < DEF_MAXQUEST; i++) m_bIsQuestCompleted[i] = false;
 
-	//m_iQuest = NULL;
-	//m_iQuestID = NULL;
-	m_iAskedQuest = NULL;
-	//m_iCurQuestCount = NULL;
-	//m_iQuestRewardType = NULL;
-	//m_iQuestRewardAmount = NULL;
-	m_iContribution = NULL;
+	//m_iQuest = 0;
+	//m_iQuestID = 0;
+	m_iAskedQuest = 0;
+	//m_iCurQuestCount = 0;
+	//m_iQuestRewardType = 0;
+	//m_iQuestRewardAmount = 0;
+	m_iContribution = 0;
 	m_bQuestMatchFlag_Loc = false;
 	//m_bIsQuestCompleted = false;
 	m_cHeroArmourBonus = 0;
@@ -240,7 +240,7 @@ CClient::CClient(HWND hWnd)
 	m_iAddAbsPD = m_iAddAbsMD = 0;
 	m_iAddCD = m_iAddExp = m_iAddGold = 0;
 	m_iSpecialAbilityTime = DEF_SPECABLTYTIMESEC;
-	m_iSpecialAbilityType = NULL;
+	m_iSpecialAbilityType = 0;
 	m_bIsSpecialAbilityEnabled = false;
 	m_iSpecialAbilityLastSec = 0;
 	m_iSpecialAbilityEquipPos = 0;
@@ -257,20 +257,20 @@ CClient::CClient(HWND hWnd)
 	m_dwInitCCTime = 0;
 	ZeroMemory(m_cLockedMapName, sizeof(m_cLockedMapName));
 	strcpy(m_cLockedMapName, "NONE");
-	m_iLockedMapTime = NULL;
+	m_iLockedMapTime = 0;
 	// <MISSING_VARIABLE_HERE> 0F1Ch
-	m_iCrusadeDuty  = NULL;
-	m_dwCrusadeGUID = NULL;
+	m_iCrusadeDuty  = 0;
+	m_dwCrusadeGUID = 0;
 	for (i = 0; i < DEF_MAXCRUSADESTRUCTURES; i++) {
-		m_stCrusadeStructureInfo[i].cType = NULL;
-		m_stCrusadeStructureInfo[i].cSide = NULL;
-		m_stCrusadeStructureInfo[i].sX = NULL;
-		m_stCrusadeStructureInfo[i].sY = NULL;
+		m_stCrusadeStructureInfo[i].cType = 0;
+		m_stCrusadeStructureInfo[i].cSide = 0;
+		m_stCrusadeStructureInfo[i].sX = 0;
+		m_stCrusadeStructureInfo[i].sY = 0;
 	}	
-	m_iCSIsendPoint = NULL;
+	m_iCSIsendPoint = 0;
 	m_bIsSendingMapStatus = false;
 	ZeroMemory(m_cSendingMapName, sizeof(m_cSendingMapName));
-	m_iConstructionPoint = NULL;
+	m_iConstructionPoint = 0;
 	ZeroMemory(m_cConstructMapName, sizeof(m_cConstructMapName));
 	m_iConstructLocX = m_iConstructLocY = -1;
 	// <MISSING_VARIABLE_HERE> 165Ch	
@@ -309,7 +309,7 @@ CClient::CClient(HWND hWnd)
 	m_iPenaltyBlockYear = m_iPenaltyBlockMonth = m_iPenaltyBlockDay = 0; // v1.4
 	ZeroMemory(m_cExchangeName, sizeof(m_cExchangeName));			// 교환할 대상의 이름 
 	ZeroMemory(m_cExchangeItemName, sizeof(m_cExchangeItemName));	// 교환할 아이템 이름 	
-	m_dwHeldenianGUID = NULL;
+	m_dwHeldenianGUID = 0;
 	m_bIsInsideWizardTower = false;
 	m_cHeroArmorBonus = 0;
 	m_bMagicConfirm = false;
@@ -323,7 +323,7 @@ CClient::CClient(HWND hWnd)
 	//50Cent - Repair All
     totalItemRepair = 0;
 	for (i = 0; i < DEF_MAXITEMS; i++) {
-		m_stRepairAll[i].index = NULL;
+		m_stRepairAll[i].index = 0;
 		m_stRepairAll[i].price = 0;
 	}
 
@@ -339,16 +339,16 @@ CClient::~CClient()
 {
  int i;
 	
-	if (m_pXSock != NULL) delete m_pXSock;
+	if (m_pXSock != 0) delete m_pXSock;
 	for (i = 0; i < DEF_MAXITEMS; i++)
-		if (m_pItemList[i] != NULL) {
+		if (m_pItemList[i] != 0) {
 			delete m_pItemList[i];
-			m_pItemList[i] = NULL;
+			m_pItemList[i] = 0;
 		}
 	for(i = 0; i < DEF_MAXBANKITEMS; i++)
-		if (m_pItemInBankList[i] != NULL) {
+		if (m_pItemInBankList[i] != 0) {
 			delete m_pItemInBankList[i];
-			m_pItemInBankList[i]=NULL;
+			m_pItemInBankList[i]=0;
 		}
 }
 
@@ -396,6 +396,6 @@ void CClient::Send(int h, WORD msg, DWORD sV1, DWORD sV2, DWORD sV3,
 	DWORD sV6, DWORD sV7, DWORD sV8, DWORD sV9, char* pString2)
 {
 
-	G_pGame->SendNotifyMsg(NULL, h, msg, sV1, sV2, sV3, pString,
+	G_pGame->SendNotifyMsg(0, h, msg, sV1, sV2, sV3, pString,
 		sV4, sV5, sV6, sV7, sV8, sV9, pString2);
 }

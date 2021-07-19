@@ -50,7 +50,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	bool   bDup, bFlag;
 	class  CItem* pItem;
 
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	m_pClientList[iClientH]->m_iSkillMsgRecvCount++;
 
 	for (i = 0; i < 6; i++) {
@@ -77,7 +77,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	// µ¥ÀÌÅÍ°¡ À¯È¿ÇÑ ¾ÆÀÌÅÛ ÀÎµ¦½ºÀÎÁö Ã¼Å©ÇÑ´Ù.
 	for (i = 0; i < 6; i++) {
 		if (cI[i] >= DEF_MAXITEMS) return;
-		if ((cI[i] >= 0) && (m_pClientList[iClientH]->m_pItemList[cI[i]] == NULL)) return;
+		if ((cI[i] >= 0) && (m_pClientList[iClientH]->m_pItemList[cI[i]] == 0)) return;
 	}
 
 	for (i = 0; i < 6; i++)
@@ -107,7 +107,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 		if (sItemIndex[i] != -1) {
 			if (sItemIndex[i] < 0) return;
 			if ((sItemIndex[i] >= 0) && (sItemIndex[i] >= DEF_MAXITEMS)) return;
-			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]] == NULL) return;
+			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]] == 0) return;
 			// ¾ÆÀÌÅÛÀÌ °¹¼ö°¡ ¿À¹öÇØµµ ¸®ÅÏ.
 			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_dwCount < sItemNumber[i]) return;
 		}
@@ -151,7 +151,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	ZeroMemory(cPotionName, sizeof(cPotionName));
 
 	for (i = 0; i < DEF_MAXPOTIONTYPES; i++)
-		if (m_pPotionConfigList[i] != NULL) {
+		if (m_pPotionConfigList[i] != 0) {
 			bFlag = false;
 			for (j = 0; j < 12; j++)
 				if (m_pPotionConfigList[i]->m_sArray[j] != sItemArray[j]) bFlag = true;
@@ -167,7 +167,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 
 	// Á¶ÇÕÀÌ ÀÏÄ¡ÇÏ´Â Æ÷¼ÇÀÌ ¾øÀ¸¹Ç·Î ¹«½Ã
 	if (strlen(cPotionName) == 0) {
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOMATCHINGPOTION, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOMATCHINGPOTION, 0, 0, 0, 0);
 		return;
 	}
 
@@ -175,7 +175,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	iSkillLevel = m_pClientList[iClientH]->m_cSkillMastery[12];
 	if (iSkillLimit > iSkillLevel) {
 		// ÇÃ·¹ÀÌ¾îÀÇ ½ºÅ³ÀÌ ³·¾Æ ¸¸µé ¼ö ¾ø´Â Æ÷¼ÇÀÌ´Ù.
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_LOWPOTIONSKILL, NULL, NULL, NULL, cPotionName);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_LOWPOTIONSKILL, 0, 0, 0, cPotionName);
 		return;
 	}
 
@@ -186,7 +186,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	iResult = iDice(1, 100);
 	if (iResult > iSkillLevel) {
 		// ½ºÅ³ ½ÇÆÐ 
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_POTIONFAIL, NULL, NULL, NULL, cPotionName);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_POTIONFAIL, 0, 0, 0, cPotionName);
 		return;
 	}
 
@@ -195,9 +195,9 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 
 	// ¸¸Á·ÇÏ´Â Æ÷¼Ç Á¶ÇÕÀÌ ÀÖ´Ù¸é strlen(cPotionName)ÀÌ 0ÀÌ ¾Æ´Ï´Ù. ÀÌ¹Ì °Ë»çÇßÁö¸¸ 
 	if (strlen(cPotionName) != 0) {
-		pItem = NULL;
+		pItem = 0;
 		pItem = new class CItem;
-		if (pItem == NULL) return;
+		if (pItem == 0) return;
 
 		// Æ÷¼ÇÀ» Á¦ÀÛÇßÀ¸¹Ç·Î Àç·á¸¦ ¾ø¾Ø´Ù.
 		for (i = 0; i < 6; i++)
@@ -208,7 +208,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				else ItemDepleteHandler(iClientH, sItemIndex[i], false, true);
 			}
 
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_POTIONSUCCESS, NULL, NULL, NULL, cPotionName);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_POTIONSUCCESS, 0, 0, 0, cPotionName);
 		// v1.41 ¼Ò·®ÀÇ °æÇèÄ¡ Áõ°¡ 
 		GetExp(iClientH, iDice(1, (iDifficulty / 3)));
 
@@ -329,7 +329,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 		}
 		else {
 			delete pItem;
-			pItem = NULL;
+			pItem = 0;
 		}
 	}
 }
@@ -350,7 +350,7 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 
 	pStrTok = new class CStrTok(pContents, seps);
 	token = pStrTok->pGet();
-	while (token != NULL) {
+	while (token != 0) {
 		if (cReadModeA != 0) {
 			switch (cReadModeA) {
 			case 1:
@@ -364,7 +364,7 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 						return false;
 					}
 
-					if (m_pPotionConfigList[atoi(token)] != NULL) {
+					if (m_pPotionConfigList[atoi(token)] != 0) {
 						// �̹� �Ҵ�� ��ȣ�� �ִ�. �����̴�.
 						PutLogList("(!!!) CRITICAL ERROR! POTION configuration file error - Duplicate potion number.");
 						delete[] pContents;
@@ -443,7 +443,7 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Wrong Data format(1).");
 						delete[] pContents; delete pStrTok; return false;
 					}
-					if (m_pCraftingConfigList[atoi(token)] != NULL)
+					if (m_pCraftingConfigList[atoi(token)] != 0)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! CRAFTING configuration file error - Duplicate crafting number.");
 						delete[] pContents; delete pStrTok; return false;
@@ -550,7 +550,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	bool   bDup, bFlag, bNeedLog;
 	class  CItem* pItem;
 
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 
 	m_pClientList[iClientH]->m_iSkillMsgRecvCount++;
 
@@ -579,7 +579,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	for (i = 0; i < 6; i++)
 	{
 		if (cI[i] >= DEF_MAXITEMS) return;
-		if ((cI[i] >= 0) && (m_pClientList[iClientH]->m_pItemList[cI[i]] == NULL)) return;
+		if ((cI[i] >= 0) && (m_pClientList[iClientH]->m_pItemList[cI[i]] == 0)) return;
 	}
 
 	for (i = 0; i < 6; i++)
@@ -613,7 +613,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 		{
 			if (sItemIndex[i] < 0) return;
 			if ((sItemIndex[i] >= 0) && (sItemIndex[i] >= DEF_MAXITEMS)) return;
-			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]] == NULL) return;
+			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]] == 0) return;
 			if (m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_dwCount < sItemNumber[i]) return;
 			sItemPurity[i] = m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_sItemSpecEffectValue2;
 			if ((m_pClientList[iClientH]->m_pItemList[sItemIndex[i]]->m_cItemType == DEF_ITEMTYPE_NONE)
@@ -677,7 +677,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	// Search Crafting you wanna build
 	ZeroMemory(cCraftingName, sizeof(cCraftingName));
 	for (i = 0; i < DEF_MAXPOTIONTYPES; i++) {
-		if (m_pCraftingConfigList[i] != NULL)
+		if (m_pCraftingConfigList[i] != 0)
 		{
 			bFlag = false;
 			for (j = 0; j < 12; j++)
@@ -697,23 +697,23 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 	// Check if recipe is OK
 	if (strlen(cCraftingName) == 0)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CRAFTING_FAIL, 1, NULL, NULL, NULL); // "There is not enough material"
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRAFTING_FAIL, 1, 0, 0, 0); // "There is not enough material"
 		return;
 	}
 	// Check for Contribution
 	if (m_pClientList[iClientH]->m_iContribution < iNeededContrib)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CRAFTING_FAIL, 2, NULL, NULL, NULL); // "There is not enough Contribution Point"	
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRAFTING_FAIL, 2, 0, 0, 0); // "There is not enough Contribution Point"	
 		return;
 	}
 	// Check possible Failure
 	if (iDice(1, 100) < iDifficulty)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CRAFTING_FAIL, 3, NULL, NULL, NULL); // "Crafting failed"
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRAFTING_FAIL, 3, 0, 0, 0); // "Crafting failed"
 	// Remove parts...
-		pItem = NULL;
+		pItem = 0;
 		pItem = new class CItem;
-		if (pItem == NULL) return;
+		if (pItem == 0) return;
 		for (i = 0; i < 6; i++) {
 			if (sItemIndex[i] != -1)
 			{	// Deplete any Merien Stone
@@ -775,9 +775,9 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 
 	if (strlen(cCraftingName) != 0)
 	{
-		pItem = NULL;
+		pItem = 0;
 		pItem = new class CItem;
-		if (pItem == NULL) return;
+		if (pItem == 0) return;
 		for (i = 0; i < 6; i++)
 		{
 			if (sItemIndex[i] != -1)
@@ -796,11 +796,11 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 		if (iNeededContrib != 0)
 		{
 			m_pClientList[iClientH]->m_iContribution -= iNeededContrib;
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, NULL, NULL, NULL);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_CONTRIBPOINTS, m_pClientList[iClientH]->m_iContribution, 0, 0, 0);
 
 		}
 
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CRAFTING_SUCCESS, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRAFTING_SUCCESS, 0, 0, 0, 0);
 
 		GetExp(iClientH, iDice(1, iDice(2, 100)));
 
@@ -918,7 +918,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 		else
 		{
 			delete pItem;
-			pItem = NULL;
+			pItem = 0;
 		}
 	}
 }

@@ -30,7 +30,7 @@ void CGame::_CheckStrategicPointOccupyStatus(char cMapIndex)
 	m_iStrategicStatus = 0;
 
 	for (i = 0; i < DEF_MAXSTRATEGICPOINTS; i++)
-		if (m_pMapList[cMapIndex]->m_pStrategicPointList[i] != NULL) {
+		if (m_pMapList[cMapIndex]->m_pStrategicPointList[i] != 0) {
 
 			iSide = m_pMapList[cMapIndex]->m_pStrategicPointList[i]->m_iSide;
 			iValue = m_pMapList[cMapIndex]->m_pStrategicPointList[i]->m_iValue;
@@ -55,7 +55,7 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 	int   iDynamicObjectIndex, iIndex;
 	class CTile* pTile;
 	DWORD dwTime = timeGetTime();
-	if (m_pMapList[cMapIndex] == NULL)									return false;
+	if (m_pMapList[cMapIndex] == 0)									return false;
 	if ((m_bHeldenianWarInitiated == false) && (bAutoFlag == false))		return false; // War must be started is player flag
 	if (m_cHeldenianWinner != -1)										return false; // War must not be finished
 	if ((m_cHeldenianType == 1) && (m_iBTFieldMapIndex != cMapIndex))	return false; // Type 1: only on BattleField
@@ -64,7 +64,7 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 	if ((m_cHeldenianType == 2) 										   			  // Type 2: 
 		&& (m_iGodHMapIndex == cMapIndex)											  // on GodH, allowed only
 		&& (bAutoFlag == false)														  // as autoflag
-		&& (m_pClientList[iClientH] != NULL))
+		&& (m_pClientList[iClientH] != 0))
 	{
 		if (m_pClientList[iClientH]->m_cSide == m_sLastHeldenianWinner) return false; // for attackers only
 		if (m_pClientList[iClientH]->m_iGuildRank != 0)					return false; // for a gm only
@@ -75,8 +75,8 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 		|| (dY < 25) || (dY >= m_pMapList[cMapIndex]->m_sSizeY - 25))	return false;
 
 	pTile = (class CTile*)(m_pMapList[cMapIndex]->m_pTile + dX + dY * m_pMapList[cMapIndex]->m_sSizeY);
-	if (pTile->m_iAttribute != NULL)									return false;
-	if (pTile->m_iOccupyFlagIndex != NULL)								return false;
+	if (pTile->m_iAttribute != 0)									return false;
+	if (pTile->m_iOccupyFlagIndex != 0)								return false;
 	if (pTile->m_bIsMoveAllowed == false)								return false;
 	if (m_pMapList[cMapIndex]->m_iTotalOccupyFlags >= DEF_MAXOCCUPYFLAG)
 	{
@@ -84,18 +84,18 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 	}
 	if (bAutoFlag == false) // Flag set by a character
 	{
-		if (m_pClientList[iClientH] == NULL) return false;
+		if (m_pClientList[iClientH] == 0) return false;
 		switch (m_pClientList[iClientH]->m_cSide) {
 		case 1:	// Aresden
-			iDynamicObjectIndex = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ARESDENFLAG1, cMapIndex, dX, dY, NULL, NULL);
+			iDynamicObjectIndex = iAddDynamicObjectList(0, 0, DEF_DYNAMICOBJECT_ARESDENFLAG1, cMapIndex, dX, dY, 0, 0);
 			break;
 		case 2: // Elvine	
-			iDynamicObjectIndex = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ELVINEFLAG1, cMapIndex, dX, dY, NULL, NULL);
+			iDynamicObjectIndex = iAddDynamicObjectList(0, 0, DEF_DYNAMICOBJECT_ELVINEFLAG1, cMapIndex, dX, dY, 0, 0);
 			break;
 		default: // Others
 			break;
 		}
-		if (iDynamicObjectIndex == NULL) return false;
+		if (iDynamicObjectIndex == 0) return false;
 		iIndex = m_pMapList[cMapIndex]->iRegisterOccupyFlag(dX, dY, iSide, iEKNum, iDynamicObjectIndex);
 		if (iIndex == -1) PutLogList("Error registering OccupyFlag.");
 		for (ix = dX - iEKNum; ix <= dX + iEKNum; ix++)
@@ -104,7 +104,7 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 				if ((ix != dX) && (iy != dY))
 				{
 					pTile = (class CTile*)(m_pMapList[cMapIndex]->m_pTile + ix + iy * m_pMapList[cMapIndex]->m_sSizeY);
-					if (pTile->m_iOccupyFlagIndex == NULL)
+					if (pTile->m_iOccupyFlagIndex == 0)
 					{
 						switch (m_pClientList[iClientH]->m_cSide) {
 						case 1:	// Aresden 
@@ -154,15 +154,15 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 		if (m_cHeldenianType != 2) return false;
 		switch (m_sLastHeldenianWinner) {
 		case 1:	// Aresden:
-			iDynamicObjectIndex = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ARESDENFLAG1, cMapIndex, dX, dY, NULL, NULL);
+			iDynamicObjectIndex = iAddDynamicObjectList(0, 0, DEF_DYNAMICOBJECT_ARESDENFLAG1, cMapIndex, dX, dY, 0, 0);
 			break;
 		case 2: // Elvine	
-			iDynamicObjectIndex = iAddDynamicObjectList(NULL, NULL, DEF_DYNAMICOBJECT_ELVINEFLAG1, cMapIndex, dX, dY, NULL, NULL);
+			iDynamicObjectIndex = iAddDynamicObjectList(0, 0, DEF_DYNAMICOBJECT_ELVINEFLAG1, cMapIndex, dX, dY, 0, 0);
 			break;
 		default: // Others
 			break;
 		}
-		if (iDynamicObjectIndex == NULL) return false;
+		if (iDynamicObjectIndex == 0) return false;
 		iIndex = m_pMapList[cMapIndex]->iRegisterOccupyFlag(dX, dY, iSide, 615, iDynamicObjectIndex);
 		if (iIndex == -1) PutLogList("Error registering MasterOccupyFlag.");
 		for (ix = dX - 20; ix <= dX + 35; ix++)
@@ -171,7 +171,7 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 				if ((ix != dX) && (iy != dY))
 				{
 					pTile = (class CTile*)(m_pMapList[cMapIndex]->m_pTile + ix + iy * m_pMapList[cMapIndex]->m_sSizeY);
-					if (pTile->m_iOccupyFlagIndex == NULL)
+					if (pTile->m_iOccupyFlagIndex == 0)
 					{
 						switch (m_sLastHeldenianWinner) {
 						case 1:	// Aresden 
@@ -210,7 +210,7 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 	DWORD* dwp;
 	short* sp;
 	WORD* wp;
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iEnemyKillCount < 10) return;
 	if (m_pClientList[iClientH]->m_cSide < 0) return;
 	if (m_pClientList[iClientH]->m_cSide > 2) return;
@@ -300,7 +300,7 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwAttribute;
 				cp += 4;
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, NULL, NULL, NULL);
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, 0, 0, 0);
 				calcularTop15HB(iClientH);
 				if (iEraseReq == 1) delete pItem;
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 53);
@@ -353,7 +353,7 @@ int CGame::_iComposeFlagStatusContents(char* pData)
 
 	// 
 	for (i = 1; i < DEF_MAXOCCUPYFLAG; i++)
-		if (m_pMapList[m_iMiddlelandMapIndex]->m_pOccupyFlag[i] != NULL) {
+		if (m_pMapList[m_iMiddlelandMapIndex]->m_pOccupyFlag[i] != 0) {
 
 			wsprintf(cTxt, "flag = %d %d %d %d", m_pMapList[m_iMiddlelandMapIndex]->m_pOccupyFlag[i]->m_cSide,
 				m_pMapList[m_iMiddlelandMapIndex]->m_pOccupyFlag[i]->m_sX,
@@ -393,7 +393,7 @@ bool CGame::_bDecodeOccupyFlagSaveFileContents(char* pData, DWORD dwMsgSize)
 	pStrTok = new class CStrTok(pContents, seps);
 	token = pStrTok->pGet();
 
-	while (token != NULL) {
+	while (token != 0) {
 		if (cReadModeA != 0) {
 			switch (cReadModeA) {
 			case 1:
@@ -491,14 +491,14 @@ void CGame::_DeleteRandomOccupyFlag(int iMapIndex)
 	class CTile* pTile;
 	DWORD dwTime;
 
-	if (m_pMapList[iMapIndex] == NULL) return;
+	if (m_pMapList[iMapIndex] == 0) return;
 
 	dwTime = timeGetTime();
 
 	// ÃÑ ±ê¹ß °¹¼ö¸¦ ±¸ÇÑ´Ù.
 	iTotalFlags = 0;
 	for (i = 1; i < DEF_MAXOCCUPYFLAG; i++)
-		if (m_pMapList[iMapIndex]->m_pOccupyFlag[i] != NULL) {
+		if (m_pMapList[iMapIndex]->m_pOccupyFlag[i] != 0) {
 			iTotalFlags++;
 		}
 
@@ -507,9 +507,9 @@ void CGame::_DeleteRandomOccupyFlag(int iMapIndex)
 
 	iCount = 0;
 	for (i = 1; i < DEF_MAXOCCUPYFLAG; i++)
-		if (m_pMapList[iMapIndex]->m_pOccupyFlag[i] != NULL) {
+		if (m_pMapList[iMapIndex]->m_pOccupyFlag[i] != 0) {
 			iCount++;
-			if ((iCount == iTotalFlags) && (m_pMapList[iMapIndex]->m_pOccupyFlag[i] != NULL)) {
+			if ((iCount == iTotalFlags) && (m_pMapList[iMapIndex]->m_pOccupyFlag[i] != 0)) {
 				// ÀÌ ±ê¹ßÀ» ¾ø¾Ø´Ù.	
 
 				//testcode
@@ -530,20 +530,20 @@ void CGame::_DeleteRandomOccupyFlag(int iMapIndex)
 				// Å¬¶óÀÌ¾ðÆ®¿¡°Ô ±ê¹ßÀÌ »ç¶óÁüÀ» ¾Ë¸®°í 
 				SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iDynamicObjectIndex]->m_cMapIndex,
 					m_pDynamicObjectList[iDynamicObjectIndex]->m_sX, m_pDynamicObjectList[iDynamicObjectIndex]->m_sY,
-					m_pDynamicObjectList[iDynamicObjectIndex]->m_sType, iDynamicObjectIndex, NULL, (short)0);
+					m_pDynamicObjectList[iDynamicObjectIndex]->m_sType, iDynamicObjectIndex, 0, (short)0);
 				// ¸Ê¿¡¼­ ±ê¹ß µ¿Àû °´Ã¼¸¦ »èÁ¦ÇÑ´Ù.
-				m_pMapList[m_pDynamicObjectList[iDynamicObjectIndex]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[iDynamicObjectIndex]->m_sX, m_pDynamicObjectList[iDynamicObjectIndex]->m_sY, dwTime);
+				m_pMapList[m_pDynamicObjectList[iDynamicObjectIndex]->m_cMapIndex]->SetDynamicObject(0, 0, m_pDynamicObjectList[iDynamicObjectIndex]->m_sX, m_pDynamicObjectList[iDynamicObjectIndex]->m_sY, dwTime);
 
 				// ±ê¹ß °´Ã¼¸¦ »èÁ¦ 
 				delete m_pMapList[iMapIndex]->m_pOccupyFlag[i];
-				m_pMapList[iMapIndex]->m_pOccupyFlag[i] = NULL;
+				m_pMapList[iMapIndex]->m_pOccupyFlag[i] = 0;
 
 				// Å¸ÀÏ »óÀÇ ±ê¹ß ÀÎµ¦½º¸¦ »èÁ¦
-				pTile->m_iOccupyFlagIndex = NULL;
+				pTile->m_iOccupyFlagIndex = 0;
 
 				// µ¿Àû °´Ã¼ »èÁ¦ 
 				delete m_pDynamicObjectList[iDynamicObjectIndex];
-				m_pDynamicObjectList[iDynamicObjectIndex] = NULL;
+				m_pDynamicObjectList[iDynamicObjectIndex] = 0;
 
 				// centu - 800x600
 				for (tx = fx - 12; tx <= fx + 12; tx++) // 10
@@ -622,33 +622,33 @@ void CGame::LocalEndHeldenianMode(DWORD dwHeldenianGUID, int iWinner)
 	int j, n;
 	for (j = 0; j < DEF_MAXCLIENTS; j++)
 	{
-		if (m_pClientList[j] == NULL)					 continue;
+		if (m_pClientList[j] == 0)					 continue;
 		if (m_pClientList[j]->m_bIsInitComplete != true) continue;
-		SendNotifyMsg(NULL, j, DEF_NOTIFY_HELDENIANEND, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, j, DEF_NOTIFY_HELDENIANEND, 0, 0, 0, 0);
 		// DEF_NOTIFY_HELDENIANVICTORY used at XP time
 		m_pClientList[j]->m_cWarType = 0; // Client has been informed, he'll get XP
 	}
 	for (m = 0; m < DEF_MAXMAPS; m++)
 	{
-		if (m_pMapList[m] == NULL) break;
+		if (m_pMapList[m] == 0) break;
 		if (m_pMapList[m]->m_bIsHeldenianMap == true)
 		{
 			for (j = 0; j < DEF_MAXCLIENTS; j++)
 			{
-				if (m_pClientList[j] == NULL)					 continue;
+				if (m_pClientList[j] == 0)					 continue;
 				if (m_pClientList[j]->m_bIsInitComplete != true) continue;
 				if (m_pClientList[j]->m_cMapIndex != m)			 continue;
-				SendNotifyMsg(NULL, j, DEF_NOTIFY_0BE8, NULL, NULL, NULL, NULL);
-				RequestTeleportHandler(j, "1   ", NULL, -1, -1);
+				SendNotifyMsg(0, j, DEF_NOTIFY_0BE8, 0, 0, 0, 0);
+				RequestTeleportHandler(j, "1   ", 0, -1, -1);
 			}
 			for (n = 0; n < DEF_MAXNPCS; n++)
 			{
-				if ((m_pNpcList[n] != NULL) && (m_pMapList[m_pNpcList[n]->m_cMapIndex] != NULL)
+				if ((m_pNpcList[n] != 0) && (m_pMapList[m_pNpcList[n]->m_cMapIndex] != 0)
 					&& (m_pNpcList[n]->m_cMapIndex == m))
 				{
 					if (m_pNpcList[n]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(NULL, NULL, n, 0);//RemoveEventNpc(n);
+						NpcKilledHandler(0, 0, n, 0);//RemoveEventNpc(n);
 					}
 					else
 					{
@@ -677,10 +677,10 @@ void CGame::RemoveOccupyFlags(int iMapIndex)
 	int iDynamicObjectIndex;
 	class CTile* pTile;
 	int iy, ix;
-	if (m_pMapList[iMapIndex] == NULL) return;
+	if (m_pMapList[iMapIndex] == 0) return;
 	for (i = 1; i < DEF_MAXOCCUPYFLAG; i++)
 	{
-		if (m_pMapList[iMapIndex]->m_pOccupyFlag[i] == NULL)
+		if (m_pMapList[iMapIndex]->m_pOccupyFlag[i] == 0)
 		{
 			continue;
 		}
@@ -689,23 +689,23 @@ void CGame::RemoveOccupyFlags(int iMapIndex)
 			dX = m_pMapList[iMapIndex]->m_pOccupyFlag[i]->m_sX;
 			dY = m_pMapList[iMapIndex]->m_pOccupyFlag[i]->m_sY;
 			iDynamicObjectIndex = m_pMapList[iMapIndex]->m_pOccupyFlag[i]->m_iDynamicObjectIndex;
-			m_pMapList[iMapIndex]->m_pOccupyFlag[i] = NULL;
+			m_pMapList[iMapIndex]->m_pOccupyFlag[i] = 0;
 			m_pMapList[iMapIndex]->m_iTotalOccupyFlags--;
 
 			pTile = (class CTile*)(m_pMapList[iMapIndex]->m_pTile + dX + dY * m_pMapList[iMapIndex]->m_sSizeY);
-			if (m_pDynamicObjectList[iDynamicObjectIndex] == NULL) continue;
+			if (m_pDynamicObjectList[iDynamicObjectIndex] == 0) continue;
 			SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT
 				, iMapIndex, dX, dY, m_pDynamicObjectList[iDynamicObjectIndex]->m_sType
-				, iDynamicObjectIndex, NULL, (short)0);
-			m_pMapList[iMapIndex]->SetDynamicObject(NULL, NULL, dX, dY, dwTime);
+				, iDynamicObjectIndex, 0, (short)0);
+			m_pMapList[iMapIndex]->SetDynamicObject(0, 0, dX, dY, dwTime);
 
-			if (m_pDynamicObjectList[iDynamicObjectIndex] == NULL)
+			if (m_pDynamicObjectList[iDynamicObjectIndex] == 0)
 			{
 				for (ix = dX - 2; ix <= dX + 2; ix++)
 					for (iy = dY - 2; iy <= dY + 2; iy++)
 					{
 						pTile = (class CTile*)(m_pMapList[iMapIndex]->m_pTile + ix + iy * m_pMapList[iMapIndex]->m_sSizeY);
-						pTile->m_sOwner = NULL;
+						pTile->m_sOwner = 0;
 					}
 			}
 		}
@@ -730,7 +730,7 @@ void CGame::_CreateHeldenianGUID(DWORD dwHeldenianGUID, int iWinnerSide)
 	char* cp, cTxt[256], cTemp[1024];
 	FILE* pFile;
 	pFile = fopen("GameConfigs\\HeldenianGUID.Txt", "wt");
-	if (pFile == NULL)
+	if (pFile == 0)
 	{
 		wsprintf(G_cTxt, "(!) Cannot create HeldenianGUID (%d) file.", dwHeldenianGUID);
 		PutLogList(G_cTxt);
@@ -759,7 +759,7 @@ void CGame::_CreateHeldenianGUID(DWORD dwHeldenianGUID, int iWinnerSide)
 **	return value		:: bool																						**
 **  commentary			::	-	translated from scratch using IDA Pro												**
 **						::	-	changed pTile->m_cOwner to m_iOccupyStatus											**
-**						::	-	added check to prevent access violation if pTile == NULL							**
+**						::	-	added check to prevent access violation if pTile == 0							**
 **						::	-	removed 4 return(s) after "iRet = 1;" and placed at end								**
 *********************************************************************************************************************/
 bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
@@ -772,7 +772,7 @@ bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 	iRet = false;
 	if (cType == DEF_OWNERTYPE_PLAYER)
 	{
-		if (m_pClientList[sAttackerH] == NULL)					return false;
+		if (m_pClientList[sAttackerH] == 0)					return false;
 		if (m_pClientList[sAttackerH]->m_cSide < 1)				return false;
 		if (m_pClientList[sAttackerH]->m_cSide > 2)				return false;
 		iMapIndex = m_pClientList[sAttackerH]->m_cMapIndex;
@@ -783,8 +783,8 @@ bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 		if ((tX <= 0) || (tX >= m_pMapList[iMapIndex]->m_sSizeX)
 			|| (tY <= 0) || (tY >= m_pMapList[iMapIndex]->m_sSizeY)) return false;
 		pTile = (class CTile*)(m_pMapList[iMapIndex]->m_pTile + tX + tY * m_pMapList[iMapIndex]->m_sSizeY);
-		if (pTile == NULL) return false;
-		if (pTile->m_iOccupyStatus != NULL)
+		if (pTile == 0) return false;
+		if (pTile->m_iOccupyStatus != 0)
 		{
 			if (pTile->m_iOccupyStatus < 0)
 			{
@@ -804,7 +804,7 @@ bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 	}
 	else if (cType == DEF_OWNERTYPE_NPC)
 	{
-		if (m_pNpcList[sAttackerH] == NULL)						return false;
+		if (m_pNpcList[sAttackerH] == 0)						return false;
 		if (m_pNpcList[sAttackerH]->m_cSide < 1)				return false;
 		if (m_pNpcList[sAttackerH]->m_cSide > 2)				return false;
 		iMapIndex = m_pNpcList[sAttackerH]->m_cMapIndex;
@@ -815,8 +815,8 @@ bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 		if ((tX <= 0) || (tX >= m_pMapList[iMapIndex]->m_sSizeX)
 			|| (tY <= 0) || (tY >= m_pMapList[iMapIndex]->m_sSizeY)) return false;
 		pTile = (class CTile*)(m_pMapList[iMapIndex]->m_pTile + tX + tY * m_pMapList[iMapIndex]->m_sSizeY);
-		if (pTile == NULL) return false;
-		if (pTile->m_iOccupyStatus != NULL)
+		if (pTile == 0) return false;
+		if (pTile->m_iOccupyStatus != 0)
 		{
 			if (pTile->m_iOccupyStatus < 0)
 			{
@@ -843,13 +843,13 @@ bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 *********************************************************************************************************************/
 void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, DWORD dwMsgSize)
 {
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
 	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == true) return;
-	if (m_pClientList[iClientH]->m_iLockedMapTime != NULL)
+	if (m_pClientList[iClientH]->m_iLockedMapTime != 0)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_LOCKEDMAP, m_pClientList[iClientH]->m_iLockedMapTime, NULL, NULL, m_pClientList[iClientH]->m_cLockedMapName);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_LOCKEDMAP, m_pClientList[iClientH]->m_iLockedMapTime, 0, 0, m_pClientList[iClientH]->m_cLockedMapName);
 		return;
 	}
 	// Prevent hack use in target maps
@@ -1015,7 +1015,7 @@ void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, DWORD dwMsgS
 *********************************************************************************************************************/
 void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, DWORD dwMsgSize)
 {
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
 	if (m_pClientList[iClientH]->m_bIsOnWaitingProcess == true) return;
@@ -1238,43 +1238,43 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 	// Tell that you can TP to battlefield, and about construction points
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
-		if (m_pClientList[i] != NULL)
+		if (m_pClientList[i] != 0)
 		{
 			if (m_pClientList[i]->m_bIsInitComplete != true) break;
 			m_pClientList[i]->m_cWarType = 2;
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_HELDENIANTELEPORT, NULL, NULL, NULL, NULL); // You can now, go to the battle field
+			SendNotifyMsg(0, i, DEF_NOTIFY_HELDENIANTELEPORT, 0, 0, 0, 0); // You can now, go to the battle field
 			m_pClientList[i]->m_dwHeldenianGUID = m_dwHeldenianGUID;
 			m_pClientList[i]->m_iWarContribution = 0;
 			m_pClientList[i]->m_iConstructionPoint = 10000; //+ (m_pClientList[i]->m_iCharisma * 100);
 			m_pClientList[i]->m_cWarType = 2;// character have been informed of heldenian starting...
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, NULL); //0: Tell player of acquired points
+			SendNotifyMsg(0, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, 0); //0: Tell player of acquired points
 			UpdateHeldenianStatus(i);
 		}
 	}
 	// Recall clients already on battlefield; remove any Heldenian mob, and create current war towers/gates
 	for (x = 0; x < DEF_MAXMAPS; x++)
 	{
-		if (m_pMapList[x] == NULL) break;
+		if (m_pMapList[x] == 0) break;
 		if (m_pMapList[x]->m_bIsHeldenianMap == true)
 		{
 			RemoveOccupyFlags(x);
 			for (i = 0; i < DEF_MAXCLIENTS; i++) // Tell everybody on Heldenian map and recall them
 			{
-				if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true)
+				if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true)
 					&& (m_pClientList[i]->m_cMapIndex == x))
 				{
-					SendNotifyMsg(NULL, i, DEF_NOTIFY_0BE8, NULL, NULL, NULL, NULL);
-					RequestTeleportHandler(i, "1   ", NULL, -1, -1);
+					SendNotifyMsg(0, i, DEF_NOTIFY_0BE8, 0, 0, 0, 0);
+					RequestTeleportHandler(i, "1   ", 0, -1, -1);
 				}
 			}
 			for (i = 0; i < DEF_MAXNPCS; i++) // Remove summons from last Heldenian
 			{
-				if ((m_pNpcList[i] != NULL) && (m_pNpcList[i]->m_bIsKilled == false)
+				if ((m_pNpcList[i] != 0) && (m_pNpcList[i]->m_bIsKilled == false)
 					&& (m_pNpcList[i]->m_cMapIndex == x))
 				{
 					if (m_pNpcList[i]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(NULL, NULL, i, 0); //RemoveEventNpc(i);
+						NpcKilledHandler(0, 0, i, 0); //RemoveEventNpc(i);
 					}
 					else
 					{	// Remove most mobs, and other Mobs become neutral
@@ -1282,7 +1282,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 						if (iDice(1, 10) != 5)
 						{
 							m_pNpcList[i]->m_bIsUnsummoned = true;
-							NpcKilledHandler(NULL, NULL, i, 0); //RemoveEventNpc(i);
+							NpcKilledHandler(0, 0, i, 0); //RemoveEventNpc(i);
 						}
 						else m_pNpcList[i]->m_cSide = 0;
 					}
@@ -1317,7 +1317,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							wsprintf(cName, "XX%d", iNamingValue);
 							cName[0] = 95;
 							cName[1] = i + 65;
-							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, NULL, NULL, cSide, false, true, false, true, NULL);
+							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, 0, 0, cSide, false, true, false, true, 0);
 							if (bRet == false)
 							{
 								m_pMapList[x]->SetNamingValueEmpty(iNamingValue);
@@ -1325,7 +1325,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							else
 							{
 								m_pMapList[x]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
-								if ((m_pNpcList[sOwnerH] != NULL) && (sOwnerH > 0) && (sOwnerH < DEF_MAXNPCS))
+								if ((m_pNpcList[sOwnerH] != 0) && (sOwnerH > 0) && (sOwnerH < DEF_MAXNPCS))
 								{
 									m_pNpcList[sOwnerH]->m_iBuildCount = 0;
 									m_pNpcList[sOwnerH]->m_sAppr2 = 0;
@@ -1376,7 +1376,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							wsprintf(cName, "XX%d", iNamingValue);
 							cName[0] = 95;
 							cName[1] = i + 65;
-							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, NULL, NULL, cSide, false, true, false, true, NULL);
+							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, 0, 0, cSide, false, true, false, true, 0);
 							if (bRet == false)
 							{
 								m_pMapList[x]->SetNamingValueEmpty(iNamingValue);
@@ -1384,7 +1384,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							else
 							{
 								m_pMapList[x]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
-								if ((m_pNpcList[sOwnerH] != NULL) && (sOwnerH > 0) && (sOwnerH < DEF_MAXNPCS))
+								if ((m_pNpcList[sOwnerH] != 0) && (sOwnerH > 0) && (sOwnerH < DEF_MAXNPCS))
 								{
 									m_pNpcList[sOwnerH]->m_iBuildCount = 0;
 									m_pNpcList[sOwnerH]->m_sAppr2 = 0;
@@ -1410,7 +1410,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							wsprintf(cName, "XX%d", iNamingValue);
 							cName[0] = 95;
 							cName[1] = i + 65;
-							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, NULL, NULL, (char)m_sLastHeldenianWinner, false, true, false, true, NULL);
+							bRet = bCreateNewNpc(cTmp, cName, m_pMapList[x]->m_cName, (rand() % 3), 0, DEF_MOVETYPE_RANDOM, &dX, &dY, cNpcWaypointIndex, 0, 0, (char)m_sLastHeldenianWinner, false, true, false, true, 0);
 							if (bRet == false)
 							{
 								m_pMapList[x]->SetNamingValueEmpty(iNamingValue);
@@ -1418,7 +1418,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 							else
 							{
 								m_pMapList[x]->GetOwner(&sOwnerH, &cOwnerType, dX, dY);
-								if ((m_pNpcList[sOwnerH] != NULL) && (sOwnerH > 0) && (sOwnerH < DEF_MAXNPCS))
+								if ((m_pNpcList[sOwnerH] != 0) && (sOwnerH > 0) && (sOwnerH < DEF_MAXNPCS))
 								{
 									m_pNpcList[sOwnerH]->m_iBuildCount = 0;
 									m_pNpcList[sOwnerH]->m_cSide = cSide;
@@ -1459,7 +1459,7 @@ void CGame::ManualStartHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize)
 	if (m_bIsCrusadeMode == true) return;
 	if (m_pClientList[iClientH]->m_iAdminUserLevel < 3)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, 0, 0, 0, 0);
 		return;
 	}
 	if (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == false) return;
@@ -1470,7 +1470,7 @@ void CGame::ManualStartHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize)
 	token = pStrTok->pGet();
 	token = pStrTok->pGet();
 	m_cHeldenianType = 1;
-	if (token != NULL)
+	if (token != 0)
 	{
 		switch (atoi(token)) {
 		case 2:
@@ -1500,12 +1500,12 @@ void CGame::ManualEndHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize)
 	char* token, cBuff[256];
 	class	CStrTok* pStrTok;
 	if ((dwMsgSize) <= 0) return;
-	if (iClientH == NULL) return;
+	if (iClientH == 0) return;
 	if (m_bIsHeldenianMode == false) return;
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iAdminUserLevel < 3)
 	{
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ADMINUSERLEVELLOW, 0, 0, 0, 0);
 		return;
 	}
 	if (m_pClientList[iClientH]->m_bIsAdminCommandEnabled == false) return;
@@ -1515,12 +1515,12 @@ void CGame::ManualEndHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize)
 	pStrTok = new class CStrTok(cBuff, seps);
 	token = pStrTok->pGet();
 	token = pStrTok->pGet();
-	if (token == NULL) // draw
+	if (token == 0) // draw
 	{
 		m_cHeldenianWinner = 0;
 		wsprintf(G_cTxt, "GM Order(%s): Heldenian terminated, Draw", m_pClientList[iClientH]->m_cCharName);
 	}
-	else if (token != NULL)
+	else if (token != 0)
 	{
 		if (_bGetIsStringIsNumber(token) == true)
 		{
@@ -1554,7 +1554,7 @@ void CGame::CheckHeldenianResultCalculation(int iClientH)
 {
 	double dV1, dV2, dV3;
 
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_cWarType != 2) return;
 	if ((m_cHeldenianType == 0) || (m_pClientList[iClientH]->m_dwHeldenianGUID == 0)) return;
 	if (m_pClientList[iClientH]->m_dwHeldenianGUID == m_dwHeldenianGUID) {
@@ -1595,12 +1595,12 @@ bool CGame::UpdateHeldenianStatus(int iClientH)
 	if (m_cHeldenianType != 1)		  return false;
 	if (iClientH != -1)
 	{
-		if ((m_pClientList[iClientH] != NULL)
+		if ((m_pClientList[iClientH] != 0)
 			&& (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsHeldenianMap == true)
 			&& (m_pClientList[iClientH]->m_cMapIndex == m_iBTFieldMapIndex))
 		{
-			SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_HELDENIANCOUNT, m_iHeldenianAresdenLeftTower
-				, m_iHeldenianElvineLeftTower, m_iHeldenianAresdenFlags, NULL, m_iHeldenianElvineFlags
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_HELDENIANCOUNT, m_iHeldenianAresdenLeftTower
+				, m_iHeldenianElvineLeftTower, m_iHeldenianAresdenFlags, 0, m_iHeldenianElvineFlags
 				, m_iHeldenianAresdenDead, m_iHeldenianElvineDead);
 			return true;
 		}
@@ -1612,13 +1612,13 @@ bool CGame::UpdateHeldenianStatus(int iClientH)
 		while (i != 0)
 		{
 			iShortCutIndex++;
-			if ((m_pClientList[i] != NULL)
+			if ((m_pClientList[i] != 0)
 				&& (m_pClientList[i]->m_bIsInitComplete == true)
 				&& (m_pMapList[m_pClientList[i]->m_cMapIndex]->m_bIsHeldenianMap == true)
 				&& (m_pClientList[i]->m_cMapIndex == m_iBTFieldMapIndex))
 			{
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_HELDENIANCOUNT, m_iHeldenianAresdenLeftTower
-					, m_iHeldenianElvineLeftTower, m_iHeldenianAresdenFlags, NULL, m_iHeldenianElvineFlags
+				SendNotifyMsg(0, i, DEF_NOTIFY_HELDENIANCOUNT, m_iHeldenianAresdenLeftTower
+					, m_iHeldenianElvineLeftTower, m_iHeldenianAresdenFlags, 0, m_iHeldenianElvineFlags
 					, m_iHeldenianAresdenDead, m_iHeldenianElvineDead);
 			}
 			i = m_iClientShortCut[iShortCutIndex];
@@ -1642,12 +1642,12 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 	short* sp;
 	WORD* wp;
 	DWORD* dwp;
-	if (m_pClientList[iClientH] == NULL)					 return;
+	if (m_pClientList[iClientH] == 0)					 return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_bIsHeldenianMode == false)						 return;
 	if (_iGetItemSpaceLeft(iClientH) == 0)
 	{
-		SendItemNotifyMsg(iClientH, DEF_NOTIFY_CANNOTCARRYMOREITEM, NULL, NULL);
+		SendItemNotifyMsg(iClientH, DEF_NOTIFY_CANNOTCARRYMOREITEM, 0, 0);
 		return;
 	}
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -1695,12 +1695,12 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 	else
 	{	// Get the scroll
 		m_pClientList[iClientH]->m_iConstructionPoint -= iNeededPts;
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[iClientH]->m_iConstructionPoint, m_pClientList[iClientH]->m_iWarContribution, 0, NULL); // 0:tell client
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[iClientH]->m_iConstructionPoint, m_pClientList[iClientH]->m_iWarContribution, 0, 0); // 0:tell client
 	}
 	// Them create the summonScroll
-	pItem = NULL;
+	pItem = 0;
 	pItem = new class CItem;
-	if (pItem == NULL) return;
+	if (pItem == 0) return;
 	if ((_bInitItemAttr(pItem, iItemNbe) == true))
 	{
 		pItem->m_sTouchEffectType = DEF_ITET_UNIQUE_OWNER;
@@ -1794,7 +1794,7 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 	else
 	{
 		delete pItem;
-		pItem = NULL;
+		pItem = 0;
 	}
 }
 
@@ -1816,16 +1816,16 @@ void CGame::HeldenianStartWarNow()
 	// Tell clients that war has begun
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true))
+		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true))
 		{
 			m_pClientList[i]->m_cWarType = 2;
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_HELDENIANSTART, NULL, NULL, NULL, NULL); // You can now, fight on the battle field
+			SendNotifyMsg(0, i, DEF_NOTIFY_HELDENIANSTART, 0, 0, 0, 0); // You can now, fight on the battle field
 			UpdateHeldenianStatus(i);
 		}
 	}
 	for (i = 0; i < DEF_MAXNPCS; i++) // Remove summons from last Heldenian
 	{
-		if ((m_pNpcList[i] != NULL) && (m_pNpcList[i]->m_bIsKilled == false)
+		if ((m_pNpcList[i] != 0) && (m_pNpcList[i]->m_bIsKilled == false)
 			&& (m_pMapList[m_pNpcList[i]->m_cMapIndex]->m_bIsHeldenianMap == true))
 		{
 			if (m_pNpcList[i]->m_bIsSummoned == false)
@@ -1864,21 +1864,21 @@ void CGame::HeldenianVictoryNow(int iSide)
 	int j, n;
 	for (m = 0; m < DEF_MAXMAPS; m++)
 	{
-		if (m_pMapList[m] == NULL) break;
+		if (m_pMapList[m] == 0) break;
 		if (m_pMapList[m]->m_bIsHeldenianMap == true)
 		{
 			for (j = 0; j < DEF_MAXCLIENTS; j++)
 			{
-				if ((m_pClientList[j] != NULL)
+				if ((m_pClientList[j] != 0)
 					&& (m_pClientList[j]->m_bIsInitComplete == true)
 					&& (m_pClientList[j]->m_cMapIndex == m))
 				{
 					UpdateHeldenianStatus(j);
-					SendNotifyMsg(NULL, j, DEF_NOTIFY_HELDENIANVICTORY, m_cHeldenianWinner, NULL, NULL, NULL); // Victory defeat screen
+					SendNotifyMsg(0, j, DEF_NOTIFY_HELDENIANVICTORY, m_cHeldenianWinner, 0, 0, 0); // Victory defeat screen
 					if ((m_pClientList[j]->m_cSide != iSide)// recall loosers only
 						&& (m_pClientList[j]->m_iAdminUserLevel == 0))
 					{
-						SendNotifyMsg(NULL, j, DEF_NOTIFY_0BE8, NULL, NULL, NULL, NULL);
+						SendNotifyMsg(0, j, DEF_NOTIFY_0BE8, 0, 0, 0, 0);
 						m_pClientList[j]->m_bIsWarLocation = true;
 						m_pClientList[j]->m_iTimeLeft_ForceRecall = 3;
 					}
@@ -1886,13 +1886,13 @@ void CGame::HeldenianVictoryNow(int iSide)
 			}
 			for (n = 0; n < DEF_MAXNPCS; n++)
 			{
-				if ((m_pNpcList[n] != NULL)
+				if ((m_pNpcList[n] != 0)
 					&& (m_pNpcList[n]->m_cMapIndex == m)
 					&& (m_pNpcList[n]->m_cSide != iSide))
 				{
 					if (m_pNpcList[n]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(NULL, NULL, n, NULL);
+						NpcKilledHandler(0, 0, n, 0);
 					}
 					else
 					{
@@ -2012,11 +2012,11 @@ void CGame::bReadHeldenianGUIDFile(char* cFn)
 	char seps[] = "= \t\n";
 	class CStrTok* pStrTok;
 	cReadMode = 0;
-	hFile = CreateFile(cFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
+	hFile = CreateFile(cFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+	dwFileSize = GetFileSize(hFile, 0);
 	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
 	pFile = fopen(cFn, "rt");
-	if (pFile == NULL)
+	if (pFile == 0)
 	{
 		PutLogList("(!) Cannot open HeldenianGUID file.");
 		return;
@@ -2029,7 +2029,7 @@ void CGame::bReadHeldenianGUIDFile(char* cFn)
 		fread(cp, dwFileSize, 1, pFile);
 		pStrTok = new class CStrTok(cp, seps);
 		token = pStrTok->pGet();
-		while (token != NULL)
+		while (token != 0)
 		{
 			if (cReadMode != 0)
 			{

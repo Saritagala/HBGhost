@@ -27,7 +27,7 @@ CFish::CFish(char cMapIndex, short sX, short sY, short sType, class CItem * pIte
 
 CFish::~CFish()
 {
-	if (m_pItem != NULL) delete m_pItem;
+	if (m_pItem != 0) delete m_pItem;
 }
 
 int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CItem* pItem, int iDifficulty, DWORD dwLastTime)
@@ -35,15 +35,15 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 	int i, iDynamicHandle;
 
 	// ¸ÊÀÇ À§Ä¡°¡ ¹°ÀÎÁö È®ÀÎÇÑ´Ù. 
-	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return NULL;
-	if (m_pMapList[cMapIndex] == NULL) return NULL;
-	if (m_pMapList[cMapIndex]->bGetIsWater(sX, sY) == false) return NULL;
+	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return 0;
+	if (m_pMapList[cMapIndex] == 0) return 0;
+	if (m_pMapList[cMapIndex]->bGetIsWater(sX, sY) == false) return 0;
 
 	for (i = 0; i < DEF_MAXFISHS; i++)
-		if (m_pFish[i] == NULL) {
+		if (m_pFish[i] == 0) {
 			// ºó °ø°£¿¡ ¹°°í±â¸¦ ¸¸µç´Ù.
 			m_pFish[i] = new class CFish(cMapIndex, sX, sY, sType, pItem, iDifficulty);
-			if (m_pFish[i] == NULL) return NULL;
+			if (m_pFish[i] == 0) return 0;
 
 			// Dynamic Object¸¦ ¹ß»ý½ÃÅ²´Ù. Owner¿¡ Fish ÀÎµ¦½º¸¦ ³Ö´Â´Ù.
 			switch (pItem->m_sIDnum) {
@@ -58,18 +58,18 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 			case 575:
 			case 576:
 			case 577:
-				iDynamicHandle = iAddDynamicObjectList(i, NULL, DEF_DYNAMICOBJECT_FISH, cMapIndex, sX, sY, dwLastTime);
+				iDynamicHandle = iAddDynamicObjectList(i, 0, DEF_DYNAMICOBJECT_FISH, cMapIndex, sX, sY, dwLastTime);
 				break;
 			default:
 				// ¹°°í±â°¡ ¾Æ´Ñ ´Ù¸¥ ¾ÆÀÌÅÛ 
-				iDynamicHandle = iAddDynamicObjectList(i, NULL, DEF_DYNAMICOBJECT_FISHOBJECT, cMapIndex, sX, sY, dwLastTime);
+				iDynamicHandle = iAddDynamicObjectList(i, 0, DEF_DYNAMICOBJECT_FISHOBJECT, cMapIndex, sX, sY, dwLastTime);
 				break;
 			}
 
-			if (iDynamicHandle == NULL) {
+			if (iDynamicHandle == 0) {
 				delete m_pFish[i];
-				m_pFish[i] = NULL;
-				return NULL;
+				m_pFish[i] = 0;
+				return 0;
 			}
 			m_pFish[i]->m_sDynamicObjectHandle = iDynamicHandle;
 			m_pMapList[cMapIndex]->m_iCurFish++;
@@ -77,7 +77,7 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 			return i;
 		}
 
-	return NULL;
+	return 0;
 }
 
 
@@ -86,36 +86,36 @@ bool CGame::bDeleteFish(int iHandle, int iDelMode)
 	int i, iH;
 	DWORD dwTime;
 
-	if (m_pFish[iHandle] == NULL) return false;
+	if (m_pFish[iHandle] == 0) return false;
 
 	dwTime = timeGetTime();
 
 	// ¿¬°üµÇ¾î ÀÖ´Â DynamicObject¸¦ »èÁ¦ÇÑ´Ù.
 	iH = m_pFish[iHandle]->m_sDynamicObjectHandle;
 
-	if (m_pDynamicObjectList[iH] != NULL) {
-		SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iH]->m_cMapIndex, m_pDynamicObjectList[iH]->m_sX, m_pDynamicObjectList[iH]->m_sY, m_pDynamicObjectList[iH]->m_sType, iH, NULL, (short)0);
+	if (m_pDynamicObjectList[iH] != 0) {
+		SendEventToNearClient_TypeB(MSGID_DYNAMICOBJECT, DEF_MSGTYPE_REJECT, m_pDynamicObjectList[iH]->m_cMapIndex, m_pDynamicObjectList[iH]->m_sX, m_pDynamicObjectList[iH]->m_sY, m_pDynamicObjectList[iH]->m_sType, iH, 0, (short)0);
 		// ¸Ê¿¡¼­ »èÁ¦ÇÑ´Ù.
-		m_pMapList[m_pDynamicObjectList[iH]->m_cMapIndex]->SetDynamicObject(NULL, NULL, m_pDynamicObjectList[iH]->m_sX, m_pDynamicObjectList[iH]->m_sY, dwTime);
+		m_pMapList[m_pDynamicObjectList[iH]->m_cMapIndex]->SetDynamicObject(0, 0, m_pDynamicObjectList[iH]->m_sX, m_pDynamicObjectList[iH]->m_sY, dwTime);
 		m_pMapList[m_pDynamicObjectList[iH]->m_cMapIndex]->m_iCurFish--;
 
 		delete m_pDynamicObjectList[iH];
-		m_pDynamicObjectList[iH] = NULL;
+		m_pDynamicObjectList[iH] = 0;
 	}
 
 	// ÀÌ ¹°°í±â¿Í ¿¬°áµÇ¾î ÀÖ´Â ÇÃ·¹ÀÌ¾îµé¿¡°Ô ¹°°í±â°¡ »ç¶óÁ® ³¬½Ã°¡ Ãë¼ÒµÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù. 
 	for (i = 1; i < DEF_MAXCLIENTS; i++) {
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true) &&
+		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true) &&
 			(m_pClientList[i]->m_iAllocatedFish == iHandle)) {
 			// ¸Þ½ÃÁö Àü¼Û 
-			SendNotifyMsg(NULL, i, DEF_NOTIFY_FISHCANCELED, iDelMode, NULL, NULL, NULL);
+			SendNotifyMsg(0, i, DEF_NOTIFY_FISHCANCELED, iDelMode, 0, 0, 0);
 			ClearSkillUsingStatus(i); // v1.4 ³¬½Ã ½ºÅ³À» Å¬¸®¾îÇÑ´Ù.
 		}
 	}
 
 	// »èÁ¦ÇÑ´Ù.
 	delete m_pFish[iHandle];
-	m_pFish[iHandle] = NULL;
+	m_pFish[iHandle] = 0;
 
 	return true;
 }
@@ -126,14 +126,14 @@ int CGame::iCheckFish(int iClientH, char cMapIndex, short dX, short dY)
 	int i;
 	short sDistX, sDistY;
 
-	if (m_pClientList[iClientH] == NULL) return 0;
+	if (m_pClientList[iClientH] == 0) return 0;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return 0;
 
 	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return 0;
 
 	// ¸ÊÀÇ Æ¯Á¤ À§Ä¡ ³»¿¡ ¹°°í±â ´ÙÀÌ³ª¹Í ¿ÀºêÁ§Æ®°¡ ÀÖ´ÂÁö ÆÇ´ÜÇÑ´Ù. 
 	for (i = 1; i < DEF_MAXDYNAMICOBJECTS; i++)
-		if (m_pDynamicObjectList[i] != NULL) {
+		if (m_pDynamicObjectList[i] != 0) {
 			sDistX = abs(m_pDynamicObjectList[i]->m_sX - dX);
 			sDistY = abs(m_pDynamicObjectList[i]->m_sY - dY);
 
@@ -142,11 +142,11 @@ int CGame::iCheckFish(int iClientH, char cMapIndex, short dX, short dY)
 				(sDistX <= 2) && (sDistY <= 2)) {
 				// ¹°°í±â ´ÙÀÌ³ª¹Í ¿ÀºêÁ§Æ®¸¦ Ã£¾Ò´Ù. ÀÌÁ¦ ÀÌ ´ÙÀÌ³ª¹Í ¿ÀºêÁ§Æ® ÀÎµ¦½º¸¦ ¼ÒÀ¯ÇÑ FishÀÇ ÀÎµ¦½º¸¦ ¹ÝÈ¯ÇÑ´Ù. 
 
-				if (m_pFish[m_pDynamicObjectList[i]->m_sOwner] == NULL) return 0;
+				if (m_pFish[m_pDynamicObjectList[i]->m_sOwner] == 0) return 0;
 				if (m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_sEngagingCount >= DEF_MAXENGAGINGFISH) return 0;
 
 				// ÀÌ¹Ì ³¬½Ã¸ðµå¿¡ µé¾î°¡ ÀÖ´Â Ä³¸¯ÅÍ´Â Áßº¹ µ¿ÀÛÀÌ ºÒ°¡´É.
-				if (m_pClientList[iClientH]->m_iAllocatedFish != NULL) return 0;
+				if (m_pClientList[iClientH]->m_iAllocatedFish != 0) return 0;
 				if (m_pClientList[iClientH]->m_cMapIndex != cMapIndex) return 0;
 				// ÀÌÁ¦ Ä³¸¯ÅÍ¿¡°Ô ³¬½Ã ¸ðµå¸¦ ½ÃÀÛÇÒ °ÍÀ» ÇÒ´çÇÑ´Ù.
 				m_pClientList[iClientH]->m_iAllocatedFish = m_pDynamicObjectList[i]->m_sOwner;
@@ -154,7 +154,7 @@ int CGame::iCheckFish(int iClientH, char cMapIndex, short dX, short dY)
 				// ÀÌ Ä³¸¯ÅÍ´Â ³¬½Ã ½ºÅ³À» »ç¿ëÁßÀÓÀ» ¼³Á¤.
 				m_pClientList[iClientH]->m_bSkillUsingStatus[1] = true;
 
-				SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_EVENTFISHMODE, (m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_wPrice / 2), m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_sSprite,
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_EVENTFISHMODE, (m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_wPrice / 2), m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_sSprite,
 					m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_sSpriteFrame, m_pFish[m_pDynamicObjectList[i]->m_sOwner]->m_pItem->m_cName);
 
 				// Ä«¿îÆ® Áõ°¡ 
@@ -173,10 +173,10 @@ void CGame::FishProcessor()
 
 	// �̺�Ʈ ���� ��尡 �Ҵ�� �÷��̾���� ó���Ѵ�.
 	for (i = 1; i < DEF_MAXCLIENTS; i++) {
-		if ((m_pClientList[i] != NULL) && (m_pClientList[i]->m_bIsInitComplete == true) &&
-			(m_pClientList[i]->m_iAllocatedFish != NULL)) {
+		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true) &&
+			(m_pClientList[i]->m_iAllocatedFish != 0)) {
 
-			if (m_pFish[m_pClientList[i]->m_iAllocatedFish] == NULL) continue;
+			if (m_pFish[m_pClientList[i]->m_iAllocatedFish] == 0) continue;
 
 			// �� �÷��̾�� �Ҵ�� �����Ⱑ �ִ�. ���� Ȯ���� �����Ͽ� �뺸�� �ش�. 
 			// ���� ����� ��ų 
@@ -195,14 +195,14 @@ void CGame::FishProcessor()
 				m_pClientList[i]->m_iFishChance += iChangeValue;
 				if (m_pClientList[i]->m_iFishChance > 99) m_pClientList[i]->m_iFishChance = 99;
 
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_FISHCHANCE, m_pClientList[i]->m_iFishChance, NULL, NULL, NULL);
+				SendNotifyMsg(0, i, DEF_NOTIFY_FISHCHANCE, m_pClientList[i]->m_iFishChance, 0, 0, 0);
 			}
 			else {
 				// ��ų �ֻ��� ���� ����. ���� Ȯ�� ����.	
 				m_pClientList[i]->m_iFishChance -= iChangeValue;
 				if (m_pClientList[i]->m_iFishChance < 1) m_pClientList[i]->m_iFishChance = 1;
 
-				SendNotifyMsg(NULL, i, DEF_NOTIFY_FISHCHANCE, m_pClientList[i]->m_iFishChance, NULL, NULL, NULL);
+				SendNotifyMsg(0, i, DEF_NOTIFY_FISHCHANCE, m_pClientList[i]->m_iFishChance, 0, 0, 0);
 			}
 		}
 	}
@@ -213,10 +213,10 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 	int iResult, iFishH;
 	class CItem* pItem;
 
-	if (m_pClientList[iClientH] == NULL) return;
+	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
-	if (m_pClientList[iClientH]->m_iAllocatedFish == NULL) return;
-	if (m_pFish[m_pClientList[iClientH]->m_iAllocatedFish] == NULL) return;
+	if (m_pClientList[iClientH]->m_iAllocatedFish == 0) return;
+	if (m_pFish[m_pClientList[iClientH]->m_iAllocatedFish] == 0) return;
 
 	// ���� ��ų ��������� ������Ų��.
 	m_pClientList[iClientH]->m_bSkillUsingStatus[1] = false;
@@ -232,7 +232,7 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 
 		// ������ �����͸� ���´�.
 		pItem = m_pFish[m_pClientList[iClientH]->m_iAllocatedFish]->m_pItem;
-		m_pFish[m_pClientList[iClientH]->m_iAllocatedFish]->m_pItem = NULL;
+		m_pFish[m_pClientList[iClientH]->m_iAllocatedFish]->m_pItem = 0;
 
 		// ���� �������� �ٴڿ� ����߸���.
 		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
@@ -249,9 +249,9 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
 // ���� ���� �޽��� ���� 
-		SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_FISHSUCCESS, NULL, NULL, NULL, NULL);
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_FISHSUCCESS, 0, 0, 0, 0);
 		iFishH = m_pClientList[iClientH]->m_iAllocatedFish;
-		m_pClientList[iClientH]->m_iAllocatedFish = NULL;
+		m_pClientList[iClientH]->m_iAllocatedFish = 0;
 
 		// �����⸦ ����� ���� 
 		bDeleteFish(iFishH, 1); // <- ���⼭ �ٸ� ���ò۵鿡�� �޽����� ���۵� ���̴�.
@@ -260,9 +260,9 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 
 	// ���µ� ����! 
 	m_pFish[m_pClientList[iClientH]->m_iAllocatedFish]->m_sEngagingCount--;
-	SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_FISHFAIL, NULL, NULL, NULL, NULL);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_FISHFAIL, 0, 0, 0, 0);
 
-	m_pClientList[iClientH]->m_iAllocatedFish = NULL;
+	m_pClientList[iClientH]->m_iAllocatedFish = 0;
 }
 
 
@@ -275,7 +275,7 @@ void CGame::FishGenerator()
 	class CItem* pItem;
 
 	for (i = 0; i < DEF_MAXMAPS; i++) {
-		if ((iDice(1, 10) == 5) && (m_pMapList[i] != NULL) &&
+		if ((iDice(1, 10) == 5) && (m_pMapList[i] != 0) &&
 			(m_pMapList[i]->m_iCurFish < m_pMapList[i]->m_iMaxFish)) {
 
 			iP = iDice(1, m_pMapList[i]->m_iTotalFishPoint) - 1;
@@ -285,7 +285,7 @@ void CGame::FishGenerator()
 			tY = m_pMapList[i]->m_FishPointList[iP].y + (iDice(1, 3) - 2);
 
 			pItem = new class CItem;
-			if (pItem == NULL) break;
+			if (pItem == 0) break;
 
 			// ¸¸µé ¹°°í±â Á¾·ù¿Í ³­ÀÌµµ, Áö¼Ó ½Ã°£À» °áÁ¤ÇÑ´Ù. 
 			ZeroMemory(cItemName, sizeof(cItemName));
@@ -363,7 +363,7 @@ void CGame::FishGenerator()
 			}
 			else {
 				delete pItem;
-				pItem = NULL;
+				pItem = 0;
 			}
 		}
 	}

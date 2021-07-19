@@ -9564,7 +9564,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					default:
-						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+						wsprintf(cTxt, "Magic Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					}
 					break;
 
@@ -9869,7 +9869,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					default:
-						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+						wsprintf(cTxt, "Magic Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					}
 					break;
 
@@ -24037,6 +24037,14 @@ void CGame::NotifyPlayerAttributes(char* pData)
 
 	ip = (int*)cp;
 	m_iAddAbsWater = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	m_iAddAbsHoly = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	m_iAddAbsUnholy = *ip;
 	cp += 4;
 	//-------------------------------------------
 	ip = (int*)cp;
