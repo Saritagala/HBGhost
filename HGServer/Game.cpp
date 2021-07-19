@@ -12709,7 +12709,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 			break;
 
 		//Magn0S: New Elements
-		/*case 5:
+		case 5:
 			if (m_pClientList[sTargetH]->m_iAddAbsHoly != 0) {
 				dTmp1 = (double)iDamage;
 				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsHoly;
@@ -12727,7 +12727,7 @@ int iPartyID, iDamage, iSideCondition, iIndex, iRemainLife, iTemp, iMaxSuperAtta
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
 			}
-			break;*/
+			break;
 
 		default: break;
 		}
@@ -13284,7 +13284,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 			break;
 
 		//Magn0S: New Elements
-		/*case 5:
+		case 5:
 			if (m_pClientList[sTargetH]->m_iAddAbsHoly != 0) {
 				dTmp1 = (double)iDamage;
 				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsHoly;
@@ -13302,7 +13302,7 @@ void CGame::Effect_Damage_Spot_Type2(short sAttackerH, char cAttackerType, short
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
 			}
-			break;*/
+			break;
 
 		default: break;
 		}
@@ -13796,7 +13796,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 			break;
 
 		//Magn0S: New Elements
-		/*case 5:
+		case 5:
 			if (m_pClientList[sTargetH]->m_iAddAbsHoly != 0) {
 				dTmp1 = (double)iDamage;
 				dTmp2 = (double)m_pClientList[sTargetH]->m_iAddAbsHoly;
@@ -13814,7 +13814,7 @@ void CGame::Effect_Damage_Spot_DamageMove(short sAttackerH, char cAttackerType, 
 				iDamage = iDamage - (int)(dTmp3);
 				if (iDamage < 0) iDamage = 0;
 			}
-			break;*/
+			break;
 
 		default: break;
 		}
@@ -20921,8 +20921,8 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				dTmp3 = dTmp1 + (dTmp1 * (dTmp2 / 100.0f));
 				iAP_L = (int)(dTmp3 + 0.5f);
 
-				//iAP_SM += iDice(1, ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) / 10));
-				//iAP_L += iDice(1, ((m_pClientList[sAttackerH]->m_iStr + m_pClientList[sAttackerH]->m_iAngelicStr) / 10));
+				iAP_SM += iDice(1, (m_pClientList[sAttackerH]->m_iCharisma / 10));
+				iAP_L += iDice(1, (m_pClientList[sAttackerH]->m_iCharisma / 10));
 
 			}
 
@@ -21117,9 +21117,9 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				bIsAttackerBerserk = true;
 			else bIsAttackerBerserk = false;
 
-			if (/*(bArrowUse != true) &&*/ (m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
+			if ((bArrowUse != true) && (m_pClientList[sAttackerH]->m_iSuperAttackLeft > 0) && (iAttackMode >= 20)) {
 
-				/*dTmp1 = (double)iAP_SM;
+				dTmp1 = (double)iAP_SM;
 				dTmp2 = (double)(m_pClientList[sAttackerH]->m_iLevel);
 				dTmp3 = dTmp2 / 100.0f;
 				dTmp2 = dTmp1 * dTmp3;
@@ -21142,19 +21142,19 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 				case 21:  iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5); iAttackerHitRatio += 50; break;
 				default: break;
 
-				}*/
+				}
 
-				iAP_SM *= 2; iAP_L *= 2;
+				//iAP_SM *= 2; iAP_L *= 2;
 				iAttackerHitRatio += 100 + m_pClientList[sAttackerH]->m_iCustomItemValue_Attack;
 			}
 			if (bIsDash == true) {
 				iAttackerHitRatio += 20;
-				/*switch (m_pClientList[sAttackerH]->m_sUsingWeaponSkill) {
+				switch (m_pClientList[sAttackerH]->m_sUsingWeaponSkill) {
 				case 8:  iAP_SM += (iAP_SM / 10); iAP_L += (iAP_L / 10); break;
 				case 10: iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5);break;
 				case 14: iAP_SM += (iAP_SM / 5); iAP_L += (iAP_L / 5);break;
 				default: break;
-				}*/
+				}
 			}
 			iAttackerHP = m_pClientList[sAttackerH]->m_iHP;
 			iAttackerHitRatio += m_pClientList[sAttackerH]->m_iAddAR;

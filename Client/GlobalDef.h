@@ -27,8 +27,8 @@
 #define DEF_UPPERVERSION2		1
 #define DEF_LOWERVERSION2		1
 
-//#define DEF_SERVER_IP			"192.168.0.53"
-#define DEF_SERVER_IP			"162.248.93.248" // Host IP
+#define DEF_SERVER_IP			"192.168.0.53"
+//#define DEF_SERVER_IP			"162.248.93.248" // Host IP
 							
 #define DEF_SERVER_PORT			2848											// WorldLServer Port
 
@@ -43,7 +43,7 @@
 
 //#define DEF_WINDOWED_MODE														// Windowed Mode
 
-#define DEF_USE_OLD_PANELS			// Centuu : Used for old style panels
+//#define DEF_USE_OLD_PANELS			// Centuu : Used for old style panels
 
 
 #define DEF_ANTI_HACK			// Snoopy: Mes antiHacks personels!

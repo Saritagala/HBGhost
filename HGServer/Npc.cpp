@@ -1938,7 +1938,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	int   iGenLevel, iResult, iItemID;
 	DWORD dwType, dwValue;
 	double dTmp1, dTmp2, dTmp3;
-	//short sElement;
+	short sElement;
 
 	if (m_pNpcList[iNpcH] == NULL) return;
 	if ((cAttackerType != DEF_OWNERTYPE_PLAYER) || (m_pNpcList[iNpcH]->m_bIsSummoned == true)) return;
@@ -2859,16 +2859,16 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							if (dwValue > m_iMaxAbs) dwValue = m_iMaxAbs;
 
 							//Magn0S:: Add Elements
-							/*iResult = iDice(1, 10200);
-							if ((iResult >= 1) && (iResult < 2750)) sElement = 1;  //Earth 27%
-							else if ((iResult >= 2750) && (iResult < 5500)) sElement = 2;  //Light 27%
-							else if ((iResult >= 5500) && (iResult < 6500)) sElement = 3;  //Fire 10%
-							else if ((iResult >= 6500) && (iResult < 9250)) sElement = 4;  //Water 27%
-							else if ((iResult >= 9250) && (iResult < 9625)) sElement = 5;  //Holy 04%
-							else if ((iResult >= 9625) && (iResult < 10000)) sElement = 6;  //Unholy 04%
-							else if ((iResult >= 10000) && (iResult <= 10200)) sElement = 7;  //Unatunned 02%
+							iResult = iDice(1, 1020);
+							if ((iResult >= 1) && (iResult < 275)) sElement = 1;  //Earth 27%
+							else if ((iResult >= 275) && (iResult < 550)) sElement = 2;  //Light 27%
+							else if ((iResult >= 550) && (iResult < 650)) sElement = 3;  //Fire 10%
+							else if ((iResult >= 650) && (iResult < 925)) sElement = 4;  //Water 27%
+							else if ((iResult >= 925) && (iResult < 962)) sElement = 5;  //Holy 04%
+							else if ((iResult >= 962) && (iResult < 1000)) sElement = 6;  //Unholy 04%
+							else if ((iResult >= 1000) && (iResult <= 1020)) sElement = 7;  //Unatunned 02%
 							else sElement = 7;
-							pItem->m_sNewEffect1 = sElement;*/
+							pItem->m_sNewEffect1 = sElement;
 							break;
 							
 						}

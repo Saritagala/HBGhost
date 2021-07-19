@@ -401,42 +401,47 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3; 
 						break;
 
-					case 9:
+					/*case 9:
 						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
-						break;
-					//Magn0S:: Magic Abs by elements
-					/*case 9:  
-						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
-						case 1:	m_pClientList[iClientH]->m_iAddAbsEarth += (int)dwSWEValue * 3; break;
-						case 2:	m_pClientList[iClientH]->m_iAddAbsLight += (int)dwSWEValue * 3; break;
-						case 3:	m_pClientList[iClientH]->m_iAddAbsFire += (int)dwSWEValue * 3; break;
-						case 4:	m_pClientList[iClientH]->m_iAddAbsWater += (int)dwSWEValue * 3; break;
-						case 5:	m_pClientList[iClientH]->m_iAddAbsHoly += (int)dwSWEValue * 3; break;
-						case 6:	m_pClientList[iClientH]->m_iAddAbsUnholy += (int)dwSWEValue * 3; break;
-						case 7:	m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
-						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
-						}
 						break;*/
+					//Magn0S:: Magic Abs by elements
+					case 9:  
+						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
+						case 1:	
+							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
+							break;
+						case 2:	
+							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
+							break;
+						case 3:	
+							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
+							break;
+						case 4:	
+							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
+							break;
+						case 5:	
+							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
+							break;
+						case 6:	
+							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
+							break;
+						default: 
+							m_pClientList[iClientH]->m_iAddElementAbs += 0; 
+							break;
+						}
+						break;
 
 					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
 					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
 					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
-
-					//Magn0S:: Set max values for elemental magic abs
-					/*switch (dwSWEType) {
-					case 9:
-						if (m_pClientList[iClientH]->m_iAddElementAbs > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddElementAbs = DEF_MAXMAGICALABS;
-						//Magn0S:: Add elements abs.
-						if (m_pClientList[iClientH]->m_iAddAbsEarth > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsEarth = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsLight > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsLight = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsFire > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsFire = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsWater > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsWater = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsHoly > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsHoly = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsUnholy > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsUnholy = DEF_MAXMAGICALABS;
-						break;
-					}*/
 				}
 
 				// Those Attack items where treated as a bundle above, see here special cases
@@ -748,41 +753,47 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 						break;
-					case 9:  
+					/*case 9:
 						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
 						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
-						break;
-					//Magn0S:: Add elemental abs
-					/*case 9:  //m_pClientList[iClientH]->m_iAddElementAbs += (int)dwSWEValue*3; break;
-						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
-						case 1:	m_pClientList[iClientH]->m_iAddAbsEarth += (int)dwSWEValue * 3; break;
-						case 2:	m_pClientList[iClientH]->m_iAddAbsLight += (int)dwSWEValue * 3; break;
-						case 3:	m_pClientList[iClientH]->m_iAddAbsFire += (int)dwSWEValue * 3; break;
-						case 4:	m_pClientList[iClientH]->m_iAddAbsWater += (int)dwSWEValue * 3; break;
-						case 5:	m_pClientList[iClientH]->m_iAddAbsHoly += (int)dwSWEValue * 3; break;
-						case 6:	m_pClientList[iClientH]->m_iAddAbsUnholy += (int)dwSWEValue * 3; break;
-						case 7:	m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
-						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
-						}
 						break;*/
+					//Magn0S:: Add elemental abs
+					case 9:
+						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
+						case 1:
+							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
+							break;
+						case 2:
+							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
+							break;
+						case 3:
+							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
+							break;
+						case 4:
+							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
+							break;
+						case 5:
+							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
+							break;
+						case 6:
+							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
+							break;
+						default:
+							m_pClientList[iClientH]->m_iAddElementAbs += 0;
+							break;
+						}
+						break;
 
 					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
 					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
 					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
-					//Magn0S:: Set max values for elemental magic abs
-					/*switch (dwSWEType) {
-					case 9:
-						if (m_pClientList[iClientH]->m_iAddElementAbs > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddElementAbs = DEF_MAXMAGICALABS;
-						//Magn0S:: Add elements abs.
-						if (m_pClientList[iClientH]->m_iAddAbsEarth > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsEarth = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsLight > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsLight = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsFire > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsFire = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsWater > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsWater = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsHoly > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsHoly = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsUnholy > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsUnholy = DEF_MAXMAGICALABS;
-						break;
-					}*/
 				}
 				break;
 
@@ -890,38 +901,44 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						//}
 						break;
 					case ITEMSTAT2_MA:
-						/*switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
-						case 1:	m_pClientList[iClientH]->m_iAddAbsEarth += (int)dwSWEValue * 3; break;
-						case 2:	m_pClientList[iClientH]->m_iAddAbsLight += (int)dwSWEValue * 3; break;
-						case 3:	m_pClientList[iClientH]->m_iAddAbsFire += (int)dwSWEValue * 3; break;
-						case 4:	m_pClientList[iClientH]->m_iAddAbsWater += (int)dwSWEValue * 3; break;
-						case 5:	m_pClientList[iClientH]->m_iAddAbsHoly += (int)dwSWEValue * 3; break;
-						case 6:	m_pClientList[iClientH]->m_iAddAbsUnholy += (int)dwSWEValue * 3; break;
-						case 7:	m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
-						default: m_pClientList[iClientH]->m_iAddElementAbs += 0; break;
+					
+						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
+						case 1:
+							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
+							break;
+						case 2:
+							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
+							break;
+						case 3:
+							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
+							break;
+						case 4:
+							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
+							break;
+						case 5:
+							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
+							break;
+						case 6:
+							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
+							break;
+						default:
+							m_pClientList[iClientH]->m_iAddElementAbs += 0;
+							break;
 						}
-						break;*/
-						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+						
+						//m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
 					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
 					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
 					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
-
-					//Magn0S:: Set max values for elemental magic abs
-					/*switch (dwSWEType) {
-					case ITEMSTAT2_MA:
-						if (m_pClientList[iClientH]->m_iAddElementAbs > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddElementAbs = DEF_MAXMAGICALABS;
-						//Magn0S:: Add elements abs.
-						if (m_pClientList[iClientH]->m_iAddAbsEarth > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsEarth = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsLight > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsLight = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsFire > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsFire = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsWater > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsWater = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsHoly > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsHoly = DEF_MAXMAGICALABS;
-						if (m_pClientList[iClientH]->m_iAddAbsUnholy > DEF_MAXMAGICALABS)  m_pClientList[iClientH]->m_iAddAbsUnholy = DEF_MAXMAGICALABS;
-						break;
-					}*/
 
 				}
 				switch (cEquipPos) { // Sub-cases of DEF_ITEMEFFECTTYPE_DEFENSE
@@ -952,16 +969,16 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 				case DEF_EQUIPPOS_HEAD:	// PA on Head
 					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
-					m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3);
+					//m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3);
 
 					// Merien Upgraded helmet +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] += iTemp;
 					m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
-					m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
+					//m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
 
 					if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
-					if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+					//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 					break;
 				/*case DEF_EQUIPPOS_BODY:
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
@@ -4162,7 +4179,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		case 9: // MA Min +9%
 			if (dwValue <= 3) dwValue = 3;
 			//Magn0S:: Add Elements
-			/*iResult = iDice(1, 1020);
+			iResult = iDice(1, 1020);
 			if ((iResult >= 1) && (iResult < 275)) sElement = 1;  //Earth 27%
 			else if ((iResult >= 275) && (iResult < 550)) sElement = 2;  //Light 27%
 			else if ((iResult >= 550) && (iResult < 650)) sElement = 3;  //Fire 10%
@@ -4172,7 +4189,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 			else if ((iResult >= 1000) && (iResult <= 1020)) sElement = 7;  //Unatunned 02%
 			else sElement = 7;
 
-			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sNewEffect1 = sElement;*/
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sNewEffect1 = sElement;
 			break;
 
 		}

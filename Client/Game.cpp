@@ -4707,7 +4707,7 @@ bool CGame::_bCheckDlgBoxClick(short msX, short msY)
 			case 9:
 				break;
 			case 10:
-				//DlgBoxClick_Chat(msX, msY);
+				DlgBoxClick_Chat(msX, msY);
 				break;
 			case 11:
 				DlgBoxClick_Shop(msX, msY);
@@ -5863,11 +5863,11 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		m_DDraw.DrawShadowBox(sX + m_stDialogBoxInfo[1].sSizeX / 2, sY, limitX, sY + 25, 1, true);
 		PutString_SprFont2(sX + 50, sY + 5, "Character", 255, 255, 255);
 		PutString_SprFont2(sX + 180, sY + 5, "Information", 19, 104, 169); //145 pra frente
-
+		/* // Centuu : deactivated
 		m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
 		m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
 		m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
-
+		*/
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		strcpy(G_cTxt, m_cPlayerName);
 		strcat(G_cTxt, " : ");
@@ -6871,10 +6871,27 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		wsprintf(G_cTxt, "%d", m_iTotalDR);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
 		//--
-		iNext += 1;
+		/*iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Magic Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddAbsMD);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);*/
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Earth Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsEarth);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Fire Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsFire);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Water Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsWater);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		iNext += 1;
+		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Air Absorption:", 255, 255, 255);
+		wsprintf(G_cTxt, "%d", m_iAddAbsAir);
+		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+
 		iNext += 1;
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Physical Absorption:", 255, 255, 255);
 		wsprintf(G_cTxt, "%d", m_iAddAbsPD);
@@ -7187,7 +7204,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	case 8: strcpy(cTxt, DRAW_DIALOGBOX_MAGIC9);  break;//"Circle Nine"
 	case 9: strcpy(cTxt, DRAW_DIALOGBOX_MAGIC10); break;//"Circle Ten"
 	}
-	PutAlignedString(sX + 3, sX + 256, sY + 50, cTxt, 0,255,0);
+	PutAlignedString(sX + 3, sX + 256, sY + 50, cTxt, 255, 255, 255);
 	//PutAlignedString(sX + 4, sX + 257, sY + 50, cTxt, 0,255,0);
 	iCPivot = m_stDialogBoxInfo[3].sView * 10;
 	iYloc = 0;
@@ -7239,11 +7256,11 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	}
 
 	if (iYloc == 0) {
-		PutAlignedString(sX + 3, sX + 256, sY + 100, DRAW_DIALOGBOX_MAGIC11, 0,255,0);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 115, DRAW_DIALOGBOX_MAGIC12, 0, 255, 0);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 130, DRAW_DIALOGBOX_MAGIC13, 0, 255, 0);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 145, DRAW_DIALOGBOX_MAGIC14, 0, 255, 0);//"
-		PutAlignedString(sX + 3, sX + 256, sY + 160, DRAW_DIALOGBOX_MAGIC15, 0, 255, 0);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 100, DRAW_DIALOGBOX_MAGIC11, 255, 255, 255);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 115, DRAW_DIALOGBOX_MAGIC12, 255, 255, 255);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 130, DRAW_DIALOGBOX_MAGIC13, 255, 255, 255);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 145, DRAW_DIALOGBOX_MAGIC14, 255, 255, 255);//"
+		PutAlignedString(sX + 3, sX + 256, sY + 160, DRAW_DIALOGBOX_MAGIC15, 255, 255, 255);//"
 	}
 
 	m_pSprite[DEF_SPRID_INTERFACE_SPRFONTS]->PutSpriteFast(sX + 30, sY + 250, 19, dwTime);
@@ -7315,7 +7332,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 	wsprintf(cTxt, DRAW_DIALOGBOX_MAGIC16, iResult);//"
-	PutAlignedString(sX, sX + 256, sY + 267, cTxt, 0, 255, 0);
+	PutAlignedString(sX, sX + 256, sY + 267, cTxt, 255, 255, 255);
 	//PutAlignedString(sX + 1, sX + 257, sY + 267, cTxt);
 
 	// v2.15
@@ -19608,10 +19625,10 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 				// Orange
 			case '^': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 205, 0); break;
 				// Default Color
-			default: PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 45, 25, 25); break;
+			default: PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50); break;
 			}
 		}
-		else PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50);
+		else PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 255, 255, 255);
 	}
 
 	if (cLB != 0 && iTotalLines > 17) {
@@ -35636,7 +35653,7 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
 			iEntry++;
 			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
@@ -35781,7 +35798,7 @@ void CGame::UpdateScreen_OnGame()
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
 				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+			wsprintf(G_cTxt, "DR: %d - PA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
 			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1); 
 			iLoc += 15;
 		}
@@ -36176,11 +36193,11 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0); // Normal Dialog
 	PutString_SprFont2(sX + 105, sY + 5, "Quest List", 240, 240, 240);
 
-	PutString(sX + 35+10, sY + 30, "Monster", RGB(255, 255, 255), false, 1);
+	PutString(sX + 35+10, sY + 30, "Monster", RGB(255, 255, 0), false, 1);
 	//PutString(sX + 110, sY + 30, "Kill", RGB(255, 255, 255), false, 1);
 	//PutString(sX + 150, sY + 30, "Contrib.", RGB(255, 255, 255), false, 1);
 	//PutString(sX + 250, sY + 30, "Item Name", RGB(255, 255, 255), false, 1);
-	PutString(sX + 250-60, sY + 30, "Map", RGB(255, 255, 255), false, 1);
+	PutString(sX + 250-60, sY + 30, "Map", RGB(255, 255, 0), false, 1);
 
 	for (i = 0; i < 17; i++) {
 		if (((i + m_stDialogBoxInfo[59].sView) < 50) && (m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID != NULL))
@@ -36216,7 +36233,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				ZeroMemory(cTxt, sizeof(cTxt));
 				GetNpcName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].iNpcID, cTxt);
 				wsprintf(dane1, "%s", cTxt);
-				PutAlignedString2(sX + 5 + 10, sX + 100+10, sY + 50 + (i * 15), dane1, 255, 255, 100);
+				PutAlignedString2(sX + 5 + 10, sX + 100+10, sY + 50 + (i * 15), dane1, 19, 104, 169);
 
 				/*ZeroMemory(dane1, sizeof(dane1));
 				wsprintf(dane1, "%d", m_stQuestList[i + m_stDialogBoxInfo[59].sView].iMaxCount);
@@ -36234,7 +36251,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 				ZeroMemory(cMapName, sizeof(cMapName));
 				GetOfficialMapName(m_stQuestList[i + m_stDialogBoxInfo[59].sView].cMapName, cMapName);
 				wsprintf(dane1, "%s", cMapName);
-				PutAlignedString2(sX + 200 - 60, sX + 320 - 60, sY + 50 + (i * 15), dane1, 255, 255, 100);
+				PutAlignedString2(sX + 200 - 60, sX + 320 - 60, sY + 50 + (i * 15), dane1, 19, 104, 169);
 			}
 		}
 	}

@@ -9552,21 +9552,21 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 
 				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);  if(dwValue2 > 11) m_bIsRare = true;  break;
+				case 9:  //wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);  if(dwValue2 > 11) m_bIsRare = true;  break;
 					//Magn0S:: Added magic abs by elements
-					/*switch (pItem->m_sNewEffect1)
+					switch (pItem->m_sNewEffect1)
 					{
 						//wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3); if(dwValue2 > 11) m_bIsRare = true;  break;
-					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 2: wsprintf(cTxt, "Air Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 3: wsprintf(cTxt, "Fire Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 4: wsprintf(cTxt, "Water Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 2: wsprintf(cTxt, "Air Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 3: wsprintf(cTxt, "Fire Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 4: wsprintf(cTxt, "Water Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					default:
-						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					}
-					break;*/
+					break;
 
 				case 10: wsprintf(cTxt, GET_ITEM_NAME33, dwValue2 * 4);   if (dwValue2 > 11) m_bIsRare = true; break;
 				case 11: wsprintf(cTxt, GET_ITEM_NAME34, dwValue2 * 10); break;
@@ -9575,7 +9575,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 				strcpy(pStr3, cTxt);
 
 				// VAMP - elemental armours - add to end of item name
-				/*if (pItem->m_sNewEffect1 > 0)
+				if (pItem->m_sNewEffect1 > 0)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
 					switch (pItem->m_sNewEffect1)
@@ -9588,7 +9588,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 					case 6: strcpy(cTxt, " of Corruption"); break;
 					}
 					strcat(pStr1, cTxt);
-				}*/
+				}
 
 			}
 		}
@@ -9857,21 +9857,21 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 
 				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 9:  wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);   if(dwValue2 > 11) m_bIsRare = true;  break;
+				case 9:  //wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);   if(dwValue2 > 11) m_bIsRare = true;  break;
 					//Magn0S:: Added magic abs by elements
-					/*switch (sEffect1) //m_sItemSpecEffectValue2
+					switch (sEffect1) //m_sItemSpecEffectValue2
 					{
 						//wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3); if(dwValue2 > 11) m_bIsRare = true;  break;
-					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 2: wsprintf(cTxt, "Air Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 3: wsprintf(cTxt, "Fire Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 4: wsprintf(cTxt, "Water Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 2: wsprintf(cTxt, "Air Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 3: wsprintf(cTxt, "Fire Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 4: wsprintf(cTxt, "Water Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					default:
-						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+						wsprintf(cTxt, "Magic Absorption+%d%% (Unattuned)", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
 					}
-					break;*/
+					break;
 
 				case 10: wsprintf(cTxt, GET_ITEM_NAME33, dwValue2 * 4);   if (dwValue2 > 11) m_bIsRare = true; break;
 				case 11: wsprintf(cTxt, GET_ITEM_NAME34, dwValue2 * 10); break;
@@ -9879,7 +9879,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 				}
 				strcpy(pStr3, cTxt);
 				// VAMP - elemental armours - add to end of item name
-				/*if (dwType2 == 9)
+				if (dwType2 == 9)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
 					switch (sEffect1)
@@ -9892,7 +9892,7 @@ void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* p
 					case 6: strcpy(cTxt, " of Corruption"); break;
 					}
 					strcat(pStr1, cTxt);
-				}*/
+				}
 			}
 		}
 	}
@@ -11060,8 +11060,8 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 2);
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, sX + 16, sY + 100, 4);
 
-	PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_LEVELUP_SETTING1);
-	PutAlignedString(sX, sX + szX, sY + 65, DRAW_DIALOGBOX_LEVELUP_SETTING2);
+	PutAlignedString(sX, sX + szX, sY + 50, DRAW_DIALOGBOX_LEVELUP_SETTING1, 4, 0, 50);
+	PutAlignedString(sX, sX + szX, sY + 65, DRAW_DIALOGBOX_LEVELUP_SETTING2, 4, 0, 50);
 
 	// Points Left - Display in green if > 0
 	PutString(sX + 20, sY + 85, DRAW_DIALOGBOX_LEVELUP_SETTING3, RGB(0, 0, 0));
@@ -11072,12 +11072,12 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 73, sY + 102, cTxt, RGB(0, 0, 0));
+		PutString(sX + 73, sY + 102, cTxt, RGB(4, 0, 50));
 	}
 	// Strength
-	PutString(sX + 24, sY + 125, DRAW_DIALOGBOX_LEVELUP_SETTING4, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 125, DRAW_DIALOGBOX_LEVELUP_SETTING4, RGB(4, 0, 50));
 	wsprintf(cTxt, "%d", m_iStr);
-	PutString(sX + 109, sY + 125, cTxt, RGB(25, 35, 25));
+	PutString(sX + 109, sY + 125, cTxt, RGB(4, 0, 50));
 	iStats = m_iStr + m_cLU_Str;
 	wsprintf(cTxt, "%d", iStats);
 	if (iStats != m_iStr)
@@ -11086,7 +11086,7 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 162, sY + 125, cTxt, RGB(25, 35, 25));
+		PutString(sX + 162, sY + 125, cTxt, RGB(4, 0, 50));
 	}
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 127) && (msY <= sY + 133) && (m_iStr < DEF_STATS_LIMIT))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 195, sY + 127, 5, dwTime);
@@ -11094,9 +11094,9 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 210, sY + 127, 6, dwTime);
 
 	// Vitality
-	PutString(sX + 24, sY + 144, DRAW_DIALOGBOX_LEVELUP_SETTING5, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 144, DRAW_DIALOGBOX_LEVELUP_SETTING5, RGB(4, 0, 50));
 	wsprintf(cTxt, "%d", m_iVit);
-	PutString(sX + 109, sY + 144, cTxt, RGB(25, 35, 25));
+	PutString(sX + 109, sY + 144, cTxt, RGB(4, 0, 50));
 	iStats = m_iVit + m_cLU_Vit;
 	wsprintf(cTxt, "%d", iStats);
 	if (iStats != m_iVit)
@@ -11105,7 +11105,7 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 162, sY + 144, cTxt, RGB(25, 35, 25));
+		PutString(sX + 162, sY + 144, cTxt, RGB(4, 0, 50));
 	}
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 146) && (msY <= sY + 152) && (m_iVit < DEF_STATS_LIMIT))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 195, sY + 146, 5, dwTime);
@@ -11113,9 +11113,9 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 210, sY + 146, 6, dwTime);
 
 	// Dexterity
-	PutString(sX + 24, sY + 163, DRAW_DIALOGBOX_LEVELUP_SETTING6, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 163, DRAW_DIALOGBOX_LEVELUP_SETTING6, RGB(4, 0, 50));
 	wsprintf(cTxt, "%d", m_iDex);
-	PutString(sX + 109, sY + 163, cTxt, RGB(25, 35, 25));
+	PutString(sX + 109, sY + 163, cTxt, RGB(4, 0, 50));
 	iStats = m_iDex + m_cLU_Dex;
 	wsprintf(cTxt, "%d", iStats);
 	if (iStats != m_iDex)
@@ -11124,7 +11124,7 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 162, sY + 163, cTxt, RGB(25, 35, 25));
+		PutString(sX + 162, sY + 163, cTxt, RGB(4, 0, 50));
 	}
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 165) && (msY <= sY + 171) && (m_iDex < DEF_STATS_LIMIT))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 195, sY + 165, 5, dwTime);
@@ -11132,9 +11132,9 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 210, sY + 165, 6, dwTime);
 
 	// Intelligence
-	PutString(sX + 24, sY + 182, DRAW_DIALOGBOX_LEVELUP_SETTING7, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 182, DRAW_DIALOGBOX_LEVELUP_SETTING7, RGB(4, 0, 50));
 	wsprintf(cTxt, "%d", m_iInt);
-	PutString(sX + 109, sY + 182, cTxt, RGB(25, 35, 25));
+	PutString(sX + 109, sY + 182, cTxt, RGB(4, 0, 50));
 	iStats = m_iInt + m_cLU_Int;
 	wsprintf(cTxt, "%d", iStats);
 	if (iStats != m_iInt)
@@ -11143,7 +11143,7 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 162, sY + 182, cTxt, RGB(25, 35, 25));
+		PutString(sX + 162, sY + 182, cTxt, RGB(4, 0, 50));
 	}
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 184) && (msY <= sY + 190) && (m_iInt < DEF_STATS_LIMIT))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 195, sY + 184, 5, dwTime);
@@ -11151,9 +11151,9 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 210, sY + 184, 6, dwTime);
 
 	// Magic
-	PutString(sX + 24, sY + 201, DRAW_DIALOGBOX_LEVELUP_SETTING8, RGB(5, 5, 5));
+	PutString(sX + 24, sY + 201, DRAW_DIALOGBOX_LEVELUP_SETTING8, RGB(4, 0, 50));
 	wsprintf(cTxt, "%d", m_iMag);
-	PutString(sX + 109, sY + 201, cTxt, RGB(25, 35, 25));
+	PutString(sX + 109, sY + 201, cTxt, RGB(4, 0, 50));
 	iStats = m_iMag + m_cLU_Mag;
 	wsprintf(cTxt, "%d", iStats);
 	if (iStats != m_iMag)
@@ -11162,7 +11162,7 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 162, sY + 201, cTxt, RGB(25, 35, 25));
+		PutString(sX + 162, sY + 201, cTxt, RGB(4, 0, 50));
 	}
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 203) && (msY <= sY + 209) && (m_iMag < DEF_STATS_LIMIT))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 195, sY + 203, 5, dwTime);
@@ -11171,9 +11171,9 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 
 	// Charisma
 	//PutString(sX + 24, sY + 220, DRAW_DIALOGBOX_LEVELUP_SETTING9, RGB(5, 5, 5));
-	PutString(sX + 24, sY + 220, "Agility", RGB(5, 5, 5));
+	PutString(sX + 24, sY + 220, "Agility", RGB(4, 0, 50));
 	wsprintf(cTxt, "%d", m_iCharisma);
-	PutString(sX + 109, sY + 220, cTxt, RGB(25, 35, 25));
+	PutString(sX + 109, sY + 220, cTxt, RGB(4, 0, 50));
 	iStats = m_iCharisma + m_cLU_Char;
 	wsprintf(cTxt, "%d", iStats);
 	if (iStats != m_iCharisma)
@@ -11182,7 +11182,7 @@ void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 	}
 	else
 	{
-		PutString(sX + 162, sY + 220, cTxt, RGB(25, 35, 25));
+		PutString(sX + 162, sY + 220, cTxt, RGB(4, 0, 50));
 	}
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 222) && (msY <= sY + 228) && (m_iCharisma < DEF_STATS_LIMIT))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8]->PutSpriteFast(sX + 195, sY + 222, 5, dwTime);
@@ -15254,7 +15254,7 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME5, sX, sY, 0);
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 6);
 
-	PutString(sX + 23, sY + 63, DRAW_DIALOGBOX_SYSMENU_DETAILLEVEL, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 63, DRAW_DIALOGBOX_SYSMENU_DETAILLEVEL, RGB(255, 255, 255));
 	if (m_cDetailLevel == 0)
 		PutString(sX + 121, sY + 63, DRAW_DIALOGBOX_SYSMENU_LOW, RGB(0, 255, 0));
 	else PutString(sX + 121, sY + 63, DRAW_DIALOGBOX_SYSMENU_LOW, RGB(45, 25, 25));
@@ -15265,7 +15265,7 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 		PutString(sX + 205, sY + 63, DRAW_DIALOGBOX_SYSMENU_HIGH, RGB(0, 255, 0));
 	else PutString(sX + 205, sY + 63, DRAW_DIALOGBOX_SYSMENU_HIGH, RGB(45, 25, 25));
 
-	PutString(sX + 23, sY + 84, DRAW_DIALOGBOX_SYSMENU_SOUND, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 84, DRAW_DIALOGBOX_SYSMENU_SOUND, RGB(255, 255, 255));
 	
 	if (m_bSoundFlag) {
 		if (m_bSoundStat) PutString(sX + 85, sY + 85, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
@@ -15273,7 +15273,7 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	}
 	else PutString(sX + 68, sY + 85, DRAW_DIALOGBOX_SYSMENU_DISABLED, RGB(100, 100, 100));
 
-	PutString(sX + 123, sY + 84, DRAW_DIALOGBOX_SYSMENU_MUSIC, RGB(255, 255, 0));
+	PutString(sX + 123, sY + 84, DRAW_DIALOGBOX_SYSMENU_MUSIC, RGB(255, 255, 255));
 	
 	if (m_bSoundFlag) {
 		if (m_bMusicStat) PutString(sX + 180, sY + 85, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
@@ -15281,30 +15281,30 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	}
 	else PutString(sX + 163, sY + 85, DRAW_DIALOGBOX_SYSMENU_DISABLED, RGB(100, 100, 100));
 
-	PutString(sX + 23, sY + 106, DRAW_DIALOGBOX_SYSMENU_WHISPER, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 106, DRAW_DIALOGBOX_SYSMENU_WHISPER, RGB(255, 255, 255));
 	
 	if (m_bWhisper) PutString(sX + 85, sY + 106, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
 	else PutString(sX + 82, sY + 106, DRAW_DIALOGBOX_SYSMENU_OFF, RGB(255, 0, 0));
 
-	PutString(sX + 123, sY + 106, DRAW_DIALOGBOX_SYSMENU_SHOUT, RGB(255, 255, 0));
+	PutString(sX + 123, sY + 106, DRAW_DIALOGBOX_SYSMENU_SHOUT, RGB(255, 255, 255));
 
 	if (m_bShout) PutString(sX + 180, sY + 106, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
 	else PutString(sX + 177, sY + 106, DRAW_DIALOGBOX_SYSMENU_OFF, RGB(255, 0, 0));
 
-	PutString(sX + 23, sY + 124, DRAW_DIALOGBOX_SYSMENU_SOUNDVOLUME, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 124, DRAW_DIALOGBOX_SYSMENU_SOUNDVOLUME, RGB(255, 255, 255));
 	
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 130 + m_cSoundVolume, sY + 129, 8);
 
-	PutString(sX + 23, sY + 141, DRAW_DIALOGBOX_SYSMENU_MUSICVOLUME, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 141, DRAW_DIALOGBOX_SYSMENU_MUSICVOLUME, RGB(255, 255, 255));
 	
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 130 + m_cMusicVolume, sY + 145, 8);
 
-	PutString(sX + 23, sY + 158, DRAW_DIALOGBOX_SYSMENU_TRANSPARENCY, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 158, DRAW_DIALOGBOX_SYSMENU_TRANSPARENCY, RGB(255, 255, 255));
 	
 	if (m_bDialogTrans) PutString(sX + 208, sY + 158, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
 	else PutString(sX + 207, sY + 158, DRAW_DIALOGBOX_SYSMENU_OFF, RGB(255, 0, 0));
 
-	PutString(sX + 23, sY + 180, DRAW_DIALOGBOX_SYSMENU_GUIDEMAP, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 180, DRAW_DIALOGBOX_SYSMENU_GUIDEMAP, RGB(255, 255, 255));
 	
 	if (m_bIsDialogEnabled[9]) PutString(sX + 99, sY + 180, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
 	else PutString(sX + 98, sY + 180, DRAW_DIALOGBOX_SYSMENU_OFF, RGB(255, 0, 0));
@@ -15313,11 +15313,11 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	GetLocalTime(&SysTime);
 	ZeroMemory(G_cTxt, sizeof(G_cTxt));
 	wsprintf(G_cTxt, "%.2d:%.2d:%.2d", SysTime.wHour, SysTime.wMinute, SysTime.wSecond);
-	PutString(sX + 23, sY + 204, G_cTxt, RGB(255, 255, 0));
+	PutString(sX + 23, sY + 204, G_cTxt, RGB(255, 255, 255));
 	
 
 	//Grid - by luqah
-	PutString(sX + 136, sY + 180, "Grid", RGB(255, 255, 0));
+	PutString(sX + 136, sY + 180, "Grid", RGB(255, 255, 255));
 	
 	if (m_bGrid) PutString(sX + 3 + 120 + 88, sY + 180, DRAW_DIALOGBOX_SYSMENU_ON, RGB(0, 255, 0));
 	else PutString(sX + 3 + 120 + 87, sY + 180, DRAW_DIALOGBOX_SYSMENU_OFF, RGB(255, 0, 0));
