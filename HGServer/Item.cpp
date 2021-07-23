@@ -4281,6 +4281,8 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 		return;
 	}
 
+	GetExp(iClientH, iDice(1, iSkillLevel*100));
+
 	CalculateSSN_SkillIndex(iClientH, 20, 1);
 	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, 0, 0);
 }

@@ -263,17 +263,17 @@ int CMisc::_iGetFileCheckSum(char * pFn)
 	ZeroMemory(cRealFn, sizeof(cRealFn));
 	strcpy(cRealFn, pFn);
 	for (i = 0; i < strlen(cRealFn); i++)
-	if (cRealFn[i] != NULL)	cRealFn[i]++;
+	if (cRealFn[i] != 0)	cRealFn[i]++;
 
-	hFile = CreateFile(cRealFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL);
+	hFile = CreateFile(cRealFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+	dwFileSize = GetFileSize(hFile, 0);
 	CloseHandle(hFile);
 	if (hFile == INVALID_HANDLE_VALUE) {
 		return 0;
 	}
 
 	pFile = fopen(cRealFn, "rb");
-	if (pFile == NULL) return 0;
+	if (pFile == 0) return 0;
 	else {
 		pContents = new char[dwFileSize+1];
 		ZeroMemory(pContents, dwFileSize+1);
@@ -303,11 +303,11 @@ bool CMisc::_iConvertFileXor(char *pFn, char * pDestFn, char cKey)
  //	.mando
  char pHeader[10];
  char cHeaderKey = 20;
-	hFile = CreateFile(pFn, GENERIC_READ, NULL, NULL, OPEN_EXISTING, NULL, NULL);
-	dwFileSize = GetFileSize(hFile, NULL) - 10;
+	hFile = CreateFile(pFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+	dwFileSize = GetFileSize(hFile, 0) - 10;
 	if (hFile != INVALID_HANDLE_VALUE) CloseHandle(hFile);
 	pFile = fopen(pFn, "rt");
-	if (pFile == NULL)
+	if (pFile == 0)
 		return false;
 
 	pContents = new char[dwFileSize+1];
@@ -319,7 +319,7 @@ bool CMisc::_iConvertFileXor(char *pFn, char * pDestFn, char cKey)
 	for (i = 0; i < (int)(dwFileSize); i++)
 		pContents[i] = pContents[i] ^ cKey;
 	pFile = fopen(pDestFn, "wt");
-	if (pFile == NULL) {
+	if (pFile == 0) {
 		delete[] pContents;
 		return false;
 	}

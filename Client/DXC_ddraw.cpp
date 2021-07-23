@@ -24,10 +24,10 @@ extern long    G_lTransG2[64][64], G_lTransRB2[64][64];
 
 DXC_ddraw::DXC_ddraw()
 {
-	m_lpFrontB4		= NULL;
-	m_lpDD4			= NULL;
-	m_lpPDBGS		= NULL;
-	m_lpBackB4flip	= NULL;
+	m_lpFrontB4		= 0;
+	m_lpDD4			= 0;
+	m_lpPDBGS		= 0;
+	m_lpBackB4flip	= 0;
 	m_cPixelFormat	= 0;
 
 #ifdef DEF_WINDOWED_MODE	
@@ -42,15 +42,15 @@ DXC_ddraw::DXC_ddraw()
 
 DXC_ddraw::~DXC_ddraw()
 {
-	if (m_hFontInUse != NULL) DeleteObject(m_hFontInUse);
-	if (m_lpBackB4flip != NULL) m_lpBackB4flip->Release();
-	if (m_lpBackB4 != NULL) m_lpBackB4->Release();
-	if (m_lpFrontB4 != NULL) m_lpFrontB4->Release();
+	if (m_hFontInUse != 0) DeleteObject(m_hFontInUse);
+	if (m_lpBackB4flip != 0) m_lpBackB4flip->Release();
+	if (m_lpBackB4 != 0) m_lpBackB4->Release();
+	if (m_lpFrontB4 != 0) m_lpFrontB4->Release();
 	if (m_bFullMode == true)
 	{
-		if (m_lpDD4 != NULL) m_lpDD4->RestoreDisplayMode();
+		if (m_lpDD4 != 0) m_lpDD4->RestoreDisplayMode();
 	}
-	if (m_lpDD4 != NULL) m_lpDD4->Release();
+	if (m_lpDD4 != 0) m_lpDD4->Release();
 }
 
 bool DXC_ddraw::IsWin2()
@@ -82,10 +82,10 @@ bool DXC_ddraw::bInit(HWND hWnd)
 #endif
 
 	if (IsWin2()) {
-		ddVal = DirectDrawCreateEx((GUID*)DDCREATE_EMULATIONONLY, (VOID**)&m_lpDD4, IID_IDirectDraw7, NULL); // sleeq
+		ddVal = DirectDrawCreateEx((GUID*)DDCREATE_EMULATIONONLY, (VOID**)&m_lpDD4, IID_IDirectDraw7, 0); // sleeq
 	}
 	else {
-		ddVal = DirectDrawCreateEx(NULL, (VOID**)&m_lpDD4, IID_IDirectDraw7, NULL);
+		ddVal = DirectDrawCreateEx(0, (VOID**)&m_lpDD4, IID_IDirectDraw7, 0);
 	}
 	
 
@@ -110,7 +110,7 @@ bool DXC_ddraw::bInit(HWND hWnd)
 		ddsd.dwBackBufferCount = 1;
 		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
 		
-		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, NULL);
+		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, 0);
 		if (ddVal != DD_OK) return false;
 
 		ZeroMemory(&ddscaps, sizeof(ddscaps));
@@ -147,7 +147,7 @@ bool DXC_ddraw::bInit(HWND hWnd)
 		
 		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 		
-		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, NULL);
+		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, 0);
 		if (ddVal != DD_OK) return false;
 #ifdef RES_HIGH
 		SetRect(&m_rcFlipping, cx-400, cy-300, cx+400, cy+300);
@@ -159,24 +159,24 @@ bool DXC_ddraw::bInit(HWND hWnd)
 	InitFlipToGDI(hWnd);
 #ifdef RES_HIGH	
 	m_lpBackB4 = pCreateOffScreenSurface(800, 600);
-	if (m_lpBackB4 == NULL) return false;
+	if (m_lpBackB4 == 0) return false;
 
 	// Pre-draw background surface
 	m_lpPDBGS = pCreateOffScreenSurface(800+32, 600+32);
-	if (m_lpPDBGS == NULL) return false;
+	if (m_lpPDBGS == 0) return false;
 #else
 	m_lpBackB4 = pCreateOffScreenSurface(640, 480);
-	if (m_lpBackB4 == NULL) return false;
+	if (m_lpBackB4 == 0) return false;
 
 	// Pre-draw background surface
 	m_lpPDBGS = pCreateOffScreenSurface(640+32, 480+32);
-	if (m_lpPDBGS == NULL) return false;
+	if (m_lpPDBGS == 0) return false;
 #endif
 	ddsd.dwSize = sizeof(ddsd);
-	if (m_lpBackB4->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL) != DD_OK) return false;
+	if (m_lpBackB4->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return false;
 	m_pBackB4Addr        = (WORD *)ddsd.lpSurface;
 	m_sBackB4Pitch       = (short)ddsd.lPitch >> 1;
-	m_lpBackB4->Unlock(NULL);
+	m_lpBackB4->Unlock(0);
 
 	_TestPixelFormat();
 	for (iS = 0; iS < 64; iS++)
@@ -215,9 +215,9 @@ bool DXC_ddraw::bInit(HWND hWnd)
 		G_lTransG2[iD][iS]  = _CalcMaxValue(iS, iD, 'G', 2, 1.0f);
 	}
 
-	m_hFontInUse = NULL;	
+	m_hFontInUse = 0;	
 	m_hFontInUse = CreateFont(16,0, 0, 0, FW_NORMAL, false, false, false, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, NONANTIALIASED_QUALITY, VARIABLE_PITCH, "Tahoma") ;
-	m_hDC = NULL;
+	m_hDC = 0;
 	m_init = true;
 	return true;
 }
@@ -237,7 +237,7 @@ HRESULT DXC_ddraw::iFlip()
 	else
 	{
 		
-		ddVal = m_lpFrontB4->Blt(&m_rcFlipping, m_lpBackB4, NULL, DDBLT_WAIT, NULL);
+		ddVal = m_lpFrontB4->Blt(&m_rcFlipping, m_lpBackB4, 0, DDBLT_WAIT, 0);
 	}
 
 	if (ddVal == DDERR_SURFACELOST) {
@@ -246,9 +246,9 @@ HRESULT DXC_ddraw::iFlip()
 		m_lpBackB4->Restore();
 		
 		ddsd2.dwSize = sizeof(ddsd2);
-		if (m_lpBackB4->Lock(NULL, &ddsd2, DDLOCK_WAIT, NULL) != DD_OK) return false;
+		if (m_lpBackB4->Lock(0, &ddsd2, DDLOCK_WAIT, 0) != DD_OK) return false;
 		m_pBackB4Addr  = (WORD *)ddsd2.lpSurface;
-		m_lpBackB4->Unlock(NULL);
+		m_lpBackB4->Unlock(0);
 
 		return DDERR_SURFACELOST;
 	}
@@ -263,14 +263,14 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 	if (!m_init)
 		return;
 
-	if (m_lpBackB4flip != NULL)
+	if (m_lpBackB4flip != 0)
 	{
 		m_lpBackB4flip->Release();
-		m_lpBackB4flip = NULL;
+		m_lpBackB4flip = 0;
 	}
-	if (m_lpBackB4 != NULL) m_lpBackB4->Release();
-	if (m_lpFrontB4 != NULL) m_lpFrontB4->Release();
-	if (m_lpDD4 != NULL)
+	if (m_lpBackB4 != 0) m_lpBackB4->Release();
+	if (m_lpFrontB4 != 0) m_lpFrontB4->Release();
+	if (m_lpDD4 != 0)
 	{
 		if (m_bFullMode == true) m_lpDD4->RestoreDisplayMode();
 	}
@@ -291,10 +291,10 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 		
 #ifdef RES_HIGH
 		if (cy > 340) cy -= 40;
-		SetWindowPos(hWnd, NULL, cx - 400, cy - 300, 800, 600, SWP_SHOWWINDOW);
+		SetWindowPos(hWnd, 0, cx - 400, cy - 300, 800, 600, SWP_SHOWWINDOW);
 #else
 		if (cy > 280) cy -= 40;
-		SetWindowPos( hWnd, NULL, cx-320, cy-240, 640, 480, SWP_SHOWWINDOW);
+		SetWindowPos( hWnd, 0, cx-320, cy-240, 640, 480, SWP_SHOWWINDOW);
 #endif
 		memset( (VOID *)&ddsd, 0, sizeof(ddsd) );
 		ddsd.dwSize = sizeof( ddsd );
@@ -302,7 +302,7 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 
 		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE;
 		
-		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, NULL);
+		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, 0);
 		if (ddVal != DD_OK) return;
 #ifdef RES_HIGH
 		SetRect(&m_rcFlipping, cx-400, cy-300, cx+400, cy+300);
@@ -328,7 +328,7 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 		ddsd.dwBackBufferCount = 1;//2 v1.3
 		ddsd.ddsCaps.dwCaps = DDSCAPS_PRIMARYSURFACE | DDSCAPS_FLIP | DDSCAPS_COMPLEX;
 		
-		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, NULL);
+		ddVal = m_lpDD4->CreateSurface(&ddsd, &m_lpFrontB4, 0);
 		if (ddVal != DD_OK) return;
 
 		ZeroMemory(&ddscaps, sizeof(ddscaps));
@@ -345,24 +345,24 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 	InitFlipToGDI(hWnd);
 #ifdef RES_HIGH
 	m_lpBackB4 = pCreateOffScreenSurface(800, 600);
-	if (m_lpBackB4 == NULL) return;
+	if (m_lpBackB4 == 0) return;
 
 	// Pre-draw background surface
 	m_lpPDBGS = pCreateOffScreenSurface(800+32, 600+32);
-	if (m_lpPDBGS == NULL) return;
+	if (m_lpPDBGS == 0) return;
 #else
 	m_lpBackB4 = pCreateOffScreenSurface(640, 480);
-	if (m_lpBackB4 == NULL) return;
+	if (m_lpBackB4 == 0) return;
 
 	// Pre-draw background surface
 	m_lpPDBGS = pCreateOffScreenSurface(640+32, 480+32);
-	if (m_lpPDBGS == NULL) return;
+	if (m_lpPDBGS == 0) return;
 #endif
 	ddsd.dwSize = sizeof(ddsd);
-	if (m_lpBackB4->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL) != DD_OK) return;
+	if (m_lpBackB4->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return;
 	m_pBackB4Addr        = (WORD *)ddsd.lpSurface;
 	m_sBackB4Pitch       = (short)ddsd.lPitch >> 1;
-	m_lpBackB4->Unlock(NULL);
+	m_lpBackB4->Unlock(0);
 }
 
 IDirectDrawSurface7 * DXC_ddraw::pCreateOffScreenSurface(WORD wSzX, WORD wSzY)
@@ -377,7 +377,7 @@ IDirectDrawSurface7 * DXC_ddraw::pCreateOffScreenSurface(WORD wSzX, WORD wSzY)
 	ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
 	ddsd.dwWidth  = (DWORD)wSzX;
     ddsd.dwHeight = (DWORD)wSzY;
-    if (m_lpDD4->CreateSurface(&ddsd, &pdds4, NULL) != DD_OK) return NULL;
+    if (m_lpDD4->CreateSurface(&ddsd, &pdds4, 0) != DD_OK) return 0;
 	return pdds4;
 }
 
@@ -415,13 +415,13 @@ DWORD DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, COLORREF rgb)
     }
 
     ddsd2.dwSize = sizeof(ddsd2);
-    while ((hres = pdds4->Lock(NULL, &ddsd2, 0, NULL)) == DDERR_WASSTILLDRAWING);
+    while ((hres = pdds4->Lock(0, &ddsd2, 0, 0)) == DDERR_WASSTILLDRAWING);
 
     if (hres == DD_OK)
     {
         dw  = *(DWORD *)ddsd2.lpSurface;                     
         dw &= (1 << ddsd2.ddpfPixelFormat.dwRGBBitCount)-1;  
-        pdds4->Unlock(NULL);
+        pdds4->Unlock(0);
     }
 
     if (rgb != CLR_INVALID && pdds4->GetDC(&hdc) == DD_OK)
@@ -440,7 +440,7 @@ DWORD DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, WORD wColorKey)
  HRESULT hres;
    
     ddsd2.dwSize = sizeof(ddsd2);
-    while ((hres = pdds4->Lock(NULL, &ddsd2, 0, NULL)) == DDERR_WASSTILLDRAWING);
+    while ((hres = pdds4->Lock(0, &ddsd2, 0, 0)) == DDERR_WASSTILLDRAWING);
 
     if (hres == DD_OK)
     {
@@ -448,7 +448,7 @@ DWORD DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, WORD wColorKey)
 		*dwp = (DWORD)wColorKey;
 		dw  = *(DWORD *)ddsd2.lpSurface;                     
         dw &= (1 << ddsd2.ddpfPixelFormat.dwRGBBitCount)-1;  
-        pdds4->Unlock(NULL);
+        pdds4->Unlock(0);
     }
 
     return dw;
@@ -558,14 +558,14 @@ void DXC_ddraw::ClearBackB4()
 {
 	DDSURFACEDESC2 ddsd2;	
 	ddsd2.dwSize = sizeof(ddsd2);
-	if (m_lpBackB4->Lock(NULL, &ddsd2, DDLOCK_WAIT, NULL) != DD_OK) return;
+	if (m_lpBackB4->Lock(0, &ddsd2, DDLOCK_WAIT, 0) != DD_OK) return;
 
 #ifdef RES_HIGH
 	memset((char*)ddsd2.lpSurface, 0, ddsd2.lPitch * 600);
 #else
 	memset((char*)ddsd2.lpSurface, 0, ddsd2.lPitch * 480);
 #endif
-	m_lpBackB4->Unlock(NULL);
+	m_lpBackB4->Unlock(0);
 }
 
 //Magn0S:: Updated.
@@ -702,7 +702,7 @@ HRESULT DXC_ddraw::InitFlipToGDI(HWND hWnd)
 
     ZeroMemory( &ddcaps, sizeof(ddcaps) );
     ddcaps.dwSize = sizeof(ddcaps);
-    m_lpDD4->GetCaps( &ddcaps, NULL );
+    m_lpDD4->GetCaps( &ddcaps, 0 );
 
     if( (ddcaps.dwCaps2 & DDCAPS2_CANRENDERWINDOWED) == 0 )
     {
@@ -714,7 +714,7 @@ HRESULT DXC_ddraw::InitFlipToGDI(HWND hWnd)
     }
 
     // Create a clipper when using GDI to draw on the primary surface 
-    if( FAILED( hr = m_lpDD4->CreateClipper( 0, &pClipper, NULL ) ) )
+    if( FAILED( hr = m_lpDD4->CreateClipper( 0, &pClipper, 0 ) ) )
         return hr;
 
     pClipper->SetHWnd( 0, hWnd );
@@ -726,7 +726,7 @@ HRESULT DXC_ddraw::InitFlipToGDI(HWND hWnd)
 	if( pClipper )
 	{
 		pClipper->Release();
-		pClipper = NULL;
+		pClipper = 0;
 	}
     return S_OK;
 }
@@ -769,11 +769,11 @@ bool DXC_ddraw::Screenshot(LPCTSTR FileName, LPDIRECTDRAWSURFACE7 lpDDS)
     if (!FileName || !lpDDS) return false;
 
     bool Success=false;
-    HDC SurfDC=NULL;        // GDI-compatible device context for the surface
-    HBITMAP OffscrBmp=NULL; // bitmap that is converted to a DIB
-    HDC OffscrDC=NULL;      // offscreen DC that we can select OffscrBmp into
-    LPBITMAPINFO lpbi=NULL; // bitmap format info; used by GetDIBits
-    LPVOID lpvBits=NULL;    // pointer to bitmap bits array
+    HDC SurfDC=0;        // GDI-compatible device context for the surface
+    HBITMAP OffscrBmp=0; // bitmap that is converted to a DIB
+    HDC OffscrDC=0;      // offscreen DC that we can select OffscrBmp into
+    LPBITMAPINFO lpbi=0; // bitmap format info; used by GetDIBits
+    LPVOID lpvBits=0;    // pointer to bitmap bits array
     HANDLE BmpFile=INVALID_HANDLE_VALUE;    // destination .bmp file
     BITMAPFILEHEADER bmfh;  // .bmp file header
 
@@ -791,35 +791,35 @@ try
     if (FAILED(lpDDS->GetDC(&SurfDC))) throw 1;
 
     // We need an HBITMAP to convert it to a DIB:
-    if ((OffscrBmp = CreateCompatibleBitmap(SurfDC, Width, Height)) == NULL)
+    if ((OffscrBmp = CreateCompatibleBitmap(SurfDC, Width, Height)) == 0)
         throw 2;
 
     // The bitmap is empty, so let's copy the contents of the surface to it.
     // For that we need to select it into a device context. We create one.
-    if ((OffscrDC = CreateCompatibleDC(SurfDC)) == NULL) throw 3;
+    if ((OffscrDC = CreateCompatibleDC(SurfDC)) == 0) throw 3;
     // Select OffscrBmp into OffscrDC:
     HBITMAP OldBmp = (HBITMAP)SelectObject(OffscrDC, OffscrBmp);
     // Now we can copy the contents of the surface to the offscreen bitmap:
     BitBlt(OffscrDC, 0, 0, Width, Height, SurfDC, 0, 0, SRCCOPY);
 
     // We don't need SurfDC anymore. Free it:
-    lpDDS->ReleaseDC(SurfDC); SurfDC = NULL;
+    lpDDS->ReleaseDC(SurfDC); SurfDC = 0;
 
     // GetDIBits requires format info about the bitmap. We can have GetDIBits
-    // fill a structure with that info if we pass a NULL pointer for lpvBits:
+    // fill a structure with that info if we pass a 0 pointer for lpvBits:
     // Reserve memory for bitmap info (BITMAPINFOHEADER + largest possible
     // palette):
     if ((lpbi = (LPBITMAPINFO)(new char[sizeof(BITMAPINFOHEADER) +
-        256 * sizeof(RGBQUAD)])) == NULL) throw 4;
+        256 * sizeof(RGBQUAD)])) == 0) throw 4;
     ZeroMemory(&lpbi->bmiHeader, sizeof(BITMAPINFOHEADER));
     lpbi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
     // Get info but first de-select OffscrBmp because GetDIBits requires it:
     SelectObject(OffscrDC, OldBmp);
-    if (!GetDIBits(OffscrDC, OffscrBmp, 0, Height, NULL, lpbi, DIB_RGB_COLORS))
+    if (!GetDIBits(OffscrDC, OffscrBmp, 0, Height, 0, lpbi, DIB_RGB_COLORS))
         throw 5;
 
     // Reserve memory for bitmap bits:
-    if ((lpvBits = new char[lpbi->bmiHeader.biSizeImage]) == NULL)
+    if ((lpvBits = new char[lpbi->bmiHeader.biSizeImage]) == 0)
         throw 6;
 
     // Have GetDIBits convert OffscrBmp to a DIB (device-independent bitmap):
@@ -829,10 +829,10 @@ try
     // Create a file to save the DIB to:
     if ((BmpFile = CreateFile(FileName,
                               GENERIC_WRITE,
-                              0, NULL,
+                              0, 0,
                               CREATE_ALWAYS,
                               FILE_ATTRIBUTE_NORMAL,
-                              NULL)) == INVALID_HANDLE_VALUE) throw 8;
+                              0)) == INVALID_HANDLE_VALUE) throw 8;
 
     DWORD Written;    // number of bytes written by WriteFile
     
@@ -841,13 +841,13 @@ try
     // bmfh.bfSize = ???        // we'll write that later
     bmfh.bfReserved1 = bmfh.bfReserved2 = 0;
     // bmfh.bfOffBits = ???     // we'll write that later
-    if (!WriteFile(BmpFile, &bmfh, sizeof(bmfh), &Written, NULL))
+    if (!WriteFile(BmpFile, &bmfh, sizeof(bmfh), &Written, 0))
         throw 9;
     if (Written < sizeof(bmfh)) throw 9;
 
     // Write BITMAPINFOHEADER to the file:
     if (!WriteFile(BmpFile, &lpbi->bmiHeader, sizeof(BITMAPINFOHEADER),
-        &Written, NULL)) throw 10;
+        &Written, 0)) throw 10;
     if (Written < sizeof(BITMAPINFOHEADER)) throw 10;
 
     // Calculate size of palette:
@@ -868,7 +868,7 @@ try
     if (PalEntries)
     {
         if (!WriteFile(BmpFile, &lpbi->bmiColors, PalEntries * sizeof(RGBQUAD),
-            &Written, NULL)) throw 11;
+            &Written, 0)) throw 11;
         if (Written < PalEntries * sizeof(RGBQUAD)) throw 11;
     }
 
@@ -878,7 +878,7 @@ try
 
     // Write bitmap bits to the file:
     if (!WriteFile(BmpFile, lpvBits, lpbi->bmiHeader.biSizeImage,
-        &Written, NULL)) throw 12;
+        &Written, 0)) throw 12;
     if (Written < lpbi->bmiHeader.biSizeImage) throw 12;
 
     // The current pos. in the file is the final file size and will be saved:
@@ -886,7 +886,7 @@ try
 
     // We have all the info for the file header. Save the updated version:
     SetFilePointer(BmpFile, 0, 0, FILE_BEGIN);
-    if (!WriteFile(BmpFile, &bmfh, sizeof(bmfh), &Written, NULL))
+    if (!WriteFile(BmpFile, &bmfh, sizeof(bmfh), &Written, 0))
         throw 13;
     if (Written < sizeof(bmfh)) throw 13;
 	OutputDebugString("Screenshot Success\r\n");

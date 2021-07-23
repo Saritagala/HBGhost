@@ -416,7 +416,6 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	double dV1, dV2, dV3;
 	DWORD  dwTemp, dwTemp2, dwType, dwValue;
 	WORD   wTemp;
-	short sMagicLevel = 0;
 
 	if (m_pClientList[iClientH] == 0) return;
 	m_pClientList[iClientH]->m_iSkillMsgRecvCount++;
@@ -556,7 +555,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					iResultValue = (iTotalValue - m_pBuildItemList[i]->m_iAverageValue);
 					if (iResultValue > 0) {
 						dV2 = (double)iResultValue;
-						dV3 = (double)(100 - m_pBuildItemList[i]->m_iAverageValue);
+						dV3 = (double)(100.0f - m_pBuildItemList[i]->m_iAverageValue);
 						dV1 = (dV2 / dV3) * 100.0f;
 						pItem->m_sItemSpecEffectValue2 = (int)dV1;
 					}
@@ -595,40 +594,40 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					else pItem->m_sItemSpecEffectValue1 = (short)pItem->m_wMaxLifeSpan;
 					
 					if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK || pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_ARROW) {
-						iResult = iDice(1, 11500);
-						if ((iResult >= 1) && (iResult <= 299)) {
+						iResult = iDice(1, 1020);
+						if ((iResult >= 1) && (iResult <= 29)) {
 							dwType = 10;
 							cColor = 5;
 						}
-						else if ((iResult >= 300) && (iResult <= 999)) {
+						else if ((iResult >= 30) && (iResult <= 99)) {
 							dwType = 12;
 							cColor = 5;
 						}
-						else if ((iResult >= 1000) && (iResult <= 2499)) {
+						else if ((iResult >= 100) && (iResult <= 249)) {
 							dwType = 7;
 							cColor = 6;
 						}
-						else if ((iResult >= 2500) && (iResult <= 4499)) {
+						else if ((iResult >= 250) && (iResult <= 449)) {
 							dwType = 7;
 							cColor = 6;
 						}
-						else if ((iResult >= 4500) && (iResult <= 6499)) {
+						else if ((iResult >= 450) && (iResult <= 649)) {
 							dwType = 7;
 							cColor = 6;
 						}
-						else if ((iResult >= 6500) && (iResult <= 8099)) {
+						else if ((iResult >= 650) && (iResult <= 809)) {
 							dwType = 7;
 							cColor = 6;
 						}
-						else if ((iResult >= 8100) && (iResult <= 9699)) {
+						else if ((iResult >= 810) && (iResult <= 969)) {
 							dwType = 9;
 							cColor = 8;
 						}
-						else if ((iResult >= 9700) && (iResult <= 9999)) {
+						else if ((iResult >= 970) && (iResult <= 999)) {
 							dwType = 9;
 							cColor = 8;
 						}
-						else if ((iResult >= 10000) && (iResult <= 11499)) {
+						else if ((iResult >= 1000) && (iResult <= 1020)) {
 							dwType = 15; // Magic
 							cColor = 10; // Black Color
 						}
@@ -636,42 +635,44 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						pItem->m_cItemColor = cColor;
 
 						if (dwType == 15) {
-							iResult = iDice(1, 30060);
-							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // Fire-Strike
-							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // Lightning
-							else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // Chill-Wind
-							else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // Ice-Strike
-							else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // Energy-Strike
-							else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // Mass-Fire-Strike
-							else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // Mass-Chill-Wind
-							else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // Earthworm-Strike
-							else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // Bloody-Shock-Wave
-							else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // Mass-Ice-Strike
-							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // Lightning-Strike
-							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // Ice-Whirlwind
-							else if ((iResult >= 29970) && (iResult < 30000))  dwValue = 13; // Meteor-Strike
-							else if ((iResult >= 30000) && (iResult < 30025))  dwValue = 14; // Mass-Magic-Missile
-							else if ((iResult >= 30025) && (iResult < 30045))  dwValue = 15; // Blizzard
-							else if ((iResult >= 30045) && (iResult <= 30060))  dwValue = 16; // Earth-Shock-Wave
-							sMagicLevel = 1;
+							iResult = iDice(1, 3060);
+							if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // Fire-Strike
+							else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // Lightning
+							else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // Chill-Wind
+							else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // Ice-Strike
+							else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // Energy-Strike
+							else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // Mass-Fire-Strike
+							else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // Mass-Chill-Wind
+							else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // Earthworm-Strike
+							else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // Bloody-Shock-Wave
+							else if ((iResult >= 2960) && (iResult < 2970))  dwValue = 10; // Mass-Ice-Strike
+							else if ((iResult >= 2970) && (iResult < 2980))  dwValue = 11; // Lightning-Strike
+							else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 12; // Ice-Whirlwind
+							else if ((iResult >= 2990) && (iResult < 3009))  dwValue = 13; // Meteor-Strike
+							else if ((iResult >= 3010) && (iResult < 3025))  dwValue = 14; // Mass-Magic-Missile
+							else if ((iResult >= 3025) && (iResult < 3045))  dwValue = 15; // Blizzard
+							else if ((iResult >= 3045) && (iResult <= 3060))  dwValue = 16; // Earth-Shock-Wave
+							
 						}
 						else {
-							iResult = iDice(1, 30000);
-							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 2;  // 6600/29348 = 22.4%
-							else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 3;  // 4356/29348 = 14.8%
-							else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 4;  // 2874/29348 = 9.7%
-							else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 5;  // 1897/29348 = 6.4%
-							else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 6;  // 1252/29348 = 4.2%
-							else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 7;  // 826/29348 = 2.8%
-							else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 8;  // 545/29348 = 1.85%
-							else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 9;  // 360/29348 = 1.2%
-							else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 10; // 237/29348 = 0.8%
-							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 11; // 156/29348 = 0.5%
-							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 12; // 103/29348 = 0.3%
-							else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 13; // 68/29348 = 0.1%
-							else dwValue = 1; 
-							sMagicLevel = 0;
+							iResult = iDice(1, 3000);
+							if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+							else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+							else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+							else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+							else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+							else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+							else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+							else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+							else if ((iResult >= 2930) && (iResult < 2950))  dwValue = 9;  // 360/29348 = 1.2%
+							else if ((iResult >= 2950) && (iResult < 2960))  dwValue = 10; // 237/29348 = 0.8%
+							else if ((iResult >= 2960) && (iResult < 2970))  dwValue = 11; // 156/29348 = 0.5%
+							else if ((iResult >= 2970) && (iResult < 2980))  dwValue = 12; // 103/29348 = 0.3%
+							else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 13; // 68/29348 = 0.1%
+							else if ((iResult >= 2990) && (iResult < 2995))  dwValue = 14; // 68/29348 = 0.1%
+							else if ((iResult >= 2995) && (iResult <= 3000))  dwValue = 15; // 68/29348 = 0.1%
+							else dwValue = 1; // v2.03 906
+							
 						}
 
 						switch (dwType) {
@@ -687,7 +688,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 							break;
 
 						}
-						if (dwValue > 7) dwValue = 7;
+						//if (dwValue > 7) dwValue = 7;
 
 						pItem->m_dwAttribute = 0;
 						dwType = dwType << 20;
@@ -695,28 +696,30 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 					}
 
-					if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_DEFENSE) {
-						iResult = iDice(1, 10000);
-						if ((iResult >= 1) && (iResult <= 5999))          dwType = 8;
-						else if ((iResult >= 6000) && (iResult <= 8999))  dwType = 6;
-						else if ((iResult >= 9000) && (iResult <= 9554))  dwType = 11; 
-						else if ((iResult >= 9555) && (iResult <= 10000)) dwType = 12; 
+					else if (pItem->m_sItemEffectType == DEF_ITEMEFFECTTYPE_DEFENSE) {
+						iResult = iDice(1, 1000);
+						if ((iResult >= 1) && (iResult <= 599))          dwType = 8;
+						else if ((iResult >= 600) && (iResult <= 899))  dwType = 6;
+						else if ((iResult >= 900) && (iResult <= 954))  dwType = 11; 
+						else if ((iResult >= 955) && (iResult <= 1000)) dwType = 12; 
 
-						iResult = iDice(1, 30000);
-						if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-						else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 1;  // 6600/29348 = 22.4%
-						else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 1;  // 4356/29348 = 14.8%
-						else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 2;  // 2874/29348 = 9.7%
-						else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 2;  // 1897/29348 = 6.4%
-						else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 2;  // 1252/29348 = 4.2%
-						else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 4;  // 826/29348 = 2.8%
-						else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 4;  // 545/29348 = 1.85%
-						else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 4;  // 360/29348 = 1.2%
-						else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 6; // 237/29348 = 0.8%
-						else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 6; // 156/29348 = 0.5%
-						else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 10; // 103/29348 = 0.3%
-						else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 10; // 68/29348 = 0.1%
-						else dwValue = 1; 
+						iResult = iDice(1, 3000);
+						if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+						else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+						else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+						else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+						else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+						else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+						else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+						else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+						else if ((iResult >= 2930) && (iResult < 2950))  dwValue = 9;  // 360/29348 = 1.2%
+						else if ((iResult >= 2950) && (iResult < 2960))  dwValue = 10; // 237/29348 = 0.8%
+						else if ((iResult >= 2960) && (iResult < 2970))  dwValue = 11; // 156/29348 = 0.5%
+						else if ((iResult >= 2970) && (iResult < 2980))  dwValue = 12; // 103/29348 = 0.3%
+						else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 13; // 68/29348 = 0.1%
+						else if ((iResult >= 2990) && (iResult < 2995))  dwValue = 14; // 68/29348 = 0.1%
+						else if ((iResult >= 2995) && (iResult <= 3000))  dwValue = 15; // 68/29348 = 0.1%
+						else dwValue = 1; // v2.03 906 
 
 						switch (dwType) {
 						case 6: 
@@ -728,71 +731,73 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 
 						case 11:
 						case 12:
-							dwValue = (dwValue + 1) / 2;
-							if (dwValue < 1) dwValue = 1;
-							if (dwValue > 2) dwValue = 2;
+							//dwValue = (dwValue + 1) / 2;
+							//if (dwValue < 1) dwValue = 1;
+							//if (dwValue > 2) dwValue = 2;
 							break;
 						}
-						if (dwValue > 7) dwValue = 7;
+						//if (dwValue > 7) dwValue = 7;
 
 						pItem->m_dwAttribute = 0;
 						dwType = dwType << 20;
 						dwValue = dwValue << 16;
 						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
-						if (iDice(1, 10000) >= m_iRareDropRate) {
+						if (iDice(1, 100) >= m_iRareDropRate) {
 
-							iResult = iDice(1, 10000);
-							if ((iResult >= 1) && (iResult <= 999)) {
+							iResult = iDice(1, 1000);
+							if ((iResult >= 1) && (iResult <= 99)) {
 								dwType = 8;
 								cColor = 15;
 							}
-							else if ((iResult >= 1000) && (iResult <= 3999)) {
+							else if ((iResult >= 100) && (iResult <= 399)) {
 								dwType = 8;
 								cColor = 15;
 							}
-							else if ((iResult >= 4000) && (iResult <= 5499)) {
+							else if ((iResult >= 400) && (iResult <= 549)) {
 								dwType = 8;
 								cColor = 15;
 							}
-							else if ((iResult >= 5500) && (iResult <= 6499)) {
+							else if ((iResult >= 550) && (iResult <= 649)) {
 								dwType = 9;
 								cColor = 10;
 							}
-							else if ((iResult >= 6500) && (iResult <= 7499)) {
+							else if ((iResult >= 650) && (iResult <= 749)) {
 								dwType = 9;
 								cColor = 10;
 							}
-							else if ((iResult >= 7500) && (iResult <= 9399)) {
+							else if ((iResult >= 750) && (iResult <= 939)) {
 								dwType = 9;
 								cColor = 10;
 							}
-							else if ((iResult >= 9400) && (iResult <= 9799)) {
+							else if ((iResult >= 940) && (iResult <= 979)) {
 								dwType = 8;
 								cColor = 15;
 							}
-							else if ((iResult >= 9800) && (iResult <= 10000)) {
+							else if ((iResult >= 980) && (iResult <= 1000)) {
 								dwType = 9;
 								cColor = 10;
 							}
 
 							pItem->m_cItemColor = cColor;
 
-							iResult = iDice(1, 30000);
-							if ((iResult >= 1) && (iResult < 10000))           dwValue = 1;  // 10000/29348 = 34%
-							else if ((iResult >= 10000) && (iResult < 17400))  dwValue = 1;  // 6600/29348 = 22.4%
-							else if ((iResult >= 17400) && (iResult < 22400))  dwValue = 1;  // 4356/29348 = 14.8%
-							else if ((iResult >= 22400) && (iResult < 25400))  dwValue = 2;  // 2874/29348 = 9.7%
-							else if ((iResult >= 25400) && (iResult < 27400))  dwValue = 2;  // 1897/29348 = 6.4%
-							else if ((iResult >= 27400) && (iResult < 28400))  dwValue = 2;  // 1252/29348 = 4.2%
-							else if ((iResult >= 28400) && (iResult < 28900))  dwValue = 2;  // 826/29348 = 2.8%
-							else if ((iResult >= 28900) && (iResult < 29300))  dwValue = 4;  // 545/29348 = 1.85%
-							else if ((iResult >= 29300) && (iResult < 29600))  dwValue = 6;  // 360/29348 = 1.2%
-							else if ((iResult >= 29600) && (iResult < 29800))  dwValue = 6; // 237/29348 = 0.8%
-							else if ((iResult >= 29800) && (iResult < 29900))  dwValue = 8; // 156/29348 = 0.5%
-							else if ((iResult >= 29900) && (iResult < 29970))  dwValue = 8; // 103/29348 = 0.3%
-							else if ((iResult >= 29970) && (iResult <= 30000))  dwValue = 8; // 68/29348 = 0.1%
-							else dwValue = 1; 
+							iResult = iDice(1, 3000);
+							if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+							else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+							else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+							else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+							else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+							else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+							else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+							else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+							else if ((iResult >= 2930) && (iResult < 2950))  dwValue = 9;  // 360/29348 = 1.2%
+							else if ((iResult >= 2950) && (iResult < 2960))  dwValue = 10; // 237/29348 = 0.8%
+							else if ((iResult >= 2960) && (iResult < 2970))  dwValue = 11; // 156/29348 = 0.5%
+							else if ((iResult >= 2970) && (iResult < 2980))  dwValue = 12; // 103/29348 = 0.3%
+							else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 13; // 68/29348 = 0.1%
+							else if ((iResult >= 2990) && (iResult < 2995))  dwValue = 14; // 68/29348 = 0.1%
+							else if ((iResult >= 2995) && (iResult <= 3000))  dwValue = 15; // 68/29348 = 0.1%
+							else dwValue = 1; // v2.03 906 
 
 							switch (dwType) {
 							case 1: 
@@ -803,7 +808,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 								if (dwValue <= 3) dwValue = 3;
 								break;
 							}
-							if (dwValue > 7) dwValue = 7;
+							//if (dwValue > 7) dwValue = 7;
 
 							dwType = dwType << 12;
 							dwValue = dwValue << 8;

@@ -10,8 +10,8 @@
 
 DXC_dinput::DXC_dinput()
 {
-	m_pDI    = NULL;
-	m_pMouse = NULL;
+	m_pDI    = 0;
+	m_pMouse = 0;
 	m_sX     = 0;
 	m_sY     = 0;
 	m_sZ     = 0;
@@ -19,14 +19,14 @@ DXC_dinput::DXC_dinput()
 
 DXC_dinput::~DXC_dinput()
 {
-	if (m_pMouse != NULL) {
+	if (m_pMouse != 0) {
 		m_pMouse->Unacquire();
         m_pMouse->Release();
-        m_pMouse = NULL;
+        m_pMouse = 0;
 	}
-	if (m_pDI != NULL) {
+	if (m_pDI != 0) {
 		m_pDI->Release();
-        m_pDI = NULL;
+        m_pDI = 0;
 	}
 }
 
@@ -40,9 +40,9 @@ bool DXC_dinput::bInit(HWND hWnd, HINSTANCE hInst)
 	m_sX     = (short)(Point.x);
 	m_sY     = (short)(Point.y); 
 
-	hr = DirectInputCreate( hInst, DIRECTINPUT_VERSION, &m_pDI, NULL );
+	hr = DirectInputCreate( hInst, DIRECTINPUT_VERSION, &m_pDI, 0 );
     if (hr != DI_OK) return false;
-	hr = m_pDI->CreateDevice( GUID_SysMouse, &m_pMouse, NULL );
+	hr = m_pDI->CreateDevice( GUID_SysMouse, &m_pMouse, 0 );
 	if (hr != DI_OK) return false;
 	hr = m_pMouse->SetDataFormat( &c_dfDIMouse );
 	if (hr != DI_OK) return false;
@@ -62,7 +62,7 @@ void DXC_dinput::SetAcquire(bool bFlag)
 {
  DIMOUSESTATE dims;
 
-	if (m_pMouse == NULL) return;
+	if (m_pMouse == 0) return;
 	if (bFlag == true) {
 		m_pMouse->Acquire();
 		m_pMouse->GetDeviceState( sizeof(DIMOUSESTATE), &dims );

@@ -37,15 +37,15 @@ long    G_lTransG25[64][64], G_lTransRB25[64][64];
 long    G_lTransG2[64][64], G_lTransRB2[64][64];
 
 char			szAppClass[32];
-HWND			G_hWnd = NULL;
-HWND			G_hEditWnd = NULL;
-HINSTANCE       G_hInstance = NULL;
+HWND			G_hWnd = 0;
+HWND			G_hEditWnd = 0;
+HINSTANCE       G_hInstance = 0;
 MMRESULT		G_mmTimer;
 char   G_cSpriteAlphaDegree;
 class CGame * G_pGame;
-class XSocket * G_pCalcSocket = NULL;
+class XSocket * G_pCalcSocket = 0;
 bool  G_bIsCalcSocketConnected = true;
-DWORD G_dwCalcSocketTime = NULL, G_dwCalcSocketSendTime = NULL;
+DWORD G_dwCalcSocketTime = 0, G_dwCalcSocketSendTime = 0;
 
 char G_cCmdLine[256], G_cCmdLineTokenA[120], G_cCmdLineTokenA_Lowercase[120], G_cCmdLineTokenB[120], G_cCmdLineTokenC[120], G_cCmdLineTokenD[120], G_cCmdLineTokenE[120];
 
@@ -139,12 +139,12 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 
 			if (__FindHackingDll__("CRCCHECK") != 1) 
 			{	G_pGame->ChangeGameMode(DEF_GAMEMODE_ONQUIT);
-				return NULL;
+				return 0;
 		}	}
 		return DefWindowProc(hWnd, message, wParam, lParam);
 
 	case WM_SETCURSOR:
-		SetCursor(NULL);
+		SetCursor(0);
 		return true;
 
 	case WM_DESTROY:
@@ -168,7 +168,7 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT message,WPARAM wParam, LPARAM lParam)
 	default: 
 		return (DefWindowProc(hWnd, message, wParam, lParam));
 	}	
-	return NULL;
+	return 0;
 }
 
 bool IsWin()
@@ -193,17 +193,17 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
  char cSearchDll[] = "rd`qbg-ckk";
  char cRealName[12];
 
-	srand((unsigned)time(NULL));
+	srand((unsigned)time(0));
 	char *pJammer = new char[(rand() % 100) +1];
 	G_pGame = new class CGame;
 	ZeroMemory(cRealName, sizeof(cRealName));
 	strcpy(cRealName, cSearchDll);
 	for (WORD i = 0; i < strlen(cRealName); i++)
-	if (cRealName[i] != NULL) cRealName[i]++;
+	if (cRealName[i] != 0) cRealName[i]++;
 
 	hDll = LoadLibrary(cRealName);
-	if( hDll == NULL ) 
-	{	MessageBox(NULL, "don't find search.dll", "ERROR!", MB_OK);
+	if( hDll == 0 ) 
+	{	MessageBox(0, "don't find search.dll", "ERROR!", MB_OK);
 		return 0;
 	}
 
@@ -212,8 +212,8 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	MYPROC *pFindHook; 
 	pFindHook = (MYPROC *) GetProcAddress(hDll, "__FindHackingDll__") ;
 
-	if (pFindHook== NULL) 
-	{	MessageBox(NULL, "can't find search.dll", "ERROR!", MB_OK);
+	if (pFindHook== 0) 
+	{	MessageBox(0, "can't find search.dll", "ERROR!", MB_OK);
 		return 0 ;
 	}else if ((*pFindHook)("CRCCHECK") != 1) 
 	{	return 0 ;
@@ -228,11 +228,11 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	Mp3Init();
 
 #ifndef DEF_MULTI_CLIENT
-	if (OpenMutex(MUTEX_ALL_ACCESS, false, "0543kjg3j31%") != NULL) {
-		MessageBox(NULL, "Only one Helbreath Ghost client program allowed!", "ERROR!", MB_OK);
+	if (OpenMutex(MUTEX_ALL_ACCESS, false, "0543kjg3j31%") != 0) {
+		MessageBox(0, "Only one Helbreath Ghost client program allowed!", "ERROR!", MB_OK);
 		return 0;
 	}
-	HANDLE hMutex = CreateMutex(NULL, false, "0543kjg3j31%");
+	HANDLE hMutex = CreateMutex(0, false, "0543kjg3j31%");
 #endif
 	
 	EventLoop();
@@ -256,10 +256,10 @@ bool InitApplication( HINSTANCE hInstance)
 	wc.cbClsExtra    = 0;                            
 	wc.cbWndExtra    = sizeof (int);
 	wc.hInstance     = hInstance;
-	wc.hIcon         = NULL;
-	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);
+	wc.hIcon         = 0;
+	wc.hCursor       = LoadCursor(0, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);
-	wc.lpszMenuName  = NULL;
+	wc.lpszMenuName  = 0;
 	wc.lpszClassName = szAppClass;        
 	return (RegisterClass(&wc));
 }
@@ -270,12 +270,12 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 	
 #ifdef RES_HIGH
 	if (cy > 340) cy -= 40;
-	G_hWnd = CreateWindowEx(NULL, szAppClass, "Helbreath Ghost", WS_POPUP, cx-400, cy-300, 
-							800, 600, NULL, NULL, hInstance, NULL);  
+	G_hWnd = CreateWindowEx(0, szAppClass, "Helbreath Ghost", WS_POPUP, cx-400, cy-300, 
+							800, 600, 0, 0, hInstance, 0);  
 #else
 	if (cy > 280) cy -= 40;
-	G_hWnd = CreateWindowEx(NULL, szAppClass, "Helbreath The Heldenian", WS_POPUP, cx-320, cy-240, 
-							640, 480, NULL, NULL, hInstance, NULL);  
+	G_hWnd = CreateWindowEx(0, szAppClass, "Helbreath The Heldenian", WS_POPUP, cx-320, cy-240, 
+							640, 480, 0, 0, hInstance, 0);  
 #endif
     if (!G_hWnd) return false;
     G_hInstance	= hInstance;
@@ -288,8 +288,8 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 void EventLoop()
 {   MSG msg;
 	while( 1 ) 
-	{	if( PeekMessage( &msg, NULL, 0, 0, PM_NOREMOVE ) ) 
-		{	if( !GetMessage( &msg, NULL, 0, 0 ) ) return;// msg.wParam;
+	{	if( PeekMessage( &msg, 0, 0, 0, PM_NOREMOVE ) ) 
+		{	if( !GetMessage( &msg, 0, 0, 0 ) ) return;// msg.wParam;
             TranslateMessage(&msg);
             DispatchMessage(&msg);
 		}
@@ -310,7 +310,7 @@ void OnDestroy()
 }
 
 void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw2)
-{	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, NULL);
+{	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, 0);
 }
 
 

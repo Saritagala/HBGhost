@@ -504,7 +504,7 @@ public:
 	void NoticementHandler(char * pData);
 	//void GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *pStr2, char *pStr3);
 	//Magn0S:: Changed
-	void GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1 = NULL, short sEffect2 = NULL, short sEffect3 = NULL, short sEffect4 = NULL);
+	void GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1 = 0, short sEffect2 = 0, short sEffect3 = 0, short sEffect4 = 0);
 	//void GetItemName(class CItem * pItem, char * pStr1, char * pStr2, char * pStr3);
 	void GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, char* pStr4, char* pStr5, char* pStr6);
 	void _InitOnCreateNewCharacter();
@@ -613,7 +613,7 @@ public:
 	void _SetItemOrder(char cWhere, char cItemID);
 	int iGetTopDialogBoxIndex();
 	void DisableDialogBox(int iBoxID);
-	void EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pString = NULL);
+	void EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pString = 0);
 	void InitItemList(char * pData);
 	int _iCheckDlgBoxFocus(short msX, short msY, char cButtonSide);
 	void GetPlayerTurn();
@@ -662,7 +662,7 @@ public:
 	void MotionResponseHandler(char * pData);
 	void GameRecvMsgHandler(DWORD dwMsgSize, char * pData);
 	void DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, short sModX, short sModY, short msX, short msY);
-	bool bSendCommand(DWORD dwMsgID, WORD wCommand = 0, char cDir = 0, int iV1 = 0, int iV2 = 0, int iV3 = 0, char * pString = NULL, int iV4 = 0); // v1.4
+	bool bSendCommand(DWORD dwMsgID, WORD wCommand = 0, char cDir = 0, int iV1 = 0, int iV2 = 0, int iV3 = 0, char * pString = 0, int iV4 = 0); // v1.4
 	char cGetNextMoveDir(short sX, short sY, short dstX, short dstY, bool bMoveCheck = false, bool bMIM = false);
 	void RestoreSprites();
 	void CommandProcessor(short msX, short msY, short indexX, short indexY, char cLB, char cRB);

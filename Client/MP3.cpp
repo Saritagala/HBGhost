@@ -84,7 +84,7 @@
 ///	Digital FX (ie reverb) to the sound, but thats not really part
 ///	of this basic example.
 ///
-IGraphBuilder* g_pGraphBuilder = NULL;
+IGraphBuilder* g_pGraphBuilder = 0;
 
 /// used to control playback of the file. The level of control over
 ///	the specific Media file is determined by the interfaces to the
@@ -96,17 +96,17 @@ IGraphBuilder* g_pGraphBuilder = NULL;
 ///	to use, so it should be fairly easy to extend this code for other
 ///	purposes...
 ///
-IMediaControl* g_pPlaybackControl = NULL;
+IMediaControl* g_pPlaybackControl = 0;
 
 /// provides a handle to basic volume and balance controls.
 ///
-IBasicAudio*   g_pVolumeControl = NULL;
+IBasicAudio*   g_pVolumeControl = 0;
 
 
 // Snoopy:
 //#include "game.h"
-IMediaEventEx*	g_pMediaEvent = NULL;
-IMediaPosition*	g_pMediaPosition = NULL;
+IMediaEventEx*	g_pMediaEvent = 0;
+IMediaPosition*	g_pMediaPosition = 0;
 
 
 extern HWND G_hWnd;
@@ -127,7 +127,7 @@ int			   g_bPaused = 0;
 ///
 void Mp3Init(void) 
 {	ZeroMemory(cMP3FileName , sizeof(cMP3FileName) );
-	CoInitialize(NULL);
+	CoInitialize(0);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -145,7 +145,7 @@ void Mp3Load(char filename[])
 
 	// create a graph build to allow us to make the audio signal path
 	if( SUCCEEDED(CoCreateInstance(CLSID_FilterGraph,
-		NULL,
+		0,
 		CLSCTX_INPROC_SERVER,
 		IID_IGraphBuilder,
 		(void**)&g_pGraphBuilder)))
@@ -161,7 +161,7 @@ void Mp3Load(char filename[])
 		g_pGraphBuilder->QueryInterface(IID_IMediaPosition, (void **)&g_pMediaPosition);		
 
 		// load and start playback of the specified sound file
-		if( SUCCEEDED( g_pGraphBuilder->RenderFile(wFile, NULL) ) )
+		if( SUCCEEDED( g_pGraphBuilder->RenderFile(wFile, 0) ) )
 		{
 			g_bReady = 1;
 			strcpy(cMP3FileName, filename);
@@ -188,31 +188,31 @@ void Mp3Cleanup(void)
 	// release the volume controller
 	if( g_pVolumeControl )
 	{	g_pVolumeControl->Release();
-		g_pVolumeControl = NULL;
+		g_pVolumeControl = 0;
 	}
 	
 	// release the playback controller
 	if( g_pPlaybackControl )
 	{	g_pPlaybackControl->Release();
-		g_pPlaybackControl = NULL;
+		g_pPlaybackControl = 0;
 	}
 
 	// release the g_pMediaEvent
 	if( g_pMediaEvent )
 	{	g_pMediaEvent->Release();
-		g_pMediaEvent = NULL;
+		g_pMediaEvent = 0;
 	}
 	
 	// release the g_pMediaPosition
 	if( g_pMediaPosition )
 	{	g_pMediaPosition->Release();
-		g_pMediaPosition = NULL;
+		g_pMediaPosition = 0;
 	}
 
 	// release the graph builder 
 	if( g_pGraphBuilder )
 	{	g_pGraphBuilder->Release();
-		g_pGraphBuilder = NULL;
+		g_pGraphBuilder = 0;
 	}
 	
 	// Unload DirectShow

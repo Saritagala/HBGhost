@@ -19,7 +19,7 @@ public:
          *ppv = this;
       else
       {
-         *ppv = NULL;
+         *ppv = 0;
          return E_NOINTERFACE;
       }
 
@@ -102,7 +102,7 @@ public:
          *ppv = this;
       else
       {
-         *ppv = NULL;
+         *ppv = 0;
          return E_NOINTERFACE;
       }
 
@@ -193,7 +193,7 @@ public:
       LPOLEINPLACEFRAMEINFO pFrameInfo )
    {
       *ppFrame = (IOleInPlaceFrame *) this;
-      *ppIIPUIWin = NULL;
+      *ppIIPUIWin = 0;
 
       RECT rc;
 
@@ -209,7 +209,7 @@ public:
       pFrameInfo->cb             = sizeof(OLEINPLACEFRAMEINFO);
       pFrameInfo->fMDIApp        = false;
       pFrameInfo->hwndFrame      = m_hwnd;
-      pFrameInfo->haccel         = NULL;
+      pFrameInfo->haccel         = 0;
       pFrameInfo->cAccelEntries  = 0;
 
       (*ppFrame)->AddRef();

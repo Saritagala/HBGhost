@@ -24,8 +24,8 @@ CSprite::CSprite(HANDLE hPakFile, DXC_ddraw *pDDraw, char *cPakFileName, short s
 	DWORD  nCount;
 	int iASDstart;
 
-	m_stBrush	= NULL;
-	m_lpSurface = NULL;
+	m_stBrush	= 0;
+	m_lpSurface = 0;
 	m_bIsSurfaceEmpty = true;
 	ZeroMemory(m_cPakFileName, sizeof(m_cPakFileName));
 
@@ -39,16 +39,16 @@ CSprite::CSprite(HANDLE hPakFile, DXC_ddraw *pDDraw, char *cPakFileName, short s
 		iASDstart = (*framePositions)[sNthFile];
 	}
 	else {
-		SetFilePointer(hPakFile, 24 + sNthFile * 8, NULL, FILE_BEGIN);
-		ReadFile(hPakFile, &iASDstart, 4, &nCount, NULL);
+		SetFilePointer(hPakFile, 24 + sNthFile * 8, 0, FILE_BEGIN);
+		ReadFile(hPakFile, &iASDstart, 4, &nCount, 0);
 	}
 	
 	//i+100       Sprite Confirm
-	SetFilePointer(hPakFile, iASDstart+100, NULL, FILE_BEGIN); 
-	ReadFile(hPakFile, &m_iTotalFrame,  4, &nCount, NULL);
+	SetFilePointer(hPakFile, iASDstart+100, 0, FILE_BEGIN); 
+	ReadFile(hPakFile, &m_iTotalFrame,  4, &nCount, 0);
 	m_dwBitmapFileStartLoc = iASDstart  + (108 + (12*m_iTotalFrame));
 	m_stBrush = new stBrush[m_iTotalFrame];
-	ReadFile(hPakFile, m_stBrush, 12*m_iTotalFrame, &nCount, NULL);
+	ReadFile(hPakFile, m_stBrush, 12*m_iTotalFrame, &nCount, 0);
 	// PAK
 	memcpy(m_cPakFileName, cPakFileName, strlen(cPakFileName));
 	m_bAlphaEffect = bAlphaEffect;
@@ -56,8 +56,8 @@ CSprite::CSprite(HANDLE hPakFile, DXC_ddraw *pDDraw, char *cPakFileName, short s
 
 CSprite::~CSprite()
 {
-	if (m_stBrush != NULL) delete[] m_stBrush;
-	if (m_lpSurface != NULL) m_lpSurface->Release();
+	if (m_stBrush != 0) delete[] m_stBrush;
+	if (m_lpSurface != 0) m_lpSurface->Release();
 }
 
 IDirectDrawSurface7 * CSprite::_pMakeSpriteSurface()
@@ -68,21 +68,21 @@ IDirectDrawSurface7 * CSprite::_pMakeSpriteSurface()
 
 	m_bOnCriticalSection = true;
 
-	if( m_stBrush == NULL ) return NULL;
+	if( m_stBrush == 0 ) return 0;
 
 	CMyDib mydib(m_cPakFileName, m_dwBitmapFileStartLoc);
 	m_wBitmapSizeX = mydib.m_wWidthX;
 	m_wBitmapSizeY = mydib.m_wWidthY;
 	pdds4 = m_pDDraw->pCreateOffScreenSurface(m_wBitmapSizeX, m_wBitmapSizeY);
-    if (pdds4 == NULL) return NULL; 
+    if (pdds4 == 0) return 0; 
 	pdds4->GetDC(&hDC);
 	mydib.PaintImage(hDC);
 	pdds4->ReleaseDC(hDC);
 
 	DDSURFACEDESC2  ddsd;
 	ddsd.dwSize = 124;
-	if (pdds4->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL) != DD_OK) return NULL;
-	pdds4->Unlock(NULL);
+	if (pdds4->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return 0;
+	pdds4->Unlock(0);
 
 	wp = (WORD *)ddsd.lpSurface;
 	m_wColorKey = *wp;
@@ -97,9 +97,9 @@ void CSprite::PutSpriteFast(int sX, int sY, int sFrame, DWORD dwTime)
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
+	if( this == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
-	if( m_stBrush == NULL ) return;
+	if( m_stBrush == 0 ) return;
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
 
@@ -188,8 +188,8 @@ void CSprite::PutSpriteFastDst(LPDIRECTDRAWSURFACE7 lpDstS, int sX, int sY, int 
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -271,8 +271,8 @@ void CSprite::PutSpriteFastDst(LPDIRECTDRAWSURFACE7 lpDstS, int sX, int sY, int 
 void CSprite::PutSpriteFastNoColorKey(int sX, int sY, int sFrame, DWORD dwTime)
 {short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -346,8 +346,8 @@ void CSprite::PutSpriteFastNoColorKeyDst(LPDIRECTDRAWSURFACE7 lpDstS, int sX, in
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -432,8 +432,8 @@ void CSprite::PutSpriteFastFrontBuffer(int sX, int sY, int sFrame, DWORD dwTime)
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -523,8 +523,8 @@ void CSprite::PutSpriteFastWidth(int sX, int sY, int sFrame, int sWidth, DWORD d
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -626,15 +626,15 @@ void CSprite::iRestore()
  HDC     hDC;
 	
 	if (m_bIsSurfaceEmpty) return;
-	if( m_stBrush == NULL ) return;
+	if( m_stBrush == 0 ) return;
 	if (m_lpSurface->IsLost() == DD_OK) return;
 
 	m_lpSurface->Restore();
 	DDSURFACEDESC2  ddsd;
 	ddsd.dwSize = 124;
-	if (m_lpSurface->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL) != DD_OK) return;
+	if (m_lpSurface->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return;
 	m_pSurfaceAddr = (WORD *)ddsd.lpSurface;
-	m_lpSurface->Unlock(NULL);
+	m_lpSurface->Unlock(0);
 	CMyDib mydib(m_cPakFileName, m_dwBitmapFileStartLoc);
 	m_lpSurface->GetDC(&hDC);
 	mydib.PaintImage(hDC);
@@ -647,8 +647,8 @@ void CSprite::PutShadowSprite(int sX, int sY, int sFrame, DWORD dwTime)
  int  ix, iy;
  WORD * pSrc, * pDst;
 
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -725,8 +725,8 @@ void CSprite::PutShadowSpriteClip(int sX, int sY, int sFrame, DWORD dwTime)
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  int  ix, iy;
  WORD * pSrc, * pDst;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -824,8 +824,8 @@ void CSprite::PutTransSprite(int sX, int sY, int sFrame, DWORD dwTime, int alpha
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -950,8 +950,8 @@ void CSprite::PutTransSprite_NoColorKey(int sX, int sY, int sFrame, DWORD dwTime
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1070,8 +1070,8 @@ void CSprite::PutTransSprite70(int sX, int sY, int sFrame, DWORD dwTime)
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1197,8 +1197,8 @@ void CSprite::PutTransSprite70_NoColorKey(int sX, int sY, int sFrame, DWORD dwTi
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1317,8 +1317,8 @@ void CSprite::PutTransSprite50(int sX, int sY, int sFrame, DWORD dwTime)
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1444,8 +1444,8 @@ void CSprite::PutTransSprite50_NoColorKey(int sX, int sY, int sFrame, DWORD dwTi
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1564,8 +1564,8 @@ void CSprite::PutTransSprite25(int sX, int sY, int sFrame, DWORD dwTime)
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1691,8 +1691,8 @@ void CSprite::PutTransSprite25_NoColorKey(int sX, int sY, int sFrame, DWORD dwTi
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1812,8 +1812,8 @@ void CSprite::PutTransSprite2(int sX, int sY, int sFrame, DWORD dwTime)
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -1927,8 +1927,8 @@ void CSprite::PutShiftTransSprite2(int sX, int sY, int shX, int shY, int sFrame,
  int  ix, iy;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -2046,8 +2046,8 @@ void CSprite::PutFadeSprite(short sX, short sY, short sFrame, DWORD dwTime)
  int  ix, iy;
  WORD * pSrc, * pDst;
 
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -2157,8 +2157,8 @@ void CSprite::PutFadeSpriteDst(WORD * pDstAddr, short sPitch, short sX, short sY
  int  ix, iy;
  WORD * pSrc, * pDst;
 
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -2265,28 +2265,28 @@ void CSprite::PutFadeSpriteDst(WORD * pDstAddr, short sPitch, short sX, short sY
 
 bool CSprite::_iOpenSprite()
 {
-  	if (m_lpSurface != NULL) return false;
+  	if (m_lpSurface != 0) return false;
 	m_lpSurface = _pMakeSpriteSurface(); 
-	if (m_lpSurface == NULL) return false;
+	if (m_lpSurface == 0) return false;
 	m_pDDraw->iSetColorKey(m_lpSurface, m_wColorKey);
 	m_bIsSurfaceEmpty  = false;
 	DDSURFACEDESC2  ddsd;
 	ddsd.dwSize = 124;
-	if (m_lpSurface->Lock(NULL, &ddsd, DDLOCK_WAIT, NULL) != DD_OK) return false;	
+	if (m_lpSurface->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return false;	
 	m_pSurfaceAddr = (WORD *)ddsd.lpSurface;
 	m_sPitch = (short)ddsd.lPitch >> 1;	
-	m_lpSurface->Unlock(NULL);
+	m_lpSurface->Unlock(0);
 	_SetAlphaDegree();
 	return true;
 }
 
 void CSprite::_iCloseSprite()
 {
-	if( m_stBrush == NULL ) return;
-	if (m_lpSurface == NULL) return;
+	if( m_stBrush == 0 ) return;
+	if (m_lpSurface == 0) return;
 	if (m_lpSurface->IsLost() != DD_OK)	return;
 	m_lpSurface->Release();
-	m_lpSurface = NULL;
+	m_lpSurface = 0;
 	m_bIsSurfaceEmpty = true;
 	m_cAlphaDegree = 1;
 }
@@ -2297,8 +2297,8 @@ void CSprite::PutSpriteRGB(int sX, int sY, int sFrame, int sRed, int sGreen, int
  int  ix, iy, iRedPlus255, iGreenPlus255, iBluePlus255;
  WORD * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -2427,8 +2427,8 @@ void CSprite::PutTransSpriteRGB(int sX, int sY, int sFrame, int sRed, int sGreen
  short ix, iy, iRedPlus255, iGreenPlus255, iBluePlus255;
  WORD  * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -2557,8 +2557,8 @@ void CSprite::PutTransSpriteRGB_NoColorKey(int sX, int sY, int sFrame, int sRed,
  short ix, iy, iRedPlus255, iGreenPlus255, iBluePlus255;
  WORD  * pSrc, * pDst;
  	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -2678,8 +2678,8 @@ void CSprite::PutTransSpriteRGB_NoColorKey(int sX, int sY, int sFrame, int sRed,
 void CSprite::_GetSpriteRect(int sX, int sY, int sFrame)
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 
 	sx  = m_stBrush[sFrame].sx;
@@ -2746,8 +2746,8 @@ void CSprite::_SetAlphaDegree()
  WORD * pSrc, wR, wG, wB, wTemp, ix, iy;
  int iR, iG, iB, sRed, sGreen, sBlue;
  
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_bOnCriticalSection = true;
 	if (m_bAlphaEffect && (m_cAlphaDegree != G_cSpriteAlphaDegree)) {
 		
@@ -2770,7 +2770,7 @@ void CSprite::_SetAlphaDegree()
 		case 1:
 			for (iy = 0; iy < m_wBitmapSizeY; iy++) 
 			{	for (ix = 0; ix < m_wBitmapSizeX; ix++) 
-				{	if (pSrc == NULL) return; 
+				{	if (pSrc == 0) return; 
 					if (pSrc[ix] != m_wColorKey) 
 					{	wR = (WORD)(pSrc[ix]&0xF800)>>11;
 						wG = (WORD)(pSrc[ix]&0x7E0)>>5;
@@ -2798,7 +2798,7 @@ void CSprite::_SetAlphaDegree()
 		case 2:
 			for (iy = 0; iy < m_wBitmapSizeY; iy++) 
 			{	for (ix = 0; ix < m_wBitmapSizeX; ix++) 
-				{	if (pSrc == NULL) return; 
+				{	if (pSrc == 0) return; 
 					if (pSrc[ix] != m_wColorKey)	
 					{	wR = (WORD)(pSrc[ix]&0x7C00)>>10;
 						wG = (WORD)(pSrc[ix]&0x3E0)>>5;
@@ -2832,8 +2832,8 @@ bool CSprite::_bCheckCollison(int sX, int sY, short sFrame, int msX, int msY)
 	WORD * pSrc;
 	int  tX, tY;
 	
-	if( this == NULL ) return false;
-	if( m_stBrush == NULL ) return false;
+	if( this == 0 ) return false;
+	if( m_stBrush == 0 ) return false;
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return false;
 	if( m_bIsSurfaceEmpty == true ) return false;
 	if( msX < m_pDDraw->m_rcClipArea.left+3 ) return false;
@@ -2921,8 +2921,8 @@ void CSprite::PutShiftSpriteFast(int sX, int sY, int shX, int shY, int sFrame, D
 {
 	short dX,dY,sx,sy,szx,szy,pvx,pvy;
  RECT rcRect;
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -3017,8 +3017,8 @@ void CSprite::PutRevTransSprite(int sX, int sY, int sFrame, DWORD dwTime, int al
 	WORD * pSrc, * pDst;
 	int dX,dY,sx,sy,szx,szy,pvx,pvy;//,sTmp;
 	
-	if( this == NULL ) return;
-	if( m_stBrush == NULL ) return;
+	if( this == 0 ) return;
+	if( m_stBrush == 0 ) return;
 	m_rcBound.top = -1; // Fix by Snoopy.... (Reco at mine)
 	if ((m_iTotalFrame-1 < sFrame) || (sFrame < 0)) return;	
 	m_bOnCriticalSection = true;
@@ -3143,8 +3143,8 @@ void ReadFramePositions(HANDLE hPakFile, std::vector<int>& framePositions, int f
 {
 	DWORD* dwp, count;
 	char* fileHeader = new char[frames * 8 + 8];
-	SetFilePointer(hPakFile, 24, NULL, FILE_BEGIN);
-	ReadFile(hPakFile, fileHeader, frames * 8, &count, NULL);
+	SetFilePointer(hPakFile, 24, 0, FILE_BEGIN);
+	ReadFile(hPakFile, fileHeader, frames * 8, &count, 0);
 	dwp = (DWORD*)fileHeader;
 	for (int i = 0; i < frames; i++, dwp += 2)
 	{
