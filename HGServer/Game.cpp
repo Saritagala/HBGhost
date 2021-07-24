@@ -190,6 +190,9 @@ CGame::CGame(HWND hWnd)
 	m_pNoticementData = 0;
 
 	m_sJailTime = 0;
+
+	srvHour = 0; 
+	srvMinute = 0;
 	
 	m_iAutoRebootingCount	= 0;
 	m_bReceivedItemList = false;
@@ -643,8 +646,7 @@ bool CGame::bInit()
 	m_iCollectedMana[2] = 0;
 	m_iAresdenMana = 0;
 	m_iElvineMana  = 0;
-	m_dwSpecialEventTime = m_dwWhetherTime = m_dwGameTime1 = m_dwGameTime2 = m_dwGameTime3 = 
-		m_dwGameTime4 = m_dwGameTime5 = m_dwGameTime6 = m_dwFishTime = dwTime;
+	m_dwSpecialEventTime = m_dwWhetherTime = m_dwGameTime1 = m_dwGameTime2 = m_dwGameTime3 = m_dwGameTime4 = m_dwGameTime5 = m_dwGameTime6 = m_dwFishTime = dwTime;
 	m_bIsSpecialEventTime = false;
 	GetLocalTime(&SysTime);
 	m_dwCanFightzoneReserveTime = dwTime - ((SysTime.wHour%2)*60*60 + SysTime.wMinute*60)*1000;
@@ -715,7 +717,7 @@ bool CGame::bInit()
 	}
 	GetLocalTime(&SysTime);
 	// centu - day/night time
-	if (SysTime.wHour >= 19 || SysTime.wHour <= 6)  
+	if (srvHour >= 19 || srvHour <= 6) //(SysTime.wHour >= 19 || SysTime.wHour <= 6)  
 		 m_cDayOrNight = 2;
 	else m_cDayOrNight = 1;
 
@@ -845,28 +847,32 @@ void CGame::DisplayInfo(HDC hdc)
 
     TextOut(hdc, 650, 4, "[Server Config]", 16);
 
-	TextOut(hdc, 605, 40, "Players Online:", 16);
+	TextOut(hdc, 605, 25+15, "Server Time:", 13);
+	wsprintf(cTxt, "%.2d:%.2d", srvHour, srvMinute);
+	TextOut(hdc, 735, 25+15, cTxt, strlen(cTxt));
+
+	TextOut(hdc, 605, 40+30, "Players Online:", 16);
 	wsprintf(cTxt, "%d/%d", m_iTotalClients, m_iMaxClients);
-	TextOut(hdc, 735, 40, cTxt, strlen(cTxt));
+	TextOut(hdc, 735, 40 + 30, cTxt, strlen(cTxt));
 
 	wsprintf(cTxt, "%d", m_iTotalClients);
 	PutLogOnline(cTxt);
 
-	TextOut(hdc, 605, 55, "Max Resistance:", 16);
+	TextOut(hdc, 605, 55 + 30, "Max Resistance:", 16);
 	wsprintf(cTxt, "%d%%", m_iMaxResist * 7);
-	TextOut(hdc, 735, 55, cTxt, strlen(cTxt));
+	TextOut(hdc, 735, 55 + 30, cTxt, strlen(cTxt));
 
-	TextOut(hdc, 605, 70, "Max Absorption:", 16);
+	TextOut(hdc, 605, 70 + 30, "Max Absorption:", 16);
 	wsprintf(cTxt, "%d%%", m_iMaxAbs * 7);
-	TextOut(hdc, 735, 70, cTxt, strlen(cTxt));
+	TextOut(hdc, 735, 70 + 30, cTxt, strlen(cTxt));
 
-	TextOut(hdc, 605, 85, "Max Recovery:", 14);
+	TextOut(hdc, 605, 85 + 30, "Max Recovery:", 14);
 	wsprintf(cTxt, "%d%%", m_iMaxRec * 7);
-	TextOut(hdc, 735, 85, cTxt, strlen(cTxt));
+	TextOut(hdc, 735, 85 + 30, cTxt, strlen(cTxt));
 
-	TextOut(hdc, 605, 100, "Max Damage:", 12);
+	TextOut(hdc, 605, 100 + 30, "Max Damage:", 12);
 	wsprintf(cTxt, "%d%%", m_iMaxHPCrit * 7);
-	TextOut(hdc, 735, 100, cTxt, strlen(cTxt));
+	TextOut(hdc, 735, 100 + 30, cTxt, strlen(cTxt));
 
     ZeroMemory(cTxt, sizeof(cTxt));
     TextOut(hdc, 605, 130+30, "[MAPS]                  [MOBS]", 30);
@@ -2505,7 +2511,9 @@ void CGame::RequestInitDataHandler(int iClientH, char* pData, char cKey, bool bI
 
 	// centu - sends max stats to client, when log in
 	SendNotifyMsg(0, iClientH, DEF_MAX_STATS, m_sCharStatLimit, 0, 0, 0);
-	
+	// centu - sends max level to client, when log in
+	SendNotifyMsg(0, iClientH, DEF_MAX_LEVEL, m_iPlayerMaxLevel, 0, 0, 0);
+
 	// SNOOPY: Send gate positions if applicable.
 	Notify_ApocalypseGateState(iClientH);
 
@@ -3095,6 +3103,17 @@ void CGame::CheckClientResponseTime()
  short sItemIndex;
  int iDir;
 
+	 if (m_bIsGameStarted)
+	 {
+		 srvMinute++;
+		 if (srvMinute == 60)
+		 {
+			 srvMinute = 0;
+			 srvHour++;
+			 if (srvHour == 24) srvHour = 0;
+		 }
+	 }
+
 	dwTime = timeGetTime();
 	for (i = 1; i < DEF_MAXCLIENTS; i++) {
 		if (m_pClientList[i] != 0) {		
@@ -3427,8 +3446,10 @@ void CGame::CheckClientResponseTime()
 					CheckCommanderConstructionPoint(i);
 				}
 			}
+			SendNotifyMsg(0, i, DEF_SERVER_TIME, srvMinute, srvHour, 0, 0);
 		}
 	}
+	
 }
 
 bool CGame::SpecialWeapon_DS(int iClientH)
@@ -15468,7 +15489,7 @@ bool CGame::_bGetIsPlayerHostile(int iClientH, int sOwnerH)
 
 void CGame::CheckDayOrNightMode()
 {
- SYSTEMTIME SysTime;	
+ //SYSTEMTIME SysTime;	
  int cPrevMode;
  int  i;
 
@@ -15476,8 +15497,8 @@ void CGame::CheckDayOrNightMode()
 	// ÁÖ, ¾ß°£ ¸ðµå ¼³Á¤ 
 	cPrevMode = m_cDayOrNight;
  
-	GetLocalTime(&SysTime);
-	if (SysTime.wHour >= 19 || SysTime.wHour <= 6)
+	//GetLocalTime(&SysTime);
+	if (srvHour >= 19 || srvHour <= 6) //(SysTime.wHour >= 19 || SysTime.wHour <= 6)
 		 m_cDayOrNight = 2;
 	else m_cDayOrNight = 1;
 
@@ -24351,6 +24372,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 8);
 		break;
 
+	case DEF_SERVER_TIME:
 	case DEF_NOTIFY_ENEMYKILLS:
 		ip = (int*)cp;
 		*ip = (int)sV1;
@@ -24367,6 +24389,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 	case DEF_UPDATE_GUILDRANK:
 	case DEF_NOTIFY_HEROBONUS:
 	case DEF_MAX_STATS: //LifeX Fix Bytes Accuracy 01/01
+	case DEF_MAX_LEVEL:
 	case DEF_NOTIFY_HELPFAILED:
 	case DEF_NOTIFY_CRAFTING_FAIL:	//reversed by Snoopy: 0x0BF1:
 	case DEF_NOTIFY_ANGEL_FAILED:

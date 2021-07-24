@@ -1088,6 +1088,8 @@ public:
 	int m_iAC;						// Armour Class
 	int m_iTHAC0;					// To Hit Armour Class 0
 
+	int srvHour, srvMinute;
+
 	int m_iLevel, m_iStr, m_iInt, m_iVit, m_iDex, m_iMag, m_iCharisma, m_iContribution;
 	int m_iExp;
 
@@ -1293,7 +1295,7 @@ public:
 	DWORD m_dwReqUsersTime;
 
 	//LifeX Fix Declaration Bugs 01/01
-	int DEF_STATS_LIMIT;
+	int DEF_STATS_LIMIT, DEF_LEVEL_LIMIT;
 	bool bDeathmatch;
 
 	void NotifyMsg_CurLifeSpan(char* pData);

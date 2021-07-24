@@ -11615,7 +11615,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		break;
 
 	case 13: //Magn0S:: Inform and Confirm to get dk set
-		if (m_iLevel < 310)
+		if (m_iLevel < DEF_LEVEL_LIMIT)
 		{
 			PutAlignedString(sX, sX + szX, sY + 80, "Your level is too low to request DK Set.", 55, 25, 25);//"
 			//PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU19, 55, 25, 25);//"

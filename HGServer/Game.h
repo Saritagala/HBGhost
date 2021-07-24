@@ -114,6 +114,8 @@ public:
 
 private:
 
+	int srvHour, srvMinute;
+
 	void ResetStatsHandler(int iClientH, char* pData, DWORD dwMsgSize);
 
 	short m_sJailTime;

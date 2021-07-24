@@ -31,8 +31,12 @@ CGame::CGame()
 
 	m_bToggleScreen = false;
 
+	srvHour = 0;
+	srvMinute = 0;
+
 	//LifeX Fix Declaration Bugs 01/01
 	DEF_STATS_LIMIT = 0;
+	DEF_LEVEL_LIMIT = 0;
 	bDeathmatch = false;
 
 	bChangeBigItems = false;
@@ -7212,7 +7216,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	case 8: strcpy(cTxt, DRAW_DIALOGBOX_MAGIC9);  break;//"Circle Nine"
 	case 9: strcpy(cTxt, DRAW_DIALOGBOX_MAGIC10); break;//"Circle Ten"
 	}
-	PutAlignedString(sX + 3, sX + 256, sY + 50, cTxt, 255, 255, 255);
+	PutAlignedString(sX + 3, sX + 256, sY + 50, cTxt, 0, 255, 0);
 	//PutAlignedString(sX + 4, sX + 257, sY + 50, cTxt, 0,255,0);
 	iCPivot = m_stDialogBoxInfo[3].sView * 10;
 	iYloc = 0;
@@ -19155,11 +19159,11 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 
 	//MORLA - Iconos Auras
 	// centu - modificado
-	next = 0;
+	next = 2; // 0;
 	if (m_bShowEmblems)
 	{
-		if (m_bIsDialogEnabled[9])
-		{
+		//if (m_bIsDialogEnabled[9])
+		//{
 			if (bPfm)
 			{
 				m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL]->PutSpriteFast(601 + resx + 100 - 10, 133 + next, 21 + 1, dwTime);
@@ -19230,7 +19234,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 				}
 				next += 35;
 			}
-		}
+		/* }
 		else
 		{
 			if (bPfm)
@@ -19303,7 +19307,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 				}
 				next += 35;
 			}
-		}
+		}*/
 
 		if (m_stMCursor.sCursorFrame == 4) {
 			bInv = false;
@@ -19314,8 +19318,12 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 	if (m_bShowFPS)
 	{
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		wsprintf(G_cTxt, "FPS : %.3d", m_sFPS);
-		PutString(10, 155, G_cTxt, RGB(255, 255, 255));
+		wsprintf(G_cTxt, "FPS: %.3d", m_sFPS);
+		PutString(10, 565, G_cTxt, RGB(255, 255, 255));
+
+		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		wsprintf(G_cTxt, "Time: %.2d:%.2d", srvHour, srvMinute);
+		PutString(728, 565, G_cTxt, RGB(255, 255, 255));
 
 		/*ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		wsprintf(G_cTxt, "Ping : %.3d", m_iPing);
@@ -28599,6 +28607,12 @@ void CGame::NotifyMsgHandler(char * pData)
 		DEF_STATS_LIMIT = *ip;
 		cp += 4;
 		break;
+	case DEF_MAX_LEVEL: // Centu
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		ip = (int*)cp;
+		DEF_LEVEL_LIMIT = *ip;
+		cp += 4;
+		break;
 
 	case DEF_NOTIFY_QUESTCOUNTER: //Magn0S:: Multi Quest
 		cp = (char *)(pData	+ DEF_INDEX2_MSGTYPE + 2);
@@ -30081,6 +30095,20 @@ NMH_LOOPBREAK2:;
 		cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 		ip = (int *)cp;
 		m_iEnemyKillCount = *ip;
+		cp += 4;
+		ip = (int*)cp;
+		m_iMaxEK = *ip;
+		cp += 4;
+		break;
+
+	case DEF_SERVER_TIME:
+		cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
+		ip = (int*)cp;
+		srvMinute = *ip;
+		cp += 4;
+		ip = (int*)cp;
+		srvHour = *ip;
+		cp += 4;
 		break;
 
 	case DEF_NOTIFY_COINPOINTS:
