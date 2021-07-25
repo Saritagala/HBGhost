@@ -224,6 +224,7 @@ void CGame::NotifyMsg_MagicEffectOff(char * pData) // MORLA - Aca efectua para u
 
 	case DEF_MAGICTYPE_ICE:
 		AddEventList(NOTIFYMSG_MAGICEFFECT_OFF13, 10);
+		bFreeze = false;
 		break;
 	}
 }
@@ -346,6 +347,7 @@ void CGame::NotifyMsg_MagicEffectOn(char * pData)
 
 	case DEF_MAGICTYPE_ICE:
 		AddEventList(NOTIFYMSG_MAGICEFFECT_ON13, 10);
+		bFreeze = true;
 		break;
 	}
 }
@@ -3492,7 +3494,12 @@ void CGame::ItemEquipHandler(char cItemID)
 	GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 	wsprintf(G_cTxt, BITEMDROP_CHARACTER9, cStr1);
 	AddEventList(G_cTxt, 10);
-	if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 52, 0);
+	
+	if (memcmp(m_pItemList[cItemID]->m_cName, "BloodSword", 10) == 0) bBlood = true;
+	else if (memcmp(m_pItemList[cItemID]->m_cName, "BloodAxe", 8) == 0) bBlood = true;
+	else if (memcmp(m_pItemList[cItemID]->m_cName, "BloodRapier", 11) == 0) bBlood = true;
+	
+	else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 52, 0);
 	else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0) PlaySound('E', 52, 0);
 	else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 52, 0);
 	else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 52, 0);
@@ -10470,7 +10477,7 @@ void CGame::InitGameSettings()
 	int i;
 
 	m_sZerk = m_sInv = m_sPfm = m_sPfa = m_sShield = 0;
-	bZerk = bInv = bPfm = bPfa = bShield = false;
+	bZerk = bInv = bPfm = bPfa = bShield = bFreeze = bBlood = false;
 
 	m_bForceAttack = false;
 
@@ -15444,7 +15451,12 @@ void CGame::bItemDrop_Inventory(short msX, short msY)
 		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 		wsprintf(cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);
 		AddEventList(cTxt, 10);
-		if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 53, 0);
+
+		if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "BloodSword", 10) == 0) bBlood = false;
+		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "BloodAxe", 8) == 0) bBlood = false;
+		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "BloodRapier", 11) == 0) bBlood = false;
+
+		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 53, 0);
 		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(DEX)", 19) == 0) PlaySound('E', 53, 0);
 		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
 		else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);

@@ -3811,6 +3811,12 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				CloseHandle(m_hPakFile);
 			}
 
+			m_hPakFile = CreateFile("sprites\\GameDialog5.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+			if (m_hPakFile != INVALID_HANDLE_VALUE) {
+				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog5", 11, false);
+				CloseHandle(m_hPakFile);
+			}
+
 			m_hPakFile = CreateFile("sprites\\GameDialog4.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
 			if (m_hPakFile != INVALID_HANDLE_VALUE) {
 				m_pSprite[DEF_SPRID_INTERFACE_ND_GAME5] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 0, false);
@@ -3923,14 +3929,15 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				CloseHandle(m_hPakFile);
 			}
 
-			MakeFunSprite("item-pack2", DEF_SPRID_ITEMPACK_PIVOTPOINT + 1, 27, false);
-			m_hPakFile = CreateFile("sprites\\item-pack2.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
-			if (m_hPakFile != INVALID_HANDLE_VALUE) {
-				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + 20] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack2", 17, false); //
-				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + 21] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack2", 18, false); //
-				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + 22] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack2", 19, false); // Angels
-				CloseHandle(m_hPakFile);
-			}
+			// centuu
+			//MakeSprite("item-pack2", DEF_SPRID_ITEMPACK_PIVOTPOINT + 1, 27, false);
+			//m_hPakFile = CreateFile("sprites\\item-pack2.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+			//if (m_hPakFile != INVALID_HANDLE_VALUE) {
+			//	m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + 20] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack2", 17, false); //
+			//	m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + 21] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack2", 18, false); //
+			//	m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + 22] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack2", 19, false); // Angels
+			//	CloseHandle(m_hPakFile);
+			//}
 
 			// DEF_SPRID_ITEMGROUND_PIVOTPOINT+1
 			MakeFunSprite( "item-ground", DEF_SPRID_ITEMGROUND_PIVOTPOINT+1, 19, false);
@@ -3941,15 +3948,17 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+22] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 19, false);//Angels
 				CloseHandle(m_hPakFile);
 			}
-			MakeFunSprite("item-ground2", DEF_SPRID_ITEMGROUND_PIVOTPOINT + 23, 19, false);
-			m_hPakFile = CreateFile("sprites\\item-ground2.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
-			if (m_hPakFile != INVALID_HANDLE_VALUE)
-			{
-				m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 42] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground2", 17, false);
-				m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 43] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground2", 18, false);
-				m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 44] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground2", 19, false);//Angels
-				CloseHandle(m_hPakFile);
-			}
+
+			// centuu
+			//MakeSprite("item-ground2", DEF_SPRID_ITEMGROUND_PIVOTPOINT + 1, 19, false);
+			//m_hPakFile = CreateFile("sprites\\item-ground2.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+			//if (m_hPakFile != INVALID_HANDLE_VALUE)
+			//{
+			//	m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 20] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground2", 17, false);
+			//	m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 21] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground2", 18, false);
+			//	m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 22] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground2", 19, false);//Angels
+			//	CloseHandle(m_hPakFile);
+			//}
 
 			MakeSprite( "item-dynamic", DEF_SPRID_ITEMDYNAMIC_PIVOTPOINT, 3, false);// Snoopy 2-> 3 (flags)
 			m_cLoading = 16;
@@ -19234,6 +19243,82 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 				}
 				next += 35;
 			}
+
+			if (m_bParalyze)
+			{
+				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS]->PutSpriteFast(600 + resx + 100 - 10, 133 + next, 11, dwTime);
+				/*wsprintf(G_cTxt, "%d", m_sPfa);
+				if (m_sPfa < 11) {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 0, 0);
+				}
+				else {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 255, 255);
+				}*/
+				next += 36;
+			}
+
+			if (m_bIsPoisoned)
+			{
+				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS]->PutSpriteFast(600 + resx + 100 - 10, 133 + next, 12, dwTime);
+				/*wsprintf(G_cTxt, "%d", m_sPfa);
+				if (m_sPfa < 11) {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 0, 0);
+				}
+				else {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 255, 255);
+				}*/
+				next += 36;
+			}
+
+			if (m_bIllusionMVT || m_bIsConfusion)
+			{
+				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS]->PutSpriteFast(600 + resx + 100 - 10, 133 + next, 8, dwTime);
+				/*wsprintf(G_cTxt, "%d", m_sPfa);
+				if (m_sPfa < 11) {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 0, 0);
+				}
+				else {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 255, 255);
+				}*/
+				next += 36;
+			}
+
+			if (bFreeze)
+			{
+				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS]->PutSpriteFast(600 + resx + 100 - 10, 133 + next, 7, dwTime);
+				/*wsprintf(G_cTxt, "%d", m_sPfa);
+				if (m_sPfa < 11) {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 0, 0);
+				}
+				else {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 255, 255);
+				}*/
+				next += 36;
+			}
+
+			if (bBlood)
+			{
+				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS]->PutSpriteFast(600 + resx + 100 - 10, 133 + next, 5, dwTime);
+				/*wsprintf(G_cTxt, "%d", m_sPfa);
+				if (m_sPfa < 11) {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 0, 0);
+				}
+				else {
+
+					PutString2(601 + resx + 100 - 10, 133 + next, G_cTxt, 255, 255, 255);
+				}*/
+				next += 36;
+			}
+
 		/* }
 		else
 		{

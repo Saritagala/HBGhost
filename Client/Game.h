@@ -1014,7 +1014,7 @@ public:
 	int m_iLastMove;
 
 	// Centuu
-	bool bZerk, bInv, bPfm, bPfa, bShield;
+	bool bZerk, bInv, bPfm, bPfa, bShield, bFreeze, bBlood;
 
 	bool m_bIsPolymorph, m_bShowEmblems;
 
