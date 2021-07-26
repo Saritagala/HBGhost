@@ -1223,6 +1223,10 @@ void CGame::SaveGameConfigFile()
 	wsprintf(cBuffer, "%d", (int)m_bNpcMap);
 	strcat(cFn2, cBuffer);
 
+	strcat(cFn2, "quest-helper = ");
+	wsprintf(cBuffer, "%d", (int)m_bQuestHelper);
+	strcat(cFn2, cBuffer);
+
 	fwrite(cFn2, 1, strlen(cFn2), pFile);
 
 	fclose(pFile);
@@ -1327,7 +1331,11 @@ bool CGame::bReadGameConfigFile(char* cFn)
 					m_bNpcMap = (bool)atoi(token);
 					cReadMode = 0;
 					break;
-
+				case 18:
+					m_bQuestHelper = (bool)atoi(token);
+					cReadMode = 0;
+					break;
+					
 				}
 			}
 			else {
@@ -1348,6 +1356,7 @@ bool CGame::bReadGameConfigFile(char* cFn)
 				if (memcmp(token, "show-events", 11) == 0)			cReadMode = 15;
 				if (memcmp(token, "show-grid", 9) == 0)				cReadMode = 16;
 				if (memcmp(token, "show-npc", 8) == 0)				cReadMode = 17;
+				if (memcmp(token, "quest-helper", 12) == 0)				cReadMode = 18;
 			}
 			token = pStrTok->pGet();
 		}
@@ -7199,9 +7208,21 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	sX = m_stDialogBoxInfo[3].sX;
 	sY = m_stDialogBoxInfo[3].sY;
 
+#ifdef DEF_USE_OLD_PANELS
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME5, sX, sY, 1, false, m_bDialogTrans);
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 7, false, m_bDialogTrans);
+#else
+	short limitX, limitY;
+	limitX = sX + m_stDialogBoxInfo[3].sSizeX;
+	limitY = sY + m_stDialogBoxInfo[3].sSizeY;
 
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	PutString_SprFont2(sX + 100, sY + 5, "Magics", 240, 240, 240);
+#endif
 	if (iGetTopDialogBoxIndex() == 3 && msZ != 0)
 	{
 		if (msZ > 0) m_stDialogBoxInfo[3].sView--;
@@ -7353,13 +7374,25 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 
 	ZeroMemory(cTxt, sizeof(cTxt));
 	wsprintf(cTxt, DRAW_DIALOGBOX_MAGIC16, iResult);//"
-	PutAlignedString(sX, sX + 256, sY + 267, cTxt, 255, 255, 255);
+	PutAlignedString(sX, sX + 256, sY + 267-5, cTxt, 255, 255, 255);
 	//PutAlignedString(sX + 1, sX + 257, sY + 267, cTxt);
 
+#ifdef DEF_USE_OLD_PANELS
 	// v2.15
 	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 285) && (msY <= sY + 285 + DEF_BTNSZY))
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + 285, 49, false, m_bDialogTrans);
 	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + 285, 48, false, m_bDialogTrans);
+#else
+	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 285) && (msY <= sY + 285 + DEF_BTNSZY))
+	{
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + 285, 0);
+		PutAlignedString2(sX + DEF_RBTNPOSX+10, sX + DEF_RBTNPOSX + DEF_BTNSZX+10, sY + 280+6, "Alchemy", 255, 255, 100);
+	}
+	else {
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + 285, 1);
+		PutAlignedString2(sX + DEF_RBTNPOSX+10, sX + DEF_RBTNPOSX + DEF_BTNSZX+10, sY + 280+6, "Alchemy", 180, 188, 180);
+	}
+#endif
 }
 
 void CGame::NotifyMsg_EnemyKillReward(char *pData)
@@ -23906,13 +23939,13 @@ void CGame::DlgBoxClick_Quest(int msX, int msY)
 			}
 		}
 
-		if ((msX > sX + 150) && (msX < sX + 250) && (msY > sY + 305) && (msY < sY + 315))
+		/*if ((msX > sX + 150) && (msX < sX + 250) && (msY > sY + 305) && (msY < sY + 315))
 		{
 			if (m_bQuestHelper)
 				m_bQuestHelper = false;
 			else m_bQuestHelper = true;
 			PlaySound('E', 14, 5);
-		}
+		}*/
 		break;
 
 	case 2: // Quest Canceled
@@ -28624,6 +28657,12 @@ void CGame::NotifyMsgHandler(char * pData)
 
 	case DEF_NOTIFY_ANGEL_RECEIVED:		// reversed by Snoopy: 0x0BF5:
 		AddEventList(DEF_MSG_NOTIFY_ANGEL_RECEIVED, 10 );// "You have received the Tutelary Angel."
+		break;
+
+	case DEF_NOTIFY_ITEMBLOOD:		
+		if (bBlood)
+			bBlood = false;
+		else bBlood = true;
 		break;
 
 	// 4LifeX Ress Wand Fix

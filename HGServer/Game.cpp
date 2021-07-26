@@ -24293,6 +24293,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, WORD wMsgType, DWORD sV1, DWORD 
 		break;
 
 	/* Centuu: msgs agrupados */
+	case DEF_NOTIFY_ITEMBLOOD:
 	case DEF_NOTIFY_FRAGILE:
 	case DEF_NOTIFY_SUMMONGUILD:
 	case DEF_NOTIFY_TRAVELERLIMITEDLEVEL:

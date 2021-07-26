@@ -9002,22 +9002,12 @@ bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 		}
 	}
 
-	if (cEquipPos == DEF_EQUIPPOS_TWOHAND) {
-		// StunSB / StormBringer
-		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 1037 || m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845) {
-			m_pClientList[iClientH]->m_iHitRatio += 10;
-		}
+	if (cEquipPos == DEF_EQUIPPOS_TWOHAND) 
+	{
 		// Centuu : Fixed las armas Blood by KaoZureS
-		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 490) { // Sword
-			if (m_pClientList[iClientH]->m_iStr < 131) {
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, 0, 0);
-				ReleaseItemHandler(iClientH, sItemIndex, true);
-				return false;
-			}
-			else
-			{
-				m_pClientList[iClientH]->m_iHitRatio += 10;
-			}
+		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 490) { // Sword
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMBLOOD, 0, 0, 0, 0);
+			
 		}
 	}
 
@@ -9025,34 +9015,15 @@ bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 	{
 		// Resurrection wand(MS.10) or Resurrection wand(MS.20)
 		if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 865) || (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 866)) {
-			if (((m_pClientList[iClientH]->m_iInt) > 99) && ((m_pClientList[iClientH]->m_iMag) > 99) && (m_pClientList[iClientH]->m_iSpecialAbilityTime < 1)) {
+			if (((m_pClientList[iClientH]->m_iInt) >= m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) && ((m_pClientList[iClientH]->m_iMag) >= m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_iQuantStat) && (m_pClientList[iClientH]->m_iSpecialAbilityTime < 1)) {
 				m_pClientList[iClientH]->m_cMagicMastery[94] = 1;
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_RESUR_ON, 0, 0, 0, 0);
 			}
 		}
 		// Centuu : Fixed las armas Blood by KaoZureS
-		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 491) { // Axe
-			if (m_pClientList[iClientH]->m_iStr < 61) {
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, 0, 0);
-				ReleaseItemHandler(iClientH, sItemIndex, true);
-				return false;
-			}
-			else
-			{
-				m_pClientList[iClientH]->m_iHitRatio += 10;
-			}
-		}
-		// Centuu : Fixed las armas Blood by KaoZureS
-		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 492) { // Rapier
-			if (m_pClientList[iClientH]->m_iStr < 11) {
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMRELEASED, m_pClientList[iClientH]->m_iSpecialAbilityEquipPos, sItemIndex, 0, 0);
-				ReleaseItemHandler(iClientH, sItemIndex, true);
-				return false;
-			}
-			else
-			{
-				m_pClientList[iClientH]->m_iHitRatio += 10;
-			}
+		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 491 || m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 492) { // Axe
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMBLOOD, 0, 0, 0, 0);
+			
 		}
 	}
 
@@ -9375,6 +9346,16 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, bool bNotice)
 				m_pClientList[iClientH]->m_cMagicMastery[94] = 0;
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_RESUR_OFF, 0, 0, 0, 0);
 			}
+		}
+		// Centuu : Fixed las armas Blood by KaoZureS
+		else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 491 || m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 492) { // Axe
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMBLOOD, 0, 0, 0, 0);
+		}
+	}
+	if (cEquipPos == DEF_EQUIPPOS_TWOHAND) {
+		// Centuu : Fixed las armas Blood by KaoZureS
+		if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 490) { // Sword
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMBLOOD, 0, 0, 0, 0);
 		}
 	}
 	// ¾ÆÀÌÅÛÀÇ ÇØÁ¦À§Ä¡¿¡ ¸Â°Ô Apprº¯¼ö¸¦ Á¶Á¤ÇÑ´Ù.
