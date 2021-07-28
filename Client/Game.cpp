@@ -316,7 +316,7 @@ CGame::CGame()
 	m_stDialogBoxInfo[28].sSizeY = 339;
 
 	//
-	// 29 RESERVED FOR GAUGE PANEL
+	// 29 RESERVED FOR GAUGE PANEL [DO NOT USE]
 	//
 
 	//Icon Pannel
@@ -432,6 +432,10 @@ CGame::CGame()
 	m_stDialogBoxInfo[47].sSizeX = 270;
 	m_stDialogBoxInfo[47].sSizeY = 105;
 
+	// 48 : FREE
+	
+	// 49 : FREE
+	
 	// Snoopy: Resurection
 	m_stDialogBoxInfo[50].sX = 185 + SCREENX;
 	m_stDialogBoxInfo[50].sY = 100 + SCREENY;
@@ -455,7 +459,7 @@ CGame::CGame()
 	m_stDialogBoxInfo[53].sSizeX = 258;
 	m_stDialogBoxInfo[53].sSizeY = 339;
 
-	// 54
+	// 54 : FREE
 
 	//50Cent - Quest Helper
 	m_stDialogBoxInfo[55].sX = 530 + SCREENX;
@@ -1106,7 +1110,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pFileName)
 DICFC_STOPDECODING:;
 
 	delete pStrTok;
-	delete[]pContents;
+	delete[] pContents;
 	
 	fclose(pFile);
 
@@ -1222,10 +1226,13 @@ void CGame::SaveGameConfigFile()
 	strcat(cFn2, "show-npc = ");
 	wsprintf(cBuffer, "%d", (int)m_bNpcMap);
 	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
 
 	strcat(cFn2, "quest-helper = ");
 	wsprintf(cBuffer, "%d", (int)m_bQuestHelper);
 	strcat(cFn2, cBuffer);
+
+	//strcat(cFn2, "\n");
 
 	fwrite(cFn2, 1, strlen(cFn2), pFile);
 
@@ -1842,8 +1849,6 @@ bool CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 
 		iRet = m_pGSock->iSendMsg(cMsg, 70, cKey);
 		break;
-
-	
 
 	case MSGID_REQUEST_PANNING:
 		dwp = (DWORD *)(cMsg + DEF_INDEX4_MSGID);
@@ -5885,11 +5890,10 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		m_DDraw.DrawShadowBox(sX + m_stDialogBoxInfo[1].sSizeX / 2, sY, limitX, sY + 25, 1, true);
 		PutString_SprFont2(sX + 50, sY + 5, "Character", 255, 255, 255);
 		PutString_SprFont2(sX + 180, sY + 5, "Information", 19, 104, 169); //145 pra frente
-		/* // Centuu : deactivated
-		m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
-		m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
-		m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
-		*/
+		// Centuu : deactivated
+		//m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
+		//m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
+		//m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		strcpy(G_cTxt, m_cPlayerName);
 		strcat(G_cTxt, " : ");
@@ -19307,7 +19311,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 				next += 36;
 			}
 
-			if (m_bIllusionMVT || m_bIsConfusion)
+			if (m_bIllusionMVT || m_bIsConfusion || m_iIlusionOwnerH != 0)
 			{
 				m_pSprite[DEF_SPRID_INTERFACE_ND_AURAS]->PutSpriteFast(600 + resx + 100 - 10, 133 + next, 8, dwTime);
 				/*wsprintf(G_cTxt, "%d", m_sPfa);
@@ -19712,13 +19716,26 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	sX = m_stDialogBoxInfo[18].sX;
 	sY = m_stDialogBoxInfo[18].sY;
 
+#ifdef DEF_USE_OLD_PANELS
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0);
+#else
+	short limitX, limitY;
+	limitX = sX + m_stDialogBoxInfo[18].sSizeX;
+	limitY = sY + m_stDialogBoxInfo[18].sSizeY;
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	//PutString_SprFont2(sX + 85, sY + 5, "Information", 240, 240, 240);
+#endif
 
 	iTotalLines = 0;
 	for (i = 0; i < DEF_TEXTDLGMAXLINES; i++)
 	if (m_pMsgTextList[i] != 0) iTotalLines++;
 
-	if( iTotalLines > 17 ) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
+	//if( iTotalLines > 17 ) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
 	if( iGetTopDialogBoxIndex() == 18 && msZ != 0 )
 	{
 		m_stDialogBoxInfo[18].sView = m_stDialogBoxInfo[18].sView - msZ/60;
@@ -19732,14 +19749,15 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 		d2 = (double)(iTotalLines-17);
 		d3 = (274.0f * d1)/d2;
 		iPointerLoc = (int)(d3+0.5f);
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX+242, sY+35+iPointerLoc, 7);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX+242, sY+35+iPointerLoc, 7);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + 35 + iPointerLoc, 7);
 	}
 	else iPointerLoc = 0;
 
 	for (i = 0; i < 17; i++)
 	if (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView] != 0) {
-		if (m_bDialogTrans == false) { // v2.173
+		/*if (m_bDialogTrans == false) { // v2.173
 			switch (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg[0]) {
 				// White
 			case '_': PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, (m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg + 1), 255, 255, 255); break;
@@ -19767,7 +19785,7 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 			default: PutAlignedString(sX + 24, sX + 236, sY + 50 + i * 13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 4, 0, 50); break;
 			}
 		}
-		else PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 255, 255, 255);
+		else*/ PutAlignedString(sX +24, sX +236, sY + 50 +i*13, m_pMsgTextList[i + m_stDialogBoxInfo[18].sView]->m_pMsg, 255, 255, 255);
 	}
 
 	if (cLB != 0 && iTotalLines > 17) {
@@ -19784,9 +19802,9 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	}
 	else m_stDialogBoxInfo[18].bIsScrollSelected = false;
 
-	if ((msX > sX + DEF_RBTNPOSX) && (msX < sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+	/*if ((msX > sX + DEF_RBTNPOSX) && (msX < sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);*/
 }
 
 
@@ -20636,7 +20654,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	}	}
 
 	// Intelligence UP - Diuuude
-	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 184) && (msY <= sY + 190) && (m_iLU_Point > 0) && (m_cLU_Int + m_iInt < DEF_STATS_LIMIT))
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 184+2) && (msY <= sY + 190+2) && (m_iLU_Point > 0) && (m_cLU_Int + m_iInt < DEF_STATS_LIMIT))
 	{	
 		if (m_bShiftPressed == true)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
@@ -20659,7 +20677,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	}	}
 
 	// Magic UP - Diuuude
-	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 203) && (msY <= sY + 209) && (m_iLU_Point > 0) && (m_cLU_Mag + m_iMag < DEF_STATS_LIMIT))
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 203+3) && (msY <= sY + 209+3) && (m_iLU_Point > 0) && (m_cLU_Mag + m_iMag < DEF_STATS_LIMIT))
 	{	
 		if (m_bShiftPressed == true)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
@@ -20682,7 +20700,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	}	}
 
 	// Charisma UP - Diuuude
-	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 222) && (msY <= sY + 228) && (m_iLU_Point > 0) && (m_cLU_Char + m_iCharisma < DEF_STATS_LIMIT))
+	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 222+3) && (msY <= sY + 228+3) && (m_iLU_Point > 0) && (m_cLU_Char + m_iCharisma < DEF_STATS_LIMIT))
 	{	
 		if (m_bShiftPressed == true)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
@@ -20772,7 +20790,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	}	}
 
 	// Intelligence DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184) && (msY <= sY + 190) && (m_cLU_Int > 0))
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184+2) && (msY <= sY + 190+2) && (m_cLU_Int > 0))
 	{	if (m_bShiftPressed == true)
 		{	if ((m_cLU_Int >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Int -= 10;
@@ -20794,7 +20812,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	}	}
 
 	// Magic DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203) && (msY <= sY + 209) && (m_cLU_Mag > 0))
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203+3) && (msY <= sY + 209+3) && (m_cLU_Mag > 0))
 	{	if (m_bShiftPressed == true)
 		{	if ((m_cLU_Mag >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Mag -= 10;
@@ -20816,7 +20834,7 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	}	}
 
 	// Charisma DOWN - Diuuude
-	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222) && (msY <= sY + 228) && (m_cLU_Char > 0))
+	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222+3) && (msY <= sY + 228+3) && (m_cLU_Char > 0))
 	{	if (m_bShiftPressed == true)
 		{	if ((m_cLU_Char >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Char -= 10;
@@ -22365,10 +22383,10 @@ void CGame::DlgBoxClick_Text(short msX, short msY)
 	sX = m_stDialogBoxInfo[18].sX;
 	sY = m_stDialogBoxInfo[18].sY;
 
-	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
+	/*if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
 		DisableDialogBox(18);
 		PlaySound('E', 14, 5);
-	}
+	}*/
 }
 
 void CGame::DlgBoxClick_Inventory(short msX, short msY)
@@ -25353,10 +25371,10 @@ void CGame::DlgBoxClick_Help(int msX, int msY)
 		DisableDialogBox(18);
 		EnableDialogBox(18, 912, 0, 0); //
 	}
-	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
+	/*if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
 		PlaySound('E', 14, 5);
 		DisableDialogBox(35);
-	}
+	}*/
 }
 
 /*********************************************************************************************************************
