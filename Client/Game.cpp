@@ -3833,16 +3833,16 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 
 			m_hPakFile = CreateFile("sprites\\GameDialog4.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
 			if (m_hPakFile != INVALID_HANDLE_VALUE) {
-				m_pSprite[DEF_SPRID_INTERFACE_ND_GAME5] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 0, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 1, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_GAME7] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 2, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 3, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 4, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL3] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 6, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_GAME5] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 0, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_GAME6] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 1, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_GAME7] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 2, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_GAME8] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 3, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 4, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL3] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 6, false);
 				m_pSprite[DEF_SPRID_INTERFACE_ND_INVENTORY2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 7, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_SELECTCHAR3] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 8, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_NEWCHAR2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 9, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_NEWEXCHANGE2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 10, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_SELECTCHAR3] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 8, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_NEWCHAR2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 9, false);
+				//m_pSprite[DEF_SPRID_INTERFACE_ND_NEWEXCHANGE2] = new class CSprite(m_hPakFile, &m_DDraw, "GameDialog4", 10, false);
 				CloseHandle(m_hPakFile);
 			}
 
@@ -3865,12 +3865,12 @@ void CGame::UpdateScreen_OnLoading(bool bActive)
 				CloseHandle(m_hPakFile);
 			}
 
-			m_hPakFile = CreateFile("sprites\\DialogText2.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+			/*m_hPakFile = CreateFile("sprites\\DialogText2.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
 			if (m_hPakFile != INVALID_HANDLE_VALUE) {
-				m_pSprite[DEF_SPRID_INTERFACE_ND_TEXT2] = new class CSprite(m_hPakFile, &m_DDraw, "DialogText2", 0, false);
-				m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2] = new class CSprite(m_hPakFile, &m_DDraw, "DialogText2", 1, false);
+				m_pSprite[DEF_SPRID_INTERFACE_ND_TEXT] = new class CSprite(m_hPakFile, &m_DDraw, "DialogText2", 0, false);
+				m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON] = new class CSprite(m_hPakFile, &m_DDraw, "DialogText2", 1, false);
 				CloseHandle(m_hPakFile);
-			}
+			}*/
 
 			MakeSprite( "Telescope", DEF_SPRID_INTERFACE_GUIDEMAP    , 32, false);	  // Snoopy: 20->32
 			MakeSprite("Telescope2", DEF_SPRID_INTERFACE_GUIDEMAP + 35, 9, false);
@@ -4922,7 +4922,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 	switch (m_stDialogBoxInfo[1].cMode) {
 	case 0:
 		
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 0, false, m_bDialogTrans);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 0, false, m_bDialogTrans);
 		PutString_SprFont2(sX + 105, sY + 5, "Character", 240, 240, 240);
 
 		if ((msX > sX + 105 + 95) && (msX < sX + 105 + 95 + 65) && (msY > sY + 30) && (msY < sY + 30 + 15))
@@ -5771,20 +5771,20 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 		// v2.05
 		if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 15, sY + 340, 5, false, m_bDialogTrans);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 15, sY + 340, 4, false, m_bDialogTrans);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 15, sY + 340, 5, false, m_bDialogTrans);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 15, sY + 340, 4, false, m_bDialogTrans);
 
 		if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 98, sY + 340, 45, false, m_bDialogTrans);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 98, sY + 340, 44, false, m_bDialogTrans);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 98, sY + 340, 45, false, m_bDialogTrans);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 98, sY + 340, 44, false, m_bDialogTrans);
 
 		if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY))
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 180, sY + 340, 11, false, m_bDialogTrans);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 180, sY + 340, 10, false, m_bDialogTrans);
+			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 11, false, m_bDialogTrans);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 180, sY + 340, 10, false, m_bDialogTrans);
 		break;
 
 	case 1:
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 2);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
 		PutString_SprFont2(sX + 95, sY + 5, "Information", 240, 240, 240);
 		int iNext = 0;
 		int iFLine, iFLine2;
@@ -6818,7 +6818,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 			PutAlignedString2(sX + 205, sX + 295, sY + 322, "Level Set.", 180, 188, 180);
 		}
 		//Sec. Line-------------------------------------------------------------------------------------------------
-		if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
+		/*if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 5, sY + 345, 0);
 			PutAlignedString2(sX + 5, sX + 95, sY + 347, "Guild", 255, 255, 100);
@@ -6846,7 +6846,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		else {
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + 205, sY + 345, 1);
 			PutAlignedString2(sX + 205, sX + 295, sY + 347, "Upgrades", 180, 188, 180);
-		}
+		}*/
 
 		break;
 
@@ -7213,8 +7213,8 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	sY = m_stDialogBoxInfo[3].sY;
 
 #ifdef DEF_USE_OLD_PANELS
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME5, sX, sY, 1, false, m_bDialogTrans);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 7, false, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME1, sX, sY, 1, false, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 7, false, m_bDialogTrans);
 #else
 	short limitX, limitY;
 	limitX = sX + m_stDialogBoxInfo[3].sSizeX;
@@ -7384,8 +7384,8 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 #ifdef DEF_USE_OLD_PANELS
 	// v2.15
 	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 285) && (msY <= sY + 285 + DEF_BTNSZY))
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + 285, 49, false, m_bDialogTrans);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + 285, 48, false, m_bDialogTrans);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + 285, 49, false, m_bDialogTrans);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + 285, 48, false, m_bDialogTrans);
 #else
 	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 285) && (msY <= sY + 285 + DEF_BTNSZY))
 	{
@@ -19126,22 +19126,22 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		}
 		if ((msX > 484 + resx + addx) && (msX < 521 + resx + addx)) { // Magic
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(484 + resx + addx, 434 + resy, 8, dwTime);
-			wsprintf(G_cTxt, "Magic Book");
+			wsprintf(G_cTxt, "Magics");
 			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 521 + resx + addx) && (msX < 558 + resx + addx)) { // Skill
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(521 + resx + addx + 1, 434 + resy, 9, dwTime);
-			wsprintf(G_cTxt, "Skill List");
+			wsprintf(G_cTxt, "Skills");
 			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 558 + resx + addx) && (msX < 595 + resx + addx)) { // History
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(558 + resx + addx, 434 + resy, 10, dwTime);
-			wsprintf(G_cTxt, "Chat History");
+			wsprintf(G_cTxt, "Chat Log");
 			PutString(msX - 10, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 		if ((msX > 595 + resx + addx) && (msX < 631 + resx + addx)) { // System Menu
 			m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(595 + resx + addx + 1, 434 + resy, 11, dwTime);
-			wsprintf(G_cTxt, "Game Options");
+			wsprintf(G_cTxt, "System Menu");
 			PutString(msX - 20, msY - 20, G_cTxt, RGB(250, 250, 220));
 		}
 	}
@@ -19440,12 +19440,12 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 	if (m_bShowFPS)
 	{
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		wsprintf(G_cTxt, "FPS: %.3d", m_sFPS);
-		PutString(10, 565, G_cTxt, RGB(255, 255, 255));
+		wsprintf(G_cTxt, "fps: %.3d", m_sFPS);
+		PutString(10, 160, G_cTxt, RGB(255, 255, 255));
 
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
+		/*ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		wsprintf(G_cTxt, "Time: %.2d:%.2d", srvHour, srvMinute);
-		PutString(728, 565, G_cTxt, RGB(255, 255, 255));
+		PutString(728, 565, G_cTxt, RGB(255, 255, 255));*/
 
 		/*ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		wsprintf(G_cTxt, "Ping : %.3d", m_iPing);
@@ -19717,7 +19717,7 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	sY = m_stDialogBoxInfo[18].sY;
 
 #ifdef DEF_USE_OLD_PANELS
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 0);
 #else
 	short limitX, limitY;
 	limitX = sX + m_stDialogBoxInfo[18].sSizeX;
@@ -19735,7 +19735,7 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	for (i = 0; i < DEF_TEXTDLGMAXLINES; i++)
 	if (m_pMsgTextList[i] != 0) iTotalLines++;
 
-	//if( iTotalLines > 17 ) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
+	//if( iTotalLines > 17 ) DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 1);
 	if( iGetTopDialogBoxIndex() == 18 && msZ != 0 )
 	{
 		m_stDialogBoxInfo[18].sView = m_stDialogBoxInfo[18].sView - msZ/60;
@@ -19749,8 +19749,8 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 		d2 = (double)(iTotalLines-17);
 		d3 = (274.0f * d1)/d2;
 		iPointerLoc = (int)(d3+0.5f);
-		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 1);
-		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX+242, sY+35+iPointerLoc, 7);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 1);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX+242, sY+35+iPointerLoc, 7);
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + 35 + iPointerLoc, 7);
 	}
 	else iPointerLoc = 0;
@@ -19803,8 +19803,8 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	else m_stDialogBoxInfo[18].bIsScrollSelected = false;
 
 	/*if ((msX > sX + DEF_RBTNPOSX) && (msX < sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-		 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);*/
+		 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);*/
 }
 
 
@@ -19816,7 +19816,7 @@ void CGame::DrawDialogBox_WarningMsg(short msX, short msY)//6
 	sX = m_stDialogBoxInfo[6].sX;
 	sY = m_stDialogBoxInfo[6].sY;
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, sX, sY, 2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, sX, sY, 2);
 
     PutString2(sX + 63, sY + 35, DEF_MSG_WARNING1, 200,200,25);//" ** This is a battle area **"
 	PutString(sX + 30, sY + 57, DEF_MSG_WARNING2, RGB(220,130,45) );//"This is a dangerous area where you"
@@ -19825,8 +19825,8 @@ void CGame::DrawDialogBox_WarningMsg(short msX, short msY)//6
 	PutString(sX + 30, sY +110, DEF_MSG_WARNING5, RGB(220,130,45) );//" cityhall and change to civilian mode."
 
 	if ((msX >= sX + 122 ) && (msX <= sX + 125 + DEF_BTNSZX ) && (msY >= sY + 127 ) && (msY <= sY + 127 + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 122 , sY + 127 , 1);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 122, sY + 127 , 0);
+			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 122 , sY + 127 , 1);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 122, sY + 127 , 0);
 
 }
 
@@ -19838,7 +19838,7 @@ void CGame::DrawDialogBox_ItemDrop(short msX, short msY)
 	sX = m_stDialogBoxInfo[4].sX;
 	sY = m_stDialogBoxInfo[4].sY;
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME5, sX, sY, 2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME1, sX, sY, 2);
 
 	//GetItemName(m_pItemList[m_stDialogBoxInfo[4].sView]->m_cName, m_pItemList[m_stDialogBoxInfo[4].sView]->m_dwAttribute, cStr1, cStr2, cStr3 );
 	//Magn0S:: Changed
@@ -19883,12 +19883,12 @@ void CGame::DrawDialogBox_ItemDrop(short msX, short msY)
 	}	}
 
 	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 30, sY + 55 ,19);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 30, sY + 55 , 18);
+			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 30, sY + 55 ,19);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 30, sY + 55 , 18);
 
 	if ((msX >= sX + 170 ) && (msX <= sX + 170 + DEF_BTNSZX ) && (msY >= sY + 55 ) && (msY <= sY + 55 + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 170 , sY + 55 , 3);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + 170, sY + 55 , 2);
+			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 170 , sY + 55 , 3);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 170, sY + 55 , 2);
 }
 
 void CGame::DrawDialogBox_NpcTalk(short msX, short msY, char cLB)
@@ -19898,23 +19898,23 @@ void CGame::DrawDialogBox_NpcTalk(short msX, short msY, char cLB)
  double d1, d2, d3;
 	sX = m_stDialogBoxInfo[21].sX;
 	sY = m_stDialogBoxInfo[21].sY;
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 2);
 
 	switch (m_stDialogBoxInfo[21].cMode) {
 	case 0: //  OK
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
+			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
 		break;
 
 	case 1: // Accept / Decline
 		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 33);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 32);
+			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 33);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 32);
 
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 41);
-		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 40);
+			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 41);
+		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 40);
 		break;
 
 	case 2: // Next
@@ -19938,7 +19938,7 @@ void CGame::DrawDialogBox_NpcTalk(short msX, short msY, char cLB)
 		d2 = (double)(iTotalLines-17);
 		d3 = (274.0f * d1)/d2;
 		iPointerLoc = (int)d3;
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
 	}
 	else iPointerLoc = 0;
 
@@ -20093,8 +20093,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 	double d1, d2, d3;
 	sX = m_stDialogBoxInfo[10].sX;
 	sY = m_stDialogBoxInfo[10].sY;
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 4, false, m_bDialogTrans);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, sX, sY, 22, false, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, false, m_bDialogTrans);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, false, m_bDialogTrans);
 
 	if (msZ != 0 && (iGetTopDialogBoxIndex() == 10)) {
 		m_stDialogBoxInfo[10].sView = m_stDialogBoxInfo[10].sView + msZ / 30;
@@ -20108,7 +20108,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 	d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
 	iPointerLoc = (int)d3;
 	iPointerLoc = 105 - iPointerLoc;
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 346, sY + 33 + iPointerLoc, 7);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 346, sY + 33 + iPointerLoc, 7);
 
 	for (i = 0; i < 8; i++)
 		if (m_pChatScrollList[i + m_stDialogBoxInfo[10].sView] != 0) {
@@ -22510,7 +22510,7 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 			PlaySound('E', 14, 5);
 		}
 		//Sec. Line-------------------------------------------------------------------------------------------------
-		if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
+		/*if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
 		{	//Guild
 			//EnableDialogBox(XX, 0, 0, 0);
 			PlaySound('E', 14, 5);
@@ -22526,10 +22526,10 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 		{	//Upgrades
 			EnableDialogBox(34, 5, 0, 0);
 			PlaySound('E', 14, 5);
-		}
+		}*/
 
 
-		if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+		/*if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
 			//Magn0S:: Mult Quest - Click selecioon on F5
 			for (i = 0; i < DEF_MAXQUEST; i++) {
 				if (m_stQuest[i].sQuestType != 0)
@@ -22548,7 +22548,7 @@ void CGame::DlgBoxClick_Character(short msX, short msY)
 			EnableDialogBox(12, 0, 0, 0);
 			DisableDialogBox(1);
 			PlaySound('E', 14, 5);
-		}
+		}*/
 		break;
 
 	case 1:
@@ -24780,7 +24780,7 @@ void CGame::DrawDialogBox_Map()
 		dV3 = (dV2*(double)szY)/dV1;
 		tY  = (int)dV3 +dY;
 
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, sX +tX, sY +tY, 43);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, sX +tX, sY +tY, 43);
 		wsprintf(G_cTxt, "(%d,%d)", m_sPlayerX, m_sPlayerY);
 		PutString_SprFont3(sX + 10 +tX -5, sY + 10 + tY -6, G_cTxt, m_wR[13]*4, m_wG[13]*4, m_wB[13]*4, false, 2);
 		break;
@@ -25507,7 +25507,7 @@ void CGame::UpdateScreen_OnConnecting()
 #else
 	m_DDraw.DrawShadowBox(0,0,639,479);
 #endif
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX,125 + SCREENY,2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX,125 + SCREENY,2);
 	wsprintf(G_cTxt, "Connecting to Server... %3dSec", (dwTime - m_dwTime)/1000);
 	PutString_SprFont(172 + 35 + SCREENX, 190 + SCREENY, G_cTxt, 7,0,0);
 
@@ -25553,7 +25553,7 @@ void CGame::UpdateScreen_OnWaitInitData()
 	}
 
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX,125 + SCREENY,2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX,125 + SCREENY,2);
 
 	wsprintf(G_cTxt,"Waiting for response... %dsec", (dwTime - m_dwTime)/1000);
 	PutString_SprFont(172+ 44 + SCREENX, 190 + SCREENY, G_cTxt, 7,0,0);
@@ -25584,7 +25584,7 @@ void CGame::UpdateScreen_OnConnectionLost()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX,125 + SCREENY,2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX,125 + SCREENY,2);
 	PutString_SprFont(172 + 54 + SCREENX, 180 + SCREENY, "Connection Lost!", 7,0,0);
 	PutString(172+50 + SCREENX, 180+30 + SCREENY, UPDATE_SCREEN_ON_CONNECTION_LOST, RGB(4, 0, 50));//"
 	DrawVersion();
@@ -27907,19 +27907,19 @@ void CGame::UpdateScreen_OnQueryForceLogin()
 		m_DDraw.DrawShadowBox(0, 0, 639, 479);
 	}
 #endif
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX, 130 + SCREENY, 2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX, 130 + SCREENY, 2);
 
 	PutString_SprFont(172 + 86 + SCREENX, 160 + SCREENY, "Character in Use", 7, 0, 0);
 	PutAlignedString(178, 453 + SCREENX + SCREENX, 195 + SCREENY, UPDATE_SCREEN_ON_QUERY_FORCE_LOGIN2);
 	PutAlignedString(178, 453 + SCREENX + SCREENX, 215 + SCREENY, UPDATE_SCREEN_ON_QUERY_FORCE_LOGIN3);
 
 	if ((msX >= 200 + SCREENX) && (msX <= 200 + SCREENX + DEF_BTNSZX) && (msY >= 244 + SCREENY) && (msY <= 244 + SCREENY + DEF_BTNSZY))
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 200 + SCREENX, 244 + SCREENY, 19);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 200 + SCREENX, 244 + SCREENY, 18);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 200 + SCREENX, 244 + SCREENY, 19);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 200 + SCREENX, 244 + SCREENY, 18);
 
 	if ((msX >= 370 + SCREENX) && (msX <= 370 + SCREENX + DEF_BTNSZX) && (msY >= 244 + SCREENY) && (msY <= 244 + SCREENY + DEF_BTNSZY))
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 370 + SCREENX, 244 + SCREENY, 3);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 370 + SCREENX, 244 + SCREENY, 2);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 370 + SCREENX, 244 + SCREENY, 3);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 370 + SCREENX, 244 + SCREENY, 2);
 
 	if ((dwTime - dwCTime) > 100) {
 		m_cMenuFrame++;
@@ -27973,8 +27973,8 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	DWORD dwTime = timeGetTime();
 	sY = 10;
 	m_DDraw.ClearBackB4();
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_SELECTCHAR3, 0 + SCREENX, 0 + SCREENY, 0);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 50);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_SELECTCHAR2, 0 + SCREENX, 0 + SCREENY, 0);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 50);
 
 	iTemp1 = 0;
 	iTemp2 = 0;
@@ -27982,8 +27982,8 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	for (i = 0; i < 4; i++)
 	{
 		if ((m_cCurFocus - 1 == i) && (bIgnoreFocus == false))
-			m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(sX + 110 + i * 109 - 7 + SCREENX, 63 - 9 + SCREENY, 62, dwTime);
-		else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(sX + 110 + i * 109 - 7 + SCREENX, 63 - 9 + SCREENY, 61, dwTime);
+			m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(sX + 110 + i * 109 - 7 + SCREENX, 63 - 9 + SCREENY, 62, dwTime);
+		else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(sX + 110 + i * 109 - 7 + SCREENX, 63 - 9 + SCREENY, 61, dwTime);
 
 		if (m_pCharList[i] != 0)
 		{
@@ -28035,27 +28035,27 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	}
 	i = 0;
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 51);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 52);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 53);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 54);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 55);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 51);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 52);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 53);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 54);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 55);
 
 	if ((msX > 360 + SCREENX) && (msY >= 283 + SCREENY) && (msX < 545 + SCREENX) & (msY <= 315 + SCREENY)) {
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 56);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 56);
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 290 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER1);//"
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER2);//"
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 320 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER3);//"
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 335 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER4);//"
 	}
 	else if ((msX > 360 + SCREENX) && (msY >= 316 + SCREENY) && (msX < 545 + SCREENX) & (msY <= 345 + SCREENY)) {
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 57);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 57);
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER5);//"
 
 	}
 	else if ((msX > 360 + SCREENX) && (msY >= 346 + SCREENY) && (msX < 545 + SCREENX) & (msY <= 375 + SCREENY)) {
 
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 58);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 58);
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER8);//"
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 320 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER9);//"
 
@@ -28063,11 +28063,11 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	}
 	else if ((msX > 360 + SCREENX) && (msY >= 376 + SCREENY) && (msX < 545 + SCREENX) & (msY <= 405 + SCREENY))
 	{
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 59);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 59);
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER12);//"
 	}
 	else if ((msX > 360 + SCREENX) && (msY >= 406 + SCREENY) && (msX < 545 + SCREENX) & (msY <= 435 + SCREENY)) {
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 60);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 0 + SCREENX, 0 + SCREENY, 60);
 		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER13);//"
 	}
 	else
@@ -28184,7 +28184,7 @@ void CGame::UpdateScreen_OnWaitingResponse()
 #else
 	m_DDraw.DrawShadowBox(0, 0, 639, 479);
 #endif
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX, 125 + SCREENY, 2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX, 125 + SCREENY, 2);
 	PutString_SprFont(172 + 44 - 17 + SCREENX, 190 + SCREENY, "Connected. Waiting for response...", 7, 0, 0);
 
 	if ((dwTime - m_dwTime) > 7000)
@@ -28258,7 +28258,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 		m_DDraw.DrawShadowBox(0, 0, 639, 479);
 	}
 #endif
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX, 125 + SCREENY, 2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX, 125 + SCREENY, 2);
 
 	PutString_SprFont(172 + 86 + SCREENX, 160 + SCREENY, "Delete Character", 7, 0, 0);
 	PutString(215 + SCREENX, 195 + SCREENY, UPDATE_SCREEN_ON_QUERY_DELETE_CHARACTER1, RGB(5, 5, 5));//"Character Name"
@@ -28269,12 +28269,12 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 
 	// v2.05
 	if ((msX >= 200 + SCREENX) && (msX <= 200 + SCREENX + DEF_BTNSZX) && (msY >= 244 + SCREENY) && (msY <= 244 + SCREENY + DEF_BTNSZY))
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 200 + SCREENX, 244 + SCREENY, 19);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 200 + SCREENX, 244 + SCREENY, 18);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 200 + SCREENX, 244 + SCREENY, 19);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 200 + SCREENX, 244 + SCREENY, 18);
 
 	if ((msX >= 370 + SCREENX) && (msX <= 370 + SCREENX + DEF_BTNSZX) && (msY >= 244 + SCREENY) && (msY <= 244 + SCREENY + DEF_BTNSZY))
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 370 + SCREENX, 244 + SCREENY, 3);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 370 + SCREENX, 244 + SCREENY, 2);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 370 + SCREENX, 244 + SCREENY, 3);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 370 + SCREENX, 244 + SCREENY, 2);
 
 	if ((dwTime - dwCTime) > 100)
 	{
@@ -31099,11 +31099,11 @@ void CGame::UpdateScreen_OnLogResMsg()
 #else
 	m_DDraw.DrawShadowBox(0,0,639,479);
 #endif
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162 + SCREENX,125 + SCREENY,2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162 + SCREENX,125 + SCREENY,2);
 
 	if ((msX >= 370 + SCREENX) && (msX <= 370 + SCREENX + DEF_BTNSZX) && (msY >= 244 + SCREENY) && (msY <= 244 + SCREENY + DEF_BTNSZY))
-		 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 370 + SCREENX, 244 + SCREENY, 1);
-	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 370 + SCREENX, 244 + SCREENY, 0);
+		 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 370 + SCREENX, 244 + SCREENY, 1);
+	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, 370 + SCREENX, 244 + SCREENY, 0);
 
 	switch (m_cMsg[1]) {
 	case '1':
@@ -32327,9 +32327,9 @@ void CGame::UpdateScreen_OnChangePassword()
 	m_DDraw.DrawShadowBox(0, 0, 639, 479);//SelectCharacter
 #endif
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 153 + SCREENX, 112 + SCREENY, 0);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT2, 153 + SCREENX, 112 + SCREENY, 13);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 153 + 157 + SCREENX, 112 + 109 + SCREENY, 7);//
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 153 + SCREENX, 112 + SCREENY, 0);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, 153 + SCREENX, 112 + SCREENY, 13);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 153 + 157 + SCREENX, 112 + 109 + SCREENY, 7);//
 
 	PutString(206 + SCREENX, 155 + SCREENY, UPDATE_SCREEN_ON_CHANGE_PASSWORD1, RGB(25, 35, 25));
 	PutString(206 + SCREENX, 179 + SCREENY, UPDATE_SCREEN_ON_CHANGE_PASSWORD2, RGB(25, 35, 25));
@@ -32374,12 +32374,12 @@ void CGame::UpdateScreen_OnChangePassword()
 	PutAlignedString(153 + SCREENX, 487 + SCREENX, 288 + SCREENY, UPDATE_SCREEN_ON_CHANGE_PASSWORD7);//"
 
 	if ((bFlag == true) && (m_cCurFocus == 5))
-		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(197 + SCREENX, 320 + SCREENY, 21, dwTime);
-	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(197 + SCREENX, 320 + SCREENY, 20, dwTime);
+		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(197 + SCREENX, 320 + SCREENY, 21, dwTime);
+	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(197 + SCREENX, 320 + SCREENY, 20, dwTime);
 
 	if (m_cCurFocus == 6)
-		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(370 + SCREENX, 320 + SCREENY, 17, dwTime);
-	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(370 + SCREENX, 320 + SCREENY, 16, dwTime);
+		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(370 + SCREENX, 320 + SCREENY, 17, dwTime);
+	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON]->PutSpriteFast(370 + SCREENX, 320 + SCREENY, 16, dwTime);
 
 	DrawVersion();
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
@@ -32990,7 +32990,7 @@ void CGame::UpdateScreen_OnVersionNotMatch()
 		return;
 	}
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_QUIT, 0,0,0, true);
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME8, 162,125,2);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, 162,125,2);
 	PutAlignedString(168, 474, 160, UPDATE_SCREEN_ON_VERSION_NO_MATCH1);
 	PutAlignedString(168, 474, 180, UPDATE_SCREEN_ON_VERSION_NO_MATCH2);
 	PutAlignedString(168, 474, 250, MSG_HOMEPAGE);
@@ -36373,8 +36373,8 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 	sY = m_stDialogBoxInfo[59].sY;
 	char dane1[120], cTxt[50], cMapName[25];
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 0); // Normal Dialog
-	PutString_SprFont2(sX + 105, sY + 5, "Quest List", 240, 240, 240);
+	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 0); // Normal Dialog
+	PutString_SprFont(sX + 105, sY + 7, "Quest List", 1, 1, 8);
 
 	PutString(sX + 35+10, sY + 30, "Monster", RGB(255, 255, 0), false, 1);
 	//PutString(sX + 110, sY + 30, "Kill", RGB(255, 255, 255), false, 1);
@@ -36450,7 +36450,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 		d3 = (274.0f * d1) / d2;
 		iPointerLoc = (int)(d3);
 		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 3);
-		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX + 242, sY + iPointerLoc + 35, 7);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX + 242, sY + iPointerLoc + 35, 7);
 	}
 	else iPointerLoc = 0;
 
