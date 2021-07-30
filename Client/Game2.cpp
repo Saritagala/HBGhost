@@ -3132,13 +3132,23 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 	limitX = sX + m_stDialogBoxInfo[44].sSizeX;
 	limitY = sY + m_stDialogBoxInfo[44].sSizeY;
 
-	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	if (m_stDialogBoxInfo[44].sV1 != -1)
+	{
+		m_DDraw.DrawShadowBox(sX, sY, limitX*2, limitY, 0, true);
+		m_DDraw.DrawShadowBox(sX, sY, limitX*2, limitY, 0, true);
 
-	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-	PutString_SprFont2(sX + 85, sY + 5, "Item Enchant", 240, 240, 240);
+		m_DDraw.DrawShadowBox(sX, sY, limitX*2, sY + 25, 0, true);
+		m_DDraw.DrawShadowBox(sX, sY, limitX*2, sY + 25, 0, true);
+		PutString_SprFont2(sX + 85*3, sY + 5, "Item Enchant", 240, 240, 240);
+	}
+	else {
+		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
 
+		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+		PutString_SprFont2(sX + 85, sY + 5, "Item Enchant", 240, 240, 240);
+	}
 	if (m_stDialogBoxInfo[44].cMode != 9) {
 		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME3, sX, sY, 3); // recuadro x1 ok y1 ok x2 ok y2 ok
 		m_DDraw.DrawShadowBox(sX + 20 - 5 + 90 - 2 - 5 - 4, sY + 90 + 10 + 24 + 10 - 1, sX + 50 + 5 + 80 + 40, sY + 145 + 102, 1, true);
