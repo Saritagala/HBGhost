@@ -5890,10 +5890,10 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		m_DDraw.DrawShadowBox(sX + m_stDialogBoxInfo[1].sSizeX / 2, sY, limitX, sY + 25, 1, true);
 		PutString_SprFont2(sX + 50, sY + 5, "Character", 255, 255, 255);
 		PutString_SprFont2(sX + 180, sY + 5, "Information", 19, 104, 169); //145 pra frente
-		// Centuu : deactivated
-		//m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
-		//m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
-		//m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
+		
+		m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
+		m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
+		m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		strcpy(G_cTxt, m_cPlayerName);
 		strcat(G_cTxt, " : ");
@@ -19825,7 +19825,7 @@ void CGame::DrawDialogBox_WarningMsg(short msX, short msY)//6
 	PutString(sX + 30, sY +110, DEF_MSG_WARNING5, RGB(220,130,45) );//" cityhall and change to civilian mode."
 
 	if ((msX >= sX + 122 ) && (msX <= sX + 125 + DEF_BTNSZX ) && (msY >= sY + 127 ) && (msY <= sY + 127 + DEF_BTNSZY))
-			 DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 122 , sY + 127 , 1);
+		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 122 , sY + 127 , 1);
 	else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + 122, sY + 127 , 0);
 
 }
