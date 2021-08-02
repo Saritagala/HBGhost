@@ -3255,10 +3255,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 			iLenSize = iLenSize * 5.5f;
 		else iLenSize = iLenSize * 6.2f;
 
-		if (iEntry > 1) {
-			m_DDraw.DrawShadowBox(iItemSelectedx - 3, iItemSelectedy + 25 - 1, iItemSelectedx + iLenSize, iItemSelectedy + 26 + 15 * iEntry, 0, true);
-		}
-		else m_DDraw.DrawShadowBox(iItemSelectedx - 3, iItemSelectedy + 25 - 1, iItemSelectedx + iLenSize, iItemSelectedy + 26 + 15 * iEntry, 0, true);
+		m_DDraw.DrawShadowBox(iItemSelectedx - 3, iItemSelectedy + 25 - 1, iItemSelectedx + iLenSize + 22, iItemSelectedy + 26 + 15 * iEntry, 0, true);
 		//-----------------------------------------------------------------------------------------------------------------------------------
 
 		iLoc = 0;
@@ -5891,7 +5888,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutString_SprFont2(sX + 50, sY + 5, "Character", 255, 255, 255);
 		PutString_SprFont2(sX + 180, sY + 5, "Information", 19, 104, 169); //145 pra frente
 		
-		m_DDraw.DrawShadowBox(sX + 20 - 5, sY + 90 + 10, sX + 50 + 5, sY + 145 - 5, 1, true); //neck ok
+		m_DDraw.DrawShadowBox(sX + 20+5, sY + 90+20, sX + 50-5, sY + 145-15, 1, true); //neck ok
 		m_DDraw.DrawShadowBox(sX + 22, sY + 183, sX + 42, sY + 203, 1, true); //ring ok
 		m_DDraw.DrawShadowBox(sX + 92 - 5, sY + 170, sX + 110, sY + 192 + 2, 1, true); //angel ok
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
@@ -35934,9 +35931,7 @@ void CGame::UpdateScreen_OnGame()
 			iLenSize = iLenSize * 5.5f;
 		else iLenSize = iLenSize * 6.2f;
 
-		if (iEntry > 1) {	
-			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
-		} else m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize, msY + 26 + 15 * iEntry, 0, true);
+		m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize+22, msY + 26 + 15 * iEntry, 0, true);
 		//-----------------------------------------------------------------------------------------------------------------------------------
 		
 		iLoc = 0;

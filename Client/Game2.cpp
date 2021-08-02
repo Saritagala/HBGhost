@@ -3121,6 +3121,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 	int i, sX, sY;
 	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
 	DWORD dwTime = timeGetTime();
+	int iLoc, iLenSize, iEntry = 0;
 
 	sX = m_stDialogBoxInfo[44].sX;
 	sY = m_stDialogBoxInfo[44].sY;
@@ -3132,7 +3133,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 	limitX = sX + m_stDialogBoxInfo[44].sSizeX;
 	limitY = sY + m_stDialogBoxInfo[44].sSizeY;
 
-	if (m_stDialogBoxInfo[44].sV1 != -1)
+	if (m_stDialogBoxInfo[44].sV1 != -1 && m_stDialogBoxInfo[44].cMode == 1)
 	{
 		m_DDraw.DrawShadowBox(sX, sY, limitX*2, limitY, 0, true);
 		m_DDraw.DrawShadowBox(sX, sY, limitX*2, limitY, 0, true);
@@ -3158,12 +3159,19 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 	case 1://Gizon box Drag item needed to be upgraded"
 		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME3, sX, sY, 3);
 		PutAlignedString(sX + 24, sX + 248, sY + 20 + 30, "Drag item needed to be enchanted", 255, 255, 255); // Drag item needed to be upgraded"
-		PutAlignedString(sX + 24, sX + 248, sY + 20 + 45, "from the inventory. Then press", 255, 255, 255); // "from the inventory. Then press"
-		PutAlignedString(sX + 24, sX + 248, sY + 20 + 60, "'Enchant' button.", 255, 255, 255); // 'Upgrade' button."
+		PutAlignedString(sX + 24, sX + 248, sY + 20 + 45, "from the inventory. ", 255, 255, 255); // "from the inventory. Then press"
+		PutAlignedString(sX + 24, sX + 248, sY + 20 + 60, "", 255, 255, 255); // 'Upgrade' button."
 		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
 		if (m_stDialogBoxInfo[44].sV1 != -1)
 		{
+			PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 20 + 30, "Now select which attribute", 255, 255, 255); // Drag item needed to be upgraded"
+			PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 20 + 45, "you want to change. Then press", 255, 255, 255); // "from the inventory. Then press"
+			PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 20 + 60, "'Enchant' button.", 255, 255, 255); // 'Upgrade' button."
 			//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME3, sX, sY, 3);
+			PutAlignedString(sX + 24 + 300, sX + 248 + 320, sY + 20 + 30 + 205, "* The attribute will change randomly to", 255, 255, 255); // Drag item needed to be upgraded"
+			PutAlignedString(sX + 24 + 300, sX + 248 + 320, sY + 20 + 45 + 205, "one that is shown in the list. The ", 255, 255, 255); // "from the inventory. Then press"
+			PutAlignedString(sX + 24 + 300, sX + 248 + 320, sY + 20 + 60 + 205, "percentage may vary depending on your skill level.", 255, 255, 255); // 'Upgrade' button."
+
 			i = m_stDialogBoxInfo[44].sV1;
 			cItemColor = m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cItemColor;
 			if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
@@ -3176,6 +3184,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 			{
 				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
 			}
+			
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
@@ -3183,13 +3192,363 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 			ZeroMemory(cStr3, sizeof(cStr5));
 			ZeroMemory(cStr3, sizeof(cStr6));
 			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
-			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1, 255, 255, 255);
-			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2, 255, 255, 255);
-			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3, 255, 255, 255);
+			PutAlignedString(sX + 24+300, sX + 248 + 300, sY + 230 + 20 - 120, cStr1, 255, 255, 0);
+			
+			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 245 + 20 - 120) && (msY <= sY + 245 + 20 - 120 + 14))
+			{
+				PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 255, 255, 255);
+				// centu : recuadro 1er stat
+				
+				iLenSize = (int)strlen(cStr1);
+				if (iLenSize < (int)strlen(cStr2)) iLenSize = (int)strlen(cStr2);
+				if (iLenSize < (int)strlen(cStr3)) iLenSize = (int)strlen(cStr3);
+				if (iLenSize < (int)strlen(cStr4)) iLenSize = (int)strlen(cStr4);
+				if (iLenSize < (int)strlen(cStr5)) iLenSize = (int)strlen(cStr5);
+				if (iLenSize < (int)strlen(cStr6)) iLenSize = (int)strlen(cStr6);
+
+				ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+					|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND)) 
+				{
+					if (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE)
+					{
+						strcpy(G_cTxt, "Casting Prob. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					}
+					else
+					{
+						strcpy(G_cTxt, "Light (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Strong (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Critical Damage (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Agile (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Righteous (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Poison (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Sharp (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Ancient (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Magic (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					}
+				}
+				else
+				{
+					if (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sItemEffectType == 45)
+					{
+						strcpy(G_cTxt, "Mana Conv. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Critical Chance (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Casting Prob. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Critical Damage (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					}
+					else {
+						strcpy(G_cTxt, "Light (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Strong (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Mana Conv. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						strcpy(G_cTxt, "Critical Chance (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+
+					}
+				}
+
+				if (iLenSize <= 15)
+					iLenSize = iLenSize * 7.0f;
+				else if (iLenSize <= 28)
+					iLenSize = iLenSize * 5.5f;
+				else iLenSize = iLenSize * 6.2f;
+
+				m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize+22, msY + 26 + 15 * iEntry, 0, true);
+				//-----------------------------------------------------------------------------------------------------------------------------------
+
+				iLoc = 0;
+				ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+					|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND)) 
+				{
+					if (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE)
+					{
+						strcpy(G_cTxt, "Casting Prob. (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+					}
+					else
+					{
+						strcpy(G_cTxt, "Light (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Strong (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Critical Damage (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Agile (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Righteous (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Poison (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Sharp (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Ancient (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Magic (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+					}
+				}
+				else
+				{
+					if (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sItemEffectType == 45)
+					{
+						strcpy(G_cTxt, "Mana Conv. (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Critical Chance (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Casting Prob. (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Critical Damage (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+					}
+					else {
+						strcpy(G_cTxt, "Light (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Strong (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Mana Conv. (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						strcpy(G_cTxt, "Critical Chance (7~105%)");
+						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						iLoc += 15;
+						
+					}
+				}
+			}
+			else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 19, 104, 169);
+			
+			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 260 + 20 - 120) && (msY <= sY + 260 + 20 - 120 + 14))
+			{
+				PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 255, 255, 255);
+				// centu : recuadro 2do stat
+				iLenSize = (int)strlen(cStr1);
+				if (iLenSize < (int)strlen(cStr2)) iLenSize = (int)strlen(cStr2);
+				if (iLenSize < (int)strlen(cStr3)) iLenSize = (int)strlen(cStr3);
+				if (iLenSize < (int)strlen(cStr4)) iLenSize = (int)strlen(cStr4);
+				if (iLenSize < (int)strlen(cStr5)) iLenSize = (int)strlen(cStr5);
+				if (iLenSize < (int)strlen(cStr6)) iLenSize = (int)strlen(cStr6);
+
+				ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+					|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+				{
+					strcpy(G_cTxt, "Hit Prob. (7~105%)");
+					iEntry++;
+					if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Consecutive Attack (7~105%)");
+					iEntry++;
+					if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Experience (7~105%)");
+					iEntry++;
+					if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Gold (7~105%)");
+					iEntry++;
+					if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+				}
+				else
+				{
+					if (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sItemEffectType == 45)
+					{
+						strcpy(G_cTxt, "Hit Prob. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Consecutive Attack (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Experience (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Gold (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "HP Rec. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "SP Rec. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "MP Rec. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					}
+					else
+					{
+						strcpy(G_cTxt, "Poison Resist. (7~105%)");
+						iEntry++;
+						//if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Defence Ratio (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "HP Rec. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "SP Rec. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "MP Rec. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Magic Resist. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Physical Abs. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						ZeroMemory(G_cTxt, sizeof(G_cTxt));
+						strcpy(G_cTxt, "Magic Abs. (7~105%)");
+						iEntry++;
+						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+					}
+				}
+
+				if (iLenSize <= 15)
+					iLenSize = iLenSize * 7.0f;
+				else if (iLenSize <= 28)
+					iLenSize = iLenSize * 5.5f;
+				else iLenSize = iLenSize * 6.2f;
+
+				m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize + 22, msY + 26 + 15 * iEntry, 0, true);
+				//-----------------------------------------------------------------------------------------------------------------------------------
+
+				iLoc = 0;
+				ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				if ((m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
+					|| (m_pItemList[m_stDialogBoxInfo[44].sV1]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+				{
+					strcpy(G_cTxt, "Hit Prob. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Consecutive Attack (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Experience (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Gold (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+				}
+				else
+				{
+					strcpy(G_cTxt, "Poison Resist. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Defence Ratio (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "HP Rec. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "SP Rec. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "MP Rec. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Magic Resist. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Physical Abs. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					strcpy(G_cTxt, "Magic Abs. (7~105%)");
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+					iLoc += 15;
+				}
+			}
+			else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 19, 104, 169);
 			
 			/*if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 47);
 			else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);*/
+
+			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+			{
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
+				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 255, 255, 100);
+			}
+			else
+			{
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
+				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 180, 188, 180);
+			}
 			
 		}
 		//else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
@@ -3198,16 +3557,6 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 17);
 		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 16);*/
 
-		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 255, 255, 100);
-		}
-		else
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 180, 188, 180);
-		}
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
@@ -3241,7 +3590,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 					, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
 			}
 			if ((rand() % 5) == 0) m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutTransSprite25(sX + 134, sY + 182, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, dwTime);
-			ZeroMemory(cStr1, sizeof(cStr1));
+			/*ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
 			ZeroMemory(cStr3, sizeof(cStr3));
 			ZeroMemory(cStr3, sizeof(cStr4));
@@ -3250,7 +3599,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cStr1, 255, 255, 255);
 			PutAlignedString(sX + 24, sX + 248, sY + 245 + 20, cStr2, 255, 255, 255);
-			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3, 255, 255, 255);
+			PutAlignedString(sX + 24, sX + 248, sY + 260 + 20, cStr3, 255, 255, 255);*/
 		}
 		if (((dwTime - m_stDialogBoxInfo[44].dwV1) / 1000 > 4) && (m_stDialogBoxInfo[44].dwV1 != 0))
 		{
@@ -4995,7 +5344,7 @@ void CGame::DrawDialogBox_FriendList(short msX, short msY)//43
 	case 0:
 		for (int i = 0; i < m_iTotalFriends; i++) {
 			if (m_cFriends[i] != 0) {
-				PutString(sX + 25, (sY + 30 + ((i + 1) * 16)), m_cFriends[i], RGB(4, 0, 50));
+				PutString(sX + 25, (sY + 30 + ((i + 1) * 16)), m_cFriends[i], RGB(70, 130, 180));
 			}
 		}
 
@@ -5007,7 +5356,7 @@ void CGame::DrawDialogBox_FriendList(short msX, short msY)//43
 			PutString_SprFont2(sX + 25, (sY + 45 + (14 * 16)) + 20, "Add", 19, 104, 169);
 		}
 		if (m_iFriendIndex != -1) {
-			PutString(sX + 25, sY + 30 + (m_iFriendIndex * 16), m_cFriends[m_iFriendIndex - 1], RGB(255, 255, 0));
+			PutString(sX + 25, sY + 30 + (m_iFriendIndex * 16), m_cFriends[m_iFriendIndex - 1], RGB(255, 255, 255));
 			m_stDialogBoxInfo[43].sV1 = m_iFriendIndex - 1;
 			//wsprintf(cTxt, "%s", m_cFriends[m_iFriendIndex - 1]);
 			m_iFriendIndex2 = m_iFriendIndex - 1;
@@ -23946,15 +24295,21 @@ void CGame::DrawDialogBox_SetTrap(short msX, short msY)
 	szx = m_stDialogBoxInfo[45].sSizeX;
 	szy = m_stDialogBoxInfo[45].sSizeY;
 
-	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, sX, sY, 2);
+	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, sX, sY, 2);
 
-	
+	short limitX, limitY;
+	limitX = sX + m_stDialogBoxInfo[45].sSizeX;
+	limitY = sY + m_stDialogBoxInfo[45].sSizeY;
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+
 	PutAlignedString(sX, sX + szx, sY + 30, "Setup Your Trap Configuration", 0, 255, 0);
 
-	PutString(sX + 15+40, sY + 60 + 15, "Magic Slot:", RGB(0, 255, 0));
-	if (m_stDialogBoxInfo[45].sV1 == 0) strcpy(G_cTxt, "(Not set)");
+	PutString(sX + 15 + 40, sY + 60 + 15, "Magic Slot:", RGB(0, 255, 0));
+	if (m_stDialogBoxInfo[45].sV1 == NULL) strcpy(G_cTxt, "(Not set)");
 	else sprintf(G_cTxt, "%s", m_pMagicCfgList[m_stDialogBoxInfo[45].sV1 - 1]->m_cName);
-	PutString(sX + 90+40, sY + 60 + 15, G_cTxt, RGB(255, 255, 0));
+	PutString(sX + 90 + 40, sY + 60 + 15, G_cTxt, RGB(255, 255, 0));
 
 	if ((msX >= sX + (szx / 2 - DEF_BTNSZX) / 2) && (msX <= sX + (szx / 2 - DEF_BTNSZX) / 2 + DEF_BTNSZX) && (msY >= sY + szy - 20 - DEF_BTNSZY) && (msY <= sY + szy - 20 - DEF_BTNSZY + DEF_BTNSZY))
 	{
