@@ -16,10 +16,10 @@ PartyManager::PartyManager(class CGateCore * pGateCore)
  int i;
 
 	for (i = 0; i < DEF_MAXPARTY; i++) {
-		m_iMemberNumList[i] = NULL;
-		m_stMemberNameList[i].m_iPartyID = NULL;
-		m_stMemberNameList[i].m_iIndex = NULL;
-		m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+		m_iMemberNumList[i] = 0;
+		m_stMemberNameList[i].m_iPartyID = 0;
+		m_stMemberNameList[i].m_iIndex = 0;
+		m_stMemberNameList[i].m_dwServerChangeTime = 0;
 		ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName)); 
 	}
 
@@ -38,11 +38,11 @@ int PartyManager::iCreateNewParty(int iClientH, char *pMasterName)
 
 	// 동일한 PartyMaster가 존재하는지 검색 
 	for (i = 1; i < DEF_MAXPARTY; i++) 
-	if ((m_stMemberNameList[i].m_iPartyID != NULL) && (strcmp(m_stMemberNameList[i].m_cName, pMasterName) == 0)) return 0;
+	if ((m_stMemberNameList[i].m_iPartyID != 0) && (strcmp(m_stMemberNameList[i].m_cName, pMasterName) == 0)) return 0;
 
 	iPartyID = 0;
 	for (i = 1; i < DEF_MAXPARTY; i++)
-	if (m_iMemberNumList[i] == NULL) {
+	if (m_iMemberNumList[i] == 0) {
 		// Party ID는 i, 멤버수 증가
 		iPartyID = i;
 		m_iMemberNumList[iPartyID]++;
@@ -54,7 +54,7 @@ int PartyManager::iCreateNewParty(int iClientH, char *pMasterName)
 CNP_BREAKLOOP:;
 	// 멤버 이름을 등록한다.
 	for (i = 1; i < DEF_MAXPARTY; i++) 
-	if (m_stMemberNameList[i].m_iPartyID == NULL) {
+	if (m_stMemberNameList[i].m_iPartyID == 0) {
 		m_stMemberNameList[i].m_iPartyID = iPartyID;
 		ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName));
 		strcpy(m_stMemberNameList[i].m_cName, pMasterName);
@@ -79,13 +79,13 @@ bool PartyManager::bDeleteParty(int iPartyID)
  WORD * wp;
 
 	bFlag = false;
-	m_iMemberNumList[iPartyID] = NULL;
+	m_iMemberNumList[iPartyID] = 0;
 
 	for (i = 1; i < DEF_MAXPARTY; i++)
 	if (m_stMemberNameList[i].m_iPartyID == iPartyID) {
-		m_stMemberNameList[i].m_iPartyID = NULL;
-		m_stMemberNameList[i].m_iIndex = NULL;
-		m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+		m_stMemberNameList[i].m_iPartyID = 0;
+		m_stMemberNameList[i].m_iIndex = 0;
+		m_stMemberNameList[i].m_dwServerChangeTime = 0;
 		ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName));
 		bFlag = true;
 	}
@@ -102,7 +102,7 @@ bool PartyManager::bDeleteParty(int iPartyID)
 	wp = (WORD *)cp;
 	*wp = iPartyID;
 	cp += 2;
-	m_pGateCore->SendMsgToAllGameServers(NULL, cData, 10, true);
+	m_pGateCore->SendMsgToAllGameServers(0, cData, 10, true);
 
 	//testcode
 	//wsprintf(G_cTxt, "Delete party(ID:%d)", iPartyID);
@@ -120,11 +120,11 @@ bool PartyManager::bAddMember(int iClientH, int iPartyID, char *pMemberName)
 
 	// 이미 등록된 파티 멤버인지 확인
 	for (i = 1; i < DEF_MAXPARTY; i++)
-		if ((m_stMemberNameList[i].m_iPartyID != NULL) && (strcmp(m_stMemberNameList[i].m_cName, pMemberName) == 0))
+		if ((m_stMemberNameList[i].m_iPartyID != 0) && (strcmp(m_stMemberNameList[i].m_cName, pMemberName) == 0))
 		{
-			m_stMemberNameList[i].m_iPartyID = NULL;
-			m_stMemberNameList[i].m_iIndex = NULL;
-			m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+			m_stMemberNameList[i].m_iPartyID = 0;
+			m_stMemberNameList[i].m_iIndex = 0;
+			m_stMemberNameList[i].m_dwServerChangeTime = 0;
 			ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName));
 			
 			m_iMemberNumList[iPartyID]--;
@@ -134,10 +134,10 @@ bool PartyManager::bAddMember(int iClientH, int iPartyID, char *pMemberName)
 
 	
 	for (i = 1; i < DEF_MAXPARTY; i++)
-	if (m_stMemberNameList[i].m_iPartyID == NULL) {
+	if (m_stMemberNameList[i].m_iPartyID == 0) {
 		m_stMemberNameList[i].m_iPartyID = iPartyID;
 		m_stMemberNameList[i].m_iIndex = iClientH;
-		m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+		m_stMemberNameList[i].m_dwServerChangeTime = 0;
 		ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName));
 		strcpy(m_stMemberNameList[i].m_cName, pMemberName);
 		m_iMemberNumList[iPartyID]++;
@@ -158,9 +158,9 @@ bool PartyManager::bRemoveMember(int iPartyID, char *pMemberName)
 	for (i = 1; i < DEF_MAXPARTY; i++)
 	if ((m_stMemberNameList[i].m_iPartyID == iPartyID) && (strcmp(m_stMemberNameList[i].m_cName, pMemberName) == 0)) {
 
-		m_stMemberNameList[i].m_iPartyID = NULL;
-		m_stMemberNameList[i].m_iIndex = NULL;
-		m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+		m_stMemberNameList[i].m_iPartyID = 0;
+		m_stMemberNameList[i].m_iIndex = 0;
+		m_stMemberNameList[i].m_dwServerChangeTime = 0;
 		ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName));
 		
 		m_iMemberNumList[iPartyID]--;
@@ -186,7 +186,7 @@ bool PartyManager::bCheckPartyMember(int iClientH, int iGSCH, int iPartyID, char
 	for (i = 1; i < DEF_MAXPARTY; i++)
 	if ((m_stMemberNameList[i].m_iPartyID == iPartyID) && (strcmp(m_stMemberNameList[i].m_cName, pName) == 0)) {
 		// 서버 이동 타임 클리어 
-		m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+		m_stMemberNameList[i].m_dwServerChangeTime = 0;
 		return true;
 	}
 
@@ -235,7 +235,7 @@ bool PartyManager::bGetPartyInfo(int iClientH, int iGSCH, char * pName, int iPar
 
 	iTotal = 0;
 	for (i = 1; i < DEF_MAXPARTY; i++)
-	if ((m_stMemberNameList[i].m_iPartyID == iPartyID) && (m_stMemberNameList[i].m_iPartyID != NULL)) {
+	if ((m_stMemberNameList[i].m_iPartyID == iPartyID) && (m_stMemberNameList[i].m_iPartyID != 0)) {
 		memcpy(cp, m_stMemberNameList[i].m_cName, 10);
 		cp += 11;
 		iTotal++;
@@ -258,9 +258,9 @@ void PartyManager::GameServerDown(int iClientH)
 		//PutLogList(G_cTxt);
 
 		m_iMemberNumList[m_stMemberNameList[i].m_iPartyID]--;
-		m_stMemberNameList[i].m_iPartyID  = NULL;
-		m_stMemberNameList[i].m_iIndex    = NULL;
-		m_stMemberNameList[i].m_dwServerChangeTime = NULL;
+		m_stMemberNameList[i].m_iPartyID  = 0;
+		m_stMemberNameList[i].m_iIndex    = 0;
+		m_stMemberNameList[i].m_dwServerChangeTime = 0;
 		ZeroMemory(m_stMemberNameList[i].m_cName, sizeof(m_stMemberNameList[i].m_cName));
 	}
 }
@@ -288,7 +288,7 @@ void PartyManager::CheckMemberActivity()
 	} else return;
 
 	for (i = 1; i < DEF_MAXPARTY; i++)
-	if ((m_stMemberNameList[i].m_dwServerChangeTime != NULL) && ((dwTime - m_stMemberNameList[i].m_dwServerChangeTime) > 1000*20)) {
+	if ((m_stMemberNameList[i].m_dwServerChangeTime != 0) && ((dwTime - m_stMemberNameList[i].m_dwServerChangeTime) > 1000*20)) {
 		// 시간 초과. 
 		ZeroMemory(cData, sizeof(cData));
 		cp = (char *)cData;
@@ -301,7 +301,7 @@ void PartyManager::CheckMemberActivity()
 		*cp = 1; // 제거 성공 
 		cp++;
 		wp = (WORD *)cp;
-		*wp = NULL;  // 인덱스는 0 
+		*wp = 0;  // 인덱스는 0 
 		cp += 2;
 		memcpy(cp, m_stMemberNameList[i].m_cName, 10);
 		cp += 10;
@@ -309,7 +309,7 @@ void PartyManager::CheckMemberActivity()
 		*wp = (WORD)m_stMemberNameList[i].m_iPartyID;
 		cp += 2;
 		// 파티 멤버가 제거되었다는 내용은 모든 서버에 전송한다.
-		m_pGateCore->SendMsgToAllGameServers(NULL, cData, 22, true);
+		m_pGateCore->SendMsgToAllGameServers(0, cData, 22, true);
 
 		bRemoveMember(m_stMemberNameList[i].m_iPartyID, m_stMemberNameList[i].m_cName);
 	}

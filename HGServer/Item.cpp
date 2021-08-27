@@ -839,12 +839,13 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						{
 							m_pClientList[iClientH]->m_iSpecialWeaponEffectValue += dwSWEValue;
 						}
-						else
+						else {
 							if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == 0)
 							{
 								m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
 								m_pClientList[iClientH]->m_iSpecialWeaponEffectValue = dwSWEValue;
 							}
+						}
 						break;
 					case ITEMSTAT_RIGHTEOUS: // Rite -> Give effect if no other effect present	
 						if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == 0)
@@ -3046,73 +3047,71 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 		return;
 	}
 
-	switch (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cCategory)
-	{
-		case 46: // Pendants are category 46
-			if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType != 1) 
-			{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
-				return; // Pendants are type 1
-			}
-			if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cEquipPos < 11) 
-			{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
-				return; // Pendants are left finger or more
-			}
-			if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType != 14) 
-			{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
-				return; // Pendants are EffectType 14
-			}
-			switch (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectValue1) 
-			{
-			default: // Other items are not upgradable
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
-				return; // Pendants are EffectType 14
+	switch (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cCategory) {
+	case 46: // Pendants are category 46
+		if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemType != 1) 
+		{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
+			return; // Pendants are type 1
+		}
+		if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cEquipPos < 11) 
+		{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
+			return; // Pendants are left finger or more
+		}
+		if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType != 14) 
+		{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
+			return; // Pendants are EffectType 14
+		}
+		switch (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectValue1) {
+		default: // Other items are not upgradable
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);			
+			return; // Pendants are EffectType 14
 
-			case 16: // AngelicPandent(STR)
-			case 17: // AngelicPandent(DEX)
-			case 18: // AngelicPandent(INT)
-			case 19: // AngelicPandent(MAG)
-				if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0) 
-				{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, 0, 0, 0);
-					return;
-				}
-				if (iValue == 10)
-				{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 1, 0, 0, 0);
-					return;
-				}
-				switch (iValue) {
-					case 0: sItemUpgrade = 10*2; break;
-					case 1: sItemUpgrade = 11*2; break;
-					case 2: sItemUpgrade = 13*2; break;
-					case 3: sItemUpgrade = 16*2; break;
-					case 4: sItemUpgrade = 20*2; break;
-					case 5: sItemUpgrade = 25*2; break;
-					case 6: sItemUpgrade = 31*2; break;
-					case 7: sItemUpgrade = 38*2; break;
-					case 8: sItemUpgrade = 46*2; break;
-					case 9: sItemUpgrade = 55*2; break;
-				}
-				if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 != m_pClientList[iClientH]->m_sCharIDnum1)
-					|| (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 != m_pClientList[iClientH]->m_sCharIDnum2)
-					|| (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 != m_pClientList[iClientH]->m_sCharIDnum3))
-				{
-					SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);
-					return;
-				}
-				if (( m_pClientList[iClientH]->m_iGizonItemUpgradeLeft - sItemUpgrade ) < 0) 
-				{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, 0, 0, 0);
-					return; 
-				}
-				m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= sItemUpgrade; 
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, 0, 0, 0);
-				iValue++;
-				dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
-				dwTemp = dwTemp & 0x0FFFFFFF;
-				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, 0, 0);
-				_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int) -1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
-				break;
+		case 16: // AngelicPandent(STR)
+		case 17: // AngelicPandent(DEX)
+		case 18: // AngelicPandent(INT)
+		case 19: // AngelicPandent(MAG)
+			if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0) 
+			{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, 0, 0, 0);
+				return;
 			}
+			if (iValue == 10)
+			{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 1, 0, 0, 0);
+				return;
+			}
+			switch (iValue) {
+				case 0: sItemUpgrade = 10*2; break;
+				case 1: sItemUpgrade = 11*2; break;
+				case 2: sItemUpgrade = 13*2; break;
+				case 3: sItemUpgrade = 16*2; break;
+				case 4: sItemUpgrade = 20*2; break;
+				case 5: sItemUpgrade = 25*2; break;
+				case 6: sItemUpgrade = 31*2; break;
+				case 7: sItemUpgrade = 38*2; break;
+				case 8: sItemUpgrade = 46*2; break;
+				case 9: sItemUpgrade = 55*2; break;
+			}
+			if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 != m_pClientList[iClientH]->m_sCharIDnum1)
+				|| (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 != m_pClientList[iClientH]->m_sCharIDnum2)
+				|| (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 != m_pClientList[iClientH]->m_sCharIDnum3))
+			{
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 2, 0, 0, 0);
+				return;
+			}
+			if (( m_pClientList[iClientH]->m_iGizonItemUpgradeLeft - sItemUpgrade ) < 0) 
+			{	SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 3, 0, 0, 0);
+				return; 
+			}
+			m_pClientList[iClientH]->m_iGizonItemUpgradeLeft -= sItemUpgrade; 
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, 0, 0, 0);
+			iValue++;
+			dwTemp = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+			dwTemp = dwTemp & 0x0FFFFFFF;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, iItemIndex, m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute, 0, 0);
+			_bItemLog(DEF_ITEMLOG_UPGRADESUCCESS, iClientH, (int) -1, m_pClientList[iClientH]->m_pItemList[iItemIndex]);
 			break;
+		}
+		break;
 
 	case 1:
 		switch (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sIDnum)
@@ -3865,6 +3864,8 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 	if ((iItemIndex < 0) || (iItemIndex >= DEF_MAXITEMS)) return;
 	if (m_pClientList[iClientH]->m_pItemList[iItemIndex] == 0) return;
 	
+	if (iSkillLevel < 1) iSkillLevel = 1;
+
 	if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) == 0 && // 1st
 		(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x0000F000) == 0) { // 2nd
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 9, 0, 0, 0);
@@ -4509,7 +4510,7 @@ bool CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
 		iRequiredEnemyKills = 30000;
 	}
 	// Helm W
-	else if (iBeforeItemID == 404 || iBeforeItemID == 404) {
+	else if (iBeforeItemID == 404 || iBeforeItemID == 406) {
 
 		iAfterItemID = 1062;
 		iStoneNumber = 657;

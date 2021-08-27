@@ -25,7 +25,7 @@ char            G_cTxt[500];
 class CWorldLog *G_pWorldLog;
 
 //Timer
-MMRESULT        G_mmTimer = NULL;
+MMRESULT        G_mmTimer = 0;
 static HWND    List1, Button1, Button2;
 static HINSTANCE BCX_hInstance;
 static int     BCX_ScaleX, BCX_ScaleY;
@@ -42,7 +42,7 @@ LRESULT CALLBACK	Clients(HWND, UINT, WPARAM, LPARAM);
 
 int ItemCount=0;
 //Sockets
-class XSocket * G_pInternalLogSock = NULL;
+class XSocket * G_pInternalLogSock = 0;
 
 LRESULT CALLBACK WindowProc(HWND hWnd,UINT uMsg,WPARAM wParam,LPARAM lParam)
 {
@@ -138,8 +138,8 @@ bool InitApplication( HINSTANCE hInstance)
 	wc.cbClsExtra    = 0;                            
 	wc.cbWndExtra    = sizeof (int);             
 	wc.hInstance     = hInstance;                    
-	wc.hIcon         = NULL;
-	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);  
+	wc.hIcon         = 0;
+	wc.hCursor       = LoadCursor(0, IDC_ARROW);  
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+7);	 
 	wc.lpszMenuName  = (LPCSTR)IDR_MENU1;                    		 
 	wc.lpszClassName = szAppClass;                   
@@ -165,10 +165,10 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 		CW_USEDEFAULT,
 		800, //GetSystemMetrics(SM_CXSCREEN),
 		400, //GetSystemMetrics(SM_CYSCREEN),
-		NULL,
-		NULL,
+		0,
+		0,
 		hInstance,
-		NULL );
+		0 );
 
 	if (!G_hWnd) return (false);
 	//MAJORHG - CLEROTH - 26/03/05
@@ -181,10 +181,10 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
 	Wc.cbClsExtra    =  0;
 	Wc.cbWndExtra    =  0;
 	Wc.hInstance     =  hInstance;
-	Wc.hIcon         =  LoadIcon(NULL,IDI_WINLOGO);
-	Wc.hCursor       =  LoadCursor(NULL,IDC_ARROW);
+	Wc.hIcon         =  LoadIcon(0,IDI_WINLOGO);
+	Wc.hCursor       =  LoadCursor(0,IDC_ARROW);
 	Wc.hbrBackground =  (HBRUSH)(COLOR_BTNFACE+1);
-	Wc.lpszMenuName  =  NULL;
+	Wc.lpszMenuName  =  0;
 	Wc.lpszClassName =  BCX_ClassName;
 	RegisterClass(&Wc);
 	//----------Main CMD--------//
@@ -204,8 +204,8 @@ int EventLoop()
  MSG msg;
 
 	while(1) {
-		if(PeekMessage(&msg, NULL, 0, 0, PM_NOREMOVE)) {
-			if(!GetMessage(&msg, NULL, 0, 0)) {
+		if(PeekMessage(&msg, 0, 0, 0, PM_NOREMOVE)) {
+			if(!GetMessage(&msg, 0, 0, 0)) {
 				return msg.wParam;
 			}
 			TranslateMessage(&msg);
@@ -226,7 +226,7 @@ void Initialize()
 	}
 
 	G_pWorldLog = new class CWorldLog(G_hWnd);
-	if (G_pWorldLog == NULL) {
+	if (G_pWorldLog == 0) {
 		MessageBox(G_hWnd, "Init fail - Invalid WorldLServer!","ERROR",MB_OK+MB_ICONERROR);
 		return;
 	}
@@ -244,18 +244,18 @@ void Initialize()
 void OnDestroy()
 {
 	G_pWorldLog->CleanupLogFiles();
-	if (G_pWorldLog != NULL) delete G_pWorldLog;
-	if (G_pXWorldLogSock != NULL) delete G_pXWorldLogSock;
-	if (G_pInternalLogSock != NULL) delete G_pInternalLogSock;
+	if (G_pWorldLog != 0) delete G_pWorldLog;
+	if (G_pXWorldLogSock != 0) delete G_pXWorldLogSock;
+	if (G_pInternalLogSock != 0) delete G_pInternalLogSock;
 	_TermWinsock();
-	if (G_mmTimer != NULL) _StopTimer(G_mmTimer);
+	if (G_mmTimer != 0) _StopTimer(G_mmTimer);
 	PostQuitMessage(0);
 }
 
 void UpdateScreen()
 {
 	if (G_cMsgUpdated == true) {
-		InvalidateRect(G_hWnd, NULL, true);
+		InvalidateRect(G_hWnd, 0, true);
 		G_cMsgUpdated = false;
 	}
 }
@@ -280,7 +280,7 @@ void OnPaint()
 		wsprintf(G_cTxt,"PRESS [HOME] KEY TO ACTIVATE WORLD SERVER!!!");
 	}
 	TextOut(hdc, 5, 10, G_cTxt, strlen(G_cTxt));
-	if (G_pWorldLog != NULL) {
+	if (G_pWorldLog != 0) {
 		TextOut(hdc, 575, 10, "World Name", strlen("World Name"));
 		TextOut(hdc, 575, 25, "World Addr", strlen("World Addr"));
 		TextOut(hdc, 575, 40, "World Port", strlen("World Port"));
@@ -313,13 +313,13 @@ void PutGameLogData(char * cMsg)
  char cBuffer[512];
  SYSTEMTIME SysTime;
 
-	pFile = NULL;
+	pFile = 0;
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	//_mkdir("GameLogData");
 	GetLocalTime(&SysTime);
 	wsprintf(cBuffer, "GameLogData\\GameEvents%04d%02d%02d.log", SysTime.wYear, SysTime.wMonth, SysTime.wDay);
 	pFile = fopen(cBuffer, "at");
-	if (pFile == NULL) return;
+	if (pFile == 0) return;
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
 	strcat(cBuffer, cMsg);
@@ -336,7 +336,7 @@ void PutEventLog(char * cMsg)
  SYSTEMTIME SysTime;
 
 	pFile = fopen("Events.log", "at");
-	if (pFile == NULL) return;
+	if (pFile == 0) return;
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	GetLocalTime(&SysTime);
 	wsprintf(cBuffer, "(%4d:%2d:%2d:%2d:%2d) - ", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
@@ -369,7 +369,7 @@ void PutLogServ(char * cMsg)
 
 void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw2)
 {
-	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, NULL);
+	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, 0);
 }
 
 MMRESULT _StartTimer(DWORD dwTime)
@@ -428,9 +428,9 @@ HWND BCX_Listbox(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
         {
                 Exstyle=WS_EX_CLIENTEDGE;
         }
-        A = CreateWindowEx(Exstyle,"Listbox",NULL,Style,
+        A = CreateWindowEx(Exstyle,"Listbox",0,Style,
         X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,
-        hWnd,(HMENU)id,BCX_hInstance,NULL);
+        hWnd,(HMENU)id,BCX_hInstance,0);
         SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject
         (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
@@ -444,7 +444,7 @@ HWND BCX_Button(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,in
         }
         A = CreateWindowEx(0,"Button","Clear",Style,
         X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,
-        hWnd,(HMENU)id,BCX_hInstance,NULL);
+        hWnd,(HMENU)id,BCX_hInstance,0);
         SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject
         (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
@@ -458,7 +458,7 @@ HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
         }
         A = CreateWindowEx(0,"Button","Start",Style,
         X*BCX_ScaleX, Y*BCX_ScaleY, W*BCX_ScaleX, H*BCX_ScaleY,
-        hWnd,(HMENU)id,BCX_hInstance,NULL);
+        hWnd,(HMENU)id,BCX_hInstance,0);
         SendMessage(A,(UINT)WM_SETFONT,(WPARAM)GetStockObject
         (DEFAULT_GUI_FONT),(LPARAM)MAKELPARAM(false,0));
         return A;
@@ -484,8 +484,8 @@ LRESULT CALLBACK Server(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 			case IDC_REMOVE:
 			/*char cWhat[100];
 			GetDlgItemText(hDlg, IDC_EDIT1, cWhat, 100);
-			if (cWhat != NULL) {
-				SetDlgItemText(hDlg, IDC_EDIT1, NULL);
+			if (cWhat != 0) {
+				SetDlgItemText(hDlg, IDC_EDIT1, 0);
 				SetFocus(hDlg);
 				G_pWorldLog->ParseCommand(true, cWhat);
 			}*/
@@ -517,8 +517,8 @@ LRESULT CALLBACK Clients(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 				//LB_DELETESTRING
 			/*char cWhat[100];
 			GetDlgItemText(hDlg, IDC_EDIT1, cWhat, 100);
-			if (cWhat != NULL) {
-				SetDlgItemText(hDlg, IDC_EDIT1, NULL);
+			if (cWhat != 0) {
+				SetDlgItemText(hDlg, IDC_EDIT1, 0);
 				SetFocus(hDlg);
 				G_pWorldLog->ParseCommand(false, cWhat);
 			}*/

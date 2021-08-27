@@ -14,9 +14,9 @@ XSocket::XSocket(HWND hWnd, int iBlockLimit)
 {
  int i;
 	
-	m_cType       = NULL;
-	m_pRcvBuffer  = NULL;
-	m_pSndBuffer  = NULL;
+	m_cType       = 0;
+	m_pRcvBuffer  = 0;
+	m_pSndBuffer  = 0;
 	m_Sock        = INVALID_SOCKET;
 	m_dwBufferSize = 0;
 
@@ -26,13 +26,13 @@ XSocket::XSocket(HWND hWnd, int iBlockLimit)
 
 	for (i = 0; i < DEF_XSOCKBLOCKLIMIT; i++) {
 		m_iUnsentDataSize[i] = 0;
-		m_pUnsentDataList[i] = NULL;
+		m_pUnsentDataList[i] = 0;
 	}
 	
 	m_sHead = 0;
 	m_sTail = 0;
 
-	m_WSAErr = NULL;
+	m_WSAErr = 0;
 
 	m_hWnd = hWnd;
 	m_bIsAvailable = false;
@@ -45,11 +45,11 @@ XSocket::~XSocket()
 {
  int i;
 	
-	if (m_pRcvBuffer != NULL) delete m_pRcvBuffer;
-	if (m_pSndBuffer != NULL) delete m_pSndBuffer;
+	if (m_pRcvBuffer != 0) delete m_pRcvBuffer;
+	if (m_pSndBuffer != 0) delete m_pSndBuffer;
 
 	for (i = 0; i < DEF_XSOCKBLOCKLIMIT; i++)
-		if (m_pUnsentDataList[i] != NULL) delete m_pUnsentDataList[i];
+		if (m_pUnsentDataList[i] != 0) delete m_pUnsentDataList[i];
 
 	// 소켓을 마저 읽고 닫는다.
 	_CloseConn(); 
@@ -57,14 +57,14 @@ XSocket::~XSocket()
 
 bool XSocket::bInitBufferSize(DWORD dwBufferSize)
 {
-	if (m_pRcvBuffer != NULL) delete m_pRcvBuffer;
-	if (m_pSndBuffer != NULL) delete m_pSndBuffer;
+	if (m_pRcvBuffer != 0) delete m_pRcvBuffer;
+	if (m_pSndBuffer != 0) delete m_pSndBuffer;
 
 	m_pRcvBuffer = new char[dwBufferSize+8];
-	if (m_pRcvBuffer == NULL) return false;
+	if (m_pRcvBuffer == 0) return false;
 	
 	m_pSndBuffer = new char[dwBufferSize+8];
-	if (m_pSndBuffer == NULL) return false;
+	if (m_pSndBuffer == 0) return false;
 
 	m_dwBufferSize = dwBufferSize;
 
@@ -78,7 +78,7 @@ int XSocket::iOnSocketEvent(WPARAM wParam, LPARAM lParam)
 	// 리스닝 소켓의 이벤트는 처리할 수 없다.
 	if (m_cType != DEF_XSOCK_NORMALSOCK) return DEF_XSOCKEVENT_SOCKETMISMATCH;
 	// 초기화 되지 않아서 처리할 수 없다.
-	if (m_cType == NULL) return DEF_XSOCKEVENT_NOTINITIALIZED;
+	if (m_cType == 0) return DEF_XSOCKEVENT_NOTINITIALIZED;
 
 	if ((SOCKET)wParam != m_Sock) return DEF_XSOCKEVENT_SOCKETMISMATCH;
 	WSAEvent = WSAGETSELECTEVENT(lParam);
@@ -262,7 +262,7 @@ int XSocket::_iSend(char * cData, int iSize, bool bSaveFlag)
 {
  int  iOutLen, iRet, WSAErr;
 
-	if (m_pUnsentDataList[m_sHead] != NULL) {
+	if (m_pUnsentDataList[m_sHead] != 0) {
 		if (bSaveFlag == true) {
 			// 만약 대기열에 데이터가 남아 있고 꼭 보내야 하는 데이터라면 
 			// 메시지의 순서를 맞추기 위해 무조건 대기열에 저장해야 한다. 
@@ -355,10 +355,10 @@ int XSocket::_iSend_ForInternalUse(char * cData, int iSize)
 int XSocket::_iRegisterUnsentData(char * cData, int iSize)
 {
 	// 큐가 가득차서 더이상 데이터를 대기열에 저장할 수 없다.
-	if (m_pUnsentDataList[m_sTail] != NULL) return 0;
+	if (m_pUnsentDataList[m_sTail] != 0) return 0;
 	
 	m_pUnsentDataList[m_sTail] = new char[iSize];
-	if (m_pUnsentDataList[m_sTail] == NULL) return -1; // 메모리 할당에 실패했다.
+	if (m_pUnsentDataList[m_sTail] == 0) return -1; // 메모리 할당에 실패했다.
 
 	// 데이터 저장 
 	memcpy(m_pUnsentDataList[m_sTail], cData, iSize);
@@ -380,14 +380,14 @@ int XSocket::_iSendUnsentData()
  char * pTemp;
 	
 	// 가능한 한 대기열의 데이터를 보낸다. 
-	while (m_pUnsentDataList[m_sHead] != NULL) {
+	while (m_pUnsentDataList[m_sHead] != 0) {
 		
 		iRet = _iSend_ForInternalUse(m_pUnsentDataList[m_sHead], m_iUnsentDataSize[m_sHead]);
 
 		if (iRet == m_iUnsentDataSize[m_sHead]) {
 			// Head큐의 데이터를 다 보냈다.	다음 데이터를 보낸다.
 			delete m_pUnsentDataList[m_sHead];
-			m_pUnsentDataList[m_sHead] = NULL;
+			m_pUnsentDataList[m_sHead] = 0;
 			m_iUnsentDataSize[m_sHead] = 0;
 			// 헤드 포인터 증가 
 			m_sHead++;
@@ -425,7 +425,7 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 	// 리스닝 소켓 혹은 닫힌 소켓으로 메시지를 보낼 수는 없다.
 	if (m_cType != DEF_XSOCK_NORMALSOCK) return DEF_XSOCKEVENT_SOCKETMISMATCH;
 	// 초기화 되지 않아서 메시지를 보낼 수 없다.
-	if (m_cType == NULL) return DEF_XSOCKEVENT_NOTINITIALIZED;
+	if (m_cType == 0) return DEF_XSOCKEVENT_NOTINITIALIZED;
 
 	// 키 입력 
 	m_pSndBuffer[0] = cKey;
@@ -435,7 +435,7 @@ int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 
 	memcpy((char *)(m_pSndBuffer + 3), cData, dwSize);
 	// v.14 : m_pSndBuffer +3 부터 dwSize까지 cKey가 0이 아니라면 암호화한다.
-	if (cKey != NULL) {//Encryption
+	if (cKey != 0) {//Encryption
 		for (i = 0; i < dwSize; i++) {
 			m_pSndBuffer[3+i] += (i ^ cKey);
 			m_pSndBuffer[3+i]  = m_pSndBuffer[3+i] ^ (cKey ^ (dwSize - i));
@@ -457,7 +457,7 @@ bool XSocket::bListen(char * pAddr, int iPort, unsigned int uiMsg)
 {
  SOCKADDR_IN	 saTemp;
 
-	if (m_cType != NULL) return false;
+	if (m_cType != 0) return false;
 	if (m_Sock  != INVALID_SOCKET) closesocket(m_Sock);
 
 	// 소켓을 생성한다. 
@@ -496,7 +496,7 @@ bool XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
  DWORD			dwOpt;
 
 	if (m_cType != DEF_XSOCK_LISTENSOCK) return false;
-	if (pXSock == NULL) return false;
+	if (pXSock == 0) return false;
 
 	iLength = sizeof(Addr);
 	// 클라이언트의 접속을 받는다 . 
@@ -553,7 +553,7 @@ DWORD  dwSize;
  char cKey;
 	
 	cKey = m_pRcvBuffer[0];
-	if (pKey != NULL) *pKey = cKey;		// v1.4
+	if (pKey != 0) *pKey = cKey;		// v1.4
 
 	wp = (WORD *)(m_pRcvBuffer + 1);
 	*pMsgSize = (*wp) - 3;				// 헤더크기는 제외해서 반환한다. 
@@ -562,7 +562,7 @@ DWORD  dwSize;
 	if (dwSize > DEF_MSGBUFFERSIZE) dwSize = DEF_MSGBUFFERSIZE;
 
 	// v.14 : m_pSndBuffer +3 부터 dwSize까지 cKey가 0이 아니라면 암호화를 푼다.
-	if (cKey != NULL) {//Encryption
+	if (cKey != 0) {//Encryption
 		for (i = 0; i < dwSize; i++) {
 			m_pRcvBuffer[3+i]  = m_pRcvBuffer[3+i] ^ (cKey ^ (dwSize - i));
 			m_pRcvBuffer[3+i] -= (i ^ cKey);

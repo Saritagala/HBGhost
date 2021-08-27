@@ -4640,7 +4640,7 @@ void CGame::OnTimer()
 		if ((dwTime - m_dwCheckPingTime) > 5000)
 		{
 			m_dwCheckPingTime = dwTime;
-			//bSendCommand(MSGID_REQUEST_PING, 0, 0, 0, 0, 0, 0);
+			bSendCommand(MSGID_REQUEST_PING, 0, 0, 0, 0, 0, 0);
 		}
 
 		if ((dwTime - m_dwCheckChatTime) > 2000)
@@ -33289,7 +33289,7 @@ bool CGame::bCheckLocalChatCommand(char * pMsg)
 		else m_bShowFPS = true;
 		return true;
 	}
-	else if (memcmp(cBuff, "/showping", 9) == 0)
+	/*else if (memcmp(cBuff, "/showping", 9) == 0)
 	{
 		if (m_iAdminUserLevel > 0) {
 			bSendCommand(MSGID_REQUEST_PING, 0, 0, 0, 0, 0, 0);
@@ -33299,7 +33299,7 @@ bool CGame::bCheckLocalChatCommand(char * pMsg)
 			}
 		}
 		return true;
-	}
+	}*/
 	else if (memcmp(cBuff, "/quest", 6) == 0)
 	{	if (m_bQuestHelper)
 			m_bQuestHelper = false;

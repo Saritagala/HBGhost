@@ -10,7 +10,7 @@
 CClient::CClient(HWND hWnd)
 {
 
-	m_pXSock = NULL;
+	m_pXSock = 0;
 	m_pXSock = new class XSocket(hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 	m_pXSock->bInitBufferSize(DEF_MSGBUFFERSIZE);
 	
@@ -21,5 +21,5 @@ CClient::CClient(HWND hWnd)
 
 CClient::~CClient()
 {
-	if (m_pXSock != NULL) delete m_pXSock;
+	if (m_pXSock != 0) delete m_pXSock;
 }

@@ -2898,7 +2898,8 @@ void CGame::OnTimer(char cType)
 		}
 		m_dwGameTime6 = dwTime; // moved
 	}
-	if ((dwTime - m_dwGameTime3) > 3000) {
+	// Centuu - 3000 -> 1000
+	if ((dwTime - m_dwGameTime3) > 1000) {
 		SyncMiddlelandMapInfo();
 		CheckDynamicObjectList();
 		DynamicObjectEffectProcessor();
@@ -2952,7 +2953,8 @@ void CGame::OnTimer(char cType)
 		m_dwGameTime5 = dwTime;
 		srand((unsigned)time(0));   
 	}
-	if ((dwTime - m_dwFishTime) > 4000) {
+	// Centuu - 4000 -> 1000
+	if ((dwTime - m_dwFishTime) > 1000) {
 		//FishProcessor();
 		//FishGenerator();
 		SendCollectedMana();
@@ -9444,6 +9446,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 				if (sItemIndex != -1 && m_pClientList[iClientH]->m_pItemList[sItemIndex] != 0) {
 					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 845 || // StormBringer
 						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 1037) { // StunSB
+						// Centuu - useless code
 						/*short sAppr2 = (short)((m_pClientList[iClientH]->m_sAppr2 & 0xF000) >> 12);
 						if (sAppr2 != 0) {
 							iV1 = m_pClientList[iClientH]->m_cAttackDiceThrow_L;
@@ -9496,6 +9499,7 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
 								while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
 									dX += 4; dY += 4; tY += 4; tX += 4; 
 								} 
+								// Centuu - no multiple hits for bow
 								/*while (((tdX - dX) >= 1) && ((tdY - dY) >= 1)) { 
 									dX += 4; dY += 4; tY += 4; tX += 4; 
 								} 
@@ -19101,6 +19105,9 @@ char buff[100];
 	m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	// Player's SP
 	m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
 	// Player's Hunger
 	m_pClientList[iClientH]->m_iHungerStatus = 100;
 
@@ -19682,13 +19689,13 @@ void CGame::CheckForceRecallTime(int iClientH)
 		else {
 			GetLocalTime(&SysTime);
 			switch (SysTime.wDayOfWeek) {
-			case 1:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //월요일  3분 2002-09-10 #1
-			case 2:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //화요일  3분 
-			case 3:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //수요일  3분 
-			case 4:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //목요일  3분 
-			case 5:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break; //금요일 15분
-			case 6:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break; //토요일 45분 
-			case 0:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break; //일요일 60분
+			case 1:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeMonday *60*1000; break;  //월요일  3분 2002-09-10 #1
+			case 2:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeTuesday * 60 * 1000; break;  //화요일  3분 
+			case 3:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeWednesday * 60 * 1000; break;  //수요일  3분 
+			case 4:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeThursday * 60 * 1000; break;  //목요일  3분 
+			case 5:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeFriday * 60 * 1000; break; //금요일 15분
+			case 6:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeSaturday * 60 * 1000; break; //토요일 45분 
+			case 0:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeSunday * 60 * 1000; break; //일요일 60분
 			}
 		}
 	}
@@ -19701,13 +19708,13 @@ void CGame::CheckForceRecallTime(int iClientH)
 		else {
 			GetLocalTime(&SysTime);
 			switch (SysTime.wDayOfWeek) {
-			case 1:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //월요일  3분 2002-09-10 #1
-			case 2:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //화요일  3분 
-			case 3:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //수요일  3분 
-			case 4:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break;  //목요일  3분 
-			case 5:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break; //금요일 15분
-			case 6:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break; //토요일 45분 
-			case 0:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = 20 * 6000; break; //일요일 60분
+			case 1:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeMonday * 60 * 1000; break;  //월요일  3분 2002-09-10 #1
+			case 2:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeTuesday * 60 * 1000; break;  //화요일  3분 
+			case 3:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeWednesday * 60 * 1000; break;  //수요일  3분 
+			case 4:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeThursday * 60 * 1000; break;  //목요일  3분 
+			case 5:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeFriday * 60 * 1000; break; //금요일 15분
+			case 6:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeSaturday * 60 * 1000; break; //토요일 45분 
+			case 0:	m_pClientList[iClientH]->m_iTimeLeft_ForceRecall = m_sRaidTimeSunday * 60 * 1000; break; //일요일 60분
 			}
 		}
 		if (m_pClientList[iClientH]->m_iTimeLeft_ForceRecall > iTL_) {
@@ -24946,9 +24953,12 @@ void CGame::bCheckLevelUp(int iClientH)
 			}
 
 			// centu - max hp,mp,sp when level up
-			/*if (m_pClientList[iClientH]->m_iHP < iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, false);
-			if (m_pClientList[iClientH]->m_iMP < iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
-			if (m_pClientList[iClientH]->m_iSP < iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);*/
+			m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
+			m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
+			m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
 
 			SendNotifyMsg(0, iClientH, DEF_NOTIFY_LEVELUP, 0, 0, 0, 0);
 			m_pClientList[iClientH]->m_iNextLevelExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel + 1];
@@ -25692,6 +25702,7 @@ void CGame::RequestRestartHandler(int iClientH)
 			}
 			m_pClientList[iClientH]->m_bIsKilled = false;
 			m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
 			m_pClientList[iClientH]->m_iHungerStatus = 100;
 			ZeroMemory(cTmpMap, sizeof(cTmpMap));
 			strcpy(cTmpMap, m_pClientList[iClientH]->m_cMapName);
@@ -28239,7 +28250,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					
@@ -28248,7 +28259,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (m_pTeleportConfigList[iTeleportConfigListIndex] != 0) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Duplicate magic number.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					m_pTeleportConfigList[iTeleportConfigListIndex] = new class CTeleport;
@@ -28274,7 +28285,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					m_pTeleportConfigList[iTeleportConfigListIndex]->m_iX = atoi(token);
@@ -28285,7 +28296,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					m_pTeleportConfigList[iTeleportConfigListIndex]->m_iY = atoi(token);
@@ -28296,7 +28307,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					//m_pClientList[iClientH]->m_iBallPoints = atoi(token);
@@ -28308,7 +28319,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					m_pTeleportConfigList[iTeleportConfigListIndex]->m_iMinLvl = atoi(token);
@@ -28319,7 +28330,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					m_pTeleportConfigList[iTeleportConfigListIndex]->m_iMaxLvl = atoi(token);
@@ -28350,12 +28361,12 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					else if( memcmp(token, "heldenian", 9) == 0 )
 					{
 						m_pTeleportConfigList[iTeleportConfigListIndex]->m_iSide = 66;
-                                        }
+                    }
 					else
 					{
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					cReadModeB = 11;
@@ -28365,7 +28376,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 
@@ -28377,7 +28388,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					cReadModeB = 12;
@@ -28387,7 +28398,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 
@@ -28399,7 +28410,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					cReadModeB = 13;
@@ -28409,7 +28420,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					if (_bGetIsStringIsNumber(token) == false) {
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 
@@ -28421,7 +28432,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 					{
 						PutLogList("(!!!) CRITICAL ERROR! TELEPORT-LIST configuration file error - Wrong Data format.");
 						delete pStrTok;
-						delete cp;
+						delete[] cp;
 						return false;
 					}
 					cReadModeA = 0;
@@ -28451,7 +28462,7 @@ bool CGame::bDecodeTeleportList(char *pFn)
 
 	}
 
-        delete cp;
+    delete[] cp;
 	delete pStrTok;
 	fclose(pFile);
 	}
@@ -30974,9 +30985,13 @@ void CGame::ChangeClassHandler(int iClientH, char* pData, DWORD dwMsgSize)
 		m_pClientList[iClientH]->m_cMagicMastery[i] = 0;
 	}
 
-	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, false);
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{
@@ -31048,9 +31063,13 @@ void CGame::ResetStatsHandler(int iClientH, char* pData, DWORD dwMsgSize)
 		m_pClientList[iClientH]->m_cMagicMastery[i] = 0;
 	}
 
-	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, false);
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
+
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{

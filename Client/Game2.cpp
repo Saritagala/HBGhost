@@ -2717,18 +2717,27 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 					DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 47);
 				else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
 			}*/
+			if (m_iGizonItemUpgradeLeft >= iValue) 
+			{
+				if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+				{
+					DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
+					PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 255, 255, 100);
+				}
+				else
+				{
+					DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
+					PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 180, 188, 180);
+				}
+			}
+			else
+			{
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
+				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 180, 188, 180);
+			}
 		}
 		//else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
-		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 255, 255, 100);
-		}
-		else
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 180, 188, 180);
-		}
+		
 		// Cancel
 		/*if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 17);
@@ -3009,22 +3018,23 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 			/*if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 47);
 			else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);*/
+
+			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+			{
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
+				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 255, 255, 100);
+			}
+			else
+			{
+				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
+				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 180, 188, 180);
+			}
 		}
 		// Cancel
 		/*if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 17);
 		else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 16);*/
 
-		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 255, 255, 100);
-		}
-		else
-		{
-			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Upgrade", 180, 188, 180);
-		}
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
@@ -3242,9 +3252,9 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 						strcpy(G_cTxt, "Ancient (7~105%)");
 						iEntry++;
 						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-						strcpy(G_cTxt, "Magic (7~105%)");
-						iEntry++;
-						if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+						//strcpy(G_cTxt, "Magic (7~105%)");
+						//iEntry++;
+						//if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 					}
 				}
 				else
@@ -3327,9 +3337,9 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 						strcpy(G_cTxt, "Ancient (7~105%)");
 						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
 						iLoc += 15;
-						strcpy(G_cTxt, "Magic (7~105%)");
-						PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
-						iLoc += 15;
+						//strcpy(G_cTxt, "Magic (7~105%)");
+						//PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+						//iLoc += 15;
 					}
 				}
 				else
@@ -16165,6 +16175,10 @@ void CGame::DrawDialogBox_SysMenu(short msX, short msY, char cLB)
 	wsprintf(G_cTxt, "Game Time: %.2d:%.2d", srvHour, srvMinute);
 	PutString(sX + 23, sY + 204, G_cTxt, RGB(4, 0, 50));
 
+	ZeroMemory(G_cTxt, sizeof(G_cTxt));
+	wsprintf(G_cTxt, "Ping: %.3d ms", m_iPing);
+	PutString(sX + 153, sY + 204, G_cTxt, RGB(4, 0, 50));
+
 	//Grid - by luqah
 	PutString(sX + 136, sY + 180, "Grid", RGB(4, 0, 50));
 	
@@ -22544,8 +22558,8 @@ void CGame::EnableDialogBox(int iBoxID, int cType, int sV1, int sV2, char * pStr
 		if (m_bIsDialogEnabled[33] == false)
 		{
 			m_stDialogBoxInfo[33].cMode = cType;
-			m_stDialogBoxInfo[33].sX = 360;
-			m_stDialogBoxInfo[33].sY = 65;
+			m_stDialogBoxInfo[33].sX = 360 + SCREENX;
+			m_stDialogBoxInfo[33].sY = 65 + SCREENY;
 			m_stDialogBoxInfo[33].sV1 = sV1;
 		}
 		break;

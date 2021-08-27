@@ -26,15 +26,15 @@
 #define WM_USER_TIMERSIGNAL		WM_USER + 500
 
 char			szAppClass[32];
-HWND			G_hWnd = NULL;
+HWND			G_hWnd = 0;
 char			G_cMsgList[120*50];
 bool            G_cMsgUpdated =	false;
 char            G_cTxt[120];
 
-class XSocket   * G_pListenSock = NULL;
-class CGateCore * G_pGateCore  = NULL;
+class XSocket   * G_pListenSock = 0;
+class CGateCore * G_pGateCore  = 0;
 
-MMRESULT          G_mmTimer0 = NULL;
+MMRESULT          G_mmTimer0 = 0;
 
 int               G_iQuitProgramCount = 0;
 bool			 G_bThreadFlag = true;
@@ -59,7 +59,7 @@ unsigned __stdcall  ThreadProc(void *ch)
 
 			for (i = 1; i < 500; i++) 
 			{
-				if ((G_pGateCore->m_pClientList[i] != NULL) && (G_pGateCore->m_pClientList[i]->m_bIsGameServer == true)) {
+				if ((G_pGateCore->m_pClientList[i] != 0) && (G_pGateCore->m_pClientList[i]->m_bIsGameServer == true)) {
 					wsprintf(cTemp,"(%s) Total user(%d)",G_pGateCore->m_pClientList[i]->m_cName,G_pGateCore->m_pClientList[i]->m_iTotalClients) ;
 					PutGameServerList(cTemp);
 				}
@@ -102,7 +102,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		break;
 
 	case WM_CLOSE:
-		if (MessageBox(NULL, "Quit gate server?", "GATE-SERVER", MB_ICONEXCLAMATION | MB_YESNO) == IDYES) {
+		if (MessageBox(0, "Quit gate server?", "GATE-SERVER", MB_ICONEXCLAMATION | MB_YESNO) == IDYES) {
 			return (DefWindowProc(hWnd, message, wParam, lParam));
 		}
 		break;
@@ -114,7 +114,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		return (DefWindowProc(hWnd, message, wParam, lParam));
 	}
 	
-	return NULL;
+	return 0;
 }
 
 
@@ -143,10 +143,10 @@ bool InitApplication( HINSTANCE hInstance)
 	wc.cbClsExtra    = 0;                            
 	wc.cbWndExtra    = sizeof (int);             
 	wc.hInstance     = hInstance;                    
-	wc.hIcon         = NULL;
-	wc.hCursor       = LoadCursor(NULL, IDC_ARROW);  
+	wc.hIcon         = 0;
+	wc.hCursor       = LoadCursor(0, IDC_ARROW);  
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW+1);	 
-	wc.lpszMenuName  = NULL;                    		 
+	wc.lpszMenuName  = 0;                    		 
 	wc.lpszClassName = szAppClass;                   
         
 	return (RegisterClass(&wc));
@@ -173,10 +173,10 @@ bool InitInstance( HINSTANCE hInstance, int nCmdShow )
         CW_USEDEFAULT,
         620, //GetSystemMetrics(SM_CXSCREEN),
         710, //GetSystemMetrics(SM_CYSCREEN),
-        NULL,
-        NULL,
+        0,
+        0,
         hInstance,
-        NULL );
+        0 );
 
     if (!G_hWnd) return (false);
     
@@ -193,8 +193,8 @@ int EventLoop()
  MSG msg;
 
 	while( 1 ) {
-		if( PeekMessage( &msg, NULL, 0, 0, PM_NOREMOVE ) ) {
-			if( !GetMessage( &msg, NULL, 0, 0 ) ) {
+		if( PeekMessage( &msg, 0, 0, 0, PM_NOREMOVE ) ) {
+			if( !GetMessage( &msg, 0, 0, 0 ) ) {
 				return msg.wParam;
 			}
             TranslateMessage(&msg);
@@ -218,7 +218,7 @@ void Initialize()
 
 	G_pGateCore = new class CGateCore(G_hWnd);
 
-	if (G_pGateCore == NULL) {
+	if (G_pGateCore == 0) {
 		MessageBox(G_hWnd, "Init fail!","ERROR", MB_ICONEXCLAMATION | MB_OK);
 		PostQuitMessage(0);
 		return;
@@ -243,11 +243,11 @@ void Initialize()
 
 void OnDestroy()
 {
-	if (G_pGateCore != NULL)    delete G_pGateCore;
-	if (G_pListenSock != NULL)  delete G_pListenSock;
+	if (G_pGateCore != 0)    delete G_pGateCore;
+	if (G_pListenSock != 0)  delete G_pListenSock;
 
 	_TermWinsock();
-  	if (G_mmTimer0 != NULL) _StopTimer(G_mmTimer0);
+  	if (G_mmTimer0 != 0) _StopTimer(G_mmTimer0);
 
 	PostQuitMessage(0);
 }
@@ -269,7 +269,7 @@ void PutLogList(char * cMsg)
 void UpdateScreen()
 {
 	if (G_cMsgUpdated == true) {
-		InvalidateRect(G_hWnd, NULL, true);
+		InvalidateRect(G_hWnd, 0, true);
 		G_cMsgUpdated = false;
 	}
 }
@@ -298,7 +298,7 @@ void OnPaint()
 	TextOut(hdc, 10, 55, "[F5] Block game server connection", strlen("[F5] Block game server connection"));
 
 	TextOut(hdc, 0, 620, "________________________________________________________________________________", strlen("________________________________________________________________________________"));
-	if (G_pGateCore != NULL) {
+	if (G_pGateCore != 0) {
 		for (i = 0; i < DEF_MAXMONITORS; i++) {
 			wsprintf(G_cTxt, "%d", i);
 			TextOut(hdc, 20 +i*30 +1, 640, G_cTxt, strlen(G_cTxt));
@@ -322,7 +322,7 @@ void OnAccept()
 
 void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw2)
 {
-	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, NULL);
+	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, 0);
 }
 
 
@@ -360,7 +360,7 @@ void PutItemLogFileList(char * cStr)
  SYSTEMTIME SysTime;
 	
 	pFile = fopen("ItemEvents.log", "at");
-	if (pFile == NULL) return;
+	if (pFile == 0) return;
 
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
@@ -376,7 +376,7 @@ void PutItemLogFileList(char * cStr)
 
 void PutGameServerList(char * cStr)
 {
- FILE * pFile = NULL ;
+ FILE * pFile = 0 ;
  char cBuffer[512];
 
  SYSTEMTIME SysTime;
@@ -389,7 +389,7 @@ void PutGameServerList(char * cStr)
 
 	pFile = fopen(cBuffer, "at");
 
-	if (pFile == NULL) return;
+	if (pFile == 0) return;
 
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
@@ -398,7 +398,7 @@ void PutGameServerList(char * cStr)
 	strcat(cBuffer, "\n");
 
 	fwrite(cBuffer, 1, strlen(cBuffer), pFile);
-    if (pFile != NULL)	fclose(pFile);
+    fclose(pFile);
 }
 
 
@@ -409,7 +409,7 @@ void PutLogFileList(char * cStr)
  SYSTEMTIME SysTime;
 	
 	pFile = fopen("HackAttacker.log", "at");
-	if (pFile == NULL) return;
+	if (pFile == 0) return;
 
 	ZeroMemory(cBuffer, sizeof(cBuffer));
 	
