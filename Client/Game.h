@@ -155,6 +155,8 @@ class CGame
 {
 public:
 
+	void ChangeBigItems();
+
 	int m_iAddAbsHoly = 0, m_iAddAbsUnholy = 0;
 
 	int chatmode = 99;

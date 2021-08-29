@@ -189,7 +189,7 @@ CGame::CGame()
 
 	//Guide Map Dialog
 #ifdef RES_HIGH
-	m_stDialogBoxInfo[9].sX = 800 - 128; //LifeX Fix Map
+	m_stDialogBoxInfo[9].sX = 799 - 128; //LifeX Fix Map
 #else
 	m_stDialogBoxInfo[9].sX = 512;
 #endif
@@ -1231,6 +1231,11 @@ void CGame::SaveGameConfigFile()
 	strcat(cFn2, "quest-helper = ");
 	wsprintf(cBuffer, "%d", (int)m_bQuestHelper);
 	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
+
+	strcat(cFn2, "show-big-items = ");
+	wsprintf(cBuffer, "%d", (int)bChangeBigItems);
+	strcat(cFn2, cBuffer);
 
 	//strcat(cFn2, "\n");
 
@@ -1342,6 +1347,10 @@ bool CGame::bReadGameConfigFile(char* cFn)
 					m_bQuestHelper = (bool)atoi(token);
 					cReadMode = 0;
 					break;
+				case 19:
+					bChangeBigItems = (bool)atoi(token);
+					cReadMode = 0;
+					break;
 					
 				}
 			}
@@ -1364,6 +1373,7 @@ bool CGame::bReadGameConfigFile(char* cFn)
 				if (memcmp(token, "show-grid", 9) == 0)				cReadMode = 16;
 				if (memcmp(token, "show-npc", 8) == 0)				cReadMode = 17;
 				if (memcmp(token, "quest-helper", 12) == 0)				cReadMode = 18;
+				if (memcmp(token, "show-big-items", 14) == 0)				cReadMode = 19;
 			}
 			token = pStrTok->pGet();
 		}
@@ -2577,10 +2587,10 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 	for (iy = -sModY - 224; iy <= 547 + 352; iy += 32)
 	{
 		indexX = sDivX + sPivotX - 4;
-		for (ix = -sModX - 128; ix <= 800 + 128; ix += 32)
+		for (ix = -sModX - 128; ix <= 799 + 128; ix += 32)
 		{	sDynamicObject = 0;
 			bRet = false;
-			if ((ix >= -sModX) && (ix <= 800 + 16) && (iy >= -sModY) && (iy <= 547 + 32 + 16))
+			if ((ix >= -sModX) && (ix <= 799 + 16) && (iy >= -sModY) && (iy <= 547 + 32 + 16))
 #else
 	for (iy = -sModY-224; iy <= 427+352; iy += 32)
 	{	indexX = sDivX + sPivotX-4;
@@ -2955,7 +2965,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 						else m_pTileSpr[100 + 32]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 					}else
 					{	if ((bIsPlayerDrawed == true) && (m_pTileSpr[sObjSpr]->m_rcBound.top <= m_rcPlayerRect.top) && (m_pTileSpr[sObjSpr]->m_rcBound.bottom >= m_rcPlayerRect.bottom) &&
-							(m_cDetailLevel >= 2) && (m_pTileSpr[sObjSpr]->m_rcBound.left <= m_rcPlayerRect.left) && (m_pTileSpr[sObjSpr]->m_rcBound.right >= m_rcPlayerRect.right))
+							(m_pTileSpr[sObjSpr]->m_rcBound.left <= m_rcPlayerRect.left) && (m_pTileSpr[sObjSpr]->m_rcBound.right >= m_rcPlayerRect.right))
 						{	m_pTileSpr[sObjSpr + 50]->PutFadeSprite(ix , iy , sObjSprFrame, dwTime);
 							m_pTileSpr[sObjSpr]->PutTransSprite2(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						}else
@@ -6943,14 +6953,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Hero Damage Bonus:", 255, 255, 255);
 		wsprintf(G_cTxt, "+%d", m_iHeroBonus);
 		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Reputation:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d", m_iRating);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
-		iNext += 1;
-		PutString2(sX + iFLine, sY + iNext * 17 + 15, "Coins:", 255, 255, 255);
-		wsprintf(G_cTxt, "%d", m_iCoinPoints);
-		PutString2(sX + iFLine2, sY + iNext * 17 + 15, G_cTxt, 0, 255, 0);
+		
 
 		break;
 	}
@@ -7080,9 +7083,9 @@ void CGame::bItemDrop_ExternalScreen(char cItemID, short msX, short msY)
 					tY = msY - 50;
 					if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-					if ((tX + 235) > 800) tX = 800 - 235;
+					if ((tX + 235) > 799) tX = 799 - 235;
 					if (tY < 0) tY = 0;
-					if ((tY + 100) > 600) tY = 600 - 100;
+					if ((tY + 100) > 599) tY = 599 - 100;
 #else
 					if ((tX + 235) > 639) tX = 639 - 235;
 					if (tY < 0) tY = 0;
@@ -7106,9 +7109,9 @@ void CGame::bItemDrop_ExternalScreen(char cItemID, short msX, short msY)
 					tY = msY - 50;
 					if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-					if ((tX + 235) > 800) tX = 800 - 235;
+					if ((tX + 235) > 799) tX = 799 - 235;
 					if (tY < 0) tY = 0;
-					if ((tY + 100) > 600) tY = 600 - 100;
+					if ((tY + 100) > 599) tY = 599 - 100;
 #else
 					if ((tX + 235) > 639) tX = 639 - 235;
 					if (tY < 0) tY = 0;
@@ -7133,9 +7136,9 @@ void CGame::bItemDrop_ExternalScreen(char cItemID, short msX, short msY)
 					tY = msY - 50;
 					if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-					if ((tX + 235) > 800) tX = 800 - 235;
+					if ((tX + 235) > 799) tX = 799 - 235;
 					if (tY < 0) tY = 0;
-					if ((tY + 100) > 600) tY = 600 - 100;
+					if ((tY + 100) > 599) tY = 599 - 100;
 #else
 					if ((tX + 235) > 639) tX = 639 - 235;
 					if (tY < 0) tY = 0;
@@ -19013,10 +19016,10 @@ void CGame::DrawTopMsg()
 {
 	if (strlen(m_cTopMsg) == 0) return;
 #ifdef RES_HIGH
-	m_DDraw.DrawShadowBox(0, 0, 800, 30);
+	m_DDraw.DrawShadowBox(0, 0, 799, 30);
 
 	if ((((G_dwGlobalTime - m_dwTopMsgTime)/250) % 2) == 0)
-		PutAlignedString(0, 800, 10, m_cTopMsg, 255,255,0);
+		PutAlignedString(0, 799, 10, m_cTopMsg, 255,255,0);
 #else
 	m_DDraw.DrawShadowBox(0, 0, 639, 30);
 
@@ -21692,7 +21695,7 @@ bool CGame::bDlgBoxPress_Character(short msX, short msY)
 		{
 			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
 			{
 				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
 				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_LFINGER];
@@ -21863,7 +21866,7 @@ bool CGame::bDlgBoxPress_Character(short msX, short msY)
 		{
 			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
+			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
 			{
 				m_stMCursor.cSelectedObjectType = DEF_SELECTEDOBJTYPE_ITEM;
 				m_stMCursor.sSelectedObjectID = m_sItemEquipmentStatus[DEF_EQUIPPOS_LFINGER];
@@ -23145,7 +23148,7 @@ void CGame::DrawLine(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultX += x_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23174,7 +23177,7 @@ void CGame::DrawLine(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultY += y_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23229,7 +23232,7 @@ void CGame::DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultX += x_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23258,7 +23261,7 @@ void CGame::DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultY += y_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23313,7 +23316,7 @@ void CGame::DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultX += x_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23342,7 +23345,7 @@ void CGame::DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultY += y_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 600)) {
+			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -25500,7 +25503,7 @@ void CGame::UpdateScreen_OnConnecting()
 	m_bIsHideLocalCursor = false;
 
 #ifdef RES_HIGH
-	m_DDraw.DrawShadowBox(0,0,800,600);
+	m_DDraw.DrawShadowBox(0,0,799,599);
 #else
 	m_DDraw.DrawShadowBox(0,0,639,479);
 #endif
@@ -27889,11 +27892,11 @@ void CGame::UpdateScreen_OnQueryForceLogin()
 	UpdateScreen_OnSelectCharacter(0, 0, 0, 0);
 #ifdef RES_HIGH
 	if ((m_cGameModeCount >= 0) && (m_cGameModeCount < 6)) {
-		m_DDraw.DrawShadowBox(0, 0, 800, 600);
+		m_DDraw.DrawShadowBox(0, 0, 799, 599);
 	}
 	else if (m_cGameModeCount >= 6) {
-		m_DDraw.DrawShadowBox(0, 0, 800, 600);
-		m_DDraw.DrawShadowBox(0, 0, 800, 600);
+		m_DDraw.DrawShadowBox(0, 0, 799, 599);
+		m_DDraw.DrawShadowBox(0, 0, 799, 599);
 	}
 #else
 	if ((m_cGameModeCount >= 0) && (m_cGameModeCount < 6)) {
@@ -28177,7 +28180,7 @@ void CGame::UpdateScreen_OnWaitingResponse()
 	}
 	m_bIsHideLocalCursor = false;
 #ifdef RES_HIGH
-	m_DDraw.DrawShadowBox(0, 0, 800, 600);
+	m_DDraw.DrawShadowBox(0, 0, 799, 599);
 #else
 	m_DDraw.DrawShadowBox(0, 0, 639, 479);
 #endif
@@ -28237,12 +28240,12 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 #ifdef RES_HIGH
 	if ((m_cGameModeCount >= 0) && (m_cGameModeCount < 6))
 	{
-		m_DDraw.DrawShadowBox(0, 0, 800, 600);
+		m_DDraw.DrawShadowBox(0, 0, 799, 599);
 	}
 	else if (m_cGameModeCount >= 6)
 	{
-		m_DDraw.DrawShadowBox(0, 0, 800, 600);
-		//m_DDraw.DrawShadowBox(0, 0, 800, 600);
+		m_DDraw.DrawShadowBox(0, 0, 799, 599);
+		m_DDraw.DrawShadowBox(0, 0, 799, 599);
 	}
 #else
 	if ((m_cGameModeCount >= 0) && (m_cGameModeCount < 6))
@@ -29712,7 +29715,7 @@ NMH_LOOPBREAK2:;
 		SetTopMsg(m_pGameMsgList[17]->m_pMsg, 5);
 		//StartMeteorStrikeEffect
 #ifdef RES_HIGH
-		for( i=0 ; i<36 ; i++ ) bAddNewEffect(60, m_sViewPointX +(rand() % 800), m_sViewPointY +(rand() % 600), 0, 0, -(rand() % 80));
+		for( i=0 ; i<36 ; i++ ) bAddNewEffect(60, m_sViewPointX +(rand() % 799), m_sViewPointY +(rand() % 547), 0, 0, -(rand() % 80)); // 600
 #else
 		for( i=0 ; i<36 ; i++ ) bAddNewEffect(60, m_sViewPointX +(rand() % 640), m_sViewPointY +(rand() % 480), 0, 0, -(rand() % 80));
 #endif
@@ -31092,7 +31095,7 @@ void CGame::UpdateScreen_OnLogResMsg()
 		break;
 	}
 #ifdef RES_HIGH
-	m_DDraw.DrawShadowBox(0,0, 800, 600);
+	m_DDraw.DrawShadowBox(0, 0, 799, 599);
 #else
 	m_DDraw.DrawShadowBox(0,0,639,479);
 #endif
@@ -31890,7 +31893,7 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 	if( sY < 20 ) sY = 0;
 #ifdef RES_HIGH
 	//Magn0S:: Fix map
-	if( sX > 800-128-20 ) sX = 800-128;
+	if( sX > 799-128-20 ) sX = 799-128;
 	if( sY > 547-128-20 ) sY = 547-128;
 	//LifeX Fix Map
 	/*if (sX > 400) sX = 800 - 128;
@@ -32319,7 +32322,7 @@ void CGame::UpdateScreen_OnChangePassword()
 
 	UpdateScreen_OnSelectCharacter(0, 0, 0, 0, true);
 #ifdef RES_HIGH
-	m_DDraw.DrawShadowBox(0, 0, 800, 600);
+	m_DDraw.DrawShadowBox(0, 0, 799, 599);
 #else
 	m_DDraw.DrawShadowBox(0, 0, 639, 479);//SelectCharacter
 #endif
@@ -33323,31 +33326,8 @@ bool CGame::bCheckLocalChatCommand(char * pMsg)
 	}
 	//Bigitems Small o Large by Fenrir
 	else if (memcmp(cBuff, "/bigitems", 9) == 0)        
-	{   if (bChangeBigItems) 
-        {	bChangeBigItems = false;
-            // DEF_SPRID_ITEMGROUND_PIVOTPOINT+1
-            MakeSprite( "item-ground", DEF_SPRID_ITEMGROUND_PIVOTPOINT+1, 19, false);
-            m_hPakFile = CreateFile("sprites\\item-ground.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
-            if( m_hPakFile != INVALID_HANDLE_VALUE )
-            {   m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+20] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 17, false);
-                m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+21] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 18, false);
-                m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+22] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 19, false);//Angels
-                CloseHandle(m_hPakFile);
-            }
-            AddEventList("Appearance of the items on the ground has been changed to a small.");
-        }else 
-        {	bChangeBigItems = true;
-            // DEF_SPRID_ITEMGROUND_PIVOTPOINT+1
-            MakeSprite( "item-pack", DEF_SPRID_ITEMGROUND_PIVOTPOINT+1, 19, false);
-            m_hPakFile = CreateFile("sprites\\item-pack.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
-            if( m_hPakFile != INVALID_HANDLE_VALUE )
-            {   m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+20] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack", 17, false);
-                m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+21] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack", 18, false);
-                m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT+22] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack", 19, false);//Angels
-                CloseHandle(m_hPakFile);
-            }
-            AddEventList("Appearance of the items on the ground has been changed to a large.");
-        }
+	{
+		ChangeBigItems();
         return true;
     }
 	else if (memcmp(cBuff, "/tooff", 6) == 0)
@@ -33439,6 +33419,40 @@ bool CGame::bCheckLocalChatCommand(char * pMsg)
 		return true;
 	}
 	return false;
+}
+
+void CGame::ChangeBigItems()
+{
+	if (bChangeBigItems)
+	{
+		bChangeBigItems = false;
+		// DEF_SPRID_ITEMGROUND_PIVOTPOINT+1
+		MakeSprite("item-ground", DEF_SPRID_ITEMGROUND_PIVOTPOINT + 1, 19, false);
+		m_hPakFile = CreateFile("sprites\\item-ground.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+		if (m_hPakFile != INVALID_HANDLE_VALUE)
+		{
+			m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 20] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 17, false);
+			m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 21] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 18, false);
+			m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 22] = new class CSprite(m_hPakFile, &m_DDraw, "item-ground", 19, false);//Angels
+			CloseHandle(m_hPakFile);
+		}
+		AddEventList("Appearance of the items on the ground has been changed to a small.");
+	}
+	else
+	{
+		bChangeBigItems = true;
+		// DEF_SPRID_ITEMGROUND_PIVOTPOINT+1
+		MakeSprite("item-pack", DEF_SPRID_ITEMGROUND_PIVOTPOINT + 1, 19, false);
+		m_hPakFile = CreateFile("sprites\\item-pack.pak", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
+		if (m_hPakFile != INVALID_HANDLE_VALUE)
+		{
+			m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 20] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack", 17, false);
+			m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 21] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack", 18, false);
+			m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 22] = new class CSprite(m_hPakFile, &m_DDraw, "item-pack", 19, false);//Angels
+			CloseHandle(m_hPakFile);
+		}
+		AddEventList("Appearance of the items on the ground has been changed to a large.");
+	}
 }
 
 bool CGame::bCheckItemOperationEnabled(char cItemID)
@@ -33692,19 +33706,19 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 #ifdef RES_HIGH
 		if ((msX == 0) && (msY == 0) && (m_sViewDstX > 32 * 26) && (m_sViewDstY > 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 8, 0, 0, 0, 0);
-		else if ((msX == 800) && (msY == 0) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY > 32 * 20))
+		else if ((msX == 799) && (msY == 0) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY > 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 2, 0, 0, 0, 0);
-		else if ((msX == 800) && (msY == 600) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 20))
+		else if ((msX == 799) && (msY == 599) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 4, 0, 0, 0, 0);
-		else if ((msX == 0) && (msY == 600))
+		else if ((msX == 0) && (msY == 599))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 6, 0, 0, 0, 0);
 		else if ((msX == 0) && (m_sViewDstX > 32 * 26))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 7, 0, 0, 0, 0);
-		else if ((msX == 800) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26))
+		else if ((msX == 799) && (m_sViewDstX < 32 * m_pMapData->m_sMapSizeX - 32 * 26))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 3, 0, 0, 0, 0);
 		else if ((msY == 0) && (m_sViewDstY > 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 1, 0, 0, 0, 0);
-		else if ((msY == 600) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 20))
+		else if ((msY == 599) && (m_sViewDstY < 32 * m_pMapData->m_sMapSizeY - 32 * 20))
 			bSendCommand(MSGID_REQUEST_PANNING, 0, 5, 0, 0, 0, 0);
 		else return;
 #else
@@ -33996,7 +34010,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						}
 						else
 						{
-							m_stDialogBoxInfo[9].sX = 800 - m_stDialogBoxInfo[9].sSizeX;
+							m_stDialogBoxInfo[9].sX = 799 - m_stDialogBoxInfo[9].sSizeX;
 						}
 
 						if (msY < 273)
@@ -34428,9 +34442,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -34449,9 +34463,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -34470,9 +34484,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -34495,9 +34509,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -34520,9 +34534,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -34541,9 +34555,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -34563,9 +34577,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								tY = msY - 50;
 								if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-								if ((tX + 235) > 800) tX = 800 - 235;
+								if ((tX + 235) > 799) tX = 799 - 235;
 								if (tY < 0) tY = 0;
-								if ((tY + 100) > 600) tY = 600 - 100;
+								if ((tY + 100) > 599) tY = 599 - 100;
 #else
 								if ((tX + 235) > 639) tX = 639 - 235;
 								if (tY < 0) tY = 0;
@@ -34586,9 +34600,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								tY = msY - 50;
 								if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-								if ((tX + 235) > 800) tX = 800 - 235;
+								if ((tX + 235) > 799) tX = 799 - 235;
 								if (tY < 0) tY = 0;
-								if ((tY + 100) > 600) tY = 600 - 100;
+								if ((tY + 100) > 599) tY = 599 - 100;
 #else
 								if ((tX + 235) > 639) tX = 639 - 235;
 								if (tY < 0) tY = 0;
@@ -34608,9 +34622,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								tY = msY - 50;
 								if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-								if ((tX + 235) > 800) tX = 800 - 235;
+								if ((tX + 235) > 799) tX = 799 - 235;
 								if (tY < 0) tY = 0;
-								if ((tY + 100) > 600) tY = 600 - 100;
+								if ((tY + 100) > 599) tY = 599 - 100;
 #else
 								if ((tX + 235) > 639) tX = 639 - 235;
 								if (tY < 0) tY = 0;
@@ -34629,9 +34643,9 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							tY = msY - 50;
 							if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-							if ((tX + 235) > 800) tX = 800 - 235;
+							if ((tX + 235) > 799) tX = 799 - 235;
 							if (tY < 0) tY = 0;
-							if ((tY + 100) > 600) tY = 600 - 100;
+							if ((tY + 100) > 599) tY = 599 - 100;
 #else
 							if ((tX + 235) > 639) tX = 639 - 235;
 							if (tY < 0) tY = 0;
@@ -35548,9 +35562,9 @@ void CGame::UpdateScreen_OnGame()
 								tY = msY - 50;
 								if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-								if ((tX + 235) > 800) tX = 800 - 235;
+								if ((tX + 235) > 799) tX = 799 - 235;
 								if (tY < 0) tY = 0;
-								if ((tY + 100) > 600) tY = 600 - 100;
+								if ((tY + 100) > 599) tY = 599 - 100;
 #else
 								if ((tX + 235) > 639) tX = 639 - 235;
 								if (tY < 0) tY = 0;
@@ -35574,9 +35588,9 @@ void CGame::UpdateScreen_OnGame()
 								tY = msY - 50;
 								if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-								if ((tX + 235) > 800) tX = 800 - 235;
+								if ((tX + 235) > 799) tX = 799 - 235;
 								if (tY < 0) tY = 0;
-								if ((tY + 100) > 600) tY = 600 - 100;
+								if ((tY + 100) > 599) tY = 599 - 100;
 #else
 								if ((tX + 235) > 639) tX = 639 - 235;
 								if (tY < 0) tY = 0;
@@ -35600,9 +35614,9 @@ void CGame::UpdateScreen_OnGame()
 								tY = msY - 50;
 								if (tX < 0) tX = 0;
 #ifdef RES_HIGH
-								if ((tX + 235) > 800) tX = 800 - 235;
+								if ((tX + 235) > 799) tX = 799 - 235;
 								if (tY < 0) tY = 0;
-								if ((tY + 100) > 600) tY = 600 - 100;
+								if ((tY + 100) > 599) tY = 599 - 100;
 #else
 								if ((tX + 235) > 639) tX = 639 - 235;
 								if (tY < 0) tY = 0;

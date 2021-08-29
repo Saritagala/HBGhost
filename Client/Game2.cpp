@@ -23301,7 +23301,7 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
-			if (m_bGrid) m_bGrid = false; else m_bGrid = true;
+			ChangeBigItems();
 
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
@@ -23841,11 +23841,11 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 		iNext += 1;
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 		{
-			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 255, 255, 255);
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Show Big Items", 255, 255, 255);
 		}
-		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Grid", 19, 104, 169);
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Show Big Items", 19, 104, 169);
 
-		if (m_bGrid) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		if (bChangeBigItems) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 
 		iNext += 1;
