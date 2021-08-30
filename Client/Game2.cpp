@@ -20533,7 +20533,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 	if (sY < 20) sY = 0;
 
 	//LifeX Fix Map
-	if (sX > 400) sX = 800 - 128;
+	if (sX > 400) sX = 799 - 128;
 	if (sY > 273) sY = 547 - 128;
 
 	for (shX = -2; shX < 130; shX++)
@@ -20686,8 +20686,8 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
 				{
 					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
-						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
-							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 12) != 0)
+						if (memcmp(PartyMapName[i], m_cMapName, 10) == 0)
+							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 10) != 0)
 								if (iParty_sX[i] >= shX && iParty_sX[i] <= shX + 128 && iParty_sY[i] >= shY && iParty_sY[i] <= shY + 128)
 									//m_pSprite[DEF_SPRID_INTERFACE_ND_CRUSADE]->PutSpriteFast(sX - shX + iParty_sX[i], sY - shY + iParty_sY[i], 38, m_dwCurTime);
 									pixyellow(sX + iParty_sX[i] - shX, sY + iParty_sY[i] - shY, 255, 255, 0);
@@ -20876,9 +20876,8 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 				{
 					if (strlen(m_stPartyMemberNameList[i].cName) != 0)
 					{
-						if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+						if (memcmp(PartyMapName[i], m_cMapName, 10) == 0)
 						{
-
 							shX = (iParty_sX[i] * 128) / (m_pMapData->m_sMapSizeX);
 							shY = (iParty_sY[i] * 128) / (m_pMapData->m_sMapSizeX);
 							if (memcmp(m_stPartyMemberNameList[i].cName, m_cPlayerName, 10) != 0) {
@@ -21045,7 +21044,7 @@ void CGame::DrawDialogBox_GuideMap(short msX, short msY, char cLB)
 			for (i = 0; i <= DEF_MAXPARTYMEMBERS; i++)
 			{
 				if (strlen(m_stPartyMemberNameList[i].cName) != 0)
-					if (memcmp(PartyMapName[i], m_cMapName, 12) == 0)
+					if (memcmp(PartyMapName[i], m_cMapName, 10) == 0)
 						if (shX > iParty_sX[i] - 5 && shX < iParty_sX[i] + 5 && shY >  iParty_sY[i] - 5 && shY < iParty_sY[i] + 5)
 							strcpy(G_cTxt, m_stPartyMemberNameList[i].cName);
 

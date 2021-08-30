@@ -1152,7 +1152,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 		try
 		{
 			com.setConnection(&con);
-			com.setCommandText("SELECT [Character-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Quest-Number1], [Character-Quest-ID1], [Character-Quest-Count1], [Character-Quest-Reward1], [Character-Quest-Amount1], [Character-Quest-Completed1], [Character-Quest-Number2], [Character-Quest-ID2], [Character-Quest-Count2], [Character-Quest-Reward2], [Character-Quest-Amount2], [Character-Quest-Completed2], [Character-Quest-Number3], [Character-Quest-ID3], [Character-Quest-Count3], [Character-Quest-Reward3], [Character-Quest-Amount3], [Character-Quest-Completed3], [Character-Quest-Number4], [Character-Quest-ID4], [Character-Quest-Count4], [Character-Quest-Reward4], [Character-Quest-Amount4], [Character-Quest-Completed4], [Character-Quest-Number5], [Character-Quest-ID5], [Character-Quest-Count5], [Character-Quest-Reward5], [Character-Quest-Amount5], [Character-Quest-Completed5], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour], [Character-Magic-Mastery], [Character-Skill-Mastery], [Character-Skill-SSN], [Character-Equip-Status], [Character-Item-Pos-X], [Character-Item-Pos-Y], [Character-Deaths], [Character-TotalDGKills], [Character-DGPoints], [Character-TotalDGDeaths], [Character-DGKills], [Character-Max-Ek], [Character-Heldenian-GUID], [Character-Wanted-Level], [Character-Coin-Points], [Character-Team], [Character-Class] FROM Characters WHERE [Character-Name] = :1 AND [Account-ID] = :2");
+			com.setCommandText("SELECT [Character-Penalty-Year], [Character-Penalty-Month], [Character-Penalty-Day], [Character-ID], RTRIM([Character-Name]) AS 'Character-Name', [Character-Location], [Character-Guild-Name], [Character-Guild-GUID], [Character-Guild-Rank], [Character-Loc-Map], [Character-Loc-X], [Character-Loc-Y], [Character-HP], [Character-MP], [Character-SP], [Character-Level], [Character-Rating], [Character-Strength], [Character-Intelligence], [Character-Vitality], [Character-Dexterity], [Character-Magic], [Character-Charisma], [Character-Luck], [Character-Experience], [Character-LU-Pool], [Character-Ek-Count], [Character-Pk-Count], [Character-Reward-Gold], [Character-ID1], [Character-ID2], [Character-ID3], [Character-Sex], [Character-Skin], [Character-Hair-Style], [Character-Hair-Colour], [Character-Underwear], [Character-Hunger], [Character-Shutup-Time], [Character-Rating-Time], [Character-Force-Time], [Character-SP-Time], [Character-Admin-Level], [Character-Quest-Number1], [Character-Quest-ID1], [Character-Quest-Count1], [Character-Quest-Reward1], [Character-Quest-Amount1], [Character-Quest-Completed1], [Character-Quest-Number2], [Character-Quest-ID2], [Character-Quest-Count2], [Character-Quest-Reward2], [Character-Quest-Amount2], [Character-Quest-Completed2], [Character-Quest-Number3], [Character-Quest-ID3], [Character-Quest-Count3], [Character-Quest-Reward3], [Character-Quest-Amount3], [Character-Quest-Completed3], [Character-Quest-Number4], [Character-Quest-ID4], [Character-Quest-Count4], [Character-Quest-Reward4], [Character-Quest-Amount4], [Character-Quest-Completed4], [Character-Quest-Number5], [Character-Quest-ID5], [Character-Quest-Count5], [Character-Quest-Reward5], [Character-Quest-Amount5], [Character-Quest-Completed5], [Character-Contribution], [Character-War-Contribution], [Character-Event-ID], [Character-Criticals], [Character-Ability-Time], [Character-Lock-Map], [Character-Lock-Time], [Character-Crusade-Job], [Character-Crusade-GUID], [Character-Construct-Points], [Character-Death-Time], [Character-Party-ID], [Character-Majestics], [Character-Appr1], [Character-Appr2], [Character-Appr3], [Character-Appr4], [Character-Appr-Colour], [Character-Magic-Mastery], [Character-Skill-Mastery], [Character-Skill-SSN], [Character-Equip-Status], [Character-Item-Pos-X], [Character-Item-Pos-Y], [Character-Deaths], [Character-TotalDGKills], [Character-DGPoints], [Character-TotalDGDeaths], [Character-DGKills], [Character-Max-Ek], [Character-Heldenian-GUID], [Character-Wanted-Level], [Character-Coin-Points], [Character-Team], [Character-Class] FROM Characters WHERE [Character-Name] = :1 AND [Account-ID] = :2");
 			com.Param(1).setAsString() = cCharacterName;
 			com.Param(2).setAsLong() = accDBID;
 
@@ -1160,7 +1160,6 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 			if (com.isResultSet())
 			{
-				
 				char cTemp[500];
 
 				strcat(cp2, "  ");
@@ -1310,6 +1309,12 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 					ZeroMemory(cTemp, sizeof(cTemp));
 					wsprintf(cTemp, "character-location = %s", com.Field("Character-Location").asString());
+					strcat(cp2, cTemp);
+					strcat(cp2, "  ");
+					iSize += (strlen(cTemp) + 2);
+
+					ZeroMemory(cTemp, sizeof(cTemp));
+					wsprintf(cTemp, "penalty-block-date = %d %d %d", com.Field("Character-Penalty-Year").asLong(), com.Field("Character-Penalty-Month").asLong(), com.Field("Character-Penalty-Day").asLong());
 					strcat(cp2, cTemp);
 					strcat(cp2, "  ");
 					iSize += (strlen(cTemp) + 2);
@@ -1592,7 +1597,7 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 					if (com2.isResultSet())
 					{
-						long col_count = com2.FieldCount();
+						int col_count = com2.FieldCount();
 
 						char cTemp2[500];
 
@@ -1620,23 +1625,23 @@ void CWorldLog::RequestPlayerData(int iClientH, char* pData)
 
 					if (com2.isResultSet())
 					{
-						long col_count = com2.FieldCount();
+						int col_count = com2.FieldCount();
 
-						char cTemp2[500];
+						char cTemp3[500];
 
 						while (com2.FetchNext())
 						{
-							ZeroMemory(cTemp2, sizeof(cTemp2));
-							strcpy(cTemp2, "character-bank-item = ");
+							ZeroMemory(cTemp3, sizeof(cTemp3));
+							strcpy(cTemp3, "character-bank-item = ");
 							for (int k = 3; k < col_count + 1; k++)
 							{
-								strcat(cTemp2, com2.Field(k).asString());
-								strcat(cTemp2, " ");
+								strcat(cTemp3, com2.Field(k).asString());
+								strcat(cTemp3, " ");
 							}
 
-							strcat(cp2, cTemp2);
+							strcat(cp2, cTemp3);
 							strcat(cp2, "  ");
-							iSize += (strlen(cTemp2) + 2);
+							iSize += (strlen(cTemp3) + 2);
 						}
 					}
 
@@ -2366,7 +2371,7 @@ bool CWorldLog::iGetCharacterData(char* cCharName, char* cMapName, short* sAppr1
 void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize, bool bVar1, bool bVar2)
 {
 	char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256], cTemp[128], cLocation[11], cGuildName[21];
-	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51];
+	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51], cSkillMastery[241], cSkillSSN[301];
 	int iGuildGUID, iGuildRank, iHP, iMP, iSP, iLevel, iRating, iStr, iInt, iDex, iVit, iMag, iCharisma, iExp, iLU_Pool;
 	int iEK, iPK, iHunger, iShutUp, iRatingTime, iForceRecall, iContribution, iCrits, iAbilityTime, iMajestics, iApprColour;
 	int iRewardGold, i, iWarContribution, iCrusadeDuty, iConstructPts;
@@ -2540,6 +2545,17 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	cp += 4;
 
 	//Penalty Block
+	ip = (int*)cp;
+	int iPenaltyBlockYear = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iPenaltyBlockMonth = *ip;
+	cp += 4;
+
+	ip = (int*)cp;
+	int iPenaltyBlockDay = *ip;
+	cp += 4;
 
 	memcpy(cGuildName, cp, 20);
 	cp += 20;
@@ -2723,6 +2739,10 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 	cp += 200;
 
 	// Skill
+	memcpy(cSkillMastery, cp, 240);
+	cp += 240;
+	memcpy(cSkillSSN, cp, 300);
+	cp += 300;
 
 	if ((dwMsgSize - 40) <= 0) {
 		PutLogList("(X) Character data body empty: Cannot create & save data file.");
@@ -3016,7 +3036,7 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 
 			com.setConnection(&con);
 
-			com.setCommandText("UPDATE Characters SET [Character-ID1] = :2, [Character-ID2] = :3, [Character-ID3] = :4, [Character-Level] = :5, [Character-Strength] = :6, [Character-Vitality] = :7, [Character-Dexterity] = :8, [Character-Intelligence] = :9, [Character-Magic] = :10, [Character-Charisma] = :11, [Character-Experience] = :12, [Character-LU-Pool] = :13, [Character-Sex] = :14, [Character-Skin] = :15, [Character-Hair-Style] = :16, [Character-Hair-Colour] = :17, [Character-Underwear] = :18, [Character-Appr-Colour] = :19, [Character-Appr1] = :20, [Character-Appr2] = :21, [Character-Appr3] = :22, [Character-Appr4] = :23, [Character-Location] = :24, [Character-Loc-Map] = :25, [Character-Loc-X] = :26, [Character-Loc-Y] = :27, [Character-Admin-Level] = :28, [Character-Contribution] = :29, [Character-Ability-Time] = :30, [Character-Lock-Map] = :31, [Character-Lock-Time] = :32, [Character-Guild-Name] = :33, [Character-Guild-GUID] = :34, [Character-Guild-Rank] = :35, [Character-Quest-Number1] = :36, [Character-Quest-ID1] = :37, [Character-Quest-Count1] = :38, [Character-Quest-Reward1] = :39, [Character-Quest-Amount1] = :40, [Character-Quest-Completed1] = :41, [Character-Quest-Number2] = :42, [Character-Quest-ID2] = :43, [Character-Quest-Count2] = :44, [Character-Quest-Reward2] = :45, [Character-Quest-Amount2] = :46, [Character-Quest-Completed2] = :47, [Character-Quest-Number3] = :48, [Character-Quest-ID3] = :49, [Character-Quest-Count3] = :50, [Character-Quest-Reward3] = :51, [Character-Quest-Amount3] = :52, [Character-Quest-Completed3] = :53, [Character-Quest-Number4] = :54, [Character-Quest-ID4] = :55, [Character-Quest-Count4] = :56, [Character-Quest-Reward4] = :57, [Character-Quest-Amount4] = :58, [Character-Quest-Completed4] = :59, [Character-Quest-Number5] = :60, [Character-Quest-ID5] = :61, [Character-Quest-Count5] = :62, [Character-Quest-Reward5] = :63, [Character-Quest-Amount5] = :64, [Character-Quest-Completed5] = :65, [Character-Event-ID] = :66, [Character-War-Contribution] = :67, [Character-Crusade-Job] = :68, [Character-Crusade-GUID] = :69, [Character-Construct-Points] = :70, [Character-Rating] = :71, [Character-HP] = :72, [Character-MP] = :73, [Character-SP] = :74, [Character-EK-Count] = :75, [Character-PK-Count] = :76, [Character-Reward-Gold] = :77, [Character-Hunger] = :78, [Character-Criticals] = :79, [Character-Shutup-Time] = :80, [Character-Rating-Time] = :81, [Character-Force-Time] = :82, [Character-SP-Time] = :83, [Character-Death-Time] = :84, [Character-Party-ID] = :85, [Character-Majestics] = :86, [Character-Deaths] = :87, [Character-TotalDGKills] = :88, [Character-DGPoints] = :89, [Character-TotalDGDeaths] = :90, [Character-DGKills] = :91, [Character-Max-Ek] = :92, [Character-Heldenian-GUID] = :93, [Character-Wanted-Level] = :94, [Character-Coin-Points] = :95, [Character-Team] = :96, [Character-Class] = :97, [Character-Magic-Mastery] = :98, [Character-Equip-Status] = :99, [Character-Item-Pos-X] = :100, [Character-Item-Pos-Y] = :101 WHERE [Character-ID] = :1");
+			com.setCommandText("UPDATE Characters SET [Character-ID1] = :2, [Character-ID2] = :3, [Character-ID3] = :4, [Character-Level] = :5, [Character-Strength] = :6, [Character-Vitality] = :7, [Character-Dexterity] = :8, [Character-Intelligence] = :9, [Character-Magic] = :10, [Character-Charisma] = :11, [Character-Experience] = :12, [Character-LU-Pool] = :13, [Character-Sex] = :14, [Character-Skin] = :15, [Character-Hair-Style] = :16, [Character-Hair-Colour] = :17, [Character-Underwear] = :18, [Character-Appr-Colour] = :19, [Character-Appr1] = :20, [Character-Appr2] = :21, [Character-Appr3] = :22, [Character-Appr4] = :23, [Character-Location] = :24, [Character-Loc-Map] = :25, [Character-Loc-X] = :26, [Character-Loc-Y] = :27, [Character-Admin-Level] = :28, [Character-Contribution] = :29, [Character-Ability-Time] = :30, [Character-Lock-Map] = :31, [Character-Lock-Time] = :32, [Character-Guild-Name] = :33, [Character-Guild-GUID] = :34, [Character-Guild-Rank] = :35, [Character-Quest-Number1] = :36, [Character-Quest-ID1] = :37, [Character-Quest-Count1] = :38, [Character-Quest-Reward1] = :39, [Character-Quest-Amount1] = :40, [Character-Quest-Completed1] = :41, [Character-Quest-Number2] = :42, [Character-Quest-ID2] = :43, [Character-Quest-Count2] = :44, [Character-Quest-Reward2] = :45, [Character-Quest-Amount2] = :46, [Character-Quest-Completed2] = :47, [Character-Quest-Number3] = :48, [Character-Quest-ID3] = :49, [Character-Quest-Count3] = :50, [Character-Quest-Reward3] = :51, [Character-Quest-Amount3] = :52, [Character-Quest-Completed3] = :53, [Character-Quest-Number4] = :54, [Character-Quest-ID4] = :55, [Character-Quest-Count4] = :56, [Character-Quest-Reward4] = :57, [Character-Quest-Amount4] = :58, [Character-Quest-Completed4] = :59, [Character-Quest-Number5] = :60, [Character-Quest-ID5] = :61, [Character-Quest-Count5] = :62, [Character-Quest-Reward5] = :63, [Character-Quest-Amount5] = :64, [Character-Quest-Completed5] = :65, [Character-Event-ID] = :66, [Character-War-Contribution] = :67, [Character-Crusade-Job] = :68, [Character-Crusade-GUID] = :69, [Character-Construct-Points] = :70, [Character-Rating] = :71, [Character-HP] = :72, [Character-MP] = :73, [Character-SP] = :74, [Character-EK-Count] = :75, [Character-PK-Count] = :76, [Character-Reward-Gold] = :77, [Character-Hunger] = :78, [Character-Criticals] = :79, [Character-Shutup-Time] = :80, [Character-Rating-Time] = :81, [Character-Force-Time] = :82, [Character-SP-Time] = :83, [Character-Death-Time] = :84, [Character-Party-ID] = :85, [Character-Majestics] = :86, [Character-Deaths] = :87, [Character-TotalDGKills] = :88, [Character-DGPoints] = :89, [Character-TotalDGDeaths] = :90, [Character-DGKills] = :91, [Character-Max-Ek] = :92, [Character-Heldenian-GUID] = :93, [Character-Wanted-Level] = :94, [Character-Coin-Points] = :95, [Character-Team] = :96, [Character-Class] = :97, [Character-Magic-Mastery] = :98, [Character-Equip-Status] = :99, [Character-Item-Pos-X] = :100, [Character-Item-Pos-Y] = :101, [Character-Skill-Mastery] = :102, [Character-Skill-SSN] = :103, [Character-Penalty-Year] = :104, [Character-Penalty-Month] = :105, [Character-Penalty-Day] = :106 WHERE [Character-ID] = :1");
 
 			com.Param(1).setAsLong() = iCharDBID; // fijo
 
@@ -3120,6 +3140,13 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, DWORD dwMsgSize
 			com.Param(99).setAsString() = cEquipStatus;
 			com.Param(100).setAsString() = cItemX;
 			com.Param(101).setAsString() = cItemY;
+
+			com.Param(102).setAsString() = cSkillMastery;
+			com.Param(103).setAsString() = cSkillSSN;
+
+			com.Param(104).setAsLong() = iPenaltyBlockYear;
+			com.Param(105).setAsLong() = iPenaltyBlockMonth;
+			com.Param(106).setAsLong() = iPenaltyBlockDay;
 
 			com.Execute();
 			com.Close();

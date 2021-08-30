@@ -93,6 +93,9 @@ CGame::CGame(HWND hWnd)
 {
 	int i, x;
 	c_team = new Team;
+	m_bSQLMode = false;
+	m_bAntiHackMode = false;
+	m_bBlockLocalConn = false;
 	m_bIsGameServerRegistered = false;
 	ReceivedAllConfig		= false;
 	m_bIsGameStarted = false;
@@ -274,48 +277,52 @@ bool CGame::bAccept(class XSocket* pXSock)
 			pXSock->bAccept(m_pClientList[i]->m_pXSock, WM_ONCLIENTSOCKETEVENT + i);
 			ZeroMemory(m_pClientList[i]->m_cIPaddress, sizeof(m_pClientList[i]->m_cIPaddress));
 			m_pClientList[i]->m_pXSock->iGetPeerAddress(m_pClientList[i]->m_cIPaddress);
-#ifdef ANTI_HAX
-			a = i;
-			if (strcmp("162.248.93.248", m_pClientList[i]->m_cIPaddress) == 0)
-			{
-				goto CLOSE_CONN;
-			}
-			for (int v = 0; v < DEF_MAXBANNED; v++)
-			{
-				if (strcmp(m_stBannedList[v].m_cBannedIPaddress, m_pClientList[i]->m_cIPaddress) == 0)
+
+			if (m_bAntiHackMode) {
+				a = i;
+
+				if (m_bBlockLocalConn) {
+					if (strcmp(m_cGameServerAddr, m_pClientList[i]->m_cIPaddress) == 0)
+					{
+						goto CLOSE_CONN;
+					}
+				}
+
+				for (int v = 0; v < DEF_MAXBANNED; v++)
 				{
+					if (strcmp(m_stBannedList[v].m_cBannedIPaddress, m_pClientList[i]->m_cIPaddress) == 0)
+					{
+						goto CLOSE_CONN;
+					}
+				}
+				//centu: Anti-Downer
+				for (int j = 1; j < DEF_MAXCLIENTS; j++) {
+					if (m_pClientList[j] != 0) {
+						if (strcmp(m_pClientList[j]->m_cIPaddress, m_pClientList[i]->m_cIPaddress) == 0) iTotalip++;
+					}
+				}
+				if (iTotalip > 9) {
+					ZeroMemory(cIPtoBan, sizeof(cIPtoBan));
+					strcpy(cIPtoBan, m_pClientList[i]->m_cIPaddress);
+					//opens cfg file
+					pFile = fopen("GameConfigs\\BannedList.cfg", "a");
+					//shows log
+					wsprintf(G_cTxt, "<%d> IP Banned: (%s)", i, cIPtoBan);
+					PutLogList(G_cTxt);
+					//modifys cfg file
+					fprintf(pFile, "banned-ip = %s", cIPtoBan);
+					fprintf(pFile, "\n");
+					fclose(pFile);
+
+					//updates BannedList.cfg on the server
+					//LocalUpdateConfigs(3);
+					for (int x = 0; x < DEF_MAXBANNED; x++)
+						if (strlen(m_stBannedList[x].m_cBannedIPaddress) == 0)
+							strcpy(m_stBannedList[x].m_cBannedIPaddress, cIPtoBan);
+
 					goto CLOSE_CONN;
 				}
 			}
-			//centu: Anti-Downer
-			for (int j = 1; j < DEF_MAXCLIENTS; j++) {
-				if (m_pClientList[j] != 0) {
-					if (strcmp(m_pClientList[j]->m_cIPaddress, m_pClientList[i]->m_cIPaddress) == 0) iTotalip++;
-				}
-			}
-			if (iTotalip > 9) {
-				ZeroMemory(cIPtoBan, sizeof(cIPtoBan));
-				strcpy(cIPtoBan, m_pClientList[i]->m_cIPaddress);
-				//opens cfg file
-				pFile = fopen("GameConfigs\\BannedList.cfg", "a");
-				//shows log
-				wsprintf(G_cTxt, "<%d> IP Banned: (%s)", i, cIPtoBan);
-				PutLogList(G_cTxt);
-				//modifys cfg file
-				fprintf(pFile, "banned-ip = %s", cIPtoBan);
-				fprintf(pFile, "\n");
-				fclose(pFile);
-
-				//updates BannedList.cfg on the server
-				//LocalUpdateConfigs(3);
-				for (int x = 0; x < DEF_MAXBANNED; x++)
-					if (strlen(m_stBannedList[x].m_cBannedIPaddress) == 0)
-						strcpy(m_stBannedList[x].m_cBannedIPaddress, cIPtoBan);
-
-				goto CLOSE_CONN;
-			}
-
-#endif
 			wsprintf(G_cTxt, "<%d> Client connected: (%s)", i, m_pClientList[i]->m_cIPaddress);
 			PutLogList(G_cTxt);
 			m_iTotalClients++;
@@ -1020,9 +1027,9 @@ void CGame::ClientMotionHandler(int iClientH, char * pData)
 	dwClientTime = *dwp;
 	cp += 4;
 
-#ifdef ANTI_HAX
-	CheckDenialServiceAttack(iClientH, dwClientTime);
-#endif
+
+	if (m_bAntiHackMode) CheckDenialServiceAttack(iClientH, dwClientTime);
+
 	m_pClientList[iClientH]->m_dwLastActionTime = timeGetTime(); //m_pClientList[iClientH]->m_dwAFKCheckTime = timeGetTime();
 
 	switch (wCommand) {
@@ -3648,25 +3655,26 @@ bool CGame::bSendMsgToLS(DWORD dwMsg, int iClientH, bool bFlag, char* pData)
 		memcpy((char *)cp, cAccountPassword, 10);
 		cp += 10;
 
-#ifdef DEF_DBGAMESERVER
-		// v2.14 DB ���� �ӵ� ��� 
-		dwp = (DWORD*)cp;
-		*dwp = m_pClientList[iClientH]->m_dwCharID;
-		cp += 4;
-#endif
+		if (m_bSQLMode) {
+			// v2.14 DB ���� �ӵ� ��� 
+			dwp = (DWORD*)cp;
+			*dwp = m_pClientList[iClientH]->m_dwCharID;
+			cp += 4;
+		}
 
 		*cp = (char)bFlag;
 		cp++;
 
 		iSize = _iComposePlayerDataFileContents(iClientH, cp);
 
-#ifdef DEF_DBGAMESERVER
-		iRet = m_pSubLogSock[m_iCurSubLogSockIndex]->iSendMsg(G_cData50000, 41 + iSize);
-		iSendSize = 41 + iSize;
-#else
-		iRet = m_pSubLogSock[m_iCurSubLogSockIndex]->iSendMsg(G_cData50000, 37 + iSize);
-		iSendSize = 37 + iSize;
-#endif
+		if (m_bSQLMode) {
+			iRet = m_pSubLogSock[m_iCurSubLogSockIndex]->iSendMsg(G_cData50000, 41 + iSize);
+			iSendSize = 41 + iSize;
+		}
+		else {
+			iRet = m_pSubLogSock[m_iCurSubLogSockIndex]->iSendMsg(G_cData50000, 37 + iSize);
+			iSendSize = 37 + iSize;
+		}
 		break;
 		
 	case MSGID_GAMEMASTERLOG:
@@ -6383,17 +6391,17 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 				break;
 
 			case 94:
-#ifdef DEF_DBGAMESERVER
-				if (_bGetIsStringIsNumber(token) == false) {
-					wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - m_dwCharID ", m_pClientList[iClientH]->m_cCharName);
-					PutLogList(cTxt);
-					delete[] pContents;
-					delete pStrTok;
-					return false;
-				}
+				if (m_bSQLMode) {
+					if (_bGetIsStringIsNumber(token) == false) {
+						wsprintf(cTxt, "(!!!) Player(%s) data file error! wrong Data format - m_dwCharID ", m_pClientList[iClientH]->m_cCharName);
+						PutLogList(cTxt);
+						delete[] pContents;
+						delete pStrTok;
+						return false;
+					}
 
-				m_pClientList[iClientH]->m_dwCharID = atoi(token);
-#endif
+					m_pClientList[iClientH]->m_dwCharID = atoi(token);
+				}
 				cReadModeA = 0;
 				break;
 				
@@ -6543,9 +6551,9 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, DWORD dwS
 			if (memcmp(token, "character-team", 14) == 0)    cReadModeA = 92;
 			if (memcmp(token, "character-class", 15) == 0)    cReadModeA = 93;
 			
-#ifdef DEF_DBGAMESERVER
-			if (memcmp(token, "character-dbid", 14) == 0)    cReadModeA = 94;
-#endif
+			if (m_bSQLMode) {
+				if (memcmp(token, "character-dbid", 14) == 0)    cReadModeA = 94;
+			}
 
 			if (memcmp(token, "[EOF]", 5) == 0) goto DPDC_STOP_DECODING;
 		}
@@ -6652,1326 +6660,1304 @@ DPDC_STOP_DECODING:;
 	return true;
 }
 
-#ifdef DEF_DBGAMESERVER
+
 int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 {
+	if (m_bSQLMode) {
+		char  cTxt[256], cTmp[256];
+		char* cp;
 
-	char  cTxt[256], cTmp[256];
-	char* cp;
+		int   i, * ip, iSize = 0;
+		short* sp, * pIDX;
+		short Skillidx, Itemidx, BankItemidx;
+		DWORD* dwp;
 
-	int   i, * ip, iSize = 0;
-	short* sp, * pIDX;
-	short Skillidx, Itemidx, BankItemidx;
-	DWORD* dwp;
+		if (m_pClientList[iClientH] == 0) return 0;
 
-	if (m_pClientList[iClientH] == 0) return 0;
+		cp = pData;
 
-	cp = pData;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sCharIDnum1;
+		cp += 2;
+		iSize += 2;
 
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sCharIDnum1;
-	cp += 2;
-	iSize += 2;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sCharIDnum2;
+		cp += 2;
+		iSize += 2;
 
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sCharIDnum2;
-	cp += 2;
-	iSize += 2;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sCharIDnum3;
+		cp += 2;
+		iSize += 2;
 
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sCharIDnum3;
-	cp += 2;
-	iSize += 2;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iLevel;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iStr;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iVit;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iDex;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iInt;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iMag;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iCharisma;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iExp;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iLU_Pool;
-	cp += 4;
-	iSize += 4;
-
-	*cp = m_pClientList[iClientH]->m_cSex;
-	cp++;
-	iSize++;
-
-	*cp = m_pClientList[iClientH]->m_cSkin;
-	cp++;
-	iSize++;
-
-	*cp = m_pClientList[iClientH]->m_cHairStyle;
-	cp++;
-	iSize++;
-
-	*cp = m_pClientList[iClientH]->m_cHairColor;
-	cp++;
-	iSize++;
-
-	*cp = m_pClientList[iClientH]->m_cUnderwear;
-	cp++;
-	iSize++;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iApprColor;
-	cp += 4;
-	iSize += 4;
-
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sAppr1;
-	cp += 2;
-	iSize += 2;
-
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sAppr2;
-	cp += 2;
-	iSize += 2;
-
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sAppr3;
-	cp += 2;
-	iSize += 2;
-
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sAppr4;
-	cp += 2;
-	iSize += 2;
-
-	memcpy(cp, m_pClientList[iClientH]->m_cLocation, 10);
-	cp += 10;
-	iSize += 10;
-
-	memcpy(cp, m_pClientList[iClientH]->m_cMapName, 10);
-	cp += 10;
-	iSize += 10;
-
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sX;
-	cp += 2;
-	iSize += 2;
-
-	sp = (short*)cp;
-	*sp = m_pClientList[iClientH]->m_sY;
-	cp += 2;
-	iSize += 2;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iContribution;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iSpecialAbilityTime;
-	cp += 4;
-	iSize += 4;
-
-	memcpy(cp, m_pClientList[iClientH]->m_cLockedMapName, 10);
-	cp += 10;
-	iSize += 10;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iLockedMapTime;
-	cp += 4;
-	iSize += 4;
-
-	//--
-	/*ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iPenaltyBlockYear;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iPenaltyBlockMonth;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iPenaltyBlockDay;
-	cp += 4;
-	iSize += 4;*/
-	//--
-
-	memcpy(cp, m_pClientList[iClientH]->m_cGuildName, 20);
-	cp += 20;
-	iSize += 20;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iGuildGUID;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iGuildRank;
-	cp += 4;
-	iSize += 4;
-
-	for (i = 0; i < 5; i++)
-	{
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iQuest[i];
+		*ip = m_pClientList[iClientH]->m_iLevel;
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iQuestID[i];
+		*ip = m_pClientList[iClientH]->m_iStr;
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iCurQuestCount[i];
+		*ip = m_pClientList[iClientH]->m_iVit;
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iQuestRewardType[i];
+		*ip = m_pClientList[iClientH]->m_iDex;
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
+		*ip = m_pClientList[iClientH]->m_iInt;
 		cp += 4;
 		iSize += 4;
 
-		*cp = (char)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iMag;
+		cp += 4;
+		iSize += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iCharisma;
+		cp += 4;
+		iSize += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iExp;
+		cp += 4;
+		iSize += 4;
+
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iLU_Pool;
+		cp += 4;
+		iSize += 4;
+
+		*cp = m_pClientList[iClientH]->m_cSex;
 		cp++;
 		iSize++;
-	}
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iSpecialEventID;
-	cp += 4;
-	iSize += 4;
+		*cp = m_pClientList[iClientH]->m_cSkin;
+		cp++;
+		iSize++;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iWarContribution;
-	cp += 4;
-	iSize += 4;
+		*cp = m_pClientList[iClientH]->m_cHairStyle;
+		cp++;
+		iSize++;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iCrusadeDuty;
-	cp += 4;
-	iSize += 4;
+		*cp = m_pClientList[iClientH]->m_cHairColor;
+		cp++;
+		iSize++;
 
-	dwp = (DWORD*)cp;
-	*dwp = m_pClientList[iClientH]->m_dwCrusadeGUID;
-	cp += 4;
-	iSize += 4;
+		*cp = m_pClientList[iClientH]->m_cUnderwear;
+		cp++;
+		iSize++;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iConstructionPoint;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iApprColor;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iRating;
-	cp += 4;
-	iSize += 4;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sAppr1;
+		cp += 2;
+		iSize += 2;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iHP;
-	cp += 4;
-	iSize += 4;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sAppr2;
+		cp += 2;
+		iSize += 2;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iMP;
-	cp += 4;
-	iSize += 4;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sAppr3;
+		cp += 2;
+		iSize += 2;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iSP;
-	cp += 4;
-	iSize += 4;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sAppr4;
+		cp += 2;
+		iSize += 2;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iEnemyKillCount;
-	cp += 4;
-	iSize += 4;
+		memcpy(cp, m_pClientList[iClientH]->m_cLocation, 10);
+		cp += 10;
+		iSize += 10;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iPKCount;
-	cp += 4;
-	iSize += 4;
+		memcpy(cp, m_pClientList[iClientH]->m_cMapName, 10);
+		cp += 10;
+		iSize += 10;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iRewardGold;
-	cp += 4;
-	iSize += 4;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sX;
+		cp += 2;
+		iSize += 2;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iHungerStatus;
-	cp += 4;
-	iSize += 4;
+		sp = (short*)cp;
+		*sp = m_pClientList[iClientH]->m_sY;
+		cp += 2;
+		iSize += 2;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iSuperAttackLeft;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iTimeLeft_ShutUp;
-	cp += 4;
-	iSize += 4;
-	
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iTimeLeft_Rating;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iContribution;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iTimeLeft_ForceRecall;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iSpecialAbilityTime;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar;
-	cp += 4;
-	iSize += 4;
+		memcpy(cp, m_pClientList[iClientH]->m_cLockedMapName, 10);
+		cp += 10;
+		iSize += 10;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iDeadPenaltyTime;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iLockedMapTime;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iPartyID;
-	cp += 4;
-	iSize += 4;
+		//--
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iPenaltyBlockYear;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iGizonItemUpgradeLeft;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iPenaltyBlockMonth;
+		cp += 4;
+		iSize += 4;
 
-	//
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iDeaths;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iPenaltyBlockDay;
+		cp += 4;
+		iSize += 4;
+		//--
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iTotalDGKills;
-	cp += 4;
-	iSize += 4;
+		memcpy(cp, m_pClientList[iClientH]->m_cGuildName, 20);
+		cp += 20;
+		iSize += 20;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iDGPoints;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iGuildGUID;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iTotalDGDeaths;
-	cp += 4;
-	iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iGuildRank;
+		cp += 4;
+		iSize += 4;
 
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iDGKills;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iMaxEK;
-	cp += 4;
-	iSize += 4;
-
-	dwp = (DWORD*)cp;
-	*dwp = m_pClientList[iClientH]->m_dwHeldenianGUID;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iWantedLevel;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iCoinPoints;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->iteam;
-	cp += 4;
-	iSize += 4;
-
-	ip = (int*)cp;
-	*ip = m_pClientList[iClientH]->m_iClass;
-	cp += 4;
-	iSize += 4;
-	//
-
-	ZeroMemory(cTxt, sizeof(cTxt));
-	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
-		wsprintf(cTmp, "%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
-		strcat(cTxt, cTmp);
-	}
-	memcpy(cp, cTxt, 100);
-	cp += 100;
-	iSize += 100;
-
-	ZeroMemory(cTxt, sizeof(cTxt));
-	for (i = 0; i < DEF_MAXITEMS; i++) 
-	{
-		wsprintf(cTmp, "%d", (char)m_pClientList[iClientH]->m_bIsItemEquipped[i]);
-		strcat(cTxt, cTmp);
-	}
-	memcpy(cp, cTxt, 50);
-	cp += 50;
-	iSize += 50;
-
-	ZeroMemory(cTxt, sizeof(cTxt));
-	for (i = 0; i < DEF_MAXITEMS; i++)
-	{
-		wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].x);
-		strcat(cTxt, cTmp);
-	}
-	memcpy(cp, cTxt, 200);
-	cp += 200;
-	iSize += 200;
-
-	ZeroMemory(cTxt, sizeof(cTxt));
-	for (i = 0; i < DEF_MAXITEMS; i++)
-	{
-		wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].y);
-		strcat(cTxt, cTmp);
-	}
-	memcpy(cp, cTxt, 200);
-	cp += 200;
-	iSize += 200;
-
-	/*pIDX = (short*)cp;
-	cp += 2;
-	iSize += 2;
-
-	Skillidx = 0;
-
-	for (i = 0; i < 24; i++) 
-	{
-		if (m_pClientList[iClientH]->m_cSkillMastery[i] > 0) 
+		for (i = 0; i < 5; i++)
 		{
-			sp = (short*)cp;
-			*sp = (short)i;
-			cp += 2;
-			iSize += 2;
-
-			sp = (short*)cp;
-			*sp = (short)m_pClientList[iClientH]->m_cSkillMastery[i];
-			cp += 2;
-			iSize += 2;
+			ip = (int*)cp;
+			*ip = m_pClientList[iClientH]->m_iQuest[i];
+			cp += 4;
+			iSize += 4;
 
 			ip = (int*)cp;
-			*ip = m_pClientList[iClientH]->m_iSkillSSN[i];
+			*ip = m_pClientList[iClientH]->m_iQuestID[i];
 			cp += 4;
 			iSize += 4;
 
-			Skillidx++;
+			ip = (int*)cp;
+			*ip = m_pClientList[iClientH]->m_iCurQuestCount[i];
+			cp += 4;
+			iSize += 4;
+
+			ip = (int*)cp;
+			*ip = m_pClientList[iClientH]->m_iQuestRewardType[i];
+			cp += 4;
+			iSize += 4;
+
+			ip = (int*)cp;
+			*ip = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
+			cp += 4;
+			iSize += 4;
+
+			*cp = (char)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
+			cp++;
+			iSize++;
 		}
-	}
 
-	*pIDX = Skillidx;*/
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iSpecialEventID;
+		cp += 4;
+		iSize += 4;
 
-	Itemidx = 0;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iWarContribution;
+		cp += 4;
+		iSize += 4;
 
-	pIDX = (short*)cp;
-	cp += 2;
-	iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iCrusadeDuty;
+		cp += 4;
+		iSize += 4;
 
-	WORD* wp;
+		dwp = (DWORD*)cp;
+		*dwp = m_pClientList[iClientH]->m_dwCrusadeGUID;
+		cp += 4;
+		iSize += 4;
 
-	for (i = 0; i < DEF_MAXITEMS; i++) 
-	{
-		if (m_pClientList[iClientH]->m_pItemList[i] != 0) 
-		{
-			memcpy(cp, m_pClientList[iClientH]->m_pItemList[i]->m_cName, 20);
-			cp += 20;
-			iSize += 20;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iConstructionPoint;
+		cp += 4;
+		iSize += 4;
 
-			dwp = (DWORD*)cp;
-			*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwCount;
-			cp += 4;
-			iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iRating;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iHP;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iMP;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iSP;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iEnemyKillCount;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iPKCount;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iRewardGold;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iHungerStatus;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iSuperAttackLeft;
+		cp += 4;
+		iSize += 4;
 
-			wp = (WORD*)cp;
-			*wp = m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iTimeLeft_ShutUp;
+		cp += 4;
+		iSize += 4;
 
-			dwp = (DWORD*)cp;
-			*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute;
-			cp += 4;
-			iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iTimeLeft_Rating;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iTimeLeft_ForceRecall;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect2;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect3;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iDeadPenaltyTime;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect4;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iPartyID;
+		cp += 4;
+		iSize += 4;
 
-			Itemidx++;
-		}
-	}
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iGizonItemUpgradeLeft;
+		cp += 4;
+		iSize += 4;
 
-	*pIDX = Itemidx;
-	
-	pIDX = (short*)cp;
-	cp += 2;
-	iSize += 2;
+		//
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iDeaths;
+		cp += 4;
+		iSize += 4;
 
-	BankItemidx = 0;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iTotalDGKills;
+		cp += 4;
+		iSize += 4;
 
-	for (i = 0; i < DEF_MAXBANKITEMS; i++) 
-	{
-		if (m_pClientList[iClientH]->m_pItemInBankList[i] != 0) 
-		{
-			memcpy(cp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName, 20);
-			cp += 20;
-			iSize += 20;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iDGPoints;
+		cp += 4;
+		iSize += 4;
 
-			dwp = (DWORD*)cp;
-			*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount;
-			cp += 4;
-			iSize += 4;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iTotalDGDeaths;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iDGKills;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iMaxEK;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2;
-			cp += 2;
-			iSize += 2;
+		dwp = (DWORD*)cp;
+		*dwp = m_pClientList[iClientH]->m_dwHeldenianGUID;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iWantedLevel;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iCoinPoints;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->iteam;
+		cp += 4;
+		iSize += 4;
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2;
-			cp += 2;
-			iSize += 2;
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iClass;
+		cp += 4;
+		iSize += 4;
+		//
 
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3;
-			cp += 2;
-			iSize += 2;
-
-			wp = (WORD*)cp;
-			*wp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan;
-			cp += 2;
-			iSize += 2;
-
-			dwp = (DWORD*)cp;
-			*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute;
-			cp += 4;
-			iSize += 4;
-
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect1;
-			cp += 2;
-			iSize += 2;
-
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect2;
-			cp += 2;
-			iSize += 2;
-
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect3;
-			cp += 2;
-			iSize += 2;
-
-			sp = (short*)cp;
-			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect4;
-			cp += 2;
-			iSize += 2;
-
-			BankItemidx++;
-		}
-	}
-
-	*pIDX = BankItemidx;
-
-	return iSize;
-}
-#else
-int CGame::_iComposePlayerDataFileContents(int iClientH, char * pData)
-{
- SYSTEMTIME SysTime;
- char  cTxt[120], cTmp[21];
- POINT TempItemPosList[DEF_MAXITEMS];
- int   i;
-
-	if (m_pClientList[iClientH] == 0) return 0;
-
-	GetLocalTime(&SysTime);
-	strcat(pData, "[FILE-DATE]\n\n");
-	
-	wsprintf(cTxt, "file-saved-date: %d %d %d %d %d\n", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-		
-	// ÀÌ¸§ ÀúÀå
-	strcat(pData, "[NAME-ACCOUNT]\n\n");
-	strcat(pData, "character-name     = ");
-	strcat(pData, m_pClientList[iClientH]->m_cCharName);
-	strcat(pData, "\n");
-	strcat(pData, "account-name       = ");
-	strcat(pData, m_pClientList[iClientH]->m_cAccountName);
-	strcat(pData, "\n\n");
-
-	strcat(pData, "[STATUS]\n\n");
-	// Ä³¸¯ÅÍ ÇÁ·ÎÇÊ 
-	strcat(pData, "character-profile 	=");
-	if (strlen(m_pClientList[iClientH]->m_cProfile) == 0) {
-		// Ä³¸¯ÅÍ ÇÁ·ÎÇÊÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò´Ù¸é 
-		strcat(pData, "__________");
-	}
-	else strcat(pData, m_pClientList[iClientH]->m_cProfile);
-	strcat(pData, "\n");
-
-	// ÇÃ·¹ÀÌ¾î ¼Ò¼Ó À§Ä¡
-	strcat(pData, "character-location   = ");
-	strcat(pData, m_pClientList[iClientH]->m_cLocation);
-	strcat(pData, "\n");
-
-	/// ±æµå »óÅÂ 
-	strcat(pData, "character-guild-name = ");
-	if (m_pClientList[iClientH]->m_iGuildRank != -1) {
-		// GuildRank°¡ -1ÀÌ¸é ±æµåÀÌ¸§Àº ¹«ÀÇ¹ÌÇÏ´Ù.
-		strcat(pData, m_pClientList[iClientH]->m_cGuildName);
-	}
-	else strcat(pData, "NONE");
-	strcat(pData, "\n");
-	
-	// ±æµå GUID 
-	strcat(pData, "character-guild-GUID = ");
-	if (m_pClientList[iClientH]->m_iGuildRank != -1) {
-		// GuildRank°¡ -1ÀÌ¸é ±æµåGUID´Â ¹«ÀÇ¹ÌÇÏ´Ù.
 		ZeroMemory(cTxt, sizeof(cTxt));
-		wsprintf(cTxt, "%d", m_pClientList[iClientH]->m_iGuildGUID);
-		strcat(pData, cTxt);
-	}
-	else strcat(pData, "-1");
-	strcat(pData, "\n");
+		for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
+			wsprintf(cTmp, "%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
+			strcat(cTxt, cTmp);
+		}
+		memcpy(cp, cTxt, 100);
+		cp += 100;
+		iSize += 100;
+
+		ZeroMemory(cTxt, sizeof(cTxt));
+		for (i = 0; i < DEF_MAXITEMS; i++)
+		{
+			wsprintf(cTmp, "%d", (char)m_pClientList[iClientH]->m_bIsItemEquipped[i]);
+			strcat(cTxt, cTmp);
+		}
+		memcpy(cp, cTxt, 50);
+		cp += 50;
+		iSize += 50;
+
+		ZeroMemory(cTxt, sizeof(cTxt));
+		for (i = 0; i < DEF_MAXITEMS; i++)
+		{
+			wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].x);
+			strcat(cTxt, cTmp);
+		}
+		memcpy(cp, cTxt, 200);
+		cp += 200;
+		iSize += 200;
+
+		ZeroMemory(cTxt, sizeof(cTxt));
+		for (i = 0; i < DEF_MAXITEMS; i++)
+		{
+			wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].y);
+			strcat(cTxt, cTmp);
+		}
+		memcpy(cp, cTxt, 200);
+		cp += 200;
+		iSize += 200;
+
+		// skills
+		ZeroMemory(cTxt, sizeof(cTxt));
+		for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
+			wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_cSkillMastery[i]);
+			strcat(cTxt, cTmp);
+		}
+		memcpy(cp, cTxt, 240);
+		cp += 240;
+		iSize += 240;
+		ZeroMemory(cTxt, sizeof(cTxt));
+		for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
+			wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_iSkillSSN[i]);
+			strcat(cTxt, cTmp);
+		}
+		memcpy(cp, cTxt, 300);
+		cp += 300;
+		iSize += 300;
 		
-	// ±æµå ¼øÀ§
-	strcat(pData, "character-guild-rank = ");
-	itoa( m_pClientList[iClientH]->m_iGuildRank, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
+		Itemidx = 0;
 
-	strcat(pData, "character-loc-map = ");
-	strcat(pData, m_pClientList[iClientH]->m_cMapName);
-	strcat(pData, "\n");
-	// XÁÂÇ¥ ÀúÀå 
-	strcat(pData, "character-loc-x   = ");
-	itoa( m_pClientList[iClientH]->m_sX, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	// YÁÂÇ¥ ÀúÀå 
-	strcat(pData, "character-loc-y   = ");
-	itoa( m_pClientList[iClientH]->m_sY, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n\n");
-	//
-	if (m_pClientList[iClientH]->m_iHP <= 0) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
-	wsprintf(cTxt, "character-HP       = %d", m_pClientList[iClientH]->m_iHP);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+		pIDX = (short*)cp;
+		cp += 2;
+		iSize += 2;
 
-	if (m_pClientList[iClientH]->m_iMP < 0) m_pClientList[iClientH]->m_iMP = 0;
-	wsprintf(cTxt, "character-MP       = %d",  m_pClientList[iClientH]->m_iMP);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+		WORD* wp;
 
-	if (m_pClientList[iClientH]->m_iSP < 0) m_pClientList[iClientH]->m_iSP = 0; // v1.1
-	wsprintf(cTxt, "character-SP       = %d",  m_pClientList[iClientH]->m_iSP);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-LEVEL    = %d", m_pClientList[iClientH]->m_iLevel);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+		for (i = 0; i < DEF_MAXITEMS; i++)
+		{
+			if (m_pClientList[iClientH]->m_pItemList[i] != 0)
+			{
+				memcpy(cp, m_pClientList[iClientH]->m_pItemList[i]->m_cName, 20);
+				cp += 20;
+				iSize += 20;
 
-	wsprintf(cTxt, "character-RATING   = %d", m_pClientList[iClientH]->m_iRating);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				dwp = (DWORD*)cp;
+				*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwCount;
+				cp += 4;
+				iSize += 4;
 
-	wsprintf(cTxt, "character-STR      = %d", m_pClientList[iClientH]->m_iStr);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-INT      = %d", m_pClientList[iClientH]->m_iInt);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-VIT      = %d", m_pClientList[iClientH]->m_iVit);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-DEX      = %d", m_pClientList[iClientH]->m_iDex);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-MAG      = %d", m_pClientList[iClientH]->m_iMag);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-CHARISMA = %d", m_pClientList[iClientH]->m_iCharisma);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-LUCK     = %d", m_pClientList[iClientH]->m_iLuck);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-EXP      = %d", m_pClientList[iClientH]->m_iExp);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-LU_Pool  = %d", m_pClientList[iClientH]->m_iLU_Pool);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				wp = (WORD*)cp;
+				*wp = m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-EK-Count = %d", m_pClientList[iClientH]->m_iEnemyKillCount);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				dwp = (DWORD*)cp;
+				*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute;
+				cp += 4;
+				iSize += 4;
 
-	wsprintf(cTxt, "character-PK-Count = %d", m_pClientList[iClientH]->m_iPKCount);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-reward-gold = %d", m_pClientList[iClientH]->m_iRewardGold);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-downskillindex = %d", m_pClientList[iClientH]->m_iDownSkillIndex);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-IDnum1 = %d", m_pClientList[iClientH]->m_sCharIDnum1);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect2;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-IDnum2 = %d", m_pClientList[iClientH]->m_sCharIDnum2);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect3;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "character-IDnum3 = %d", m_pClientList[iClientH]->m_sCharIDnum3);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect4;
+				cp += 2;
+				iSize += 2;
 
+				Itemidx++;
+			}
+		}
 
-	wsprintf(cTxt, "party-rank = %d", m_pClientList[iClientH]->m_iPartyRank);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+		*pIDX = Itemidx;
 
-	
+		pIDX = (short*)cp;
+		cp += 2;
+		iSize += 2;
 
-	//
-	// ÇÃ·¹ÀÌ¾î Æ¯¼ºÄ¡ ÀÔ·Â 
-	strcat(pData, "sex-status       = ");
-	itoa( m_pClientList[iClientH]->m_cSex, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "skin-status      = ");
-	itoa( m_pClientList[iClientH]->m_cSkin, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "hairstyle-status = ");
-	itoa( m_pClientList[iClientH]->m_cHairStyle, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "haircolor-status = ");
-	itoa( m_pClientList[iClientH]->m_cHairColor, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "underwear-status = ");
-	itoa( m_pClientList[iClientH]->m_cUnderwear, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
+		BankItemidx = 0;
 
-	wsprintf(cTxt, "hunger-status    = %d", m_pClientList[iClientH]->m_iHungerStatus);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+		for (i = 0; i < DEF_MAXBANKITEMS; i++)
+		{
+			if (m_pClientList[iClientH]->m_pItemInBankList[i] != 0)
+			{
+				memcpy(cp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName, 20);
+				cp += 20;
+				iSize += 20;
 
-	wsprintf(cTxt, "timeleft-shutup  = %d", m_pClientList[iClientH]->m_iTimeLeft_ShutUp);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				dwp = (DWORD*)cp;
+				*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount;
+				cp += 4;
+				iSize += 4;
 
-	wsprintf(cTxt, "timeleft-rating  = %d", m_pClientList[iClientH]->m_iTimeLeft_Rating);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "timeleft-force-recall  = %d", m_pClientList[iClientH]->m_iTimeLeft_ForceRecall);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "timeleft-firm-staminar = %d", m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "admin-user-level = %d", m_pClientList[iClientH]->m_iAdminUserLevel);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3;
+				cp += 2;
+				iSize += 2;
 
-	wsprintf(cTxt, "penalty-block-date = %d %d %d", m_pClientList[iClientH]->m_iPenaltyBlockYear, m_pClientList[iClientH]->m_iPenaltyBlockMonth, m_pClientList[iClientH]->m_iPenaltyBlockDay);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
+				sp = (short*)cp;
+				*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor;
+				cp += 2;
+				iSize += 2;
 
-	//Magn0S:: Multi Quest
-	strcat(pData, "character-quest-number = ");
-	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuest[i]);
-		strcat(pData, cTxt);
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1;
+				cp += 2;
+				iSize += 2;
+
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2;
+				cp += 2;
+				iSize += 2;
+
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3;
+				cp += 2;
+				iSize += 2;
+
+				wp = (WORD*)cp;
+				*wp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan;
+				cp += 2;
+				iSize += 2;
+
+				dwp = (DWORD*)cp;
+				*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute;
+				cp += 4;
+				iSize += 4;
+
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect1;
+				cp += 2;
+				iSize += 2;
+
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect2;
+				cp += 2;
+				iSize += 2;
+
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect3;
+				cp += 2;
+				iSize += 2;
+
+				sp = (short*)cp;
+				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect4;
+				cp += 2;
+				iSize += 2;
+
+				BankItemidx++;
+			}
+		}
+
+		*pIDX = BankItemidx;
+
+		return iSize;
 	}
-	strcat(pData, "\n");
+	else {
+		SYSTEMTIME SysTime;
+		char  cTxt[120], cTmp[21];
+		POINT TempItemPosList[DEF_MAXITEMS];
+		int   i;
 
-	strcat(pData, "character-quest-ID = ");
-	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestID[i]);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
+		if (m_pClientList[iClientH] == 0) return 0;
 
-	strcat(pData, "current-quest-count = ");
-	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iCurQuestCount[i]);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
+		GetLocalTime(&SysTime);
+		strcat(pData, "[FILE-DATE]\n\n");
 
-	strcat(pData, "quest-reward-type = ");
-	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestRewardType[i]);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
-
-	strcat(pData, "quest-reward-amount = ");
-	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestRewardAmount[i]);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
-
-	/*wsprintf(cTxt, "character-quest-number = %d", m_pClientList[iClientH]->m_iQuest);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-quest-ID     = %d", m_pClientList[iClientH]->m_iQuestID);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "current-quest-count    = %d", m_pClientList[iClientH]->m_iCurQuestCount);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "quest-reward-type      = %d", m_pClientList[iClientH]->m_iQuestRewardType);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "quest-reward-amount    = %d", m_pClientList[iClientH]->m_iQuestRewardAmount);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");*/
-
-	wsprintf(cTxt, "character-contribution = %d", m_pClientList[iClientH]->m_iContribution);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-war-contribution = %d", m_pClientList[iClientH]->m_iWarContribution);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	strcat(pData, "character-quest-completed = ");
-	for (i = 0; i < DEF_MAXQUEST; i++) {
-		wsprintf(cTxt, "%d ", (int)m_pClientList[iClientH]->m_bIsQuestCompleted[i]);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
-
-	/*wsprintf(cTxt, "character-quest-completed = %d", (int)m_pClientList[iClientH]->m_bIsQuestCompleted);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");*/
-
-	wsprintf(cTxt, "special-event-id = %d", m_pClientList[iClientH]->m_iSpecialEventID);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "super-attack-left = %d", m_pClientList[iClientH]->m_iSuperAttackLeft);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// v1.4311-3 Ãß°¡ ¿ùµå¼­¹ö¿¡ »çÅõÀå °ü·Ã º¯¼ö¸¦ º¸³½´Ù.
-	// »çÅõÀå ¿¹¾à °ü·ÃµÈ ³»¿ë ÀúÀå reserved-fightzone-id ¿¹¾àµÈ »çÅõÀå¹øÈ£/³¯Â¥¹×½Ã°£/³²ÀºÆ¼ÄÏ°¹¼ö
-	wsprintf(cTxt, "reserved-fightzone-id = %d %d %d", m_pClientList[iClientH]->m_iFightzoneNumber, m_pClientList[iClientH]->m_iReserveTime,m_pClientList[iClientH]->m_iFightZoneTicketNumber  );
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// Æ¯¼ö ´É·Â ¹ßÈÖ¿ë ³²Àº ½Ã°£
-	wsprintf(cTxt, "special-ability-time = %d", m_pClientList[iClientH]->m_iSpecialAbilityTime);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// Àá±ä ¸Ê ÀÌ¸§
-	wsprintf(cTxt, "locked-map-name = %s", m_pClientList[iClientH]->m_cLockedMapName);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// Àá±ä ¸Ê ½Ã°£
-	wsprintf(cTxt, "locked-map-time = %d", m_pClientList[iClientH]->m_iLockedMapTime);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// Å©·ç¼¼ÀÌµå¿¡¼­ ¸ÃÀº Á÷Ã¥.
-	wsprintf(cTxt, "crusade-job = %d", m_pClientList[iClientH]->m_iCrusadeDuty);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// Å©·ç¼¼ÀÌµå °íÀ¯ ¾ÆÀÌµð 
-	wsprintf(cTxt, "crusade-GUID = %d", m_pClientList[iClientH]->m_dwCrusadeGUID);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "construct-point = %d", m_pClientList[iClientH]->m_iConstructionPoint);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// v2.04 »ç¸Á½Ã Æä³ÎÆ¼ Å¸ÀÓ 
-	wsprintf(cTxt, "dead-penalty-time = %d", m_pClientList[iClientH]->m_iDeadPenaltyTime);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// v2.06 12-4 ÆÄÆ¼ ¾ÆÀÌµð
-	wsprintf(cTxt, "party-id = %d", m_pClientList[iClientH]->m_iPartyID);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// v2.15 ÁöÁ¸¾ÆÀÌÅÛ¾÷±×·¹ÀÌµå
-	
-
-	
-	wsprintf(cTxt, "gizon-item-upgrade-left = %d", m_pClientList[iClientH]->m_iGizonItemUpgradeLeft);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	// MORLA 2.2- Nuevos datos para el pj
-	wsprintf(cTxt, "character-Deaths = %d", m_pClientList[iClientH]->m_iDeaths);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-TotalDGKills = %d", m_pClientList[iClientH]->m_iTotalDGKills);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-DGPoints = %d", m_pClientList[iClientH]->m_iDGPoints);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-TotalDGDeaths = %d", m_pClientList[iClientH]->m_iTotalDGDeaths);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-	
-	wsprintf(cTxt, "character-DGKills = %d", m_pClientList[iClientH]->m_iDGKills);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "max-ek = %d", m_pClientList[iClientH]->m_iMaxEK);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	strcat(pData, "ip2 = "); 
-	strcat(pData, m_pClientList[iClientH]->m_cIP2); 
-	strcat(pData, "\n"); 
-	
-	strcat(pData, "ip = "); 
-	strcat(pData, m_pClientList[iClientH]->m_cIPaddress); 
-	strcat(pData, "\n");
-
-	wsprintf(cTxt, "heldenian-GUID = %d", m_pClientList[iClientH]->m_dwHeldenianGUID);
-	strcat(pData, cTxt);
-	strcat(pData,"\n");
-
-	wsprintf(cTxt, "character-wanted-level = %d", m_pClientList[iClientH]->m_iWantedLevel);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-
-	wsprintf(cTxt, "coin-points = %d", m_pClientList[iClientH]->m_iCoinPoints);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-
-	wsprintf(cTxt, "character-team = %d", m_pClientList[iClientH]->iteam);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-
-	// Centuu : 1 War | 2 Mage | 3 Archer 
-	wsprintf(cTxt, "character-class = %d", m_pClientList[iClientH]->m_iClass);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-
-	/*wsprintf(cTxt, "character-gold = %d", m_pClientList[iClientH]->m_dwGold);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");*/
-
-	strcat(pData,"\n\n");
-
-	// Ä³¸¯ÅÍÀÇ ¿ÜÇüÇ¥Çö Appr4°³¸¦ ÀúÀåÇÑ´Ù. ÀÌ°ÍÀº °ÔÀÓ¼­¹ö¿¡¼­´Â »ç¿ëÇÏÁö ¾ÊÀ¸¸ç ·Î±×¼­¹ö->Å¬¶óÀÌ¾ðÆ®°£¿¡ »ç¿ëµÈ´Ù.
-	strcat(pData, "appr1 = ");
-	itoa( m_pClientList[iClientH]->m_sAppr1, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "appr2 = ");
-	// ÀüÅõ¸ðµå ÇÃ·¡±×¸¦ Å¬¸®¾îÇÑ´Ù.
-	itoa( m_pClientList[iClientH]->m_sAppr2, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "appr3 = ");
-	itoa( m_pClientList[iClientH]->m_sAppr3, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	strcat(pData, "appr4 = ");
-	itoa( m_pClientList[iClientH]->m_sAppr4, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
-	// v1.4 ApprColor
-	strcat(pData, "appr-color = ");
-	itoa( m_pClientList[iClientH]->m_iApprColor, cTxt, 10);
-	strcat(pData, cTxt);
-	strcat(pData, "\n\n");
-
-	// ¾ÆÀÌÅÛ Á¤º¸ ÀúÀå 
-	strcat(pData, "[ITEMLIST]\n\n");
-
-	for (i = 0; i < DEF_MAXITEMS; i++) { // v1.4
-		TempItemPosList[i].x = 40;
-		TempItemPosList[i].y = 30;
-	}
-	
-
-	// °¢°¢ÀÇ ¾ÆÀÌÅÛÀ» ÀúÀåÇÑ´Ù.
-	for (i = 0; i < DEF_MAXITEMS; i++)
-	if (m_pClientList[iClientH]->m_pItemList[i] != 0) {
-		
-		if (m_pClientList[iClientH]->m_pItemList[i]->teamcape) continue;
-		if (m_pClientList[iClientH]->m_pItemList[i]->teamboots) continue;
-		
-		// v1.4 ¾ÆÀÌÅÛ ¼ø¼­¸¦ Àç¹èÄ¡ÇÑ´Ù. 
-		TempItemPosList[i].x = m_pClientList[iClientH]->m_ItemPosList[i].x;
-		TempItemPosList[i].y = m_pClientList[iClientH]->m_ItemPosList[i].y;
-		
-		strcat(pData, "character-item = ");
-		memset(cTmp, ' ', 21);
-		strcpy(cTmp, m_pClientList[iClientH]->m_pItemList[i]->m_cName);
-		cTmp[strlen(m_pClientList[iClientH]->m_pItemList[i]->m_cName)] = (char)' ';
-		cTmp[20] = 0;
-		strcat(pData, cTmp);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_dwCount, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//----------------------------------------------------------------------------
-		itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//--------------------
-		itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect2, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//--------------------
-		itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect3, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//--------------------
-		itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect4, cTxt, 10);
+		wsprintf(cTxt, "file-saved-date: %d %d %d %d %d\n", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
 		strcat(pData, cTxt);
 		strcat(pData, "\n");
-	}
-	strcat(pData, "\n\n");
 
-	// v1.4 Àç °è»êµÈ ¾ÆÀÌÅÛ À§Ä¡ ±â¾ï 
-	for (i = 0; i < DEF_MAXITEMS; i++) {
-		m_pClientList[iClientH]->m_ItemPosList[i].x = TempItemPosList[i].x; 
-		m_pClientList[iClientH]->m_ItemPosList[i].y = TempItemPosList[i].y;
-	}
+		// ÀÌ¸§ ÀúÀå
+		strcat(pData, "[NAME-ACCOUNT]\n\n");
+		strcat(pData, "character-name     = ");
+		strcat(pData, m_pClientList[iClientH]->m_cCharName);
+		strcat(pData, "\n");
+		strcat(pData, "account-name       = ");
+		strcat(pData, m_pClientList[iClientH]->m_cAccountName);
+		strcat(pData, "\n\n");
 
-	//m_cAccountName
-	for (i = 0; i < DEF_MAXBANKITEMS; i++)
-	if (m_pClientList[iClientH]->m_pItemInBankList[i] != 0) {
-		strcat(pData, "character-bank-item = ");
-		memset(cTmp, ' ', 21);
-		strcpy(cTmp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName);
-		cTmp[strlen(m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName)] = (char)' ';
-		cTmp[20] = 0;
-		strcat(pData, cTmp);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		itoa( m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//----------------------------------------------------------------------------
-		itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect1, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//--------------------
-		itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect2, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//--------------------
-		itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect3, cTxt, 10);
-		strcat(pData, cTxt);
-		strcat(pData, " ");
-		//--------------------
-		itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect4, cTxt, 10);
+		strcat(pData, "[STATUS]\n\n");
+		// Ä³¸¯ÅÍ ÇÁ·ÎÇÊ 
+		strcat(pData, "character-profile 	=");
+		if (strlen(m_pClientList[iClientH]->m_cProfile) == 0) {
+			// Ä³¸¯ÅÍ ÇÁ·ÎÇÊÀÌ ¼³Á¤µÇÁö ¾Ê¾Ò´Ù¸é 
+			strcat(pData, "__________");
+		}
+		else strcat(pData, m_pClientList[iClientH]->m_cProfile);
+		strcat(pData, "\n");
+
+		// ÇÃ·¹ÀÌ¾î ¼Ò¼Ó À§Ä¡
+		strcat(pData, "character-location   = ");
+		strcat(pData, m_pClientList[iClientH]->m_cLocation);
+		strcat(pData, "\n");
+
+		/// ±æµå »óÅÂ 
+		strcat(pData, "character-guild-name = ");
+		if (m_pClientList[iClientH]->m_iGuildRank != -1) {
+			// GuildRank°¡ -1ÀÌ¸é ±æµåÀÌ¸§Àº ¹«ÀÇ¹ÌÇÏ´Ù.
+			strcat(pData, m_pClientList[iClientH]->m_cGuildName);
+		}
+		else strcat(pData, "NONE");
+		strcat(pData, "\n");
+
+		// ±æµå GUID 
+		strcat(pData, "character-guild-GUID = ");
+		if (m_pClientList[iClientH]->m_iGuildRank != -1) {
+			// GuildRank°¡ -1ÀÌ¸é ±æµåGUID´Â ¹«ÀÇ¹ÌÇÏ´Ù.
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%d", m_pClientList[iClientH]->m_iGuildGUID);
+			strcat(pData, cTxt);
+		}
+		else strcat(pData, "-1");
+		strcat(pData, "\n");
+
+		// ±æµå ¼øÀ§
+		strcat(pData, "character-guild-rank = ");
+		itoa(m_pClientList[iClientH]->m_iGuildRank, cTxt, 10);
 		strcat(pData, cTxt);
 		strcat(pData, "\n");
-	}
-	strcat(pData, "\n\n");
 
-	
-	strcat(pData, "[MAGIC-SKILL-MASTERY]\n\n");
-
-	strcat(pData, "//------------------012345678901234567890123456789012345678901234567890");
-	strcat(pData,"\n");
-
-	strcat(pData, "magic-mastery     = ");
-	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
-		wsprintf(cTxt,"%d", m_pClientList[iClientH]->m_cMagicMastery[i]);
+		strcat(pData, "character-loc-map = ");
+		strcat(pData, m_pClientList[iClientH]->m_cMapName);
+		strcat(pData, "\n");
+		// XÁÂÇ¥ ÀúÀå 
+		strcat(pData, "character-loc-x   = ");
+		itoa(m_pClientList[iClientH]->m_sX, cTxt, 10);
 		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
-	
-	strcat(pData, "skill-mastery     = ");
-			
-	
-	for (i = 0; i < 60; i++) {
-		ZeroMemory(cTxt, sizeof(cTxt));
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_cSkillMastery[i]);
+		strcat(pData, "\n");
+		// YÁÂÇ¥ ÀúÀå 
+		strcat(pData, "character-loc-y   = ");
+		itoa(m_pClientList[iClientH]->m_sY, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n\n");
+		//
+		if (m_pClientList[iClientH]->m_iHP <= 0) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
+		wsprintf(cTxt, "character-HP       = %d", m_pClientList[iClientH]->m_iHP);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
 
-		strcat(pData, cTxt); // ÃÊ±â°ª ÀÔ·Â
-	}
-	strcat(pData,"\n");
-			
-	strcat(pData, "skill-SSN     = ");
-	for (i = 0; i < 60; i++) {
-		ZeroMemory(cTxt, sizeof(cTxt));
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iSkillSSN[i]);
+		if (m_pClientList[iClientH]->m_iMP < 0) m_pClientList[iClientH]->m_iMP = 0;
+		wsprintf(cTxt, "character-MP       = %d", m_pClientList[iClientH]->m_iMP);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
 
-		strcat(pData, cTxt); // ÃÊ±â°ª ÀÔ·Â
-	}
-	strcat(pData,"\n");
-	
-	// ¾ÆÀÌÅÛ ÀåÂø »óÅÂ¸¦ ÀúÀåÇÑ´Ù. ¹Ýµå½Ã ¸Ç ¸¶Áö¸·¿¡ ÀÖ¾î¾ß ÇÔ.
-	strcat(pData, "[ITEM-EQUIP-STATUS]\n\n");
-	strcat(pData, "item-equip-status = ");
-	
-	ZeroMemory(cTxt, sizeof(cTxt));
-	strcpy(cTxt, "00000000000000000000000000000000000000000000000000");
-	              
-	int iEP = 0;
-	for (i = 0; i < DEF_MAXITEMS; i++) 
-	if (m_pClientList[iClientH]->m_pItemList[i] != 0) {
-		if ((m_pClientList[iClientH]->m_bIsItemEquipped[i] == true) && 
-			(m_pClientList[iClientH]->m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_EQUIP)) {
-			 cTxt[iEP] = '1';
+		if (m_pClientList[iClientH]->m_iSP < 0) m_pClientList[iClientH]->m_iSP = 0; // v1.1
+		wsprintf(cTxt, "character-SP       = %d", m_pClientList[iClientH]->m_iSP);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-LEVEL    = %d", m_pClientList[iClientH]->m_iLevel);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-RATING   = %d", m_pClientList[iClientH]->m_iRating);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-STR      = %d", m_pClientList[iClientH]->m_iStr);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-INT      = %d", m_pClientList[iClientH]->m_iInt);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-VIT      = %d", m_pClientList[iClientH]->m_iVit);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-DEX      = %d", m_pClientList[iClientH]->m_iDex);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-MAG      = %d", m_pClientList[iClientH]->m_iMag);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-CHARISMA = %d", m_pClientList[iClientH]->m_iCharisma);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-LUCK     = %d", m_pClientList[iClientH]->m_iLuck);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-EXP      = %d", m_pClientList[iClientH]->m_iExp);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-LU_Pool  = %d", m_pClientList[iClientH]->m_iLU_Pool);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-EK-Count = %d", m_pClientList[iClientH]->m_iEnemyKillCount);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-PK-Count = %d", m_pClientList[iClientH]->m_iPKCount);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-reward-gold = %d", m_pClientList[iClientH]->m_iRewardGold);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-downskillindex = %d", m_pClientList[iClientH]->m_iDownSkillIndex);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-IDnum1 = %d", m_pClientList[iClientH]->m_sCharIDnum1);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-IDnum2 = %d", m_pClientList[iClientH]->m_sCharIDnum2);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-IDnum3 = %d", m_pClientList[iClientH]->m_sCharIDnum3);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+
+		wsprintf(cTxt, "party-rank = %d", m_pClientList[iClientH]->m_iPartyRank);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// ÇÃ·¹ÀÌ¾î Æ¯¼ºÄ¡ ÀÔ·Â 
+		strcat(pData, "sex-status       = ");
+		itoa(m_pClientList[iClientH]->m_cSex, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "skin-status      = ");
+		itoa(m_pClientList[iClientH]->m_cSkin, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "hairstyle-status = ");
+		itoa(m_pClientList[iClientH]->m_cHairStyle, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "haircolor-status = ");
+		itoa(m_pClientList[iClientH]->m_cHairColor, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "underwear-status = ");
+		itoa(m_pClientList[iClientH]->m_cUnderwear, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "hunger-status    = %d", m_pClientList[iClientH]->m_iHungerStatus);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "timeleft-shutup  = %d", m_pClientList[iClientH]->m_iTimeLeft_ShutUp);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "timeleft-rating  = %d", m_pClientList[iClientH]->m_iTimeLeft_Rating);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "timeleft-force-recall  = %d", m_pClientList[iClientH]->m_iTimeLeft_ForceRecall);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "timeleft-firm-staminar = %d", m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "admin-user-level = %d", m_pClientList[iClientH]->m_iAdminUserLevel);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "penalty-block-date = %d %d %d", m_pClientList[iClientH]->m_iPenaltyBlockYear, m_pClientList[iClientH]->m_iPenaltyBlockMonth, m_pClientList[iClientH]->m_iPenaltyBlockDay);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		//Magn0S:: Multi Quest
+		strcat(pData, "character-quest-number = ");
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuest[i]);
+			strcat(pData, cTxt);
 		}
-		iEP++;
-	}
-	strcat(pData, cTxt);
-	strcat(pData, "\n");
+		strcat(pData, "\n");
 
-	
-	strcat(pData, "item-position-x = ");
-	for (i = 0; i < DEF_MAXITEMS; i++) {
-		ZeroMemory(cTxt, sizeof(cTxt));
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_ItemPosList[i].x);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n");
-	
-	strcat(pData, "item-position-y = ");
-	for (i = 0; i < DEF_MAXITEMS; i++) {
-		ZeroMemory(cTxt, sizeof(cTxt));
-		wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_ItemPosList[i].y);
-		strcat(pData, cTxt);
-	}
-	strcat(pData, "\n\n");
-	
-	strcat(pData, "[EOF]");
-	strcat(pData, "\n\n\n\n");
+		strcat(pData, "character-quest-ID = ");
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestID[i]);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
 
-	return strlen(pData);
+		strcat(pData, "current-quest-count = ");
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iCurQuestCount[i]);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
+
+		strcat(pData, "quest-reward-type = ");
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestRewardType[i]);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
+
+		strcat(pData, "quest-reward-amount = ");
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iQuestRewardAmount[i]);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
+
+		/*wsprintf(cTxt, "character-quest-number = %d", m_pClientList[iClientH]->m_iQuest);
+		strcat(pData, cTxt);
+		strcat(pData,"\n");
+
+		wsprintf(cTxt, "character-quest-ID     = %d", m_pClientList[iClientH]->m_iQuestID);
+		strcat(pData, cTxt);
+		strcat(pData,"\n");
+
+		wsprintf(cTxt, "current-quest-count    = %d", m_pClientList[iClientH]->m_iCurQuestCount);
+		strcat(pData, cTxt);
+		strcat(pData,"\n");
+
+		wsprintf(cTxt, "quest-reward-type      = %d", m_pClientList[iClientH]->m_iQuestRewardType);
+		strcat(pData, cTxt);
+		strcat(pData,"\n");
+
+		wsprintf(cTxt, "quest-reward-amount    = %d", m_pClientList[iClientH]->m_iQuestRewardAmount);
+		strcat(pData, cTxt);
+		strcat(pData,"\n");*/
+
+		wsprintf(cTxt, "character-contribution = %d", m_pClientList[iClientH]->m_iContribution);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-war-contribution = %d", m_pClientList[iClientH]->m_iWarContribution);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		strcat(pData, "character-quest-completed = ");
+		for (i = 0; i < DEF_MAXQUEST; i++) {
+			wsprintf(cTxt, "%d ", (int)m_pClientList[iClientH]->m_bIsQuestCompleted[i]);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
+
+		/*wsprintf(cTxt, "character-quest-completed = %d", (int)m_pClientList[iClientH]->m_bIsQuestCompleted);
+		strcat(pData, cTxt);
+		strcat(pData,"\n");*/
+
+		wsprintf(cTxt, "special-event-id = %d", m_pClientList[iClientH]->m_iSpecialEventID);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "super-attack-left = %d", m_pClientList[iClientH]->m_iSuperAttackLeft);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// v1.4311-3 Ãß°¡ ¿ùµå¼­¹ö¿¡ »çÅõÀå °ü·Ã º¯¼ö¸¦ º¸³½´Ù.
+		// »çÅõÀå ¿¹¾à °ü·ÃµÈ ³»¿ë ÀúÀå reserved-fightzone-id ¿¹¾àµÈ »çÅõÀå¹øÈ£/³¯Â¥¹×½Ã°£/³²ÀºÆ¼ÄÏ°¹¼ö
+		wsprintf(cTxt, "reserved-fightzone-id = %d %d %d", m_pClientList[iClientH]->m_iFightzoneNumber, m_pClientList[iClientH]->m_iReserveTime, m_pClientList[iClientH]->m_iFightZoneTicketNumber);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// Æ¯¼ö ´É·Â ¹ßÈÖ¿ë ³²Àº ½Ã°£
+		wsprintf(cTxt, "special-ability-time = %d", m_pClientList[iClientH]->m_iSpecialAbilityTime);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// Àá±ä ¸Ê ÀÌ¸§
+		wsprintf(cTxt, "locked-map-name = %s", m_pClientList[iClientH]->m_cLockedMapName);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// Àá±ä ¸Ê ½Ã°£
+		wsprintf(cTxt, "locked-map-time = %d", m_pClientList[iClientH]->m_iLockedMapTime);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// Å©·ç¼¼ÀÌµå¿¡¼­ ¸ÃÀº Á÷Ã¥.
+		wsprintf(cTxt, "crusade-job = %d", m_pClientList[iClientH]->m_iCrusadeDuty);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// Å©·ç¼¼ÀÌµå °íÀ¯ ¾ÆÀÌµð 
+		wsprintf(cTxt, "crusade-GUID = %d", m_pClientList[iClientH]->m_dwCrusadeGUID);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "construct-point = %d", m_pClientList[iClientH]->m_iConstructionPoint);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// v2.04 »ç¸Á½Ã Æä³ÎÆ¼ Å¸ÀÓ 
+		wsprintf(cTxt, "dead-penalty-time = %d", m_pClientList[iClientH]->m_iDeadPenaltyTime);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// v2.06 12-4 ÆÄÆ¼ ¾ÆÀÌµð
+		wsprintf(cTxt, "party-id = %d", m_pClientList[iClientH]->m_iPartyID);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// v2.15 ÁöÁ¸¾ÆÀÌÅÛ¾÷±×·¹ÀÌµå
+		wsprintf(cTxt, "gizon-item-upgrade-left = %d", m_pClientList[iClientH]->m_iGizonItemUpgradeLeft);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// MORLA 2.2- Nuevos datos para el pj
+		wsprintf(cTxt, "character-Deaths = %d", m_pClientList[iClientH]->m_iDeaths);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-TotalDGKills = %d", m_pClientList[iClientH]->m_iTotalDGKills);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-DGPoints = %d", m_pClientList[iClientH]->m_iDGPoints);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-TotalDGDeaths = %d", m_pClientList[iClientH]->m_iTotalDGDeaths);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-DGKills = %d", m_pClientList[iClientH]->m_iDGKills);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "max-ek = %d", m_pClientList[iClientH]->m_iMaxEK);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		strcat(pData, "ip2 = ");
+		strcat(pData, m_pClientList[iClientH]->m_cIP2);
+		strcat(pData, "\n");
+
+		strcat(pData, "ip = ");
+		strcat(pData, m_pClientList[iClientH]->m_cIPaddress);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "heldenian-GUID = %d", m_pClientList[iClientH]->m_dwHeldenianGUID);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-wanted-level = %d", m_pClientList[iClientH]->m_iWantedLevel);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "coin-points = %d", m_pClientList[iClientH]->m_iCoinPoints);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		wsprintf(cTxt, "character-team = %d", m_pClientList[iClientH]->iteam);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		// Centuu : 1 War | 2 Mage | 3 Archer 
+		wsprintf(cTxt, "character-class = %d", m_pClientList[iClientH]->m_iClass);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+		/*wsprintf(cTxt, "character-gold = %d", m_pClientList[iClientH]->m_dwGold);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");*/
+
+		strcat(pData, "\n\n");
+
+		// Ä³¸¯ÅÍÀÇ ¿ÜÇüÇ¥Çö Appr4°³¸¦ ÀúÀåÇÑ´Ù. ÀÌ°ÍÀº °ÔÀÓ¼­¹ö¿¡¼­´Â »ç¿ëÇÏÁö ¾ÊÀ¸¸ç ·Î±×¼­¹ö->Å¬¶óÀÌ¾ðÆ®°£¿¡ »ç¿ëµÈ´Ù.
+		strcat(pData, "appr1 = ");
+		itoa(m_pClientList[iClientH]->m_sAppr1, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "appr2 = ");
+		// ÀüÅõ¸ðµå ÇÃ·¡±×¸¦ Å¬¸®¾îÇÑ´Ù.
+		itoa(m_pClientList[iClientH]->m_sAppr2, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "appr3 = ");
+		itoa(m_pClientList[iClientH]->m_sAppr3, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		strcat(pData, "appr4 = ");
+		itoa(m_pClientList[iClientH]->m_sAppr4, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+		// v1.4 ApprColor
+		strcat(pData, "appr-color = ");
+		itoa(m_pClientList[iClientH]->m_iApprColor, cTxt, 10);
+		strcat(pData, cTxt);
+		strcat(pData, "\n\n");
+
+		// ¾ÆÀÌÅÛ Á¤º¸ ÀúÀå 
+		strcat(pData, "[ITEMLIST]\n\n");
+
+		for (i = 0; i < DEF_MAXITEMS; i++) { // v1.4
+			TempItemPosList[i].x = 40;
+			TempItemPosList[i].y = 30;
+		}
+
+		// °¢°¢ÀÇ ¾ÆÀÌÅÛÀ» ÀúÀåÇÑ´Ù.
+		for (i = 0; i < DEF_MAXITEMS; i++)
+			if (m_pClientList[iClientH]->m_pItemList[i] != 0) {
+
+				if (m_pClientList[iClientH]->m_pItemList[i]->teamcape) continue;
+				if (m_pClientList[iClientH]->m_pItemList[i]->teamboots) continue;
+
+				// v1.4 ¾ÆÀÌÅÛ ¼ø¼­¸¦ Àç¹èÄ¡ÇÑ´Ù. 
+				TempItemPosList[i].x = m_pClientList[iClientH]->m_ItemPosList[i].x;
+				TempItemPosList[i].y = m_pClientList[iClientH]->m_ItemPosList[i].y;
+
+				strcat(pData, "character-item = ");
+				memset(cTmp, ' ', 21);
+				strcpy(cTmp, m_pClientList[iClientH]->m_pItemList[i]->m_cName);
+				cTmp[strlen(m_pClientList[iClientH]->m_pItemList[i]->m_cName)] = (char)' ';
+				cTmp[20] = 0;
+				strcat(pData, cTmp);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_dwCount, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//----------------------------------------------------------------------------
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//--------------------
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect2, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//--------------------
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect3, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//--------------------
+				itoa(m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect4, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, "\n");
+			}
+		strcat(pData, "\n\n");
+
+		// v1.4 Àç °è»êµÈ ¾ÆÀÌÅÛ À§Ä¡ ±â¾ï 
+		for (i = 0; i < DEF_MAXITEMS; i++) {
+			m_pClientList[iClientH]->m_ItemPosList[i].x = TempItemPosList[i].x;
+			m_pClientList[iClientH]->m_ItemPosList[i].y = TempItemPosList[i].y;
+		}
+
+		//m_cAccountName
+		for (i = 0; i < DEF_MAXBANKITEMS; i++)
+			if (m_pClientList[iClientH]->m_pItemInBankList[i] != 0) {
+				strcat(pData, "character-bank-item = ");
+				memset(cTmp, ' ', 21);
+				strcpy(cTmp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName);
+				cTmp[strlen(m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName)] = (char)' ';
+				cTmp[20] = 0;
+				strcat(pData, cTmp);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//----------------------------------------------------------------------------
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect1, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//--------------------
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect2, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//--------------------
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect3, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, " ");
+				//--------------------
+				itoa(m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect4, cTxt, 10);
+				strcat(pData, cTxt);
+				strcat(pData, "\n");
+			}
+		strcat(pData, "\n\n");
+
+
+		strcat(pData, "[MAGIC-SKILL-MASTERY]\n\n");
+
+		strcat(pData, "//------------------012345678901234567890123456789012345678901234567890");
+		strcat(pData, "\n");
+
+		strcat(pData, "magic-mastery     = ");
+		for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
+			wsprintf(cTxt, "%d", m_pClientList[iClientH]->m_cMagicMastery[i]);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
+
+		strcat(pData, "skill-mastery     = ");
+
+		for (i = 0; i < 60; i++) {
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_cSkillMastery[i]);
+
+			strcat(pData, cTxt); // ÃÊ±â°ª ÀÔ·Â
+		}
+		strcat(pData, "\n");
+
+		strcat(pData, "skill-SSN     = ");
+		for (i = 0; i < 60; i++) {
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_iSkillSSN[i]);
+
+			strcat(pData, cTxt); // ÃÊ±â°ª ÀÔ·Â
+		}
+		strcat(pData, "\n");
+
+		// ¾ÆÀÌÅÛ ÀåÂø »óÅÂ¸¦ ÀúÀåÇÑ´Ù. ¹Ýµå½Ã ¸Ç ¸¶Áö¸·¿¡ ÀÖ¾î¾ß ÇÔ.
+		strcat(pData, "[ITEM-EQUIP-STATUS]\n\n");
+		strcat(pData, "item-equip-status = ");
+
+		ZeroMemory(cTxt, sizeof(cTxt));
+		strcpy(cTxt, "00000000000000000000000000000000000000000000000000");
+
+		int iEP = 0;
+		for (i = 0; i < DEF_MAXITEMS; i++)
+			if (m_pClientList[iClientH]->m_pItemList[i] != 0) {
+				if ((m_pClientList[iClientH]->m_bIsItemEquipped[i] == true) &&
+					(m_pClientList[iClientH]->m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_EQUIP)) {
+					cTxt[iEP] = '1';
+				}
+				iEP++;
+			}
+		strcat(pData, cTxt);
+		strcat(pData, "\n");
+
+
+		strcat(pData, "item-position-x = ");
+		for (i = 0; i < DEF_MAXITEMS; i++) {
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_ItemPosList[i].x);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n");
+
+		strcat(pData, "item-position-y = ");
+		for (i = 0; i < DEF_MAXITEMS; i++) {
+			ZeroMemory(cTxt, sizeof(cTxt));
+			wsprintf(cTxt, "%d ", m_pClientList[iClientH]->m_ItemPosList[i].y);
+			strcat(pData, cTxt);
+		}
+		strcat(pData, "\n\n");
+
+		strcat(pData, "[EOF]");
+		strcat(pData, "\n\n\n\n");
+
+		return strlen(pData);
+	}
 }
-#endif
+
 /*********************************************************************************************************************
 **  bool CGame::_bGetIsStringIsNumber(char * pStr)																	**
 **  DESCRIPTION			:: checks if valid ASCII value																**
@@ -9928,35 +9914,36 @@ DWORD * dwp, dwTimeRcv;
 				break;
 
 			case MSGID_REQUEST_INITDATA:
-#ifdef ANTI_HAX
-				// Anti Bump 
-                if (m_pClientList[iClientH]->m_bIsClientConnected == true) {
-                    if (m_pClientList[iClientH] == 0) break;
-                    wsprintf(G_cTxt, "(!!!) Client (%s) connection closed!. Sniffer suspect!.", m_pClientList[iClientH]->m_cCharName);
-                    PutLogList(G_cTxt);
-                    ZeroMemory(cData, sizeof(cData));
-                    cp  = (char *)cData;
-                    *cp = GSM_DISCONNECT;
-                    cp++;
-                    memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
-                    cp += 10;
-                    bStockMsgToGateServer(cData, 11);
-                    m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->ClearOwner(2, iClientH, DEF_OWNERTYPE_PLAYER, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
-                    bRemoveFromDelayEventList(iClientH, DEF_OWNERTYPE_PLAYER, 0);
-                    bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH, false);
-                    if ((dwTime - m_dwGameTime2) > 3000) { // 3 segs
-                        m_pClientList[iClientH]->m_bIsClientConnected = false;
-						DeleteClient(iClientH, true, true, true, true);
-                    }
-                    break;
+				if (m_bAntiHackMode) {
+					// Anti Bump 
+					if (m_pClientList[iClientH]->m_bIsClientConnected == true) {
+						if (m_pClientList[iClientH] == 0) break;
+						wsprintf(G_cTxt, "(!!!) Client (%s) connection closed!. Sniffer suspect!.", m_pClientList[iClientH]->m_cCharName);
+						PutLogList(G_cTxt);
+						ZeroMemory(cData, sizeof(cData));
+						cp = (char*)cData;
+						*cp = GSM_DISCONNECT;
+						cp++;
+						memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
+						cp += 10;
+						bStockMsgToGateServer(cData, 11);
+						m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->ClearOwner(2, iClientH, DEF_OWNERTYPE_PLAYER, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY);
+						bRemoveFromDelayEventList(iClientH, DEF_OWNERTYPE_PLAYER, 0);
+						bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH, false);
+						if ((dwTime - m_dwGameTime2) > 3000) { // 3 segs
+							m_pClientList[iClientH]->m_bIsClientConnected = false;
+							DeleteClient(iClientH, true, true, true, true);
+						}
+						break;
+					}
+					else {
+						m_pClientList[iClientH]->m_bIsClientConnected = true;
+						RequestInitDataHandler(iClientH, pData, cKey, false);
+					}
 				}
-                else {
-                    m_pClientList[iClientH]->m_bIsClientConnected = true;
-                    RequestInitDataHandler(iClientH, pData, cKey, false);
-                }
-#else
-				RequestInitDataHandler(iClientH, pData, cKey, false);
-#endif
+				else {
+					RequestInitDataHandler(iClientH, pData, cKey, false);
+				}
 				break;
 
 			case MSGID_COMMAND_CHECKCONNECTION:
@@ -16695,9 +16682,9 @@ void CGame::LocalSavePlayerData(int iClientH)
 	// ·Î±× ¼­¹ö·ÎÀÇ ¿¬°áÀÌ Á¾·áµÇ¾î ÀÓ½Ã·Î °ÔÀÓ¼­¹ö ³»ÀÇ Æú´õ¿¡ ÀúÀåÇÑ´Ù. 
 	if (m_pClientList[iClientH] == 0) return;
  
-#ifdef DEF_DBGAMESERVER
-	return;
-#endif
+
+	if (m_bSQLMode) return;
+
 
 	pData = new char[30000];
 	if (pData == 0) return;
@@ -17791,9 +17778,7 @@ void CGame::CheckConnectionHandler(int iClientH, char *pData)
 	dwp = (DWORD *)cp;
 	dwTimeRcv = *dwp;
 
-#ifdef ANTI_HAX
-	CheckDenialServiceAttack(iClientH, dwTimeRcv);
-#endif
+	if (m_bAntiHackMode) CheckDenialServiceAttack(iClientH, dwTimeRcv);
 
 	if (m_pClientList[iClientH] == 0) return;
 
@@ -23243,6 +23228,50 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 				m_sJailTime = atoi(token);
 				cReadMode = 0;
 				break;
+
+			case 44:
+				if ((memcmp(token, "on", 2) == 0) || (memcmp(token, "ON", 2) == 0))
+				{
+					m_bSQLMode = true;
+					PutLogList("(*) Server is connected to SQL database.");
+				}
+				if ((memcmp(token, "off", 3) == 0) || (memcmp(token, "OFF", 3) == 0))
+				{
+					m_bSQLMode = false;
+					PutLogList("(*) Server is working with TXT files.");
+				}
+
+				cReadMode = 0;
+				break;
+
+			case 45:
+				if ((memcmp(token, "on", 2) == 0) || (memcmp(token, "ON", 2) == 0))
+				{
+					m_bAntiHackMode = true;
+					PutLogList("(*) Server have anti-hacks enabled.");
+				}
+				if ((memcmp(token, "off", 3) == 0) || (memcmp(token, "OFF", 3) == 0))
+				{
+					m_bAntiHackMode = false;
+					PutLogList("(*) Server doesn't have anti-hacks.");
+				}
+
+				cReadMode = 0;
+				break;
+			case 46:
+				if ((memcmp(token, "on", 2) == 0) || (memcmp(token, "ON", 2) == 0))
+				{
+					m_bBlockLocalConn = true;
+					PutLogList("(*) Server blocks local connections.");
+				}
+				if ((memcmp(token, "off", 3) == 0) || (memcmp(token, "OFF", 3) == 0))
+				{
+					m_bBlockLocalConn = false;
+					PutLogList("(*) Server allows local connections.");
+				}
+
+				cReadMode = 0;
+				break;
 			}
          } 
          else { 
@@ -23263,7 +23292,7 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 			if (memcmp(token, "slate-success-rate", 18) == 0)		 cReadMode = 15;
 			if (memcmp(token, "character-stat-limit", 20) == 0)		 cReadMode = 16;
 			if (memcmp(token, "character-skill-limit", 21) == 0)	 cReadMode = 17;
-			if (memcmp(token, "max-absorption", 14) == 0)	 cReadMode = 18;
+			if (memcmp(token, "max-absorption", 14) == 0)			cReadMode = 18;
 			if (memcmp(token, "admin-security-code", 19) == 0)		 cReadMode = 19;
 			if (memcmp(token, "max-player-level", 16) == 0)			 cReadMode = 20;
 			if (memcmp(token, "max-resistance", 14) == 0)			 cReadMode = 21;
@@ -23288,10 +23317,14 @@ bool CGame::bReadSettingsConfigFile(char * cFn)
 			if (strcmp(token, "revelation-finish") == 0)			 cReadMode = 39;
 
 			if (strcmp(token, "fragile-drop-rate") == 0)			 cReadMode = 40;
-			if (strcmp(token, "max-recovery") == 0)			 cReadMode = 41;
-			if (strcmp(token, "max-hpcrit") == 0)			 cReadMode = 42;
+			if (strcmp(token, "max-recovery") == 0)					cReadMode = 41;
+			if (strcmp(token, "max-hpcrit") == 0)					cReadMode = 42;
 
-			if (strcmp(token, "jail-time") == 0)			 cReadMode = 43;
+			if (strcmp(token, "jail-time") == 0)					cReadMode = 43;
+
+			if (strcmp(token, "sql-server-mode") == 0)					cReadMode = 44;
+			if (strcmp(token, "anti-hack-mode") == 0)					cReadMode = 45;
+			if (strcmp(token, "block-local-conn") == 0)					cReadMode = 46;
 		 } 
 
          token = pStrTok->pGet(); 

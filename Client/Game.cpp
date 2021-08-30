@@ -328,7 +328,7 @@ CGame::CGame()
 	m_stDialogBoxInfo[30].sY = 427;
 
 #endif
-	m_stDialogBoxInfo[30].sSizeX = 800;
+	m_stDialogBoxInfo[30].sSizeX = 799;
 	m_stDialogBoxInfo[30].sSizeY = 52;
 
 	//Sell List Dialog
@@ -17204,7 +17204,7 @@ void CGame::DrawBackground(short sDivX, short sModX, short sDivY, short sModY)
 		for (iy = -sModY; iy < 547 + 48; iy += 32) // 600 
 		{
 			indexX = sDivX+m_pMapData->m_sPivotX;
-			for (ix = -sModX; ix < 800+48 ; ix += 32)
+			for (ix = -sModX; ix < 799+48 ; ix += 32)
 			{	sSpr      = m_pMapData->m_tile[indexX][indexY].m_sTileSprite;
 				sSprFrame = m_pMapData->m_tile[indexX][indexY].m_sTileSpriteFrame;
 				m_pTileSpr[sSpr]->PutSpriteFastNoColorKeyDst(m_DDraw.m_lpPDBGS, ix - 16 +sModX, iy - 16 +sModY, sSprFrame, m_dwCurTime);
@@ -19640,9 +19640,9 @@ void CGame::DrawDialogBox_GaugePannel()
 	iMaxPoint3 = iGetLevelExp(m_iLevel + 1) - iGetLevelExp(m_iLevel);
 
 	int uTemp = m_iExp - iGetLevelExp(m_iLevel);
-	iBarWidth = (uTemp * 800) / iMaxPoint3;
+	iBarWidth = (uTemp * 799) / iMaxPoint3;
 	if (iBarWidth < 0) iBarWidth = 0;
-	if (iBarWidth > 800) iBarWidth = 800;
+	if (iBarWidth > 799) iBarWidth = 799;
 	m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFastWidth(0, 427 + resy + 2, 18, iBarWidth, m_dwCurTime, false);
 	uTemp = uTemp - iMaxPoint3;
 
@@ -23148,7 +23148,7 @@ void CGame::DrawLine(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultX += x_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
+			if ((iResultX >= 0) && (iResultX < 799) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23177,7 +23177,7 @@ void CGame::DrawLine(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultY += y_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
+			if ((iResultX >= 0) && (iResultX < 799) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23232,7 +23232,7 @@ void CGame::DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultX += x_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
+			if ((iResultX >= 0) && (iResultX < 799) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23261,7 +23261,7 @@ void CGame::DrawLine2(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultY += y_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
+			if ((iResultX >= 0) && (iResultX < 799) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23316,7 +23316,7 @@ void CGame::DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultX += x_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
+			if ((iResultX >= 0) && (iResultX < 799) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -23345,7 +23345,7 @@ void CGame::DrawBorder(int x0, int y0, int x1, int y1, int iR, int iG, int iB)
 			}
 			iResultY += y_inc;
 #ifdef RES_HIGH
-			if ((iResultX >= 0) && (iResultX < 800) && (iResultY >= 0) && (iResultY < 547)) { // 600
+			if ((iResultX >= 0) && (iResultX < 799) && (iResultY >= 0) && (iResultY < 547)) { // 600
 #else
 			if ((iResultX >= 0) && (iResultX < 640) && (iResultY >= 0) && (iResultY < 480)) {
 #endif
@@ -35774,7 +35774,7 @@ void CGame::UpdateScreen_OnGame()
 		DrawObjects(sPivotX, sPivotY, sDivX, sDivY, sModX, sModY, msX, msY);
 		DrawEffects();
 		DrawWhetherEffects();
-		DrawChatMsgs(-100, 0, 800, 600);
+		DrawChatMsgs(-100, 0, 799, 599);
 		WhetherObjectFrameCounter();
 		DrawDialogBoxs(msX, msY, msZ, cLB);
 	}
@@ -36082,7 +36082,7 @@ void CGame::UpdateScreen_OnGame()
 	if (m_cMapIndex == 25)
 	{
 #ifdef RES_HIGH
-		bAddNewEffect(13, m_sViewPointX + rand() % 800, m_sViewPointY + rand() % 547, 0, 0, -1 * (rand() % 80), 1);
+		bAddNewEffect(13, m_sViewPointX + rand() % 799, m_sViewPointY + rand() % 547, 0, 0, -1 * (rand() % 80), 1);
 #else
 		bAddNewEffect(13, m_sViewPointX + rand() % 640, m_sViewPointY + rand() % 480, 0, 0, -1 * (rand() % 80), 1);
 #endif

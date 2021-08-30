@@ -134,9 +134,7 @@
 
 #define DEF_MAXCRUSADESTRUCTURES		300
 
-#define ANTI_HAX
 
-#define DEF_DBGAMESERVER				// SQL Server Mode
 
 //#define TEXTOUT
 

@@ -114,6 +114,8 @@ public:
 
 private:
 
+	bool m_bSQLMode, m_bAntiHackMode, m_bBlockLocalConn;
+
 	int srvHour, srvMinute;
 
 	void ResetStatsHandler(int iClientH, char* pData, DWORD dwMsgSize);
