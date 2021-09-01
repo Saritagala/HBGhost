@@ -66,6 +66,7 @@ CMainLog::CMainLog(HWND hWnd)
 	m_iQueueTail = 0;
 	m_iMainServerInternalPort = 0;
 	m_iValidAccounts = m_iTotalWorld = m_iTotalGame = 0;
+
 }
 
 CMainLog::~CMainLog(void)
@@ -94,8 +95,8 @@ bool CMainLog::bInit()
 	{
 		con.Connect(
 			"localhost\\sqlexpress@HBGhost",
-			"",
-			"",
+			"hb",
+			"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -107,7 +108,7 @@ bool CMainLog::bInit()
 		return false;
 	}
 
-	PutLogList("(!) SQL SERVER CONNECTED: @HBGhost");
+	PutLogList("(!) SQL SERVER CONNECTED");
 	return true;
 }
 
@@ -2275,6 +2276,7 @@ bool CMainLog::bReadServerConfigFile(char* cFn)
 
 	return true;
 }
+
 void CMainLog::DeleteAccount(int iClientH, char cAccountName[11])
 {
 	int i, x;

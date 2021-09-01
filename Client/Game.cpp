@@ -1760,7 +1760,8 @@ bool CGame::bSendCommand(DWORD dwMsgID, WORD wCommand, char cDir, int iV1, int i
 
         cp = (char *)(cMsg + DEF_INDEX2_MSGTYPE + 2);
         dwp = (DWORD *)cp;
-        *dwp = dwTime;
+        //*dwp = dwTime;
+		*dwp = (DWORD)iV1;
         cp += 4;
 
         iRet = m_pGSock->iSendMsg(cMsg, 10, cKey);
@@ -4650,7 +4651,8 @@ void CGame::OnTimer()
 		if ((dwTime - m_dwCheckPingTime) > 5000)
 		{
 			m_dwCheckPingTime = dwTime;
-			bSendCommand(MSGID_REQUEST_PING, 0, 0, 0, 0, 0, 0);
+			//bSendCommand(MSGID_REQUEST_PING, 0, 0, 0, 0, 0, 0);
+			bSendCommand(MSGID_REQUEST_PING, 0, 0, dwTime, 0, 0, 0);
 		}
 
 		if ((dwTime - m_dwCheckChatTime) > 2000)
@@ -20506,16 +20508,34 @@ void CGame::DlgBoxClick_Enchanting(int msX, int msY)
 	sY = m_stDialogBoxInfo[44].sY;
 	switch (m_stDialogBoxInfo[44].cMode) {
 	case 1:	// Upgrade Majestic, items in the window
+		if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 245 + 20 - 120) && (msY <= sY + 245 + 20 - 120 + 14))
+		{
+			m_bFirstStatSelected = true; 
+			m_bSecondStatSelected = false;
+			m_stDialogBoxInfo[44].sV2 = 1;
+		}
+
+		if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 260 + 20 - 120) && (msY <= sY + 260 + 20 - 120 + 14))
+		{
+			m_bFirstStatSelected = false;
+			m_bSecondStatSelected = true;
+			m_stDialogBoxInfo[44].sV2 = 2;
+		}
 		if ((m_stDialogBoxInfo[44].sV1 != -1) && (msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
+			if (!m_bFirstStatSelected && !m_bSecondStatSelected) return;
 			PlaySound('E', 14, 5);
 			PlaySound('E', 44, 0);
+			m_bFirstStatSelected = false;
+			m_bSecondStatSelected = false;
 			m_stDialogBoxInfo[44].cMode = 2;
 			m_stDialogBoxInfo[44].dwV1 = timeGetTime();
 		}
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{	// Cancel
 			PlaySound('E', 14, 5);
+			m_bFirstStatSelected = false;
+			m_bSecondStatSelected = false;
 			DisableDialogBox(44);
 		}
 		break;

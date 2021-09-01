@@ -3853,7 +3853,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 }
 
 // Enchanting System by Centuu
-void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
+void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttributeType)
 {
 	DWORD dwType, dwValue;
 	char cColor;
@@ -3881,400 +3881,413 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex)
 	}
 
 	if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK || m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_ARROW) {
-		iResult = iDice(1, iSkillLevel*10);
-		if ((iResult >= 1) && (iResult <= 29)) {
-			dwType = ITEMSTAT_LIGHT;
-			cColor = 2;
-		}
-		else if ((iResult >= 30) && (iResult <= 99)) {
-			dwType = ITEMSTAT_STRONG;
-			cColor = 3;
-		}
-		else if ((iResult >= 100) && (iResult <= 249)) {
-			dwType = ITEMSTAT_CRITICAL;
-			cColor = 5;
-		}
-		else if ((iResult >= 250) && (iResult <= 449)) {
-			dwType = ITEMSTAT_AGILE;
-			cColor = 1;
-		}
-		else if ((iResult >= 450) && (iResult <= 649)) {
-			dwType = ITEMSTAT_RIGHTEOUS;
-			cColor = 7;
-		}
-		else if ((iResult >= 650) && (iResult <= 809)) {
-			dwType = ITEMSTAT_POISONING;
-			cColor = 4;
-		}
-		else if ((iResult >= 810) && (iResult <= 969)) {
-			dwType = ITEMSTAT_SHARP;
-			cColor = 6;
-		}
-		else if ((iResult >= 970) && (iResult <= 1000)) {
-			dwType = ITEMSTAT_ANCIENT;
-			cColor = 8;
-		}
+		if (iAttributeType == 1) {
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 29)) {
+				dwType = ITEMSTAT_LIGHT;
+				cColor = 2;
+			}
+			else if ((iResult >= 30) && (iResult <= 99)) {
+				dwType = ITEMSTAT_STRONG;
+				cColor = 3;
+			}
+			else if ((iResult >= 100) && (iResult <= 249)) {
+				dwType = ITEMSTAT_CRITICAL;
+				cColor = 5;
+			}
+			else if ((iResult >= 250) && (iResult <= 449)) {
+				dwType = ITEMSTAT_AGILE;
+				cColor = 1;
+			}
+			else if ((iResult >= 450) && (iResult <= 649)) {
+				dwType = ITEMSTAT_RIGHTEOUS;
+				cColor = 7;
+			}
+			else if ((iResult >= 650) && (iResult <= 809)) {
+				dwType = ITEMSTAT_POISONING;
+				cColor = 4;
+			}
+			else if ((iResult >= 810) && (iResult <= 969)) {
+				dwType = ITEMSTAT_SHARP;
+				cColor = 6;
+			}
+			else if ((iResult >= 970) && (iResult <= 1000)) {
+				dwType = ITEMSTAT_ANCIENT;
+				cColor = 8;
+			}
 
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor = cColor;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor = cColor;
 
-		iResult = iDice(1, iSkillLevel*30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
 
-		switch (dwType) {
-		case ITEMSTAT_CRITICAL: // 
-			if (dwValue <= 5) dwValue = 5;
-			break;
-		case ITEMSTAT_POISONING: // Min +20
-			if (dwValue <= 4) dwValue = 4;
-			break;
-		case ITEMSTAT_LIGHT: // Min +16%
-			if (dwValue <= 4) dwValue = 4;
-			break;
-		case ITEMSTAT_STRONG: // Min +14%					
-			if (dwValue <= 2) dwValue = 2;
-			break;
-		}
-		// Max 7
-		//if (dwValue > 7) dwValue = 7;
-
-		// Main
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
-		dwType = dwType << 20;
-		 // esto ocupa 1byte: aca tenes 8 0 y 1
-		 // esto ocupa 4 bytes: aca tenes 32 0 y 1 
-		 // 32 bools en un int
-			// 0 1 bool es 0 1 
-			// al tener 32 0 1 podes tener 32 bool
-			// ahorras memoria: 32 bool que ocupan 32 byts tenes un int que ocupa 4byte
-		dwValue = dwValue << 16;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
-
-		//  Hit Prob(50%),  CAD(35%),  Gold(10%), Exp(5%)
-		iResult = iDice(1, iSkillLevel * 10);
-		if ((iResult >= 1) && (iResult <= 499))       dwType = ITEMSTAT2_HITPROB;
-		else if ((iResult >= 500) && (iResult <= 849)) dwType = ITEMSTAT2_CAD;
-		else if ((iResult >= 850) && (iResult <= 949)) dwType = ITEMSTAT2_GOLD;
-		else if ((iResult >= 950) && (iResult <= 1000)) dwType = ITEMSTAT2_EXP;
-
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
-
-		switch (dwType) {
-		case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
-			if (dwValue <= 3) dwValue = 3;
-			break;
-		case ITEMSTAT2_CAD: // CAD Vai do +1  até +7 só
+			switch (dwType) {
+			case ITEMSTAT_CRITICAL: // 
+				if (dwValue <= 5) dwValue = 5;
+				break;
+			case ITEMSTAT_POISONING: // Min +20
+				if (dwValue <= 4) dwValue = 4;
+				break;
+			case ITEMSTAT_LIGHT: // Min +16%
+				if (dwValue <= 4) dwValue = 4;
+				break;
+			case ITEMSTAT_STRONG: // Min +14%					
+				if (dwValue <= 2) dwValue = 2;
+				break;
+			}
+			// Max 7
 			//if (dwValue > 7) dwValue = 7;
-			break;
-		case ITEMSTAT2_EXP: // Exp  +20%
-			//dwValue = 2;
-			break;
-		case ITEMSTAT2_GOLD: // Gold +50%
-			//dwValue = 5;
-			break;
+
+			// Main
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+			dwType = dwType << 20;
+			// esto ocupa 1byte: aca tenes 8 0 y 1
+			// esto ocupa 4 bytes: aca tenes 32 0 y 1 
+			// 32 bools en un int
+			   // 0 1 bool es 0 1 
+			   // al tener 32 0 1 podes tener 32 bool
+			   // ahorras memoria: 32 bool que ocupan 32 byts tenes un int que ocupa 4byte
+			dwValue = dwValue << 16;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
+		else {
+			//  Hit Prob(50%),  CAD(35%),  Gold(10%), Exp(5%)
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 499))       dwType = ITEMSTAT2_HITPROB;
+			else if ((iResult >= 500) && (iResult <= 849)) dwType = ITEMSTAT2_CAD;
+			else if ((iResult >= 850) && (iResult <= 949)) dwType = ITEMSTAT2_GOLD;
+			else if ((iResult >= 950) && (iResult <= 1000)) dwType = ITEMSTAT2_EXP;
 
-		// Demais stats max é 7 (para mobs fracos iGenLevel)
-		//if (dwValue > 7) dwValue = 7;
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
 
-		dwType = dwType << 12;
-		dwValue = dwValue << 8;
+			switch (dwType) {
+			case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
+				if (dwValue <= 3) dwValue = 3;
+				break;
+			case ITEMSTAT2_CAD: // CAD Vai do +1  até +7 só
+				//if (dwValue > 7) dwValue = 7;
+				break;
+			case ITEMSTAT2_EXP: // Exp  +20%
+				//dwValue = 2;
+				break;
+			case ITEMSTAT2_GOLD: // Gold +50%
+				//dwValue = 5;
+				break;
+			}
 
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+			// Demais stats max é 7 (para mobs fracos iGenLevel)
+			//if (dwValue > 7) dwValue = 7;
+
+			dwType = dwType << 12;
+			dwValue = dwValue << 8;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+		}
 	}
 	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_ATTACK_MANASAVE) {
 
-		dwType = ITEMSTAT_CASTPROB;
-		cColor = 5;
+		if (iAttributeType == 1) {
+			dwType = ITEMSTAT_CASTPROB;
+			cColor = 5;
 
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor = cColor;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cItemColor = cColor;
 
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
 
-		//if (dwValue > 7) dwValue = 7;
-
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
-		dwType = dwType << 20;
-		dwValue = dwValue << 16;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
-
-		iResult = iDice(1, iSkillLevel * 10);
-		if ((iResult >= 1) && (iResult <= 499))      dwType = ITEMSTAT2_HITPROB;
-		else if ((iResult >= 500) && (iResult <= 849)) dwType = ITEMSTAT2_CAD;
-		else if ((iResult >= 850) && (iResult <= 949)) dwType = ITEMSTAT2_GOLD;
-		else if ((iResult >= 950) && (iResult <= 1000)) dwType = ITEMSTAT2_EXP;
-
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
-
-		//if (dwValue > 7) dwValue = 7;
-
-		switch (dwType) {
-		case ITEMSTAT2_HITPROB: // Hit Prob Min +21%
-			if (dwValue <= 3) dwValue = 3;
-			break;
-		case ITEMSTAT2_CAD: // Cad vai de +1 até +7
 			//if (dwValue > 7) dwValue = 7;
-			break;
-		case ITEMSTAT2_EXP: // Exp set +20%
-			//dwValue = 2;
-			break;
-		case ITEMSTAT2_GOLD: // Gold Set +50%
-			//dwValue = 5;
-			break;
-		}
 
-		dwType = dwType << 12;
-		dwValue = dwValue << 8;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+			dwType = dwType << 20;
+			dwValue = dwValue << 16;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+		}
+		else {
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 499))      dwType = ITEMSTAT2_HITPROB;
+			else if ((iResult >= 500) && (iResult <= 849)) dwType = ITEMSTAT2_CAD;
+			else if ((iResult >= 850) && (iResult <= 949)) dwType = ITEMSTAT2_GOLD;
+			else if ((iResult >= 950) && (iResult <= 1000)) dwType = ITEMSTAT2_EXP;
+
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
+
+			//if (dwValue > 7) dwValue = 7;
+
+			switch (dwType) {
+			case ITEMSTAT2_HITPROB: // Hit Prob Min +21%
+				if (dwValue <= 3) dwValue = 3;
+				break;
+			case ITEMSTAT2_CAD: // Cad vai de +1 até +7
+				//if (dwValue > 7) dwValue = 7;
+				break;
+			case ITEMSTAT2_EXP: // Exp set +20%
+				//dwValue = 2;
+				break;
+			case ITEMSTAT2_GOLD: // Gold Set +50%
+				//dwValue = 5;
+				break;
+			}
+
+			dwType = dwType << 12;
+			dwValue = dwValue << 8;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+		}
 	}
 	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_DEFENSE) {
 
-		iResult = iDice(1, iSkillLevel * 10);
-		if ((iResult >= 1) && (iResult <= 599))          dwType = ITEMSTAT_STRONG;
-		else if ((iResult >= 600) && (iResult <= 899))  dwType = ITEMSTAT_LIGHT;
-		else if ((iResult >= 900) && (iResult <= 954))  dwType = ITEMSTAT_MANACONV;
-		else if ((iResult >= 955) && (iResult <= 1000)) dwType = ITEMSTAT_CRITICAL2;
+		if (iAttributeType == 1) {
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 599))          dwType = ITEMSTAT_STRONG;
+			else if ((iResult >= 600) && (iResult <= 899))  dwType = ITEMSTAT_LIGHT;
+			else if ((iResult >= 900) && (iResult <= 954))  dwType = ITEMSTAT_MANACONV;
+			else if ((iResult >= 955) && (iResult <= 1000)) dwType = ITEMSTAT_CRITICAL2;
 
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
 
-		switch (dwType) {
-		case ITEMSTAT_LIGHT: // Min +16%
-			if (dwValue <= 4) dwValue = 4;
-			break;
-		case ITEMSTAT_STRONG: // Min +14%
-			if (dwValue <= 2) dwValue = 2;
-			break;
+			switch (dwType) {
+			case ITEMSTAT_LIGHT: // Min +16%
+				if (dwValue <= 4) dwValue = 4;
+				break;
+			case ITEMSTAT_STRONG: // Min +14%
+				if (dwValue <= 2) dwValue = 2;
+				break;
 
-		case ITEMSTAT_MANACONV:
-		case ITEMSTAT_CRITICAL2:
-			/*dwValue = (dwValue + 1) / 2;
-			if (dwValue < 1) dwValue = 1;
-			if (dwValue > 2) dwValue = 2;*/
-			break;
+			case ITEMSTAT_MANACONV:
+			case ITEMSTAT_CRITICAL2:
+				/*dwValue = (dwValue + 1) / 2;
+				if (dwValue < 1) dwValue = 1;
+				if (dwValue > 2) dwValue = 2;*/
+				break;
+			}
+			// Max = 7
+			//if (dwValue > 7) dwValue = 7;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+			dwType = dwType << 20;
+			dwValue = dwValue << 16;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
-		// Max = 7
-		//if (dwValue > 7) dwValue = 7;
+		else {
+			// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 99))       dwType = ITEMSTAT2_DEF;	// 10
+			else if ((iResult >= 100) && (iResult <= 399))  dwType = ITEMSTAT2_PSNRES;	// 12
+			else if ((iResult >= 400) && (iResult <= 549))  dwType = ITEMSTAT2_SPREC;	// 16
+			else if ((iResult >= 550) && (iResult <= 649))  dwType = ITEMSTAT2_HPREC;	// 23
+			else if ((iResult >= 650) && (iResult <= 749))  dwType = ITEMSTAT2_MPREC;	// 23 
+			else if ((iResult >= 750) && (iResult <= 939))  dwType = ITEMSTAT2_MR;		// 12
+			else if ((iResult >= 940) && (iResult <= 979))  dwType = ITEMSTAT2_PA;		// 3
+			else if ((iResult >= 980) && (iResult <= 1000)) dwType = ITEMSTAT2_MA;		// 1
 
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
-		dwType = dwType << 20;
-		dwValue = dwValue << 16;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
 
-		// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
-		iResult = iDice(1, iSkillLevel * 10);
-		if ((iResult >= 1) && (iResult <= 99))       dwType = ITEMSTAT2_DEF;	// 10
-		else if ((iResult >= 100) && (iResult <= 399))  dwType = ITEMSTAT2_PSNRES;	// 12
-		else if ((iResult >= 400) && (iResult <= 549))  dwType = ITEMSTAT2_SPREC;	// 16
-		else if ((iResult >= 550) && (iResult <= 649))  dwType = ITEMSTAT2_HPREC;	// 23
-		else if ((iResult >= 650) && (iResult <= 749))  dwType = ITEMSTAT2_MPREC;	// 23 
-		else if ((iResult >= 750) && (iResult <= 939))  dwType = ITEMSTAT2_MR;		// 12
-		else if ((iResult >= 940) && (iResult <= 979))  dwType = ITEMSTAT2_PA;		// 3
-		else if ((iResult >= 980) && (iResult <= 1000)) dwType = ITEMSTAT2_MA;		// 1
+			switch (dwType) {
+			case 1: // Poison min +21%
+			case 3: // DR Min +21%
+			case 7: // MR Min +21%
+			case 8: // PA Min +9%
+				if (dwValue <= 3) dwValue = 3;
+				break;
+			case 9: // MA Min +9%
+				if (dwValue <= 3) dwValue = 3;
+				//Magn0S:: Add Elements
+				iResult = iDice(1, 1020);
+				if ((iResult >= 1) && (iResult < 275)) sElement = 1;  //Earth 27%
+				else if ((iResult >= 275) && (iResult < 550)) sElement = 2;  //Light 27%
+				else if ((iResult >= 550) && (iResult < 650)) sElement = 3;  //Fire 10%
+				else if ((iResult >= 650) && (iResult < 925)) sElement = 4;  //Water 27%
+				else if ((iResult >= 925) && (iResult < 970)) sElement = 5;  //Holy 04%
+				else if ((iResult >= 970) && (iResult < 1000)) sElement = 6;  //Unholy 04%
+				else if ((iResult >= 1000) && (iResult <= 1020)) sElement = 7;  //Unatunned 02%
+				else sElement = 7;
 
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
+				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sNewEffect1 = sElement;
+				break;
 
-		switch (dwType) {
-		case 1: // Poison min +21%
-		case 3: // DR Min +21%
-		case 7: // MR Min +21%
-		case 8: // PA Min +9%
-			if (dwValue <= 3) dwValue = 3;
-			break;
-		case 9: // MA Min +9%
-			if (dwValue <= 3) dwValue = 3;
-			//Magn0S:: Add Elements
-			iResult = iDice(1, 1020);
-			if ((iResult >= 1) && (iResult < 275)) sElement = 1;  //Earth 27%
-			else if ((iResult >= 275) && (iResult < 550)) sElement = 2;  //Light 27%
-			else if ((iResult >= 550) && (iResult < 650)) sElement = 3;  //Fire 10%
-			else if ((iResult >= 650) && (iResult < 925)) sElement = 4;  //Water 27%
-			else if ((iResult >= 925) && (iResult < 970)) sElement = 5;  //Holy 04%
-			else if ((iResult >= 970) && (iResult < 1000)) sElement = 6;  //Unholy 04%
-			else if ((iResult >= 1000) && (iResult <= 1020)) sElement = 7;  //Unatunned 02%
-			else sElement = 7;
+			}
+			// Max = 7
+			//if (dwValue > 7) dwValue = 7;
 
-			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sNewEffect1 = sElement;
-			break;
-
+			dwType = dwType << 12;
+			dwValue = dwValue << 8;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
-		// Max = 7
-		//if (dwValue > 7) dwValue = 7;
-
-		dwType = dwType << 12;
-		dwValue = dwValue << 8;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 	}
 	else if (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sItemEffectType == DEF_ITEMEFFECTTYPE_BIJOUTERIE) { // necks & rings
-		iResult = iDice(1, iSkillLevel * 10);
-		if ((iResult >= 1) && (iResult <= 299))  dwType = ITEMSTAT_MANACONV;
-		else if ((iResult >= 300) && (iResult <= 599)) dwType = ITEMSTAT_CRITICAL;
-		else if ((iResult >= 600) && (iResult <= 799)) dwType = ITEMSTAT_CRITICAL2;
-		else if ((iResult >= 800) && (iResult <= 1000)) dwType = ITEMSTAT_CASTPROB;
 
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
+		if (iAttributeType == 1) {
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 299))  dwType = ITEMSTAT_MANACONV;
+			else if ((iResult >= 300) && (iResult <= 599)) dwType = ITEMSTAT_CRITICAL;
+			else if ((iResult >= 600) && (iResult <= 799)) dwType = ITEMSTAT_CRITICAL2;
+			else if ((iResult >= 800) && (iResult <= 1000)) dwType = ITEMSTAT_CASTPROB;
 
-		switch (dwType) {
-		case ITEMSTAT_CRITICAL: // 
-			if (dwValue <= 5) dwValue = 5;
-			break;
-		case ITEMSTAT_MANACONV:
-		case ITEMSTAT_CRITICAL2:
-			/*dwValue = (dwValue + 1) / 2;
-			if (dwValue < 1) dwValue = 1;*/
-			//if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
-			break;
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
+
+			switch (dwType) {
+			case ITEMSTAT_CRITICAL: // 
+				if (dwValue <= 5) dwValue = 5;
+				break;
+			case ITEMSTAT_MANACONV:
+			case ITEMSTAT_CRITICAL2:
+				/*dwValue = (dwValue + 1) / 2;
+				if (dwValue < 1) dwValue = 1;*/
+				//if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
+				break;
+			}
+			// Max = 7
+			//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+			dwType = dwType << 20;
+			dwValue = dwValue << 16;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
-		// Max = 7
-		//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
+		else {
+			// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
+			iResult = iDice(1, iSkillLevel * 10);
+			if ((iResult >= 1) && (iResult <= 299))       dwType = ITEMSTAT2_HITPROB;
+			else if ((iResult >= 300) && (iResult <= 399)) dwType = ITEMSTAT2_CAD;
+			else if ((iResult >= 400) && (iResult <= 499)) dwType = ITEMSTAT2_GOLD;
+			else if ((iResult >= 500) && (iResult <= 699)) dwType = ITEMSTAT2_EXP;
+			else if ((iResult >= 700) && (iResult <= 799))  dwType = ITEMSTAT2_SPREC;	// 16
+			else if ((iResult >= 800) && (iResult <= 899))  dwType = ITEMSTAT2_HPREC;	// 23
+			else if ((iResult >= 900) && (iResult <= 1000))  dwType = ITEMSTAT2_MPREC;	// 23 
 
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
-		dwType = dwType << 20;
-		dwValue = dwValue << 16;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+			iResult = iDice(1, iSkillLevel * 30);
+			if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
+			else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
+			else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
+			else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
+			else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
+			else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
+			else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
+			else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
+			else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
+			else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
+			else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
+			else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
+			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
+			else dwValue = 1; // v2.03 906
 
-		// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
-		iResult = iDice(1, iSkillLevel * 10);
-		if ((iResult >= 1) && (iResult <= 299))       dwType = ITEMSTAT2_HITPROB;
-		else if ((iResult >= 300) && (iResult <= 399)) dwType = ITEMSTAT2_CAD;
-		else if ((iResult >= 400) && (iResult <= 499)) dwType = ITEMSTAT2_GOLD;
-		else if ((iResult >= 500) && (iResult <= 699)) dwType = ITEMSTAT2_EXP;
-		else if ((iResult >= 700) && (iResult <= 799))  dwType = ITEMSTAT2_SPREC;	// 16
-		else if ((iResult >= 800) && (iResult <= 899))  dwType = ITEMSTAT2_HPREC;	// 23
-		else if ((iResult >= 900) && (iResult <= 1000))  dwType = ITEMSTAT2_MPREC;	// 23 
+			switch (dwType) {
+			case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
+				if (dwValue <= 3) dwValue = 3;
+				break;
+			case ITEMSTAT2_CAD: // CAD Vai do +1  até +7 só
+				//if (dwValue > 7) dwValue = 7;
+				break;
+			case ITEMSTAT2_EXP: // Exp  +20%
+				//dwValue = 2;
+				break;
+			case ITEMSTAT2_GOLD: // Gold +50%
+				//dwValue = 5;
+				break;
+			}
 
-		iResult = iDice(1, iSkillLevel * 30);
-		if ((iResult >= 1) && (iResult < 1000))           dwValue = 1;  // 10000/29348 = 34%
-		else if ((iResult >= 1000) && (iResult < 1740))  dwValue = 2;  // 6600/29348 = 22.4%
-		else if ((iResult >= 1740) && (iResult < 2240))  dwValue = 3;  // 4356/29348 = 14.8%
-		else if ((iResult >= 2240) && (iResult < 2540))  dwValue = 4;  // 2874/29348 = 9.7%
-		else if ((iResult >= 2540) && (iResult < 2740))  dwValue = 5;  // 1897/29348 = 6.4%
-		else if ((iResult >= 2740) && (iResult < 2840))  dwValue = 6;  // 1252/29348 = 4.2%
-		else if ((iResult >= 2840) && (iResult < 2890))  dwValue = 7;  // 826/29348 = 2.8%
-		else if ((iResult >= 2890) && (iResult < 2930))  dwValue = 8;  // 545/29348 = 1.85%
-		else if ((iResult >= 2930) && (iResult < 2960))  dwValue = 9;  // 360/29348 = 1.2%
-		else if ((iResult >= 2960) && (iResult < 2980))  dwValue = 10; // 237/29348 = 0.8%
-		else if ((iResult >= 2980) && (iResult < 2990))  dwValue = 11; // 156/29348 = 0.5%
-		else if ((iResult >= 2990) && (iResult < 2997))  dwValue = 12; // 103/29348 = 0.3%
-		else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
-		else dwValue = 1; // v2.03 906
+			// Max = 7
+			//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
-		switch (dwType) {
-		case ITEMSTAT2_HITPROB: // Min Hip Prob +21%
-			if (dwValue <= 3) dwValue = 3;
-			break;
-		case ITEMSTAT2_CAD: // CAD Vai do +1  até +7 só
-			//if (dwValue > 7) dwValue = 7;
-			break;
-		case ITEMSTAT2_EXP: // Exp  +20%
-			//dwValue = 2;
-			break;
-		case ITEMSTAT2_GOLD: // Gold +50%
-			//dwValue = 5;
-			break;
+			dwType = dwType << 12;
+			dwValue = dwValue << 8;
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
-
-		// Max = 7
-		//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
-
-		dwType = dwType << 12;
-		dwValue = dwValue << 8;
-		m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 	}
 	else
 	{

@@ -3139,27 +3139,28 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 0);
 	//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 5);
 
-	short limitX, limitY;
-	limitX = sX + m_stDialogBoxInfo[44].sSizeX;
-	limitY = sY + m_stDialogBoxInfo[44].sSizeY;
+	short limitX, limitY, addx;
 
 	if (m_stDialogBoxInfo[44].sV1 != -1 && m_stDialogBoxInfo[44].cMode == 1)
 	{
-		m_DDraw.DrawShadowBox(sX, sY, limitX*2, limitY, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX*2, limitY, 0, true);
-
-		m_DDraw.DrawShadowBox(sX, sY, limitX*2, sY + 25, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX*2, sY + 25, 0, true);
-		PutString_SprFont2(sX + 85*3, sY + 5, "Item Enchant", 240, 240, 240);
+		m_stDialogBoxInfo[44].sSizeX = (short)(258*2.5f);
+		//m_stDialogBoxInfo[44].sSizeY = 339*2;
+		addx = 2;
 	}
 	else {
-		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-
-		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-		PutString_SprFont2(sX + 85, sY + 5, "Item Enchant", 240, 240, 240);
+		m_stDialogBoxInfo[44].sSizeX = 258;
+		//m_stDialogBoxInfo[44].sSizeY = 339;
+		addx = 1;
 	}
+	limitX = sX + m_stDialogBoxInfo[44].sSizeX;
+	limitY = sY + m_stDialogBoxInfo[44].sSizeY;
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+	PutString_SprFont2(sX + 85* addx, sY + 5, "Item Enchant", 240, 240, 240);
+
 	if (m_stDialogBoxInfo[44].cMode != 9) {
 		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME3, sX, sY, 3); // recuadro x1 ok y1 ok x2 ok y2 ok
 		m_DDraw.DrawShadowBox(sX + 20 - 5 + 90 - 2 - 5 - 4, sY + 90 + 10 + 24 + 10 - 1, sX + 50 + 5 + 80 + 40, sY + 145 + 102, 1, true);
@@ -3376,8 +3377,11 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 					}
 				}
 			}
-			else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 19, 104, 169);
-			
+			else
+			{
+				if (m_bFirstStatSelected) PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 0, 255, 0);
+				else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 19, 104, 169);
+			}
 			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 260 + 20 - 120) && (msY <= sY + 260 + 20 - 120 + 14))
 			{
 				PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 255, 255, 255);
@@ -3543,23 +3547,28 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 					iLoc += 15;
 				}
 			}
-			else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 19, 104, 169);
-			
+			else
+			{
+				if (m_bSecondStatSelected) PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 0, 255, 0);
+				else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 19, 104, 169);
+			}
 			/*if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 47);
 			else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);*/
 
-			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+			if (m_bFirstStatSelected || m_bSecondStatSelected) 
 			{
-				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
-				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 255, 255, 100);
+				if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
+				{
+					DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
+					PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 255, 255, 100);
+				}
+				else
+				{
+					DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
+					PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 180, 188, 180);
+				}
 			}
-			else
-			{
-				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
-				PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Enchant", 180, 188, 180);
-			}
-			
 		}
 		//else DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
 		// Cancel
@@ -3614,7 +3623,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 		if (((dwTime - m_stDialogBoxInfo[44].dwV1) / 1000 > 4) && (m_stDialogBoxInfo[44].dwV1 != 0))
 		{
 			m_stDialogBoxInfo[44].dwV1 = 0;
-			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_ENCHANTITEM, 0, m_stDialogBoxInfo[44].sV1, 0, 0, 0);
+			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_ENCHANTITEM, 0, m_stDialogBoxInfo[44].sV1, m_stDialogBoxInfo[44].sV2, 0, 0);
 		}
 		break;
 

@@ -19,7 +19,7 @@
 #define NAME_WORLDNAME			"WS1"											// Name for default (1st) server
 #define MSG_WORLDNAME1			"Helbreath Ghost"								// Long name for 1st server...
 
-#define MSG_HOMEPAGE			"http://www.helbreathghost.com"					// Web Server
+#define MSG_HOMEPAGE			"https://www.helbreathghost.com"					// Web Server
 
 #define DEF_UPPERVERSION		3
 #define DEF_LOWERVERSION		51

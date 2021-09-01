@@ -709,7 +709,7 @@ private:
 	bool bCheckIsItemUpgradeSuccess(int iClientH, int iItemIndex, int iSomH, bool bBonus = false);
 	void RequestItemUpgradeHandler(int iClientH, int iItemIndex);
 
-	void RequestItemEnchantHandler(int iClientH, int iItemIndex);
+	void RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttributeType);
 
 	//Party Codes
 	void RequestCreatePartyHandler(int iClientH);

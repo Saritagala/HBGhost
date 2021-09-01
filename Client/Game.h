@@ -177,6 +177,8 @@ public:
 
 	int iCityHP[2], iCityMaxHP[2];
 
+	bool m_bFirstStatSelected = false, m_bSecondStatSelected = false;
+
 	class CItem* m_pItemConfigList[5000];
 	bool _bDecodeItemConfigFileContents(char* pFileName);
 

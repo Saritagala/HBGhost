@@ -135,8 +135,8 @@ bool CWorldLog::bInit()
 	{
 		con.Connect(
 			"localhost\\sqlexpress@HBGhost",
-			"",
-			"",
+			"hb",
+			"h3lbr34th_gh0s7",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -148,7 +148,7 @@ bool CWorldLog::bInit()
 		return false;
 	}
 
-	PutLogList("(!) SQL SERVER CONNECTED: @HBGhost");
+	PutLogList("(!) SQL SERVER CONNECTED");
 
 	return true;
 }
@@ -4888,6 +4888,7 @@ int CWorldLog::iSaveCharacterSQL(DWORD dwCharID, char* pData)
 {
 	return -1;
 }
+
 
 bool CWorldLog::bReadItemConfigFile(char* cFn)
 {

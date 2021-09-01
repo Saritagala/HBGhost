@@ -10436,7 +10436,7 @@ void CGame::ClientCommonHandler(int iClientH, char * pData)
 		break;
 
 	case DEF_COMMONTYPE_ENCHANTITEM:
-		RequestItemEnchantHandler(iClientH, iV1);
+		RequestItemEnchantHandler(iClientH, iV1, iV2);
 		break;
 
 	case DEF_COMMONTYPE_REQGUILDNAME:
