@@ -1292,7 +1292,7 @@ public:
     void DrawQuestHelper();
 	bool m_bQuestHelper;
 
-	bool bChangeBigItems;
+	bool bChangeBigItems, m_bUseOldPanels;
 	//Grid - by luqah
 	bool m_bGrid;
 
