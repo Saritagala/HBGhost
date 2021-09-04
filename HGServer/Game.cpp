@@ -11336,7 +11336,7 @@ int CGame::iGetLevelExp(int iLevel)
 	
 	if (iLevel == 0) return 0;
 	
-	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 175) * (iLevel / 175) ) );
+	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 17) * (iLevel / 17) ) );
 
 	return iRet;
 }
@@ -11354,7 +11354,7 @@ void CGame::StateChangeHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	char cStr, cVit, cDex, cInt, cMag, cChar;
 	int iOldStr, iOldVit, iOldDex, iOldInt, iOldMag, iOldChar;
 	if (m_pClientList[iClientH] == 0) return;
-	if (m_pClientList[iClientH]->m_bIsInitComplete == FALSE) return;
+	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_pClientList[iClientH]->m_iGizonItemUpgradeLeft <= 0) return;
 	cStr = cVit = cDex = cInt = cMag = cChar = 0;
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -11448,7 +11448,7 @@ void CGame::StateChangeHandler(int iClientH, char* pData, DWORD dwMsgSize)
 	m_pClientList[iClientH]->m_iCharisma -= cChar;
 	if (cInt > 0) bCheckMagicInt(iClientH);
 	// Snoopy: Check max values here or character will be considered as hacker if reducing mana or vit
-	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH, FALSE);
+	if (m_pClientList[iClientH]->m_iHP > iGetMaxHP(iClientH)) m_pClientList[iClientH]->m_iHP = iGetMaxHP(iClientH);
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
 	SendNotifyMsg(0, iClientH, DEF_NOTIFY_GIZONITEMUPGRADELEFT, m_pClientList[iClientH]->m_iGizonItemUpgradeLeft, 0, 0, 0);

@@ -17301,124 +17301,116 @@ void CGame::DlgBoxClick_Shop(short msX, short msY)
 	}
 }
 
-#ifdef DEF_USE_OLD_PANELS
 void CGame::DlgBoxClick_Skill(short msX, short msY)
 {
 	int i;
 	short sX, sY;
+	int x = 0;
+
 	sX = m_stDialogBoxInfo[15].sX;
 	sY = m_stDialogBoxInfo[15].sY;
+	
 	switch (m_stDialogBoxInfo[15].cMode) {
 	case -1:
 		break;
-	case 0:
-		for (i = 0; i < 17; i++)
-			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != 0))
-			{
-				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
+	
+	case 0:	
+		if (m_bUseOldPanels)
+		{
+			for (i = 0; i < 17; i++)
+				if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != 0))
 				{
-					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == true)
-						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
+					if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
 					{
-						if (m_bSkillUsingStatus == true)
+						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == true)
+							&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 						{
-							AddEventList(DLGBOX_CLICK_SKILL1, 10); // "You are already using other skill."
-							return;
+							if (m_bSkillUsingStatus == true)
+							{
+								AddEventList(DLGBOX_CLICK_SKILL1, 10); // "You are already using other skill."
+								return;
+							}
+							if ((m_bCommandAvailable == false) || (m_iHP <= 0))
+							{
+								AddEventList(DLGBOX_CLICK_SKILL2, 10); // "You can't use a skill while you are moving."
+								return;
+							}
+							if (m_bIsGetPointingMode == true)
+							{
+								return;
+							}
+							switch (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cUseMethod) {
+							case 0:
+							case 2:
+								bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USESKILL, 0, (i + m_stDialogBoxInfo[15].sView), 0, 0, 0);
+								m_bSkillUsingStatus = true;
+								DisableDialogBox(15);
+								PlaySound('E', 14, 5);
+								break;
+							}
 						}
-						if ((m_bCommandAvailable == false) || (m_iHP <= 0))
+					}
+					else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
+					{
+						if (m_stDialogBoxInfo[15].bFlag == false)
 						{
-							AddEventList(DLGBOX_CLICK_SKILL2, 10); // "You can't use a skill while you are moving."
-							return;
-						}
-						if (m_bIsGetPointingMode == true)
-						{
-							return;
-						}
-						switch (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cUseMethod) {
-						case 0:
-						case 2:
-							bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USESKILL, 0, (i + m_stDialogBoxInfo[15].sView), 0, 0, 0);
-							m_bSkillUsingStatus = true;
-							DisableDialogBox(15);
+							bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_SETDOWNSKILLINDEX, 0, i + m_stDialogBoxInfo[15].sView, 0, 0, 0);
 							PlaySound('E', 14, 5);
-							break;
+							m_stDialogBoxInfo[15].bFlag = true;
 						}
 					}
 				}
-				else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
+		}
+		else {
+			for (i = 0; i < 24; i++)
+				if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != 0))
 				{
-					if (m_stDialogBoxInfo[15].bFlag == false)
+					if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
+					if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 					{
-						bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_SETDOWNSKILLINDEX, 0, i + m_stDialogBoxInfo[15].sView, 0, 0, 0);
-						PlaySound('E', 14, 5);
-						m_stDialogBoxInfo[15].bFlag = true;
+						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+							&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
+						{
+							if (m_bSkillUsingStatus == TRUE)
+							{
+								AddEventList(DLGBOX_CLICK_SKILL1, 10); // "You are already using other skill."
+								return;
+							}
+							if ((m_bCommandAvailable == FALSE) || (m_iHP <= 0))
+							{
+								AddEventList(DLGBOX_CLICK_SKILL2, 10); // "You can't use a skill while you are moving."
+								return;
+							}
+							if (m_bIsGetPointingMode == TRUE)
+							{
+								return;
+							}
+							switch (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cUseMethod) {
+							case 0:
+							case 2:
+								bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USESKILL, 0, (i + m_stDialogBoxInfo[15].sView), 0, 0, 0);
+								m_bSkillUsingStatus = TRUE;
+								DisableDialogBox(15);
+								PlaySound('E', 14, 5);
+								break;
+							}
+						}
 					}
+					/*else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
+					{
+						if (m_stDialogBoxInfo[15].bFlag == FALSE)
+						{
+							bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_SETDOWNSKILLINDEX, 0, i + m_stDialogBoxInfo[15].sView, 0, 0, 0);
+							PlaySound('E', 14, 5);
+							m_stDialogBoxInfo[15].bFlag = TRUE;
+						}
+					}*/
+					x++;
 				}
-			}
+		}
 		break;
 	}
 }
-#else // Centuu : Skill
-void CGame::DlgBoxClick_Skill(short msX, short msY)
-{
-	int i;
-	short sX, sY;
-	sX = m_stDialogBoxInfo[15].sX;
-	sY = m_stDialogBoxInfo[15].sY;
-	switch (m_stDialogBoxInfo[15].cMode) {
-	case -1:
-		break;
-	case 0:
-		int x = 0;
-		for (i = 0; i < 24; i++)
-			if ((i < DEF_MAXSKILLTYPE) && (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView] != 0))
-			{
-				if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
-				if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
-				{
-					if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
-						&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
-					{
-						if (m_bSkillUsingStatus == TRUE)
-						{
-							AddEventList(DLGBOX_CLICK_SKILL1, 10); // "You are already using other skill."
-							return;
-						}
-						if ((m_bCommandAvailable == FALSE) || (m_iHP <= 0))
-						{
-							AddEventList(DLGBOX_CLICK_SKILL2, 10); // "You can't use a skill while you are moving."
-							return;
-						}
-						if (m_bIsGetPointingMode == TRUE)
-						{
-							return;
-						}
-						switch (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cUseMethod) {
-						case 0:
-						case 2:
-							bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USESKILL, 0, (i + m_stDialogBoxInfo[15].sView), 0, 0, 0);
-							m_bSkillUsingStatus = TRUE;
-							DisableDialogBox(15);
-							PlaySound('E', 14, 5);
-							break;
-						}
-					}
-				}
-				/*else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
-				{
-					if (m_stDialogBoxInfo[15].bFlag == FALSE)
-					{
-						bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_SETDOWNSKILLINDEX, 0, i + m_stDialogBoxInfo[15].sView, 0, 0, 0);
-						PlaySound('E', 14, 5);
-						m_stDialogBoxInfo[15].bFlag = TRUE;
-					}
-				}*/
-				x++;
-			}
-		break;
-	}
-}
-#endif
 
 void CGame::DlgBoxClick_SkillDlg(short msX, short msY)
 {

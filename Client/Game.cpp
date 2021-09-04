@@ -22499,136 +22499,133 @@ void CGame::DlgBoxClick_Inventory(short msX, short msY)
 	}
 }
 
-#ifdef DEF_USE_OLD_PANELS
-void CGame::DlgBoxClick_Character(short msX, short msY)
-{
-	short sX, sY;
-
-	sX = m_stDialogBoxInfo[1].sX;
-	sY = m_stDialogBoxInfo[1].sY;
-	
-	switch (m_stDialogBoxInfo[1].cMode) {
-	case 0:
-		if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
-			EnableDialogBox(28, 0, 0, 0);
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}
-		else if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
-			EnableDialogBox(32, 0, 0, 0);
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}
-		else if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
-			EnableDialogBox(12, 0, 0, 0);
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}
-
-		if ((msX > sX + 105 + 95) && (msX < sX + 105 + 95 + 65) && (msY > sY + 30) && (msY < sY + 30 + 15))
-		{
-			m_stDialogBoxInfo[1].cMode = 1;
-			PlaySound('E', 14, 5);
-		}
-		break;
-	}
-}
-#else // Centuu : Character
 void CGame::DlgBoxClick_Character(short msX, short msY)
 {
 	short sX, sY;
 	int i;
 
-	sX = m_stDialogBoxInfo[1].sX;
-	sY = m_stDialogBoxInfo[1].sY;
+	if (m_bUseOldPanels)
+	{
+		sX = m_stDialogBoxInfo[1].sX;
+		sY = m_stDialogBoxInfo[1].sY;
 
-	//m_stDialogBoxInfo[1].sSizeX = 270;
-
-	if ((msX >= sX + 10) && (msX <= sX + 175) && (msY >= sY + 5) && (msY <= sY + 25)) {
-		m_stDialogBoxInfo[1].cMode = 0;
-		PlaySound('E', 14, 5);
-	}
-
-	if ((msX >= sX + 180) && (msX <= sX + 295) && (msY >= sY + 5) && (msY <= sY + 25)) {
-		m_stDialogBoxInfo[1].cMode = 1;
-		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, 0, 27, 0, 0, 0);
-		PlaySound('E', 14, 5);
-	}
-
-	switch (m_stDialogBoxInfo[1].cMode) {
-	case 0:
-		if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 320) && (msY <= sY + 340))
-		{	//Magn0S:: Mult Quest - Click selecioon on F5
-			for (i = 0; i < DEF_MAXQUEST; i++) {
-				if (m_stQuest[i].sQuestType != 0)
-					EnableDialogBox(28, 0, 0, 0);
-				else EnableDialogBox(28, 3, 0, 0);
+		switch (m_stDialogBoxInfo[1].cMode) {
+		case 0:
+			if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+				EnableDialogBox(28, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
 			}
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}
-
-		if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 320) && (msY <= sY + 340))
-		{	//Party
-			EnableDialogBox(32, 0, 0, 0);
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}
-
-		if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 320) && (msY <= sY + 340))
-		{	//Level Settings
-			EnableDialogBox(12, 0, 0, 0);
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}
-		//Sec. Line-------------------------------------------------------------------------------------------------
-		/*if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
-		{	//Guild
-			//EnableDialogBox(XX, 0, 0, 0);
-			PlaySound('E', 14, 5);
-		}
-
-		if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 345) && (msY <= sY + 365))
-		{	//Player Panel
-			EnableDialogBox(53, 0, 0, 0);
-			PlaySound('E', 14, 5);
-		}
-
-		if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 345) && (msY <= sY + 365))
-		{	//Upgrades
-			EnableDialogBox(34, 5, 0, 0);
-			PlaySound('E', 14, 5);
-		}*/
-
-
-		/*if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
-			//Magn0S:: Mult Quest - Click selecioon on F5
-			for (i = 0; i < DEF_MAXQUEST; i++) {
-				if (m_stQuest[i].sQuestType != 0)
-					EnableDialogBox(28, 0, 0, 0);
-				else EnableDialogBox(28, 3, 0, 0);
+			else if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+				EnableDialogBox(32, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
 			}
-			DisableDialogBox(1);
+			else if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+				EnableDialogBox(12, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}
+
+			if ((msX > sX + 105 + 95) && (msX < sX + 105 + 95 + 65) && (msY > sY + 30) && (msY < sY + 30 + 15))
+			{
+				m_stDialogBoxInfo[1].cMode = 1;
+				PlaySound('E', 14, 5);
+			}
+			break;
+		}
+	}
+	else {
+		sX = m_stDialogBoxInfo[1].sX;
+		sY = m_stDialogBoxInfo[1].sY;
+
+		//m_stDialogBoxInfo[1].sSizeX = 270;
+
+		if ((msX >= sX + 10) && (msX <= sX + 175) && (msY >= sY + 5) && (msY <= sY + 25)) {
+			m_stDialogBoxInfo[1].cMode = 0;
 			PlaySound('E', 14, 5);
 		}
-		else if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
-			EnableDialogBox(32, 0, 0, 0);
-			DisableDialogBox(1);
+
+		if ((msX >= sX + 180) && (msX <= sX + 295) && (msY >= sY + 5) && (msY <= sY + 25)) {
+			m_stDialogBoxInfo[1].cMode = 1;
+			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_CLIENTMSG, 0, 27, 0, 0, 0);
 			PlaySound('E', 14, 5);
 		}
-		else if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
-			EnableDialogBox(12, 0, 0, 0);
-			DisableDialogBox(1);
-			PlaySound('E', 14, 5);
-		}*/
-		break;
 
-	case 1:
+		switch (m_stDialogBoxInfo[1].cMode) {
+		case 0:
+			if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 320) && (msY <= sY + 340))
+			{	//Magn0S:: Mult Quest - Click selecioon on F5
+				for (i = 0; i < DEF_MAXQUEST; i++) {
+					if (m_stQuest[i].sQuestType != 0)
+						EnableDialogBox(28, 0, 0, 0);
+					else EnableDialogBox(28, 3, 0, 0);
+				}
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}
 
-		break;
+			if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 320) && (msY <= sY + 340))
+			{	//Party
+				EnableDialogBox(32, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}
+
+			if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 320) && (msY <= sY + 340))
+			{	//Level Settings
+				EnableDialogBox(12, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}
+			//Sec. Line-------------------------------------------------------------------------------------------------
+			if ((msX >= sX + 5) && (msX <= sX + 95) && (msY >= sY + 345) && (msY <= sY + 365))
+			{	//Guild
+				//EnableDialogBox(XX, 0, 0, 0);
+				PlaySound('E', 14, 5);
+			}
+
+			if ((msX >= sX + 105) && (msX <= sX + 195) && (msY >= sY + 345) && (msY <= sY + 365))
+			{	//Player Panel
+				EnableDialogBox(53, 0, 0, 0);
+				PlaySound('E', 14, 5);
+			}
+
+			if ((msX >= sX + 205) && (msX <= sX + 295) && (msY >= sY + 345) && (msY <= sY + 365))
+			{	//Upgrades
+				EnableDialogBox(34, 5, 0, 0);
+				PlaySound('E', 14, 5);
+			}
+
+
+			/*if ((msX >= sX + 15) && (msX <= sX + 15 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+				//Magn0S:: Mult Quest - Click selecioon on F5
+				for (i = 0; i < DEF_MAXQUEST; i++) {
+					if (m_stQuest[i].sQuestType != 0)
+						EnableDialogBox(28, 0, 0, 0);
+					else EnableDialogBox(28, 3, 0, 0);
+				}
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}
+			else if ((msX >= sX + 98) && (msX <= sX + 98 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+				EnableDialogBox(32, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}
+			else if ((msX >= sX + 180) && (msX <= sX + 180 + DEF_BTNSZX) && (msY >= sY + 340) && (msY <= sY + 340 + DEF_BTNSZY)) {
+				EnableDialogBox(12, 0, 0, 0);
+				DisableDialogBox(1);
+				PlaySound('E', 14, 5);
+			}*/
+			break;
+
+		case 1:
+
+			break;
+		}
 	}
 }
-#endif
 
 void CGame::DlgBoxClick_MagicShop(short msX, short msY)
 {
@@ -22936,7 +22933,7 @@ void CGame::DlgBoxClick_ItemSellorRepair(short msX, short msY)
 int CGame::iGetLevelExp(int iLevel)
 {int iRet;
 	if (iLevel == 0) return 0;
-	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 175) * (iLevel / 175) ) );
+	iRet = iGetLevelExp(iLevel - 1) + iLevel * ( 50 + (iLevel * (iLevel / 17) * (iLevel / 17) ) );
 	return iRet;
 }
 
@@ -27574,17 +27571,19 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case VK_F9:
-#ifdef DEF_USE_OLD_PANELS
-		if (m_bIsDialogEnabled[10] == false)
-			EnableDialogBox(10, 0, 0, 0);
-		else DisableDialogBox(10);
-#else
-		if (m_bIsDialogEnabled[10] == FALSE)
-			if (chatmode == 99)
+		if (m_bUseOldPanels)
+		{
+			if (m_bIsDialogEnabled[10] == false)
 				EnableDialogBox(10, 0, 0, 0);
-			else EnableDialogBox(10, 1, 0, 0);
-		else DisableDialogBox(10);
-#endif
+			else DisableDialogBox(10);
+		}
+		else {
+			if (m_bIsDialogEnabled[10] == FALSE)
+				if (chatmode == 99)
+					EnableDialogBox(10, 0, 0, 0);
+				else EnableDialogBox(10, 1, 0, 0);
+			else DisableDialogBox(10);
+		}
 		break;
 
 	case VK_F10: // f10 player panel
@@ -31487,18 +31486,20 @@ void CGame::EraseItem(char cItemID)
 }
 
 //Magn0S:: Update F5 - 26/07/2020 - Cancelado devido a queda de fps
-#ifndef DEF_USE_OLD_PANELS
+
 void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 {
 	char cEquipPoiStatus[DEF_MAXITEMEQUIPPOS], cItemID = -1;
 	short sX, sY, sSprH, sFrame;
 	int i;
+	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
+	
 	if (m_bIsDialogEnabled[17] == true) return;
 	sX = m_stDialogBoxInfo[1].sX;
 	sY = m_stDialogBoxInfo[1].sY;
 
-	switch (m_stDialogBoxInfo[1].cMode) {
-	case 0:
+	if (m_bUseOldPanels)
+	{
 		for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++)
 			cEquipPoiStatus[i] = -1;
 
@@ -31515,7 +31516,6 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 		}
 		if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
 		{
-
 			if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
 				sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
 				sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
@@ -31585,7 +31585,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 			if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
 				sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 				sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-				if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+				if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
 					cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
 			}
 			if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
@@ -31671,7 +31671,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 			if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
 				sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
 				sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-				if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+				if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
 					cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
 			}
 			if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
@@ -31689,7 +31689,6 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 		else {
 			if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == true)
 			{
-				char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 				GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 				ZeroMemory(G_cTxt, sizeof(G_cTxt));
 				wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);//"
@@ -31699,28 +31698,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 				else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
 				else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);
 				else PlaySound('E', 29, 0);
-				// Remove Angelic Stats
-				/*if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos >= 11)
-					&& (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == 1))
-				{
-					char cItemID = m_stMCursor.sSelectedObjectID;
-					if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
-					{
-						m_iAngelicStr = 0;
-					}
-					else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
-					{
-						m_iAngelicDex = 0;
-					}
-					else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
-					{
-						m_iAngelicInt = 0;
-					}
-					else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
-					{
-						m_iAngelicMag = 0;
-					}
-				}*/
+
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, 0, m_stMCursor.sSelectedObjectID, 0, 0, 0);
 				m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] = false;
 				m_sItemEquipmentStatus[m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos] = -1;
@@ -31728,228 +31706,242 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 				m_stMCursor.sSelectedObjectID = 0;
 			}
 		}
-		break;
 	}
-}
-#else
-void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
-{
-	char cEquipPoiStatus[DEF_MAXITEMEQUIPPOS], cItemID = -1;
-	short sX, sY, sSprH, sFrame;
-	int i;
-	if (m_bIsDialogEnabled[17] == true) return;
-	sX = m_stDialogBoxInfo[1].sX;
-	sY = m_stDialogBoxInfo[1].sY;
-
-	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++)
-		cEquipPoiStatus[i] = -1;
-
-	for (i = 0; i < DEF_MAXITEMS; i++) {
-		if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
-
-		if (strcmp(m_cMapName, "team") == 0)
-		{
-			if ((m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_BACK) || (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_BOOTS))
-			{
-				return;
-			}
-		}
-	}
-	if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
-	{
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 41, sY + 137, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BACK];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_PANTS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_ARMS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BODY];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 170, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LHAND];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RHAND];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_NECK];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RFINGER];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 72, sY + 135, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_HEAD];
-		}
-	}
-	else if ((m_sPlayerType >= 4) && (m_sPlayerType <= 6)) {
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 45, sY + 143, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BACK];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_PANTS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_ARMS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BODY];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 84, sY + 175, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LHAND];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RHAND];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_NECK];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RFINGER];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 98, sY + 182, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
-		}
-		if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
-			sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
-			sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
-			if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 72, sY + 139, sFrame, msX, msY))
-				cItemID = cEquipPoiStatus[DEF_EQUIPPOS_HEAD];
-		}
-	}
-
-	if (cItemID == -1 || m_pItemList[cItemID] == 0) return;
-	if ((m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_CONSUME) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW) || (m_pItemList[cItemID]->m_dwCount > 1)) return;
-	if ((m_bIsDialogEnabled[11] == true) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24))
-		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, 0, cItemID, m_stDialogBoxInfo[39].sV3, 0, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
 	else {
-		if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == true)
-		{
-			char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
-			GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
-			ZeroMemory(G_cTxt, sizeof(G_cTxt));
-			wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);//"
-			AddEventList(G_cTxt, 10);
-			if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 53, 0);
-			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(DEX)", 19) == 0) PlaySound('E', 53, 0);
-			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
-			else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);
-			else PlaySound('E', 29, 0);
-			
-			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, 0, m_stMCursor.sSelectedObjectID, 0, 0, 0);
-			m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] = false;
-			m_sItemEquipmentStatus[m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos] = -1;
-			m_stMCursor.cSelectedObjectType = 0;
-			m_stMCursor.sSelectedObjectID = 0;
+		switch (m_stDialogBoxInfo[1].cMode) {
+		case 0:
+			for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++)
+				cEquipPoiStatus[i] = -1;
+
+			for (i = 0; i < DEF_MAXITEMS; i++) {
+				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+
+				if (strcmp(m_cMapName, "team") == 0)
+				{
+					if ((m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_BACK) || (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_BOOTS))
+					{
+						return;
+					}
+				}
+			}
+			if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
+			{
+
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 41, sY + 137, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BACK];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_PANTS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_ARMS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BODY];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 170, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LHAND];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RHAND];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 57, sY + 186, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_NECK];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RFINGER];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->_bCheckCollison(sX + 72, sY + 135, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_HEAD];
+				}
+			}
+			else if ((m_sPlayerType >= 4) && (m_sPlayerType <= 6)) {
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BACK] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 45, sY + 143, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BACK];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_PANTS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_PANTS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_ARMS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_ARMS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BOOTS] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BOOTS];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_BODY] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_BODY];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 171, sY + 290, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_LHAND] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 84, sY + 175, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LHAND];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_RHAND] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RHAND];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 60, sY + 191, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_NECK] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 35, sY + 120, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_NECK];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_RFINGER] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 32, sY + 193, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_RFINGER];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_LFINGER] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 90, sY + 175, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_LFINGER];
+				}
+				if (cEquipPoiStatus[DEF_EQUIPPOS_HEAD] != -1) {
+					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSprite;
+					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
+					if (m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->_bCheckCollison(sX + 72, sY + 139, sFrame, msX, msY))
+						cItemID = cEquipPoiStatus[DEF_EQUIPPOS_HEAD];
+				}
+			}
+
+			if (cItemID == -1 || m_pItemList[cItemID] == 0) return;
+			if ((m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_CONSUME) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW) || (m_pItemList[cItemID]->m_dwCount > 1)) return;
+			if ((m_bIsDialogEnabled[11] == true) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24))
+				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, 0, cItemID, m_stDialogBoxInfo[39].sV3, 0, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
+			else {
+				if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == true)
+				{
+					GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+					ZeroMemory(G_cTxt, sizeof(G_cTxt));
+					wsprintf(G_cTxt, ITEM_EQUIPMENT_RELEASED, cStr1);//"
+					AddEventList(G_cTxt, 10);
+					if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(STR)", 19) == 0) PlaySound('E', 53, 0);
+					else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(DEX)", 19) == 0) PlaySound('E', 53, 0);
+					else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(INT)", 19) == 0) PlaySound('E', 53, 0);
+					else if (memcmp(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName, "AngelicPandent(MAG)", 19) == 0) PlaySound('E', 53, 0);
+					else PlaySound('E', 29, 0);
+					// Remove Angelic Stats
+					/*if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos >= 11)
+						&& (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == 1))
+					{
+						char cItemID = m_stMCursor.sSelectedObjectID;
+						if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(STR)", 19) == 0)
+						{
+							m_iAngelicStr = 0;
+						}
+						else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(DEX)", 19) == 0)
+						{
+							m_iAngelicDex = 0;
+						}
+						else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(INT)", 19) == 0)
+						{
+							m_iAngelicInt = 0;
+						}
+						else if (memcmp(m_pItemList[cItemID]->m_cName, "AngelicPandent(MAG)", 19) == 0)
+						{
+							m_iAngelicMag = 0;
+						}
+					}*/
+					bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, 0, m_stMCursor.sSelectedObjectID, 0, 0, 0);
+					m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] = false;
+					m_sItemEquipmentStatus[m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos] = -1;
+					m_stMCursor.cSelectedObjectType = 0;
+					m_stMCursor.sSelectedObjectID = 0;
+				}
+			}
+			break;
 		}
 	}
 }
-#endif
 
 void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 {short si = m_stMCursor.sCursorFrame;
