@@ -2985,8 +2985,8 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 							m_pTileSpr[sObjSpr]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						}
 						if (m_bIsXmas == true)
-						{	if (G_cSpriteAlphaDegree == 2) // nuit
-							{	if( iXmasTreeBulbDelay < 0 || iXmasTreeBulbDelay > idelay + 1) iXmasTreeBulbDelay = 0;
+						{	/*if (G_cSpriteAlphaDegree == 2) // nuit
+							{*/	if( iXmasTreeBulbDelay < 0 || iXmasTreeBulbDelay > idelay + 1) iXmasTreeBulbDelay = 0;
 								if( iXmasTreeBulbDelay > idelay )
 								{	for (int i = 0; i < 100; i++) {
 										ix1[i] = 1*(rand() % 400)-200;
@@ -2998,7 +2998,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 								for (int j = 0; j < 100; j++)
 								{	if( m_pTileSpr[sObjSpr]->_bCheckCollison(ix-16, iy-16, sObjSprFrame, ix + ix1[j], iy + iy2[j]) )
 									{	m_pEffectSpr[66+(j%6)]->PutTransSprite(ix + ix1[j], iy + iy2[j], (iXmasTreeBulbDelay>>2), dwTime);
-			}	}	}	}	}	}	}
+			}	}	}	}	}	}	//}
 
 			// Dynamic Object
 			if ( (bRet == true) && (sDynamicObject != 0) )
@@ -19480,6 +19480,11 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		}
 	}
 
+	/*if (G_cSpriteAlphaDegree == 2)
+	{
+		m_DDraw.DrawShadowBox(0, 0, 799, 547, 0, false);
+	}*/
+
 	if (m_bShowFPS)
 	{
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
@@ -24574,8 +24579,6 @@ void CGame::NoticementHandler(char * pData)
 		m_stDialogBoxInfo[18].sX  =  20;
 		m_stDialogBoxInfo[18].sY  =  65;
 		EnableDialogBox(18, 1000, 0, 0);
-		DisableDialogBox(9);
-		EnableDialogBox(9, 0, 0, 0);
 		break;
 	}
 	AddEventList("Press Ctrl+H for help.", 10);
@@ -28127,8 +28130,8 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	else if ((msX > 360 + SCREENX) && (msY >= 346 + SCREENY) && (msX < 545 + SCREENX) & (msY <= 375 + SCREENY)) {
 
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON2, 0 + SCREENX, 0 + SCREENY, 58);
-		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER8);//"
-		PutAlignedString(98 + SCREENX, 357 + SCREENX, 320 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER9);//"
+		PutAlignedString(98 + SCREENX, 357 + SCREENX, 305 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER6);//"
+		PutAlignedString(98 + SCREENX, 357 + SCREENX, 320 + 15 + SCREENY, UPDATE_SCREEN_ON_SELECT_CHARACTER7);//"
 
 
 	}

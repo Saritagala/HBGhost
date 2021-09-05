@@ -3866,15 +3866,21 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 	
 	if (iSkillLevel < 1) iSkillLevel = 1;
 
-	if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00F00000) == 0 && // 1st
-		(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x0000F000) == 0) { // 2nd
+	if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 == m_pClientList[iClientH]->m_sCharIDnum1)
+		&& (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 == m_pClientList[iClientH]->m_sCharIDnum2)
+		&& (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 == m_pClientList[iClientH]->m_sCharIDnum3))
+	{
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 9, 0, 0, 0);
 		return;
 	}
 
-	if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue1 == m_pClientList[iClientH]->m_sCharIDnum1)
-		&& (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue2 == m_pClientList[iClientH]->m_sCharIDnum2)
-		&& (m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_sTouchEffectValue3 == m_pClientList[iClientH]->m_sCharIDnum3))
+	auto attr = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute;
+	auto dwType1 = (attr & 0x00F00000) >> 20;
+	auto dwValue1 = (attr & 0x000F0000) >> 16;
+	auto dwType2 = (attr & 0x0000F000) >> 12;
+	auto dwValue2 = (attr & 0x00000F00) >> 8;
+
+	if (dwType1 == ITEMSTAT_NONE && dwType2 == ITEMSTAT2_NONE)
 	{
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMUPGRADEFAIL, 9, 0, 0, 0);
 		return;
@@ -3954,14 +3960,13 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			// Main
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 			dwType = dwType << 20;
-			// esto ocupa 1byte: aca tenes 8 0 y 1
-			// esto ocupa 4 bytes: aca tenes 32 0 y 1 
-			// 32 bools en un int
-			   // 0 1 bool es 0 1 
-			   // al tener 32 0 1 podes tener 32 bool
-			   // ahorras memoria: 32 bool que ocupan 32 byts tenes un int que ocupa 4byte
 			dwValue = dwValue << 16;
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+		
+			dwType2 = dwType2 << 12;
+			dwValue2 = dwValue2 << 8;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType2 | dwValue2;
 		}
 		else {
 			//  Hit Prob(50%),  CAD(35%),  Gold(10%), Exp(5%)
@@ -4005,6 +4010,13 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			// Demais stats max é 7 (para mobs fracos iGenLevel)
 			//if (dwValue > 7) dwValue = 7;
 
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+
+			dwType1 = dwType1 << 20;
+			dwValue1 = dwValue1 << 16;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType1 | dwValue1;
+
 			dwType = dwType << 12;
 			dwValue = dwValue << 8;
 
@@ -4041,6 +4053,11 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			dwType = dwType << 20;
 			dwValue = dwValue << 16;
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+
+			dwType2 = dwType2 << 12;
+			dwValue2 = dwValue2 << 8;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType2 | dwValue2;
 		}
 		else {
 			iResult = iDice(1, iSkillLevel * 10);
@@ -4082,8 +4099,16 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 				break;
 			}
 
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+
+			dwType1 = dwType1 << 20;
+			dwValue1 = dwValue1 << 16;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType1 | dwValue1;
+
 			dwType = dwType << 12;
 			dwValue = dwValue << 8;
+
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
 	}
@@ -4134,6 +4159,11 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			dwType = dwType << 20;
 			dwValue = dwValue << 16;
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+
+			dwType2 = dwType2 << 12;
+			dwValue2 = dwValue2 << 8;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType2 | dwValue2;
 		}
 		else {
 			// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
@@ -4190,8 +4220,16 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			// Max = 7
 			//if (dwValue > 7) dwValue = 7;
 
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+
+			dwType1 = dwType1 << 20;
+			dwValue1 = dwValue1 << 16;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType1 | dwValue1;
+
 			dwType = dwType << 12;
 			dwValue = dwValue << 8;
+
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
 	}
@@ -4238,6 +4276,11 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			dwType = dwType << 20;
 			dwValue = dwValue << 16;
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
+
+			dwType2 = dwType2 << 12;
+			dwValue2 = dwValue2 << 8;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType2 | dwValue2;
 		}
 		else {
 			// Poison R.(1),  Hit Prob(2), DR(3), HP(4), SP(5), MP(6),  MR(7),  PA(8), MA(9), CAD(10),  Exp(11), Gold(12)
@@ -4284,8 +4327,16 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			// Max = 7
 			//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
+
+			dwType1 = dwType1 << 20;
+			dwValue1 = dwValue1 << 16;
+
+			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType1 | dwValue1;
+
 			dwType = dwType << 12;
 			dwValue = dwValue << 8;
+
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute | dwType | dwValue;
 		}
 	}

@@ -3189,9 +3189,9 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 
 	if (m_stDialogBoxInfo[44].sV1 != -1 && m_stDialogBoxInfo[44].cMode == 1)
 	{
-		m_stDialogBoxInfo[44].sSizeX = (short)(258*2.5f);
+		m_stDialogBoxInfo[44].sSizeX = (short)(258*2.3f);
 		//m_stDialogBoxInfo[44].sSizeY = 339*2;
-		addx = 2;
+		addx = 3;
 	}
 	else {
 		m_stDialogBoxInfo[44].sSizeX = 258;
@@ -3221,6 +3221,8 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTON, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 46);
 		if (m_stDialogBoxInfo[44].sV1 != -1)
 		{
+			DisableDialogBox(2); // centu : close bag
+
 			PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 20 + 30, "Now select which attribute", 255, 255, 255); // Drag item needed to be upgraded"
 			PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 20 + 45, "you want to change. Then press", 255, 255, 255); // "from the inventory. Then press"
 			PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 20 + 60, "'Enchant' button.", 255, 255, 255); // 'Upgrade' button."
@@ -3241,6 +3243,10 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 			{
 				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSprite]->PutSpriteRGB(sX + 134, sY + 182, m_pItemList[m_stDialogBoxInfo[44].sV1]->m_sSpriteFrame, m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0], dwTime);
 			}
+
+			char cSkillPerc[51];
+			wsprintf(cSkillPerc, "Enchanting Probability: %d%%", m_cSkillMastery[20]);
+			PutAlignedString(sX + 24, sX + 248, sY + 230 + 20, cSkillPerc, 255, 255, 255);
 			
 			ZeroMemory(cStr1, sizeof(cStr1));
 			ZeroMemory(cStr2, sizeof(cStr2));
@@ -3251,7 +3257,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 			GetItemName(m_pItemList[m_stDialogBoxInfo[44].sV1], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 			PutAlignedString(sX + 24+300, sX + 248 + 300, sY + 230 + 20 - 120, cStr1, 255, 255, 0);
 			
-			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 245 + 20 - 120) && (msY <= sY + 245 + 20 - 120 + 14))
+			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 245 + 20 - 120) && (msY <= sY + 245 + 20 - 120 + 14) && strlen(cStr2) > 0)
 			{
 				PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 255, 255, 255);
 				// centu : recuadro 1er stat
@@ -3428,7 +3434,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 				if (m_bFirstStatSelected) PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 0, 255, 0);
 				else PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 245 + 20 - 120, cStr2, 19, 104, 169);
 			}
-			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 260 + 20 - 120) && (msY <= sY + 260 + 20 - 120 + 14))
+			if ((msX >= sX + 24 + 300) && (msX <= sX + 24 + 300 + 200) && (msY >= sY + 260 + 20 - 120) && (msY <= sY + 260 + 20 - 120 + 14) && strlen(cStr3) > 0)
 			{
 				PutAlignedString(sX + 24 + 300, sX + 248 + 300, sY + 260 + 20 - 120, cStr3, 255, 255, 255);
 				// centu : recuadro 2do stat
@@ -11421,9 +11427,7 @@ void CGame::InitGameSettings()
 	cStateChange3 = 0;
 
 	EnableDialogBox(9, 0, 0, 0);
-	DisableDialogBox(9);
-	EnableDialogBox(9, 0, 0, 0);
-
+	
 	//Magn0S:: Quest List
 	for (i = 0; i < 50; i++)
 	{
