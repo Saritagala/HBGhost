@@ -130,7 +130,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 	float dV1, dV2, dV3;
 	UINT32  dwSWEType, dwSWEValue;
 	short  sTemp;
-	int iShieldHPrec, iShieldSPrec, iShieldMPrec, iTotalAngelicstatas;
+	int iShieldHPrec, iShieldSPrec, iShieldMPrec;
 
 	iShieldHPrec = iShieldSPrec = iShieldMPrec = 0;
 
@@ -534,12 +534,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 				case 5:	// Lucky Gold Ring
 					// SNOOPY: changed to use m_sItemEffectValue2 as Lucky % value
 					//         and cumulative betxeen items
-					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 > 0)
+					/*if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 > 0)
 						m_pClientList[iClientH]->m_bIsLuckyEffect += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
-					else m_pClientList[iClientH]->m_bIsLuckyEffect += 10;
+					else m_pClientList[iClientH]->m_bIsLuckyEffect += 10;*/
 					// Merien Upgraded items
-					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
-					m_pClientList[iClientH]->m_bIsLuckyEffect += (iTemp * 10);
+					/*iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
+					m_pClientList[iClientH]->m_bIsLuckyEffect += (iTemp * 10);*/
 					break;
 
 				case 6:	// Add Magic Damage. 
@@ -9801,10 +9801,10 @@ void CGame::_PenaltyItemDrop(int iClientH, int iTotal, bool bIsSAattacked)
 		return;
 
 	// SNOOPY: Lucky effect will prevent drops,  even of a ZEM.
-	if ((m_pClientList[iClientH]->m_bIsLuckyEffect > 0) && ((iDice(1, 100) <= m_pClientList[iClientH]->m_bIsLuckyEffect)))
+	/*if ((m_pClientList[iClientH]->m_bIsLuckyEffect > 0) && ((iDice(1, 100) <= m_pClientList[iClientH]->m_bIsLuckyEffect)))
 	{
 		return;
-	}
+	}*/
 
 	if ((m_pClientList[iClientH]->m_iAlterItemDropIndex != -1) && (m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_iAlterItemDropIndex] != 0)) {
 		// Testcode

@@ -802,7 +802,8 @@ private:
 	bool m_bIsSocketConnected[DEF_MAXSUBLOGSOCK];
 	bool ReceivedAllConfig;
 
-	int m_iNotifyCleanMap;	UINT32 m_dwCleanTime;
+	bool m_iNotifyCleanMap;	
+	UINT32 m_dwCleanTime;
 
 	char m_cServerName[12];
 
@@ -953,7 +954,7 @@ private:
 	bool   m_bIsCrusadeMode;		// 크루세이드 모드
 	bool   m_bIsApocalypseMode;
 	// Daryl - Chat logging option
-	bool m_bLogChatOption;
+	char m_bLogChatOption;
 
 	struct {
 		char cMapName[11];			// 설치되는 맵 위치

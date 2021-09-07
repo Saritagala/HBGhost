@@ -967,9 +967,9 @@ void CGame::CalcNextWayPointDestination(int iNpcH)
 
 void CGame::DeleteNpc(int iNpcH)
 {
-	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP], iSlateID;
+	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP];
 	char cTmp[21], cItemName[21];
-	class CItem* pItem, * pItem2;
+	class CItem* pItem;
 	UINT32 dwCount, dwTime;
 	POINT ItemPositions[MAX_NPCITEMDROP];
 	char cTemp[256];
@@ -3191,7 +3191,7 @@ bool CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 
 	}
 	else {
-		int iResult;
+		
 		// NPC를 삭제할때 특수 아이템을 발생시킬 것인지의 여부를 계산한다. 
 
 		switch (sNpcType) {

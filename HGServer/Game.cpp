@@ -6669,7 +6669,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 
 		int   i, * ip, iSize = 0;
 		short* sp, * pIDX;
-		short Skillidx, Itemidx, BankItemidx;
+		short Itemidx, BankItemidx;
 		UINT32* dwp;
 
 		if (m_pClientList[iClientH] == 0) return 0;
@@ -9056,7 +9056,6 @@ int CGame::iClientMotion_Attack_Handler(int iClientH, short sX, short sY, short 
  short sItemIndex;
  int tX, tY, iErr;
  UINT32 iExp;
- int  iDamage, iV1, iV2, iV3;
 
 	if (m_pClientList[iClientH] == 0) return 0;
 	if ((cDir <= 0) || (cDir > 8))       return 0;
@@ -15239,7 +15238,7 @@ void CGame::ToggleWhisperPlayer(int iClientH, char * pMsg, UINT32 dwMsgSize)
 			}
 			m_pClientList[iClientH]->m_iWhisperPlayerIndex = i;
 			ZeroMemory(m_pClientList[iClientH]->m_cWhisperPlayerName, sizeof(m_pClientList[iClientH]->m_cWhisperPlayerName));
-			strcpy(m_pClientList[iClientH]->m_cWhisperPlayerName, cName);
+			memcpy(m_pClientList[iClientH]->m_cWhisperPlayerName, cName, 10);
 			break;
 		}
 
@@ -15266,7 +15265,7 @@ void CGame::ToggleWhisperPlayer(int iClientH, char * pMsg, UINT32 dwMsgSize)
 			bStockMsgToGateServer(cBuff, 25);
 
 			ZeroMemory(m_pClientList[iClientH]->m_cWhisperPlayerName, sizeof(m_pClientList[iClientH]->m_cWhisperPlayerName));
-			strcpy(m_pClientList[iClientH]->m_cWhisperPlayerName, cName);
+			memcpy(m_pClientList[iClientH]->m_cWhisperPlayerName, cName, 10);
 			m_pClientList[iClientH]->m_bIsCheckingWhisperPlayer = true;
 		}
 		else{
@@ -16095,7 +16094,7 @@ void CGame::AdminOrder_CreateFish(int iClientH, char * pData, UINT32 dwMsgSize)
 void CGame::AdminOrder_Teleport(int iClientH, char * pData, UINT32 dwMsgSize)
 {
  char   seps[] = "= \t\n";
- char   * token, cBuff[256], cMapName[256];
+ char   * token, cBuff[256], cMapName[11];
  class  CStrTok * pStrTok;
  int dX, dY;
  bool   bFlag;
@@ -16111,6 +16110,8 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, UINT32 dwMsgSize)
 		return;
 	}
 
+	ZeroMemory(cMapName, sizeof(cMapName));
+
 	ZeroMemory(cBuff, sizeof(cBuff));
 	memcpy(cBuff, pData, dwMsgSize);
 
@@ -16119,7 +16120,7 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, UINT32 dwMsgSize)
 	
 	token = pStrTok->pGet();
 	if (token != 0) {
-		ZeroMemory(cMapName, sizeof(cMapName));
+		
 		strcpy(cMapName, token);
 	}
 
@@ -16134,38 +16135,17 @@ void CGame::AdminOrder_Teleport(int iClientH, char * pData, UINT32 dwMsgSize)
 	}
 
 	bFlag = false;
-	if (strcmp("2ndmiddle", cMapName) == 0) bFlag = true;
-	if (strcmp("abaddon", cMapName) == 0) bFlag = true; 
-	if (strcmp("arebrk11", cMapName) == 0) bFlag = true;
-	if (strcmp("arejail", cMapName) == 0) bFlag = true;
-	if (strcmp("aresden", cMapName) == 0) bFlag = true;
-	if (strcmp("bisle", cMapName) == 0)   bFlag = true;
-	if (strcmp("BtField", cMapName) == 0) bFlag = true;
-	if (strcmp("cityhall_1", cMapName) == 0) bFlag = true;
-	if (strcmp("cityhall_2", cMapName) == 0) bFlag = true;
-	if (strcmp("default", cMapName) == 0) bFlag = true;
-	if (strcmp("elvine", cMapName) == 0)  bFlag = true;
-	if (strcmp("elvjail", cMapName) == 0)    bFlag = true;
-	if (strcmp("fightzone1", cMapName) == 0) bFlag = true;
-	if (strcmp("GodH", cMapName) == 0)   bFlag = true;
-	if (strcmp("HRampart", cMapName) == 0)     bFlag = true;
-	if (strcmp("icebound", cMapName) == 0) bFlag = true; 
-	if (strcmp("middled1n", cMapName) == 0) bFlag = true;
-	if (strcmp("middled1x", cMapName) == 0) bFlag = true;
-	if (strcmp("middleland", cMapName) == 0) bFlag = true;
-	if (strcmp("procella", cMapName) == 0) bFlag = true;
-	if (string(cMapName) == "team") bFlag = true;
-	if (string(cMapName) == "toh3") bFlag = true;
 
-	if (string(cMapName) == "catacombs") bFlag = true;
-	if (string(cMapName) == "lost") bFlag = true;
+	// centuu
+	for (int m = 0; m < DEF_MAXMAPS; m++) { //Enum all maps
+		if (m_pMapList[m] != 0) {	//Is allocated map
+			if (memcmp(m_pMapList[m]->m_cName, cMapName, 11) == 0) {
+				bFlag = true;
+				break;
+			}
+		}
+	}
 	
-	if (string(cMapName) == "dungeon5") bFlag = true;
-	if (string(cMapName) == "procella2") bFlag = true;
-	if (string(cMapName) == "abbylair") bFlag = true;
-
-	if (string(cMapName) == "lobby") bFlag = true;
-
 	if (bFlag)
 		RequestTeleportHandler(iClientH, "2   ", cMapName, dX, dY);
 	else ShowClientMsg(iClientH, "The map is currently offline.");
@@ -17441,9 +17421,9 @@ void CGame::RequestCheckAccountPasswordHandler(char *pData, UINT32 dwMsgSize)
 	cp += 4;
 
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
-	if ((m_pClientList[i] != 0) && (strcmp(m_pClientList[i]->m_cAccountName, cAccountName) == 0)) {
+	if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cAccountName, cAccountName, 10) == 0)) {
 		// °°Àº °èÁ¤À» Ã£¾Ò´Ù. ¸¸¾à ÆÐ½º¿öµå³ª ·¹º§ÀÌ ´Ù¸£¸é µ¥ÀÌÅÍ ÀúÀåÀ» ÇÏÁö ¾Ê°í Á¢¼ÓÀ» ²÷´Â´Ù. 
-		if ((strcmp(m_pClientList[i]->m_cAccountPassword, cAccountPassword) != 0) || (m_pClientList[i]->m_iLevel != iLevel)) {
+		if ((memcmp(m_pClientList[i]->m_cAccountPassword, cAccountPassword, 10) != 0) || (m_pClientList[i]->m_iLevel != iLevel)) {
 			wsprintf(G_cTxt, "(TestLog) Error! Account(%s)-Level(%d) password(or level) mismatch! Disconnect.", cAccountName, iLevel);
 			PutLogList(G_cTxt);
 			// µ¥ÀÌÅÍ ÀúÀåÀ» ÇÏÁö ¾Ê°í ²÷´Â´Ù.
@@ -17839,7 +17819,7 @@ void CGame::SendStockMsgToGateServer()
 
 void CGame::ServerStockMsgHandler(char *pData)
 {
- char * cp, * cp2, cTemp[120], cLocation[10], cGuildName[20], cName[11], cTemp2[120], cTemp3[120], cMapName[11], cBuffer[256]; short * sp;
+ char * cp, * cp2, cTemp[120], cLocation[11], cGuildName[21], cName[11], cTemp2[120], cTemp3[120], cMapName[11], cBuffer[256]; short * sp;
  UINT16 * wp, wServerID, wClientH, wV1, wV2, wV3, wV4, wV5;
  UINT32 * dwp;
  bool bFlag = false;
@@ -17873,7 +17853,7 @@ void CGame::ServerStockMsgHandler(char *pData)
 			cp += 2;
 
 			for (i = 0; i < DEF_MAXCLIENTS; i++)
-			if ((m_pClientList[i] != 0) && (strcmp(m_pClientList[i]->m_cGuildName, cGuildName) == 0))
+			if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cGuildName, cGuildName, 20) == 0))
 			{	wsprintf(G_cTxt,"PC(%s) summoned by Guild(%s) to %s.", m_pClientList[i]->m_cCharName, cGuildName, cMapName);
 				PutLogList(G_cTxt);
 				RequestTeleportHandler(i, "2   ", cMapName, wV1, wV2);
@@ -17903,7 +17883,7 @@ void CGame::ServerStockMsgHandler(char *pData)
 			cp += 2;
 			
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
-				if ((m_pClientList[i] != 0) && (strcmp(m_pClientList[i]->m_cCharName, cName) == 0)) {
+				if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, cName, 10) == 0)) {
 					RequestTeleportHandler(i, "2   ", cTemp ,wV1, wV2);
 					break;
 				}
@@ -17930,7 +17910,7 @@ void CGame::ServerStockMsgHandler(char *pData)
 			cp += 2;
 			
 			for (i = 0; i < DEF_MAXCLIENTS; i++)
-				if ((m_pClientList[i] != 0) && (strcmp(m_pClientList[i]->m_cLocation, cLocation) == 0)) {
+				if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cLocation, cLocation, 10) == 0)) {
 					RequestTeleportHandler(i, "2   ", cTemp, wV1, wV2);
 					break;
 				}
@@ -18217,7 +18197,7 @@ void CGame::ServerStockMsgHandler(char *pData)
 			cp += wV1;
 
 			for (i = 1; i < DEF_MAXCLIENTS; i++)
-				if ((m_pClientList[i] != 0) && (strcmp(m_pClientList[i]->m_cCharName, cName) == 0)) {
+				if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, cName, 10) == 0)) {
 					iRet = m_pClientList[i]->m_pXSock->iSendMsg(cBuffer, wV1);
 					if(	m_pClientList[i]->m_iAdminUserLevel > 0) {
 						char cTxt[200],cTmpName[12] ;
@@ -18304,7 +18284,7 @@ void CGame::ServerStockMsgHandler(char *pData)
 					}
 				}
 				else{
-					if ((m_pClientList[wClientH]->m_bIsCheckingWhisperPlayer == true) && (strcmp(m_pClientList[wClientH]->m_cWhisperPlayerName, cTemp) == 0)) {
+					if ((m_pClientList[wClientH]->m_bIsCheckingWhisperPlayer == true) && (memcmp(m_pClientList[wClientH]->m_cWhisperPlayerName, cTemp, 10) == 0)) {
 						m_pClientList[wClientH]->m_iWhisperPlayerIndex = 10000;
 						SendNotifyMsg(0, wClientH, DEF_NOTIFY_WHISPERMODEON, 0, 0, 0, m_pClientList[wClientH]->m_cWhisperPlayerName);
 					}
@@ -18312,9 +18292,8 @@ void CGame::ServerStockMsgHandler(char *pData)
 						if (m_pClientList[wClientH]->m_iAdminUserLevel == 0) {
 							ZeroMemory(cTemp3, sizeof(cTemp3));
 						}
-						if (strcmp(m_pClientList[wClientH]->m_cCharName, cTemp2) == 0) {
-							SendNotifyMsg(0, wClientH, DEF_NOTIFY_PLAYERONGAME, 0, 0, 0, cTemp,
-								0, 0, 0, 0, 0, 0, cTemp3);
+						if (memcmp(m_pClientList[wClientH]->m_cCharName, cTemp2, 10) == 0) {
+							SendNotifyMsg(0, wClientH, DEF_NOTIFY_PLAYERONGAME, 0, 0, 0, cTemp, 0, 0, 0, 0, 0, 0, cTemp3);
 						}
 					}
 				}
@@ -18535,29 +18514,29 @@ void CGame::GetExp(int iClientH, UINT32 iExp, bool bIsAttackerOwn)
 				dV2 = dV1;
 				break;
 			case 2:
-				dV2 = (dV1 + (dV1 * 2.0e-2)) / 2.0f;
+				dV2 = (dV1 + (dV1 * (float)2.0e-2)) / 2.0f;
 				break;
 			case 3:
-				dV2 = (dV1 + (dV1 * 5.0e-2)) / 3.0f;
+				dV2 = (dV1 + (dV1 * (float)5.0e-2)) / 3.0f;
 				break;
 			case 4:
-				dV2 = (dV1 + (dV1 * 7.000000000000001e-2)) / 4.0f;
+				dV2 = (dV1 + (dV1 * (float)7.000000000000001e-2)) / 4.0f;
 				break;
 			case 5:
-				dV2 = (dV1 + (dV1 * 1.0e-1)) / 5.0f;
+				dV2 = (dV1 + (dV1 * (float)1.0e-1)) / 5.0f;
 				break;
 			case 6:
-				dV2 = (dV1 + (dV1 * 1.4e-1)) / 6.0f;
+				dV2 = (dV1 + (dV1 * (float)1.4e-1)) / 6.0f;
 				break;
 			case 7:
-				dV2 = (dV1 + (dV1 * 1.7e-1)) / 7.0f;
+				dV2 = (dV1 + (dV1 * (float)1.7e-1)) / 7.0f;
 				break;
 			case 8:
-				dV2 = (dV1 + (dV1 * 2.0e-1)) / 8.0f;
+				dV2 = (dV1 + (dV1 * (float)2.0e-1)) / 8.0f;
 				break;
 			}
 
-			dV3 = dV2 + 5.0e-1;
+			dV3 = dV2 + (float)5.0e-1;
 			iUnitValue = (UINT32)dV3;
 
 			//Divide exp among party members
@@ -20776,7 +20755,7 @@ void CGame::TimeHitPointsUp(int iClientH)
 
 int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttackerH, char cAttackerType, int tdX, int tdY, int iAttackMode, bool bNearAttack, bool bIsDash, bool bArrowUse, bool bMainGaucheAttack)
 {
- int    iAP_SM, iAP_L, iAttackerHitRatio, iTargetDefenseRatio, iDestHitRatio, iResult, iAP_Abs_Armor, iAP_Abs_Shield, iAP_Abs_Cape, iExtraDmg;
+ int    iAP_SM, iAP_L, iAttackerHitRatio, iTargetDefenseRatio, iDestHitRatio, iResult,iExtraDmg;
  char   cAttackerName[21], cAttackerDir, cAttackerSide, cTargetDir, cProtect, cCropSkill, cFarmingSkill, cDamageMod[256];
  short  sWeaponIndex, sAttackerWeapon, dX, dY, sX, sY, sAtkX, sAtkY, sTgtX, sTgtY;
  UINT32  dwTime;
@@ -20805,7 +20784,6 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 	iAttackerSAvalue = 0;
 	wWeaponType      = 0;
 
-	int iValue;
 
 	switch (cAttackerType) {
 	case DEF_OWNERTYPE_PLAYER:
@@ -21960,10 +21938,10 @@ int CGame::iCalculateAttackEffect(short sTargetH, char cTargetType, short sAttac
 							break;				
 				}	}	}
 
-				if ((m_pClientList[sTargetH]->m_bIsLuckyEffect > 0) && (iDice(1,100) <= m_pClientList[sTargetH]->m_bIsLuckyEffect) 
+				/*if ((m_pClientList[sTargetH]->m_bIsLuckyEffect > 0) && (iDice(1,100) <= m_pClientList[sTargetH]->m_bIsLuckyEffect) 
 					&& (m_pClientList[sTargetH]->m_iHP <= iAP_SM)) 
 				{	iAP_SM = m_pClientList[sTargetH]->m_iHP - 1;
-				}
+				}*/
 
 				switch (iHitPoint) {
 				case 1:
@@ -26127,7 +26105,6 @@ void CGame::ParseCommand(char * pMsg)
  char   * token, * token2; 
  class  CStrTok * pStrTok; 
  char buff[256]; 
- bool bFlag; 
  char ss[256];
 
 	if (pMsg == 0) return; 
@@ -28114,7 +28091,7 @@ bool CGame::bReadTopPlayersFile(char* cFn) // MORLA 2.4 - Tops
 			token = pStrTok->pGet();
 		}
 		delete pStrTok;
-		delete cp;
+		delete[] cp;
 		fclose(pFile);
 	}
 	PutLogList("(!) Top Players file loaded.");
@@ -28553,11 +28530,10 @@ void CGame::RequestTeleportListHandler(int iClientH, char* pData, UINT32 dwMsgSi
 	{
 		if (m_pTeleportConfigList[index] == 0) continue;
 		//    Source Map 
-		if (strncmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName,
-			m_pTeleportConfigList[index]->m_cSourceMap, 10) != 0)
+		if (memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, m_pTeleportConfigList[index]->m_cSourceMap, 10) != 0)
 			continue;
 		//  NPC
-		if (strncmp(m_pTeleportConfigList[index]->m_cNpcname, cNpcName, 20) != 0)
+		if (memcmp(m_pTeleportConfigList[index]->m_cNpcname, cNpcName, 20) != 0)
 			continue;
 
 		if (m_pTeleportConfigList[index]->m_iMinLvl > m_pClientList[iClientH]->m_iLevel ||

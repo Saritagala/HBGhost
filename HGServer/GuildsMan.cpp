@@ -397,7 +397,7 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, UINT32 dwMsg
 			if (dwGoldCount >= m_iGuildCost) 
 			{
 				ZeroMemory(m_pClientList[iClientH]->m_cGuildName, sizeof(m_pClientList[iClientH]->m_cGuildName));
-				strcpy(m_pClientList[iClientH]->m_cGuildName, cGuildName);
+				memcpy(m_pClientList[iClientH]->m_cGuildName, cGuildName, 20);
 				ZeroMemory(m_pClientList[iClientH]->m_cLocation, sizeof(m_pClientList[iClientH]->m_cLocation));
 				strcpy(m_pClientList[iClientH]->m_cLocation, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cLocationName);
 				
@@ -673,7 +673,6 @@ void CGame::ResponseDisbandGuildHandler(char* pData, UINT32 dwMsgSize)
 void CGame::JoinGuildApproveHandler(int iClientH, char* pName)
 {
 	int i;
-	bool bIsExist = false;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -828,7 +827,7 @@ void CGame::SendGuildMsg(int iClientH, UINT16 wNotifyMsgType, short sV1, short s
 
 			case DEF_NOTIFY_EVENTMSGSTRING:
 				// ±æµå¿øµé¿¡°Ô Àü´ÞµÇ´Â ÀÌº¥Æ® ¸Þ½ÃÁö ½ºÆ®¸µ 
-				strcpy(cp, pString);
+				memcpy(cp, pString, strlen(pString));
 				cp += strlen(pString);
 
 				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 6 + strlen(pString) + 1);
@@ -910,7 +909,7 @@ void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, UINT32 dwMsgSize
 			if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, cTargetName, 10) == 0)) {
 				// ¸ñÇ¥ Ä³¸¯ÅÍ¸¦ Ã£¾Ò´Ù. °­Á¦·Î ±æµå¸¦ °­Åð ½ÃÅ²´Ù. 
 
-				if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 21) != 0) {
+				if (memcmp(m_pClientList[iClientH]->m_cGuildName, m_pClientList[i]->m_cGuildName, 20) != 0) {
 					// ÀÚ½ÅÀÇ ±æµå¿øÀÌ ¾Æ´Ï¶ó Çã¶ôÀÌ ºÒ°¡´ÉÇÏ´Ù.
 
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_CANNOTBANGUILDMAN, 0, 0, 0, 0);
@@ -981,20 +980,20 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 	pY = m_pClientList[iClientH]->m_sY;
 	
 	ZeroMemory(cMapName, sizeof(cMapName));
-	memcpy(cMapName, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, 11);
+	memcpy(cMapName, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, 10);
 	
 	ZeroMemory(cGuildName, sizeof(cGuildName));
-	memcpy(cGuildName, m_pClientList[iClientH]->m_cGuildName, 21);
+	memcpy(cGuildName, m_pClientList[iClientH]->m_cGuildName, 20);
 	
 	bool bExiste = false;
 	for (i = 0; i < DEF_MAXGUILDS; i++)
 	{
-		if (string(m_stSummonGuild[i].cGuildName) == "NONE") continue;
-		if (string(m_stSummonGuild[i].cGuildName) == cGuildName)
+		if (strcmp(m_stSummonGuild[i].cGuildName, "NONE") == 0) continue;
+		if (memcmp(m_stSummonGuild[i].cGuildName, cGuildName, 20) == 0)
 		{
 			m_stSummonGuild[i].sX = pX;
 			m_stSummonGuild[i].sY = pY;
-			strcpy(m_stSummonGuild[i].cMap, cMapName);
+			memcpy(m_stSummonGuild[i].cMap, cMapName, 10);
 			bExiste = true;
 			break;
 		}
@@ -1005,10 +1004,10 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 		{
 			if (string(m_stSummonGuild[i].cGuildName) == "NONE")
 			{
-				strcpy(m_stSummonGuild[i].cGuildName, cGuildName);
+				memcpy(m_stSummonGuild[i].cGuildName, cGuildName, 20);
 				m_stSummonGuild[i].sX = pX;
 				m_stSummonGuild[i].sY = pY;
-				strcpy(m_stSummonGuild[i].cMap, cMapName);
+				memcpy(m_stSummonGuild[i].cMap, cMapName, 10);
 				break;
 			}
 		}
@@ -1017,7 +1016,7 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 	for (i = 0; i < DEF_MAXCLIENTS; i++) 
 	{
 		if (i == iClientH) continue;
-		if ((m_pClientList[i] != 0) && (strcmp(m_pClientList[i]->m_cGuildName, cGuildName) == 0))
+		if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cGuildName, cGuildName, 20) == 0))
 		{
 			SendNotifyMsg(0, i, DEF_NOTIFY_SUMMONGUILD, 0, 0, 0, 0);
 		}
