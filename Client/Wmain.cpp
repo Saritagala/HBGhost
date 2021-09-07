@@ -45,7 +45,7 @@ char   G_cSpriteAlphaDegree;
 class CGame * G_pGame;
 class XSocket * G_pCalcSocket = 0;
 bool  G_bIsCalcSocketConnected = true;
-DWORD G_dwCalcSocketTime = 0, G_dwCalcSocketSendTime = 0;
+UINT32 G_dwCalcSocketTime = 0, G_dwCalcSocketSendTime = 0;
 
 char G_cCmdLine[256], G_cCmdLineTokenA[120], G_cCmdLineTokenA_Lowercase[120], G_cCmdLineTokenB[120], G_cCmdLineTokenC[120], G_cCmdLineTokenD[120], G_cCmdLineTokenE[120];
 
@@ -198,7 +198,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	G_pGame = new class CGame;
 	ZeroMemory(cRealName, sizeof(cRealName));
 	strcpy(cRealName, cSearchDll);
-	for (WORD i = 0; i < strlen(cRealName); i++)
+	for (UINT16 i = 0; i < strlen(cRealName); i++)
 	if (cRealName[i] != 0) cRealName[i]++;
 
 	hDll = LoadLibrary(cRealName);
@@ -336,7 +336,7 @@ void _StopTimer(MMRESULT timerid)
 void Initialize(char * pCmdLine)
 {int iX, iY, iSum;
  int     iErrCode;
- WORD	 wVersionRequested;
+ UINT16	 wVersionRequested;
  WSADATA wsaData;
 	wVersionRequested = MAKEWORD( 2, 2 ); 
 	iErrCode = WSAStartup( wVersionRequested, &wsaData );

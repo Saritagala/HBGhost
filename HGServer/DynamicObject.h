@@ -14,7 +14,7 @@
 class CDynamicObject  
 {
 public:
-	CDynamicObject(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, DWORD dwRegisterTime, DWORD dwLastTime, int iV1, int iV2, int iV3);
+	CDynamicObject(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, UINT32 dwRegisterTime, UINT32 dwLastTime, int iV1, int iV2, int iV3);
 	virtual ~CDynamicObject();
 
 	short m_sOwner;
@@ -25,8 +25,8 @@ public:
 	short m_sType;
 	char  m_cMapIndex;
 	short m_sX, m_sY; 
-	DWORD m_dwRegisterTime;
-	DWORD m_dwLastTime;
+	UINT32 m_dwRegisterTime;
+	UINT32 m_dwLastTime;
 
 	int   m_iCount;			// 특수 오브젝트의 경우 사용하는 카운터 변수 
 	int   m_iV1, m_iV2, m_iV3;			// 추가 정보를 넣을때 사용한다.

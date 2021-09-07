@@ -125,13 +125,13 @@ void CGame::NotifyMsg_SettingSuccess(char * pData)
 void CGame::NotifyMsg_MagicEffectOff(char * pData) // MORLA - Aca efectua para uras
 {
 	char * cp;
-	WORD * wp;
+	UINT16 * wp;
 	short  sMagicType, sMagicEffect;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sMagicType = (short)*wp;
 	cp += 2;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sMagicEffect = (short)*wp;
 	cp += 2;
 	switch (sMagicType) {
@@ -232,20 +232,20 @@ void CGame::NotifyMsg_MagicEffectOff(char * pData) // MORLA - Aca efectua para u
 void CGame::NotifyMsg_MagicEffectOn(char * pData)
 {
 	char * cp;
-	DWORD * dwp;
-	WORD * wp;
+	UINT32 * dwp;
+	UINT16 * wp;
 	short  sMagicType, sMagicEffect, sOwnerH;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sMagicType = (short)*wp;
 	cp += 2;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	sMagicEffect = (short)*dwp;
 	cp += 4;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	sOwnerH = (short)*dwp;
 	cp += 4;
 
@@ -436,25 +436,25 @@ void CGame::NotifyMsg_NewGuildsMan(char * pData)
 void CGame::NotifyMsg_PKcaptured(char *pData)
 {
 	char  * cp;
-	DWORD * dwp;
-	WORD  * wp;
+	UINT32 * dwp;
+	UINT16  * wp;
 	int     iPKcount, iLevel, iRewardGold;
 	char cTxt[120], cName[12];
-	unsigned long iExp;
+	UINT32 iExp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	iPKcount = *wp;
 	cp += 2;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	iLevel = *wp;
 	cp += 2;
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
 	cp += 10;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iRewardGold = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iExp = *dwp;
 	cp += 4;
 	wsprintf(cTxt, NOTIFYMSG_PK_CAPTURED1, iLevel, cName, iPKcount);
@@ -467,32 +467,32 @@ void CGame::NotifyMsg_PKcaptured(char *pData)
 void CGame::NotifyMsg_PKpenalty(char *pData)
 {
 	char  * cp;
-	DWORD * dwp;
+	UINT32 * dwp;
 	int     iPKcount, iStr, iVit, iDex, iInt, iMag, iChr;
-	unsigned long iExp;
+	UINT32 iExp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iExp = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iStr = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iVit = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iDex = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iInt = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iMag = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iChr = *dwp;
 	cp += 4;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	iPKcount = *dwp;
 	cp += 4;
 	wsprintf(G_cTxt, NOTIFYMSG_PK_PENALTY1, iPKcount - m_iPKCount);
@@ -511,9 +511,9 @@ void CGame::NotifyMsg_PKpenalty(char *pData)
 void CGame::NotifyMsg_PlayerShutUp(char * pData)
 {
 	char * cp, cName[12];
-	WORD * wp, wTime;
+	UINT16 * wp, wTime;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wTime = *wp;
 	cp += 2;
 	ZeroMemory(cName, sizeof(cName));
@@ -529,8 +529,8 @@ void CGame::NotifyMsg_PlayerShutUp(char * pData)
 void CGame::NotifyMsg_PlayerStatus(bool bOnGame, char * pData)
 {
 	char cName[12], cMapName[12], *cp;
-	WORD * wp;
-	WORD  dx = 1, dy = 1;
+	UINT16 * wp;
+	UINT16  dx = 1, dy = 1;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
@@ -538,11 +538,11 @@ void CGame::NotifyMsg_PlayerStatus(bool bOnGame, char * pData)
 	ZeroMemory(cMapName, sizeof(cMapName));
 	memcpy(cMapName, cp, 10);
 	cp += 10;
-	wp = (WORD *)cp;
-	dx = (WORD)*wp;
+	wp = (UINT16 *)cp;
+	dx = (UINT16)*wp;
 	cp += 2;
-	wp = (WORD *)cp;
-	dy = (WORD)*wp;
+	wp = (UINT16 *)cp;
+	dy = (UINT16)*wp;
 	cp += 2;
 	ZeroMemory(G_cTxt, sizeof(G_cTxt));
 	if (bOnGame == true) {
@@ -627,7 +627,7 @@ void CGame::NotifyMsg_RatingPlayer(char * pData)
 {
 	int * ip;
 	char * cp, cName[12];
-	WORD  cValue;
+	UINT16  cValue;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 	cValue = *cp;
 	cp++;
@@ -704,19 +704,19 @@ void CGame::NotifyMsg_ServerChange(char * pData)
 void CGame::NotifyMsg_SetItemCount(char * pData)
 {
 	char  * cp;
-	WORD  * wp;
-	DWORD * dwp;
+	UINT16  * wp;
+	UINT32 * dwp;
 	short  sItemIndex;
-	DWORD  dwCount;
+	UINT32  dwCount;
 	bool   bIsItemUseResponse;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sItemIndex = *wp;
 	cp += 2;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwCount = *dwp;
 	cp += 4;
 
@@ -733,12 +733,12 @@ void CGame::NotifyMsg_SetItemCount(char * pData)
 void CGame::NotifyMsg_ShowMap(char * pData)
 {
 	char * cp;
-	WORD * wp, w1, w2;
+	UINT16 * wp, w1, w2;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	w1 = *wp;
 	cp += 2;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	w2 = *wp;
 	cp += 2;
 	if (w2 == 0) AddEventList(NOTIFYMSG_SHOW_MAP1, 10);
@@ -747,7 +747,7 @@ void CGame::NotifyMsg_ShowMap(char * pData)
 
 void CGame::NotifyMsg_Skill(char *pData)
 {
-	//WORD * wp; // centu - fix negative skills
+	//UINT16 * wp; // centu - fix negative skills
 	short sSkillIndex, sValue, *sp, sValue2;
 	char * cp;
 	char cTxt[120];
@@ -850,9 +850,9 @@ void CGame::NotifyMsg_SkillTrainSuccess(char * pData)
 void CGame::NotifyMsg_SkillUsingEnd(char * pData)
 {
 	char * cp;
-	WORD * wp, wResult;
+	UINT16 * wp, wResult;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wResult = *wp;
 	switch (wResult) {
 	case 0:
@@ -1017,7 +1017,7 @@ void CGame::DrawDialogBox_CrusadeJob(short msX, short msY)
 void CGame::_Draw_OnLogin(char *pAccount, char *pPassword, int msX, int msY, int iFrame)
 {
 	bool bFlag = true;
-	DWORD dwTime = timeGetTime();
+	UINT32 dwTime = timeGetTime();
 
 	m_DDraw.ClearBackB4();
 
@@ -1063,7 +1063,7 @@ void CGame::_Draw_OnLogin(char *pAccount, char *pPassword, int msX, int msY, int
 	}
 }
 
-void CGame::ShowEventList(DWORD dwTime)
+void CGame::ShowEventList(UINT32 dwTime)
 {
 	int i;
 	int resi;
@@ -1161,7 +1161,7 @@ void CGame::RequestTeleportAndWaitData()
 
 void CGame::MotionEventHandler(char* pData)
 {
-	WORD* wp, wEventType, wObjectID;
+	UINT16* wp, wEventType, wObjectID;
 	short* sp, sX, sY, sType, sAppr1, sAppr2, sAppr3, sAppr4, sV1, sV2, sV3, sPrevAppr2;
 	int iStatus, iStatus2;
 	char* cp, cDir, cName[12];
@@ -1172,10 +1172,10 @@ void CGame::MotionEventHandler(char* pData)
 	int iDamage = 0;
 	ZeroMemory(cName, sizeof(cName));
 	sV1 = sV2 = sV3 = 0;
-	wp = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
 	wEventType = *wp;
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	wObjectID = *wp;
 	cp += 2;
 	iLoc = 0;
@@ -1421,7 +1421,7 @@ void CGame::MotionEventHandler(char* pData)
 void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 {
 	short sX, sY, szX, szY, MapSzX, MapSzY;
-	DWORD dwTime = G_dwGlobalTime;
+	UINT32 dwTime = G_dwGlobalTime;
 	double dV1, dV2, dV3;
 	int i, tX, tY;
 	sX = m_stDialogBoxInfo[36].sX;
@@ -1842,7 +1842,7 @@ void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 {
 	short sX, sY, szX, szY, MapSzX, MapSzY;
-	DWORD dwTime = G_dwGlobalTime;
+	UINT32 dwTime = G_dwGlobalTime;
 	double dV1, dV2, dV3;
 	int tX, tY;
 	char cMapName[12];
@@ -2127,7 +2127,7 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 void CGame::DrawDialogBox_Soldier(int msX, int msY) // Snoopy: Fixed for 351
 {
 	short sX, sY, szX, szY, MapSzX, MapSzY;
-	DWORD dwTime = G_dwGlobalTime;
+	UINT32 dwTime = G_dwGlobalTime;
 	char cMapName[120];
 	double dV1, dV2, dV3;
 	int tX, tY;
@@ -2626,7 +2626,7 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 {
 	int i, sX, sY, iValue;
 	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
-	DWORD dwTime = timeGetTime();
+	UINT32 dwTime = timeGetTime();
 
 	sX = m_stDialogBoxInfo[34].sX;
 	sY = m_stDialogBoxInfo[34].sY;
@@ -3176,7 +3176,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 {
 	int i, sX, sY;
 	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
-	DWORD dwTime = timeGetTime();
+	UINT32 dwTime = timeGetTime();
 	int iLoc, iLenSize, iEntry = 0;
 
 	sX = m_stDialogBoxInfo[44].sX;
@@ -4156,7 +4156,7 @@ void CGame::ItemEquipHandler(char cItemID)
 void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 {
 	short sX, sY, szX;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	char cTxt[120];
 	int iStats;
 	sX = m_stDialogBoxInfo[42].sX;
@@ -5553,7 +5553,7 @@ bool CGame::CheckProcesses()
 	bool bFound = false;
 	char *Ufoundprocess;
 	hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPALL, 0);
-	uProcess.dwSize = (DWORD)sizeof(PROCESSENTRY32);
+	uProcess.dwSize = (UINT32)sizeof(PROCESSENTRY32);
 	r = Process32First(hSnapShot, &uProcess);
 	do
 	{
@@ -7380,7 +7380,7 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 	int y, iaddx, iaddy;
 	int nickheight = 16;
 	short toX, toY, limitX, limitY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	int  i, iTemp;
 	char cTemp2[255], cStr2[255], cStr3[255];
 
@@ -9014,7 +9014,7 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MORLA 2.4 - Shop2
 {
 	short sX, sY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	int  i, iTemp;
 	char cTemp[255], cStr2[255], cStr3[255], cTxt[250], cStr4[250], cStr5[250], cStr6[250];
 
@@ -9450,15 +9450,15 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 {
 	char  * cp;
 	short * sp;
-	DWORD * dwp;
-	WORD  * wp;
+	UINT32 * dwp;
+	UINT16  * wp;
 	int i, j;
 
-	DWORD dwCount;
+	UINT32 dwCount;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	bool  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
-	WORD  wCost, wWeight, wCurLifeSpan;
+	UINT16  wCost, wWeight, wCurLifeSpan;
 	char  cTxt[120], cItemColor;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -9469,7 +9469,7 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 	memcpy(cName, cp, 20);
 	cp += 20;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwCount = *dwp;
 	cp += 4;
 
@@ -9489,11 +9489,11 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 	cGenderLimit = *cp;
 	cp++;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wCurLifeSpan = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wWeight = *wp;
 	cp += 2;
 
@@ -9508,7 +9508,7 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 	cItemColor = *cp; // v1.4
 	cp++;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wCost = *wp;
 	ZeroMemory(cTxt, sizeof(cTxt));
 	char cStr1[64], cStr2[64], cStr3[64];
@@ -9578,7 +9578,7 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
 
@@ -10039,7 +10039,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 {
 	int i;
 	char cTxt[256], cTxt2[256], cName[51];
-	DWORD dwType1, dwType2, dwValue1, dwValue2, dwValue3;
+	UINT32 dwType1, dwType2, dwValue1, dwValue2, dwValue3;
 	char cDescri1[256], cDescri2[256], cDescri3[256];
 
 	m_bIsSpecial = false;
@@ -10372,11 +10372,11 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 }
 
 //Magn0S:: Changed
-void CGame::GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1, short sEffect2, short sEffect3, short sEffect4)
+void CGame::GetItemName(char* cItemName, UINT32 dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1, short sEffect2, short sEffect3, short sEffect4)
 {
 	int i;
 	char cTxt[256], cTxt2[256], cName[51];
-	DWORD dwType1, dwType2, dwValue1, dwValue2, dwValue3;
+	UINT32 dwType1, dwType2, dwValue1, dwValue2, dwValue3;
 
 
 	m_bIsSpecial = false;
@@ -10778,7 +10778,7 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 	int  iMaxPage, j, i, iLoc;
 	char cTotalItems, cItemColor, cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	bool bFlag;
-	DWORD dwTime = timeGetTime();
+	UINT32 dwTime = timeGetTime();
 	sX = m_stDialogBoxInfo[14].sX;
 	sY = m_stDialogBoxInfo[14].sY;
 	szX = m_stDialogBoxInfo[14].sSizeX - 5;
@@ -11714,8 +11714,8 @@ void CGame::DlgBoxClick_GuildMenu(short msX, short msY)
 
 void CGame::CreateNewGuildResponseHandler(char * pData)
 {
-	WORD * wpResult;
-	wpResult = (WORD *)(pData + DEF_INDEX2_MSGTYPE);
+	UINT16 * wpResult;
+	wpResult = (UINT16 *)(pData + DEF_INDEX2_MSGTYPE);
 	switch (*wpResult) {
 	case DEF_MSGTYPE_CONFIRM:
 		m_iGuildRank = 0;
@@ -11732,7 +11732,7 @@ void CGame::CreateNewGuildResponseHandler(char * pData)
 void CGame::DrawDialogBox_LevelUpSetting(short msX, short msY)
 {
 	short sX, sY, szX;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	char cTxt[120];
 	int iStats;
 	sX = m_stDialogBoxInfo[12].sX;
@@ -12458,7 +12458,7 @@ void CGame::DrawDialogBox_Exchange(short msX, short msY)
 	short sX, sY, szX, sXadd;
 	//50Cent - MultiTrade
 	short sYadd, sAux = 0;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	char cItemColor, cTxt[120], cTxt2[128];
 	char cNameStr[120], cSubStr1[120], cSubStr2[120];
 	int iLoc, i;
@@ -12797,7 +12797,7 @@ void CGame::DrawDialogBox_Exchange(short msX, short msY)
 	}
 #else
 	short sX, sY, szX, sXadd;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	char cItemColor, cTxt[120], cTxt2[128];
 	char cNameStr[120], cSubStr1[120], cSubStr2[120];
 	int iLoc, i;
@@ -13063,7 +13063,7 @@ void CGame::DrawDialogBox_Fishing(short msX, short msY)
 {
 
 	short sX, sY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	char  cTxt[120];
 
 	sX = m_stDialogBoxInfo[24].sX;
@@ -13496,7 +13496,7 @@ void CGame::DrawDialogBox_GuildOperation(short msX, short msY)
 void CGame::DrawDialogBox_MagicShop(short msX, short msY, short msZ)
 {
 	short sX, sY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	int  i;
 
 	int  iCPivot, iYloc;
@@ -14822,7 +14822,7 @@ void CGame::DrawDialogBox_SellList(short msX, short msY)
 void CGame::DrawDialogBox_SellorRepairItem(short msX, short msY)
 {
 	short sX, sY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	char cItemID, cItemColor, cTxt[120], cTemp[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
 
 	sX = m_stDialogBoxInfo[23].sX;
@@ -14968,7 +14968,7 @@ void CGame::DrawDialogBox_SellorRepairItem(short msX, short msY)
 void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	int  i, iTemp;
 	char cTemp[255], cStr2[255], cStr3[255], cStr4[255], cStr5[255], cStr6[255];
 
@@ -15482,7 +15482,7 @@ void CGame::DrawDialogBox_SkillDlg(short msX, short msY, short msZ, char cLB)
 	char cTemp[120], cTemp2[120];
 	short sX, sY, szX;
 	char cStr1[64], cStr2[64], cStr3[64];
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 
 	iAdjX = 5;
 	iAdjY = 8;
@@ -17662,11 +17662,11 @@ void CGame::ResponseChargedTeleport(char *pData)
 void CGame::NotifyMsg_CannotGiveItem(char *pData)
 {
 	char * cp, cName[21], cTxt[256];
-	WORD * wp, wItemIndex;
+	UINT16 * wp, wItemIndex;
 	int  * ip, iAmount;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wItemIndex = *wp;
 	cp += 2;
 
@@ -17690,11 +17690,11 @@ void CGame::NotifyMsg_CannotGiveItem(char *pData)
 void CGame::NotifyMsg_DropItemFin_CountChanged(char *pData)
 {
 	char * cp, cTxt[256];
-	WORD * wp, wItemIndex;
+	UINT16 * wp, wItemIndex;
 	int  * ip, iAmount;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wItemIndex = *wp;
 	cp += 2;
 
@@ -17743,10 +17743,10 @@ void CGame::NotifyMsg_DismissGuildsMan(char * pData)
 void CGame::NotifyMsg_CannotRating(char * pData)
 {
 	char * cp, cTxt[120];
-	WORD * wp, wTime;
+	UINT16 * wp, wTime;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wTime = *wp;
 	cp += 2;
 
@@ -17758,13 +17758,13 @@ void CGame::NotifyMsg_CannotRating(char * pData)
 void CGame::NotifyMsg_CannotRepairItem(char * pData)
 {
 	char * cp, cTxt[120], cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
-	WORD * wp, wV1, wV2;
+	UINT16 * wp, wV1, wV2;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wV1 = *wp;
 	cp += 2;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wV2 = *wp;
 	cp += 2;
 	ZeroMemory(cStr1, sizeof(cStr1));
@@ -17791,15 +17791,15 @@ void CGame::NotifyMsg_CannotRepairItem(char * pData)
 void CGame::NotifyMsg_CannotSellItem(char * pData)
 {
 	char * cp, cTxt[120], cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
-	WORD * wp, wV1, wV2;
+	UINT16 * wp, wV1, wV2;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wV1 = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wV2 = *wp;
 	cp += 2;
 
@@ -17841,14 +17841,14 @@ void CGame::NotifyMsg_CannotSellItem(char * pData)
 void CGame::NotifyMsg_DropItemFin_EraseItem(char *pData)
 {
 	char * cp;
-	WORD * wp;
+	UINT16 * wp;
 	int * ip, iAmount;
 	short  sItemIndex;
 	char   cTxt[120];
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sItemIndex = *wp;
 	cp += 2;
 
@@ -17889,18 +17889,18 @@ void CGame::NotifyMsg_EventFishMode(char * pData)
 {
 	short sSprite, sSpriteFrame;
 	char * cp, cName[21];
-	WORD * wp, wPrice;
+	UINT16 * wp, wPrice;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wPrice = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sSprite = (short)*wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sSpriteFrame = (short)*wp;
 	cp += 2;
 
@@ -17917,26 +17917,26 @@ void CGame::NotifyMsg_EventFishMode(char * pData)
 
 void CGame::NotifyMsg_Exp(char * pData)
 {
-	DWORD * dwp;
+	UINT32 * dwp;
 	int  * ip;
 	char * cp, cTxt[120];
-	int iPrevExp;
+	UINT32 iPrevExp;
 
 	iPrevExp = m_iExp;
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	ip = (int*)cp;
-	m_iExp = *ip;
+	dwp = (UINT32*)cp;
+	m_iExp = *dwp;
 	cp += 4;
 }
 
 void CGame::NotifyMsg_GiveItemFin_CountChanged(char *pData)
 {
 	char * cp, cName[21], cTxt[256];
-	WORD * wp, wItemIndex;
+	UINT16 * wp, wItemIndex;
 	int  * ip, iAmount;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wItemIndex = *wp;
 	cp += 2;
 
@@ -17959,7 +17959,7 @@ void CGame::NotifyMsg_GiveItemFin_CountChanged(char *pData)
 void CGame::NotifyMsg_GiveItemFin_EraseItem(char *pData)
 {
 	char * cp;
-	WORD * wp;
+	UINT16 * wp;
 	int  * ip, iAmount;
 	short  sItemIndex;
 	char cName[21], cTxt[250];
@@ -17967,7 +17967,7 @@ void CGame::NotifyMsg_GiveItemFin_EraseItem(char *pData)
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sItemIndex = *wp;
 	cp += 2;
 
@@ -18093,14 +18093,14 @@ void CGame::NotifyMsg_ItemColorChange(char *pData)
 void CGame::NotifyMsg_ItemDepleted_EraseItem(char * pData)
 {
 	char * cp;
-	WORD * wp;
+	UINT16 * wp;
 	short  sItemIndex;
 	bool   bIsUseItemResult;
 	char   cTxt[120];
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	sItemIndex = *wp;
 	cp += 2;
 
@@ -18216,15 +18216,15 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 {
 	char * cp;
 	short * sp;
-	DWORD * dwp;
+	UINT32 * dwp;
 	int i, j, *ip, iClass;
 
-	DWORD dwCount, dwAttribute;
+	UINT32 dwCount, dwAttribute;
 	char  cName[21], cItemType, cEquipPos;
 	bool  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit, sSpecialEV2;
 	char  cTxt[120], cGenderLimit, cItemColor;
-	WORD  * wp, wWeight, wCurLifeSpan, wMaxLifeSpan;
+	UINT16  * wp, wWeight, wCurLifeSpan, wMaxLifeSpan;
 	//Magn0S::
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
 	short sItemEffectValue6, sItemEffectValue5, sItemEffectValue4, sItemEffectValue3, sItemEffectValue2, sItemEffectValue1, sItemEffectType;
@@ -18239,7 +18239,7 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	memcpy(cName, cp, 20);
 	cp += 20;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwCount = *dwp;
 	cp += 4;
 
@@ -18259,11 +18259,11 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	cGenderLimit = *cp;
 	cp++;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wCurLifeSpan = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wWeight = *wp;
 	cp += 2;
 
@@ -18281,7 +18281,7 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	sSpecialEV2 = (short)*cp; // v1.41
 	cp++;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwAttribute = *dwp;
 	cp += 4;
 
@@ -18329,7 +18329,7 @@ void CGame::NotifyMsg_ItemObtained(char * pData)
 	sItemEffectType = *sp;
 	cp += 2;
 	
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	wMaxLifeSpan = *wp;
 	cp += 2;
 
@@ -18445,15 +18445,15 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 {
 	char  * cp;
 	short * sp;
-	DWORD * dwp;
-	WORD  * wp;
+	UINT32 * dwp;
+	UINT16  * wp;
 	int i, j, *ip, iClass, wCost;
 
-	DWORD dwCount;
+	UINT32 dwCount;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit;
 	bool  bIsEquipped;
 	short sSprite, sSpriteFrame, sLevelLimit;
-	WORD  wWeight, wCurLifeSpan, wMaxLifeSpan;
+	UINT16  wWeight, wCurLifeSpan, wMaxLifeSpan;
 	char  cTxt[120], cItemColor;
 	//Magn0S:: Add
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
@@ -18469,7 +18469,7 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	memcpy(cName, cp, 20);
 	cp += 20;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwCount = *dwp;
 	cp += 4;
 
@@ -18489,11 +18489,11 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	cGenderLimit = *cp;
 	cp++;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wCurLifeSpan = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wWeight = *wp;
 	cp += 2;
 
@@ -18556,7 +18556,7 @@ void CGame::NotifyMsg_ItemPurchased(char * pData)
 	sItemEffectType = *sp;
 	cp += 2;
 
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	wMaxLifeSpan = *wp;
 	cp += 2;
 	
@@ -18702,19 +18702,19 @@ void CGame::NotifyMsg_ItemReleased(char * pData)
 void CGame::NotifyMsg_ItemRepaired(char * pData)
 {
 	char * cp, cTxt[120];
-	DWORD * dwp, dwItemID, dwLife;
+	UINT32 * dwp, dwItemID, dwLife;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwItemID = *dwp;
 	cp += 4;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwLife = *dwp;
 	cp += 4;
 
-	m_pItemList[dwItemID]->m_wCurLifeSpan = (WORD)dwLife;
+	m_pItemList[dwItemID]->m_wCurLifeSpan = (UINT16)dwLife;
 	m_bIsItemDisabled[dwItemID] = false;
 	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	GetItemName(m_pItemList[dwItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
@@ -18727,11 +18727,11 @@ void CGame::NotifyMsg_ItemRepaired(char * pData)
 void CGame::NotifyMsg_ItemToBank(char *pData)
 {
 	char * cp, cIndex;
-	DWORD * dwp, dwCount, dwAttribute;
+	UINT32 * dwp, dwCount, dwAttribute;
 	char  cName[21], cItemType, cEquipPos, cGenderLimit, cItemColor;
 	bool  bIsEquipped;
 	short * sp, sSprite, sSpriteFrame, sLevelLimit, sItemSpecEffectValue2;
-	WORD* wp, wWeight, wCurLifeSpan, wMaxLifeSpan;
+	UINT16* wp, wWeight, wCurLifeSpan, wMaxLifeSpan;
 	char  cTxt[120];
 	//Magn0S::
 	short sNewAtt1, sNewAtt2, sNewAtt3, sNewAtt4;
@@ -18750,7 +18750,7 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	memcpy(cName, cp, 20);
 	cp += 20;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwCount = *dwp;
 	cp += 4;
 
@@ -18770,11 +18770,11 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	cGenderLimit = *cp;
 	cp++;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wCurLifeSpan = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wWeight = *wp;
 	cp += 2;
 
@@ -18794,7 +18794,7 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	sItemEffectValue2 = *sp;
 	cp += 2;
 
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	dwAttribute = *dwp;
 	cp += 4;
 
@@ -18847,7 +18847,7 @@ void CGame::NotifyMsg_ItemToBank(char *pData)
 	sItemEffectType = *sp;
 	cp += 2;
 
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	wMaxLifeSpan = *wp;
 	cp += 2;
 
@@ -18945,7 +18945,7 @@ bool CGame::bInitMagicCfgList()
 	class CStrTok * pStrTok;
 	HANDLE hFile;
 	FILE * pFile;
-	DWORD  dwFileSize;
+	UINT32  dwFileSize;
 
 	ZeroMemory(cTemp, sizeof(cTemp));
 	ZeroMemory(cFn, sizeof(cFn));
@@ -19114,7 +19114,7 @@ bool CGame::bInitSkillCfgList()
 	class CStrTok * pStrTok;
 	HANDLE hFile;
 	FILE * pFile;
-	DWORD  dwFileSize;
+	UINT32  dwFileSize;
 
 	ZeroMemory(cTemp, sizeof(cTemp));
 	ZeroMemory(cFn, sizeof(cFn));
@@ -19348,7 +19348,7 @@ void CGame::WriteSettings()
 bool CGame::bEffectFrameCounter()
 {
 	int i, x;
-	DWORD dwTime;
+	UINT32 dwTime;
 	bool bRet = false;
 	short sAbsX, sAbsY, sDist;
 	char  cDir;
@@ -21285,7 +21285,7 @@ void CGame::DrawDialogBoxs(short msX, short msY, short msZ, char cLB)
 
 void CGame::_Draw_CharacterBody(short sX, short sY, short sType)
 {
-	DWORD dwTime = m_dwCurTime;
+	UINT32 dwTime = m_dwCurTime;
 	int  iR, iG, iB;
 
 	if (sType <= 3)
@@ -21366,7 +21366,7 @@ int CGame::_iCheckDlgBoxFocus(short msX, short msY, char cButtonSide)
 	int i;
 	char         cDlgID;
 	short        sX, sY;
-	DWORD		  dwTime = m_dwCurTime;
+	UINT32		  dwTime = m_dwCurTime;
 	if (cButtonSide == 1) {
 		// Snoopy: 41->61
 		for (i = 0; i < 61; i++)
@@ -21631,8 +21631,8 @@ void CGame::InitItemList(char * pData)
 	char    cTotalItems;
 	int     i, iAngelValue, *ip;
 	short * sp;
-	DWORD * dwp;
-	WORD  * wp;
+	UINT32 * dwp;
+	UINT16  * wp;
 	char  * cp;
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
@@ -21668,7 +21668,7 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i] = new class CItem;
 		memcpy(m_pItemList[i]->m_cName, cp, 20);
 		cp += 20;
-		dwp = (DWORD *)cp;
+		dwp = (UINT32 *)cp;
 		m_pItemList[i]->m_dwCount = *dwp;
 		m_pItemList[i]->m_sX = 40;
 		m_pItemList[i]->m_sY = 30;
@@ -21689,10 +21689,10 @@ void CGame::InitItemList(char * pData)
 		cp += 2;
 		m_pItemList[i]->m_cGenderLimit = *cp;
 		cp++;
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		m_pItemList[i]->m_wCurLifeSpan = *wp;
 		cp += 2;
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		m_pItemList[i]->m_wWeight = *wp;
 		cp += 2;
 		sp = (short *)cp;
@@ -21705,7 +21705,7 @@ void CGame::InitItemList(char * pData)
 		cp++;
 		m_pItemList[i]->m_sItemSpecEffectValue2 = (short)*cp; // v1.41
 		cp++;
-		dwp = (DWORD *)cp;
+		dwp = (UINT32 *)cp;
 		m_pItemList[i]->m_dwAttribute = *dwp;
 		cp += 4;
 
@@ -21753,7 +21753,7 @@ void CGame::InitItemList(char * pData)
 		m_pItemList[i]->m_sItemEffectType = *sp;
 		cp += 2;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		m_pItemList[i]->m_wMaxLifeSpan = *wp;
 		cp += 2;
 
@@ -21788,7 +21788,7 @@ void CGame::InitItemList(char * pData)
 		memcpy(m_pBankList[i]->m_cName, cp, 20);
 		cp += 20;
 
-		dwp = (DWORD *)cp;
+		dwp = (UINT32 *)cp;
 		m_pBankList[i]->m_dwCount = *dwp;
 		cp += 4;
 
@@ -21808,11 +21808,11 @@ void CGame::InitItemList(char * pData)
 		m_pBankList[i]->m_cGenderLimit = *cp;
 		cp++;
 
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		m_pBankList[i]->m_wCurLifeSpan = *wp;
 		cp += 2;
 
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		m_pBankList[i]->m_wWeight = *wp;
 		cp += 2;
 
@@ -21830,7 +21830,7 @@ void CGame::InitItemList(char * pData)
 		m_pBankList[i]->m_sItemSpecEffectValue2 = (short)*cp; // v1.41
 		cp++;
 
-		dwp = (DWORD *)cp;
+		dwp = (UINT32 *)cp;
 		m_pBankList[i]->m_dwAttribute = *dwp;
 		cp += 4;
 		//Magn0S::
@@ -21878,7 +21878,7 @@ void CGame::InitItemList(char * pData)
 		m_pBankList[i]->m_sItemEffectType = *sp;
 		cp += 2;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		m_pBankList[i]->m_wMaxLifeSpan = *wp;
 		cp += 2;
 
@@ -22054,14 +22054,14 @@ void CGame::StartBGM()
 
 void CGame::MotionResponseHandler(char * pData)
 {
-	WORD  * wp, wResponse;
+	UINT16  * wp, wResponse;
 	short * sp, sX, sY;
 	char  * cp, cDir;
 	int   * ip, iPreHP;
 	//						          0 3        4 5						 6 7		8 9		   10	    11
 	// Confirm Code(4) | MsgSize(4) | MsgID(4) | DEF_OBJECTMOVE_CONFIRM(2) | Loc-X(2) | Loc-Y(2) | Dir(1) | MapData ...
 	// Confirm Code(4) | MsgSize(4) | MsgID(4) | DEF_OBJECTMOVE_REJECT(2)  | Loc-X(2) | Loc-Y(2)
-	wp = (WORD *)(pData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16 *)(pData + DEF_INDEX2_MSGTYPE);
 	wResponse = *wp;
 
 	cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -22151,7 +22151,7 @@ void CGame::MotionResponseHandler(char * pData)
 
 	case DEF_OBJECTMOVE_REJECT:
 		if (m_iHP <= 0) return;
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		if (m_sPlayerObjectID != *wp) return;
 		cp += 2;
 		sp = (short *)cp;
@@ -22218,7 +22218,7 @@ void CGame::MotionResponseHandler(char * pData)
 	}
 }
 
-void CGame::DrawAngel(int iSprite, short sX, short sY, char cFrame, DWORD dwTime)
+void CGame::DrawAngel(int iSprite, short sX, short sY, char cFrame, UINT32 dwTime)
 {
 	switch (_tmp_cDir)
 	{

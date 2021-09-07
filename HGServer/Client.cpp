@@ -391,9 +391,9 @@ bool CClient::IsTeamPlayer()
 }
 
 
-void CClient::Send(int h, WORD msg, DWORD sV1, DWORD sV2, DWORD sV3,
-	char* pString, DWORD sV4, DWORD sV5,
-	DWORD sV6, DWORD sV7, DWORD sV8, DWORD sV9, char* pString2)
+void CClient::Send(int h, UINT16 msg, UINT32 sV1, UINT32 sV2, UINT32 sV3,
+	char* pString, UINT32 sV4, UINT32 sV5,
+	UINT32 sV6, UINT32 sV7, UINT32 sV8, UINT32 sV9, char* pString2)
 {
 
 	G_pGame->SendNotifyMsg(0, h, msg, sV1, sV2, sV3, pString,

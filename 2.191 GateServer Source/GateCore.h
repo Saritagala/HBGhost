@@ -32,9 +32,9 @@ class CGateCore
 {
 public:
 	void PartyOperation(int iClientH, char * pData);
-	void SendMsgToMonitor(char * pData, DWORD dwMsgSize);
+	void SendMsgToMonitor(char * pData, UINT32 dwMsgSize);
 	void CheckAutoShutdownProcess();
-	void SendMsgToAllGameServers(int iClientH, char * pData, DWORD dwMsgSize, bool bIsOwnSend = true);
+	void SendMsgToAllGameServers(int iClientH, char * pData, UINT32 dwMsgSize, bool bIsOwnSend = true);
 	void ItemLog(char * pData);
 	void _SendServerShutDownMsg(int iClientH, char cCode);
 	void SendServerShutDownMsg(char cCode, bool bISShutdown = false);
@@ -42,7 +42,7 @@ public:
 	void OnKeyDown(WPARAM wParam, LPARAM lParam);
 	void _SendTotalGameServerClients(int iClientH, int iTotalClients);
 	void SendTotalClientsToGameServer();
-	void SendMsgToMonitor(DWORD dwMsg, WORD wMsgType, char * pGameServerName, short sTotalClient = 0);
+	void SendMsgToMonitor(UINT32 dwMsg, UINT16 wMsgType, char * pGameServerName, short sTotalClient = 0);
 	void CheckGameServerActivity();
 	void OnTimer(int iID);
 	void OnKeyUp(WPARAM wParam, LPARAM lParam);
@@ -67,7 +67,7 @@ public:
 
 	bool  m_bIsAutoShutdownProcess;
 	int   m_iAutoShutdownCount;
-	DWORD m_dwAutoShutdownTime;
+	UINT32 m_dwAutoShutdownTime;
 
 	//2002-11-27일 정진 수정
 	char m_cAddress[10][16];	

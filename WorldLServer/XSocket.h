@@ -2,7 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-// 헤더의 확인코드는 1바이트, 크기는 WORD로 변경되었음. 즉 헤더는 총 3바이트 
+// 헤더의 확인코드는 1바이트, 크기는 UINT16로 변경되었음. 즉 헤더는 총 3바이트 
 
 
 #if !defined(AFX_XSOCKET_H__F9D1BA42_7338_11D2_A8E6_00001C7030A6__INCLUDED_)
@@ -59,15 +59,15 @@ class XSocket
 {
 public:						 
 	int iGetPeerAddress(char * pAddrString);
-	char * pGetRcvDataPointer(DWORD * pMsgSize, char * pKey = NULL);
+	char * pGetRcvDataPointer(UINT32 * pMsgSize, char * pKey = NULL);
 	SOCKET iGetSocket();
 	bool bAccept(class XSocket * pXSock, unsigned int uiMsg);
 	bool bListen(char * pAddr, int iPort, unsigned int uiMsg);
-	//change from DWORD to int
-	int iSendMsg(char * cData, DWORD dwSize, char cKey = NULL);
+	//change from UINT32 to int
+	int iSendMsg(char * cData, UINT32 dwSize, char cKey = NULL);
 	bool bConnect(char * pAddr, int iPort, unsigned int uiMsg);
 	int  iOnSocketEvent(WPARAM wParam, LPARAM lParam);
-	bool bInitBufferSize(DWORD dwBufferSize);
+	bool bInitBufferSize(UINT32 dwBufferSize);
 	XSocket(HWND hWnd, int iBlockLimit);
 	virtual ~XSocket();
 
@@ -93,7 +93,7 @@ private:
 	char   m_cStatus;
 	//changed to int, since it deals with numbers
 	int  m_dwReadSize;
-	DWORD  m_dwTotalReadSize;
+	UINT32  m_dwTotalReadSize;
 	char   m_pAddr[30];
 	int    m_iPortNum;
 

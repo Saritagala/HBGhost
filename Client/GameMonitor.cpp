@@ -32,7 +32,7 @@ int CGameMonitor::iReadBadWordFileList(char *pFn)
  class CStrTok * pStrTok;
  HANDLE hFile;
  FILE * pFile;
- DWORD  dwFileSize;
+ UINT32  dwFileSize;
 
 	hFile = CreateFile(pFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
 	dwFileSize = GetFileSize(hFile, 0);

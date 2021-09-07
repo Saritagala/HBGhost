@@ -34,7 +34,7 @@ CSkill::~CSkill()
 
 int CGame::_iGetWeaponSkillType(int iClientH)
 {
-	WORD wWeaponType;
+	UINT16 wWeaponType;
 
 	if (m_pClientList[iClientH] == 0) return 0;
 
@@ -125,7 +125,7 @@ bool CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 	return true;
 }
 
-bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeSkillConfigFileContents(char* pData, UINT32 dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -293,8 +293,8 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int iSkillLevel)
 {
 	char* cp, cData[100];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int   iRet;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -309,9 +309,9 @@ void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int i
 		m_pClientList[iClientH]->m_cSkillMastery[iSkillNum] = iSkillLevel;
 		bCheckTotalSkillMasteryPoints(iClientH, iSkillNum);
 
-		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_SKILLTRAINSUCCESS;
 
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -1345,7 +1345,7 @@ void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)
 // 05/24/2004 - Hypnotoad - Hammer and Wand train to 100% fixed
 void CGame::_CheckAttackType(int iClientH, short* spType)
 {
-	WORD wType;
+	UINT16 wType;
 
 	if (m_pClientList[iClientH] == 0) return;
 	wType = ((m_pClientList[iClientH]->m_sAppr2 & 0x0FF0) >> 4);

@@ -16,7 +16,7 @@ class Team
 public:
 	Team();
 	virtual ~Team();
-	DWORD onesec;
+	UINT32 onesec;
 	bool bend;
 	int endcount;
 	bool bteam;

@@ -76,7 +76,7 @@ bool CGateCore::bReadProgramConfigFile(char * cFn)
 {
  FILE * pFile;
  HANDLE hFile;
- DWORD  dwFileSize;
+ UINT32  dwFileSize;
  char * cp, * token, cReadMode, cTxt[120];
  char seps[] = "= ,\t\n";
  int	iIPindex = 0;
@@ -303,15 +303,15 @@ bool CGateCore::bAccept(class XSocket * pXSock)
 void CGateCore::OnClientRead(int iClientH)
 {
  char  * cp, * pData, cTemp[22],cTxt[256] ;
- DWORD * dwpMsgID, dwMsgSize, dwTime, * dwp ;
- WORD  * wp;
+ UINT32 * dwpMsgID, dwMsgSize, dwTime, * dwp ;
+ UINT16  * wp;
  int i , iRet; 
  bool bFindGameServer= false ; 
  	
 	dwTime = timeGetTime();
 	pData = m_pClientList[iClientH]->m_pXSock->pGetRcvDataPointer(&dwMsgSize);
 	
-	dwpMsgID = (DWORD *)(pData + DEF_INDEX4_MSGID);
+	dwpMsgID = (UINT32 *)(pData + DEF_INDEX4_MSGID);
 
 	
 	switch (*dwpMsgID) {
@@ -325,7 +325,7 @@ void CGateCore::OnClientRead(int iClientH)
 		break;
 	case MSGID_REQUEST_GAMESERVER_SHUTDOWN:
 		cp  = (char *)(pData + DEF_INDEX2_MSGTYPE);
-		wp  = (WORD *)cp;
+		wp  = (UINT16 *)cp;
 		if (*wp != 0x5A8E) {
 			// 확인코드 불일치. 삭제.
 			delete m_pClientList[iClientH];
@@ -345,9 +345,9 @@ void CGateCore::OnClientRead(int iClientH)
 					&& ( m_pClientList[i]->m_bIsGameServer == true)) {
 
 				ZeroMemory(cTxt, sizeof(cTxt));
-				dwp  = (DWORD *)(cTxt + DEF_INDEX4_MSGID);
+				dwp  = (UINT32 *)(cTxt + DEF_INDEX4_MSGID);
 				*dwp = MSGID_GAMESERVERSHUTDOWNED;
-				wp   = (WORD *)(cTxt + DEF_INDEX2_MSGTYPE);
+				wp   = (UINT16 *)(cTxt + DEF_INDEX2_MSGTYPE);
 				*wp  = DEF_MSGTYPE_CONFIRM;
 		
 				iRet = m_pClientList[i]->m_pXSock->iSendMsg(cTxt, 6);
@@ -382,7 +382,7 @@ void CGateCore::OnClientRead(int iClientH)
 
 	case MSGID_REQUEST_ALLGAMESERVER_SHUTDOWN:
 		cp  = (char *)(pData + DEF_INDEX2_MSGTYPE);
-		wp  = (WORD *)cp;
+		wp  = (UINT16 *)cp;
 		if (*wp != 0x5A8E) {
 			// 확인코드 불일치. 삭제.
 			delete m_pClientList[iClientH];
@@ -409,7 +409,7 @@ void CGateCore::OnClientRead(int iClientH)
 	case MSGID_REQUEST_EXEC_1DOTBAT:
 	case MSGID_REQUEST_EXEC_2DOTBAT:
 		cp  = (char *)(pData + DEF_INDEX2_MSGTYPE);
-		wp  = (WORD *)cp;
+		wp  = (UINT16 *)cp;
 		if (*wp != 0x5A8E) {
 			// 확인코드 불일치. 삭제.
 			delete m_pClientList[iClientH];
@@ -426,7 +426,7 @@ void CGateCore::OnClientRead(int iClientH)
 
 	case MSGID_MONITORALIVE:
 		cp  = (char *)(pData + DEF_INDEX2_MSGTYPE);
-		wp  = (WORD *)cp;
+		wp  = (UINT16 *)cp;
 
 		if (m_cMonitorStatus[*wp] != 1) 
 			 m_cMonitorStatus[*wp] = 1;
@@ -454,7 +454,7 @@ void CGateCore::OnClientRead(int iClientH)
 		// 게임서버가 살아 있음을 알리는 메시지
 		m_pClientList[iClientH]->m_dwAliveTime = dwTime;
 		cp  = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
-		wp  = (WORD *)cp;
+		wp  = (UINT16 *)cp;
 		m_pClientList[iClientH]->m_iTotalClients = (int)*wp;
 
 		if (m_pClientList[iClientH]->m_sIsActivated >= 0) 
@@ -470,10 +470,10 @@ void CGateCore::RegisterGameServerHandler(int iClientH, char * pData)
 {
  char cTxt[100], cName[11], cAddress[16], * cp;
  int  i, iPort, iTotalMaps;
- DWORD * dwp, dwBuildDate;
- WORD  * wp;
+ UINT32 * dwp, dwBuildDate;
+ UINT16  * wp;
  bool  bIsSuccess = true;
- DWORD dwProcess;
+ UINT32 dwProcess;
 
 	// 게임 서버를 등록한다.
 
@@ -487,7 +487,7 @@ void CGateCore::RegisterGameServerHandler(int iClientH, char * pData)
 	memcpy(cAddress, cp, 16);
 	cp += 16;
 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	iPort = (int)*wp;
 	cp += 2;
 
@@ -498,12 +498,12 @@ void CGateCore::RegisterGameServerHandler(int iClientH, char * pData)
 		cp += 11;
 	}
 
-	dwp =(DWORD *)cp;
-	dwProcess = (DWORD)*dwp;
+	dwp =(UINT32 *)cp;
+	dwProcess = (UINT32)*dwp;
 	// v2.17 고광현 수정
 	cp += 4;
 	
-	dwp =(DWORD *)cp;
+	dwp =(UINT32 *)cp;
 	dwBuildDate = *dwp;
 	cp += 4;
 
@@ -560,16 +560,16 @@ void CGateCore::RegisterGameServerHandler(int iClientH, char * pData)
 void CGateCore::ResponseRegisterGameServer(int iClientH, bool bRet)
 {
  char cData[20], cTempName[22];
- DWORD * dwp;
- WORD  * wp;
+ UINT32 * dwp;
+ UINT16  * wp;
  int iRet;
 
 	ZeroMemory(cData, sizeof(cData));
 	ZeroMemory(cTempName, sizeof(cTempName));
 
-	dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+	dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_RESPONSE_REGISTERGAMESERVER;
-	wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+	wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);
 	if (bRet == true) 
 		 *wp  = DEF_MSGTYPE_CONFIRM;
 	else *wp  = DEF_MSGTYPE_REJECT;
@@ -718,7 +718,7 @@ void CGateCore::OnTimer(int iID)
 void CGateCore::CheckGameServerActivity()
 {
  int i;
- DWORD    dwTime;
+ UINT32    dwTime;
  char     cTxt[120];
 
 	dwTime = timeGetTime();
@@ -737,18 +737,18 @@ void CGateCore::CheckGameServerActivity()
 	}
 }
 
-void CGateCore::SendMsgToMonitor(DWORD dwMsg, WORD wMsgType, char *  pGameServerName,short sTotalClient)
+void CGateCore::SendMsgToMonitor(UINT32 dwMsg, UINT16 wMsgType, char *  pGameServerName,short sTotalClient)
 {
  int     i, iRet;
  char  * cp, cTxt[120], cData[200];
- DWORD * dwp;
- WORD  * wp;
+ UINT32 * dwp;
+ UINT16  * wp;
  short * sp ;
 	ZeroMemory(cData,sizeof(cData)) ;
 
-	dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+	dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
 	*dwp = dwMsg; //MSGID_GAMESERVERDOWN;
-	wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+	wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);
 	*wp  = wMsgType; //DEF_MSGTYPE_CONFIRM;
 
 	cp = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -784,7 +784,7 @@ void CGateCore::SendMsgToMonitor(DWORD dwMsg, WORD wMsgType, char *  pGameServer
 
 }
 
-void CGateCore::SendMsgToMonitor(char * pData, DWORD dwMsgSize)
+void CGateCore::SendMsgToMonitor(char * pData, UINT32 dwMsgSize)
 {
  int  i, iRet;
  char cTxt[120];
@@ -838,21 +838,21 @@ void CGateCore::SendTotalClientsToGameServer()
 void CGateCore::_SendTotalGameServerClients(int iClientH, int iTotalClients)
 {
  char cData[120],cTempName[22];
- DWORD * dwp;
- WORD  * wp;
+ UINT32 * dwp;
+ UINT16  * wp;
  char  * cp;
  int     iRet;
 
 	ZeroMemory(cData, sizeof(cData));
 	ZeroMemory(cTempName, sizeof(cTempName));
 
-	dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+	dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_TOTALGAMESERVERCLIENTS;
-	wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+	wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);
 	*wp  = DEF_MSGTYPE_CONFIRM;
 
 	cp = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = iTotalClients;
 	cp += 2;
 	
@@ -895,8 +895,8 @@ void CGateCore::CheckGlobalCommand()
 {
  int i, iRet;
  char cData[256],cTempName[22];
- DWORD * dwp;
- WORD  * wp;
+ UINT32 * dwp;
+ UINT16  * wp;
  
 
 	ZeroMemory(cTempName,sizeof(cTempName)) ;
@@ -908,9 +908,9 @@ void CGateCore::CheckGlobalCommand()
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsGameServer == true)) {
 			
 			ZeroMemory(cData, sizeof(cData));
-			dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+			dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_GAMESERVERSHUTDOWNED;
-			wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+			wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);
 			*wp  = DEF_MSGTYPE_CONFIRM;
 	
 			iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 6);
@@ -957,8 +957,8 @@ void CGateCore::SendServerShutDownMsg(char cCode, bool bISShutdown )
 void CGateCore::_SendServerShutDownMsg(int iClientH, char cCode)
 {
  char cData[120],cTempName[22];
- DWORD * dwp;
- WORD  * wp;
+ UINT32 * dwp;
+ UINT16  * wp;
  char  * cp;
  int     iRet;
 
@@ -966,13 +966,13 @@ void CGateCore::_SendServerShutDownMsg(int iClientH, char cCode)
 	ZeroMemory(cTempName, sizeof(cTempName));
 
 
-	dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+	dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_SENDSERVERSHUTDOWNMSG;
-	wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+	wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);
 	*wp  = DEF_MSGTYPE_CONFIRM;
 
 	cp = (char *)(cData + DEF_INDEX2_MSGTYPE + 2);
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = cCode;
 	cp += 2;
 	
@@ -1042,7 +1042,7 @@ void CGateCore::ItemLog(char *pData)
 
 
 
-void CGateCore::SendMsgToAllGameServers(int iClientH, char *pData, DWORD dwMsgSize, bool bIsOwnSend)
+void CGateCore::SendMsgToAllGameServers(int iClientH, char *pData, UINT32 dwMsgSize, bool bIsOwnSend)
 {
  int i;
 
@@ -1063,10 +1063,10 @@ void CGateCore::SendMsgToAllGameServers(int iClientH, char *pData, DWORD dwMsgSi
 void CGateCore::CheckAutoShutdownProcess()
 {
  int i, iRet;
- DWORD dwTime = timeGetTime();
+ UINT32 dwTime = timeGetTime();
  char  cData[128], cTempName[22];
- WORD * wp;
- DWORD * dwp;
+ UINT16 * wp;
+ UINT32 * dwp;
 	ZeroMemory(cTempName,sizeof(cTempName)); 
 
 	m_bIsAutoShutdownProcess = false ;
@@ -1104,9 +1104,9 @@ void CGateCore::CheckAutoShutdownProcess()
 			PutLogList(G_cTxt) ;
 
 			ZeroMemory(cData, sizeof(cData));
-			dwp  = (DWORD *)(cData + DEF_INDEX4_MSGID);
+			dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_GAMESERVERSHUTDOWNED;
-			wp   = (WORD *)(cData + DEF_INDEX2_MSGTYPE);
+			wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);
 			*wp  = DEF_MSGTYPE_CONFIRM;
 	
 			iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData, 6);
@@ -1140,27 +1140,27 @@ void CGateCore::CheckAutoShutdownProcess()
 void CGateCore::PartyOperation(int iClientH, char *pData)
 {
  char * cp, cName[12], cData[120];
- DWORD * dwp;
- WORD * wp, wRequestType;
+ UINT32 * dwp;
+ UINT16 * wp, wRequestType;
  int iRet, iGSCH, iPartyID;
  bool bRet;
 
 	cp = (char *)pData;
 	cp += 4;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wRequestType = *wp;
 	cp += 2;
 
-	wp = (WORD *)cp;
-	iGSCH = (WORD)*wp;
+	wp = (UINT16 *)cp;
+	iGSCH = (UINT16)*wp;
 	cp += 2;
 
 	ZeroMemory(cName, sizeof(cName));
 	memcpy(cName, cp, 10);
 	cp += 10;
 
-	wp = (WORD *)cp;
-	iPartyID = (WORD)*wp;
+	wp = (UINT16 *)cp;
+	iPartyID = (UINT16)*wp;
 	cp += 2;
 
 	//testcode
@@ -1169,10 +1169,10 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char *)cData;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	
 	switch (wRequestType) {
 	case 1: // 파티 생성 요청 
@@ -1183,13 +1183,13 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 			cp += 2;
 			*cp = 0; // 생성 실패 
 			cp++;
-			wp = (WORD *)cp;
+			wp = (UINT16 *)cp;
 			*wp = iGSCH;
 			cp += 2;
 			memcpy(cp, cName, 10);
 			cp += 10;
-			wp = (WORD *)cp;
-			*wp = (WORD)iPartyID;
+			wp = (UINT16 *)cp;
+			*wp = (UINT16)iPartyID;
 			cp += 2;
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 22);
 		}
@@ -1199,13 +1199,13 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 			cp += 2;
 			*cp = 1; // 생성 성공 
 			cp++;
-			wp = (WORD *)cp;
+			wp = (UINT16 *)cp;
 			*wp = iGSCH;
 			cp += 2;
 			memcpy(cp, cName, 10);
 			cp += 10;
-			wp = (WORD *)cp;
-			*wp = (WORD)iPartyID;
+			wp = (UINT16 *)cp;
+			*wp = (UINT16)iPartyID;
 			cp += 2;
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 22);
 		}
@@ -1222,13 +1222,13 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 			cp += 2;
 			*cp = 1; // 추가 성공 
 			cp++;
-			wp = (WORD *)cp;
+			wp = (UINT16 *)cp;
 			*wp = iGSCH;
 			cp += 2;
 			memcpy(cp, cName, 10);
 			cp += 10;
-			wp = (WORD *)cp;
-			*wp = (WORD)iPartyID;
+			wp = (UINT16 *)cp;
+			*wp = (UINT16)iPartyID;
 			cp += 2;
 			// 파티 멤버가 추가되었다는 내용은 모든 서버에 전송한다.
 			SendMsgToAllGameServers(0, cData, 22, true);
@@ -1239,13 +1239,13 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 			cp += 2;
 			*cp = 0; // 추가 실패 
 			cp++;
-			wp = (WORD *)cp;
+			wp = (UINT16 *)cp;
 			*wp = iGSCH;
 			cp += 2;
 			memcpy(cp, cName, 10);
 			cp += 10;
-			wp = (WORD *)cp;
-			*wp = (WORD)iPartyID;
+			wp = (UINT16 *)cp;
+			*wp = (UINT16)iPartyID;
 			cp += 2;
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 22);
 		}
@@ -1259,13 +1259,13 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 			cp += 2;
 			*cp = 1; // 제거 성공 
 			cp++;
-			wp = (WORD *)cp;
+			wp = (UINT16 *)cp;
 			*wp = iGSCH;
 			cp += 2;
 			memcpy(cp, cName, 10);
 			cp += 10;
-			wp = (WORD *)cp;
-			*wp = (WORD)iPartyID;
+			wp = (UINT16 *)cp;
+			*wp = (UINT16)iPartyID;
 			cp += 2;
 			// 파티 멤버가 제거되었다는 내용은 모든 서버에 전송한다.
 			SendMsgToAllGameServers(0, cData, 22, true);
@@ -1276,13 +1276,13 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 			cp += 2;
 			*cp = 0; // 제거 실패 
 			cp++;
-			wp = (WORD *)cp;
+			wp = (UINT16 *)cp;
 			*wp = iGSCH;
 			cp += 2;
 			memcpy(cp, cName, 10);
 			cp += 10;
-			wp = (WORD *)cp;
-			*wp = (WORD)iPartyID;
+			wp = (UINT16 *)cp;
+			*wp = (UINT16)iPartyID;
 			cp += 2;
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 22);
 		}

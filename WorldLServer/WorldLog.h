@@ -53,11 +53,11 @@ public:
 	void RequestSaveOccupyFlag(int iClientH, char *pData, char cType);
 	int RequestSetAccountWaitStatus(char *pData);
 	bool bReadItemConfigFile(char *cFn);
-	void PutGMLogData(char * pData, DWORD dwMsgSize, bool bIsSave);
-	void PutItemLogData(char * pData, DWORD dwMsgSize, bool bIsSave);
-	void PutCrusadeLogData(char * pData, DWORD dwMsgSize, bool bIsSave);
+	void PutGMLogData(char * pData, UINT32 dwMsgSize, bool bIsSave);
+	void PutItemLogData(char * pData, UINT32 dwMsgSize, bool bIsSave);
+	void PutCrusadeLogData(char * pData, UINT32 dwMsgSize, bool bIsSave);
 
-	int OnPlayerAccountMessage(DWORD dwMsgID, char * pData, char * pData2, int iLevel, char * pData3);
+	int OnPlayerAccountMessage(UINT32 dwMsgID, char * pData, char * pData2, int iLevel, char * pData3);
 	bool bReadServerConfigFile(char *cFn);
 	void EnterGame(int iClientH, char * pData);
 	int iGetMapInformation(char *cMapName, char * cAddress, int * iPort, int iClientH);
@@ -67,15 +67,15 @@ public:
 	void SendServerShutdownMessage();
 	void CreateNewCharacterFile(char *pData, char *cFn, char * cNewCharName, char * cAccountName, char * cPassword, char cNewGender, char cNewSkin, int iTempAppr1, int iTempAppr2, int iTempAppr3, char cNewStr, char cNewVit, char cNewDex, char cNewInt, char cNewMag, char cNewChr, short sAppr1, short sAppr2, short sAppr3, short sAppr4);
 	void RequestNoSaveLogout(int iClientH, char *pData);
-	void VerifyCharacterIntegrity(char *cCharacterName, char *cAccountName, int *iLevel, char *cGuildName, char *cGuildRank, DWORD *dwGuildGUID);
-	void VerifyGuildIntegrity(char *cGuildName, DWORD *dwGuildGUID);
+	void VerifyCharacterIntegrity(char *cCharacterName, char *cAccountName, int *iLevel, char *cGuildName, char *cGuildRank, UINT32 *dwGuildGUID);
+	void VerifyGuildIntegrity(char *cGuildName, UINT32 *dwGuildGUID);
 	bool bAccept(class XSocket * pXSock, bool bCheck);
 	bool bClientRegisterMaps(int iClientH, char *pData);
 	void DeleteClient(int iClientH, short Mod);
 	// complete ascii but uncoded sql:
 	void RequestPlayerData(int iClientH, char *pData);
-	bool iGetCharacterData(char * cCharName, char * cMapName, short * sAppr1, short * sAppr2, short * sAppr3, short * sAppr4, int * iApprColor, char * cSex, char * cSkin, int * iLevel, int * iExp, int * iStr, int * iVit, int * iDex, int * iInt, int * iMag, int * iCharisma, int * iSaveYear, int * iSaveMonth, int * iSaveDay, int * iSaveHour, int * iSaveMinute);
-	void RequestSavePlayerData(int iClientH, char *pData, DWORD dwMsgSize, bool bVar1, bool bVar2);
+	bool iGetCharacterData(char * cCharName, char * cMapName, short * sAppr1, short * sAppr2, short * sAppr3, short * sAppr4, int * iApprColor, char * cSex, char * cSkin, int * iLevel, UINT32 * iExp, int * iStr, int * iVit, int * iDex, int * iInt, int * iMag, int * iCharisma, int * iSaveYear, int * iSaveMonth, int * iSaveDay, int * iSaveHour, int * iSaveMinute);
+	void RequestSavePlayerData(int iClientH, char *pData, UINT32 dwMsgSize, bool bVar1, bool bVar2);
 	void RequestCreateNewCharacter(int iClientH, char *pData);
 	void RequestDeleteCharacter(int iClientH, char *pData);
 	void RequestCreateNewGuild(int iClientH, char *pData);
@@ -87,11 +87,11 @@ public:
 	// uncoded sql functions:
 	int iCreateNewCharacterSQL(char * cCharacterName, char * cAccountName, char *pData, bool bGuildCheck);
 	bool bInitSQLServer(void);
-	bool bVerifyCharacterGuildSQL(char *pData, DWORD dwGuildGUID);
+	bool bVerifyCharacterGuildSQL(char *pData, UINT32 dwGuildGUID);
 	void UpdateGuildsmanSQL(char *cMemberName, char *cGuildName, bool bUpdateType);
 	int UpdateGuildFile_NewGuildsMan(char * cFile, char * pData, char * cp);
 	int UpdateGuildFile_DeleteGuildsMan(char * cFile, char * pData, char * cp);
-	int iSaveCharacterSQL(DWORD dwCharID, char *pData);
+	int iSaveCharacterSQL(UINT32 dwCharID, char *pData);
 
 	// KLKS
 	void CharInfoList(int iClientH, char *pData);
@@ -100,12 +100,12 @@ public:
 	void ResponseRegisterGameServer(int iClientH, bool bSuccesfull);
 	void ClientRegisterGameserver(int iClientH, char * pData);
 	void ClientMSLConfirmed(int iClientH);
-	void SendEventToMLS(DWORD dwMsgID, WORD wMsgType, char * pData, DWORD dwMsgSize, int iMainH);
+	void SendEventToMLS(UINT32 dwMsgID, UINT16 wMsgType, char * pData, UINT32 dwMsgSize, int iMainH);
 	void CheckClientTimeout();
 	void MsgProcess();
 	void OnTimer();
-	bool bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey);
-	bool bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey);
+	bool bPutMsgQuene(char cFrom, char * pData, UINT32 dwMsgSize, int iIndex, char cKey);
+	bool bGetMsgQuene(char * pFrom, char * pData, UINT32 * pMsgSize, int * pIndex, char * pKey);
 	void OnClientRead(int iClientH);
 	void RegisterWorldServerSocket(int iMainH);
 	void RegisterWorldGameServer();
@@ -117,7 +117,7 @@ public:
 	bool bInit();
 
 	// customization:
-	void PutPacketLogData(DWORD dwMsgID, char *cData, DWORD dwMsgSize); // KLKS
+	void PutPacketLogData(UINT32 dwMsgID, char *cData, UINT32 dwMsgSize); // KLKS
 
 	// Variables
 	HWND  m_hWnd;												// 4h
@@ -147,13 +147,13 @@ public:
 	int   m_iTotalMainLogSock;									// 294D0h
 	char  m_cGMLogBuffer[DEF_MSGBUFFERSIZE];					// 294D4h
 	char  m_cGMLogCount;										// 30A04h
-	DWORD m_dwGMLogTime;										// 30A08h
+	UINT32 m_dwGMLogTime;										// 30A08h
 	char  m_cItemLogBuffer[DEF_MSGBUFFERSIZE];					// 30A0Ch
 	char  m_cItemLogCount;										// 37F3Ch
-	DWORD m_dwItemLogTime;										// 37F40h
+	UINT32 m_dwItemLogTime;										// 37F40h
 	char  m_cCrusadeLogBuffer[DEF_MSGBUFFERSIZE];				// 37F44h
 	char  m_cCrusadeLogCount;									// 3F474h
-	DWORD m_dwCrusadeLogTime;									// 3F478h
+	UINT32 m_dwCrusadeLogTime;									// 3F478h
 	bool  m_bIsWorldRegistered;									// 3F47Ch	
 
 	// customized
@@ -161,5 +161,5 @@ public:
 	void ServerList(bool Client);
 	//void ParseCommand(bool dlb, char* pMsg);
 	char cGameSecurity[11];
-	DWORD m_dwGameTime1;
+	UINT32 m_dwGameTime1;
 };

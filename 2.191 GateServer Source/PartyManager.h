@@ -40,11 +40,11 @@ public:
 	struct {
 		int  m_iPartyID, m_iIndex;
 		char m_cName[12];
-		DWORD m_dwServerChangeTime;
+		UINT32 m_dwServerChangeTime;
 	} m_stMemberNameList[DEF_MAXPARTY];
 
 	class CGateCore * m_pGateCore;
-	DWORD m_dwCheckMemberActTime;
+	UINT32 m_dwCheckMemberActTime;
 };
 
 #endif // !defined(AFX_PARTYMANAGER_H__ED26235F_8BA2_493A_AF52_397C25D4CF5C__INCLUDED_)

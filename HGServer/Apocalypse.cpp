@@ -31,7 +31,7 @@ void CGame::ApocalypseStarter()
 	if (m_bIsApocalypseStarter == false) return;
 
 	char* cp, cData[120];
-	DWORD* dwp, dwApocalypseGUID;
+	UINT32* dwp, dwApocalypseGUID;
 
 	GetLocalTime(&SysTime);
 	for (i = 0; i < DEF_MAXSCHEDULE; i++) {
@@ -48,7 +48,7 @@ void CGame::ApocalypseStarter()
 			cp = (char*)cData;
 			*cp = GSM_BEGINAPOCALYPSE;
 			cp++;
-			dwp = (DWORD*)cp;
+			dwp = (UINT32*)cp;
 			*dwp = dwApocalypseGUID;
 			cp += 4;
 			bStockMsgToGateServer(cData, 5);
@@ -64,7 +64,7 @@ void CGame::ApocalypseStarter()
 // I also needed to add many new functions.
 //**************************************************************************************
 // SNOOPY: Revamped Apocalypse functions:
-//         bReadApocalypseGUIDFile(DWORD dwApocalypseGUID) 
+//         bReadApocalypseGUIDFile(UINT32 dwApocalypseGUID) 
 //         Reads the GUID file when server starts
 // DynamicGateType = 1: Opens Gate when Apoc begins, for 15 min
 // DynamicGateType = 2: Open the gate when map is empty
@@ -78,7 +78,7 @@ void CGame::bReadApocalypseGUIDFile(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
-	DWORD  dwFileSize;
+	UINT32  dwFileSize;
 	char* cp, * token, cReadMode;
 	char seps[] = "= \t\n";
 	class CStrTok* pStrTok;
@@ -106,7 +106,7 @@ void CGame::bReadApocalypseGUIDFile(char* cFn)
 			{
 				switch (cReadMode) {
 				case 1:
-					m_dwApocalypseGUID = (DWORD)atoi(token);
+					m_dwApocalypseGUID = (UINT32)atoi(token);
 					cReadMode = 0;
 					break;
 				}
@@ -127,11 +127,11 @@ void CGame::bReadApocalypseGUIDFile(char* cFn)
 
 //**************************************************************************************
 // SNOOPY: Revamped Apocalypse functions:
-//         _CreateApocalypseGUID(DWORD dwApocalypseGUID) 
+//         _CreateApocalypseGUID(UINT32 dwApocalypseGUID) 
 //         Create the GUID file if it doesn't exist at Apoc beginning
 //         or at the Apocalypse end.
 //**************************************************************************************
-void CGame::_CreateApocalypseGUID(DWORD dwApocalypseGUID)
+void CGame::_CreateApocalypseGUID(UINT32 dwApocalypseGUID)
 {
 	char* cp, cTxt[256], cTemp[1024];
 	FILE* pFile;
@@ -166,7 +166,7 @@ void CGame::_CreateApocalypseGUID(DWORD dwApocalypseGUID)
 //		   -> Prevent npc generation on "kill all to go out" maps
 //		   -> Execute local Openning or closing gates by GM command
 //**************************************************************************************
-void CGame::LocalStartApocalypse(DWORD dwApocalypseGUID)
+void CGame::LocalStartApocalypse(UINT32 dwApocalypseGUID)
 {
 	/*if (dwApocalypseGUID == 1)// Means want to open Gate
 	{
@@ -220,7 +220,7 @@ void CGame::LocalStartApocalypse(DWORD dwApocalypseGUID)
 void CGame::GlobalStartApocalypseMode(int iClientH, int iMode)
 {
 	char* cp, cData[120];
-	DWORD* dwp, dwApocalypseGUID;
+	UINT32* dwp, dwApocalypseGUID;
 	char cString[200];
 	ZeroMemory(cString, sizeof(cString));
 	if ((iClientH != 0) && (m_pClientList[iClientH]->m_iAdminUserLevel < 3)) {
@@ -288,7 +288,7 @@ void CGame::GlobalStartApocalypseMode(int iClientH, int iMode)
 	cp = (char*)cData;
 	*cp = GSM_BEGINAPOCALYPSE;
 	cp++;
-	dwp = (DWORD*)cp;
+	dwp = (UINT32*)cp;
 	*dwp = dwApocalypseGUID;
 	cp += 4;
 	bStockMsgToGateServer(cData, 5);
@@ -343,7 +343,7 @@ void CGame::LocalEndApocalypse()
 	m_bIsApocalypseMode = false;
 	m_bIsApocalypseGateOpen = false;
 	int i;
-	//DWORD  dwTime = timeGetTime();
+	//UINT32  dwTime = timeGetTime();
 	m_dwApocalypseGateCloseTime = 0;//dwTime - 1;
 	m_dwApocalypseGateOpenTime = 0;//dwTime - 100; // alreaddy closed
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
@@ -387,14 +387,14 @@ void CGame::LocalEndApocalypse()
 void CGame::SendThunder(int iClient, short sX, short sY, short sV3, short sV4)
 {
 	char* cp, cData[100];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	short* sp;
 	int iRet;
 	ZeroMemory(cData, sizeof(cData));
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_EVENT_COMMON;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_COMMONTYPE_MAGIC;
 	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 	sp = (short*)cp;
@@ -422,7 +422,7 @@ void CGame::DoAbaddonThunderDamageHandler(char cMapIndex)
 	int iResult;
 	int i;
 	if (iDice(1, 15) != 13) return;
-	DWORD dwTime = timeGetTime();
+	UINT32 dwTime = timeGetTime();
 	for (i = 0; i < DEF_MAXCLIENTS; i++)
 	{
 		if (m_pClientList[i] != 0)
@@ -598,7 +598,7 @@ bool CGame::MobBossGenerator(int iMapIndex)
 //**************************************************************************************
 void CGame::OpenCloseApocalypseGate()
 {
-	DWORD  dwTime = timeGetTime();
+	UINT32  dwTime = timeGetTime();
 	bool bIsOpen = m_bIsApocalypseGateOpen;
 	if ((dwTime >= m_dwApocalypseGateOpenTime)
 		&& (dwTime < m_dwApocalypseGateCloseTime))
@@ -786,14 +786,14 @@ void CGame::minimap_clear_apoc(int client)
 			string(m_pMapList[p->m_cMapIndex]->m_cName) == "abaddon")
 		{
 			char cData[56];
-			DWORD* dwp;
-			WORD* wp;
+			UINT32* dwp;
+			UINT16* wp;
 			char* cp;
 			int* ip;
 
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 
 			*wp = MINIMAPRED_CLEAR;
 			
@@ -827,15 +827,15 @@ void CGame::minimap_update_apoc(int client)
 			string(m_pMapList[p->m_cMapIndex]->m_cName) == "abaddon")
 		{
 			char cData[56];
-			DWORD* dwp;
-			WORD* wp;
+			UINT32* dwp;
+			UINT16* wp;
 			char* cp;
 			int* ip;
 			short* sp;
 
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = MINIMAPRED_UPDATE;
 			
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -922,8 +922,8 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 			}
 		}*/
 		// Show Spawns on minimap, and tell everybody on Apocalypse server.					
-		//DWORD wX = m_pNpcList[i5]->m_sX;
-		//DWORD wY = m_pNpcList[i5]->m_sX;
+		//UINT32 wX = m_pNpcList[i5]->m_sX;
+		//UINT32 wY = m_pNpcList[i5]->m_sX;
 		for (x = 1; x < DEF_MAXCLIENTS; x++)
 			if (m_pClientList[x] != 0)
 				
@@ -943,7 +943,7 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 		// Prepare Abaddon's death, and Apocalypse end.
 		//if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
 		//{	// Abaddon should die by himself		
-		//	DWORD dwTime = timeGetTime();
+		//	UINT32 dwTime = timeGetTime();
 		//	dwTime += 1000 * 60 * 1; // 1 minute
 		//	bRegisterDelayEvent(DEF_DELAYEVENTTYPE_KILL_ABADDON, 0, dwTime, i5
 		//		, DEF_OWNERTYPE_NPC, MapIndex, 0, 0, 0, 0, 0);
@@ -1000,7 +1000,7 @@ void CGame::GenerateSlime(int MapIndex)
 void CGame::ForceOpen_ApocalypseGate()
 {
 	if (m_bIsApocalypseMode == false)	return;
-	DWORD  dwTime = timeGetTime();
+	UINT32  dwTime = timeGetTime();
 	m_dwApocalypseGateOpenTime = dwTime;
 	m_dwApocalypseGateCloseTime = dwTime + 15 * 60 * 1000; // will close in 15 minutes
 	OpenCloseApocalypseGate();
@@ -1014,7 +1014,7 @@ void CGame::ForceOpen_ApocalypseGate()
 void CGame::ForceClose_ApocalypseGate()
 {
 	if (m_bIsApocalypseMode == false)	return;
-	//DWORD  dwTime = timeGetTime();
+	//UINT32  dwTime = timeGetTime();
 	m_dwApocalypseGateCloseTime = 0;//dwTime - 1;
 	m_dwApocalypseGateOpenTime = 0;//dwTime - 100; // alreaddy closed
 	OpenCloseApocalypseGate();

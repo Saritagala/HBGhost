@@ -455,7 +455,7 @@ bool CMap::bSetItem(short sX, short sY, class CItem * pItem)
 	return pItem;
 }*/
 
-class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, DWORD* pRemainItemAttr) //v1.4 color
+class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, UINT32* pRemainItemAttr) //v1.4 color
 {
 	class CTile* pTile;
 	class CItem* pItem;
@@ -648,7 +648,7 @@ bool CMap::bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int *
 	return false;
 }
 
-void CMap::SetDynamicObject(WORD wID, short sType, short sX, short sY, DWORD dwRegisterTime)
+void CMap::SetDynamicObject(UINT16 wID, short sType, short sX, short sY, UINT32 dwRegisterTime)
 {
  class CTile * pTile;	
 
@@ -662,7 +662,7 @@ void CMap::SetDynamicObject(WORD wID, short sType, short sX, short sY, DWORD dwR
 	pTile->m_dwDynamicObjectRegisterTime = dwRegisterTime;
 }
 
-bool CMap::bGetDynamicObject(short sX, short sY, short *pType, DWORD *pRegisterTime, int * pIndex)
+bool CMap::bGetDynamicObject(short sX, short sY, short *pType, UINT32 *pRegisterTime, int * pIndex)
 {
  class CTile * pTile;	
 
@@ -1010,7 +1010,7 @@ bool CGame::__bReadMapInfo(int iMapIndex)
 	int  iNamingValue;
 	class CStrTok* pStrTok;
 	HANDLE hFile;
-	DWORD  dwFileSize, dwReadSize;
+	UINT32  dwFileSize, dwReadSize;
 	FILE* pFile;
 
 	char cName[6], cNpcName[21], cNpcMoveType, cNpcWaypointIndex[10], cNamePrefix;
@@ -2912,8 +2912,8 @@ RMI_SKIPDECODING:;
 int CGame::iRequestPanningMapDataRequest(int iClientH, char* pData)
 {
 	char* cp, cDir, cData[3000];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	short* sp, dX, dY;
 	int   iRet, iSize;
 
@@ -2954,9 +2954,9 @@ int CGame::iRequestPanningMapDataRequest(int iClientH, char* pData)
 	m_pClientList[iClientH]->m_sY = dY;
 	m_pClientList[iClientH]->m_cDir = cDir;
 
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_RESPONSE_PANNING;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_OBJECTMOVE_CONFIRM;
 
 	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -3012,7 +3012,7 @@ void CGame::ClearMap()
 	class CItem* pItem;
 	short sRemainItemID;
 	char cRemainItemColor;
-	DWORD dwRemainItemAttr;
+	UINT32 dwRemainItemAttr;
 	for (m = 0; m < DEF_MAXMAPS; m++)
 	{
 		if (m_pMapList[m] != 0)
@@ -3059,9 +3059,9 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 	unsigned char ucHeader;
 	short* sp, * pTotal;
 	int iTemp, iTemp2;
-	WORD* wp;
+	UINT16* wp;
 	char* cp;
-	DWORD* dwp;
+	UINT32* dwp;
 
 	if (m_pClientList[iClientH] == 0) return 0;
 	pTotal = (short*)pData;
@@ -3343,14 +3343,14 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 					iSize++;
 
 					// Centu - attribute
-					dwp = (DWORD*)cp;
+					dwp = (UINT32*)cp;
 					*dwp = pTile->m_pItem[0]->m_dwAttribute;
 					cp += 4;
 					iSize += 4;
 				}
 
 				if (pTile->m_sDynamicObjectType != 0) {
-					wp = (WORD*)cp;
+					wp = (UINT16*)cp;
 					*wp = pTile->m_wDynamicObjectID;
 					cp += 2;
 					iSize += 2;
@@ -3368,7 +3368,7 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 }
 
 /*********************************************************************************************************************
-**  void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dwMsgID, WORD wMsgType,			**
+**  void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 dwMsgID, UINT16 wMsgType,			**
 **		short sV1, short sV2, short sV3)																			**
 **  DESCRIPTION			:: updates client screen																	**
 **  LAST_UPDATED		:: March 16, 2005; 12:26 AM; Hypnotoad														**
@@ -3377,12 +3377,12 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 **							- changed npc psock sendmsg to 29 from 27												**
 **	MODIFICATION		::  - should have a invis hack check (commented)											**
 **********************************************************************************************************************/
-void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dwMsgID, WORD wMsgType, short sV1, short sV2, short sV3)
+void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 dwMsgID, UINT16 wMsgType, short sV1, short sV2, short sV3)
 {
 	int* ip, i, iRet, iShortCutIndex;
 	char* cp_a, * cp_s, * cp_sv, cData_All[200], cData_Srt[200], cData_Srt_Av[200];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int* ipStatus, iDumm;
 	short* sp, sRange, sX, sY;
 	bool  bFlag, cOwnerSend;
@@ -3395,19 +3395,19 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 	ipStatus = (int*)&iDumm;
 	cKey = (rand() % 245) + 1;
 
-	dwp = (DWORD*)(cData_All + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData_All + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
-	wp = (WORD*)(cData_All + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData_All + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 
-	dwp = (DWORD*)(cData_Srt + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData_Srt + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
-	wp = (WORD*)(cData_Srt + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData_Srt + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 
-	dwp = (DWORD*)(cData_Srt_Av + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData_Srt_Av + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
-	wp = (WORD*)(cData_Srt_Av + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData_Srt_Av + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 
 	cp_a = (char*)(cData_All + DEF_INDEX2_MSGTYPE + 2);
@@ -3435,7 +3435,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 			break;
 		}
 
-		wp = (WORD*)cp_a;
+		wp = (UINT16*)cp_a;
 		*wp = sOwnerH;
 		cp_a += 2;
 
@@ -3496,7 +3496,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		else *cp_a = 0;
 		cp_a++;
 
-		wp = (WORD*)cp_s;
+		wp = (UINT16*)cp_s;
 		*wp = sOwnerH + 30000;
 		cp_s += 2;
 
@@ -3524,7 +3524,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		*sp = sY;
 		cp_s += 2;
 
-		wp = (WORD*)cp_sv;
+		wp = (UINT16*)cp_sv;
 		*wp = sOwnerH + 30000;
 		cp_sv += 2;
 
@@ -3730,7 +3730,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 	else {
 		if (m_pNpcList[sOwnerH] == 0) return;
 
-		wp = (WORD*)cp_a;
+		wp = (UINT16*)cp_a;
 		*wp = sOwnerH + 10000;
 		cp_a += 2;
 
@@ -3771,7 +3771,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		else *cp_a = 0;
 		cp_a++;
 
-		wp = (WORD*)cp_s;
+		wp = (UINT16*)cp_s;
 		*wp = sOwnerH + 40000;
 		cp_s += 2;
 
@@ -3798,7 +3798,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 		*sp = sY;
 		cp_s += 2;
 
-		wp = (WORD*)cp_sv;
+		wp = (UINT16*)cp_sv;
 		*wp = sOwnerH + 40000;
 		cp_sv += 2;
 		*cp_sv = m_pNpcList[sOwnerH]->m_cDir;
@@ -3899,12 +3899,12 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, DWORD dw
 	}
 }
 
-void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, DWORD sV4)
+void CGame::SendEventToNearClient_TypeB(UINT32 dwMsgID, UINT16 wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, UINT32 sV4)
 {
 	int i, iRet, iShortCutIndex;
 	char* cp, cData[100];
-	DWORD* dwp, dwTime;
-	WORD* wp;
+	UINT32* dwp, dwTime;
+	UINT16* wp;
 	short* sp;
 	bool bFlag;
 	char  cKey;
@@ -3913,9 +3913,9 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 
 	ZeroMemory(cData, sizeof(cData));
 
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 
 	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -3940,7 +3940,7 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	*sp = sV3;
 	cp += 2;
 
-	dwp = (DWORD*)cp;
+	dwp = (UINT32*)cp;
 	*dwp = sV4;
 	cp += 4;
 
@@ -3967,12 +3967,12 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 	}
 }
 
-void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4)
+void CGame::SendEventToNearClient_TypeB(UINT32 dwMsgID, UINT16 wMsgType, char cMapIndex, short sX, short sY, short sV1, short sV2, short sV3, short sV4)
 {
 	int i, iRet, iShortCutIndex;
 	char* cp, cData[100];
-	DWORD* dwp, dwTime;
-	WORD* wp;
+	UINT32* dwp, dwTime;
+	UINT16* wp;
 	short* sp;
 	bool bFlag;
 	char  cKey;
@@ -3981,9 +3981,9 @@ void CGame::SendEventToNearClient_TypeB(DWORD dwMsgID, WORD wMsgType, char cMapI
 
 	ZeroMemory(cData, sizeof(cData));
 
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 
 	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);

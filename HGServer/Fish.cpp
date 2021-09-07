@@ -30,7 +30,7 @@ CFish::~CFish()
 	if (m_pItem != 0) delete m_pItem;
 }
 
-int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CItem* pItem, int iDifficulty, DWORD dwLastTime)
+int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CItem* pItem, int iDifficulty, UINT32 dwLastTime)
 {
 	int i, iDynamicHandle;
 
@@ -84,7 +84,7 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 bool CGame::bDeleteFish(int iHandle, int iDelMode)
 {
 	int i, iH;
-	DWORD dwTime;
+	UINT32 dwTime;
 
 	if (m_pFish[iHandle] == 0) return false;
 
@@ -271,7 +271,7 @@ void CGame::FishGenerator()
 	int i, iP, tX, tY, iRet;
 	char  cItemName[21];
 	short sDifficulty;
-	DWORD dwLastTime;
+	UINT32 dwLastTime;
 	class CItem* pItem;
 
 	for (i = 0; i < DEF_MAXMAPS; i++) {

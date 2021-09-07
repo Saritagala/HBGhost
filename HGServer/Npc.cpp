@@ -222,7 +222,7 @@ void CGame::RemoveFromTarget(short sTargetH, char cTargetType, int iCode, int iA
 	//  "   "     "     "  killed/teleported/deco 
 	if ((m_bIsCrusadeMode == true) && (cTargetType == DEF_OWNERTYPE_PLAYER))
 	{
-		DWORD dwTime = timeGetTime();
+		UINT32 dwTime = timeGetTime();
 		for (i = 0; i < DEF_MAXNPCS; i++)
 			if (m_pNpcList[i] != 0)
 			{
@@ -391,7 +391,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 {
 	short  sAttackerWeapon;
 	int* ip, i, iQuestIndex, iConstructionPoint, iWarContribution, iMapIndex, j;
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	char* cp, cData[120], cTargetName[21];
 	int iExp;
 
@@ -436,8 +436,8 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 			iExp += m_pNpcList[iNpcH]->m_iNoDieRemainExp;
 
 		if (m_pClientList[sAttackerH]->m_iAddExp != 0) {
-			dTmp1 = (double)m_pClientList[sAttackerH]->m_iAddExp;
-			dTmp2 = (double)iExp;
+			dTmp1 = (float)m_pClientList[sAttackerH]->m_iAddExp;
+			dTmp2 = (float)iExp;
 			dTmp3 = (dTmp1 / 100.0f) * dTmp2;
 			iExp += (int)dTmp3;
 		}
@@ -445,7 +445,7 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 		if (m_pNpcList[iNpcH]->m_sType == 99) {
 			
 			// Centu - end apocalypse
-			DWORD dwTime = timeGetTime();
+			UINT32 dwTime = timeGetTime();
 			dwTime += 1000 * 60 * 5; 
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
 				, 0, m_pNpcList[iNpcH]->m_cMapIndex, 0, 0, 0, 0, 0);
@@ -703,7 +703,7 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 	int i, iTemp;
 	char cTmpName[21];
 	int sTemp;
-	double dV1, dV2, dV3;
+	float dV1, dV2, dV3;
 
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, pNpcName);
@@ -784,14 +784,14 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 				// v1.411 NPCÀÇ Æ¯¼ö È¿°ú °è»ê. °æÇèÄ¡ °¡Áß 
 				switch (pNpc->m_cSpecialAbility) {
 				case 1:
-					dV2 = (double)pNpc->m_iExp;
+					dV2 = (float)pNpc->m_iExp;
 					dV3 = 25.0f / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
 					break;
 
 				case 2:
-					dV2 = (double)pNpc->m_iExp;
+					dV2 = (float)pNpc->m_iExp;
 					dV3 = 30.0f / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
@@ -809,8 +809,8 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 						if (pNpc->m_iAbsDamage < -90) pNpc->m_iAbsDamage = -90;
 					}
 
-					dV2 = (double)pNpc->m_iExp;
-					dV3 = (double)abs(pNpc->m_iAbsDamage) / 100.0f;
+					dV2 = (float)pNpc->m_iExp;
+					dV3 = (float)abs(pNpc->m_iAbsDamage) / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
 					break;
@@ -827,14 +827,14 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 						if (pNpc->m_iAbsDamage > 90) pNpc->m_iAbsDamage = 90;
 					}
 
-					dV2 = (double)pNpc->m_iExp;
-					dV3 = (double)(pNpc->m_iAbsDamage) / 100.0f;
+					dV2 = (float)pNpc->m_iExp;
+					dV3 = (float)(pNpc->m_iAbsDamage) / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
 					break;
 
 				case 5:
-					dV2 = (double)pNpc->m_iExp;
+					dV2 = (float)pNpc->m_iExp;
 					dV3 = 15.0f / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
@@ -842,14 +842,14 @@ bool CGame::_bInitNpcAttr(class CNpc* pNpc, char* pNpcName, short sClass, char c
 
 				case 6:
 				case 7:
-					dV2 = (double)pNpc->m_iExp;
+					dV2 = (float)pNpc->m_iExp;
 					dV3 = 20.0f / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
 					break;
 
 				case 8:
-					dV2 = (double)pNpc->m_iExp;
+					dV2 = (float)pNpc->m_iExp;
 					dV3 = 25.0f / 100.0f;
 					dV1 = dV2 * dV3;
 					pNpc->m_iExp += (int)dV1;
@@ -970,7 +970,7 @@ void CGame::DeleteNpc(int iNpcH)
 	int  i, iNamingValue, iNumItem, iItemID, iItemIDs[MAX_NPCITEMDROP], iSlateID;
 	char cTmp[21], cItemName[21];
 	class CItem* pItem, * pItem2;
-	DWORD dwCount, dwTime;
+	UINT32 dwCount, dwTime;
 	POINT ItemPositions[MAX_NPCITEMDROP];
 	char cTemp[256];
 	SYSTEMTIME SysTime;
@@ -1315,8 +1315,8 @@ void CGame::DeleteNpc(int iNpcH)
 							// Centuu : fragile items
 							pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
 
-							DWORD dwType = 4;
-							DWORD dwValue = 1;
+							UINT32 dwType = 4;
+							UINT32 dwValue = 1;
 
 							pItem->m_dwAttribute = 0;
 							dwType = dwType << 20;
@@ -1413,8 +1413,8 @@ void CGame::DeleteNpc(int iNpcH)
 					// Centuu : fragile items
 					pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
 					
-					DWORD dwType = 4;
-					DWORD dwValue = 1;
+					UINT32 dwType = 4;
+					UINT32 dwValue = 1;
 
 					pItem->m_dwAttribute = 0;
 					dwType = dwType << 20;
@@ -1760,7 +1760,7 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 	}
 }
 
-void CGame::SetSummonMobAction(int iClientH, int iMode, DWORD dwMsgSize, char* pData)
+void CGame::SetSummonMobAction(int iClientH, int iMode, UINT32 dwMsgSize, char* pData)
 {
 	int i, iTargetIndex;
 	char   seps[] = "= \t\n";
@@ -1936,8 +1936,8 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 	char  cColor, cItemName[21];
 	bool  bIsGold;
 	int   iGenLevel, iResult, iItemID;
-	DWORD dwType, dwValue;
-	double dTmp1, dTmp2, dTmp3;
+	UINT32 dwType, dwValue;
+	float dTmp1, dTmp2, dTmp3;
 	short sElement;
 
 	if (m_pNpcList[iNpcH] == 0) return;
@@ -1968,12 +1968,12 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				return;
 			}
 
-			pItem->m_dwCount = (DWORD)(iDice(1, (m_pNpcList[iNpcH]->m_iGoldDiceMax - m_pNpcList[iNpcH]->m_iGoldDiceMin)) + m_pNpcList[iNpcH]->m_iGoldDiceMin);
+			pItem->m_dwCount = (UINT32)(iDice(1, (m_pNpcList[iNpcH]->m_iGoldDiceMax - m_pNpcList[iNpcH]->m_iGoldDiceMin)) + m_pNpcList[iNpcH]->m_iGoldDiceMin);
 
 			// v1.42 Gold 
 			if ((cAttackerType == DEF_OWNERTYPE_PLAYER) && (m_pClientList[sAttackerH]->m_iAddGold > 0)) {
-				dTmp1 = (double)m_pClientList[sAttackerH]->m_iAddGold;
-				dTmp2 = (double)pItem->m_dwCount;
+				dTmp1 = (float)m_pClientList[sAttackerH]->m_iAddGold;
+				dTmp2 = (float)pItem->m_dwCount;
 				dTmp3 = (dTmp1 / 100.0f) * dTmp2;
 				pItem->m_dwCount += (int)dTmp3;
 			}
@@ -2914,7 +2914,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 // October 19,2004 - 3.51 translated
 void CGame::NpcBehavior_Dead(int iNpcH)
 {
-	DWORD dwTime;
+	UINT32 dwTime;
 
 	if (m_pNpcList[iNpcH] == 0) return;
 
@@ -2933,7 +2933,7 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
-	DWORD  dwFileSize;
+	UINT32  dwFileSize;
 	char* cp, * token, cGSMode[16] = "";
 	char seps[] = "= \t\n";
 	class CStrTok* pStrTok;
@@ -3461,7 +3461,7 @@ void CGame::RemoveEventNpc(int iNpcH)
 
 }
 
-bool CGame::_bDecodeNpcConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeNpcConfigFileContents(char* pData, UINT32 dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -5393,7 +5393,7 @@ int CGame::bCreateNewNpc(char* pNpcName, char* pName, char* pMapName, short sCla
 void CGame::NpcProcess()
 {
 	int i, iMaxHP;
-	DWORD dwTime, dwActionTime;
+	UINT32 dwTime, dwActionTime;
 	// SNOOPY: Poisonned npcs
 	int iHPup = 0;
 
@@ -5593,7 +5593,7 @@ int CGame::iGetDangerValue(int iNpcH, short dX, short dY)
 	int ix, iy, iDangerValue;
 	short sOwner, sDOType;
 	char  cOwnerType;
-	DWORD dwRegisterTime;
+	UINT32 dwRegisterTime;
 
 	if (m_pNpcList[iNpcH] == 0) return false;
 
@@ -5735,7 +5735,7 @@ bool CGame::bDecodeDropManagerFile(char* pFn)
 	int i = 0, j = 0, k = 0, f = 0, o = 0;
 	char cTxt[250];
 
-	DWORD  dwFileSize;
+	UINT32  dwFileSize;
 	class CStrTok* pStrTok;
 
 	cReadModeA = 0;

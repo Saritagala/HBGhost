@@ -37,13 +37,13 @@ public:
 	bool bCheckAccountExists(char* cAccountName);
 
 	void MsgProcess();
-	bool bGetMsgQuene(char * pFrom, char * pData, DWORD * pMsgSize, int * pIndex, char * pKey);
-	bool bPutMsgQuene(char cFrom, char * pData, DWORD dwMsgSize, int iIndex, char cKey);
+	bool bGetMsgQuene(char * pFrom, char * pData, UINT32 * pMsgSize, int * pIndex, char * pKey);
+	bool bPutMsgQuene(char cFrom, char * pData, UINT32 dwMsgSize, int iIndex, char cKey);
 	void OnTimer();
 	bool bAccept(class XSocket * pXSock, bool bWorld);
 	bool bInit();
 	void OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lParam);
-	void SendEventToWLS(DWORD dwMsgID, WORD wMsgType, char * pData, DWORD dwMsgSize, int iWorldH);
+	void SendEventToWLS(UINT32 dwMsgID, UINT16 wMsgType, char * pData, UINT32 dwMsgSize, int iWorldH);
 	void DeleteAccount(int iClientH, char cAccountName[11] = NULL);
 	
 	
@@ -61,7 +61,7 @@ public:
 	//geting or checking account info
 	int GetAccountInfo(int iClientH, char cAccountName[11], char cAccountPass[11], char cWorldName[30] = NULL, int * iAccount = NULL, int* iDBID = NULL, char cMode = NULL);
 
-	void PutPacketLogData(DWORD dwMsgID, char *cData, DWORD dwMsgSize);
+	void PutPacketLogData(UINT32 dwMsgID, char *cData, UINT32 dwMsgSize);
 	void CleanupLogFiles();
 	bool bReadServerConfigFile(char *cFn);
 

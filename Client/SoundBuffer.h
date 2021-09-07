@@ -24,7 +24,7 @@ public:
 	bool Play(bool bLoop = false, long lPan = 0, int iVol = 0);
 	bool _LoadWavContents(char cBufferIndex, FILE* pFile, DWORD dwSize, DWORD dwPos);
 	bool bCreateBuffer_LoadWavFileContents(char cBufferIndex);
-	bool _bCreateSoundBuffer(char cBufferIndex, DWORD dwBufSize, DWORD dwFreq, DWORD dwBitsPerSample, DWORD dwBlkAlign, bool bStereo);
+	bool _bCreateSoundBuffer(char cBufferIndex, UINT32 dwBufSize, DWORD dwFreq, DWORD dwBitsPerSample, DWORD dwBlkAlign, bool bStereo);
 	CSoundBuffer(LPDIRECTSOUND lpDS, DSCAPS DSCaps, char * pWavFileName, bool bIsSingleLoad = false);
 	virtual ~CSoundBuffer();
 

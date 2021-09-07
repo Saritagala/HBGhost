@@ -27,7 +27,7 @@ public:
 	char m_cTargetType;
 	int m_iV1, m_iV2, m_iV3;
 
-	DWORD m_dwTriggerTime;
+	UINT32 m_dwTriggerTime;
 };
 
 #endif // !defined(AFX_DELAYEVENT_H__047EB960_D8C0_11D2_B145_00001C7030A6__INCLUDED_)

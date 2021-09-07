@@ -19,10 +19,10 @@ public:
 	
 	CTile();
 	virtual ~CTile();	
-	DWORD m_dwOwnerTime;
-	DWORD m_dwEffectTime;
-	DWORD m_dwDeadOwnerTime;
-	DWORD m_dwDynamicObjectTime;
+	UINT32 m_dwOwnerTime;
+	UINT32 m_dwEffectTime;
+	UINT32 m_dwDeadOwnerTime;
+	UINT32 m_dwDynamicObjectTime;
 	
 	int   m_iChatMsg;
 	int   m_cItemColor; // v1.4
@@ -32,8 +32,8 @@ public:
 	int   m_iApprColor; // v1.4
 	int   m_iDeadChatMsg;
 
-	WORD  m_wDeadObjectID;
-	WORD  m_wObjectID;
+	UINT16  m_wDeadObjectID;
+	UINT16  m_wObjectID;
 
 	short m_sOwnerType;							// +B2C
 	short m_sAppr1;								// +B2E
@@ -57,7 +57,7 @@ public:
 	/*short m_sItemSprite;
 	short m_sItemSpriteFrame;*/
 	short m_sItemID;
-	DWORD m_dwItemAttr;
+	UINT32 m_dwItemAttr;
 
 	char  m_cDeadOwnerFrame;
 	char  m_cOwnerAction;						// +B59

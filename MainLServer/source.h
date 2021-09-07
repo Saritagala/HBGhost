@@ -14,7 +14,7 @@ void OnPaint();
 void PutLogList(char * cMsg);
 void PutLogServ(char * cMsg);
 void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw2);
-MMRESULT _StartTimer(DWORD dwTime);
+MMRESULT _StartTimer(UINT32 dwTime);
 void _StopTimer(MMRESULT timerid);
 void OnAccept();
 void PutGameLogData(char * cMsg);

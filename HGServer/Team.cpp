@@ -334,8 +334,8 @@ void Team::CreateCape(int client, char* itemname, char color)
 	class  CItem* pItem;
 	short* sp;
 	int    iRet, iEraseReq;
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 
 	auto p = g->m_pClientList[client];
 	if (!p) return;
@@ -354,9 +354,9 @@ void Team::CreateCape(int client, char* itemname, char color)
 
 	if (g->_bAddClientItemList(client, pItem, &iEraseReq) == true) {
 
-		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_ITEMOBTAINED;
 
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -367,7 +367,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 		memcpy(cp, pItem->m_cName, 20);
 		cp += 20;
 
-		dwp = (DWORD*)cp;
+		dwp = (UINT32*)cp;
 		*dwp = pItem->m_dwCount;
 		cp += 4;
 
@@ -387,11 +387,11 @@ void Team::CreateCape(int client, char* itemname, char color)
 		*cp = pItem->m_cGenderLimit;
 		cp++;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = pItem->m_wCurLifeSpan;
 		cp += 2;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = pItem->m_wWeight;
 		cp += 2;
 
@@ -409,7 +409,7 @@ void Team::CreateCape(int client, char* itemname, char color)
 		*cp = (char)pItem->m_sItemSpecEffectValue2;
 		cp++;
 
-		dwp = (DWORD*)cp;
+		dwp = (UINT32*)cp;
 		*dwp = pItem->m_dwAttribute;
 		cp += 4;
 
@@ -446,8 +446,8 @@ void Team::CreateBoots(int client, char* itemname, char color)
 	class  CItem* pItem;
 	short* sp;
 	int    iRet, iEraseReq;
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 
 	auto p = g->m_pClientList[client];
 	if (!p) return;
@@ -466,9 +466,9 @@ void Team::CreateBoots(int client, char* itemname, char color)
 
 	if (g->_bAddClientItemList(client, pItem, &iEraseReq) == true) {
 
-		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_ITEMOBTAINED;
 
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -479,7 +479,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 		memcpy(cp, pItem->m_cName, 20);
 		cp += 20;
 
-		dwp = (DWORD*)cp;
+		dwp = (UINT32*)cp;
 		*dwp = pItem->m_dwCount;
 		cp += 4;
 
@@ -499,11 +499,11 @@ void Team::CreateBoots(int client, char* itemname, char color)
 		*cp = pItem->m_cGenderLimit;
 		cp++;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = pItem->m_wCurLifeSpan;
 		cp += 2;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = pItem->m_wWeight;
 		cp += 2;
 
@@ -521,7 +521,7 @@ void Team::CreateBoots(int client, char* itemname, char color)
 		*cp = (char)pItem->m_sItemSpecEffectValue2;
 		cp++;
 
-		dwp = (DWORD*)cp;
+		dwp = (UINT32*)cp;
 		*dwp = pItem->m_dwAttribute;
 		cp += 4;
 

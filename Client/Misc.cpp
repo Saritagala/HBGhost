@@ -176,25 +176,25 @@ char CMisc::cCalcDirection(short sX, short sY, short dX, short dY)
 	return 1;
 }
 
-void CMisc::ColorTransfer(char cPixelFormat, COLORREF fcolor, WORD * wR, WORD * wG, WORD * wB)
-{ WORD result = 0x0000;
+void CMisc::ColorTransfer(char cPixelFormat, COLORREF fcolor, UINT16 * wR, UINT16 * wG, UINT16 * wB)
+{ UINT16 result = 0x0000;
 	switch(cPixelFormat) {
 	case 1:
 		// R
-		result = result|(WORD)((fcolor&0x000000f8)<<8);
+		result = result|(UINT16)((fcolor&0x000000f8)<<8);
 		// G
-		result = result|(WORD)((fcolor&0x0000fc00)>>5);
+		result = result|(UINT16)((fcolor&0x0000fc00)>>5);
 		// B
-		result = result|(WORD)((fcolor&0x00f80000)>>19);
+		result = result|(UINT16)((fcolor&0x00f80000)>>19);
 		break;
 
 	case 2:
 		// R
-		result = result|(WORD)((fcolor&0x000000f8)<<7);
+		result = result|(UINT16)((fcolor&0x000000f8)<<7);
 		// G
-		result = result|(WORD)((fcolor&0x0000f800)>>6);
+		result = result|(UINT16)((fcolor&0x0000f800)>>6);
 		// B
-		result = result|(WORD)((fcolor&0x00f80000)>>19);
+		result = result|(UINT16)((fcolor&0x00f80000)>>19);
 		break;
 	}
 	switch(cPixelFormat) {
@@ -255,7 +255,7 @@ bool CMisc::bCheckValidName(char* pStr)
 int CMisc::_iGetFileCheckSum(char * pFn)
 {	HANDLE hFile;
 	FILE * pFile;
-	DWORD  dwFileSize;
+	UINT32  dwFileSize;
 	char * pContents;
 	int    iCheckSum, iV1, iV2, iV3;
 	UINT i;
@@ -296,7 +296,7 @@ int CMisc::_iGetFileCheckSum(char * pFn)
 bool CMisc::_iConvertFileXor(char *pFn, char * pDestFn, char cKey)
 {
  HANDLE hFile;
- DWORD  dwFileSize;
+ UINT32  dwFileSize;
  FILE * pFile;
  char * pContents;
  int    i;

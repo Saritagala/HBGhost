@@ -371,12 +371,12 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 {
 	short* sp, sX, sY, sOwnerH, sMagicCircle, rx, ry, sLevelMagic, sTemp;
 	char* cp, cData[120], cDir, cOwnerType, cName[11], cItemName[21], cNpcWaypoint[11], cName_Master[11], cNpcName[21], cRemainItemColor;
-	double dV1, dV2, dV3, dV4;
+	float dV1, dV2, dV3, dV4;
 	int    i, iErr, iRet, ix, iy, iResult, iDiceRes, iNamingValue, iFollowersNum, iEraseReq, iWhetherBonus;
 	int    tX, tY, iManaCost, iMagicAttr;
 	class  CItem* pItem;
-	DWORD* dwp, dwTime, dwRemainItemAttr;
-	WORD* wp, wWeaponType;
+	UINT32* dwp, dwTime, dwRemainItemAttr;
+	UINT16* wp, wWeaponType;
 	short sEqStatus, sRemainItemID;
 
 	dwTime = timeGetTime();
@@ -483,11 +483,11 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 	sMagicCircle = (sType / 10) + 1;
 	if (m_pClientList[iClientH]->m_cSkillMastery[4] == 0)
 		dV1 = 1.0f;
-	else dV1 = (double)m_pClientList[iClientH]->m_cSkillMastery[4];
+	else dV1 = (float)m_pClientList[iClientH]->m_cSkillMastery[4];
 
-	if (bItemEffect == true) dV1 = (double)100.0f;
-	dV2 = (double)(dV1 / 100.0f);
-	dV3 = (double)_tmp_iMCProb[sMagicCircle];
+	if (bItemEffect == true) dV1 = (float)100.0f;
+	dV2 = (float)(dV1 / 100.0f);
+	dV3 = (float)_tmp_iMCProb[sMagicCircle];
 	dV1 = dV2 * dV3;
 	iResult = (int)dV1;
 
@@ -497,9 +497,9 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 	sLevelMagic = ((m_pClientList[iClientH]->m_iLevel) / 10);
 	if (sMagicCircle != sLevelMagic) {
 		if (sMagicCircle > sLevelMagic) {
-			dV1 = (double)((m_pClientList[iClientH]->m_iLevel) - sLevelMagic * 10);
-			dV2 = (double)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
-			dV3 = (double)abs(sMagicCircle - sLevelMagic) * 10;
+			dV1 = (float)((m_pClientList[iClientH]->m_iLevel) - sLevelMagic * 10);
+			dV2 = (float)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
+			dV3 = (float)abs(sMagicCircle - sLevelMagic) * 10;
 			dV4 = (dV1 / dV3) * dV2;
 			iResult -= abs(abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle] - (int)dV4);
 		}
@@ -516,8 +516,8 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 	}
 
 	if (m_pClientList[iClientH]->m_iSpecialWeaponEffectType == 10) {
-		dV1 = (double)iResult;
-		dV2 = (double)(m_pClientList[iClientH]->m_iSpecialWeaponEffectValue * 3);
+		dV1 = (float)iResult;
+		dV2 = (float)(m_pClientList[iClientH]->m_iSpecialWeaponEffectValue * 3);
 		dV3 = dV1 + dV2;
 		iResult = (int)dV3;
 	}
@@ -534,9 +534,9 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 	}
 
 	if (m_pClientList[iClientH]->m_iManaSaveRatio > 0) {
-		dV1 = (double)m_pClientList[iClientH]->m_iManaSaveRatio;
-		dV2 = (double)(dV1 / 100.0f);
-		dV3 = (double)iManaCost;
+		dV1 = (float)m_pClientList[iClientH]->m_iManaSaveRatio;
+		dV2 = (float)(dV1 / 100.0f);
+		dV3 = (float)iManaCost;
 		dV1 = dV2 * dV3;
 		dV2 = dV3 - dV1;
 		iManaCost = (int)dV2;
@@ -572,9 +572,9 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 	sLevelMagic = ((m_pClientList[iClientH]->m_iLevel) / 10);
 	if (sMagicCircle != sLevelMagic) {
 		if (sMagicCircle > sLevelMagic) {
-			dV1 = (double)((m_pClientList[iClientH]->m_iLevel) - sLevelMagic * 10);
-			dV2 = (double)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
-			dV3 = (double)abs(sMagicCircle - sLevelMagic) * 10;
+			dV1 = (float)((m_pClientList[iClientH]->m_iLevel) - sLevelMagic * 10);
+			dV2 = (float)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
+			dV3 = (float)abs(sMagicCircle - sLevelMagic) * 10;
 			dV4 = (dV1 / dV3) * dV2;
 
 			iResult -= abs(abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle] - (int)dV4);
@@ -2903,9 +2903,9 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 					// v1.411 Â·ÃŽÂ±Ã— Â³Â²Â±Ã¤Â´Ã™.
 					_bItemLog(DEF_ITEMLOG_GET, iClientH, (int)-1, pItem);
 
-					dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+					dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 					*dwp = MSGID_NOTIFY;
-					wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+					wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 					*wp = DEF_NOTIFY_ITEMOBTAINED;
 
 					cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -2917,7 +2917,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 					memcpy(cp, pItem->m_cName, 20);
 					cp += 20;
 
-					dwp = (DWORD*)cp;
+					dwp = (UINT32*)cp;
 					*dwp = pItem->m_dwCount;
 					cp += 4;
 
@@ -2937,11 +2937,11 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 					*cp = pItem->m_cGenderLimit;
 					cp++;
 
-					wp = (WORD*)cp;
+					wp = (UINT16*)cp;
 					*wp = pItem->m_wCurLifeSpan;
 					cp += 2;
 
-					wp = (WORD*)cp;
+					wp = (UINT16*)cp;
 					*wp = pItem->m_wWeight;
 					cp += 2;
 
@@ -2959,7 +2959,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 					*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 					cp++;
 
-					dwp = (DWORD*)cp;
+					dwp = (UINT32*)cp;
 					*dwp = pItem->m_dwAttribute;
 					cp += 4;
 
@@ -2993,9 +2993,9 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 					// Â°Â¡ÃÂ®Â¿Ã”Â´Ã¸ Â¾Ã†Ã€ÃŒÃ…Ã›Ã€Â» Â¿Ã¸Â»Ã³ÃˆÂ¸ÂºÂ¹Â½ÃƒÃ…Â²Â´Ã™. 
 					m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(dX, dY, pItem);
 
-					dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+					dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 					*dwp = MSGID_NOTIFY;
-					wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+					wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 					*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 					iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -3429,7 +3429,7 @@ void CGame::NpcMagicHandler(int iNpcH, short dX, short dY, short sType)
 	char   cOwnerType;
 	int i, iErr, ix, iy, sX, sY, tX, tY;
 	int iResult, iIceAtkRatio, iWhetherBonus, iMagicAttr;
-	DWORD  dwTime = timeGetTime();
+	UINT32  dwTime = timeGetTime();
 
 	if (m_pNpcList[iNpcH] == 0) return;
 	if ((dX < 0) || (dX >= m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->m_sSizeX) ||
@@ -4696,7 +4696,7 @@ NMH_NOEFFECT:;
 **********************************************************************************************************************/
 bool CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char cTargetType, int iHitRatio)
 {
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	int    iTargetMagicResistRatio, iDestHitRatio;
 	char   cTargetDir, cProtect;
 
@@ -4729,8 +4729,8 @@ bool CGame::bCheckResistingMagicSuccess(char cAttackerDir, short sTargetH, char 
 		iHitRatio += 50;
 	}*/
 
-	dTmp1 = (double)(iHitRatio);
-	dTmp2 = (double)(iTargetMagicResistRatio);
+	dTmp1 = (float)(iHitRatio);
+	dTmp2 = (float)(iTargetMagicResistRatio);
 	dTmp3 = (dTmp1 / dTmp2) * 50.0f;
 	iDestHitRatio = (int)(dTmp3);
 	if (iDestHitRatio >= 100) return false;
@@ -4796,8 +4796,8 @@ bool CGame::bCheckResistingIceSuccess(char cAttackerDir, short sTargetH, char cT
 int CGame::iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cDir)
 {
 	char  cData[100];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int     iRet;
 
 	if (m_pClientList[iClientH] == 0) return 0;
@@ -4833,9 +4833,9 @@ int CGame::iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cD
 
 	m_pClientList[iClientH]->m_cDir = cDir;
 
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_RESPONSE_MOTION;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_OBJECTMOTION_CONFIRM;
 
 	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -4851,7 +4851,7 @@ int CGame::iClientMotion_Magic_Handler(int iClientH, short sX, short sY, char cD
 	return 1;
 }
 
-bool CGame::_bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeMagicConfigFileContents(char* pData, UINT32 dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -5164,8 +5164,8 @@ bool CGame::_bDecodeMagicConfigFileContents(char* pData, DWORD dwMsgSize)
 bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bool bIsPurchase)
 {
 	char* cp, cMagicName[31], cData[100];
-	DWORD* dwp, dwGoldCount = 0;
-	WORD* wp;
+	UINT32* dwp, dwGoldCount = 0;
+	UINT16* wp;
 	int* ip, iReqInt, iCost, iRet, iTempInt;
 	bool bMagic = true;
 	iTempInt = m_pClientList[iClientH]->m_iInt;
@@ -5186,7 +5186,7 @@ bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bo
 		{
 			if (m_pMagicConfigList[iRet]->m_iGoldCost < 0) bMagic = false;
 			dwGoldCount = dwGetItemCount(iClientH, "Gold");
-			if ((DWORD)iCost > dwGoldCount) bMagic = false;
+			if ((UINT32)iCost > dwGoldCount) bMagic = false;
 			//iTempInt += m_pClientList[iClientH]->m_iAngelicInt;
 			// SNOOPY: Was Buggy couldn't leran a Spell Book outside Magic Tower !
 			if (m_pClientList[iClientH]->m_bIsInsideWizardTower == false) bMagic = false; //return false;
@@ -5204,9 +5204,9 @@ bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bo
 			m_pClientList[iClientH]->m_cMagicMastery[iRet] = 1;
 			// Snoopy: notify sender function off the succes.
 			//bSucces = true;
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_MAGICSTUDYSUCCESS;
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 			*cp = iRet;
@@ -5226,9 +5226,9 @@ bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bo
 		}
 		else
 		{
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_MAGICSTUDYFAIL;
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 			*cp = 1;
@@ -5306,11 +5306,11 @@ void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, bo
 {
 	short  sX, sY, sOwnerH, sMagicCircle, sLevelMagic, sAppr2, sEqStatus;
 	char   cOwnerType;
-	double dV1, dV2, dV3, dV4;
+	float dV1, dV2, dV3, dV4;
 	int    i, iErr, ix, iy, iResult, iWhetherBonus;
 	int    tX, tY, iManaCost, iMagicAttr, iDmgBonus, iBonusDmgTwo;
-	DWORD dwTime = timeGetTime();
-	WORD  wWeaponType;
+	UINT32 dwTime = timeGetTime();
+	UINT16  wWeaponType;
 
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -5411,9 +5411,9 @@ void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, bo
 		iManaCost += (iManaCost / 2) - (iManaCost / 10);
 	}*/
 	if (m_pClientList[iClientH]->m_iManaSaveRatio > 0) {
-		dV1 = (double)m_pClientList[iClientH]->m_iManaSaveRatio;
-		dV2 = (double)(dV1 / 100.0f);
-		dV3 = (double)iManaCost;
+		dV1 = (float)m_pClientList[iClientH]->m_iManaSaveRatio;
+		dV2 = (float)(dV1 / 100.0f);
+		dV3 = (float)iManaCost;
 		dV1 = dV2 * dV3;
 		dV2 = dV3 - dV1;
 		iManaCost = (int)dV2;
@@ -5439,9 +5439,9 @@ void CGame::BattleMageMagicHandler(int iClientH, int dX, int dY, short sType, bo
 	sLevelMagic = (m_pClientList[iClientH]->m_iLevel / 10);
 	if (sMagicCircle != sLevelMagic) {
 		if (sMagicCircle > sLevelMagic) {
-			dV1 = (double)(m_pClientList[iClientH]->m_iLevel - sLevelMagic * 10);
-			dV2 = (double)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
-			dV3 = (double)abs(sMagicCircle - sLevelMagic) * 10;
+			dV1 = (float)(m_pClientList[iClientH]->m_iLevel - sLevelMagic * 10);
+			dV2 = (float)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
+			dV3 = (float)abs(sMagicCircle - sLevelMagic) * 10;
 			dV4 = (dV1 / dV3) * dV2;
 
 			iResult -= abs(abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle] - (int)dV4);

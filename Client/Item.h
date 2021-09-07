@@ -101,11 +101,11 @@ public:
 	short m_sX, m_sY;
 	short m_sItemSpecEffectValue1, m_sItemSpecEffectValue2, m_sItemSpecEffectValue3;
 	short m_sItemEffectValue1, m_sItemEffectValue2, m_sItemEffectValue3, m_sItemEffectValue4, m_sItemEffectValue5, m_sItemEffectValue6; 
-	WORD  m_wCurLifeSpan;
-	WORD  m_wMaxLifeSpan;
-	WORD  m_wPrice, m_wWeight;
-	DWORD m_dwCount;
-	DWORD m_dwAttribute;*/
+	UINT16  m_wCurLifeSpan;
+	UINT16  m_wMaxLifeSpan;
+	UINT16  m_wPrice, m_wWeight;
+	UINT32 m_dwCount;
+	UINT32 m_dwAttribute;*/
 
 	char  m_cName[21];
 	char  m_cItemType;
@@ -121,12 +121,12 @@ public:
 	short m_sX, m_sY;
 	short m_sItemSpecEffectValue1, m_sItemSpecEffectValue2, m_sItemSpecEffectValue3;
 	short m_sItemEffectValue1, m_sItemEffectValue2, m_sItemEffectValue3, m_sItemEffectValue4, m_sItemEffectValue5, m_sItemEffectValue6;
-	WORD  m_wCurLifeSpan;
-	WORD  m_wMaxLifeSpan;
-	WORD  m_wWeight;
+	UINT16  m_wCurLifeSpan;
+	UINT16  m_wMaxLifeSpan;
+	UINT16  m_wWeight;
 	unsigned int m_wPrice;
-	DWORD m_dwCount;
-	DWORD m_dwAttribute;
+	UINT32 m_dwCount;
+	UINT32 m_dwAttribute;
 
 	//Magn0S:: New Items Extra Atributes.
 	short m_sNewEffect1, m_sNewEffect2, m_sNewEffect3, m_sNewEffect4;

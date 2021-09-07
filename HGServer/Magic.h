@@ -58,7 +58,7 @@ public:
 	char m_cName[31];
 
 	short m_sType;
-	DWORD m_dwDelayTime, m_dwLastTime;
+	UINT32 m_dwDelayTime, m_dwLastTime;
 	short m_sValue1, m_sValue2, m_sValue3, m_sValue4, m_sValue5, m_sValue6;
 	short m_sValue7, m_sValue8, m_sValue9, m_sValue10, m_sValue11, m_sValue12;
 	short m_sIntLimit;

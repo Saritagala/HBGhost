@@ -1358,11 +1358,11 @@ bool CMapData::bIsTeleportLoc(short sX, short sY)
 	return true;
 }
 
-bool __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, int cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName, short sAction, short sV1, short sV2, short sV3, int iPreLoc, int iFrame)
+bool __fastcall CMapData::bSetOwner(UINT16 wObjectID, int sX, int sY, int sType, int cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName, short sAction, short sV1, short sV2, short sV3, int iPreLoc, int iFrame)
 {int   iX, iY, dX, dY;
  int   iChatIndex, iAdd;
  char  cTmpName[12];
- DWORD dwTime;
+ UINT32 dwTime;
  int   iEffectType, iEffectFrame, iEffectTotalFrame;
 
 	if ((m_sPivotX == -1) || (m_sPivotY == -1)) return false;
@@ -1572,7 +1572,7 @@ bool __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, i
 				default:
 					break;
 				}
-				if (   (wObjectID != (WORD)m_pGame->m_sPlayerObjectID)
+				if (   (wObjectID != (UINT16)m_pGame->m_sPlayerObjectID)
 					&& (m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1634,7 +1634,7 @@ bool __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, i
 				default:
 					break;
 				}
-				if ((wObjectID != (WORD)m_pGame->m_sPlayerObjectID) &&
+				if ((wObjectID != (UINT16)m_pGame->m_sPlayerObjectID) &&
 					(m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1687,7 +1687,7 @@ bool __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, i
 				default:
 					break;
 				}
-				if (   (wObjectID != (WORD)m_pGame->m_sPlayerObjectID) 
+				if (   (wObjectID != (UINT16)m_pGame->m_sPlayerObjectID) 
 					&& (m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1741,7 +1741,7 @@ bool __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, i
 				default:
 					break;
 				}
-				if ((wObjectID != (WORD)m_pGame->m_sPlayerObjectID) &&
+				if ((wObjectID != (UINT16)m_pGame->m_sPlayerObjectID) &&
 					(m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1810,8 +1810,8 @@ EXIT_SEARCH_LOOP:;
 	}	}
 
 	if (m_pData[dX][dY].m_sOwnerType != 0)
-	{	if (   (wObjectID != (WORD)m_pGame->m_sPlayerObjectID)
-			&& (m_pData[dX][dY].m_wObjectID == (WORD)m_pGame->m_sPlayerObjectID))
+	{	if (   (wObjectID != (UINT16)m_pGame->m_sPlayerObjectID)
+			&& (m_pData[dX][dY].m_wObjectID == (UINT16)m_pGame->m_sPlayerObjectID))
 		{	return false;
 		}else
 		{	return false;
@@ -1953,11 +1953,11 @@ bool __fastcall CMapData::bGetDeadOwner(short sX, short sY, short * pOwnerType, 
 int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short sViewPointY)
 {
  int dX,dY, sVal;
- DWORD dwTime, dwRealTime, dwFrameTime;
+ UINT32 dwTime, dwRealTime, dwFrameTime;
  int  iDelay;
  int  iRet, iSoundIndex, iSkipFrame;
  int  cDir, cTotalFrame, cFrameMoveDots;
- static DWORD S_dwUpdateTime = timeGetTime();
+ static UINT32 S_dwUpdateTime = timeGetTime();
  int   sWeaponType, sCenterX, sCenterY, sDist;
  bool  bAutoUpdate = false;
  short dx, dy;
@@ -4086,7 +4086,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 	return true;
 }*/
 
-bool CMapData::bSetItem(short sX, short sY, short sIDnum/*, short sItemSpr, short sItemSprFrame*/, char cItemColor, DWORD dwItemAttr, bool bDropEffect)
+bool CMapData::bSetItem(short sX, short sY, short sIDnum/*, short sItemSpr, short sItemSprFrame*/, char cItemColor, UINT32 dwItemAttr, bool bDropEffect)
 {
 	int dX, dY;
 	int sAbsX, sAbsY, sDist;
@@ -4128,7 +4128,7 @@ bool CMapData::bSetItem(short sX, short sY, short sIDnum/*, short sItemSpr, shor
 	return true;
 }
 
-bool __fastcall CMapData::bSetDeadOwner(WORD wObjectID, short sX, short sY, short sType, char cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName)
+bool __fastcall CMapData::bSetDeadOwner(UINT16 wObjectID, short sX, short sY, short sType, char cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName)
 {
  int  dX, dY;
  char pTmpName[12];
@@ -4197,7 +4197,7 @@ bool __fastcall CMapData::bSetDeadOwner(WORD wObjectID, short sX, short sY, shor
 	return true;
 }
 
-bool __fastcall CMapData::bSetChatMsgOwner(WORD wObjectID, short sX, short sY, int iIndex)
+bool __fastcall CMapData::bSetChatMsgOwner(UINT16 wObjectID, short sX, short sY, int iIndex)
 {
  int dX, dY;
 
@@ -4260,7 +4260,7 @@ void CMapData::ClearDeadChatMsg(short sX, short sY)
 	m_pData[sX - m_sPivotX][sY - m_sPivotY].m_iDeadChatMsg = 0;
 }
 
-bool __fastcall CMapData::bGetOwner(short sX, short sY, char * pName, short * pOwnerType, int * pOwnerStatus, WORD * pObjectID)
+bool __fastcall CMapData::bGetOwner(short sX, short sY, char * pName, short * pOwnerType, int * pOwnerStatus, UINT16 * pObjectID)
 {
  int dX, dY;
 
@@ -4281,7 +4281,7 @@ bool __fastcall CMapData::bGetOwner(short sX, short sY, char * pName, short * pO
 	return true;
 }
 
-bool CMapData::bSetDynamicObject(short sX, short sY, WORD wID, short sType, bool bIsEvent)
+bool CMapData::bSetDynamicObject(short sX, short sY, UINT16 wID, short sType, bool bIsEvent)
 {
  int dX, dY, sPrevType;
 
@@ -4345,7 +4345,7 @@ bool CMapData::bSetDynamicObject(short sX, short sY, WORD wID, short sType, bool
 	return true;
 }
 
-void CMapData::GetOwnerStatusByObjectID(WORD wObjectID, char *pOwnerType, char *pDir, short *pAppr1, short *pAppr2, short *pAppr3, short *pAppr4, int * pStatus, int * pColor, char * pName)
+void CMapData::GetOwnerStatusByObjectID(UINT16 wObjectID, char *pOwnerType, char *pDir, short *pAppr1, short *pAppr2, short *pAppr3, short *pAppr4, int * pStatus, int * pColor, char * pName)
 { int iX, iY;
 	for (iX = 0; iX < MAPDATASIZEX; iX++)
 	for (iY = 0; iY < MAPDATASIZEY; iY++)

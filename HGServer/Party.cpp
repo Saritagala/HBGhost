@@ -34,8 +34,8 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 {
 	char* cp, cData[120];
 	short sAppr2;
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int i;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -109,18 +109,18 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 		{
 			ZeroMemory(cData, sizeof(cData));
 			cp = (char*)cData;
-			dwp = (DWORD*)cp;
+			dwp = (UINT32*)cp;
 			*dwp = MSGID_PARTYOPERATION;
 			cp += 4;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = 6; // ÆÄÆ¼ ¸â¹ö ¸®½ºÆ® ¿äÃ»
 			cp += 2;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = iClientH;
 			cp += 2;
 			memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
 			cp += 10;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = m_pClientList[iClientH]->m_iPartyID;
 			cp += 2;
 			SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);
@@ -136,8 +136,8 @@ void CGame::JoinPartyHandler(int iClientH, int iV1, char* pMemberName)
 void CGame::RequestCreatePartyHandler(int iClientH)
 {
 	char* cp, cData[120];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -158,14 +158,14 @@ void CGame::RequestCreatePartyHandler(int iClientH)
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char*)cData;
 
-	dwp = (DWORD*)cp;
+	dwp = (UINT32*)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = 1; // 1, request
 	cp += 2;
 
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = iClientH;
 	cp += 2;
 
@@ -181,11 +181,11 @@ void CGame::RequestCreatePartyHandler(int iClientH)
 void CGame::PartyOperationResultHandler(char* pData)
 {
 	char* cp, cResult, cName[12];
-	WORD* wp;
+	UINT16* wp;
 	int i, iClientH, iPartyID, iTotal;
 
 	cp = (char*)(pData + 4);
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	cp += 2;
 
 	switch (*wp) {
@@ -193,7 +193,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		cResult = *cp;
 		cp++;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iClientH = (int)*wp;
 		cp += 2;
 
@@ -201,7 +201,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		memcpy(cName, cp, 10);
 		cp += 10;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iPartyID = (int)*wp;
 		cp += 2;
 
@@ -211,7 +211,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		break;
 
 	case 2:
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iPartyID = *wp;
 		cp += 2;
 
@@ -221,7 +221,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		break;
 
 	case 3:
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iClientH = *wp;
 		cp += 2;
 
@@ -262,7 +262,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		cResult = *cp;
 		cp++;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iClientH = (int)*wp;
 		cp += 2;
 
@@ -270,7 +270,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		memcpy(cName, cp, 10);
 		cp += 10;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iPartyID = (int)*wp;
 		cp += 2;
 
@@ -280,7 +280,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		break;
 
 	case 5:
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iClientH = (int)*wp;
 		cp += 2;
 
@@ -288,7 +288,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		memcpy(cName, cp, 10);
 		cp += 10;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iTotal = (int)*wp;
 		cp += 2;
 
@@ -301,7 +301,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		cResult = *cp;
 		cp++;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iClientH = (int)*wp;
 		cp += 2;
 
@@ -309,7 +309,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		memcpy(cName, cp, 10);
 		cp += 10;
 
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		iPartyID = (int)*wp;
 		cp += 2;
 
@@ -324,8 +324,8 @@ void CGame::PartyOperationResultHandler(char* pData)
 void CGame::PartyOperationResult_Create(int iClientH, char* pName, int iResult, int iPartyID)
 {
 	char* cp, cData[120];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int i;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -376,22 +376,22 @@ void CGame::PartyOperationResult_Create(int iClientH, char* pName, int iResult, 
 
 			cp = (char*)cData;
 
-			dwp = (DWORD*)cp;
+			dwp = (UINT32*)cp;
 			*dwp = MSGID_PARTYOPERATION;
 			cp += 4;
 
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = 3;
 			cp += 2;
 
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = m_pClientList[iClientH]->m_iReqJoinPartyClientH;
 			cp += 2;
 
 			memcpy(cp, m_pClientList[iClientH]->m_cReqJoinPartyName, 10);
 			cp += 10;
 
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = m_pClientList[iClientH]->m_iPartyID;
 			cp += 2;
 
@@ -574,13 +574,13 @@ void CGame::PartyOperationResult_Delete(int iPartyID)
 
 
 
-void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::RequestJoinPartyHandler(int iClientH, char* pData, UINT32 dwMsgSize)
 {
 	char   seps[] = "= \t\n";
 	char* cp, * token, cBuff[256], cData[120], cName[12];
 	class  CStrTok* pStrTok;
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int i;
 
 	// ÆÄÆ¼ °¡ÀÔ ¿©ºÎ¸¦ ¹¯°í ÀÖ´Ù.
@@ -619,18 +619,18 @@ void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
 			ZeroMemory(cData, sizeof(cData));
 
 			cp = (char*)cData;
-			dwp = (DWORD*)cp;
+			dwp = (UINT32*)cp;
 			*dwp = MSGID_PARTYOPERATION;
 			cp += 4;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = 3; // ÆÄÆ¼ ¸â¹ö Ãß°¡ ¿äÃ»
 			cp += 2;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = iClientH;
 			cp += 2;
 			memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
 			cp += 10;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = m_pClientList[i]->m_iPartyID;
 			cp += 2;
 			SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);
@@ -646,26 +646,26 @@ void CGame::RequestJoinPartyHandler(int iClientH, char* pData, DWORD dwMsgSize)
 void CGame::RequestDismissPartyHandler(int iClientH)
 {
 	char* cp, cData[120];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_CONFIRM) return;
 
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char*)cData;
-	dwp = (DWORD*)cp;
+	dwp = (UINT32*)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = 4; // ¸â¹ö Á¦°Å ¿äÃ»
 	cp += 2;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = iClientH;
 	cp += 2;
 	memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
 	cp += 10;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = m_pClientList[iClientH]->m_iPartyID;
 	cp += 2;
 	SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);
@@ -677,26 +677,26 @@ void CGame::RequestDismissPartyHandler(int iClientH)
 void CGame::GetPartyInfoHandler(int iClientH)
 {
 	char* cp, cData[120];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iPartyStatus != DEF_PARTYSTATUS_CONFIRM) return;
 
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char*)cData;
-	dwp = (DWORD*)cp;
+	dwp = (UINT32*)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = 5; // ÆÄÆ¼ Á¤º¸ ¿äÃ»
 	cp += 2;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = iClientH;
 	cp += 2;
 	memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
 	cp += 10;
-	wp = (WORD*)cp;
+	wp = (UINT16*)cp;
 	*wp = m_pClientList[iClientH]->m_iPartyID;
 	cp += 2;
 	SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);
@@ -715,25 +715,25 @@ void CGame::PartyOperationResult_Info(int iClientH, char* pName, int iTotal, cha
 void CGame::RequestDeletePartyHandler(int iClientH)
 {
 	char* cp, cData[120];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iPartyID != 0) {
 		ZeroMemory(cData, sizeof(cData));
 		cp = (char*)cData;
-		dwp = (DWORD*)cp;
+		dwp = (UINT32*)cp;
 		*dwp = MSGID_PARTYOPERATION;
 		cp += 4;
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = 4; // ¸â¹ö Á¦°Å ¿äÃ»
 		cp += 2;
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = iClientH;
 		cp += 2;
 		memcpy(cp, m_pClientList[iClientH]->m_cCharName, 10);
 		cp += 10;
-		wp = (WORD*)cp;
+		wp = (UINT16*)cp;
 		*wp = m_pClientList[iClientH]->m_iPartyID;
 		cp += 2;
 		SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);
@@ -745,8 +745,8 @@ void CGame::RequestDeletePartyHandler(int iClientH)
 void CGame::RequestAcceptJoinPartyHandler(int iClientH, int iResult)
 {
 	char* cp, cData[120];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int iH;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -806,18 +806,18 @@ void CGame::RequestAcceptJoinPartyHandler(int iClientH, int iResult)
 			// °¡ÀÔ Ã³¸® ÇÑ´Ù.
 			ZeroMemory(cData, sizeof(cData));
 			cp = (char*)cData;
-			dwp = (DWORD*)cp;
+			dwp = (UINT32*)cp;
 			*dwp = MSGID_PARTYOPERATION;
 			cp += 4;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = 3; // ÆÄÆ¼ ¸â¹ö Ãß°¡ ¿äÃ»
 			cp += 2;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = m_pClientList[iClientH]->m_iReqJoinPartyClientH;
 			cp += 2;
 			memcpy(cp, m_pClientList[iClientH]->m_cReqJoinPartyName, 10);
 			cp += 10;
-			wp = (WORD*)cp;
+			wp = (UINT16*)cp;
 			*wp = m_pClientList[iClientH]->m_iPartyID;
 			cp += 2;
 			SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);

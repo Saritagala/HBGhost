@@ -75,8 +75,8 @@ bool PartyManager::bDeleteParty(int iPartyID)
  int i;
  bool bFlag;
  char * cp, cData[120];
- DWORD * dwp;
- WORD * wp;
+ UINT32 * dwp;
+ UINT16 * wp;
 
 	bFlag = false;
 	m_iMemberNumList[iPartyID] = 0;
@@ -93,13 +93,13 @@ bool PartyManager::bDeleteParty(int iPartyID)
 	// 모든 게임 서버에게 파티가 사라졌음을 알려준다.
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char *)cData;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = 2; // Code 2: 파티 해산 
 	cp += 2; 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = iPartyID;
 	cp += 2;
 	m_pGateCore->SendMsgToAllGameServers(0, cData, 10, true);
@@ -180,8 +180,8 @@ bool PartyManager::bCheckPartyMember(int iClientH, int iGSCH, int iPartyID, char
 {
  int i, iRet;
  char * cp, cData[120];
- DWORD * dwp;
- WORD * wp;
+ UINT32 * dwp;
+ UINT16 * wp;
 
 	for (i = 1; i < DEF_MAXPARTY; i++)
 	if ((m_stMemberNameList[i].m_iPartyID == iPartyID) && (strcmp(m_stMemberNameList[i].m_cName, pName) == 0)) {
@@ -193,13 +193,13 @@ bool PartyManager::bCheckPartyMember(int iClientH, int iGSCH, int iPartyID, char
 	// 파티 멤버가 아니다. 클리어를 요청한다.
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char *)cData;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = 3; // 파티 멤버가 아니라는 코드
 	cp += 2; 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = iGSCH;
 	cp += 2;
 	memcpy(cp, pName, 10);
@@ -213,23 +213,23 @@ bool PartyManager::bGetPartyInfo(int iClientH, int iGSCH, char * pName, int iPar
 {
  int i, iRet, iTotal;
  char * cp, cData[1024];
- DWORD * dwp;
- WORD * wp, * wpTotal;
+ UINT32 * dwp;
+ UINT16 * wp, * wpTotal;
 
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char *)cData;
-	dwp = (DWORD *)cp;
+	dwp = (UINT32 *)cp;
 	*dwp = MSGID_PARTYOPERATION;
 	cp += 4;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = 5; // 파티 정보라는 의미의 코드
 	cp += 2; 
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	*wp = iGSCH;
 	cp += 2;
 	memcpy(cp, pName, 10);
 	cp += 10;
-	wp = (WORD *)cp;
+	wp = (UINT16 *)cp;
 	wpTotal = wp;
 	cp += 2;
 
@@ -279,9 +279,9 @@ void PartyManager::SetServerChangeStatus(char *pName, int iPartyID)
 void PartyManager::CheckMemberActivity()
 {
  int i;
- DWORD * dwp, dwTime = timeGetTime();
+ UINT32 * dwp, dwTime = timeGetTime();
  char * cp, cData[120];
- WORD * wp;
+ UINT16 * wp;
 
 	if ((dwTime - m_dwCheckMemberActTime) > 1000*2) {
 		m_dwCheckMemberActTime = dwTime;
@@ -292,21 +292,21 @@ void PartyManager::CheckMemberActivity()
 		// 시간 초과. 
 		ZeroMemory(cData, sizeof(cData));
 		cp = (char *)cData;
-		dwp = (DWORD *)cp;
+		dwp = (UINT32 *)cp;
 		*dwp = MSGID_PARTYOPERATION;
 		cp += 4;
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		*wp = 6; // 멤버 제거에 대한 응답이다.
 		cp += 2;
 		*cp = 1; // 제거 성공 
 		cp++;
-		wp = (WORD *)cp;
+		wp = (UINT16 *)cp;
 		*wp = 0;  // 인덱스는 0 
 		cp += 2;
 		memcpy(cp, m_stMemberNameList[i].m_cName, 10);
 		cp += 10;
-		wp = (WORD *)cp;
-		*wp = (WORD)m_stMemberNameList[i].m_iPartyID;
+		wp = (UINT16 *)cp;
+		*wp = (UINT16)m_stMemberNameList[i].m_iPartyID;
 		cp += 2;
 		// 파티 멤버가 제거되었다는 내용은 모든 서버에 전송한다.
 		m_pGateCore->SendMsgToAllGameServers(0, cData, 22, true);

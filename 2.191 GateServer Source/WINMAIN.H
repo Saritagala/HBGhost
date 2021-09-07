@@ -14,7 +14,7 @@ void OnPaint();
 void OnDestroy();
 void Initialize();
 void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw2);
-MMRESULT _StartTimer(DWORD dwTime);
+MMRESULT _StartTimer(UINT32 dwTime);
 void _StopTimer(MMRESULT timerid);
 unsigned __stdcall  ThreadProc(void *ch);
 void PutGameServerList(char * cStr) ;

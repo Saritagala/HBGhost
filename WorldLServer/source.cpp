@@ -372,7 +372,7 @@ void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw
 	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, 0);
 }
 
-MMRESULT _StartTimer(DWORD dwTime)
+MMRESULT _StartTimer(UINT32 dwTime)
 {
  TIMECAPS caps;
  MMRESULT timerid;

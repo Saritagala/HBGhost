@@ -37,7 +37,7 @@ CMineral::~CMineral()
 
 }
 
-bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeBuildItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -413,9 +413,9 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 	int    i, x, z, iMatch, iCount, iPlayerSkillLevel, iResult, iTotalValue, iResultValue, iTemp, iItemCount[DEF_MAXITEMS];
 	class  CItem* pItem;
 	bool   bFlag, bItemFlag[6];
-	double dV1, dV2, dV3;
-	DWORD  dwTemp, dwTemp2, dwType, dwValue;
-	WORD   wTemp;
+	float dV1, dV2, dV3;
+	UINT32  dwTemp, dwTemp2, dwType, dwValue;
+	UINT16   wTemp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	m_pClientList[iClientH]->m_iSkillMsgRecvCount++;
@@ -514,11 +514,11 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					return;
 				}
 
-				dV2 = (double)m_pBuildItemList[i]->m_iMaxValue;
+				dV2 = (float)m_pBuildItemList[i]->m_iMaxValue;
 				if (iTotalValue <= 0)
 					dV3 = 1.0f;
-				else dV3 = (double)iTotalValue;
-				dV1 = (double)(dV3 / dV2) * 100.0f;
+				else dV3 = (float)iTotalValue;
+				dV1 = (float)(dV3 / dV2) * 100.0f;
 
 				iTotalValue = (int)dV1;
 
@@ -546,7 +546,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					dwTemp = pItem->m_dwAttribute;
 					dwTemp = dwTemp & 0x0000FFFF;
 
-					dwTemp2 = (WORD)m_pBuildItemList[i]->m_wAttribute;
+					dwTemp2 = (UINT16)m_pBuildItemList[i]->m_wAttribute;
 					dwTemp2 = dwTemp2 << 16;
 
 					dwTemp = dwTemp | dwTemp2;
@@ -554,21 +554,21 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 
 					iResultValue = (iTotalValue - m_pBuildItemList[i]->m_iAverageValue);
 					if (iResultValue > 0) {
-						dV2 = (double)iResultValue;
-						dV3 = (double)(100.0f - m_pBuildItemList[i]->m_iAverageValue);
+						dV2 = (float)iResultValue;
+						dV3 = (float)(100.0f - m_pBuildItemList[i]->m_iAverageValue);
 						dV1 = (dV2 / dV3) * 100.0f;
 						pItem->m_sItemSpecEffectValue2 = (int)dV1;
 					}
 					else if (iResultValue < 0) {
-						dV2 = (double)(iResultValue);
-						dV3 = (double)(m_pBuildItemList[i]->m_iAverageValue);
+						dV2 = (float)(iResultValue);
+						dV3 = (float)(m_pBuildItemList[i]->m_iAverageValue);
 						dV1 = (dV2 / dV3) * 100.0f;
 						pItem->m_sItemSpecEffectValue2 = (int)dV1;
 					}
 					else pItem->m_sItemSpecEffectValue2 = 0;
 
-					dV2 = (double)pItem->m_sItemSpecEffectValue2;
-					dV3 = (double)pItem->m_wMaxLifeSpan;
+					dV2 = (float)pItem->m_sItemSpecEffectValue2;
+					dV3 = (float)pItem->m_wMaxLifeSpan;
 					dV1 = (dV2 / 100.0f) * dV3;
 
 					iTemp = (int)pItem->m_wMaxLifeSpan;
@@ -584,7 +584,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 
 					if (iTemp <= 0)
 						wTemp = 1;
-					else wTemp = (WORD)iTemp;
+					else wTemp = (UINT16)iTemp;
 
 					if (wTemp <= pItem->m_wMaxLifeSpan * 2) {
 						//pItem->m_wMaxLifeSpan = wTemp;
@@ -923,10 +923,10 @@ int CGame::iCreateMineral(char cMapIndex, int tX, int tY, char cLevel)
 void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 {
 	short sType;
-	DWORD dwRegisterTime;
+	UINT32 dwRegisterTime;
 	int   iDynamicIndex, iSkillLevel, iResult, iItemID;
 	class CItem* pItem;
-	WORD  wWeaponType;
+	UINT16  wWeaponType;
 
 	if (m_pClientList[iClientH] == 0)  return;
 
@@ -1189,7 +1189,7 @@ void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 void CGame::bDeleteMineral(int iIndex)
 {
 	int iDynamicIndex;
-	DWORD dwTime;
+	UINT32 dwTime;
 
 	dwTime = timeGetTime();
 

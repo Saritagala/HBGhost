@@ -61,15 +61,15 @@ public:
 	};
 	int iSendMsgBlockingMode(char *buf,int nbytes);
 	int iGetPeerAddress(char * pAddrString);
-	char * pGetRcvDataPointer(DWORD * pMsgSize, char * pKey = 0);
+	char * pGetRcvDataPointer(UINT32 * pMsgSize, char * pKey = 0);
 	bool bAccept(class XSocket * pXSock, unsigned int uiMsg);
 	bool bListen(char * pAddr, int iPort, unsigned int uiMsg);
 	
-	int iSendMsg(char * cData, DWORD dwSize, char cKey = 0);
+	int iSendMsg(char * cData, UINT32 dwSize, char cKey = 0);
 	bool bConnect(char * pAddr, int iPort, unsigned int uiMsg);
 	bool bBlockConnect(char * pAddr, int iPort, unsigned int uiMsg);
 	int  iOnSocketEvent(WPARAM wParam, LPARAM lParam);
-	bool bInitBufferSize(DWORD dwBufferSize);
+	bool bInitBufferSize(UINT32 dwBufferSize);
 	XSocket(HWND hWnd, int iBlockLimit);
 	virtual ~XSocket();
 
@@ -88,12 +88,12 @@ public:
 	char   m_cType;
 	char * m_pRcvBuffer;
 	char * m_pSndBuffer;
-	DWORD  m_dwBufferSize;
+	UINT32  m_dwBufferSize;
 	
 	SOCKET m_Sock;
 	char   m_cStatus;
-	DWORD  m_dwReadSize;
-	DWORD  m_dwTotalReadSize;
+	UINT32  m_dwReadSize;
+	UINT32  m_dwTotalReadSize;
 	char   m_pAddr[30];
 	int    m_iPortNum;
 

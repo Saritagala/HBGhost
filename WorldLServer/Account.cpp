@@ -12,7 +12,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CAccount::CAccount(char * pData, DWORD dwTime)
+CAccount::CAccount(char * pData, UINT32 dwTime)
 {
 
 	ZeroMemory(cAccountName, sizeof(cAccountName));			

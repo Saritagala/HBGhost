@@ -14,7 +14,7 @@ extern HWND	G_hWnd;
 
 #pragma warning (disable : 4996)
 
-bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
+bool CGame::_bDecodeQuestConfigFileContents(char* pData, UINT32 dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -784,7 +784,7 @@ void CGame::CancelQuestHandler(int iClientH, int iQuest)
 }
 
 //Magn0S:: Quest List
-void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::RequestQuestList(int iClientH, char* pData, UINT32 dwMsgSize)
 {
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -793,8 +793,8 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 
 	char* cp, cData[5000];
 	int  iRet;
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int* listCount;
 	int* ip;
 
@@ -802,9 +802,9 @@ void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	ZeroMemory(cData, sizeof(cData));
-	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 	*dwp = DEF_MSGID_RESPONSE_QUEST_LIST;
-	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_MSGTYPE_CONFIRM;
 
 	cp = cData + 6;

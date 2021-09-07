@@ -106,14 +106,14 @@ void CGame::RequestGuildMemberRank(int iClientH, char *pName, int iIndex)
 	}
 }
 
-void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int iRank)
+void CGame::PlayerCommandAddRank(int iClientH, char* pData, UINT32 dwMsgSize, int iRank)
 {
     char   seps[] = "= \t\n";
     char* token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11], cMsg[52];
     class  CStrTok* pStrTok;
     int i, iMajesticCount;
 
-	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");
+	UINT32 dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
     if (m_pClientList[iClientH] == 0) return;
     if ((dwMsgSize) <= 0) return;
@@ -205,7 +205,7 @@ void CGame::PlayerCommandAddRank(int iClientH, char* pData, DWORD dwMsgSize, int
     
 }
 
-void CGame::PlayerOrder_DeleteRank(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::PlayerOrder_DeleteRank(int iClientH, char* pData, UINT32 dwMsgSize)
 {
     char   seps[] = "= \t\n";
     char* token, cName[11], cTargetName[11], cBuff[256], cNpcName[21], cNpcWaypoint[11];
@@ -268,11 +268,11 @@ void CGame::PlayerOrder_DeleteRank(int iClientH, char* pData, DWORD dwMsgSize)
     
 }
 
-void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
+void CGame::ResponseCreateNewGuildHandler(char* pData, UINT32 dwMsgSize)
 {
 	int i;
-	WORD* wp, wResult;
-	DWORD* dwp;
+	UINT16* wp, wResult;
+	UINT32* dwp;
 	char* cp, cCharName[11], cData[100], cTxt[120];
 	int iRet;
 
@@ -289,7 +289,7 @@ void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
 			// centu - guild cost gold
 			/*(dwGetItemCount(i, "Gold") >= m_iGuildCost)*/) {
 
-			wp = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wp) {
 			case DEF_LOGRESMSGTYPE_CONFIRM:
 				// Å¬¶óÀÌ¾ðÆ®ÀÇ ±æµå »ý¼º ¿ä±¸°¡ ¼º°øÇÏ¿´´Ù. 
@@ -313,9 +313,9 @@ void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
 				break;
 			}
 
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = wResult;
 
 			// ±æµå »ý¼º ¿ä±¸ ÀÀ´ä ¸Þ½ÃÁö¸¦ Å¬¶óÀÌ¾ðÆ®¿¡°Ô Àü¼Û
@@ -338,11 +338,11 @@ void CGame::ResponseCreateNewGuildHandler(char* pData, DWORD dwMsgSize)
 	PutLogList(cTxt);
 }
 
-void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, UINT32 dwMsgSize)
 {
 	char* cp, cGuildName[21], cTxt[120], cData[100];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	int     iRet;
 	SYSTEMTIME SysTime;
 	
@@ -361,7 +361,7 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 	memcpy(cGuildName, cp, 20);
 	cp += 20;
 
-	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");
+	UINT32 dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
 	if (m_pClientList[iClientH]->m_iGuildRank != -1) 
 	{
@@ -376,9 +376,9 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 		{ // v1.4
 		   ZeroMemory(cData, sizeof(cData));
 
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_MSGTYPE_REJECT;
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -417,9 +417,9 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, DWORD dwMsgS
 
 				ZeroMemory(cData, sizeof(cData));
 
-				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_RESPONSE_CREATENEWGUILD;
-				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_MSGTYPE_REJECT;
 
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -575,7 +575,7 @@ int CGame::_iComposeGuildDataFileContents(int iGuildH, char* pData)
 	return strlen(pData);
 }
 
-void CGame::RequestDisbandGuildHandler(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::RequestDisbandGuildHandler(int iClientH, char* pData, UINT32 dwMsgSize)
 {
 	char* cp, cGuildName[21], cTxt[120];
 
@@ -602,11 +602,11 @@ void CGame::RequestDisbandGuildHandler(int iClientH, char* pData, DWORD dwMsgSiz
 	}
 }
 
-void CGame::ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize)
+void CGame::ResponseDisbandGuildHandler(char* pData, UINT32 dwMsgSize)
 {
 	int i;
-	WORD* wp, wResult;
-	DWORD* dwp;
+	UINT16* wp, wResult;
+	UINT32* dwp;
 	char* cp, cCharName[11], cData[100], cTxt[120];
 	int iRet;
 
@@ -620,7 +620,7 @@ void CGame::ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize)
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, cCharName, 10) == 0)) {
 
-			wp = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wp) {
 			case DEF_LOGRESMSGTYPE_CONFIRM:
 				// Ŭ���̾�Ʈ�� ��� �ػ� �䱸�� �����Ͽ���. 
@@ -646,9 +646,9 @@ void CGame::ResponseDisbandGuildHandler(char* pData, DWORD dwMsgSize)
 				break;
 			}
 
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_RESPONSE_DISBANDGUILD;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = wResult;
 
 			// ��� �ػ� �䱸 ���� �޽����� Ŭ���̾�Ʈ���� ����
@@ -784,11 +784,11 @@ void CGame::DismissGuildRejectHandler(int iClientH, char* pName)
 	// Å»Åð¸¦ ½ÅÃ»ÇÑ Å¬¶óÀÌ¾ðÆ®¸¦ Ã£À»¼ö ¾ø´Ù.(Á¢¼ÓÀÌ ±×»çÀÌ ²÷°å´Ù´øÁö) ¹«È¿ÀÓ 
 }
 
-void CGame::SendGuildMsg(int iClientH, WORD wNotifyMsgType, short sV1, short sV2, char* pString)
+void CGame::SendGuildMsg(int iClientH, UINT16 wNotifyMsgType, short sV1, short sV2, char* pString)
 {
 	char cData[500];
-	DWORD* dwp;
-	WORD* wp;
+	UINT32* dwp;
+	UINT16* wp;
 	char* cp;
 	int i, iRet;
 
@@ -803,9 +803,9 @@ void CGame::SendGuildMsg(int iClientH, WORD wNotifyMsgType, short sV1, short sV2
 			// ### BUG POINT À§Ä¡°¡ Àß¸øµÇ¾î Æ÷ÀÎÅÍ ¿¬»êÀÌ Àß¸øµÇ¾ú´Ù. 
 			ZeroMemory(cData, sizeof(cData));
 
-			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = wNotifyMsgType;
 
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -856,7 +856,7 @@ void CGame::SendGuildMsg(int iClientH, WORD wNotifyMsgType, short sV1, short sV2
 
 }
 
-void CGame::GuildNotifyHandler(char* pData, DWORD dwMsgSize)
+void CGame::GuildNotifyHandler(char* pData, UINT32 dwMsgSize)
 {
 	// ´Ù¸¥ °ÔÀÓ¼­¹ö·ÎºÎÅÍ ±æµå ÀÌº¥Æ®°¡ µµÂøÇß´Ù. 
 	char* cp, cCharName[11], cGuildName[21];
@@ -876,7 +876,7 @@ void CGame::GuildNotifyHandler(char* pData, DWORD dwMsgSize)
 }
 
 // v1.4311-3 Ãß°¡¹× º¯°æ ÇÔ¼ö  ±æµå¿ø °­Åð ¸í·É void CGame::UserCommand_BanGuildsman
-void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, DWORD dwMsgSize)
+void CGame::UserCommand_BanGuildsman(int iClientH, char* pData, UINT32 dwMsgSize)
 {
 	char   seps[] = "= \t\n";
 	char* token, cTargetName[11], cBuff[256];
@@ -962,7 +962,7 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 	if (m_pClientList[iClientH] == 0) return;
 	
 	if (m_pClientList[iClientH]->m_iGuildRank != 0 && m_pClientList[iClientH]->m_iGuildRank != 2) return;
-	DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");  // dwGoldCount = player gold
+	UINT32 dwGoldCount = dwGetItemCount(iClientH, "Gold");  // dwGoldCount = player gold
 	ZeroMemory(cTemp, sizeof(cTemp));
 	if (m_iSummonGuildCost > dwGoldCount)
 	{
@@ -972,7 +972,7 @@ void CGame::AdminOrder_SummonGuild(int iClientH)
 	}
 	else // if summonguildcost is less than player gold
 	{
-		SetItemCount(iClientH, "Gold", dwGoldCount - (DWORD)m_iSummonGuildCost); // reduce gold by summonguildcost   
+		SetItemCount(iClientH, "Gold", dwGoldCount - (UINT32)m_iSummonGuildCost); // reduce gold by summonguildcost   
 		wsprintf(cTemp, "You've used %d Gold!", m_iSummonGuildCost);
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, cTemp);
 	}
