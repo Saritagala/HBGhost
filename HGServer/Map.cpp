@@ -953,7 +953,7 @@ bool CMap::bApocalypseGate()
 {
  class CTile * pTile;
  int i, LR, TB;
- LONG cLeft, cTop, cRight, cBottom;
+ UINT32 cLeft, cTop, cRight, cBottom;
 
 	for (i = 0; i < m_iTotalDynamicGate; i++) {
 		cLeft	= m_rcDynamicGateRect[i].left;

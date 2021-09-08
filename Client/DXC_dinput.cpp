@@ -83,8 +83,8 @@ void DXC_dinput::UpdateMouseState(short * pX, short * pY, short * pZ, char * pLB
 	if (m_sX < 0) m_sX = 0;
 	if (m_sY < 0) m_sY = 0;
 #ifdef RES_HIGH
-	if (m_sX > 800) m_sX = 800;
-	if (m_sY > 600) m_sY = 600;
+	if (m_sX > 799) m_sX = 799;
+	if (m_sY > 599) m_sY = 599;
 #else
 	if (m_sX > 639) m_sX = 639;
 	if (m_sY > 479) m_sY = 479;

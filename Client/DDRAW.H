@@ -4065,7 +4065,7 @@ typedef struct _DDCOLORCONTROL
 #define DDSCL_FPUSETUP                          0x00000800l
 
 /*
- * App specifies that it needs either double precision FPU or FPU exceptions
+ * App specifies that it needs either float precision FPU or FPU exceptions
  * enabled. This makes Direct3D explicitly set the FPU state eah time it is
  * called. Setting the flag will reduce Direct3D performance. The flag is
  * assumed by default in DirectX 6 and earlier. See also DDSCL_FPUSETUP

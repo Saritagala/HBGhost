@@ -886,13 +886,13 @@ public:
 		bool  bIsScrollSelected;
 	} m_stDialogBoxInfo[61];	 // Snoopy passé à 61 (origine 41, Alastor 60), j'ai mis +20 car plus pratique. - Magn0S:: Increased max dialog box
 	char m_cDialogBoxOrder[61];
-	CInt m_bIsDialogEnabled[61];//was bool
+	bool m_bIsDialogEnabled[61];//was bool
 //Snoopy=>>>>>>>>>>>>>>>>>>>>>
 	struct {
 		int   sV1, sV2, sV3, sV4, sV5, sV6, sV7, sItemID;
 		UINT32 dwV1;
 		char  cStr1[32], cStr2[32];
-	} m_stDialogBoxExchangeInfo[8];
+	} m_stDialogBoxExchangeInfo[16];
 //Snoopy end<<<<<<<<<<<<<<<<<<
 	struct {
 		int iIndex;
@@ -1041,40 +1041,40 @@ public:
 
 	bool m_bZoomMap;
 	bool m_bIsProgramActive;
-	CInt m_bCommandAvailable;//was bool
+	bool m_bCommandAvailable;//was bool
 	bool m_bSoundFlag;
 	bool m_bSoundStat, m_bMusicStat; // On/Off
-	CInt m_bIsItemEquipped[DEF_MAXITEMS];//was bool
-	CInt m_bIsItemDisabled[DEF_MAXITEMS];//was bool
-	CInt m_bIsGetPointingMode;//was bool
+	bool m_bIsItemEquipped[DEF_MAXITEMS];//was bool
+	bool m_bIsItemDisabled[DEF_MAXITEMS];//was bool
+	bool m_bIsGetPointingMode;//was bool
 	bool m_bEnterPressed, m_bEscPressed, m_bCtrlPressed, m_bRunningMode, m_bShiftPressed;
 
 	bool m_bDialogTrans;
 	bool m_bIsCombatMode;
 	bool m_bIsSafeAttackMode;
-	CInt m_bSkillUsingStatus;//was bool
-	CInt m_bItemUsingStatus;//was bool
+	bool m_bSkillUsingStatus;//was bool
+	bool m_bItemUsingStatus;//was bool
 	bool m_bIsWhetherEffect;
 	bool m_bSuperAttackMode;	//
 	bool m_bIsObserverMode, m_bIsObserverCommanded;
-	CInt m_bIsPoisoned;//was bool
+	bool m_bIsPoisoned;//was bool
 	bool m_bIsFirstConn;
 	bool m_bIsConfusion;
 	bool m_bIsRedrawPDBGS;
 	bool m_bDrawFlagDir;
 	bool m_bIsCrusadeMode;
-	CInt m_bIsSpecialAbilityEnabled;//was bool
+	bool m_bIsSpecialAbilityEnabled;//was bool
 	bool m_bInputStatus;
 	bool m_bToggleScreen;
 	bool m_bIsSpecial;
 	bool m_bIsRare;
 
 	bool m_bIsF1HelpWindowEnabled;
-	CInt m_bIsTeleportRequested;//was bool
+	bool m_bIsTeleportRequested;//was bool
 	bool m_bIsPrevMoveBlocked;
 	bool m_bIsHideLocalCursor;
 
-	CInt m_bForceDisconn;//was bool
+	bool m_bForceDisconn;//was bool
 
 	bool m_bParalyze;
 
@@ -1086,9 +1086,9 @@ public:
 	int m_iFightzoneNumber;
 	int m_iFightzoneNumberTemp;
 	int m_iPlayerApprColor; // v1.4
-	CInt m_iHP;//was int			// Hit Point
-	CInt m_iMP;//was int			// Mana Point
-	CInt m_iSP;//was int			// Staminar Point
+	int m_iHP;//was int			// Hit Point
+	int m_iMP;//was int			// Mana Point
+	int m_iSP;//was int			// Staminar Point
 	int m_iAC;						// Armour Class
 	int m_iTHAC0;					// To Hit Armour Class 0
 

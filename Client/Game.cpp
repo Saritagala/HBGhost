@@ -5910,7 +5910,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 		sX = m_stDialogBoxInfo[1].sX;
 		sY = m_stDialogBoxInfo[1].sY;
-		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 0, FALSE, m_bDialogTrans);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 0, false, m_bDialogTrans);
 
 		//m_stDialogBoxInfo[1].sSizeX = 270;
 		//m_stDialogBoxInfo[1].sSizeY = 376;
@@ -5949,7 +5949,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 			PutAlignedString(sX + 14, sX + 290, sY + 32, G_cTxt, 255, 255, 100);
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 
-			if (m_bCitizen == FALSE)
+			if (m_bCitizen == false)
 			{
 				strcpy(G_cTxt, DRAW_DIALOGBOX_CHARACTER7); // "Traveller"
 			}
@@ -6023,115 +6023,115 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 			// centu - agregado majestic level
 			wsprintf(G_cTxt, "%d", m_iLevel);
 			//	iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Level:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Level:", RGB(255, 255, 255), false, 1);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Exp
 			// centu - mostrar valor con coma
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Exp:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Exp:", RGB(255, 255, 255), false, 1);
 			DisplayCommaNumber_G_cTxt(m_iExp);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Next.Exp
 			// centu - agregado majestic level
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Next Exp:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Next Exp:", RGB(255, 255, 255), false, 1);
 			DisplayCommaNumber_G_cTxt(iGetLevelExp(m_iLevel + 1));
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Hp
 			iTemp = m_iHP;
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "HP Points:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "HP Points:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d/%d", iTemp, (m_iVit * 3) + (m_iLevel * 2) + ((m_iStr) / 2));
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 255, 0, 0);
 
 			// Mp
 			iTemp = m_iMP;
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "MP Points:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "MP Points:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d/%d", iTemp, ((m_iMag) * 2) + (m_iLevel) * 2 + (m_iInt) / 2);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 130, 130, 255);
 
 			// Sp
 			iTemp = m_iSP;
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "SP Points:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "SP Points:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d/%d", iTemp, (m_iLevel) * 2 + (m_iStr) * 2);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Max.Load
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Weight:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Weight:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d/%d", (_iCalcTotalWeight() / 100), (((m_iStr) * 5) + (m_iLevel) * 5));
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Enemy Kills
 			// centu - muestra el maximo total de eks
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Enemy Kill:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Enemy Kill:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d/%d", m_iEnemyKillCount, m_iMaxEK);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Majestic Points
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Majestics:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Majestics:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iGizonItemUpgradeLeft);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Deaths
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Deaths:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Deaths:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iPlayerDeaths);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// REP
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Reputation:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Reputation:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iRating);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// centu : coins / Adjustes by Magn0S, saving again centuu
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Coin Points:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Coin Points:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iCoinPoints);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 			// Hunger
 			iEntry++;
-			PutString(sX + 130, sY + 100 + (iEntry * 14), "Hunger:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 130, sY + 100 + (iEntry * 14), "Hunger:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d%%", 100 - iHungerStatus);
 			PutAlignedString(sX + 198, sX + 290, sY + 100 + (iEntry * 14), G_cTxt, 0, 255, 0);
 
 
 			// Str
-			PutString(sX + 30, sY + 285 - 2, "Str:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 30, sY + 285 - 2, "Str:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iStr);
 			PutAlignedString(sX + 48 + 2, sX + 82, sY + 285 - 2, G_cTxt, 0, 255, 0);
 		
 			// Vit
-			PutString(sX + 200 + 30, sY + 285 - 2, "Vit:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 200 + 30, sY + 285 - 2, "Vit:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iVit);
 			PutAlignedString(sX + 218 + 30, sX + 251 + 30, sY + 285 - 2, G_cTxt, 0, 255, 0);
 
 			// Dex
-			PutString(sX + 25 + 1, sY + 302 - 2, "Dex:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 25 + 1, sY + 302 - 2, "Dex:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iDex);
 			PutAlignedString(sX + 48 + 2, sX + 82, sY + 302 - 2, G_cTxt, 0, 255, 0);
 		
 			// Int
-			PutString(sX + 110 + 20 + 3, sY + 285 - 2, "Int:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 110 + 20 + 3, sY + 285 - 2, "Int:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iInt);
 			PutAlignedString(sX + 135 + 20, sX + 167 + 20, sY + 285 - 2, G_cTxt, 0, 255, 0);
 		
 			// Mag
-			PutString(sX + 110 + 20 - 5, sY + 302 - 2, "Mag:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 110 + 20 - 5, sY + 302 - 2, "Mag:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iMag);
 			PutAlignedString(sX + 135 + 20, sX + 167 + 20, sY + 302 - 2, G_cTxt, 0, 255, 0);
 
 			// Chr
-			PutString(sX + 195 + 30 + 2, sY + 302 - 2, "Agi:", RGB(255, 255, 255), FALSE, 1);
+			PutString(sX + 195 + 30 + 2, sY + 302 - 2, "Agi:", RGB(255, 255, 255), false, 1);
 			wsprintf(G_cTxt, "%d", m_iCharisma);
 			PutAlignedString(sX + 218 + 30, sX + 251 + 30, sY + 302 - 2, G_cTxt, 0, 255, 0);
 
@@ -6140,7 +6140,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 			for (i = 0; i < DEF_MAXITEMS; i++)
 			{
-				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == TRUE))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
 			}
 			if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
 			{
@@ -6160,7 +6160,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BACK]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BACK]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 41, sY + 137, sFrame, m_dwCurTime);
@@ -6182,7 +6182,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6204,7 +6204,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6226,7 +6226,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6248,7 +6248,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BODY]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BODY]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6270,7 +6270,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6292,7 +6292,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 90, sY + 170, sFrame, m_dwCurTime);
@@ -6314,7 +6314,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 57, sY + 186, sFrame, m_dwCurTime);
@@ -6336,7 +6336,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 57, sY + 186, sFrame, m_dwCurTime);
@@ -6358,7 +6358,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_NECK]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_NECK]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 35, sY + 120, sFrame, m_dwCurTime);
@@ -6380,7 +6380,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 32, sY + 193, sFrame, m_dwCurTime);
@@ -6402,7 +6402,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 90, sY + 175, sFrame, m_dwCurTime);
@@ -6424,7 +6424,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH]->PutSpriteFast(sX + 72, sY + 135, sFrame, m_dwCurTime);
@@ -6496,7 +6496,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BACK]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BACK]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BACK]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 45, sY + 143, sFrame, m_dwCurTime);
@@ -6518,7 +6518,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6540,7 +6540,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_PANTS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6562,7 +6562,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_ARMS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6584,7 +6584,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BOOTS]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6606,7 +6606,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_BODY]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BODY]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_BODY]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6627,7 +6627,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_FULLBODY]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 171, sY + 290, sFrame, m_dwCurTime);
@@ -6649,7 +6649,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LHAND]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 84, sY + 175, sFrame, m_dwCurTime);
@@ -6670,7 +6670,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSprite;
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]]->m_cItemColor;
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RHAND]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 60, sY + 191, sFrame, m_dwCurTime);
@@ -6691,7 +6691,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sSprH = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSprite;
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]]->m_cItemColor;
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_TWOHAND]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 60, sY + 191, sFrame, m_dwCurTime);
@@ -6713,7 +6713,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_NECK]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_NECK]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_NECK]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 35, sY + 120, sFrame, m_dwCurTime);
@@ -6735,7 +6735,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_RFINGER]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 32, sY + 193, sFrame, m_dwCurTime);
@@ -6757,7 +6757,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_LFINGER]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 90, sY + 175, sFrame, m_dwCurTime);
@@ -6779,7 +6779,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 					sFrame = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_sSpriteFrame;
 					cItemColor = m_pItemList[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]]->m_cItemColor;
 
-					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]] == FALSE)
+					if (m_bIsItemDisabled[cEquipPoiStatus[DEF_EQUIPPOS_HEAD]] == false)
 					{
 						if (cItemColor == 0)
 							m_pSprite[DEF_SPRID_ITEMEQUIP_PIVOTPOINT + sSprH + 40]->PutSpriteFast(sX + 72, sY + 139, sFrame, m_dwCurTime);
@@ -7239,7 +7239,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	int  iCPivot, i, iYloc, iResult, iManaCost;
 	char cTxt[120], cMana[10];
 	UINT32 dwTime = m_dwCurTime;
-	double dV1, dV2, dV3, dV4;
+	float dV1, dV2, dV3, dV4;
 	int r, g, b;
 
 	sX = m_stDialogBoxInfo[3].sX;
@@ -7369,9 +7369,9 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	sMagicCircle = m_stDialogBoxInfo[3].sView + 1;
 	if (m_cSkillMastery[4] == 0)
 		dV1 = 1.0f;
-	else dV1 = (double)m_cSkillMastery[4];
-	dV2 = (double)(dV1 / 100.0f);
-	dV3 = (double)_tmp_iMCProb[sMagicCircle];
+	else dV1 = (float)m_cSkillMastery[4];
+	dV2 = (float)(dV1 / 100.0f);
+	dV3 = (float)_tmp_iMCProb[sMagicCircle];
 	dV1 = dV2 * dV3;
 	iResult = (int)dV1;
 	if ((m_iInt) > 50) iResult += ((m_iInt) - 50) / 2;
@@ -7380,9 +7380,9 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	{
 		if (sMagicCircle > sLevelMagic)
 		{
-			dV1 = (double)(m_iLevel - sLevelMagic * 10);
-			dV2 = (double)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
-			dV3 = (double)abs(sMagicCircle - sLevelMagic) * 10;
+			dV1 = (float)(m_iLevel - sLevelMagic * 10);
+			dV2 = (float)abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle];
+			dV3 = (float)abs(sMagicCircle - sLevelMagic) * 10;
 			dV4 = (dV1 / dV3) * dV2;
 			iResult -= abs(abs(sMagicCircle - sLevelMagic) * _tmp_iMLevelPenalty[sMagicCircle] - (int)dV4);
 		}
@@ -7405,8 +7405,8 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 		{
 			if (((m_pItemList[i]->m_dwAttribute & 0x00F00000) >> 20) == 10)
 			{
-				dV1 = (double)iResult;
-				dV2 = (double)(((m_pItemList[i]->m_dwAttribute & 0x000F0000) >> 16) * 3);
+				dV1 = (float)iResult;
+				dV2 = (float)(((m_pItemList[i]->m_dwAttribute & 0x000F0000) >> 16) * 3);
 				dV3 = dV1 + dV2;
 				iResult = (int)dV3;
 				break;
@@ -18694,7 +18694,7 @@ void CGame::DrawNewDialogBox(char cType, int sX, int sY, int iFrame, bool bIsNoC
 
 void CGame::DlgBoxClick_Commander(int msX, int msY) // Snoopy: Fixed for 351
 {short sX, sY, tX, tY;
- double d1, d2, d3;
+ float d1, d2, d3;
 	if (m_bIsCrusadeMode == false) return;
 	sX = m_stDialogBoxInfo[36].sX;
 	sY = m_stDialogBoxInfo[36].sY;
@@ -18732,12 +18732,12 @@ void CGame::DlgBoxClick_Commander(int msX, int msY) // Snoopy: Fixed for 351
 
 	case 1: // Set TP
 		if ((msX >= sX + 15) && (msX <= sX + 15 + 278) && (msY >= sY + 60) && (msY <= sY + 60 + 272))
-		{	d1 = (double)(msX - (sX + 15));
-			d2 = (double)(524.0f); 
+		{	d1 = (float)(msX - (sX + 15));
+			d2 = (float)(524.0f); 
 			d3 = (d2*d1)/279.0f;
 			tX = (int)d3;
-			d1 = (double)(msY - (sY + 60));
-			d2 = (double)(524.0f); 
+			d1 = (float)(msY - (sY + 60));
+			d2 = (float)(524.0f); 
 			d3 = (d2*d1)/(280.0f); 
 			tY = (int)d3;
 			if (tX < 30) tX = 30;
@@ -18850,12 +18850,12 @@ void CGame::DlgBoxClick_Commander(int msX, int msY) // Snoopy: Fixed for 351
 	case 4: // Set constr
 		if (   (msX >= sX + 15) && (msX <= sX + 15 + 278)
 			&& (msY >= sY + 60) && (msY <= sY + 60 + 272))
-		{	d1 = (double)(msX - (sX + 15));
-			d2 = (double)(524.0f);
+		{	d1 = (float)(msX - (sX + 15));
+			d2 = (float)(524.0f);
 			d3 = (d2*d1)/279.0f;
 			tX = (int)d3;
-			d1 = (double)(msY - (sY + 60));
-			d2 = (double)(524.0f);
+			d1 = (float)(msY - (sY + 60));
+			d2 = (float)(524.0f);
 			d3 = (d2*d1)/(280.0f);
 			tY = (int)d3;
 			if (tX < 30) tX = 30;
@@ -19760,7 +19760,7 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 {
  short sX, sY;
  int i, iTotalLines, iPointerLoc;
- double d1,d2,d3;
+ float d1,d2,d3;
  int r, g, b;
 
 	sX = m_stDialogBoxInfo[18].sX;
@@ -19802,8 +19802,8 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	if( iTotalLines>17 && m_stDialogBoxInfo[18].sView > iTotalLines-17 ) m_stDialogBoxInfo[18].sView = iTotalLines-17;
 
 	if (iTotalLines > 17) {
-		d1 = (double)m_stDialogBoxInfo[18].sView;
-		d2 = (double)(iTotalLines-17);
+		d1 = (float)m_stDialogBoxInfo[18].sView;
+		d2 = (float)(iTotalLines-17);
 		d3 = (274.0f * d1)/d2;
 		iPointerLoc = (int)(d3+0.5f);
 		
@@ -19851,8 +19851,8 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 	if (cLB != 0 && iTotalLines > 17) {
 		if ((iGetTopDialogBoxIndex() == 18)) {
 			if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 40) && (msY <= sY + 320)) {
-				d1 = (double)(msY -(sY+35));
-				d2 = (double)(iTotalLines-17);
+				d1 = (float)(msY -(sY+35));
+				d2 = (float)(iTotalLines-17);
 				d3 = (d1 * d2)/274.0f;
 				iPointerLoc = (int)d3;
 				if (iPointerLoc > iTotalLines-17) iPointerLoc = iTotalLines-17;
@@ -19957,7 +19957,7 @@ void CGame::DrawDialogBox_NpcTalk(short msX, short msY, char cLB)
 {
  short sX, sY;
  int i, iTotalLines, iPointerLoc;
- double d1, d2, d3;
+ float d1, d2, d3;
 	sX = m_stDialogBoxInfo[21].sX;
 	sY = m_stDialogBoxInfo[21].sY;
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 2);
@@ -19996,8 +19996,8 @@ void CGame::DrawDialogBox_NpcTalk(short msX, short msY, char cLB)
 	if (m_pMsgTextList2[i] != 0) iTotalLines++;
 
 	if (iTotalLines > 17) {
-		d1 = (double)m_stDialogBoxInfo[21].sView;
-		d2 = (double)(iTotalLines-17);
+		d1 = (float)m_stDialogBoxInfo[21].sView;
+		d2 = (float)(iTotalLines-17);
 		d3 = (274.0f * d1)/d2;
 		iPointerLoc = (int)d3;
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -20007,8 +20007,8 @@ void CGame::DrawDialogBox_NpcTalk(short msX, short msY, char cLB)
 	if (cLB != 0 && iTotalLines > 17) {
 		if ((iGetTopDialogBoxIndex() == 21)) {
 			if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 40) && (msY <= sY + 320)) {
-				d1 = (double)(msY -(sY+40));
-				d2 = (double)(iTotalLines-17);
+				d1 = (float)(msY -(sY+40));
+				d2 = (float)(iTotalLines-17);
 				d3 = (d1 * d2)/274.0f;
 				iPointerLoc = (int)d3;
 
@@ -20151,7 +20151,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
 	int i, iPointerLoc;
-	double d1, d2, d3;
+	float d1, d2, d3;
 	if (m_bUseOldPanels)
 	{
 		
@@ -20167,8 +20167,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 		if (m_stDialogBoxInfo[10].sView < 0) m_stDialogBoxInfo[10].sView = 0;
 		if (m_stDialogBoxInfo[10].sView > DEF_MAXCHATSCROLLMSGS - 8) m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
 
-		d1 = (double)m_stDialogBoxInfo[10].sView;
-		d2 = (double)(105);
+		d1 = (float)m_stDialogBoxInfo[10].sView;
+		d2 = (float)(105);
 		d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
 		iPointerLoc = (int)d3;
 		iPointerLoc = 105 - iPointerLoc;
@@ -20192,7 +20192,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 		if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
 		{
 			if ((msX >= sX + 336) && (msX <= sX + 361) && (msY >= sY + 28) && (msY <= sY + 140)) {
-				d1 = (double)(msY - (sY + 28));
+				d1 = (float)(msY - (sY + 28));
 				d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
 				m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
 			}
@@ -20209,8 +20209,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 
 		sX = m_stDialogBoxInfo[10].sX;
 		sY = m_stDialogBoxInfo[10].sY;
-		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, FALSE, m_bDialogTrans);
-		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, FALSE, m_bDialogTrans);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME2, sX, sY, 4, false, m_bDialogTrans);
+		//DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_TEXT, sX, sY, 22, false, m_bDialogTrans);
 
 		//Magn0S:: Updated Chat Box
 		short toX, toY, limitX, limitY;
@@ -20272,8 +20272,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 			if (m_stDialogBoxInfo[10].sView < 0) m_stDialogBoxInfo[10].sView = 0;
 			if (m_stDialogBoxInfo[10].sView > DEF_MAXCHATSCROLLMSGS - 8) m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
 
-			d1 = (double)m_stDialogBoxInfo[10].sView;
-			d2 = (double)(105.0f);
+			d1 = (float)m_stDialogBoxInfo[10].sView;
+			d2 = (float)(105.0f);
 			d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
 			iPointerLoc = (int)d3;
 			iPointerLoc = 105 - iPointerLoc;
@@ -20297,7 +20297,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 			if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
 			{
 				if ((msX >= sX + 336) && (msX <= sX + 361) && (msY >= sY + 28) && (msY <= sY + 140)) { //,,  
-					d1 = (double)(msY - (sY + 28));
+					d1 = (float)(msY - (sY + 28));
 					d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
 					m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
 				}
@@ -20308,7 +20308,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 				if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 140) && (msY < sY + 163))
 					m_stDialogBoxInfo[10].sView = 0;
 			}
-			else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
+			else m_stDialogBoxInfo[10].bIsScrollSelected = false;
 			break;
 
 		case 1: // Magn0S:: Chat by selection
@@ -20320,8 +20320,8 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 			if (m_stDialogBoxInfo[10].sView < 0) m_stDialogBoxInfo[10].sView = 0;
 			if (m_stDialogBoxInfo[10].sView > DEF_MAXCHATSCROLLMSGS - 8) m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8;
 
-			d1 = (double)m_stDialogBoxInfo[10].sView;
-			d2 = (double)(105.0f);
+			d1 = (float)m_stDialogBoxInfo[10].sView;
+			d2 = (float)(105.0f);
 			d3 = (d1 * d2) / (DEF_MAXCHATSCROLLMSGS - 8);
 			iPointerLoc = (int)d3;
 			iPointerLoc = 105 - iPointerLoc;
@@ -20395,7 +20395,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 			if ((cLB != 0) && (iGetTopDialogBoxIndex() == 10))
 			{
 				if ((msX >= sX + 336) && (msX <= sX + 361) && (msY >= sY + 28) && (msY <= sY + 140)) { //,,  
-					d1 = (double)(msY - (sY + 28));
+					d1 = (float)(msY - (sY + 28));
 					d2 = ((DEF_MAXCHATSCROLLMSGS - 8) * d1) / 105.0f;
 					m_stDialogBoxInfo[10].sView = DEF_MAXCHATSCROLLMSGS - 8 - (int)d2;
 				}
@@ -20406,7 +20406,7 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 				if ((msX >= sX + 336) && (msX <= sX + 361) && (msY > sY + 140) && (msY < sY + 163))
 					m_stDialogBoxInfo[10].sView = 0;
 			}
-			else m_stDialogBoxInfo[10].bIsScrollSelected = FALSE;
+			else m_stDialogBoxInfo[10].bIsScrollSelected = false;
 			break;
 		}
 	}
@@ -24730,7 +24730,7 @@ void CGame::DrawDialogBox_Map()
 {
  short sX, sY;
  UINT32 dwTime = m_dwCurTime;
- double dV1, dV2, dV3;
+ float dV1, dV2, dV3;
  int    tX, tY, szX, szY, dX, dY;
 
 	sX = m_stDialogBoxInfo[22].sX;
@@ -24843,15 +24843,15 @@ void CGame::DrawDialogBox_Map()
 
 		}
 
-		dV1 = (double)m_pMapData->m_sMapSizeX;
-		dV2 = (double)m_sPlayerX;
-		dV3 = (dV2*(double)szX)/dV1;
+		dV1 = (float)m_pMapData->m_sMapSizeX;
+		dV2 = (float)m_sPlayerX;
+		dV3 = (dV2*(float)szX)/dV1;
 		tX  = (int)dV3 +dX;
 
-		dV1 = (double)m_pMapData->m_sMapSizeY;
+		dV1 = (float)m_pMapData->m_sMapSizeY;
 		if( dV1 == 752 ) dV1 = 680;
-		dV2 = (double)m_sPlayerY;
-		dV3 = (dV2*(double)szY)/dV1;
+		dV2 = (float)m_sPlayerY;
+		dV3 = (dV2*(float)szY)/dV1;
 		tY  = (int)dV3 +dY;
 
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME4, sX +tX, sY +tY, 43);
@@ -26329,7 +26329,7 @@ void CGame::UpdateScreen_OnAgreement()
  static class CMouseInterface * pMI;
  int i, iTotalLines, iPointerLoc;
  UINT32 dwTime = timeGetTime();
- double d1,d2,d3;
+ float d1,d2,d3;
  int iMIbuttonNum;
 
 	sX = 121;
@@ -26387,9 +26387,9 @@ void CGame::UpdateScreen_OnAgreement()
 	for (i = 0; i < DEF_TEXTDLGMAXLINES; i++)
 	if (m_pAgreeMsgTextList[i] != 0) iTotalLines++;
 
-	d1 = (double)m_iAgreeView;
-	d2 = (double)(iTotalLines - 20);
-	d3 = (double)d1 / d2;
+	d1 = (float)m_iAgreeView;
+	d2 = (float)(iTotalLines - 20);
+	d3 = (float)d1 / d2;
 	d1 = 338.0f * d3;
 	iPointerLoc = (int)d1;
 	m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutSpriteFast(sX +361 -112, sY +37 +13 +iPointerLoc, 7, dwTime);
@@ -26406,9 +26406,9 @@ void CGame::UpdateScreen_OnAgreement()
 	}
 	if (cLB != 0 && iTotalLines > 20)
 	{ 	if ((msX >= sX +345 -112) && (msX <= sX +380 -112) && (msY >= sY +50) && (msY <= sY +395))
-		{	d1 = (double)(msY - (sY + 37 +13));
-			d2 = (double)(iTotalLines - 17);
-			d3 = (double)(d1 * d2)/(338.0f);
+		{	d1 = (float)(msY - (sY + 37 +13));
+			d2 = (float)(iTotalLines - 17);
+			d3 = (float)(d1 * d2)/(338.0f);
 			m_iAgreeView = (int)d3;
 			m_pSprite[DEF_SPRID_INTERFACE_ND_GAME2]->PutTransSprite(sX +361 -112, sY +37 +13 +iPointerLoc, 4, dwTime);
 	}	}
@@ -27583,7 +27583,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 			else DisableDialogBox(10);
 		}
 		else {
-			if (m_bIsDialogEnabled[10] == FALSE)
+			if (m_bIsDialogEnabled[10] == false)
 				if (chatmode == 99)
 					EnableDialogBox(10, 0, 0, 0);
 				else EnableDialogBox(10, 1, 0, 0);
@@ -29297,7 +29297,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		cp += 20;
 
 		ZeroMemory( m_stGuildName[sV2].cGuildName, sizeof(m_stGuildName[sV2].cGuildName) );
-		strcpy(m_stGuildName[sV2].cGuildName, cTemp);
+		memcpy(m_stGuildName[sV2].cGuildName, cTemp, 20);
 		m_stGuildName[sV2].iGuildRank = sV1;
 		for (i = 0; i < 20; i++) if (m_stGuildName[sV2].cGuildName[i] == '_') m_stGuildName[sV2].cGuildName[i] = ' ';
 		break;
@@ -31987,7 +31987,7 @@ void CGame::DlbBoxDoubleClick_GuideMap(short msX, short msY)
 	if( shX < 30 || shY < 30 ) return;
 	if( shX > m_pMapData->m_sMapSizeX-30 || shY > m_pMapData->m_sMapSizeY-30 ) return;
 	
-	//Magn0S:: Add to double click in map and Auto-TP
+	//Magn0S:: Add to float click in map and Auto-TP
 	//if ((strcmp(m_cPlayerName, "Magn0S[GM]") == 0) || (strcmp(m_cPlayerName, "Centuu[GM]") == 0) || (strcmp(m_cPlayerName, "[GM1]") == 0)) {
 	if (m_iAdminUserLevel > 0 && !m_bCtrlPressed)
 	{
@@ -32066,7 +32066,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			_SetItemOrder(0, cItemID);
 			GetItemName(m_pItemList[cItemID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 
-			if ( m_bIsDialogEnabled[11] && (m_bIsDialogEnabled[23] == false) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24) )
+			if ( m_bIsDialogEnabled[11] && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24) )
 			{	if (m_pItemList[cItemID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
 				{	bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, 0, cItemID, m_stDialogBoxInfo[39].sV3, 0, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
 					return;
@@ -35968,7 +35968,7 @@ void CGame::UpdateScreen_OnGame()
 		
 		ZeroMemory(G_cTxt, sizeof(G_cTxt));
 		if  (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sIDnum == 650 || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
-		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan);
+		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
 			iEntry++;
 			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 		}
@@ -36446,7 +36446,7 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
 	int i, iPointerLoc;
-	double d1, d2, d3;
+	float d1, d2, d3;
 	sX = m_stDialogBoxInfo[59].sX;
 	sY = m_stDialogBoxInfo[59].sY;
 	char dane1[120], cTxt[50], cMapName[25];
@@ -36523,8 +36523,8 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 		if (m_stQuestList[i].iQuestID != 0) iTotalLines++;
 
 	if (iTotalLines > 17) {
-		d1 = (double)m_stDialogBoxInfo[59].sView;
-		d2 = (double)(iTotalLines - 17);
+		d1 = (float)m_stDialogBoxInfo[59].sView;
+		d2 = (float)(iTotalLines - 17);
 		d3 = (274.0f * d1) / d2;
 		iPointerLoc = (int)(d3);
 		DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -36538,8 +36538,8 @@ void CGame::DrawDialogBox_QuestList(short msX, short msY, short msZ, char cLB)
 		{
 			if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 			{
-				d1 = (double)(msY - (sY + 35));
-				d2 = (double)(iTotalLines - 17);
+				d1 = (float)(msY - (sY + 35));
+				d2 = (float)(iTotalLines - 17);
 				d3 = (d1 * d2) / 274.0f;
 				m_stDialogBoxInfo[59].sView = (int)(d3 + 0.5f);
 			}

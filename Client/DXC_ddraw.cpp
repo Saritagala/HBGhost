@@ -487,14 +487,14 @@ void DXC_ddraw::_TestPixelFormat()
 	}
 }
 
-long DXC_ddraw::_CalcMaxValue(int iS, int iD, char cMode, char cMethod, double dAlpha)
+long DXC_ddraw::_CalcMaxValue(int iS, int iD, char cMode, char cMethod, float dAlpha)
 {
  long Sum;
- double dTmp;
+ float dTmp;
  
 	switch (cMethod) {
 	case 1:
-		dTmp = (double)iS;
+		dTmp = (float)iS;
 		dTmp = dTmp * dAlpha;
 		iS = (int)dTmp;
 		Sum = (iS) + (iD);
@@ -659,7 +659,7 @@ void DXC_ddraw::PutPixel(short sX, short sY, UINT16 wR, UINT16 wG, UINT16 wB)
 {
  UINT16 * pDst;
 #ifdef RES_HIGH
-	if ((sX < 0) || (sY < 0) || (sX > 800) || (sY > 600)) return;
+	if ((sX < 0) || (sY < 0) || (sX > 799) || (sY > 599)) return;
 #else
 	if ((sX < 0) || (sY < 0) || (sX > 639) || (sY > 479)) return;
 #endif

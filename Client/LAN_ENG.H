@@ -1599,7 +1599,7 @@
  #define	NOTIFYMSG_MAGICEFFECT_ON9	"Illusion magic casted, impossible to tell who is who!"
 
 #define	NOTIFYMSG_MAGICEFFECT_ON10	"You were poisoned!"
-#define	NOTIFYMSG_MAGICEFFECT_ON11	"Berserk magic casted! You deal double physical damage!"
+#define	NOTIFYMSG_MAGICEFFECT_ON11	"Berserk magic casted! You deal float physical damage!"
 #define	NOTIFYMSG_MAGICEFFECT_ON12	"Transformation magic effect, you have been transformed as a monster"
 #define	NOTIFYMSG_MAGICEFFECT_ON13	"You have been frozen! Your movement decreases to 50%."
 #define	NOTIFYMSG_MAGICEFFECT_ON14  "You are completely protected from magic!"

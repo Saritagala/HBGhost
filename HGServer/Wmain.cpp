@@ -231,7 +231,7 @@ DWORD written;
 	return 0;
 }
 
-LONG lpTopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo){
+UINT32 lpTopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo){
 
 	//Shutdown everything
 	G_bIsThread = false;

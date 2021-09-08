@@ -4274,7 +4274,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, UINT32 dw
 	bool   bRet;
 	int    iTemp, iValue;
 	SYSTEMTIME SysTime;
-	long iDateSum1, iDateSum2;
+	UINT32 iDateSum1, iDateSum2;
 	bool   bIsNotUsedItemFound = false;
 
 	if (m_pClientList[iClientH] == 0) return false;
@@ -6601,14 +6601,14 @@ DPDC_STOP_DECODING:;
 	if (m_Misc.bCheckValidName(m_pClientList[iClientH]->m_cAccountName) == false) return false;
 	if (m_pClientList[iClientH]->m_iPenaltyBlockYear != 0) {
 		GetLocalTime(&SysTime);
-		iDateSum1 = (long)m_pClientList[iClientH]->m_iPenaltyBlockYear*10000 + m_pClientList[iClientH]->m_iPenaltyBlockMonth*100 + m_pClientList[iClientH]->m_iPenaltyBlockDay;
-		iDateSum2 = (long)SysTime.wYear*10000 + SysTime.wMonth*100 + SysTime.wDay;
+		iDateSum1 = (UINT32)(m_pClientList[iClientH]->m_iPenaltyBlockYear*10000 + m_pClientList[iClientH]->m_iPenaltyBlockMonth*100 + m_pClientList[iClientH]->m_iPenaltyBlockDay);
+		iDateSum2 = (UINT32)(SysTime.wYear*10000 + SysTime.wMonth*100 + SysTime.wDay);
 		if (iDateSum1 >= iDateSum2) return false;
 	}
 	if (m_pClientList[iClientH]->m_iReserveTime != 0) {
 		GetLocalTime(&SysTime);
-		iDateSum1 = (long)m_pClientList[iClientH]->m_iReserveTime;
-		iDateSum2 = (long)SysTime.wMonth*10000 + SysTime.wDay*100 + SysTime.wHour;
+		iDateSum1 = (UINT32)m_pClientList[iClientH]->m_iReserveTime;
+		iDateSum2 = (UINT32)(SysTime.wMonth*10000 + SysTime.wDay*100 + SysTime.wHour);
 		if (iDateSum2 >= iDateSum1) {
 			// SNOOPY: Bug here ii wrong, should be iClientH
 			SendNotifyMsg(0, iClientH, DEF_NOTIFY_FIGHTZONERESERVE, -2, 0, 0, 0);

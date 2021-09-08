@@ -100,14 +100,14 @@ void CMisc::GetPoint(int x0, int y0, int x1, int y1, int * pX, int * pY, int * p
 
 void CMisc::GetDirPoint(char cDir, int * pX, int * pY)
 {	switch(cDir) {
-	case 1:	*pY--; break;
-	case 2:	*pY--; *pX++;	break;
-	case 3:	*pX++; break;
-	case 4:	*pX++; *pY++;	break;
-	case 5:	*pY++; break;
-	case 6:	*pX--; *pY++;	break;
-	case 7:	*pX--; break;
-	case 8:	*pX--; *pY--;	break;
+	case 1:	--*pY; break;
+	case 2:	--*pY; ++*pX;	break;
+	case 3:	++*pX; break;
+	case 4:	++*pX; ++*pY;	break;
+	case 5:	++*pY; break;
+	case 6:	--*pX; ++*pY;	break;
+	case 7:	--*pX; break;
+	case 8:	--*pX; --*pY;	break;
 	}
 }
 
@@ -135,7 +135,7 @@ void CMisc::ReplaceString(char * pStr, char cFrom, char cTo)
 }
 
 char CMisc::cCalcDirection(short sX, short sY, short dX, short dY)
-{double dTmp1, dTmp2, dTmp3;
+{float dTmp1, dTmp2, dTmp3;
 
 	if ((sX == dX) && (sY == dY)) return 1;
 	if ((sX == dX) && (sY != dY))
@@ -146,8 +146,8 @@ char CMisc::cCalcDirection(short sX, short sY, short dX, short dY)
 	{	if (sX > dX) return 7;
 		else return 3;
 	}
-	dTmp1 = (double)(dX - sX);
-	dTmp2 = (double)(dY - sY);
+	dTmp1 = (float)(dX - sX);
+	dTmp2 = (float)(dY - sY);
 	dTmp3 = dTmp1 / dTmp2;
 	if (dTmp3 < -3)
 	{	if (sX > dX) return 7;

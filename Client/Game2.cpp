@@ -13155,8 +13155,10 @@ void CGame::DrawDialogBox_GuildMenu(short msX, short msY)
 		PutString(sX + 75, sY + 144, "____________________", RGB(25, 35, 25));
 
 		if (iGetTopDialogBoxIndex() != 7)
-			PutString(sX + 75, sY + 140, m_cGuildName, RGB(255, 255, 255), 16, false, 2);
-
+		{
+			//PutString(sX + 75, sY + 140, m_cGuildName, RGB(255, 255, 255), 16, false, 2);
+			PutString(sX + 75, sY + 140, m_cGuildName, RGB(255, 255, 255));
+		}
 		PutAlignedString(sX + 24, sX + 239, sY + 175, "Making a Guild costs 100.000 Gold.", 4, 0, 50);//"
 
 		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY)) {
@@ -14600,11 +14602,9 @@ void CGame::DrawQuestHelper()
 	iY = 130;
 #endif
 
-	PutString2(iX, iY, DEF_QUESTHELPER, 255, 200, 0);
-
 	for (i = 0; i < DEF_MAXQUEST; i++) {
 		if (m_stQuest[i].sQuestType != 0) {
-
+			PutString2(iX, iY, DEF_QUESTHELPER, 255, 200, 0);
 			if (m_stQuest[i].bIsQuestCompleted) {
 				//PutString2(iX, iY + 14 + (iEntry *30), DEF_QUESTHELPERCOMPLETE, 255, 0, 0);
 				ZeroMemory(cTxt2, sizeof(cTxt2));
@@ -15437,7 +15437,7 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					}
 					if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 					{
-						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == true)
 							&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 						{
 							PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(255, 255, 0));
@@ -15453,7 +15453,7 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					}
 					else
 					{
-						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == true)
 							&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 						{
 							PutString(sX + 30, sY + 30 + (x * 15) + 15, cTemp, RGB(70, 130, 180));
@@ -17372,20 +17372,20 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 					if (strcmp(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_cName, "????") == 0) continue;
 					if ((msX >= sX + 44) && (msX <= sX + 135 + 44) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 					{
-						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == TRUE)
+						if ((m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_bIsUseable == true)
 							&& (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel != 0))
 						{
-							if (m_bSkillUsingStatus == TRUE)
+							if (m_bSkillUsingStatus == true)
 							{
 								AddEventList(DLGBOX_CLICK_SKILL1, 10); // "You are already using other skill."
 								return;
 							}
-							if ((m_bCommandAvailable == FALSE) || (m_iHP <= 0))
+							if ((m_bCommandAvailable == false) || (m_iHP <= 0))
 							{
 								AddEventList(DLGBOX_CLICK_SKILL2, 10); // "You can't use a skill while you are moving."
 								return;
 							}
-							if (m_bIsGetPointingMode == TRUE)
+							if (m_bIsGetPointingMode == true)
 							{
 								return;
 							}
@@ -17393,7 +17393,7 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 							case 0:
 							case 2:
 								bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USESKILL, 0, (i + m_stDialogBoxInfo[15].sView), 0, 0, 0);
-								m_bSkillUsingStatus = TRUE;
+								m_bSkillUsingStatus = true;
 								DisableDialogBox(15);
 								PlaySound('E', 14, 5);
 								break;
@@ -17402,11 +17402,11 @@ void CGame::DlgBoxClick_Skill(short msX, short msY)
 					}
 					/*else if ((msX >= sX + 215) && (msX <= sX + 240) && (msY >= sY + 45 + i * 15) && (msY <= sY + 59 + i * 15))
 					{
-						if (m_stDialogBoxInfo[15].bFlag == FALSE)
+						if (m_stDialogBoxInfo[15].bFlag == false)
 						{
 							bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_SETDOWNSKILLINDEX, 0, i + m_stDialogBoxInfo[15].sView, 0, 0, 0);
 							PlaySound('E', 14, 5);
-							m_stDialogBoxInfo[15].bFlag = TRUE;
+							m_stDialogBoxInfo[15].bFlag = true;
 						}
 					}*/
 					x++;

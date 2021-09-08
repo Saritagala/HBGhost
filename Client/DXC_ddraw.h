@@ -45,7 +45,7 @@ public:
 	UINT32 _dwColorMatch(IDirectDrawSurface7 * pdds4, UINT16 wColorKey);
 	UINT32 _dwColorMatch(IDirectDrawSurface7 * pdds4, COLORREF rgb);
 	long _CalcMinValue(int iS, int iD, char cMode);
-	long _CalcMaxValue(int iS, int iD, char cMode, char cMethod, double dAlpha);
+	long _CalcMaxValue(int iS, int iD, char cMode, char cMethod, float dAlpha);
 	HRESULT iSetColorKey(IDirectDrawSurface7 * pdds4, UINT16 wColorKey);
 	void PutPixel(short sX, short sY, UINT16 wR, UINT16 wG, UINT16 wB);
 	void DrawShadowBox(short sX, short sY, short dX, short dY, int iType = 0, bool border = false);
