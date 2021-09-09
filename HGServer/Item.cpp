@@ -5182,6 +5182,10 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				// Full Ancient Slate ??
 				if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum == 867) {
 					// Slates dont work on Heldenian Map
+					if ((m_bIsHeldenianMode == true) && (m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_bIsHeldenianMap == true)) {
+						ItemDepleteHandler(iClientH, sItemIndex, true, false);
+						return;
+					}
 					switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2) {
 					case 2: // Bezerk slate
 						m_pClientList[iClientH]->m_cMagicEffectStatus[DEF_MAGICTYPE_BERSERK] = true;
@@ -5196,28 +5200,30 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 						if (strlen(cSlateType) == 0) {
 							strcpy(cSlateType, "Invincible");
 						}
-						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_INVINCIBLE, 0, 0, 0, 0);
-						break;
 					case 3: // Mana slate
 						if (strlen(cSlateType) == 0) {
 							strcpy(cSlateType, "Mana");
 						}
-						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_MANA, 0, 0, 0, 0);
-						break;
 					case 4: // Exp slate
 						if (strlen(cSlateType) == 0) {
 							strcpy(cSlateType, "Exp");
 						}
-						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_EXP, 0, 0, 0, 0);
-						break;
+						SetSlateFlag(iClientH, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2, true);
+						bRegisterDelayEvent(DEF_DELAYEVENTTYPE_ANCIENT_TABLET, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2,
+							dwTime + (1000 * 600), iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
+						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2) {
+						case 1:
+							iEffectResult = 4;
+							break;
+						case 3:
+							iEffectResult = 5;
+							break;
+						case 4:
+							iEffectResult = 6;
+							break;
+						}
 					}
-					SetSlateFlag(iClientH, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2, true);
-					bRegisterDelayEvent(DEF_DELAYEVENTTYPE_ANCIENT_TABLET, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2,
-						dwTime + (1000 * 600), iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
-
 				}
-				if (strlen(cSlateType) > 0)
-					_bItemLog(DEF_ITEMLOG_USE, iClientH, strlen(cSlateType), m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 			}
 			break;
 
@@ -5240,7 +5246,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_pClientList[iClientH]->m_iHP > iMax) m_pClientList[iClientH]->m_iHP = iMax;
 				if (m_pClientList[iClientH]->m_iHP <= 0)   m_pClientList[iClientH]->m_iHP = 1;
 
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
+				iEffectResult = 1;
 			}
 			break;
 
@@ -5265,7 +5271,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_pClientList[iClientH]->m_iMP > iMax)
 					m_pClientList[iClientH]->m_iMP = iMax;
 
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
+				iEffectResult = 2;
 			}
 			break;
 
@@ -5289,7 +5295,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_pClientList[iClientH]->m_iSP > iMax)
 					m_pClientList[iClientH]->m_iSP = iMax;
 
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
+				iEffectResult = 3;
 			}
 
 			if (m_pClientList[iClientH]->m_bIsPoisoned == true) {
@@ -5583,6 +5589,30 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 		// *** Request Teleport HandlerÂ°Â¡ Ã€Ã›ÂµÂ¿ÂµÃ‡Â¸Ã© Ã€ÃŒÂ¹ÃŒ ÂµÂ¥Ã€ÃŒÃ…Ã Ã€ÃºÃ€Ã¥Ã€ÃŒ Â¿Ã¤ÃƒÂ»ÂµÃˆ Â»Ã³Ã…Ã‚Ã€ÃŒÂ¹Ã‡Â·Ã Ã€ÃŒÃˆÃ„Â¿Â¡ Â¾Ã†Ã€ÃŒÃ…Ã›Ã€Â» Â¾Ã¸Â¾Ã–ÂºÃÂ¾ÃŸ Â¼Ã’Â¿Ã«Ã€ÃŒ Â¾Ã¸Â´Ã™. 
 		// Â¾Ã†Ã€ÃŒÃ…Ã›Ã€Â» Â¸Ã•Ã€Ãº Â¾Ã¸Â¾Ã˜Â´Ã™.
 		ItemDepleteHandler(iClientH, sItemIndex, true, true);
+
+		switch (iEffectResult) {
+		case 1:
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
+			break;
+		case 2:
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
+			break;
+		case 3:
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
+			break;
+		case 4: // Invincible
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_INVINCIBLE, 0, 0, 0, 0);
+			break;
+		case 5: // Mana
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_MANA, 0, 0, 0, 0);
+			break;
+		case 6: // EXP
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_EXP, 0, 0, 0, 0);
+			break;
+		default:
+			break;
+		}
+
 	}
 	else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE_DEST) {
 		// Â»Ã§Â¿Ã«Ã‡ÃÂ¸Ã©Â¼Â­ Â¸Ã±Ã‡Â¥ÃÃ¶ÃÂ¡Ã€Â» ÃÃ¶ÃÂ¤Ã‡ÃÂ´Ã‚ Â¾Ã†Ã€ÃŒÃ…Ã›.
@@ -7317,6 +7347,7 @@ int CGame::SetItemCount(int iClientH, int iItemIndex, UINT32 dwCount)
 void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 {
 	int i, iRet;
+	short* sp;
 	char cItemID[4], ctr[4];
 	char* cp, cSlateColour, cData[120];
 	bool bIsSlatePresent = false;
@@ -7334,10 +7365,10 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 	}
 
 	cp = (char*)pData;
-	cp += 10;
+	cp += 11;
 
 	// 14% chance of creating slates
-	if (iDice(1, 100) < m_sSlateSuccessRate) bIsSlatePresent = true;
+	if (iDice(1, 100) <= m_sSlateSuccessRate) bIsSlatePresent = true; // 40
 
 	try {
 		// make sure slates really exist
@@ -7367,14 +7398,14 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 		bIsSlatePresent = false;
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_CREATEFAIL, 0, 0, 0, 0);
 		wsprintf(G_cTxt, "TSearch Slate Hack: (%s) Player: (%s) - creating slates without correct item!", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
-		PutHackLogFileList(G_cTxt);
-		//DeleteClient(iClientH, true, true);
+		PutLogList(G_cTxt);
+		DeleteClient(iClientH, true, true);
 		return;
 	}
 
 	// Are all 4 slates present ??
 	if (ctr[0] != 1 || ctr[1] != 1 || ctr[2] != 1 || ctr[3] != 1) {
-		bIsSlatePresent = false;
+		bIsSlatePresent = true;
 		return;
 	}
 
@@ -7406,19 +7437,19 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 		iSlateType = 1;
 		cSlateColour = 32;
 	}
-	else if (i >= 50 && i < 250) { // Bezerk slate
+	else if (i < 250) { // Bezerk slate
 		iSlateType = 2;
 		cSlateColour = 3;
 	}
-	else if (i >= 250 && i < 750) { // Exp slate
+	else if (i < 750) { // Exp slate
 		iSlateType = 4;
 		cSlateColour = 7;
 	}
-	else if (i >= 750 && i < 950) { // Mana slate
+	else if (i < 950) { // Mana slate
 		iSlateType = 3;
 		cSlateColour = 37;
 	}
-	else if (i >= 950) { // Hp slate
+	else if (i < 1001) { // Hp slate
 		iSlateType = 1;
 		cSlateColour = 32;
 	}
@@ -7429,7 +7460,7 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 	ZeroMemory(cData, sizeof(cData));
 
 	// Create slates
-	if (_bInitItemAttr(pItem, 867) == false) {
+	if (!_bInitItemAttr(pItem, 867)) {
 		delete pItem;
 		return;
 	}
@@ -7443,17 +7474,89 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 
 		pItem->m_sItemSpecEffectValue2 = iSlateType;
 		pItem->m_cItemColor = cSlateColour;
-		if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
-			SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, 0);
+		if (_bAddClientItemList(iClientH, pItem, &iEraseReq)) {
+			ZeroMemory(cData, sizeof(cData));
+			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			*dwp = MSGID_NOTIFY;
+			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			*wp = DEF_NOTIFY_ITEMOBTAINED;
+
+			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
+			*cp = 1;
+			cp++;
+
+			memcpy(cp, pItem->m_cName, 20);
+			cp += 20;
+
+			dwp = (UINT32*)cp;
+			*dwp = pItem->m_dwCount;
+			cp += 4;
+
+			*cp = pItem->m_cItemType;
+			cp++;
+
+			*cp = pItem->m_cEquipPos;
+			cp++;
+
+			*cp = (char)0; // ¾??¾|?????eøµ??¾??
+			cp++;
+
+			sp = (short*)cp;
+			*sp = pItem->m_sLevelLimit;
+			cp += 2;
+
+			*cp = pItem->m_cGenderLimit;
+			cp++;
+
+			wp = (UINT16*)cp;
+			*wp = pItem->m_wCurLifeSpan;
+			cp += 2;
+
+			wp = (UINT16*)cp;
+			*wp = pItem->m_wWeight;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = pItem->m_sSprite;
+			cp += 2;
+
+			sp = (short*)cp;
+			*sp = pItem->m_sSpriteFrame;
+			cp += 2;
+
+			*cp = pItem->m_cItemColor;
+			cp++;
+
+			*cp = (char)pItem->m_sItemSpecEffectValue2;
+			cp++;
+
+			dwp = (UINT32*)cp;
+			*dwp = pItem->m_dwAttribute;
+			cp += 4;
+
+			*cp = (char)pItem->m_sItemSpecEffectValue3;
+			cp++;
 
 			if (iEraseReq == 1) delete pItem;
+
+			// ¾|??dº¸ |¼?
+			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 54);
+			switch (iRet) {
+			case DEF_XSOCKEVENT_QUENEFULL:
+			case DEF_XSOCKEVENT_SOCKETERROR:
+			case DEF_XSOCKEVENT_CRITICALERROR:
+			case DEF_XSOCKEVENT_SOCKETCLOSED:
+				// ¸?a?º¸³¾¶§ ¿¡·¯°¡ ¹???¦°???
+				DeleteClient(iClientH, true, true);
+				return;
+			}
 		}
 		else {
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem);
+			
 			/*SendEventToNearClient_TypeB(MSGID_MAGICCONFIGURATIONCONTENTS, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem->m_sSprite, pItem->m_sSpriteFrame,
 				pItem->m_cItemColor);*/
-
 			SendEventToNearClient_TypeB(MSGID_MAGICCONFIGURATIONCONTENTS, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem->m_sIDnum, pItem->m_sSpriteFrame,
 				pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -7469,12 +7572,13 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 			case DEF_XSOCKEVENT_SOCKETERROR:
 			case DEF_XSOCKEVENT_CRITICALERROR:
 			case DEF_XSOCKEVENT_SOCKETCLOSED:
-				// ¸Ş½ÃÁö¸¦ º¸³¾¶§ ¿¡·¯°¡ ¹ß»ıÇß´Ù¸é Á¦°ÅÇÑ´Ù.
+				// ¸?a?º¸³¾¶§ ¿¡·¯°¡ ¹???¦°???
 				DeleteClient(iClientH, true, true);
 				break;
 			}
 		}
 	}
+	return;
 }
 
 void CGame::SetSlateFlag(int iClientH, short sType, bool bFlag)
@@ -7488,7 +7592,7 @@ void CGame::SetSlateFlag(int iClientH, short sType, bool bFlag)
 		return;
 	}
 
-	if (bFlag == true) {
+	if (bFlag) {
 		if (sType == 1) { // Invincible slate
 			m_pClientList[iClientH]->m_iStatus |= 0x400000;
 		}

@@ -22523,12 +22523,12 @@ CAE_SKIPCOUNTERATTACK:;
 					m_pNpcList[sTargetH]->m_cDir = cDamageMoveDir;
 
 					SendEventToNearClient_TypeA(sTargetH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTMOVE, 0, 0, 0);
-CAE_SKIPDAMAGEMOVE2:;
+
 				}
 				else {
 					SendEventToNearClient_TypeA(sTargetH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTDAMAGE, iDamage, sAttackerWeapon, 0);
 				}
-
+CAE_SKIPDAMAGEMOVE2:;
 				if (m_pNpcList[sTargetH]->m_cMagicEffectStatus[ DEF_MAGICTYPE_HOLDOBJECT ] == 1) {
 					m_pNpcList[sTargetH]->m_cMagicEffectStatus[ DEF_MAGICTYPE_HOLDOBJECT ] = 0;
 					bRemoveFromDelayEventList(sTargetH, DEF_OWNERTYPE_NPC, DEF_MAGICTYPE_HOLDOBJECT);
@@ -23984,6 +23984,14 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, UINT16 wMsgType, UINT32 sV1, UIN
 		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 6 + strlen(pString) + 1);
 		break;
 
+	case DEF_NOTIFY_SLATE_CREATESUCCESS:
+		dwp = (UINT32*)cp;
+		*dwp = sV1;
+		cp += 4;
+
+		iRet = m_pClientList[iToH]->m_pXSock->iSendMsg(cData, 10);
+		break;
+
 	case DEF_NOTIFY_REWARDGOLD:
 		dwp = (UINT32*)cp;
 		*dwp = m_pClientList[iToH]->m_iRewardGold;
@@ -24356,10 +24364,8 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, UINT16 wMsgType, UINT32 sV1, UIN
 	case DEF_NOTIFY_CANNOTBANGUILDMAN:
 	case DEF_NOTIFY_METEORSTRIKEHIT:
 	case DEF_NOTIFY_SPECIALABILITYENABLED:
-	case DEF_NOTIFY_SLATE_STATUS:
 	case DEF_NOTIFY_FISHSUCCESS:
 	case DEF_NOTIFY_FISHFAIL:
-	case DEF_NOTIFY_SLATE_CREATESUCCESS:
 	case DEF_NOTIFY_ITEMSOLD:
 	case DEF_NOTIFY_APOCGATECLOSE:
 	case DEF_NOTIFY_KILLED:
@@ -24384,6 +24390,7 @@ void CGame::SendNotifyMsg(int iFromH, int iToH, UINT16 wMsgType, UINT32 sV1, UIN
 	case DEF_NOTIFY_FISHCANCELED:
 	case DEF_NOTIFY_CANNOTRATING:
 	case DEF_NOTIFY_SKILLUSINGEND:
+	case DEF_NOTIFY_SLATE_STATUS:
 		wp = (UINT16*)cp;
 		*wp = (UINT16)sV1;
 		cp += 2;
@@ -26316,9 +26323,9 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 	if (m_pNpcList[iNpcH]->m_sAreaSize != 0) {
 		bFly = m_pMapList[m_pClientList[iNpcH]->m_cMapIndex]->bCheckFlySpaceAvailable(dX, dY, cDir, iNpcH);
 	}
+	m_pNpcList[iNpcH]->m_cDir = cDir;
 	if (((abs(sX - dX) <= 1) && (abs(sY - dY) <= 1)) && (m_pNpcList[iNpcH]->m_sAreaSize == 0)) 
 	{
-		m_pNpcList[iNpcH]->m_cDir = cDir;
 		if (m_pNpcList[iNpcH]->m_cActionLimit == 5) 
 		{
 			switch (m_pNpcList[iNpcH]->m_sType) {
@@ -26361,9 +26368,6 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 		}
 	}
 	else {
-		cDir = m_Misc.cGetNextMoveDir(sX, sY, dX, dY);
-		if (cDir == 0) return;
-		m_pNpcList[iNpcH]->m_cDir = cDir;
 		if ((m_pNpcList[iNpcH]->m_cMagicLevel > 0) && (iDice(1, 3) == 2) &&
 			(abs(sX - dX) <= 11) && (abs(sY - dY) <= 9)) {
 			iMagicType = -1;
@@ -26673,6 +26677,7 @@ void CGame::NpcBehavior_Attack(int iNpcH)
 						goto NBA_BREAK1;
 						break;
 					}
+					break;
 				NBA_BREAK1:;
 					SendEventToNearClient_TypeA(iNpcH, DEF_OWNERTYPE_NPC, MSGID_EVENT_MOTION, DEF_OBJECTATTACK, dX, dY, 20);
 					iCalculateAttackEffect(m_pNpcList[iNpcH]->m_iTargetIndex, m_pNpcList[iNpcH]->m_cTargetType, iNpcH, DEF_OWNERTYPE_NPC, dX, dY, 20);
