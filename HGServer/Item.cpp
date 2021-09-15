@@ -5134,11 +5134,11 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 	int iMax, iV1, iV2, iV3, iSEV1, iEffectResult = 0;
 	UINT32 dwTime, dwGUID;
 	short sTemp, sTmpType, sTmpAppr1;
-	char cSlateType[20];
+	//char cSlateType[20];
 	bool bDepleteNow = true;
 
 	dwTime = timeGetTime();
-	ZeroMemory(cSlateType, sizeof(cSlateType));
+	//ZeroMemory(cSlateType, sizeof(cSlateType));
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
@@ -5193,36 +5193,31 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 						bRegisterDelayEvent(DEF_DELAYEVENTTYPE_MAGICRELEASE, DEF_MAGICTYPE_BERSERK, dwTime + (1000 * 600),
 							iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
 						SendNotifyMsg(0, iClientH, DEF_NOTIFY_MAGICEFFECTON, DEF_MAGICTYPE_BERSERK, 1, 0, 0);
-						strcpy(cSlateType, "Berserk");
+						//strcpy(cSlateType, "Berserk");
 						break;
 
 					case 1: // Invincible slate
-						if (strlen(cSlateType) == 0) {
+						/*if (strlen(cSlateType) == 0) {
 							strcpy(cSlateType, "Invincible");
-						}
+						}*/
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_INVINCIBLE, 0, 0, 0, 0);
+						break;
 					case 3: // Mana slate
-						if (strlen(cSlateType) == 0) {
+						/*if (strlen(cSlateType) == 0) {
 							strcpy(cSlateType, "Mana");
-						}
+						}*/
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_MANA, 0, 0, 0, 0);
+						break;
 					case 4: // Exp slate
-						if (strlen(cSlateType) == 0) {
+						/*if (strlen(cSlateType) == 0) {
 							strcpy(cSlateType, "Exp");
-						}
-						SetSlateFlag(iClientH, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2, true);
-						bRegisterDelayEvent(DEF_DELAYEVENTTYPE_ANCIENT_TABLET, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2,
-							dwTime + (1000 * 600), iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
-						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2) {
-						case 1:
-							iEffectResult = 4;
-							break;
-						case 3:
-							iEffectResult = 5;
-							break;
-						case 4:
-							iEffectResult = 6;
-							break;
-						}
+						}*/
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_EXP, 0, 0, 0, 0);
+						break;
 					}
+					SetSlateFlag(iClientH, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2, true);
+					bRegisterDelayEvent(DEF_DELAYEVENTTYPE_ANCIENT_TABLET, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2,
+							dwTime + (1000 * 600), iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
 				}
 			}
 			break;
@@ -5246,7 +5241,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_pClientList[iClientH]->m_iHP > iMax) m_pClientList[iClientH]->m_iHP = iMax;
 				if (m_pClientList[iClientH]->m_iHP <= 0)   m_pClientList[iClientH]->m_iHP = 1;
 
-				iEffectResult = 1;
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
 			}
 			break;
 
@@ -5271,7 +5266,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_pClientList[iClientH]->m_iMP > iMax)
 					m_pClientList[iClientH]->m_iMP = iMax;
 
-				iEffectResult = 2;
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
 			}
 			break;
 
@@ -5295,7 +5290,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_pClientList[iClientH]->m_iSP > iMax)
 					m_pClientList[iClientH]->m_iSP = iMax;
 
-				iEffectResult = 3;
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
 			}
 
 			if (m_pClientList[iClientH]->m_bIsPoisoned == true) {
@@ -5589,29 +5584,6 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 		// *** Request Teleport Handler°¡ ÀÛµ¿µÇ¸é ÀÌ¹Ì µ¥ÀÌÅÍ ÀúÀåÀÌ ¿äÃ»µÈ »óÅÂÀÌ¹Ç·Î ÀÌÈÄ¿¡ ¾ÆÀÌÅÛÀ» ¾ø¾ÖºÁ¾ß ¼Ò¿ëÀÌ ¾ø´Ù. 
 		// ¾ÆÀÌÅÛÀ» ¸ÕÀú ¾ø¾Ø´Ù.
 		ItemDepleteHandler(iClientH, sItemIndex, true, true);
-
-		switch (iEffectResult) {
-		case 1:
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_HP, 0, 0, 0, 0);
-			break;
-		case 2:
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_MP, 0, 0, 0, 0);
-			break;
-		case 3:
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SP, 0, 0, 0, 0);
-			break;
-		case 4: // Invincible
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_INVINCIBLE, 0, 0, 0, 0);
-			break;
-		case 5: // Mana
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_MANA, 0, 0, 0, 0);
-			break;
-		case 6: // EXP
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_EXP, 0, 0, 0, 0);
-			break;
-		default:
-			break;
-		}
 
 	}
 	else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE_DEST) {

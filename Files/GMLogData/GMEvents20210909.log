@@ -1,0 +1,12 @@
+2021:09:09:18:04:31	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AncientTablet(LU)"
+2021:09:09:18:04:44	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AncientTablet(LU) "
+2021:09:09:18:04:53	Loc(aresden) IP(192.168.0.53) GM(test):"/enableadmincommand 2257516364627831 "
+2021:09:09:18:05:02	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AncientTablet(LD)"
+2021:09:09:18:05:22	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AcientTablet(LU)"
+2021:09:09:18:05:22	(192.168.0.53) GM Order(test): Create ItemName(AcientTablet(LU))
+2021:09:09:18:05:36	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AcientTablet(LD)"
+2021:09:09:18:05:36	(192.168.0.53) GM Order(test): Create ItemName(AcientTablet(LD))
+2021:09:09:18:05:41	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AcientTablet(RU)"
+2021:09:09:18:05:41	(192.168.0.53) GM Order(test): Create ItemName(AcientTablet(RU))
+2021:09:09:18:05:43	Loc(aresden) IP(192.168.0.53) GM(test):"/createitem AcientTablet(RD)"
+2021:09:09:18:05:43	(192.168.0.53) GM Order(test): Create ItemName(AcientTablet(RD))

@@ -1422,7 +1422,7 @@ void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 {
 	short sX, sY, szX, szY, MapSzX, MapSzY;
 	UINT32 dwTime = G_dwGlobalTime;
-	double dV1, dV2, dV3;
+	float dV1, dV2, dV3;
 	int i, tX, tY;
 	sX = m_stDialogBoxInfo[36].sX;
 	sY = m_stDialogBoxInfo[36].sY;
@@ -1747,13 +1747,13 @@ void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 			for (i = 0; i < DEF_MAXCRUSADESTRUCTURES; i++)
 				if (m_stCrusadeStructureInfo[i].cType != 0)
 				{
-					dV1 = (double)MapSzX;
-					dV2 = (double)m_stCrusadeStructureInfo[i].sX;
-					dV3 = (dV2*(double)szX) / dV1;
+					dV1 = (float)MapSzX;
+					dV2 = (float)m_stCrusadeStructureInfo[i].sX;
+					dV3 = (dV2*(float)szX) / dV1;
 					tX = (int)dV3;
-					dV1 = (double)MapSzY;
-					dV2 = (double)m_stCrusadeStructureInfo[i].sY;
-					dV3 = (dV2*(double)szY) / dV1;
+					dV1 = (float)MapSzY;
+					dV2 = (float)m_stCrusadeStructureInfo[i].sY;
+					dV3 = (dV2*(float)szY) / dV1;
 					tY = (int)dV3;
 					switch (m_stCrusadeStructureInfo[i].cType) {
 					case 38:
@@ -1775,13 +1775,13 @@ void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 				}
 			if (m_iTeleportLocX != -1)
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_iTeleportLocX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_iTeleportLocX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_iTeleportLocY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_iTeleportLocY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				if ((m_stDialogBoxInfo[36].cMode == 1) && (tY >= 30) && (tY <= 494)) // Place the TP
 				{
@@ -1791,25 +1791,25 @@ void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 			}
 			if ((m_stDialogBoxInfo[36].cMode != 2) && (m_iConstructLocX != -1))
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_iConstructLocX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_iConstructLocX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_iConstructLocY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_iConstructLocY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 41, false, true); // Contr pt
 			}
 			if (strcmp(m_cMapName, "middleland") == 0)
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_sPlayerX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_sPlayerX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_sPlayerY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_sPlayerY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 43); // Player place
 			}
@@ -1819,12 +1819,12 @@ void CGame::DrawDialogBox_Commander(int msX, int msY) // Snoopy: Fixed for 351
 			if ((msX >= sX + 15) && (msX <= sX + 15 + 278)
 				&& (msY >= sY + 60) && (msY <= sY + 60 + 272)) // Draw mouse coordinates
 			{
-				dV1 = (double)(msX - (sX + 15));
-				dV2 = (double)MapSzX;
+				dV1 = (float)(msX - (sX + 15));
+				dV2 = (float)MapSzX;
 				dV3 = (dV2*dV1) / szX;
 				tX = (int)dV3;
-				dV1 = (double)(msY - (sY + 60));
-				dV2 = (double)MapSzX;
+				dV1 = (float)(msY - (sY + 60));
+				dV2 = (float)MapSzX;
 				dV3 = (dV2*dV1) / szY;
 				tY = (int)dV3;
 				if (tX < 30) tX = 30;
@@ -1843,7 +1843,7 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 {
 	short sX, sY, szX, szY, MapSzX, MapSzY;
 	UINT32 dwTime = G_dwGlobalTime;
-	double dV1, dV2, dV3;
+	float dV1, dV2, dV3;
 	int tX, tY;
 	char cMapName[12];
 	sX = m_stDialogBoxInfo[37].sX;
@@ -2051,13 +2051,13 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 			for (int i = 0; i < DEF_MAXCRUSADESTRUCTURES; i++)
 				if (m_stCrusadeStructureInfo[i].cType == 42)
 				{
-					dV1 = (double)MapSzX;
-					dV2 = (double)m_stCrusadeStructureInfo[i].sX;
-					dV3 = (dV2*(double)szX) / dV1;
+					dV1 = (float)MapSzX;
+					dV2 = (float)m_stCrusadeStructureInfo[i].sX;
+					dV3 = (dV2*(float)szX) / dV1;
 					tX = (int)dV3;
-					dV1 = (double)MapSzY;
-					dV2 = (double)m_stCrusadeStructureInfo[i].sY;
-					dV3 = (dV2*(double)szY) / dV1;
+					dV1 = (float)MapSzY;
+					dV2 = (float)m_stCrusadeStructureInfo[i].sY;
+					dV3 = (dV2*(float)szY) / dV1;
 					tY = (int)dV3;
 					switch (m_stCrusadeStructureInfo[i].cType) {
 					case 42:
@@ -2067,37 +2067,37 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 				}
 			if (m_iTeleportLocX != -1)
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_iTeleportLocX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_iTeleportLocX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_iTeleportLocY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_iTeleportLocY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 42, false, true); //TP
 			}
 			if ((m_stDialogBoxInfo[37].cMode != 2) && (m_iConstructLocX != -1))
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_iConstructLocX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_iConstructLocX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_iConstructLocY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_iConstructLocY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 41, false, true); // Contr pt
 			}
 			if (strcmp(m_cMapName, "middleland") == 0)
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_sPlayerX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_sPlayerX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_sPlayerY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_sPlayerY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 43); // Player place
 			}
@@ -2105,12 +2105,12 @@ void CGame::DrawDialogBox_Constructor(int msX, int msY) // Snoopy: Fixed for 351
 		if ((msX >= sX + 15) && (msX <= sX + 15 + 278)
 			&& (msY >= sY + 60) && (msY <= sY + 60 + 272))  // Draw mouse coordinates
 		{
-			dV1 = (double)(msX - (sX + 15));
-			dV2 = (double)MapSzX;
+			dV1 = (float)(msX - (sX + 15));
+			dV2 = (float)MapSzX;
 			dV3 = (dV2*dV1) / szX;
 			tX = (int)dV3;
-			dV1 = (double)(msY - (sY + 60));
-			dV2 = (double)MapSzX;
+			dV1 = (float)(msY - (sY + 60));
+			dV2 = (float)MapSzX;
 			dV3 = (dV2*dV1) / szY;
 			tY = (int)dV3;
 			if (tX < 30) tX = 30;
@@ -2129,7 +2129,7 @@ void CGame::DrawDialogBox_Soldier(int msX, int msY) // Snoopy: Fixed for 351
 	short sX, sY, szX, szY, MapSzX, MapSzY;
 	UINT32 dwTime = G_dwGlobalTime;
 	char cMapName[120];
-	double dV1, dV2, dV3;
+	float dV1, dV2, dV3;
 	int tX, tY;
 	sX = m_stDialogBoxInfo[38].sX;
 	sY = m_stDialogBoxInfo[38].sY;
@@ -2251,13 +2251,13 @@ void CGame::DrawDialogBox_Soldier(int msX, int msY) // Snoopy: Fixed for 351
 			for (int i = 0; i < DEF_MAXCRUSADESTRUCTURES; i++)
 				if (m_stCrusadeStructureInfo[i].cType == 42)
 				{
-					dV1 = (double)MapSzX;
-					dV2 = (double)m_stCrusadeStructureInfo[i].sX;
-					dV3 = (dV2*(double)szX) / dV1;
+					dV1 = (float)MapSzX;
+					dV2 = (float)m_stCrusadeStructureInfo[i].sX;
+					dV3 = (dV2*(float)szX) / dV1;
 					tX = (int)dV3;
-					dV1 = (double)MapSzY;
-					dV2 = (double)m_stCrusadeStructureInfo[i].sY;
-					dV3 = (dV2*(double)szY) / dV1;
+					dV1 = (float)MapSzY;
+					dV2 = (float)m_stCrusadeStructureInfo[i].sY;
+					dV3 = (dV2*(float)szY) / dV1;
 					tY = (int)dV3;
 					switch (m_stCrusadeStructureInfo[i].cType) {
 					case 42:
@@ -2267,25 +2267,25 @@ void CGame::DrawDialogBox_Soldier(int msX, int msY) // Snoopy: Fixed for 351
 				}
 			if (m_iTeleportLocX != -1)
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_iTeleportLocX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_iTeleportLocX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_iTeleportLocY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_iTeleportLocY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 42, false, true); //TP
 			}
 			if (strcmp(m_cMapName, "middleland") == 0)
 			{
-				dV1 = (double)MapSzX;
-				dV2 = (double)m_sPlayerX;
-				dV3 = (dV2*(double)szX) / dV1;
+				dV1 = (float)MapSzX;
+				dV2 = (float)m_sPlayerX;
+				dV3 = (dV2*(float)szX) / dV1;
 				tX = (int)dV3;
-				dV1 = (double)MapSzY;
-				dV2 = (double)m_sPlayerY;
-				dV3 = (dV2*(double)szY) / dV1;
+				dV1 = (float)MapSzY;
+				dV2 = (float)m_sPlayerY;
+				dV3 = (dV2*(float)szY) / dV1;
 				tY = (int)dV3;
 				DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_CRUSADE, sX + tX + 15, sY + tY + 60, 43); // Player place
 			}
@@ -2293,12 +2293,12 @@ void CGame::DrawDialogBox_Soldier(int msX, int msY) // Snoopy: Fixed for 351
 		if ((msX >= sX + 15) && (msX <= sX + 15 + 278)
 			&& (msY >= sY + 60) && (msY <= sY + 60 + 272))  // Draw mouse coordinates
 		{
-			dV1 = (double)(msX - (sX + 15));
-			dV2 = (double)MapSzX;
+			dV1 = (float)(msX - (sX + 15));
+			dV2 = (float)MapSzX;
 			dV3 = (dV2*dV1) / szX;
 			tX = (int)dV3;
-			dV1 = (double)(msY - (sY + 60));
-			dV2 = (double)MapSzX;
+			dV1 = (float)(msY - (sY + 60));
+			dV2 = (float)MapSzX;
 			dV3 = (dV2*dV1) / szY;
 			tY = (int)dV3;
 			if (tX < 30) tX = 30;
@@ -3919,9 +3919,9 @@ int CGame::iGetManaCost(int iMagicNo)
 	if (m_bIsSafeAttackMode) iManaCost += (iManaCost / 2) - (iManaCost / 10);
 	if (iManaSave > 0)
 	{
-		double dV1 = (double)iManaSave;
-		double dV2 = (double)(dV1 / 100.0f);
-		double dV3 = (double)iManaCost;
+		float dV1 = (float)iManaSave;
+		float dV2 = (float)(dV1 / 100.0f);
+		float dV3 = (float)iManaCost;
 		dV1 = dV2 * dV3;
 		dV2 = dV3 - dV1;
 		iManaCost = (int)dV2;
@@ -5862,7 +5862,7 @@ void CGame::DrawDialogBox_RepairAll(short msX, short msY, short msZ) //4LifeX Mo
 	short sX, sY, szX;
 	char cTxt[120];
 	int i, iTotalLines, iPointerLoc;
-	double d1, d2, d3;
+	float d1, d2, d3;
 
 	sX = m_stDialogBoxInfo[52].sX;
 	sY = m_stDialogBoxInfo[52].sY;
@@ -5885,8 +5885,8 @@ void CGame::DrawDialogBox_RepairAll(short msX, short msY, short msZ) //4LifeX Mo
 	iTotalLines = totalItemRepair;
 	if (iTotalLines > 15)
 	{
-		d1 = (double)m_stDialogBoxInfo[52].sView;
-		d2 = (double)(iTotalLines - 15);
+		d1 = (float)m_stDialogBoxInfo[52].sView;
+		d2 = (float)(iTotalLines - 15);
 		d3 = (274.0f * d1) / d2;
 		iPointerLoc = (int)d3;
 	}
@@ -7384,11 +7384,11 @@ void CGame::DrawDialogBox_GMPanel(short msX, short msY, short msZ, char cLB)
 	int  i, iTemp;
 	char cTemp2[255], cStr2[255], cStr3[255];
 
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	int  iTotalLines, iPointerLoc;
 	bool bFlagStatLow = false;
 	bool bFlagRedShown = false;
-	double d1, d2, d3;
+	float d1, d2, d3;
 	int iR, iG, iB;
 
 	char cTmpCName[11];
@@ -8735,8 +8735,8 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		for (i = 0; i < DEF_MAXCLIENTS; i++)
 			if (m_pOnlineUsersList[i] != 0) iTotalLines++;
 		if (iTotalLines > 17) {
-			d1 = (double)m_stDialogBoxInfo[56].sView;
-			d2 = (double)(iTotalLines - 17);
+			d1 = (float)m_stDialogBoxInfo[56].sView;
+			d2 = (float)(iTotalLines - 17);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -8750,8 +8750,8 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 17);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 17);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[56].sView = (int)(d3 + 0.5f);
 				}
@@ -8854,8 +8854,8 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 		for (i = 0; i < DEF_MAXCLIENTS; i++)
 			if (m_pOnlineUsersList[i] != 0) iTotalLines++;
 		if (iTotalLines > 17) {
-			d1 = (double)m_stDialogBoxInfo[56].sView;
-			d2 = (double)(iTotalLines - 17);
+			d1 = (float)m_stDialogBoxInfo[56].sView;
+			d2 = (float)(iTotalLines - 17);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -8869,8 +8869,8 @@ ase 80: strcpy(pName, NPC_NAME_TENTOCL); break;
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 17);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 17);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[56].sView = (int)(d3 + 0.5f);
 				}
@@ -9020,11 +9020,11 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 
 	int  iCost, iDiscountCost, iDiscountRatio;
 
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	int  iTotalLines, iPointerLoc;
 	bool bFlagStatLow = false;
 	bool bFlagRedShown = false;
-	double d1, d2, d3;
+	float d1, d2, d3;
 
 	sX = m_stDialogBoxInfo[57].sX;
 	sY = m_stDialogBoxInfo[57].sY;
@@ -9038,8 +9038,8 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		for (i = 0; i < DEF_MAXMENUITEMS; i++)
 			if (m_pItemForSaleList[i] != 0) iTotalLines++;
 		if (iTotalLines > 13) {
-			d1 = (double)m_stDialogBoxInfo[57].sView;
-			d2 = (double)(iTotalLines - 13);
+			d1 = (float)m_stDialogBoxInfo[57].sView;
+			d2 = (float)(iTotalLines - 13);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -9053,8 +9053,8 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 13);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[57].sView = (int)(d3 + 0.5f);
 				}
@@ -9097,9 +9097,9 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 			if (((i + m_stDialogBoxInfo[57].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView] != 0))
 			{
 				/*iDiscountRatio = 0;
-				dTmp1 = (double)iDiscountRatio;
+				dTmp1 = (float)iDiscountRatio;
 				dTmp2 = dTmp1 / 100.0f;
-				dTmp1 = (double)m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice;
+				dTmp1 = (float)m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice;
 				dTmp3 = dTmp1 * dTmp2;
 				iDiscountCost = (int)dTmp3;*/
 				iCost = m_pItemForSaleList[i + m_stDialogBoxInfo[57].sView]->m_wPrice;
@@ -9157,9 +9157,9 @@ void CGame::DrawDialogBox_Shop2(short msX, short msY, short msZ, char cLB) // MO
 		PutString(sX + 91, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 
 		/*iDiscountRatio = 0;
-		dTmp1 = (double)iDiscountRatio;
+		dTmp1 = (float)iDiscountRatio;
 		dTmp2 = dTmp1 / 100.0f;
-		dTmp1 = (double)m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice;
+		dTmp1 = (float)m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice;
 		dTmp3 = dTmp1 * dTmp2;
 		iDiscountCost = (int)dTmp3;*/
 		//iCost = (int)(m_pItemForSaleList[m_stDialogBoxInfo[57].cMode - 1]->m_wPrice * ((100 + m_cDiscount) / 100.0f));
@@ -9582,11 +9582,11 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
 
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	int  iTotalLines, iPointerLoc;
 	bool bFlagStatLow = false;
 	bool bFlagRedShown = false;
-	double d1, d2, d3;
+	float d1, d2, d3;
 	int iR, iG, iB;
 
 	char cTmpCName[11];
@@ -9644,8 +9644,8 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 		for (i = 0; i < DEF_MAXCLIENTS; i++)
 			if (m_pOnlineUsersList[i] != 0) iTotalLines++;
 		if (iTotalLines > 17) {
-			d1 = (double)m_stDialogBoxInfo[60].sView;
-			d2 = (double)(iTotalLines - 17);
+			d1 = (float)m_stDialogBoxInfo[60].sView;
+			d2 = (float)(iTotalLines - 17);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			if (m_bUseOldPanels)
@@ -9663,8 +9663,8 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 17);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 17);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[60].sView = (int)(d3 + 0.5f);
 				}
@@ -10919,7 +10919,7 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY, szX;
 	int  i, iTotalLines, iPointerLoc, iLoc;
-	double d1, d2, d3;
+	float d1, d2, d3;
 	char cItemColor, cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	bool bFlag = false;
 
@@ -11020,8 +11020,8 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 			if (m_pBankList[i] != 0) iTotalLines++;
 		if (iTotalLines > m_stDialogBoxInfo[58].sV1)
 		{
-			d1 = (double)m_stDialogBoxInfo[58].sView;
-			d2 = (double)(iTotalLines - m_stDialogBoxInfo[58].sV1);
+			d1 = (float)m_stDialogBoxInfo[58].sView;
+			d2 = (float)(iTotalLines - m_stDialogBoxInfo[58].sV1);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)d3;
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -11030,8 +11030,8 @@ void CGame::DrawDialogBox_GuildBank(short msX, short msY, short msZ, char cLB)
 		else iPointerLoc = 0;
 		if (cLB != 0 && (iGetTopDialogBoxIndex() == 58) && iTotalLines > m_stDialogBoxInfo[58].sV1) {
 			if ((msX >= sX + 230) && (msX <= sX + 260) && (msY >= sY + 40) && (msY <= sY + 320)) {
-				d1 = (double)(msY - (sY + 35));
-				d2 = (double)(iTotalLines - m_stDialogBoxInfo[58].sV1);
+				d1 = (float)(msY - (sY + 35));
+				d2 = (float)(iTotalLines - m_stDialogBoxInfo[58].sV1);
 				d3 = (d1 * d2) / 274.0f;
 				m_stDialogBoxInfo[58].sView = (int)(d3 + 0.5f);
 			}
@@ -14974,11 +14974,11 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 
 	int  iCost, iDiscountCost, iDiscountRatio=0;
 
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	int  iTotalLines, iPointerLoc;
 	bool bFlagStatLow = false;
 	bool bFlagRedShown = false;
-	double d1, d2, d3;
+	float d1, d2, d3;
 
 	sX = m_stDialogBoxInfo[11].sX;
 	sY = m_stDialogBoxInfo[11].sY;
@@ -14992,8 +14992,8 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 		for (i = 0; i < DEF_MAXMENUITEMS; i++)
 			if (m_pItemForSaleList[i] != 0) iTotalLines++;
 		if (iTotalLines > 13) {
-			d1 = (double)m_stDialogBoxInfo[11].sView;
-			d2 = (double)(iTotalLines - 13);
+			d1 = (float)m_stDialogBoxInfo[11].sView;
+			d2 = (float)(iTotalLines - 13);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_GAME6, sX, sY, 3);
@@ -15007,8 +15007,8 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 13);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[11].sView = (int)(d3 + 0.5f);
 				}
@@ -15043,9 +15043,9 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 			if (((i + m_stDialogBoxInfo[11].sView) < DEF_MAXMENUITEMS) && (m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView] != 0))
 			{
 				//iDiscountRatio = ((m_iCharisma - 10) / 4);
-				dTmp1 = (double)iDiscountRatio;
+				dTmp1 = (float)iDiscountRatio;
 				dTmp2 = dTmp1 / 100.0f;
-				dTmp1 = (double)m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView]->m_wPrice;
+				dTmp1 = (float)m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView]->m_wPrice;
 				dTmp3 = dTmp1 * dTmp2;
 				iDiscountCost = (int)dTmp3;
 				iCost = (int)(m_pItemForSaleList[i + m_stDialogBoxInfo[11].sView]->m_wPrice * ((100 + m_cDiscount) / 100.0f));
@@ -15079,9 +15079,9 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 		PutString(sX + 91, sY + 93 + 30 - 10, cTemp, RGB(40, 10, 10));
 
 		//iDiscountRatio = ((m_iCharisma - 10) / 4);
-		dTmp1 = (double)iDiscountRatio;
+		dTmp1 = (float)iDiscountRatio;
 		dTmp2 = dTmp1 / 100.0f;
-		dTmp1 = (double)m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wPrice;
+		dTmp1 = (float)m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wPrice;
 		dTmp3 = dTmp1 * dTmp2;
 		iDiscountCost = (int)dTmp3;
 		iCost = (int)(m_pItemForSaleList[m_stDialogBoxInfo[11].cMode - 1]->m_wPrice * ((100 + m_cDiscount) / 100.0f));
@@ -15284,12 +15284,29 @@ void CGame::DrawDialogBox_Shop(short msX, short msY, short msZ, char cLB)
 	}
 }
 
+int CGame::_iCalcSkillSSNpoint(int iLevel)
+{
+	int iRet;
+
+	if (iLevel < 1) return 1;
+
+	if (iLevel <= 50)
+		iRet = iLevel;
+	else if (iLevel > 50) {
+		iRet = (iLevel * iLevel) / 10;
+	}
+
+	//iRet = iLevel; // centu
+
+	return iRet;
+}
+
 void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
 	int  i, iTotalLines, iPointerLoc;
 	char cTemp[255], cTemp2[255], cTemp3[255];
-	double d1, d2, d3;
+	float d1, d2, d3;
 	
 	if (m_bUseOldPanels)
 	{
@@ -15350,8 +15367,8 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 
 			if (iTotalLines > 17)
 			{
-				d1 = (double)m_stDialogBoxInfo[15].sView;
-				d2 = (double)(iTotalLines - 17);
+				d1 = (float)m_stDialogBoxInfo[15].sView;
+				d2 = (float)(iTotalLines - 17);
 				d3 = (274.0f * d1) / d2;
 				iPointerLoc = (int)d3;
 			}
@@ -15368,8 +15385,8 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 				{
 					if ((msX >= sX + 240) && (msX <= sX + 260) && (msY >= sY + 30) && (msY <= sY + 320))
 					{
-						d1 = (double)(msY - (sY + 35));
-						d2 = (double)(iTotalLines - 17);
+						d1 = (float)(msY - (sY + 35));
+						d2 = (float)(iTotalLines - 17);
 						d3 = (d1 * d2) / 274.0f;
 						iPointerLoc = (int)(d3 + 0.5f);
 						if (iPointerLoc > iTotalLines - 17) iPointerLoc = iTotalLines - 17;
@@ -15428,12 +15445,12 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 
 					if (m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel < 100) {
 						ZeroMemory(cTemp3, sizeof(cTemp3));
-						wsprintf(cTemp3, "%d/%d", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView], m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel + 1);
+						wsprintf(cTemp3, "%d/%d", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView], _iCalcSkillSSNpoint(m_pSkillCfgList[i + m_stDialogBoxInfo[15].sView]->m_iLevel + 1));
 					}
 					else
 					{
 						ZeroMemory(cTemp3, sizeof(cTemp3));
-						wsprintf(cTemp3, "%d/---", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+						wsprintf(cTemp3, "%d/----", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
 					}
 					if ((msX >= sX + 25) && (msX <= sX + 166) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 					{
@@ -23546,9 +23563,9 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
 
-	double dTmp1, dTmp2, dTmp3;
+	float dTmp1, dTmp2, dTmp3;
 	int  iTotalLines, iPointerLoc;
-	double d1, d2, d3;
+	float d1, d2, d3;
 	int iR, iG, iB;
 
 	int x;
@@ -23953,8 +23970,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 		for (i = 0; i < DEF_MAXMENUITEMS; i++)
 			if (m_pOnlineUsersList[i] != 0) iTotalLines++;
 		if (iTotalLines > 13) {
-			d1 = (double)m_stDialogBoxInfo[53].sView;
-			d2 = (double)(iTotalLines - 13);
+			d1 = (float)m_stDialogBoxInfo[53].sView;
+			d2 = (float)(iTotalLines - 13);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			if (m_bUseOldPanels) {
@@ -23971,8 +23988,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 13);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[53].sView = (int)(d3 + 0.5f);
 				}
@@ -24157,8 +24174,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 		for (i = 0; i < DEF_MAXMENUITEMS; i++)
 			if (m_pOnlineUsersList[i] != 0) iTotalLines++;
 		if (iTotalLines > 13) {
-			d1 = (double)m_stDialogBoxInfo[53].sView;
-			d2 = (double)(iTotalLines - 13);
+			d1 = (float)m_stDialogBoxInfo[53].sView;
+			d2 = (float)(iTotalLines - 13);
 			d3 = (274.0f * d1) / d2;
 			iPointerLoc = (int)(d3);
 			if (m_bUseOldPanels) {
@@ -24175,8 +24192,8 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 			{
 				if ((msX >= sX + 235) && (msX <= sX + 260) && (msY >= sY + 10) && (msY <= sY + 330))
 				{
-					d1 = (double)(msY - (sY + 35));
-					d2 = (double)(iTotalLines - 13);
+					d1 = (float)(msY - (sY + 35));
+					d2 = (float)(iTotalLines - 13);
 					d3 = (d1 * d2) / 274.0f;
 					m_stDialogBoxInfo[53].sView = (int)(d3 + 0.5f);
 				}

@@ -1405,6 +1405,8 @@ public:
 	short m_sEarthValue, m_sAirValue, m_sFireValue, m_sWaterValue, m_sHolyValue, m_sUnholyValue;
 	void NotifyMsg_ArmourValues(char* pData);
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
+
+	int _iCalcSkillSSNpoint(int iLevel);
 };
 
 #endif // !defined(AFX_GAME_H__0089D9E3_74E6_11D2_A8E6_00001C7030A6__INCLUDED_)

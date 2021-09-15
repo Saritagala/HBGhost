@@ -318,7 +318,7 @@ MMRESULT _StartTimer(DWORD dwTime)
 {TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
 	timeBeginPeriod(caps.wPeriodMin);
-	return timeSetEvent(dwTime,0,_TimerFunc,0, (UINT)TIME_PERIODIC);
+	return timeSetEvent(dwTime,0,(LPTIMECALLBACK)_TimerFunc,0, (UINT)TIME_PERIODIC);
 }
 
 

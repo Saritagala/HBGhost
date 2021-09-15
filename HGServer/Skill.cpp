@@ -366,13 +366,13 @@ int CGame::_iCalcSkillSSNpoint(int iLevel)
 
 	if (iLevel < 1) return 1;
 
-	/*if (iLevel <= 50)
+	if (iLevel <= 50)
 		iRet = iLevel;
 	else if (iLevel > 50) {
 		iRet = (iLevel * iLevel) / 10;
-	}*/
+	}
 
-	iRet = iLevel; // centu
+	//iRet = iLevel; // centu
 
 	return iRet;
 }
@@ -393,8 +393,13 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
 	
-	m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
-	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
+	if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] < 9999) {
+		m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
+		if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= 9999) {
+			m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 9999;
+		}
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
+	}
 
 	iSSNpoint = m_iSkillSSNpoint[m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] + 1];
 
@@ -523,8 +528,13 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 	
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
 	
-	m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
-	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
+	if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] < 9999) {
+		m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
+		if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= 9999) {
+			m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 9999;
+		}
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
+	}
 
 	iSSNpoint = m_iSkillSSNpoint[m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] + 1];
 
@@ -1227,10 +1237,12 @@ void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 	}
 
 	pItem = new class CItem;
-	if (_bInitItemAttr(pItem, iItemID) == false) {
+	if (!_bInitItemAttr(pItem, iItemID)) 
+	{
 		delete pItem;
 	}
-	if (bType == 0) {
+	if (!bType) 
+	{
 		m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bSetItem(m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY, pItem);
 		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[sAttackerH]->m_cMapIndex,
 			m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY, pItem->m_sSprite,
@@ -1240,7 +1252,8 @@ void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 			m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 	}
-	else if (bType == 1) {
+	else //if (bType == 1) 
+	{
 		m_pMapList[m_pNpcList[sTargetH]->m_cMapIndex]->bSetItem(m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY, pItem);
 		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[sTargetH]->m_cMapIndex,
 			m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY, pItem->m_sSprite,
@@ -1250,7 +1263,6 @@ void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 			m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 	}
-
 }
 
 //LifeX Auto Skills

@@ -18463,7 +18463,6 @@ void CGame::RequestOnlines(int iClientH)
 
 void CGame::GetExp(int iClientH, UINT32 iExp, bool bIsAttackerOwn)
 {
-
 	float dV1, dV2, dV3;
 	int i, iH;
 	UINT32 dwTime = timeGetTime();
@@ -18514,29 +18513,29 @@ void CGame::GetExp(int iClientH, UINT32 iExp, bool bIsAttackerOwn)
 				dV2 = dV1;
 				break;
 			case 2:
-				dV2 = (dV1 + (dV1 * (float)2.0e-2)) / 2.0f;
+				dV2 = (dV1 + (dV1 * 0.02f)) / 2.0f;
 				break;
 			case 3:
-				dV2 = (dV1 + (dV1 * (float)5.0e-2)) / 3.0f;
+				dV2 = (dV1 + (dV1 * 0.05f)) / 3.0f;
 				break;
 			case 4:
-				dV2 = (dV1 + (dV1 * (float)7.000000000000001e-2)) / 4.0f;
+				dV2 = (dV1 + (dV1 * 0.07f)) / 4.0f;
 				break;
 			case 5:
-				dV2 = (dV1 + (dV1 * (float)1.0e-1)) / 5.0f;
+				dV2 = (dV1 + (dV1 * 0.1f)) / 5.0f;
 				break;
 			case 6:
-				dV2 = (dV1 + (dV1 * (float)1.4e-1)) / 6.0f;
+				dV2 = (dV1 + (dV1 * 0.14f)) / 6.0f;
 				break;
 			case 7:
-				dV2 = (dV1 + (dV1 * (float)1.7e-1)) / 7.0f;
+				dV2 = (dV1 + (dV1 * 0.17f)) / 7.0f;
 				break;
 			case 8:
-				dV2 = (dV1 + (dV1 * (float)2.0e-1)) / 8.0f;
+				dV2 = (dV1 + (dV1 * 0.2f)) / 8.0f;
 				break;
 			}
 
-			dV3 = dV2 + (float)5.0e-1;
+			dV3 = dV2 + 0.5f;
 			iUnitValue = (UINT32)dV3;
 
 			//Divide exp among party members
