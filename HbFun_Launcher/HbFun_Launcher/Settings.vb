@@ -30,7 +30,7 @@ Public Class Settings
         Me.Close()
     End Sub
     Private Sub SaveSettings()
-        Dim FileLine(16) As String
+        Dim FileLine(19) As String
         If Me.Text.Contains("*") Then
             Me.Text = actualText
             FileLine(0) = "[CONFIG]"
@@ -50,8 +50,11 @@ Public Class Settings
             FileLine(14) = "whisper-mode = " & chkWhisper.CheckState
             FileLine(15) = "show-grid = " & chkGrid.CheckState
             FileLine(16) = "show-npc = " & chkShowNPC.CheckState
+            FileLine(17) = "quest-helper = " & chkQuestHelper.CheckState
+            FileLine(18) = "show-big-items = " & chkBigItems.CheckState
+            FileLine(19) = "use-old-panels = " & chkOldPanels.CheckState
             Dim objWriter As New StreamWriter(FILE_NAME)
-            For i = 0 To 16
+            For i = 0 To 19
                 objWriter.WriteLine(FileLine(i))
             Next
             objWriter.Close()
@@ -59,10 +62,10 @@ Public Class Settings
         MsgBox("Changes saved!", vbOKOnly + vbInformation, "Done")
     End Sub
     Private Sub LoadSettings()
-        Dim FileLine(16) As String
+        Dim FileLine(19) As String
         Dim line As String()
         Dim reader As New StreamReader(FILE_NAME, Encoding.Default)
-        For i = 0 To 16
+        For i = 0 To 19
             line = reader.ReadLine().Split("=")
             If line.Contains("[CONFIG]") Then Continue For
             FileLine(i) = line(1)
@@ -84,6 +87,9 @@ Public Class Settings
         chkWhisper.CheckState = FileLine(14).Trim
         chkGrid.CheckState = FileLine(15).Trim
         chkShowNPC.CheckState = FileLine(16).Trim
+        chkQuestHelper.CheckState = FileLine(17).Trim
+        chkBigItems.CheckState = FileLine(18).Trim
+        chkOldPanels.CheckState = FileLine(19).Trim
     End Sub
     Private Sub chkMusic_CheckedChanged(sender As Object, e As EventArgs) Handles chkMusic.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
@@ -125,6 +131,15 @@ Public Class Settings
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
     End Sub
     Private Sub chkShowNPC_CheckedChanged(sender As Object, e As EventArgs) Handles chkShowNPC.CheckedChanged
+        If Not Me.Text.Contains("*") Then Me.Text &= "*"
+    End Sub
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles chkQuestHelper.CheckedChanged
+        If Not Me.Text.Contains("*") Then Me.Text &= "*"
+    End Sub
+    Private Sub chkBigItems_CheckedChanged(sender As Object, e As EventArgs) Handles chkBigItems.CheckedChanged
+        If Not Me.Text.Contains("*") Then Me.Text &= "*"
+    End Sub
+    Private Sub CheckBox1_CheckedChanged_1(sender As Object, e As EventArgs) Handles chkOldPanels.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
     End Sub
 End Class

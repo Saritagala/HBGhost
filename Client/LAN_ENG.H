@@ -950,7 +950,7 @@
 #define DEF_NOTIFY_MSG_STATECHANGE_FAILED			"Stats has NOT been changed"
 #define	DRAW_DIALOGBOX_LEVELUP_SETTING14			"You can change 3 stats point"
 #define	DRAW_DIALOGBOX_LEVELUP_SETTING15			"for each Majestic Point."
-#define	DRAW_DIALOGBOX_LEVELUP_SETTING16			"* Majestic Points Left"
+#define	DRAW_DIALOGBOX_LEVELUP_SETTING16			"* Majestic Points Left:"
 #define	DRAW_DIALOGBOX_LEVELUP_SETTING17			"Your stats has been changed using Majestic Points."
 
 

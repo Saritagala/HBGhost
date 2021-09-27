@@ -558,7 +558,7 @@ bool CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
  char seps[] = "&= ,\t\n";
  char * token;
 #ifdef DEF_ANTI_HACK
- if (CheckProcesses() == true)
+ if (CheckProcesses())
  {
 	 MessageBox(m_hWnd, "No Hacks Programs Permitted.", "ERROR2", MB_ICONEXCLAMATION | MB_OK);
 	 return false;
@@ -1677,13 +1677,13 @@ char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, bool bMo
 			if (cTmpDir > 8) cTmpDir -= 8;
 			aX = _tmp_cTmpDirX[cTmpDir];
 			aY = _tmp_cTmpDirY[cTmpDir];
-			if (((dX + aX) == m_iPrevMoveX) && ((dY + aY) == m_iPrevMoveY) && (m_bIsPrevMoveBlocked == true) && (bMoveCheck == true))
+			if (((dX + aX) == m_iPrevMoveX) && ((dY + aY) == m_iPrevMoveY) && (m_bIsPrevMoveBlocked) && (bMoveCheck))
 			{
 				m_bIsPrevMoveBlocked = false;
 			}
-			else if (m_pMapData->bGetIsLocateable(dX + aX, dY + aY) == true)
+			else if (m_pMapData->bGetIsLocateable(dX + aX, dY + aY))
 			{
-				if (m_pMapData->bIsTeleportLoc(dX + aX, dY + aY) == true)
+				if (m_pMapData->bIsTeleportLoc(dX + aX, dY + aY))
 				{
 					return cTmpDir;
 
@@ -1699,13 +1699,13 @@ char CGame::cGetNextMoveDir(short sX, short sY, short dstX, short dstY, bool bMo
 			if (cTmpDir < 1) cTmpDir += 8;
 			aX = _tmp_cTmpDirX[cTmpDir];
 			aY = _tmp_cTmpDirY[cTmpDir];
-			if (((dX + aX) == m_iPrevMoveX) && ((dY + aY) == m_iPrevMoveY) && (m_bIsPrevMoveBlocked == true) && (bMoveCheck == true))
+			if (((dX + aX) == m_iPrevMoveX) && ((dY + aY) == m_iPrevMoveY) && (m_bIsPrevMoveBlocked) && (bMoveCheck))
 			{
 				m_bIsPrevMoveBlocked = false;
 			}
-			else if (m_pMapData->bGetIsLocateable(dX + aX, dY + aY) == true)
+			else if (m_pMapData->bGetIsLocateable(dX + aX, dY + aY))
 			{
-				if (m_pMapData->bIsTeleportLoc(dX + aX, dY + aY) == true)
+				if (m_pMapData->bIsTeleportLoc(dX + aX, dY + aY))
 				{
 					return cTmpDir;
 				}
@@ -2233,7 +2233,7 @@ bool CGame::bSendCommand(UINT32 dwMsgID, UINT16 wCommand, char cDir, int iV1, in
 		break;
 
 	case MSGID_COMMAND_CHATMSG:
-		if (m_bIsTeleportRequested == true) return false;
+		if (m_bIsTeleportRequested) return false;
 
 		// to Game Server
 		dwp = (UINT32 *)(cMsg + DEF_INDEX4_MSGID);
@@ -2257,14 +2257,14 @@ bool CGame::bSendCommand(UINT32 dwMsgID, UINT16 wCommand, char cDir, int iV1, in
 		*cp = (char)iV1;
 		cp++;
 
-		if (bCheckLocalChatCommand(pString) == true) return false;
+		if (bCheckLocalChatCommand(pString)) return false;
 		memcpy((char *)cp, pString, strlen(pString) + 1);
 
 		iRet = m_pGSock->iSendMsg(cMsg, 22 + strlen(pString));
 		break;
 
 	case MSGID_COMMAND_COMMON:
-		if (m_bIsTeleportRequested == true) return false;
+		if (m_bIsTeleportRequested) return false;
 		dwp = (UINT32 *)(cMsg + DEF_INDEX4_MSGID);
 		*dwp = dwMsgID;
 		wp  = (UINT16 *)(cMsg + DEF_INDEX2_MSGTYPE);
@@ -2497,7 +2497,7 @@ bool CGame::bSendCommand(UINT32 dwMsgID, UINT16 wCommand, char cDir, int iV1, in
 		break;
 
 	default:
-		if (m_bIsTeleportRequested == true) return false;
+		if (m_bIsTeleportRequested) return false;
 
 		dwp = (UINT32 *)(cMsg + DEF_INDEX4_MSGID);
 		*dwp = dwMsgID;
@@ -2656,7 +2656,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					bRet = true;
 			 	}
 
-				/*if ((bRet == true) && (sItemSprite != 0))
+				/*if ((bRet) && (sItemSprite != 0))
 				{	if (cItemColor == 0)
 						 m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + sItemSprite]->PutSpriteFast(ix, iy, sItemSpriteFrame, dwTime);
 					else
@@ -2684,7 +2684,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 						m_stMCursor.sCursorFrame  = sMCAnimFrame;
 				}	}*/
 
-				if ((bRet == true) && (sItemID != 0) && m_pItemConfigList[sItemID] != 0)
+				if ((bRet) && (sItemID != 0) && m_pItemConfigList[sItemID] != 0)
 				{
 					if (cItemColor == 0)
 						m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + m_pItemConfigList[sItemID]->m_sSprite]->PutSpriteFast(ix, iy, m_pItemConfigList[sItemID]->m_sSpriteFrame, dwTime);
@@ -2725,14 +2725,14 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					}
 				}
 
-				if ((bRet == true) && (_tmp_wObjectID != 0))
+				if ((bRet) && (_tmp_wObjectID != 0))
 				{	bContact = DrawObject_OnDead(indexX, indexY, ix, iy, false, dwTime, msX, msY);
 				}
 
 #ifdef RES_HIGH
-				if ((bContact == true) && (msY <= 551))
+				if ((bContact) && (msY <= 551))
 #else
-				if ((bContact == true) && (msY <= 431))
+				if ((bContact) && (msY <= 431))
 #endif
 				{	m_sMCX = indexX;
 					m_sMCY = indexY;
@@ -2801,7 +2801,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 							_tmp_iApprColor = m_iApprColor_IE;
 			 	}	}	}
 
-				if ((bRet == true) && (strlen(_tmp_cName) > 0))
+				if ((bRet) && (strlen(_tmp_cName) > 0))
 				{	_tmp_dx = 0;
 					_tmp_dy = 0;
 					switch (_tmp_cAction) {
@@ -2847,9 +2847,9 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 					}
 
 #ifdef RES_HIGH
-					if ((bContact == true) && (msY <= 551))
+					if ((bContact) && (msY <= 551))
 #else
-					if ((bContact == true) && (msY <= 431))
+					if ((bContact) && (msY <= 431))
 #endif
 					{	m_sMCX = indexX;
 						m_sMCY = indexY;
@@ -2976,7 +2976,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 						else if( sObjSpr < 100 + 32 ) m_pTileSpr[100 + 23]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						else m_pTileSpr[100 + 32]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 					}else
-					{	if ((bIsPlayerDrawed == true) && (m_pTileSpr[sObjSpr]->m_rcBound.top <= m_rcPlayerRect.top) && (m_pTileSpr[sObjSpr]->m_rcBound.bottom >= m_rcPlayerRect.bottom) &&
+					{	if ((bIsPlayerDrawed) && (m_pTileSpr[sObjSpr]->m_rcBound.top <= m_rcPlayerRect.top) && (m_pTileSpr[sObjSpr]->m_rcBound.bottom >= m_rcPlayerRect.bottom) &&
 							(m_pTileSpr[sObjSpr]->m_rcBound.left <= m_rcPlayerRect.left) && (m_pTileSpr[sObjSpr]->m_rcBound.right >= m_rcPlayerRect.right))
 						{	m_pTileSpr[sObjSpr + 50]->PutFadeSprite(ix , iy , sObjSprFrame, dwTime);
 							m_pTileSpr[sObjSpr]->PutTransSprite2(ix - 16, iy - 16, sObjSprFrame, dwTime);
@@ -2984,7 +2984,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 						{	m_pTileSpr[sObjSpr + 50]->PutSpriteFast(ix , iy , sObjSprFrame, dwTime);
 							m_pTileSpr[sObjSpr]->PutSpriteFast(ix - 16, iy - 16, sObjSprFrame, dwTime);
 						}
-						if (m_bIsXmas == true)
+						if (m_bIsXmas)
 						{	/*if (G_cSpriteAlphaDegree == 2) // nuit
 							{*/	if( iXmasTreeBulbDelay < 0 || iXmasTreeBulbDelay > idelay + 1) iXmasTreeBulbDelay = 0;
 								if( iXmasTreeBulbDelay > idelay )
@@ -3001,7 +3001,7 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 			}	}	}	}	}	}	//}
 
 			// Dynamic Object
-			if ( (bRet == true) && (sDynamicObject != 0) )
+			if ( (bRet) && (sDynamicObject != 0) )
 			{	switch (sDynamicObject) {
 				case DEF_DYNAMICOBJECT_MAGICTRAP:
 					m_pSprite[DEF_SPRID_ITEMGROUND_PIVOTPOINT + 6]->PutSpriteFast(ix, iy, 156, dwTime);
@@ -3319,9 +3319,9 @@ void CGame::DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, 
 		}
 	}
 
-	if (m_bIsGetPointingMode == true)
+	if (m_bIsGetPointingMode)
 	{	if ( (m_iPointCommandType >= 100) && (m_iPointCommandType < 200) ) // spell
-		{	if (m_bCommandAvailable == true)
+		{	if (m_bCommandAvailable)
 			{	if( m_sMCX != 0 )
 				{	if( _iGetFOE(iFocuiStatus) < 0 )
 						m_stMCursor.sCursorFrame = 5;   // Red enemi for spell
@@ -3602,7 +3602,7 @@ void CGame::UpdateScreen_OnMainMenu()
         m_cArrowPressed = 0;
     }
 
-    if (m_bEnterPressed == true) {
+    if (m_bEnterPressed) {
         // Enter
         PlaySound('E', 14, 5);
         m_bEnterPressed = false;
@@ -4643,7 +4643,7 @@ void CGame::OnTimer()
 		if (((dwTime - m_dwCheckSprTime) > 6150) && (m_dwCheckSprTime != 0)) // 8000
 		{	m_dwCheckSprTime = dwTime;
 			if( m_bIsProgramActive ) ReleaseUnusedSprites();
-			if ((m_pGSock != 0) && (m_pGSock->m_bIsAvailable == true)) {
+			if ((m_pGSock != 0) && (m_pGSock->m_bIsAvailable)) {
 				//bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, 0, 0, 0, 0, 0);
 				bSendCommand(MSGID_COMMAND_CHECKCONNECTION, DEF_MSGTYPE_CONFIRM, 0, dwTime, 0, 0, 0);
 			}
@@ -4657,6 +4657,7 @@ void CGame::OnTimer()
 #ifdef DEF_ANTI_HACK
 			CheckProcesses(); // centu
 #endif
+			bSendCommand(MSGID_COMMAND_CHATMSG, 0, 0, 0, 0, 0, "/save"); // centu
 		}
 
 		if ((dwTime - m_dwCheckPingTime) > 5000)
@@ -4689,14 +4690,14 @@ void CGame::OnTimer()
 			m_bEscPressed = false;
 			PlaySound('E', 14, 5);
 			if (m_bSoundFlag) m_pESound[38]->bStop();
-			if ((m_bSoundFlag) && (m_bMusicStat == true))
+			if ((m_bSoundFlag) && (m_bMusicStat))
 			{	StopBGM();	// Snoopy: mp3 support
 				if (m_pBGM != 0) m_pBGM->bStop();
 			}
 			return;
 		}
 
-		if ((G_pCalcSocket != 0) && (G_bIsCalcSocketConnected == true)) {
+		if ((G_pCalcSocket != 0) && (G_bIsCalcSocketConnected)) {
 			if ((dwTime - G_dwCalcSocketSendTime) > 1000*5) {
 				if (memcmp(G_cCmdLineTokenA_Lowercase, "wisetop", 7) != 0)
 				
@@ -5102,7 +5103,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 			for (i = 0; i < DEF_MAXITEMS; i++)
 			{
-				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
 			}
 			if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
 			{
@@ -5920,7 +5921,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 		limitY = sY + m_stDialogBoxInfo[1].sSizeY;
 
 		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
 
 		switch (m_stDialogBoxInfo[1].cMode) {
 		case 0:
@@ -6140,7 +6141,7 @@ void CGame::DrawDialogBox_Character(short msX, short msY)
 
 			for (i = 0; i < DEF_MAXITEMS; i++)
 			{
-				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
 			}
 			if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
 			{
@@ -7258,10 +7259,10 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 		limitY = sY + m_stDialogBoxInfo[3].sSizeY;
 
 		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
 
 		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
 		PutString_SprFont2(sX + 100, sY + 5, "Magics", 240, 240, 240);
 
 		r = 255;
@@ -7401,7 +7402,7 @@ void CGame::DrawDialogBox_Magic(short msX, short msY, short msZ)
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{
 		if (m_pItemList[i] == 0) continue;
-		if (m_bIsItemEquipped[i] == true)
+		if (m_bIsItemEquipped[i])
 		{
 			if (((m_pItemList[i]->m_dwAttribute & 0x00F00000) >> 20) == 10)
 			{
@@ -7549,7 +7550,7 @@ void CGame::NotifyMsg_ForceDisconn(char *pData)
 		m_pGSock = 0;
 		m_bEscPressed = false;
 		if (m_bSoundFlag) m_pESound[38]->bStop();
-		if ((m_bSoundFlag) && (m_bMusicStat == true))
+		if ((m_bSoundFlag) && (m_bMusicStat))
 		{
 			StopBGM();	// Snoopy: mp3 support
 			if (m_pBGM != 0) m_pBGM->bStop();
@@ -10451,7 +10452,7 @@ void CGame::bItemDrop_IconPannel(short msX, short msY)
 	sX = m_stDialogBoxInfo[30].sX;	sY = m_stDialogBoxInfo[30].sY;
 
 	sItemIndex = m_stMCursor.sSelectedObjectID;
-	if (m_bIsItemDisabled[sItemIndex] == true) return;
+	if (m_bIsItemDisabled[sItemIndex]) return;
 	if (m_cCommand < 0) return;
 	if ((453 < msX) && (486 > msX) && (440 < msY) && (475 > msY))
 	{	
@@ -11044,7 +11045,7 @@ bool   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, bool b
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInvy = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInvy = true; //beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInvy = true; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInvy = true;
 		else if (_revelation) bInvy = true;
 		else return false;
@@ -11264,7 +11265,7 @@ bool   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, bool b
 
 			if (_tmp_sOwnerType == 81) // Abaddon
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
-			}else if (bInvy == true)
+			}else if (bInvy)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
 			else
 			{	if ((_tmp_iStatus & 0x40) != 0)
@@ -11377,7 +11378,7 @@ bool   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, bool b
 
 			if (_tmp_sOwnerType == 81) // Abaddon
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
-			}else if (bInvy == true)
+			}else if (bInvy)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
 			else
 			{	if ((_tmp_iStatus & 0x40) != 0)
@@ -11583,7 +11584,7 @@ bool   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bo
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; //beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; //beholder neck
 		else if ( _iGetFOE(_tmp_iStatus) == 1 ) bInv = true;
 		else if (_revelation) bInv = true;
  		else return false;
@@ -11852,7 +11853,7 @@ bool   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bo
 				break;
 			}
 
-			if (bInv == true)
+			if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 			else {
 				if ((_tmp_iStatus & 0x40) != 0)
@@ -11962,7 +11963,7 @@ bool   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bo
 				break;
 			}
 
-			if (bInv == true)
+			if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 			else {
 				if ((_tmp_iStatus & 0x40) != 0)
@@ -12068,7 +12069,7 @@ bool   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bo
 		
 		DrawFlagHolder(sX + dx, sY + dy, dwTime);
 
-		if (bDashDraw == true) {
+		if (bDashDraw) {
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSpriteRGB(sX+dsx, sY+dsy, _tmp_cFrame, m_wR[10] -(m_wR[0]/3), m_wG[10] -(m_wG[0]/3), m_wB[10] -(m_wB[0]/3), dwTime);
 			if (iWeaponIndex != -1) m_pSprite[iWeaponIndex]->PutTransSpriteRGB(sX+dsx, sY+dsy, _tmp_cFrame, m_wR[10] -(m_wR[0]/3), m_wG[10] -(m_wG[0]/3), m_wB[10] -(m_wB[0]/3), dwTime);
 			if (iShieldIndex != -1) m_pSprite[iShieldIndex]->PutTransSpriteRGB(sX+dsx, sY+dsy, (_tmp_cDir-1) * 8 + _tmp_cFrame, m_wR[10] -(m_wR[0]/3), m_wG[10] -(m_wG[0]/3), m_wB[10] -(m_wB[0]/3), dwTime);
@@ -12239,7 +12240,7 @@ bool   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, bool bT
 			break;
 		}
 
-		if (bInvy == true)
+		if (bInvy)
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
 		else {
 			if ((_tmp_iStatus & 0x40) != 0)
@@ -12358,7 +12359,7 @@ bool   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, bool 
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; //beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = true;
 		else if (_revelation) bInv = true;
 		else return false;
@@ -12469,7 +12470,7 @@ bool   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, bool 
 			break;
 		}
 
-		if (bInv == true)
+		if (bInv)
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite2(sX, sY, _tmp_cFrame, dwTime);
 		else {
 			if ((_tmp_iStatus & 0x40) != 0)
@@ -12609,7 +12610,7 @@ bool CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTr
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; //beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = true;
 		else if (_revelation) bInv = true;
 		else return false;
@@ -12870,7 +12871,7 @@ bool CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTr
 
 				if (_tmp_sOwnerType == 81) // Abaddon
 				{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
-				}else if (bInv == true)
+				}else if (bInv)
 					m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
 				else
 				{	if ((_tmp_iStatus & 0x40) != 0)
@@ -12981,7 +12982,7 @@ bool CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTr
 
 				if (_tmp_sOwnerType == 81) // Abaddon
 				{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
-				}else if (bInv == true)
+				}else if (bInv)
 					m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
 				else
 				{	if ((_tmp_iStatus & 0x40) != 0)
@@ -13124,7 +13125,7 @@ bool CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTr
 
 				if (_tmp_sOwnerType == 81) // Abaddon
 				{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
-				}else if (bInv == true)
+				}else if (bInv)
 					m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
 				else {
 					if ((_tmp_iStatus & 0x40) != 0)
@@ -13236,7 +13237,7 @@ bool CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTr
 
 				if (_tmp_sOwnerType == 81) // Abaddon
 				{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
-				}else if (bInv == true)
+				}else if (bInv)
 					m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, cFrame, dwTime);
 				else {
 					if ((_tmp_iStatus & 0x40) != 0)
@@ -14105,7 +14106,7 @@ bool   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTr
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; //beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = true;
 		else if (_revelation) bInv = true;
 		else return false;
@@ -14412,7 +14413,7 @@ bool   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTr
 
 			if (_tmp_sOwnerType == 81) // Abaddon
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
-			}else if (bInv == true)
+			}else if (bInv)
 				 m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 			else
 			{	if ((_tmp_iStatus & 0x40) != 0)
@@ -14550,7 +14551,7 @@ bool   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTr
 
 			if (_tmp_sOwnerType == 81) // Abaddon
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite70(sX+dx, sY+dy, _tmp_cFrame, dwTime);
-			}else if (bInv == true)
+			}else if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 			else
 			{	if ((_tmp_iStatus & 0x40) != 0)
@@ -14786,7 +14787,7 @@ bool CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; //beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; //beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = true;
 		else if (_revelation) bInv = true;
 		else return false;
@@ -14960,7 +14961,7 @@ bool CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool
 			if (_tmp_sOwnerType == 35)
 				m_pEffectSpr[0]->PutTransSprite(sX, sY, 1, dwTime);
 
-			if (bInv == true)
+			if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, cFrame, dwTime);
 			else {
 				if ((_tmp_iStatus & 0x40) != 0)
@@ -15075,7 +15076,7 @@ bool CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool
 			if (_tmp_sOwnerType == 35)
 				m_pEffectSpr[0]->PutTransSprite(sX, sY, 1, dwTime);
 
-			if (bInv == true)
+			if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, cFrame, dwTime);
 			else {
 				if ((_tmp_iStatus & 0x40) != 0)
@@ -15402,7 +15403,7 @@ bool CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, bo
 			}
 			break;
 		}
-		if (bInv == true)
+		if (bInv)
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 		else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutSpriteFast(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 
@@ -15493,7 +15494,7 @@ bool CGame::DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, bo
 			break;
 		}
 
-		if (bInv == true)
+		if (bInv)
 			m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 		else m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutSpriteFast(sX+dx, sY+dy, _tmp_cFrame, dwTime);
 
@@ -15611,7 +15612,7 @@ bool   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTr
 	if ( (_tmp_iStatus & 0x10) != 0)
 	{	if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; // beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; // beholder neck
 		else if( _iGetFOE(_tmp_iStatus) == 1 ) bInv = true;
 		else if (_revelation) bInv = true;
 		else return false;
@@ -15849,7 +15850,7 @@ bool   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTr
 			if (_tmp_sOwnerType == 81) // Abaddon
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
 
-			}else if (bInv == true)
+			}else if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
 			else
 			{	if ((_tmp_iStatus & 0x40) != 0)
@@ -15987,7 +15988,7 @@ bool   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTr
 				m_pEffectSpr[0]->PutTransSprite(sX, sY, 1, dwTime);
 			if (_tmp_sOwnerType == 81) // Abaddon
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
-			}else if (bInv == true)
+			}else if (bInv)
 			{	m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX, sY, _tmp_cFrame, dwTime);
 			}else
 			{	if ((_tmp_iStatus & 0x40) != 0)
@@ -17127,7 +17128,7 @@ void CGame::ChatMsgHandler(char * pData)
 	cMsgType = *cp;
 	cp++;
 
-	if (bCheckExID(cName) == true) return;
+	if (bCheckExID(cName)) return;
 
 	ZeroMemory(cTemp, sizeof(cTemp));
 	strcpy(cTemp, cp);
@@ -17188,7 +17189,7 @@ void CGame::ChatMsgHandler(char * pData)
 			m_pChatMsgList[i] = 0;
 		}
 
-		if ( (cMsgType != 0) && (m_bIsDialogEnabled[10] != true) ) {
+		if ( (cMsgType != 0) && (!m_bIsDialogEnabled[10]) ) {
 			ZeroMemory(cHeadMsg, sizeof(cHeadMsg));
 			wsprintf(cHeadMsg, "%s: %s", cName, cp);
 			AddEventList(cHeadMsg, cMsgType);
@@ -17238,7 +17239,7 @@ void CGame::DrawBackground(short sDivX, short sModX, short sDivY, short sModY)
 
 #ifdef RES_HIGH
 	if (sDivX < 0 || sDivY < 0) return ;
-	if ((m_bIsRedrawPDBGS == true) || (m_iPDBGSdivX != sDivX) || (m_iPDBGSdivY != sDivY)) {
+	if ((m_bIsRedrawPDBGS) || (m_iPDBGSdivX != sDivX) || (m_iPDBGSdivY != sDivY)) {
 		// Pre-Draw Background Surface
 		m_bIsRedrawPDBGS = false;
 		m_iPDBGSdivX = sDivX;
@@ -17269,7 +17270,7 @@ void CGame::DrawBackground(short sDivX, short sModX, short sDivY, short sModY)
 	}
 #else
  	if (sDivX < 0 || sDivY < 0) return ;
-	if ((m_bIsRedrawPDBGS == true) || (m_iPDBGSdivX != sDivX) || (m_iPDBGSdivY != sDivY)) {
+	if ((m_bIsRedrawPDBGS) || (m_iPDBGSdivX != sDivX) || (m_iPDBGSdivY != sDivY)) {
 		// Pre-Draw Background Surface
 		m_bIsRedrawPDBGS = false;
 		m_iPDBGSdivX = sDivX;
@@ -17340,7 +17341,7 @@ bool CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans
 	{
 		if (memcmp(m_cPlayerName, _tmp_cName, 10) == 0) bInv = true;
 		else if (_iGetFOE(_tmp_iStatus) == 2) return false;
-		else if (bCheckItemEquiped("NecklaceOfBeholder") == true) bInv = true; // beholder neck
+		else if (bCheckItemEquiped("NecklaceOfBeholder")) bInv = true; // beholder neck
 		else if (_iGetFOE(_tmp_iStatus) == 1) bInv = true;
 		else if (_revelation) bInv = true;
 		else return false;
@@ -17508,7 +17509,7 @@ bool CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans
 				break;
 			}
 
-			if (bInv == true)
+			if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite(sX + dx, sY + dy, _tmp_cFrame, dwTime);
 			else
 			{
@@ -17677,7 +17678,7 @@ bool CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans
 				break;
 			}
 
-			if (bInv == true)
+			if (bInv)
 				m_pSprite[iBodyIndex + (_tmp_cDir - 1)]->PutTransSprite2(sX + dx, sY + dy, _tmp_cFrame, dwTime);
 			else
 			{
@@ -18129,7 +18130,7 @@ void CGame::InitDataResponseHandler(char * pData)
 	else m_bIsCombatMode = false;
 
 	//v1.42
-	if (m_bIsFirstConn == true)
+	if (m_bIsFirstConn)
 	{
 		m_bIsFirstConn = false;
 		hFile = CreateFile("contents\\contents1000.txt", GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
@@ -18446,7 +18447,7 @@ void CGame::DlgBoxClick_CrusadeJob(short msX, short msY)
 		if( m_bCitizen == false )
 		{	DisableDialogBox(33);
 			PlaySound('E', 14, 5);
-		}else if (m_bAresden == true)
+		}else if (m_bAresden)
 		{	if (m_iGuildRank == 0 || m_iGuildRank == 3)
 			{	if ((msX > sX + 24) && (msX < sX + 246) && (msY > sY + 150) && (msY < sY + 165))
 				{	bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQUEST_SELECTCRUSADEDUTY, 0, 3, 0, 0, 0);
@@ -18546,7 +18547,7 @@ void CGame::AddMapStatusInfo(char * pData, bool bIsLastData)
 		sIndex++;
 	}
 
-	if (bIsLastData == true) {
+	if (bIsLastData) {
 		while (sIndex < DEF_MAXCRUSADESTRUCTURES) {
 			m_stCrusadeStructureInfo[sIndex].cType = 0;
 			m_stCrusadeStructureInfo[sIndex].sX = 0;
@@ -18635,7 +18636,7 @@ void CGame::ShowReceivedString(bool bIsHide)
 	{	strcpy(G_cTxt + strlen(m_pInputBuffer), m_cEdit);
 	}
 
-	if (bIsHide == true)
+	if (bIsHide)
 	{	for (unsigned char i = 0; i < strlen(G_cTxt); i++)
 		if (G_cTxt[i] != 0) G_cTxt[i] = '*';
 	}
@@ -18685,7 +18686,7 @@ void CGame::DrawNewDialogBox(char cType, int sX, int sY, int iFrame, bool bIsNoC
 
 	if (m_pSprite[cType] == 0) return;
 	if (bIsNoColorKey == false)
-	{	if (bIsTrans == true)
+	{	if (bIsTrans)
 			 m_pSprite[cType]->PutTransSprite2(sX, sY, iFrame, dwTime);
 		else m_pSprite[cType]->PutSpriteFast(sX, sY, iFrame, dwTime);
 	}
@@ -18778,7 +18779,7 @@ void CGame::DlgBoxClick_Commander(int msX, int msY) // Snoopy: Fixed for 351
 		break;
 
 	case 3: // Summon Unit
-		if( m_bAresden == true )
+		if( m_bAresden )
 		{	if ((msX >= sX +20) && (msX <= sX +20 +46) && (msY >= sY +220) && (msY <= sY +220 +50))
 			{	if (m_iConstructionPoint >= 3000)
 				{	bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_SUMMONWARUNIT, 0, 47, 1, m_stDialogBoxInfo[36].sV1, 0);
@@ -19125,7 +19126,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 	}
 
 	if ((m_bIsCrusadeMode) && (m_iCrusadeDuty != 0)) { // Crusade Icon
-		if (m_bAresden == true) {
+		if (m_bAresden) {
 			if ((322 + resx + addx <= msX) && (355 + resx + addx >= msX) && (434 + resy < msY) && (475 + resy > msY))
 				m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(322 + resx + addx + 1, 434 + resy, 1, dwTime);
 			else m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(322 + resx + addx, 434 + resy, 2, dwTime);
@@ -19212,7 +19213,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		//New Party Status - ZeroEoyPnk - 04/09/2010
 		if (m_iPartyStatus != 0)
 		{
-			if (ActualizarParty == true)
+			if (ActualizarParty)
 			{
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQUEST_JOINPARTY, 0, 2, 0, 0, m_cMCName);
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_RESQUEST_PARTYHP, 0, 0, 0, 0, 0);
@@ -19562,7 +19563,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 		// centuu - si esta en Arena 1 desactiva el mapa para mostrar las auras arriba
 		if (memcmp(m_cCurLocation, "fightzone1", 10) == 0)
 		{
-			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
+			//if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
 
 			char cCol1[11], cCol2[11], cCol3[11];
 
@@ -19600,7 +19601,7 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 
 		if (strcmp(m_cMapName, "team") == 0)
 		{
-			if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
+			//if (m_bIsDialogEnabled[9]) DisableDialogBox(9);
 			//m_DDraw.DrawShadowBox(5, 175, 110, 280, 0, true);
 			wsprintf(G_cTxt, "Team");
 			PutString(10, 160 + 20, G_cTxt, RGB(220, 200, 200));
@@ -19778,10 +19779,10 @@ void CGame::DrawDialogBox_Text(short msX, short msY, short msZ, char cLB)
 		limitY = sY + m_stDialogBoxInfo[18].sSizeY;
 
 		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(sX, sY, limitX, limitY, 0, true);
 
 		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
-		m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(sX, sY, limitX, sY + 25, 0, true);
 		//PutString_SprFont2(sX + 85, sY + 5, "Information", 240, 240, 240);
 
 		r = 255;
@@ -20221,10 +20222,10 @@ void CGame::DrawDialogBox_Chat(short msX, short msY, short msZ, char cLB)
 		int iminus = 0;
 
 		m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
-		m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(toX, toY, limitX, limitY, 0, true);
 
 		m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
-		m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
+		if (!m_bDialogTrans) m_DDraw.DrawShadowBox(toX, toY, limitX, toY + 25, 0, true);
 		PutString_SprFont2(sX + 145, sY + 5, "Chat Log", 240, 240, 240);
 
 		if (((msX >= sX + 10) && (msX <= sX + 25) && (msY >= sY + 25) && (msY <= sY + 39)) || chatmode == 99)
@@ -20665,13 +20666,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Strength UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 127) && (msY <= sY + 133) && (m_iLU_Point > 0) && (m_cLU_Str + m_iStr < DEF_STATS_LIMIT))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 10;
 				m_cLU_Str += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_iLU_Point >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 5;
 				m_cLU_Str += 5;
@@ -20688,13 +20689,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Vitality UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 146) && (msY <= sY + 152) && (m_iLU_Point > 0) && (m_cLU_Vit + m_iVit < DEF_STATS_LIMIT))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 10;
 				m_cLU_Vit += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_iLU_Point >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 5;
 				m_cLU_Vit += 5;
@@ -20711,13 +20712,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Dexterity UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 165) && (msY <= sY + 171) && (m_iLU_Point > 0) && (m_cLU_Dex + m_iDex < DEF_STATS_LIMIT))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 10;
 				m_cLU_Dex += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_iLU_Point >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 5;
 				m_cLU_Dex += 5;
@@ -20734,13 +20735,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Intelligence UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 184+2) && (msY <= sY + 190+2) && (m_iLU_Point > 0) && (m_cLU_Int + m_iInt < DEF_STATS_LIMIT))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 10;
 				m_cLU_Int += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_iLU_Point >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 5;
 				m_cLU_Int += 5;
@@ -20757,13 +20758,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Magic UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 203+3) && (msY <= sY + 209+3) && (m_iLU_Point > 0) && (m_cLU_Mag + m_iMag < DEF_STATS_LIMIT))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 10;
 				m_cLU_Mag += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_iLU_Point >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 5;
 				m_cLU_Mag += 5;
@@ -20780,13 +20781,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Charisma UP - Diuuude
 	if ((msX >= sX + 195) && (msX <= sX + 205) && (msY >= sY + 222+3) && (msY <= sY + 228+3) && (m_iLU_Point > 0) && (m_cLU_Char + m_iCharisma < DEF_STATS_LIMIT))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_iLU_Point >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 10;
 				m_cLU_Char += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_iLU_Point >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_iLU_Point -= 5;
 				m_cLU_Char += 5;
@@ -20803,13 +20804,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 	// Strength DOWN - Diuuude
 	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 127) && (msY <= sY + 133) && (m_cLU_Str > 0))
 	{	
-		if (m_bShiftPressed == true)
+		if (m_bShiftPressed)
 		{	if ((m_cLU_Str >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Str -= 10;
 				m_iLU_Point += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_cLU_Str >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Str -= 5;
 				m_iLU_Point += 5;
@@ -20825,13 +20826,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 
 	// Vitality DOWN - Diuuude
 	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 146) && (msY <= sY + 152) && (m_cLU_Vit > 0))
-	{	if (m_bShiftPressed == true)
+	{	if (m_bShiftPressed)
 		{	if ((m_cLU_Vit >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Vit -= 10;
 				m_iLU_Point += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_cLU_Vit >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Vit -= 5;
 				m_iLU_Point += 5;
@@ -20847,13 +20848,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 
 	// Dexterity DOWN - Diuuude
 	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 165) && (msY <= sY + 171) && (m_cLU_Dex > 0))
-	{	if (m_bShiftPressed == true)
+	{	if (m_bShiftPressed)
 		{	if ((m_cLU_Dex >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Dex -= 10;
 				m_iLU_Point += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_cLU_Dex >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Dex -= 5;
 				m_iLU_Point += 5;
@@ -20869,13 +20870,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 
 	// Intelligence DOWN - Diuuude
 	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 184+2) && (msY <= sY + 190+2) && (m_cLU_Int > 0))
-	{	if (m_bShiftPressed == true)
+	{	if (m_bShiftPressed)
 		{	if ((m_cLU_Int >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Int -= 10;
 				m_iLU_Point += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_cLU_Int >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Int -= 5;
 				m_iLU_Point += 5;
@@ -20891,13 +20892,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 
 	// Magic DOWN - Diuuude
 	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 203+3) && (msY <= sY + 209+3) && (m_cLU_Mag > 0))
-	{	if (m_bShiftPressed == true)
+	{	if (m_bShiftPressed)
 		{	if ((m_cLU_Mag >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Mag -= 10;
 				m_iLU_Point += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_cLU_Mag >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Mag -= 5;
 				m_iLU_Point += 5;
@@ -20913,13 +20914,13 @@ void CGame::DlgBoxClick_LevelUpSettings(short msX, short msY)
 
 	// Charisma DOWN - Diuuude
 	if ((msX >= sX + 210) && (msX <= sX + 220) && (msY >= sY + 222+3) && (msY <= sY + 228+3) && (m_cLU_Char > 0))
-	{	if (m_bShiftPressed == true)
+	{	if (m_bShiftPressed)
 		{	if ((m_cLU_Char >= 10)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Char -= 10;
 				m_iLU_Point += 10;
 			}
 			PlaySound('E', 14, 5);
-		}else if (m_bCtrlPressed == true)
+		}else if (m_bCtrlPressed)
 		{	if ((m_cLU_Char >= 5)&&(m_bIsDialogEnabled[42] == false))
 			{	m_cLU_Char -= 5;
 				m_iLU_Point += 5;
@@ -21008,13 +21009,13 @@ void CGame::DrawDialogBox_Inventory(int msX, int msY)
 		{
 			uTotalItem++;
 			if (((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_ITEM)
-				&& (m_stMCursor.sSelectedObjectID == m_cItemOrder[i])) || (m_bIsItemEquipped[m_cItemOrder[i]] == true))
+				&& (m_stMCursor.sSelectedObjectID == m_cItemOrder[i])) || (m_bIsItemEquipped[m_cItemOrder[i]]))
 			{
 			}
 			else
 			{
 				cItemColor = m_pItemList[m_cItemOrder[i]]->m_cItemColor;
-				if (m_bIsItemDisabled[m_cItemOrder[i]] == true)
+				if (m_bIsItemDisabled[m_cItemOrder[i]])
 				{
 					if (cItemColor == 0)
 						m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_cItemOrder[i]]->m_sSprite]->PutTransSprite2(sX + 32 + m_pItemList[m_cItemOrder[i]]->m_sX,
@@ -21155,7 +21156,7 @@ void CGame::CrusadeWarResult(int iWinnerSide)
 		m_pMsgTextList[i] = 0;
 	}
 	if( m_bCitizen == false ) iPlayerSide = 0;
-	else if (m_bAresden == true) iPlayerSide = 1;
+	else if (m_bAresden) iPlayerSide = 1;
 	else if (m_bAresden == false) iPlayerSide = 2;
 	if (iPlayerSide == 0)
 	{	switch (iWinnerSide) {
@@ -21539,7 +21540,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 		m_cArrowPressed = 0;
 	}
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{
 		ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 		delete pMI;
@@ -21547,7 +21548,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 		return;
 	}
 
-	if (m_bEnterPressed == true)
+	if (m_bEnterPressed)
 	{
 		m_bEnterPressed = false;
 		PlaySound('E', 14, 5);
@@ -21559,7 +21560,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 				ZeroMemory(m_cPlayerName, sizeof(m_cPlayerName));
 				strcpy(m_cPlayerName, m_pCharList[m_cCurFocus - 1]->m_cName);
 				m_iLevel = (int)m_pCharList[m_cCurFocus - 1]->m_sLevel;
-				if (m_Misc.bCheckValidString(m_cPlayerName) == true)
+				if (m_Misc.bCheckValidString(m_cPlayerName))
 				{
 					m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->_iCloseSprite();
 					m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->_iCloseSprite();
@@ -21631,7 +21632,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 						ZeroMemory(m_cPlayerName, sizeof(m_cPlayerName));
 						strcpy(m_cPlayerName, m_pCharList[m_cCurFocus - 1]->m_cName);
 						m_iLevel = (int)m_pCharList[m_cCurFocus - 1]->m_sLevel;
-						if (m_Misc.bCheckValidString(m_cPlayerName) == true)
+						if (m_Misc.bCheckValidString(m_cPlayerName))
 						{
 							m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->_iCloseSprite();
 							m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->_iCloseSprite();
@@ -21670,7 +21671,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 					strcpy(m_cPlayerName, m_pCharList[m_cCurFocus - 1]->m_cName);
 					m_iLevel = (int)m_pCharList[m_cCurFocus - 1]->m_sLevel;
 
-					if (m_Misc.bCheckValidString(m_cPlayerName) == true) {
+					if (m_Misc.bCheckValidString(m_cPlayerName)) {
 						m_pSprite[DEF_SPRID_INTERFACE_ND_LOGIN]->_iCloseSprite();
 						m_pSprite[DEF_SPRID_INTERFACE_ND_MAINMENU]->_iCloseSprite();
 						m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
@@ -21732,13 +21733,13 @@ bool CGame::bDlgBoxPress_Character(short msX, short msY)
 	short sX, sY, sSprH, sFrame;
 	char cEquipPoiStatus[DEF_MAXITEMEQUIPPOS];
 
-	if (m_bIsDialogEnabled[17] == true) return false;
+	if (m_bIsDialogEnabled[17]) return false;
 
 	sX = m_stDialogBoxInfo[1].sX;
 	sY = m_stDialogBoxInfo[1].sY;
 	for (i = 0; i < DEF_MAXITEMEQUIPPOS; i++) cEquipPoiStatus[i] = -1;
 	for (i = 0; i < DEF_MAXITEMS; i++)
-	{	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[ m_pItemList[i]->m_cEquipPos ] = i;
+	{	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))	cEquipPoiStatus[ m_pItemList[i]->m_cEquipPos ] = i;
 	}
 
 	if ((m_sPlayerType >= 1) && (m_sPlayerType <= 3))
@@ -22157,7 +22158,7 @@ int iReqHeroItemID;
 		break;
 
 	case 1:
-		if (m_bCitizen == true) 
+		if (m_bCitizen) 
 		{
 			if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 			{	// Yes Click
@@ -22223,7 +22224,7 @@ int iReqHeroItemID;
 	case 7:
  		// Hero's Cape
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 95) && (msY <= sY + 110))
- 		{	if(m_bAresden == true) iReqHeroItemID = 400;
+ 		{	if(m_bAresden) iReqHeroItemID = 400;
   			else iReqHeroItemID = 401;
 			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
 			//memcpy(m_cTakeHeroItemName,DRAW_DIALOGBOX_CITYHALL_MENU47,strlen(DRAW_DIALOGBOX_CITYHALL_MENU47));
@@ -22233,8 +22234,8 @@ int iReqHeroItemID;
  		}
  		// Hero's Helm
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 110) && (msY <= sY + 125))
- 		{	if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 403;
-  			if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 404;
+ 		{	if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 403;
+  			if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 404;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 405;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 406;
  	 		//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
@@ -22245,8 +22246,8 @@ int iReqHeroItemID;
  		}
  		// Hero's Cap
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 125) && (msY <= sY + 140))
- 		{	if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 407;
-  			if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 408;
+ 		{	if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 407;
+  			if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 408;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 409;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 410;
   			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
@@ -22257,8 +22258,8 @@ int iReqHeroItemID;
  		}
  		// Hero's Armor
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 140) && (msY <= sY + 155))
- 		{  	if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 411;
-  			if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 412;
+ 		{  	if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 411;
+  			if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 412;
  	 		if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 413;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 414;
   			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
@@ -22269,8 +22270,8 @@ int iReqHeroItemID;
  		}
  		// Hero's Robe
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 155) && (msY <= sY + 170))
- 		{	if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 415;
-  			if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 416;
+ 		{	if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 415;
+  			if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 416;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 417;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 418;
   			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
@@ -22281,8 +22282,8 @@ int iReqHeroItemID;
  		}
  		// Hero's Hauberk
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 170) && (msY <= sY + 185))
-  		{	if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 419;
-	  		if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 420;
+  		{	if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 419;
+	  		if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 420;
 	  		if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 421;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 422;
   			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
@@ -22293,8 +22294,8 @@ int iReqHeroItemID;
  		}
  		// Hero's Leggings
  		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 185) && (msY <= sY + 200))
- 		{  	if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 423;
-  			if((m_bAresden == true) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 424;
+ 		{  	if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 423;
+  			if((m_bAresden) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 424;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 1)) iReqHeroItemID = 425;
   			if((m_bAresden == false) && (m_pCharList[m_cCurFocus-1]->m_sSex == 2)) iReqHeroItemID = 426;
   			//ZeroMemory(m_cTakeHeroItemName,sizeof(m_cTakeHeroItemName));
@@ -22306,8 +22307,8 @@ int iReqHeroItemID;
 		// Hero's Hood
 		if ((msX >= sX + 35) && (msX <= sX + 220) && (msY >= sY + 200) && (msY <= sY + 215))
 		{
-			if ((m_bAresden == true) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 392;
-			if ((m_bAresden == true) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 393;
+			if ((m_bAresden) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 392;
+			if ((m_bAresden) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 393;
 			if ((m_bAresden == false) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 1)) iReqHeroItemID = 394;
 			if ((m_bAresden == false) && (m_pCharList[m_cCurFocus - 1]->m_sSex == 2)) iReqHeroItemID = 395;
 			//ZeroMemory(m_cTakeHeroItemName, sizeof(m_cTakeHeroItemName));
@@ -22483,10 +22484,10 @@ void CGame::DlgBoxClick_Inventory(short msX, short msY)
 	{	if (m_cSkillMastery[13] == 0)
 		{	AddEventList(DLGBOXCLICK_INVENTORY1, 10);
 			AddEventList(DLGBOXCLICK_INVENTORY2, 10);//"The manufacturing manual is purchasable in Blacksmith."
-		}else if (m_bSkillUsingStatus == true)
+		}else if (m_bSkillUsingStatus)
 		{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY5, 10);//""You are already using another skill."
 			return;
-		}else if (_bIsItemOnHand() == true)
+		}else if (_bIsItemOnHand())
 		{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY4, 10);//""Your hands should be free to use this item."
 			return;
 		}else
@@ -22809,17 +22810,17 @@ bool CGame::_bIsItemOnHand() // Snoopy: Fixed to remove ShieldCast
 {int i;
  UINT16 wWeaponType;
 	for (i = 0; i < DEF_MAXITEMS; i++)
-	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))
-	{	if (   (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
-			|| (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))
+	{	
+		if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND) //((m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_LHAND) || (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
 			return true;
 	}
 	for (i = 0; i < DEF_MAXITEMS; i++)
-	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))
+	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))
 	{	if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_RHAND)
 		{	wWeaponType = ((m_sPlayerAppr2 & 0x0FF0) >> 4);
 			// Snoopy 34 for all wands.
-	if ((wWeaponType >= 34) && (wWeaponType < 40) || (wWeaponType >= 50) && (wWeaponType < 55)) return false;
+			if ((wWeaponType >= 34) && (wWeaponType < 40) || (wWeaponType >= 50) && (wWeaponType < 55)) return false;
 			else return true;
 	}	}
 	return false;
@@ -23020,17 +23021,17 @@ void CGame::DrawWhetherEffects()
 				dY = m_stWhetherObject[i].sY - m_sViewPointY;
 
 				// Snoopy: Snow on lower bar
-				/*if (dY >= 547)
+				if (dY >= 547)
 				{
-					cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3;
+					/*cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3;
 					dX = m_stWhetherObject[i].sBX;
-					dY = 547;
+					dY = 547;*/
 				}
-				else*/ cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3 + (rand() % 3);
+				else cTempFrame = 39 + (m_stWhetherObject[i].cStep / 20) * 3 + (rand() % 3);
 
 				m_pEffectSpr[11]->PutTransSprite(dX, dY, cTempFrame, dwTime);
 
-				/*if (m_bIsXmas == true)
+				if (m_bIsXmas)
 				{
 					if (dY == 547)
 					{
@@ -23040,10 +23041,10 @@ void CGame::DrawWhetherEffects()
 						iNum++;
 					}
 					if (iNum >= MAXNUM) iNum = 0;
-				}*/
+				}
 			}
 		}
-		if (m_bIsXmas == true)
+		if (m_bIsXmas)
 		{
 			for (i = 0; i <= MAXNUM; i++)
 			{
@@ -23158,10 +23159,10 @@ void CGame::WhetherObjectFrameCounter()
 void CGame::SetWhetherStatus(bool bStart, char cType)
 {SYSTEMTIME SysTime;
 	GetLocalTime(&SysTime);
-	if (bStart == true)
+	if (bStart)
 	{	m_bIsWhetherEffect   = true;
 		m_cWhetherEffectType = cType;
-		if ((m_bSoundStat == true) && (m_bSoundFlag) && (cType >= 1) && (cType <= 3)) m_pESound[38]->Play(true);
+		if ((m_bSoundStat) && (m_bSoundFlag) && (cType >= 1) && (cType <= 3)) m_pESound[38]->Play(true);
 
 		for (int i = 0; i < DEF_MAXWHETHEROBJECTS; i++)
 		{	m_stWhetherObject[i].sX    = 1;
@@ -23175,7 +23176,7 @@ void CGame::SetWhetherStatus(bool bStart, char cType)
 	}else
 	{	m_bIsWhetherEffect = false;
 		m_cWhetherEffectType = 0;
-		if ((m_bSoundStat == true) && (m_bSoundFlag)) m_pESound[38]->bStop();
+		if ((m_bSoundStat) && (m_bSoundFlag)) m_pESound[38]->bStop();
 	}
 }
 
@@ -23652,47 +23653,47 @@ int CGame::_iGetAttackType()
 {UINT16 wWeaponType;
 	wWeaponType = ((m_sPlayerAppr2 & 0x0FF0) >> 4);
 	if (wWeaponType == 0)
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[5] >= 100)) return 20;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[5] >= 100)) return 20;
 		else return 1;		// Boxe
 	}else if ((wWeaponType >= 1) && (wWeaponType <= 2))
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[7] >= 100)) return 21;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[7] >= 100)) return 21;
 		else return 1;		//Dag, SS
 	}else if ((wWeaponType > 2) && (wWeaponType < 20))
 	{	if ((wWeaponType == 7)||(wWeaponType == 18)) // Added Kloness Esterk
-		{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[9] >= 100)) return 22;
+		{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[9] >= 100)) return 22;
 			else return 1;  // Esterk
 		}else if (wWeaponType == 15)
-		{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[8] >= 100)) return 30;
+		{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[8] >= 100)) return 30;
 			else return 5;  // StormBlade
 		}else
-		{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[8] >= 100)) return 23;
+		{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[8] >= 100)) return 23;
 			else return 1;	// LongSwords
 		}
 	}else if ((wWeaponType >= 20) && (wWeaponType < 29))
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[10] >= 100)) return 24;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[10] >= 100)) return 24;
 		else return 1;		// Haches
 	}else if (((wWeaponType >= 30) && (wWeaponType < 33)) ||  ((wWeaponType >= 55) && (wWeaponType < 60)))
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[14] >= 100)) return 26;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[14] >= 100)) return 26;
 		else return 1;		// Hammers
 	}
 	else if ((wWeaponType >= 50) && (wWeaponType < 54))
 	{
-		if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[21] >= 100)) return 28;
+		if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[21] >= 100)) return 28;
 		else return 6;		// Battle staffs <<<< NEW
 	}
 	else if (wWeaponType == 40)
 	{
-		if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[6] >= 100)) return 29;
+		if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[6] >= 100)) return 29;
 		else return 7;		// Short Bows <<<< NEW
 	}
 	else if ((wWeaponType >= 34) && (wWeaponType < 40))
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[21] >= 100)) return 27;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[21] >= 100)) return 27;
 		else return 1;		// Wands
 	}else if ((wWeaponType >= 41) && (wWeaponType < 50))
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[6] >= 100)) return 25;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[6] >= 100)) return 25;
 		else return 2;		// Long Bows <<<< NEW
 	}else if ((wWeaponType == 29) || (wWeaponType == 33))
-	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true) && (m_cSkillMastery[8] >= 100)) return 23;
+	{	if ((m_iSuperAttackLeft > 0) && (m_bSuperAttackMode) && (m_cSkillMastery[8] >= 100)) return 23;
 		else return 1;		// LS
 	}
 	return 0;
@@ -24606,12 +24607,12 @@ int CGame::_iGetFOE(int iStatus)
 	else bGM = false;
 	if (bGM) return 2;
 
-	if( bPK == true ) return -2;
+	if( bPK ) return -2;
 	if( bCitizen == false ) return 0;
 	if( m_bCitizen == false ) return 0;
-	if( (m_bAresden == true) && (bAresden == true) ) return 1;
+	if( (m_bAresden) && (bAresden) ) return 1;
 	if( (m_bAresden == false) && (bAresden == false) ) return 1;
-	if( m_bIsCrusadeMode == true  || m_bIsHeldenian) return -1;
+	if( m_bIsCrusadeMode  || m_bIsHeldenian) return -1;
 	else
 	{	if( (m_bHunter == false) && (bHunter == false) ) return -1;
 		else return 0;
@@ -25511,7 +25512,7 @@ void CGame::UpdateScreen_OnConnecting()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 
-	if (m_bEscPressed == true) {
+	if (m_bEscPressed) {
 
 		if ((dwTime - m_dwTime) > 1000)
 		{	ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
@@ -25611,7 +25612,7 @@ void CGame::UpdateScreen_OnWaitInitData()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 
-	if (m_bEscPressed == true) {
+	if (m_bEscPressed) {
 		if ((dwTime - m_dwTime) > 7000)
 		{	ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 			if (m_pLSock != 0)
@@ -25651,7 +25652,7 @@ void CGame::UpdateScreen_OnConnectionLost()
 	if (m_cGameModeCount == 0)
 	{	dwTime = timeGetTime();
 		if (m_bSoundFlag) m_pESound[38]->bStop();
-		if ((m_bSoundFlag) && (m_bMusicStat == true))
+		if ((m_bSoundFlag) && (m_bMusicStat))
 		{	StopBGM();	// Snoopy: mp3 support
 			if (m_pBGM != 0) m_pBGM->bStop();
 	}	}
@@ -25719,7 +25720,7 @@ bool CGame::_bDraw_OnCreateNewCharacter(char* pName, short msX, short msY, int i
 	if (iPoint > 0) bFlag = false;
 	if (m_Misc.bCheckValidName(pName) == false) bFlag = false;
 
-	if ((bFlag == true) && (m_cCurFocus == 2)) 
+	if ((bFlag) && (m_cCurFocus == 2)) 
 		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(384 + SCREENX, 445 + SCREENY, 25, dwTime);
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(384 + SCREENX, 445 + SCREENY, 24, dwTime);
 	if (m_cCurFocus == 3)
@@ -25903,7 +25904,7 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 		cPrevFocus = m_cCurFocus;
 	}
 
-	if (m_bEscPressed == true) {
+	if (m_bEscPressed) {
 		ChangeGameMode(DEF_GAMEMODE_ONSELECTCHARACTER);
 		delete pMI;
 		m_bEscPressed = false;
@@ -26346,14 +26347,14 @@ void CGame::UpdateScreen_OnAgreement()
 
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
-	if (m_bEnterPressed == true) {
+	if (m_bEnterPressed) {
 		PlaySound('E', 14, 5);
 		ChangeGameMode(DEF_GAMEMODE_ONCREATENEWACCOUNT);
 		ClearContents_OnCreateNewAccount();
 		delete pMI;
 		return;
 	}
-	if (m_bEscPressed == true) {
+	if (m_bEscPressed) {
 		PlaySound('E', 14, 5);
 		ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 		delete pMI;
@@ -26489,7 +26490,7 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 		m_cArrowPressed = 0;
 	}
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{
 		ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 		delete pMI;
@@ -26538,12 +26539,12 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 		ShowReceivedString();
 
 	if (m_cCurFocus != 1) {
-		if (m_Misc.bCheckValidName(cName) != false)
+		if (m_Misc.bCheckValidName(cName))
 			PutString2(427 + SCREENX, 84 + SCREENY, cName, 100, 200, 100);
 		else PutString2(427 + SCREENX, 84 + SCREENY, cName, 200, 100, 100);
 	}
 	if (m_cCurFocus != 2) {
-		if (m_Misc.bCheckValidName(cPassword) != false)
+		if (m_Misc.bCheckValidName(cPassword))
 			PutString(427 + SCREENX, 106 + SCREENY, cPassword, RGB(100, 200, 100), true, 1);
 		else PutString(427 + SCREENX, 106 + SCREENY, cPassword, RGB(200, 100, 100), true, 1);
 	}
@@ -26699,7 +26700,7 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	DrawVersion(true);
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
 	m_pSprite[DEF_SPRID_MOUSECURSOR]->PutSpriteFast(msX, msY, 0, dwTime);
-	if (m_bEnterPressed == true)
+	if (m_bEnterPressed)
 	{
 		PlaySound('E', 14, 5);
 		switch (m_cCurFocus) {
@@ -26908,7 +26909,7 @@ void CGame::UpdateScreen_OnLogin()
 		m_cArrowPressed = 0;
 	}
 
-	if (m_bEnterPressed == true)
+	if (m_bEnterPressed)
 	{	
 		m_bEnterPressed = false;
 		PlaySound('E', 14, 5);
@@ -26944,7 +26945,7 @@ void CGame::UpdateScreen_OnLogin()
 			return;
 	}	}
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{	
 		EndInputString();
 		ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
@@ -27065,7 +27066,7 @@ void CGame::UpdateScreen_OnSelectServer()
 		m_cArrowPressed = 0;
 	}
 
-	if (m_bEnterPressed == true)
+	if (m_bEnterPressed)
 	{	m_bEnterPressed = false;
 		PlaySound('E', 14, 5);
 		switch (m_cCurFocus) {
@@ -27090,7 +27091,7 @@ void CGame::UpdateScreen_OnSelectServer()
 			return;
 	}	}
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{	ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 		delete pMI;
 		m_bEscPressed = false;
@@ -27183,7 +27184,7 @@ void CGame::OnSysKeyUp(WPARAM wParam)
 		break;
 	case VK_RETURN:
 		m_bEnterPressed = false;
-		if( m_bToggleScreen == true )
+		if( m_bToggleScreen )
 		{	m_bIsRedrawPDBGS = true;
 			m_DDraw.ChangeDisplayMode(G_hWnd);
 		}
@@ -27208,7 +27209,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 90: //'Z'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus)) {
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus)) {
 			bSendCommand(MSGID_REQUEST_SETTRAP, DEF_MSGTYPE_CONFIRM, 0, 0, 0, 0, 0);
 		}
 		break;
@@ -27230,12 +27231,12 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 71: //Magn0S:: Player Panel 'G'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus))
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus))
 			EnableDialogBox(53, 0, 0, 0);
 		break;
 
 	case 81://'Q'
-		if(( m_bCtrlPressed == true ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ))
+		if(( m_bCtrlPressed ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ))
 		{
 			if (m_iAdminUserLevel > 0) {
 				if (m_bIsDialogEnabled[56] == false)
@@ -27251,7 +27252,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 69://'E'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{
 			if(m_bShowEmblems)
 			{
@@ -27267,7 +27268,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 79://'O'
-		if( ( m_bCtrlPressed == true ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
+		if( ( m_bCtrlPressed ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
 		{	if (m_bIsDialogEnabled[60] == false)
 			{	
 				bSendCommand(MSGID_REQUEST_ONLINE);	 //ahora es lo mismo poner eso que todos esos 0, 0 etc
@@ -27279,7 +27280,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 68://'D'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{	m_cDetailLevel++;
 			if( m_cDetailLevel > 2 ) m_cDetailLevel = 0;
 			switch( m_cDetailLevel ) {
@@ -27339,13 +27340,13 @@ void CGame::OnKeyUp(WPARAM wParam)
 	case 77://'M'
 		if( m_cGameMode == DEF_GAMEMODE_ONMAINGAME )
 		{	if( m_bCtrlPressed )
-			{	if( m_bIsDialogEnabled[9] == true ) DisableDialogBox(9);
+			{	if( m_bIsDialogEnabled[9]) DisableDialogBox(9);
 				else EnableDialogBox(9, 0, 0, 0, 0);
 		}	}
 		break;
 
 	case 80://'P' VAMP - party info
-		if( ( m_bCtrlPressed == true ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
+		if( ( m_bCtrlPressed ) && ( m_cGameMode == DEF_GAMEMODE_ONMAINGAME ) )
 		{	
 			if (m_bShowParty)
 			{	m_bShowParty = false;
@@ -27361,7 +27362,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 
 
 	case 82://'R'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{	if( m_bRunningMode )
 			{	m_bRunningMode = false;
 				AddEventList( NOTIFY_MSG_CONVERT_WALKING_MODE, 10 );
@@ -27372,8 +27373,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 83://'S'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
-		{	if (m_bMusicStat == true) // Music Off
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
+		{	if (m_bMusicStat) // Music Off
 			{	m_bMusicStat = false;
 				if (m_bSoundFlag)
 				{	StopBGM();	// Snoopy: mp3 support
@@ -27384,7 +27385,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 				}	}
 				AddEventList( NOTIFY_MSG_MUSIC_OFF, 10 );
 				break;
-			}else if( m_bSoundStat == true )
+			}else if( m_bSoundStat )
 			{	m_pESound[38]->bStop();
 				m_bSoundStat = false;
 				AddEventList( NOTIFY_MSG_SOUND_OFF, 10 );
@@ -27403,14 +27404,14 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case 84: //'T'
-		if (m_bCtrlPressed == true && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
+		if (m_bCtrlPressed && m_cGameMode == DEF_GAMEMODE_ONMAINGAME && (!m_bInputStatus) )
 		{	char tempid[100], cLB, cRB;
 			short sX, sY, msX, msY, msZ;
 			sX = m_stDialogBoxInfo[10].sX;
 			sY = m_stDialogBoxInfo[10].sY;
 			ZeroMemory( tempid, sizeof( tempid ) );
 			m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
-			if( m_bIsDialogEnabled[10] == true && (msX >= sX + 20) && (msX <= sX + 360) && (msY >= sY + 35) && (msY <= sY + 139) )
+			if( m_bIsDialogEnabled[10] && (msX >= sX + 20) && (msX <= sX + 360) && (msY >= sY + 35) && (msY <= sY + 139) )
 			{	CStrTok *pStrTok;
 				char   * token, cBuff[64];
 				char   seps[] = ":";
@@ -27454,13 +27455,13 @@ void CGame::OnKeyUp(WPARAM wParam)
 
 	case VK_INSERT:
 		if (m_iHP <= 0) return;
-		if (m_bItemUsingStatus == true)
+		if (m_bItemUsingStatus)
 		{	
 			AddEventList(USE_POTION, 10);
 			return;
 		}
 
-		if (m_bIsDialogEnabled[27] == true)
+		if (m_bIsDialogEnabled[27])
 		{	AddEventList(USED_POTION, 10);
 			return;
 		}
@@ -27469,7 +27470,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if (_candy_boost)
 		{
 			for (i = 0; i < DEF_MAXITEMS; i++)
-				if ((m_pItemList[i] != 0) && (m_bIsItemDisabled[i] != true) &&
+				if ((m_pItemList[i] != 0) && (!m_bIsItemDisabled[i]) &&
 					(std::string(m_pItemList[i]->m_cName) == "RedCandy"))
 				{
 					bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USEITEM, 0, i, 0, 0, 0);
@@ -27480,7 +27481,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		}
 
 		for (i = 0; i < DEF_MAXITEMS; i++)
-		if ( (m_pItemList[i] != 0) && (m_bIsItemDisabled[i] != true) &&
+		if ( (m_pItemList[i] != 0) && (!m_bIsItemDisabled[i]) &&
 			 (m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 1 || m_pItemList[i]->m_sSpriteFrame == 2 ))
 		{	
 			
@@ -27495,11 +27496,11 @@ void CGame::OnKeyUp(WPARAM wParam)
 
 	case VK_DELETE:
 		if (m_iHP <= 0) return;
-		if (m_bItemUsingStatus == true)
+		if (m_bItemUsingStatus)
 		{	AddEventList(USE_POTION, 10);
 			return;
 		}
-		if (m_bIsDialogEnabled[27] == true)
+		if (m_bIsDialogEnabled[27])
 		{	AddEventList(USED_POTION, 10);
 			return;
 		}
@@ -27508,7 +27509,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		if (_candy_boost)
 		{
 			for (i = 0; i < DEF_MAXITEMS; i++)
-				if ((m_pItemList[i] != 0) && (m_bIsItemDisabled[i] != true) &&
+				if ((m_pItemList[i] != 0) && (!m_bIsItemDisabled[i]) &&
 					(std::string(m_pItemList[i]->m_cName) == "BlueCandy"))
 				{
 					bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USEITEM, 0, i, 0, 0, 0);
@@ -27519,7 +27520,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		}
 
 		for (i = 0; i < DEF_MAXITEMS; i++)
-		if ( (m_pItemList[i] != 0) && (m_bIsItemDisabled[i] != true) &&
+		if ( (m_pItemList[i] != 0) && (!m_bIsItemDisabled[i]) &&
 			 (m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 3 || m_pItemList[i]->m_sSpriteFrame == 4 ))
 		{	
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_USEITEM, 0, i, 0, 0, 0);
@@ -27530,8 +27531,8 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case VK_END:
-		if ( ((m_bIsDialogEnabled[7] == true) && (m_stDialogBoxInfo[7].cMode == 1) && (iGetTopDialogBoxIndex() == 7)) ||
-			((m_bIsDialogEnabled[17] == true) && (m_stDialogBoxInfo[17].cMode == 1) && (iGetTopDialogBoxIndex() == 17)) )
+		if ( ((m_bIsDialogEnabled[7]) && (m_stDialogBoxInfo[7].cMode == 1) && (iGetTopDialogBoxIndex() == 7)) ||
+			((m_bIsDialogEnabled[17]) && (m_stDialogBoxInfo[17].cMode == 1) && (iGetTopDialogBoxIndex() == 17)) )
 		{}else if ((!m_bInputStatus) && (m_cBackupChatMsg[0] != '!') && (m_cBackupChatMsg[0] != '~') && (m_cBackupChatMsg[0] != '^') &&
 				 (m_cBackupChatMsg[0] != '@'))
 		{	ZeroMemory(m_cChatMsg, sizeof(m_cChatMsg));
@@ -27592,7 +27593,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 		break;
 
 	case VK_F10: // f10 player panel
-		if (m_bIsDialogEnabled[56] == true)
+		if (m_bIsDialogEnabled[56])
 			 DisableDialogBox(56);
 		else EnableDialogBox(56, 0, 0, 0);
 		break;
@@ -27707,7 +27708,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 	case VK_ESCAPE:
 		m_bEscPressed = true;
 		if (m_cGameMode == DEF_GAMEMODE_ONMAINGAME)
-		{	if ((m_bIsObserverMode == true) && (m_bShiftPressed)) { //ObserverMode Shift+Esc
+		{	if ((m_bIsObserverMode) && (m_bShiftPressed)) { //ObserverMode Shift+Esc
 				// Log Out
 				if (m_cLogOutCount == -1) m_cLogOutCount = 1;
 				DisableDialogBox(19);
@@ -27719,7 +27720,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 					AddEventList(DLGBOX_CLICK_SYSMENU2, 10);
 				}
 			}
-			if (m_bIsGetPointingMode == true) {
+			if (m_bIsGetPointingMode) {
 				m_bIsGetPointingMode = false;
 				AddEventList(COMMAND_PROCESSOR1, 10);
 			}
@@ -27730,7 +27731,7 @@ void CGame::OnKeyUp(WPARAM wParam)
 	case 33:
 		if (m_cGameMode != DEF_GAMEMODE_ONMAINGAME) return;
 		if (m_bInputStatus) return;
-		if (m_bIsSpecialAbilityEnabled == true) 
+		if (m_bIsSpecialAbilityEnabled) 
 		{	if (!bMapActivate) {
 				AddEventList("Items Activation were disabled in this map.", 10);
 				return;
@@ -27845,16 +27846,17 @@ void CGame::OnKeyDown(WPARAM wParam)
 			// MORLA - Modificado para que no escriba al apretar los hotkeys de Casting Bar
 			}else if ((m_bInputStatus == false) && (GetAsyncKeyState(VK_MENU)>>15 == false))
 			{
-				//if ((m_bShiftPressed == true) || ((wParam!=49) && (wParam!=50)
+				//if ((m_bShiftPressed) || ((wParam!=49) && (wParam!=50)
 				//	&& (wParam!=51)&& (wParam!=52) && (wParam!=53)))
 				//{
+				if (m_bEnterPressed) {
 #ifdef RES_HIGH
 					StartInputString(10, 532, sizeof(m_cChatMsg), m_cChatMsg);
 #else
 					StartInputString(10, 414, sizeof(m_cChatMsg), m_cChatMsg);
 #endif
 					ClearInputString(); 
-				//}
+				}
 		}	}
 		break;
 	}
@@ -27896,7 +27898,7 @@ void CGame::UpdateScreen_OnQuit()
 
 	m_DDraw.ClearBackB4();
 
-	if (m_bEscPressed == true || m_bEnterPressed == true) {
+	if (m_bEscPressed || m_bEnterPressed) {
 		m_bEscPressed = false;
 		m_bEnterPressed = false;
 		delete pMI;
@@ -27957,7 +27959,7 @@ void CGame::UpdateScreen_OnQueryForceLogin()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 
-	if (m_bEscPressed == true) {
+	if (m_bEscPressed) {
 		ChangeGameMode(DEF_GAMEMODE_ONSELECTCHARACTER);
 		delete pMI;
 		m_bEscPressed = false;
@@ -28084,7 +28086,7 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 
 			if (m_pCharList[i]->m_sSex != 0)
 			{
-				if (m_Misc.bCheckValidString(m_pCharList[i]->m_cName) == true)
+				if (m_Misc.bCheckValidString(m_pCharList[i]->m_cName))
 				{
 					m_pEffectSpr[0]->PutTransSprite(sX + 157 + i * 109 + SCREENX, sY + 138 + SCREENY, 1, dwTime);
 					DrawObject_OnMove_ForMenu(0, 0, sX + 157 + i * 109 + SCREENX, sY + 138 + SCREENY, false, dwTime, 0, 0);
@@ -28193,7 +28195,7 @@ void CGame::UpdateScreen_OnWaitingResponse()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{
 		if ((dwTime - m_dwTime) > 7000)
 		{
@@ -28303,7 +28305,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{
 		ChangeGameMode(DEF_GAMEMODE_ONSELECTCHARACTER);
 		delete pMI;
@@ -28901,7 +28903,7 @@ void CGame::NotifyMsgHandler(char * pData)
 
 	case DEF_NOTIFY_HELDENIANSTART: //  Case BEA of switch 00454077
 		
-		SetTopMsg("Heldenian real battle has been started form now on.", 10);
+		SetTopMsg("Heldenian real battle has been started from now on.", 10);
 		break;
 
 	case DEF_NOTIFY_HELDENIANVICTORY: // Case BEB of switch 00454077
@@ -29366,7 +29368,7 @@ void CGame::NotifyMsgHandler(char * pData)
 		ZeroMemory( m_pItemList[sV1]->m_cName, sizeof(m_pItemList[sV1]->m_cName) );
 		memcpy(m_pItemList[sV1]->m_cName,cp,20) ;
 		cp += 20 ;
-		if (m_bIsDialogEnabled[34] == true)
+		if (m_bIsDialogEnabled[34])
 		{	m_stDialogBoxInfo[34].cMode = 3; // succes
 		}
 		PlaySound('E', 23, 5);
@@ -29401,19 +29403,19 @@ void CGame::NotifyMsgHandler(char * pData)
 		if (*dwp != 0) m_pItemList[sV1]->m_sItemSpecEffectValue2 = (short)*dwp;
 		cp += 4;
 		if (dwTemp == m_pItemList[sV1]->m_dwAttribute)
-		{	if (m_bIsDialogEnabled[34] == true)
+		{	if (m_bIsDialogEnabled[34])
 			{	m_stDialogBoxInfo[34].cMode = 4;// Failed
 			}
-			else if (m_bIsDialogEnabled[44] == true)
+			else if (m_bIsDialogEnabled[44])
 			{
 				m_stDialogBoxInfo[44].cMode = 4;// Failed
 			}
 			PlaySound('E', 24, 5);
 		}else
-		{	if (m_bIsDialogEnabled[34] == true)
+		{	if (m_bIsDialogEnabled[34])
 			{	m_stDialogBoxInfo[34].cMode = 3; // Success
 			}
-			else if (m_bIsDialogEnabled[44] == true)
+			else if (m_bIsDialogEnabled[44])
 			{
 				m_stDialogBoxInfo[44].cMode = 3; // Success
 			}
@@ -29846,7 +29848,7 @@ NMH_LOOPBREAK2:;
 					 EnableDialogBox(33, 2, iV2, 0);
 				else EnableDialogBox(33, 1, 0, 0);
 				if( m_bCitizen == false ) EnableDialogBox(18, 800, 0, 0);
-				else if( m_bAresden == true ) EnableDialogBox(18, 801, 0, 0);
+				else if( m_bAresden ) EnableDialogBox(18, 801, 0, 0);
 				else if( m_bAresden == false ) EnableDialogBox(18, 802, 0, 0);
 				if (m_bCitizen == false) SetTopMsg(NOTIFY_MSG_CRUSADESTART_NONE, 10);
 				else SetTopMsg(m_pGameMsgList[9]->m_pMsg, 10);
@@ -29988,7 +29990,7 @@ NMH_LOOPBREAK2:;
 			}
 			else {
 				ZeroMemory(G_cTxt, sizeof(G_cTxt));
-				if( m_bAresden == true ) wsprintf(G_cTxt, NOTIFY_MSG_HANDLER34, cTxt);//"%s(Aresden) pushed energy sphere to enemy's portal!!..."
+				if( m_bAresden ) wsprintf(G_cTxt, NOTIFY_MSG_HANDLER34, cTxt);//"%s(Aresden) pushed energy sphere to enemy's portal!!..."
 				else if (m_bAresden == false) wsprintf(G_cTxt, NOTIFY_MSG_HANDLER34_ELV, cTxt);//"%s(Elvine) pushed energy sphere to enemy's portal!!..."
 				AddEventList(G_cTxt, 10);
 			}
@@ -30044,7 +30046,7 @@ NMH_LOOPBREAK2:;
 		cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
 		sp = (short *)cp;
 
-		if ((bool)*sp == true)
+		if ((bool)*sp)
 		{	m_stDialogBoxInfo[32].cMode = 2;
 		}else
 		{	m_stDialogBoxInfo[32].cMode = 3;
@@ -31094,7 +31096,7 @@ void CGame::UpdateScreen_OnLogResMsg()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
 
-	if (m_bEscPressed == true || m_bEnterPressed) {
+	if (m_bEscPressed || m_bEnterPressed) {
 		switch (m_cMsg[0]) {
 		case '1':
 			ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
@@ -31499,7 +31501,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 	int i;
 	char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	
-	if (m_bIsDialogEnabled[17] == true) return;
+	if (m_bIsDialogEnabled[17]) return;
 	sX = m_stDialogBoxInfo[1].sX;
 	sY = m_stDialogBoxInfo[1].sY;
 
@@ -31509,7 +31511,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 			cEquipPoiStatus[i] = -1;
 
 		for (i = 0; i < DEF_MAXITEMS; i++) {
-			if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+			if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
 
 			if (strcmp(m_cMapName, "team") == 0)
 			{
@@ -31689,10 +31691,10 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 
 		if (cItemID == -1 || m_pItemList[cItemID] == 0) return;
 		if ((m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_CONSUME) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW) || (m_pItemList[cItemID]->m_dwCount > 1)) return;
-		if ((m_bIsDialogEnabled[11] == true) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24))
+		if ((m_bIsDialogEnabled[11]) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24))
 			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, 0, cItemID, m_stDialogBoxInfo[39].sV3, 0, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
 		else {
-			if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == true)
+			if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID])
 			{
 				GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 				ZeroMemory(G_cTxt, sizeof(G_cTxt));
@@ -31719,7 +31721,7 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 				cEquipPoiStatus[i] = -1;
 
 			for (i = 0; i < DEF_MAXITEMS; i++) {
-				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
+				if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))	cEquipPoiStatus[m_pItemList[i]->m_cEquipPos] = i;
 
 				if (strcmp(m_cMapName, "team") == 0)
 				{
@@ -31900,10 +31902,10 @@ void CGame::DlbBoxDoubleClick_Character(short msX, short msY)
 
 			if (cItemID == -1 || m_pItemList[cItemID] == 0) return;
 			if ((m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_CONSUME) || (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW) || (m_pItemList[cItemID]->m_dwCount > 1)) return;
-			if ((m_bIsDialogEnabled[11] == true) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24))
+			if ((m_bIsDialogEnabled[11]) && (m_bIsDialogEnabled[23] == false) && (m_stDialogBoxInfo[39].sV3 == 24))
 				bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_REQ_REPAIRITEM, 0, cItemID, m_stDialogBoxInfo[39].sV3, 0, m_pItemList[cItemID]->m_cName, m_stDialogBoxInfo[39].sV4); // v1.4
 			else {
-				if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID] == true)
+				if (m_bIsItemEquipped[m_stMCursor.sSelectedObjectID])
 				{
 					GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
 					ZeroMemory(G_cTxt, sizeof(G_cTxt));
@@ -32015,7 +32017,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
  char  cItemID, cTxt[120];
  short sX, sY, x1, x2, y1, y2;
  char cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
-	if (m_bItemUsingStatus == true)
+	if (m_bItemUsingStatus)
 	{	
 		AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY1, 10);
 		return;
@@ -32024,7 +32026,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 	sY = m_stDialogBoxInfo[2].sY;
 
 	//Magn0S:: Add to Equip Full set with Ctrl Pressed.
-	/*if (m_bCtrlPressed == true) {
+	if (m_bCtrlPressed) {
 		for (i = 0; i < DEF_MAXITEMS; i++) {
 			cItemID = m_cItemOrder[DEF_MAXITEMS - 1 - i];
 			if (m_pItemList[cItemID] == 0) continue;
@@ -32047,7 +32049,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}
 		}
 		return;
-	}*/
+	}
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{	if (m_cItemOrder[DEF_MAXITEMS - 1 - i] == -1) continue;
@@ -32118,11 +32120,11 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}	}
 
 			if ( m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_SKILL )
-			{	if (_bIsItemOnHand() == true)
+			{	if (_bIsItemOnHand())
 				{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY4, 10);//"Your hands should be free to use this item."
 					return;
 				}
-				if (m_bSkillUsingStatus == true)
+				if (m_bSkillUsingStatus)
 				{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY5, 10);//"You are already using another skill."
 					return;
 				}
@@ -32136,11 +32138,11 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}	}
 
 			if ( m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE_DEST )
-			{	if (_bIsItemOnHand() == true)
+			{	if (_bIsItemOnHand())
 				{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY4, 10);//"Your hands should be free to use this item."
 					return;
 				}
-				if (m_bSkillUsingStatus == true)
+				if (m_bSkillUsingStatus)
 				{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY13, 10);//"You are already using another skill."
 					return;
 				}
@@ -32154,12 +32156,12 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 			}	}
 
 			if (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_USE_SKILL_ENABLEDIALOGBOX)
-			{	if (_bIsItemOnHand() == true)
+			{	if (_bIsItemOnHand())
 				{	AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY4, 10);//"Your hands should be free to use this item."
 					return;
 				}
 
-				if (m_bSkillUsingStatus == true) {
+				if (m_bSkillUsingStatus) {
 					AddEventList(BDLBBOX_DOUBLE_CLICK_INVENTORY5, 10);//"You are already using another skill."
 					return;
 				}
@@ -32205,16 +32207,16 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 						break;
 			}	}	}
 			// Dblclick Alchemy bowl
-			if (( m_bIsDialogEnabled[26] == true) && (m_stDialogBoxInfo[26].cMode == 1))
+			if (( m_bIsDialogEnabled[26]) && (m_stDialogBoxInfo[26].cMode == 1))
 			{	bItemDrop_SkillDialog();
 			}
 			// Dblclick Manuf box
-			if (( m_bIsDialogEnabled[26] == true) && (m_stDialogBoxInfo[26].cMode == 4))
+			if (( m_bIsDialogEnabled[26]) && (m_stDialogBoxInfo[26].cMode == 4))
 			{	bItemDrop_SkillDialog();
 			}
 			// Crafting
 			// Dblclick Crafting box
-			if (( m_bIsDialogEnabled[26] == true) && (m_stDialogBoxInfo[26].cMode == 7))
+			if (( m_bIsDialogEnabled[26]) && (m_stDialogBoxInfo[26].cMode == 7))
 			{	bItemDrop_SkillDialog();
 			}
 			if (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
@@ -32314,7 +32316,7 @@ void CGame::UpdateScreen_OnChangePassword()
 		m_cArrowPressed = 0;
 	}
 
-	if (m_bEnterPressed == true)
+	if (m_bEnterPressed)
 	{
 		PlaySound('E', 14, 5);
 		switch (m_cCurFocus) {
@@ -32358,7 +32360,7 @@ void CGame::UpdateScreen_OnChangePassword()
 		m_bEnterPressed = false;
 	}
 
-	if (m_bEscPressed == true)
+	if (m_bEscPressed)
 	{
 		ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 		delete pMI;
@@ -32406,26 +32408,26 @@ void CGame::UpdateScreen_OnChangePassword()
 	PutString(206 + SCREENX, 227 + SCREENY, UPDATE_SCREEN_ON_CHANGE_PASSWORD4, RGB(25, 35, 25));
 
 	if (m_cCurFocus != 1) {
-		if (m_Misc.bCheckValidString(cName) != false)
+		if (m_Misc.bCheckValidString(cName))
 			PutString(314 + SCREENX, 155 + SCREENY, cName, RGB(25, 35, 25));
 		else PutString(314 + SCREENX, 155 + SCREENY, cName, RGB(55, 18, 13));
 	}
 	if ((m_Misc.bCheckValidString(cName) == false) || (strlen(cName) == 0)) bFlag = false;
 
 	if (m_cCurFocus != 2) {
-		if ((m_Misc.bCheckValidString(cPassword) != false))
+		if ((m_Misc.bCheckValidString(cPassword)))
 			PutString(314 + SCREENX, 179 + SCREENY, cPassword, RGB(25, 35, 25), true, 3);
 		else PutString(314 + SCREENX, 179 + SCREENY, cPassword, RGB(55, 18, 13), true, 3);
 	}
 
 	if (m_cCurFocus != 3) {
-		if ((m_Misc.bCheckValidName(cNewPassword) != false))
+		if ((m_Misc.bCheckValidName(cNewPassword)))
 			PutString(314 + SCREENX, 203 + SCREENY, cNewPassword, RGB(25, 35, 25), true, 3);
 		else PutString(314 + SCREENX, 203 + SCREENY, cNewPassword, RGB(55, 18, 13), true, 3);
 	}
 
 	if (m_cCurFocus != 4) {
-		if ((m_Misc.bCheckValidName(cNewPassConfirm) != false))
+		if ((m_Misc.bCheckValidName(cNewPassConfirm)))
 			PutString(314 + SCREENX, 227 + SCREENY, cNewPassConfirm, RGB(25, 35, 25), true, 3);
 		else PutString(314 + SCREENX, 227 + SCREENY, cNewPassConfirm, RGB(55, 18, 13), true, 3);
 	}
@@ -32442,7 +32444,7 @@ void CGame::UpdateScreen_OnChangePassword()
 	PutAlignedString(153 + SCREENX, 487 + SCREENX, 273 + SCREENY, UPDATE_SCREEN_ON_CHANGE_PASSWORD6);//"
 	PutAlignedString(153 + SCREENX, 487 + SCREENX, 288 + SCREENY, UPDATE_SCREEN_ON_CHANGE_PASSWORD7);//"
 
-	if ((bFlag == true) && (m_cCurFocus == 5))
+	if ((bFlag) && (m_cCurFocus == 5))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(197 + SCREENX, 320 + SCREENY, 21, dwTime);
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(197 + SCREENX, 320 + SCREENY, 20, dwTime);
 
@@ -32528,7 +32530,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 
 	if ((msX >= sX + 24) && (msX <= sX + 115) && (msY >= sY + 81) && (msY <= sY + 100))
 	{	if( m_bSoundFlag )
-		{	if (m_bSoundStat == true)
+		{	if (m_bSoundStat)
 			{	m_pESound[38]->bStop();
 				m_bSoundStat = false;
 				AddEventList( NOTIFY_MSG_SOUND_OFF, 10 );
@@ -32539,7 +32541,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 
 	if ((msX >= sX + 116) && (msX <= sX + 202) && (msY >= sY + 81) && (msY <= sY + 100))
 	{	if( m_bSoundFlag )
-		{	if (m_bMusicStat == true) 	// Music Off
+		{	if (m_bMusicStat) 	// Music Off
 			{	m_bMusicStat = false;
 				AddEventList( NOTIFY_MSG_MUSIC_OFF, 10 );
 				if (m_bSoundFlag)
@@ -32558,7 +32560,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 
 
 	if ((msX >= sX + 23) && (msX <= sX + 108) && (msY >= sY + 108) && (msY <= sY + 119))
-	{	if (m_bWhisper == true)
+	{	if (m_bWhisper)
 		{	m_bWhisper = false;
 			AddEventList(BCHECK_LOCAL_CHAT_COMMAND7, 10 );
 		}else
@@ -32567,7 +32569,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 	}	}
 
 	if ((msX >= sX + 123) && (msX <= sX + 203) && (msY >= sY + 108) && (msY <= sY + 119))
-	{	if (m_bShout == true)
+	{	if (m_bShout)
 		{	m_bShout = false;
 			AddEventList(BCHECK_LOCAL_CHAT_COMMAND9, 10 );
 		}else
@@ -32632,7 +32634,7 @@ void CGame::DrawNpcName(short sX, short sY, short sOwnerType, int iStatus)
 	if ((iStatus & 0x20) != 0) strcat(cTxt, DRAW_OBJECT_NAME50);//" Berserk"
 	if ((iStatus & 0x40) != 0) strcat(cTxt, DRAW_OBJECT_NAME51);//" Frozen"
 	PutString2(sX, sY, cTxt, 255,255,255);
-	if (m_bIsObserverMode == true) PutString2(sX, sY+14, cTxt, 50,50,255);
+	if (m_bIsObserverMode) PutString2(sX, sY+14, cTxt, 50,50,255);
 	else if (m_bIsConfusion || (m_iIlusionOwnerH != 0))
 	{	ZeroMemory(cTxt, sizeof(cTxt));
 		strcpy(cTxt, DRAW_OBJECT_NAME87);//"(Unknown)"
@@ -32840,7 +32842,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 			else bHunter = false;
 			
 			if( m_bIsCrusadeMode==false || iFOE>=0 )
-			{	if( FindGuildName(pName, &iGuildIndex) == true )
+			{	if( FindGuildName(pName, &iGuildIndex) )
 				{	if (m_stGuildName[iGuildIndex].cGuildName[0] != 0)
 					{	if( strcmp(m_stGuildName[iGuildIndex].cGuildName, "NONE" )!=0 )
 						{	if( m_stGuildName[iGuildIndex].iGuildRank == 0 )
@@ -32884,7 +32886,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 			{
 				if (bAresden)
 				{
-					if (bHunter == true)
+					if (bHunter)
 						strcpy(cTxt, DEF_MSG_ARECIVIL); // "Aresden Civilian"
 					else
 						strcpy(cTxt, DEF_MSG_ARESOLDIER);
@@ -32892,13 +32894,13 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 				}
 				else
 				{
-					if (bHunter == true)
+					if (bHunter)
 						strcpy(cTxt, DEF_MSG_ELVCIVIL);// "Elvine Civilian"
 					else
 						strcpy(cTxt, DEF_MSG_ELVSOLDIER);	// "Elvine Combatant"	
 				}
 			}
-			if (bPK == true)
+			if (bPK)
 			{
 				if (bCitizen == false)
 					strcpy(cTxt, DEF_MSG_PK);	//"Criminal"
@@ -33050,7 +33052,7 @@ void CGame::UpdateScreen_OnVersionNotMatch()
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 120) m_cGameModeCount = 120;
 	m_DDraw.ClearBackB4();
-	if (m_bEscPressed == true || m_bEnterPressed == true)
+	if (m_bEscPressed || m_bEnterPressed)
 	{	m_bEscPressed = false;
 		m_bEnterPressed = false;
 		delete pMI;
@@ -33155,7 +33157,7 @@ char CGame::GetOfficialMapName(char * pMapName, char * pName)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME61);	// Tower of Hell 2
 		return 19;
 	}else if (strcmp(pMapName, "toh3") == 0)
-	{	strcpy(pName, "Tower of Hunt");	// Tower of Hell 3
+	{	strcpy(pName, "Tower of Hell");	// Tower of Hell 3
 		return 20;
 	}else if (strcmp(pMapName, "middled1x") == 0)
 	{	strcpy(pName, GET_OFFICIAL_MAP_NAME58);	// Middleland Mine
@@ -33528,10 +33530,10 @@ bool CGame::bCheckItemOperationEnabled(char cItemID)
 {
 	if (m_pItemList[cItemID] == 0) return false;
 	if (m_cCommand < 0) return false;
-	if (m_bIsTeleportRequested == true) return false;
-	if (m_bIsItemDisabled[cItemID] == true) return false;
+	if (m_bIsTeleportRequested) return false;
+	if (m_bIsItemDisabled[cItemID]) return false;
 
-	if ((m_pItemList[cItemID]->m_sSpriteFrame == 155) && (m_bUsingSlate == true))
+	if ((m_pItemList[cItemID]->m_sSpriteFrame == 155) && (m_bUsingSlate))
 	{	if ((m_cMapIndex==35)||(m_cMapIndex==36)||(m_cMapIndex==37))
 		{	AddEventList(DEF_MSG_NOTIFY_SLATE_WRONG_MAP, 10); // "You cannot use it right here."
 			return false;
@@ -33540,47 +33542,47 @@ bool CGame::bCheckItemOperationEnabled(char cItemID)
 		return false;
 	}
 
-	/*if ( m_bIsDialogEnabled[17] == true )
+	if ( m_bIsDialogEnabled[17] ) // items drop external screen
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
 	}
 
-	if (m_bIsDialogEnabled[20] == true)
+	if (m_bIsDialogEnabled[20]) // NpcActionQuery
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
 	}
 
-	if (m_bIsDialogEnabled[23] == true)
+	if (m_bIsDialogEnabled[23]) // repair
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
 	}
 
-	if (m_bIsDialogEnabled[26] == true)
+	if (m_bIsDialogEnabled[26]) // manufacture
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
 	}
 
-	if (m_bIsDialogEnabled[27] == true)
+	if (m_bIsDialogEnabled[27]) // exchange
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
 	}
 
-	if (m_bIsDialogEnabled[31] == true)
+	if (m_bIsDialogEnabled[31]) // sell
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
 	}
 
-	if (m_bIsDialogEnabled[4] == true)
+	if (m_bIsDialogEnabled[4]) // Item drop confirmation
 	{	AddEventList(BCHECK_ITEM_OPERATION_ENABLE1, 10);
 		return false;
-	}*/
+	}
 
 	return true;
 }
 
 void CGame::ClearSkillUsingStatus()
 {
-	if (m_bSkillUsingStatus == true)
+	if (m_bSkillUsingStatus)
 	{	AddEventList(CLEAR_SKILL_USING_STATUS1, 10);//"
 		DisableDialogBox(24);
 		DisableDialogBox(26);
@@ -33770,7 +33772,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 
 	bool  bGORet;
 	// Fixed by Snoopy
-	if ((m_bIsObserverCommanded == false) && (m_bIsObserverMode == true))
+	if ((m_bIsObserverCommanded == false) && (m_bIsObserverMode))
 	{
 #ifdef RES_HIGH
 		if ((msX == 0) && (msY == 0) && (m_sViewDstX > 32 * 26) && (m_sViewDstY > 32 * 20))
@@ -33814,7 +33816,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 		return;
 	}
 
-	if (m_bIsObserverMode == true) return;
+	if (m_bIsObserverMode) return;
 
 	if (GetAsyncKeyState(VK_MENU) >> 15) // [ALT]
 		m_bSuperAttackMode = true;
@@ -33857,7 +33859,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 				{
 					if (m_iHP > 0) 
 					{
-						if ((m_bIsDialogEnabled[12] != true) && (m_iLU_Point > 0))
+						if ((!m_bIsDialogEnabled[12]) && (m_iLU_Point > 0))
 						{
 							EnableDialogBox(12, 0, 0, 0);
 							PlaySound('E', 14, 5);
@@ -33895,7 +33897,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 				return;
 			}
 		}
-		else if (cRB != 0)
+		if (cRB != 0)
 		{
 			iRet = _iCheckDlgBoxFocus(msX, msY, 2);
 			if (iRet == 1) return;
@@ -33936,7 +33938,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 		}
 		if (cLB != 0) 			// v2.05 01-11-30
 		{
-			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY) == true) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
+			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY)) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
 
 			if ((m_stMCursor.sPrevX != msX) || (m_stMCursor.sPrevY != msY))
 			{
@@ -33969,7 +33971,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 		}*/
 		if (cLB == 0)
 		{	//ZeroEoyPnk - Bye delay...
-			if ((m_bIsDialogEnabled[12] != true) || (m_stMCursor.sSelectedObjectID != 12))
+			if ((!m_bIsDialogEnabled[12]) || (m_stMCursor.sSelectedObjectID != 12))
 			{
 				if (((dwTime - m_stMCursor.dwSelectClickTime) < DEF_DOUBLECLICKTIME) 	// Double Click
 					&& (msX == m_stMCursor.sClickX) && (msY == m_stMCursor.sClickY))
@@ -34000,9 +34002,9 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 			}
 			return;
 		}
-		else //if (cLB != 0) 			// v2.05 01-11-30
+		if (cLB != 0) 			// v2.05 01-11-30
 		{
-			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY) == true) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
+			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY)) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
 
 			if ((m_stMCursor.sPrevX != msX) || (m_stMCursor.sPrevY != msY))
 			{
@@ -34037,7 +34039,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 	case DEF_CURSORSTATUS_DRAGGING:
 		if (cLB != 0)
 		{
-			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY) == true) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
+			if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY)) && (m_cCommandCount == 0)) goto CP_SKIPMOUSEBUTTONSTATUS;
 			if (m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_DLGBOX)
 			{
 				m_stDialogBoxInfo[m_stMCursor.sSelectedObjectID].sX = msX - m_stMCursor.sDistX;
@@ -34049,7 +34051,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 			if ((m_cCommand == DEF_OBJECTMOVE) || (m_cCommand == DEF_OBJECTRUN)) goto MOTION_COMMAND_PROCESS;
 			return;
 		}
-		else //if (cLB == 0) 
+		if (cLB == 0) 
 		{
 			switch (m_stMCursor.cSelectedObjectType) {
 			case DEF_SELECTEDOBJTYPE_DLGBOX:
@@ -34070,9 +34072,10 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 					StartInputString(sX + 40, sY + 57, 11, m_cAmountString);
 					m_stDialogBoxInfo[17].cMode = 1;
 				}
-				if (m_stMCursor.sSelectedObjectID == 9)
+				if (m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_DLGBOX && 
+					m_stMCursor.sSelectedObjectID == 9)
 				{
-					{
+					
 						if (msX < 400) //LifeX Fix Map
 						{
 							m_stDialogBoxInfo[9].sX = 0;
@@ -34090,7 +34093,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 						{
 							m_stDialogBoxInfo[9].sY = 547 - m_stDialogBoxInfo[9].sSizeY;
 						}
-					}
+					
 				}
 
 				m_stMCursor.cPrevStatus = DEF_CURSORSTATUS_NULL;
@@ -34125,7 +34128,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 		m_bEscPressed = false;
 		PlaySound('E', 14, 5);
 		if (m_bSoundFlag) m_pESound[38]->bStop();
-		if ((m_bSoundFlag) && (m_bMusicStat == true))
+		if ((m_bSoundFlag) && (m_bMusicStat))
 		{
 			StopBGM();	// Snoopy: mp3 support
 			if (m_pBGM != 0) m_pBGM->bStop();
@@ -34143,13 +34146,13 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 		goto MOTION_COMMAND_PROCESS;
 	}
 
-	if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY) == true) && (m_cCommandCount == 0))
+	if ((m_pMapData->bIsTeleportLoc(m_sPlayerX, m_sPlayerY)) && (m_cCommandCount == 0))
 		RequestTeleportAndWaitData();
 
 	// indexX, indexY
 	if (cLB != 0) // Mouse Left button
 	{
-		if (m_bIsGetPointingMode == true)
+		if (m_bIsGetPointingMode)
 		{
 			if ((m_sMCX != 0) || (m_sMCY != 0))
 				PointCommandHandler(m_sMCX, m_sMCY);
@@ -34177,7 +34180,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 			if (memcmp(m_cMCName, m_cPlayerName, 10) == 0) m_sMCY--;
 			if ((m_sMCX != 0) && (m_sMCY != 0)) // m_sMCX, m_sMCY
 			{
-				if (m_bCtrlPressed == true)
+				if (m_bCtrlPressed)
 				{
 					m_pMapData->bGetOwner(m_sMCX, m_sMCY, cName, &sObjectType, &iObjectStatus, &m_wCommObjectID);
 					if ((iObjectStatus & 0x10) != 0) return;
@@ -34250,7 +34253,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							break;
 
 						case 8: // LS
-							if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+							if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 								&& (_iGetAttackType() != 30)) // Crit without StormBlade
 							{
 								wType = _iGetAttackType();
@@ -34258,7 +34261,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								m_sCommX = m_sMCX;
 								m_sCommY = m_sMCY;
 							}
-							else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+							else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 								&& (_iGetAttackType() == 30))  // Crit with StormBlade (by Snoopy)
 							{
 								wType = _iGetAttackType();
@@ -34316,7 +34319,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							break;
 
 						case 9: // Fencing
-							if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true))
+							if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode))
 							{
 								m_cCommand = DEF_OBJECTATTACK;
 								m_sCommX = m_sMCX;
@@ -34357,7 +34360,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							break;
 
 						case 10: // Axe
-							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true))
+							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode))
 							{
 								m_cCommand = DEF_OBJECTATTACK;
 								m_sCommX = m_sMCX;
@@ -34404,7 +34407,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							}
 							break;
 						case 14: // Hammer
-							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 								m_cCommand = DEF_OBJECTATTACK;
 								m_sCommX = m_sMCX;
 								m_sCommY = m_sMCY;
@@ -34443,13 +34446,13 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							}
 							break;
 						case 21: // Wand
-							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+							if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 								m_cCommand = DEF_OBJECTATTACK; // Crit without battle staff
 								m_sCommX = m_sMCX;
 								m_sCommY = m_sMCY;
 								wType = _iGetAttackType();
 							}
-							else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+							else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 								&& (_iGetAttackType() == 28)) { // Crit with battle staff
 								m_cCommand = DEF_OBJECTATTACK;
 								m_sCommX = m_sMCX;
@@ -34768,7 +34771,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 									break;
 
 								case 8: // LS
-									if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+									if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 										&& (_iGetAttackType() != 30)) // Crit without StormBlade by Snoopy
 									{
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
@@ -34778,7 +34781,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 										m_sCommY = m_sMCY;
 										wType = _iGetAttackType();
 									}
-									else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+									else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 										&& (_iGetAttackType() == 30)) // Crit with StormBlade by Snoopy
 									{
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
@@ -34809,7 +34812,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 									break;
 
 								case 9: // Fencing
-									if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true))
+									if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode))
 									{
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
 											m_cCommand = DEF_OBJECTATTACKMOVE;
@@ -34831,7 +34834,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 									break;
 
 								case 10: //
-									if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+									if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
 											m_cCommand = DEF_OBJECTATTACKMOVE;
 										else m_cCommand = DEF_OBJECTATTACK;
@@ -34850,7 +34853,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 									}
 									break;
 								case 14: //
-									if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+									if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
 											m_cCommand = DEF_OBJECTATTACKMOVE;
 										else m_cCommand = DEF_OBJECTATTACK;
@@ -34869,7 +34872,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 									}
 									break;
 								case 21: //
-									if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+									if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
 											m_cCommand = DEF_OBJECTATTACKMOVE;
 										else m_cCommand = DEF_OBJECTATTACK;
@@ -34877,7 +34880,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 										m_sCommY = m_sMCY;
 										wType = _iGetAttackType();
 									}
-									else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+									else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 										&& (_iGetAttackType() == 28)) { // Crit with Battle staff
 										if ((absX <= 1) && (absY <= 1) && (m_bShiftPressed || m_bRunningMode) && (m_iSP > 0))
 											m_cCommand = DEF_OBJECTATTACKMOVE;
@@ -34933,10 +34936,10 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 			}
 		}
 	}
-	else if (cRB != 0) // Mouse Right button
+	if (cRB != 0) // Mouse Right button
 	{
 		m_cCommand = DEF_OBJECTSTOP;
-		if (m_bIsGetPointingMode == true)
+		if (m_bIsGetPointingMode)
 		{
 			m_bIsGetPointingMode = false;
 			AddEventList(COMMAND_PROCESSOR1, 10);
@@ -34950,7 +34953,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 			absY = abs(m_sPlayerY - m_sMCY);
 			if (absX == 0 && absY == 0) return;
 
-			if (m_bCtrlPressed == true)
+			if (m_bCtrlPressed)
 			{
 				m_pMapData->bGetOwner(m_sMCX, m_sMCY, cName, &sObjectType, &iObjectStatus, &m_wCommObjectID);
 				if ((iObjectStatus & 0x10) != 0) return;
@@ -34986,7 +34989,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						break;
 
 					case 8: // LS
-						if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+						if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 							&& (_iGetAttackType() != 30)) // without StormBlade by Snoopy
 						{
 							wType = _iGetAttackType();
@@ -34994,7 +34997,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 							m_sCommX = m_sMCX;
 							m_sCommY = m_sMCY;
 						}
-						else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+						else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 							&& (_iGetAttackType() == 30)) // with stormBlade crit by Snoopy
 						{
 							wType = _iGetAttackType();
@@ -35013,7 +35016,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						break;
 
 					case 9: // Fencing
-						if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+						if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 							m_cCommand = DEF_OBJECTATTACK;
 							m_sCommX = m_sMCX;
 							m_sCommY = m_sMCY;
@@ -35022,7 +35025,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						break;
 
 					case 10: //
-						if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+						if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 							m_cCommand = DEF_OBJECTATTACK;
 							m_sCommX = m_sMCX;
 							m_sCommY = m_sMCY;
@@ -35031,7 +35034,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						break;
 
 					case 14: //
-						if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+						if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 							m_cCommand = DEF_OBJECTATTACK;
 							m_sCommX = m_sMCX;
 							m_sCommY = m_sMCY;
@@ -35039,7 +35042,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 						}
 						break;
 					case 21: //
-						/*if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+						/*if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 							m_cCommand = DEF_OBJECTATTACK;
 							m_sCommX = m_sMCX;
 							m_sCommY = m_sMCY;
@@ -35097,7 +35100,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								break;
 
 							case 8: // LS
-								if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+								if ((absX <= 3) && (absY <= 3) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 									&& (_iGetAttackType() != 30)) // crit without StormBlade by Snoopy
 								{
 									wType = _iGetAttackType();
@@ -35105,7 +35108,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 									m_sCommX = m_sMCX;
 									m_sCommY = m_sMCY;
 								}
-								else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+								else if ((absX <= 5) && (absY <= 5) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 									&& (_iGetAttackType() == 30)) // with stormBlade crit by Snoopy
 								{
 									wType = _iGetAttackType();
@@ -35124,7 +35127,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								break;
 
 							case 9: // fencing
-								if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+								if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 									m_cCommand = DEF_OBJECTATTACK;
 									m_sCommX = m_sMCX;
 									m_sCommY = m_sMCY;
@@ -35133,7 +35136,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								break;
 
 							case 10: //
-								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 									m_cCommand = DEF_OBJECTATTACK;
 									m_sCommX = m_sMCX;
 									m_sCommY = m_sMCY;
@@ -35141,7 +35144,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								}
 								break;
 							case 14: // hammer
-								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 									m_cCommand = DEF_OBJECTATTACK;
 									m_sCommX = m_sMCX;
 									m_sCommY = m_sMCY;
@@ -35149,13 +35152,13 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 								}
 								break;
 							case 21: // wand
-								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)) {
+								if ((absX <= 2) && (absY <= 2) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)) {
 									m_cCommand = DEF_OBJECTATTACK;
 									m_sCommX = m_sMCX;
 									m_sCommY = m_sMCY;
 									wType = _iGetAttackType();
 								}
-								else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode == true)
+								else if ((absX <= 4) && (absY <= 4) && (m_iSuperAttackLeft > 0) && (m_bSuperAttackMode)
 									&& (_iGetAttackType() == 28)) {
 									m_cCommand = DEF_OBJECTATTACK;
 									m_sCommX = m_sMCX;
@@ -35192,6 +35195,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 				m_iPlayerStatus, m_cPlayerName,
 				m_cCommand, 0, 0, 0, 0,
 				10);
+			
 			m_bCommandAvailable = false;
 			m_dwCommandTime = timeGetTime();
 			return;
@@ -35227,7 +35231,7 @@ MOTION_COMMAND_PROCESS:;
 			m_sCommY = m_sPlayerY;
 
 			// mim crit fixed by kaozures tocado para ande bien by cloud :P
-			if (m_bIllusionMVT == true) {
+			if (m_bIllusionMVT) {
 				switch (m_sDamageMove) {
 				case 1: m_sCommY++; break;
 				case 2: m_sCommX--; m_sCommY++; break;
@@ -35288,7 +35292,7 @@ MOTION_COMMAND_PROCESS:;
 			if ((m_sPlayerX == m_sCommX) && (m_sPlayerY == m_sCommY))
 				m_cCommand = DEF_OBJECTSTOP;
 			else if ((abs(m_sPlayerX - m_sCommX) <= 1) && (abs(m_sPlayerY - m_sCommY) <= 1) &&
-				(bGORet == true) && (sDstOwnerType != 0))
+				(bGORet) && (sDstOwnerType != 0))
 				m_cCommand = DEF_OBJECTSTOP;
 			else if ((abs(m_sPlayerX - m_sCommX) <= 2) && (abs(m_sPlayerY - m_sCommY) <= 2) &&
 				(m_pMapData->m_tile[m_sCommX][m_sCommY].m_bIsMoveAllowed == false))
@@ -35308,7 +35312,7 @@ MOTION_COMMAND_PROCESS:;
 				cDir = cGetNextMoveDir(m_sPlayerX, m_sPlayerY, m_sCommX, m_sCommY, true);
 
 				// Snoopy: Illusion Movement
-				if ((m_bIllusionMVT == true) && (m_cCommand != DEF_OBJECTDAMAGEMOVE))
+				if ((m_bIllusionMVT) && (m_cCommand != DEF_OBJECTDAMAGEMOVE))
 				{
 					cDir = cGetNextMoveDir(m_sPlayerX, m_sPlayerY, m_sCommX, m_sCommY, true, true);
 				}
@@ -35357,7 +35361,7 @@ MOTION_COMMAND_PROCESS:;
 		case DEF_OBJECTATTACK:
 			cDir = m_Misc.cGetNextMoveDir(m_sPlayerX, m_sPlayerY, m_sCommX, m_sCommY);
 			// Snoopy: Illusion movement
-			if (m_bIllusionMVT == true)
+			if (m_bIllusionMVT)
 			{
 				cDir += 4;
 				if (cDir >8) cDir -= 8;
@@ -35394,13 +35398,13 @@ MOTION_COMMAND_PROCESS:;
 			if ((m_sPlayerX == m_sCommX) && (m_sPlayerY == m_sCommY))
 				m_cCommand = DEF_OBJECTSTOP;
 			else if ((abs(m_sPlayerX - m_sCommX) <= 1) && (abs(m_sPlayerY - m_sCommY) <= 1) &&
-				(bGORet == true) && (sDstOwnerType != 0))
+				(bGORet) && (sDstOwnerType != 0))
 				m_cCommand = DEF_OBJECTSTOP;
 			else
 			{
 				cDir = cGetNextMoveDir(m_sPlayerX, m_sPlayerY, m_sCommX, m_sCommY, true);
 				// Snoopy: Illusion mvt
-				if (m_bIllusionMVT == true)
+				if (m_bIllusionMVT)
 				{
 					cDir = cGetNextMoveDir(m_sPlayerX, m_sPlayerY, m_sCommX, m_sCommY, true, true);
 				}
@@ -35427,6 +35431,12 @@ MOTION_COMMAND_PROCESS:;
 					m_dwCommandTime = timeGetTime();
 					m_iPrevMoveX = m_sPlayerX;
 					m_iPrevMoveY = m_sPlayerY;
+				}
+				// Centuu : auto pickup gold
+				if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
+				{
+					bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, 0, 0, 0, 0);
+
 				}
 			}
 			m_cCommand = DEF_OBJECTSTOP;
@@ -35557,11 +35567,11 @@ void CGame::UpdateScreen_OnGame()
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
 	m_dwCurTime = timeGetTime();
 
-	if (m_bEnterPressed == true)
+	if (m_bEnterPressed)
 	{
 		m_bEnterPressed = false;
 
-		if ((m_bIsDialogEnabled[7] == true) && (m_stDialogBoxInfo[7].cMode == 1) && (iGetTopDialogBoxIndex() == 7)) {
+		if ((m_bIsDialogEnabled[7]) && (m_stDialogBoxInfo[7].cMode == 1) && (iGetTopDialogBoxIndex() == 7)) {
 
 			EndInputString();
 
@@ -35574,25 +35584,25 @@ void CGame::UpdateScreen_OnGame()
 			}
 		}
 
-		else if ((m_bIsDialogEnabled[17] == true) && (m_stDialogBoxInfo[17].cMode == 1) && (iGetTopDialogBoxIndex() == 17)) {
+		else if ((m_bIsDialogEnabled[17]) && (m_stDialogBoxInfo[17].cMode == 1) && (iGetTopDialogBoxIndex() == 17)) {
 			// Drop Item Query
 
 			EndInputString();
 
-			if (m_bSkillUsingStatus == true)
+			if (m_bSkillUsingStatus)
 			{
 				AddEventList(UPDATE_SCREEN_ONGAME1, 10);
 				return;
 			}
 
-			if ((m_bIsDialogEnabled[20] == true)
+			if ((m_bIsDialogEnabled[20])
 				&& ((m_stDialogBoxInfo[20].cMode == 1) || (m_stDialogBoxInfo[20].cMode == 2)))
 			{
 				AddEventList(UPDATE_SCREEN_ONGAME1, 10);//"You can not give or drop before the actual Item transaction."
 				return;
 			}
 
-			if ((m_bIsDialogEnabled[4] == true) || (m_bIsDialogEnabled[23] == true) || (m_bIsDialogEnabled[26] == true))
+			if ((m_bIsDialogEnabled[4]) || (m_bIsDialogEnabled[23]) || (m_bIsDialogEnabled[26]))
 			{
 				AddEventList(UPDATE_SCREEN_ONGAME1, 10);
 				return;
@@ -35851,8 +35861,8 @@ void CGame::UpdateScreen_OnGame()
 
 	if ((iUpdateRet != 0) && m_bInputStatus)
 	{
-		if (((m_bIsDialogEnabled[7] == true) && (m_stDialogBoxInfo[7].cMode == 1)) ||
-			((m_bIsDialogEnabled[17] == true) && (m_stDialogBoxInfo[17].cMode == 1)))
+		if (((m_bIsDialogEnabled[7]) && (m_stDialogBoxInfo[7].cMode == 1)) ||
+			((m_bIsDialogEnabled[17]) && (m_stDialogBoxInfo[17].cMode == 1)))
 #ifdef RES_HIGH
 		{
 		}
@@ -36213,7 +36223,7 @@ void CGame::UpdateScreen_OnGame()
 
 		PlaySound('E', 14, 5);
 		if (m_bSoundFlag) m_pESound[38]->bStop();
-		if ((m_bSoundFlag) && (m_bMusicStat == true))
+		if ((m_bSoundFlag) && (m_bMusicStat))
 		{
 			StopBGM();	// Snoopy: mp3 support
 			if (m_pBGM != 0) m_pBGM->bStop();
@@ -36245,7 +36255,7 @@ void CGame::UpdateScreen_OnGame()
 		return;
 	}
 
-	if (m_bIsObserverMode == true)
+	if (m_bIsObserverMode)
 	{
 		m_DDraw.PutPixel(msX, msY, 255, 255, 255);
 		m_DDraw.PutPixel(msX + 1, msY, 255, 255, 255);
@@ -36331,7 +36341,7 @@ void CGame::UpdateScreen_OnGame()
 	// m_iPlayerStatus 0x000F
 	iUpdateRet = m_pMapData->iObjectFrameCounter(m_cPlayerName, m_sViewPointX, m_sViewPointY);
 
-	if ((bEffectFrameCounter() == true) && (iUpdateRet == 0)) iUpdateRet = -1;
+	if ((bEffectFrameCounter()) && (iUpdateRet == 0)) iUpdateRet = -1;
 	if (iUpdateRet == 2)
 	{
 		m_bCommandAvailable = true;

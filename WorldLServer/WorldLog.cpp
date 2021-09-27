@@ -134,9 +134,9 @@ bool CWorldLog::bInit()
 	try
 	{
 		con.Connect(
-			"localhost\\sqlexpress@HBGhost",
-			"hb",
-			"h3lbr34th_gh0s7",
+			"SOL-PC@HBGhost",
+			"",
+			"",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)
@@ -4281,7 +4281,7 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 	cp += 20;
 
 	if (G_bDBMode == true) {
-		SACommand com;
+		SACommand com, com2;
 
 		try
 		{
@@ -4294,6 +4294,16 @@ void CWorldLog::RequestDisbandGuild(int iClientH, char* pData)
 			//long affected = com.RowsAffected();
 
 			com.Close();
+
+			com2.setConnection(&con);
+			com2.setCommandText("DELETE FROM GuildMembers WHERE [Guild-Name] = :1");
+			com2.Param(1).setAsString() = cGuildName;
+
+			com2.Execute();
+
+			//long affected = com.RowsAffected();
+
+			com2.Close();
 
 			char cTemp[256];
 			ZeroMemory(cTemp, sizeof(cTemp));

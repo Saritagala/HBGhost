@@ -94,9 +94,9 @@ bool CMainLog::bInit()
 	try
 	{
 		con.Connect(
-			"localhost\\sqlexpress@HBGhost",
-			"hb",
-			"h3lbr34th_gh0s7",
+			"SOL-PC@HBGhost",
+			"",
+			"",
 			SA_SQLServer_Client);
 	}
 	catch (SAException& x)

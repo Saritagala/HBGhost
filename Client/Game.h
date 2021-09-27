@@ -998,7 +998,7 @@ public:
 	UINT32 m_dwCurTime;
 	UINT32 m_dwCheckConnTime, m_dwCheckSprTime, m_dwCheckChatTime;
 	UINT32 m_dwDialogCloseTime;
-	CInt  m_dwLogOutCountTime;//was UINT32
+	UINT32  m_dwLogOutCountTime;//was UINT32
 	UINT32 m_dwRestartCountTime;
 	UINT32 m_dwWOFtime; //v1.4
 	UINT32 m_dwObserverCamTime;

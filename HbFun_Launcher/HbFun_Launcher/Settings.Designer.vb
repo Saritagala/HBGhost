@@ -47,12 +47,18 @@ Partial Class Settings
         Me.scrSound = New System.Windows.Forms.HScrollBar()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
+        Me.chkQuestHelper = New System.Windows.Forms.CheckBox()
+        Me.chkBigItems = New System.Windows.Forms.CheckBox()
+        Me.chkOldPanels = New System.Windows.Forms.CheckBox()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.chkOldPanels)
+        Me.GroupBox1.Controls.Add(Me.chkBigItems)
+        Me.GroupBox1.Controls.Add(Me.chkQuestHelper)
         Me.GroupBox1.Controls.Add(Me.chkShowNPC)
         Me.GroupBox1.Controls.Add(Me.chkEvents)
         Me.GroupBox1.Controls.Add(Me.cboDetail)
@@ -80,7 +86,7 @@ Partial Class Settings
         '
         Me.chkShowNPC.AutoSize = True
         Me.chkShowNPC.Location = New System.Drawing.Point(2, 124)
-        Me.chkShowNPC.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.chkShowNPC.Margin = New System.Windows.Forms.Padding(2)
         Me.chkShowNPC.Name = "chkShowNPC"
         Me.chkShowNPC.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.chkShowNPC.Size = New System.Drawing.Size(78, 17)
@@ -103,7 +109,7 @@ Partial Class Settings
         '
         Me.cboDetail.FormattingEnabled = True
         Me.cboDetail.Items.AddRange(New Object() {"Low", "Normal", "High"})
-        Me.cboDetail.Location = New System.Drawing.Point(85, 162)
+        Me.cboDetail.Location = New System.Drawing.Point(107, 175)
         Me.cboDetail.Name = "cboDetail"
         Me.cboDetail.Size = New System.Drawing.Size(76, 21)
         Me.cboDetail.TabIndex = 18
@@ -111,7 +117,7 @@ Partial Class Settings
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(42, 164)
+        Me.Label5.Location = New System.Drawing.Point(64, 178)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(37, 13)
         Me.Label5.TabIndex = 17
@@ -241,7 +247,7 @@ Partial Class Settings
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(211, 159)
+        Me.Button1.Location = New System.Drawing.Point(215, 173)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(59, 23)
         Me.Button1.TabIndex = 0
@@ -315,6 +321,39 @@ Partial Class Settings
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Sound:"
         '
+        'chkQuestHelper
+        '
+        Me.chkQuestHelper.AutoSize = True
+        Me.chkQuestHelper.Location = New System.Drawing.Point(95, 124)
+        Me.chkQuestHelper.Name = "chkQuestHelper"
+        Me.chkQuestHelper.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.chkQuestHelper.Size = New System.Drawing.Size(88, 17)
+        Me.chkQuestHelper.TabIndex = 21
+        Me.chkQuestHelper.Text = "Quest Helper"
+        Me.chkQuestHelper.UseVisualStyleBackColor = True
+        '
+        'chkBigItems
+        '
+        Me.chkBigItems.AutoSize = True
+        Me.chkBigItems.Location = New System.Drawing.Point(205, 124)
+        Me.chkBigItems.Name = "chkBigItems"
+        Me.chkBigItems.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.chkBigItems.Size = New System.Drawing.Size(69, 17)
+        Me.chkBigItems.TabIndex = 22
+        Me.chkBigItems.Text = "Big Items"
+        Me.chkBigItems.UseVisualStyleBackColor = True
+        '
+        'chkOldPanels
+        '
+        Me.chkOldPanels.AutoSize = True
+        Me.chkOldPanels.Location = New System.Drawing.Point(3, 146)
+        Me.chkOldPanels.Name = "chkOldPanels"
+        Me.chkOldPanels.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.chkOldPanels.Size = New System.Drawing.Size(77, 17)
+        Me.chkOldPanels.TabIndex = 23
+        Me.chkOldPanels.Text = "Old-Panels"
+        Me.chkOldPanels.UseVisualStyleBackColor = True
+        '
         'Settings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -363,4 +402,7 @@ Partial Class Settings
     Friend WithEvents chkDialog As CheckBox
     Friend WithEvents chkEvents As CheckBox
     Friend WithEvents chkShowNPC As CheckBox
+    Friend WithEvents chkQuestHelper As CheckBox
+    Friend WithEvents chkBigItems As CheckBox
+    Friend WithEvents chkOldPanels As CheckBox
 End Class

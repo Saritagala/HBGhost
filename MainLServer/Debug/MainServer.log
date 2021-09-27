@@ -1,0 +1,5 @@
+﻿  MainLog.cpp
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\MainLServer\MainLog.cpp(557,10): warning C4101: 'dwp': unreferenced local variable
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\MainLServer\MainLog.cpp(561,65): warning C4101: 'cp2': unreferenced local variable
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\MainLServer\MainLog.cpp(555,27): warning C4101: 'i': unreferenced local variable
+  MainServer.vcxproj -> C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\MainLServer\Debug\MainServer.exe

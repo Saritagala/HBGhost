@@ -2751,7 +2751,7 @@ void CGame::DeleteClient(int iClientH, bool bSave, bool bNotify, bool bCountLogo
 		
 				SendMsgToGateServer(MSGID_PARTYOPERATION, iClientH, cData);
 			}
-			if (bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH, bCountLogout) == false) LocalSavePlayerData(iClientH);
+			bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH, bCountLogout); //if (bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH, bCountLogout) == false) LocalSavePlayerData(iClientH);
 		}
 		else bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH, bCountLogout);
 	}
@@ -3255,10 +3255,10 @@ void CGame::CheckClientResponseTime()
 						if (m_pClientList[x] != 0 && m_pClientList[x]->m_cSide != 0) SendNotifyMsg(0, x, DEF_NOTIFY_EVENT, 0, 8 + m_pClientList[i]->m_cSide - 1, 0, 0);
 				}
 
-				if ((m_pMapList[m_pClientList[i]->m_cMapIndex]->m_bIsFightZone == false) &&	((dwTime - m_pClientList[i]->m_dwAutoSaveTime) > (UINT32)DEF_AUTOSAVETIME)) {
+				/*if ((m_pMapList[m_pClientList[i]->m_cMapIndex]->m_bIsFightZone == false) &&	((dwTime - m_pClientList[i]->m_dwAutoSaveTime) > (UINT32)DEF_AUTOSAVETIME)) {
 					bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, i, true); 
 					m_pClientList[i]->m_dwAutoSaveTime = dwTime;
-				}
+				}*/
 				if ((dwTime - m_pClientList[i]->m_dwExpStockTime) > (UINT32)DEF_EXPSTOCKTIME) {
 					m_pClientList[i]->m_dwExpStockTime = dwTime;
 					//CalcExpStock(i);
@@ -8750,11 +8750,11 @@ void CGame::ChatMsgHandler(int iClientH, char * pData, UINT32 dwMsgSize)
             
         }
 
-		/*else if (memcmp(cp, "/save", 5) == 0) {
-			if (bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH) == false) LocalSavePlayerData(iClientH);
-			SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Data saved!");
-			
-		}*/
+		else if (memcmp(cp, "/save", 5) == 0) {
+			//if (bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATALOGOUT, iClientH) == false) LocalSavePlayerData(iClientH);
+			//SendNotifyMsg(iClientH, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Data saved!");
+			bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH);
+		}
 
 		else if (memcmp(cp, "/bum ", 5) == 0) { // MORLA - 2.12 Cagar pc del player
 			AdminOrder_BanPj(iClientH, cp, dwMsgSize - 21);
@@ -18409,7 +18409,7 @@ void CGame::RequestChangePlayMode(int iClientH)
 		SendNotifyMsg(0,iClientH,DEF_NOTIFY_CHANGEPLAYMODE,0,0,0,m_pClientList[iClientH]->m_cLocation);
 		SendEventToNearClient_TypeA(iClientH,DEF_OWNERTYPE_PLAYER,MSGID_EVENT_MOTION,100,0,0,0);
 	}
-	bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, true);
+	//bSendMsgToLS(MSGID_REQUEST_SAVEPLAYERDATA, iClientH, true);
 	//LocalSavePlayerData(iClientH);
 }
 
@@ -26840,21 +26840,21 @@ bool CGame::bGetMultipleItemNamesWhenDeleteNpc(short sNpcType, int iProbability,
 						}
 						break;
 					case 3: // Ancient piece
-						switch (iDice(1, 4)) {
+						/*switch (iDice(1, 4)) {
 							case 1: iItemID = 868; break;
 							case 2: iItemID = 869; break;
 							case 3: iItemID = 870; break;
 							case 4: iItemID = 871; break;
-						}
+						}*/
 						break;
 					case 4: // Gold
-						switch (iDice(1, 5)) {
+						/*switch (iDice(1, 5)) {
 							case 1: iItemID = 740; break;
 							case 2: iItemID = 741; break;
 							case 3: iItemID = 742; break;
 							case 4: iItemID = 743; break;
 							case 5: iItemID = 744; break;
-						}
+						}*/
 						break;
 					}
 				}

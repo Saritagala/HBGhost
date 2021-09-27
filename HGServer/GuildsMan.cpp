@@ -408,6 +408,8 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, UINT32 dwMsg
 
 				bSendMsgToLS(MSGID_REQUEST_CREATENEWGUILD, iClientH);
 
+				bSendMsgToLS(MSGID_REQUEST_UPDATEGUILDINFO_NEWGUILDSMAN, iClientH);
+
 				//_CreateNewGuildFile(cGuildName);
 			}
 			else 
@@ -436,144 +438,6 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, UINT32 dwMsg
 	}
 }
 
-void CGame::_CreateNewGuildFile(char *cGuildName)
-{
-	char cTxt[256], cFileName[256], cDir[11], * pData, * cp;
-	FILE* pFile;
-	int    iSize, id = ObtenerNuevoID();
-
-	m_stGuild[id].iGuildLevel = 0;
-	strcpy(m_stGuild[id].cGuildName, cGuildName);
-
-	pData = new char[30000];
-	if (pData == 0) return;
-	ZeroMemory(pData, 30000);
-
-	cp = (char*)(pData);
-	iSize = _iComposeGuildDataFileContents(id, cp);
-
-	// Centuu - guild upgrade
-	strcat(cFileName, "Guild");
-	strcat(cFileName, "\\");
-	strcat(cFileName, "\\");
-	wsprintf(cTxt, "AscII%d", (unsigned char)cGuildName[0]);
-	strcat(cFileName, cTxt);
-	strcpy(cDir, cFileName);
-	strcat(cFileName, "\\");
-	strcat(cFileName, "\\");
-	strcat(cFileName, cGuildName);
-	strcat(cFileName, ".txt");
-
-	_mkdir("Guild");
-	_mkdir(cDir);
-
-	if (iSize == 0) {
-		PutLogList("(!) Guild data body empty: Cannot create & save temporal guild data file.");
-		delete[] pData;
-		return;
-	}
-
-	pFile = fopen(cFileName, "wt");
-	if (pFile == 0) {
-		wsprintf(cTxt, "(!) Cannot create new Guild file : Name(%s)", cFileName);
-		PutLogList(cTxt);
-		return;
-	}
-	
-	wsprintf(cTxt, "(!) Guild data file saved : Name(%s)", cFileName);
-	PutLogList(cTxt);
-	fwrite(cp, iSize, 1, pFile);
-	fclose(pFile);
-	
-}
-
-int CGame::_iComposeGuildDataFileContents(int iGuildH, char* pData)
-{
-	SYSTEMTIME SysTime;
-	char  cTxt[120], cTmp[21];
-	int   i;
-
-	GetLocalTime(&SysTime);
-	strcat(pData, "[FILE-DATE]\n\n");
-
-	wsprintf(cTxt, "file-saved-date: %d %d %d %d %d\n", SysTime.wYear, SysTime.wMonth, SysTime.wDay, SysTime.wHour, SysTime.wMinute);
-	strcat(pData, cTxt);
-	strcat(pData, "\n\n");
-
-	strcat(pData, "[LEVEL]\n\n");
-	wsprintf(cTxt, "guild-level       = %d", m_stGuild[iGuildH].iGuildLevel);
-	strcat(pData, cTxt);
-	strcat(pData, "\n\n");
-	
-	strcat(pData, "[ITEMLIST]\n\n");
-
-	for (i = 0; i < DEF_MAXBANKITEMS; i++) {
-		if (m_stGuild[iGuildH].m_pItemInBankList[i] != 0) {
-			strcat(pData, "guild-bank-item = ");
-			memset(cTmp, ' ', 21);
-			strcpy(cTmp, m_stGuild[iGuildH].m_pItemInBankList[i]->m_cName);
-			cTmp[strlen(m_stGuild[iGuildH].m_pItemInBankList[i]->m_cName)] = (char)' ';
-			cTmp[20] = 0;
-			strcat(pData, cTmp);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_dwCount, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sTouchEffectType, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sTouchEffectValue1, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sTouchEffectValue2, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sTouchEffectValue3, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_cItemColor, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sItemSpecEffectValue1, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sItemSpecEffectValue2, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sItemSpecEffectValue3, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_wCurLifeSpan, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_dwAttribute, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			//----------------------------------------------------------------------------
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sNewEffect1, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			//--------------------
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sNewEffect2, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			//--------------------
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sNewEffect3, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, " ");
-			//--------------------
-			itoa(m_stGuild[iGuildH].m_pItemInBankList[i]->m_sNewEffect4, cTxt, 10);
-			strcat(pData, cTxt);
-			strcat(pData, "\n");
-		}
-	}
-	strcat(pData, "\n\n");
-
-	strcat(pData, "[EOF]");
-	strcat(pData, "\n\n\n\n");
-
-	return strlen(pData);
-}
 
 void CGame::RequestDisbandGuildHandler(int iClientH, char* pData, UINT32 dwMsgSize)
 {

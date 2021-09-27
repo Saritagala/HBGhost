@@ -5337,7 +5337,11 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 					return;
 				}
 			}
-			break;
+
+			if (bDepleteNow)
+				ItemDepleteHandler(iClientH, sItemIndex, true, true);
+
+			return; // break;
 
 		//Magn0S:: Reputation Increased Potion.
 		case DEF_ITEMEFFECTTYPE_REP:

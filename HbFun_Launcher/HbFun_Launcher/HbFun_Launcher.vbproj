@@ -170,6 +170,7 @@
   <ItemGroup>
     <Content Include="AIcon.ico" />
     <Content Include="Icon.ico" />
+    <None Include="Resources\magnos.jpg" />
     <None Include="Resources\descarga.png" />
     <None Include="Resources\Boton_2.png" />
     <None Include="Resources\Boton_1.png" />

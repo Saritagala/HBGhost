@@ -1304,84 +1304,72 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem = 0;
 				}
 				else {
-						if (iItemIDs[j] == 90)
-							pItem->m_dwCount = iDice(10, 10500);
-						else
-							pItem->m_dwCount = dwCount;
+					if (iItemIDs[j] == 90)
+						pItem->m_dwCount = iDice(10, 10500);
+					else
+						pItem->m_dwCount = dwCount;
 						
-						string st1 = pItem->m_cName;
-						if (IsFragile && iDice(1,100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
+					/*string st1 = pItem->m_cName;
+					if (IsFragile && iDice(1,100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
+					{
+						// Centuu : fragile items
+						pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
+
+						UINT32 dwType = 4;
+						UINT32 dwValue = 1;
+
+						pItem->m_dwAttribute = 0;
+						dwType = dwType << 20;
+						dwValue = dwValue << 16;
+						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
+
+						_AdjustRareItemValue(pItem);
+
+						pItem->m_sNewEffect2 = SysTime.wDay + 15;
+						pItem->m_sNewEffect3 = SysTime.wMonth;
+						pItem->m_sNewEffect4 = SysTime.wYear;
+						if (SysTime.wMonth == 1 || SysTime.wMonth == 3 || SysTime.wMonth == 5 || SysTime.wMonth == 7 ||
+							SysTime.wMonth == 8 || SysTime.wMonth == 10 || SysTime.wMonth == 12)
 						{
-							// Centuu : fragile items
-							pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
-
-							UINT32 dwType = 4;
-							UINT32 dwValue = 1;
-
-							pItem->m_dwAttribute = 0;
-							dwType = dwType << 20;
-							dwValue = dwValue << 16;
-							pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
-
-							_AdjustRareItemValue(pItem);
-
-							pItem->m_sTouchEffectType = DEF_ITET_ID;
-							pItem->m_sTouchEffectValue1 = iDice(1, 100000);
-							pItem->m_sTouchEffectValue2 = iDice(1, 100000);
-
-							SYSTEMTIME SysTime;
-							char cTemp[256];
-							GetLocalTime(&SysTime);
-							ZeroMemory(cTemp, sizeof(cTemp));
-							wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
-							pItem->m_sTouchEffectValue3 = atoi(cTemp);
-
-							pItem->m_sNewEffect2 = SysTime.wDay + 15;
-							pItem->m_sNewEffect3 = SysTime.wMonth;
-							pItem->m_sNewEffect4 = SysTime.wYear;
-							if (SysTime.wMonth == 1 || SysTime.wMonth == 3 || SysTime.wMonth == 5 || SysTime.wMonth == 7 ||
-								SysTime.wMonth == 8 || SysTime.wMonth == 10 || SysTime.wMonth == 12)
+							if (pItem->m_sNewEffect2 > 31)
 							{
-								if (pItem->m_sNewEffect2 > 31)
-								{
-									pItem->m_sNewEffect2 -= 31;
-									pItem->m_sNewEffect3++;
-								}
-							}
-							else if (SysTime.wMonth == 4 || SysTime.wMonth == 6 || SysTime.wMonth == 9 || SysTime.wMonth == 11)
-							{
-								if (pItem->m_sNewEffect2 > 30)
-								{
-									pItem->m_sNewEffect2 -= 30;
-									pItem->m_sNewEffect3++;
-								}
-							}
-							else if (SysTime.wMonth == 2)
-							{
-								if (isLeap(SysTime.wYear))
-								{
-									if (pItem->m_sNewEffect2 > 29)
-									{
-										pItem->m_sNewEffect2 -= 29;
-										pItem->m_sNewEffect3++;
-									}
-								}
-								else
-								{
-									if (pItem->m_sNewEffect2 > 28)
-									{
-										pItem->m_sNewEffect2 -= 28;
-										pItem->m_sNewEffect3++;
-									}
-								}
-							}
-							if (pItem->m_sNewEffect3 > 12)
-							{
-								pItem->m_sNewEffect3 = 1;
-								pItem->m_sNewEffect4++;
+								pItem->m_sNewEffect2 -= 31;
+								pItem->m_sNewEffect3++;
 							}
 						}
-					
+						else if (SysTime.wMonth == 4 || SysTime.wMonth == 6 || SysTime.wMonth == 9 || SysTime.wMonth == 11)
+						{
+							if (pItem->m_sNewEffect2 > 30)
+							{
+								pItem->m_sNewEffect2 -= 30;
+								pItem->m_sNewEffect3++;
+							}
+						}
+						else if (SysTime.wMonth == 2)
+						{
+							if (isLeap(SysTime.wYear))
+							{
+								if (pItem->m_sNewEffect2 > 29)
+								{
+									pItem->m_sNewEffect2 -= 29;
+									pItem->m_sNewEffect3++;
+								}
+							}
+							else
+							{
+								if (pItem->m_sNewEffect2 > 28)
+								{
+									pItem->m_sNewEffect2 -= 28;
+									pItem->m_sNewEffect3++;
+								}
+							}
+						}
+						if (pItem->m_sNewEffect3 > 12)
+						{
+							pItem->m_sNewEffect3 = 1;
+							pItem->m_sNewEffect4++;
+						}
+					}*/
 
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
@@ -1407,7 +1395,7 @@ void CGame::DeleteNpc(int iNpcH)
 			else {
 				pItem->m_dwCount = dwCount;
 
-				string st1 = pItem->m_cName;
+				/*string st1 = pItem->m_cName;
 				if (IsFragile && iDice(1, 100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
 				{
 					// Centuu : fragile items
@@ -1422,17 +1410,6 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
 
 					_AdjustRareItemValue(pItem);
-
-					pItem->m_sTouchEffectType = DEF_ITET_ID;
-					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
-					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
-
-					SYSTEMTIME SysTime;
-					char cTemp[256];
-					GetLocalTime(&SysTime);
-					ZeroMemory(cTemp, sizeof(cTemp));
-					wsprintf(cTemp, "%d%2d", (short)SysTime.wMonth, (short)SysTime.wDay);
-					pItem->m_sTouchEffectValue3 = atoi(cTemp);
 
 					pItem->m_sNewEffect2 = SysTime.wDay + 15;
 					pItem->m_sNewEffect3 = SysTime.wMonth;
@@ -1478,7 +1455,7 @@ void CGame::DeleteNpc(int iNpcH)
 						pItem->m_sNewEffect3 = 1;
 						pItem->m_sNewEffect4++;
 					}
-				}
+				}*/
 
 				pItem->m_sTouchEffectType = DEF_ITET_ID;
 				pItem->m_sTouchEffectValue1 = iDice(1, 100000);
@@ -1496,8 +1473,9 @@ void CGame::DeleteNpc(int iNpcH)
 			}
 		}
 
-		/*if (iDice(1, 100000) < 10) {
-			pItem2 = new class CItem;
+		if (iDice(1, 100000) < 10) {
+			CItem *pItem2 = new class CItem;
+			int iSlateID;
 			switch (iDice(1, 4)) {
 			case 1:	iSlateID = 868; break;
 			case 2: iSlateID = 869; break;
@@ -1524,7 +1502,7 @@ void CGame::DeleteNpc(int iNpcH)
 					pItem2->m_sIDnum, pItem2->m_sSpriteFrame, pItem2->m_cItemColor, pItem2->m_dwAttribute);
 				_bItemLog(DEF_ITEMLOG_NEWGENDROP, 0, m_pNpcList[iNpcH]->m_cNpcName, pItem2);
 			}
-		}*/
+		}
 	}
 
 	delete m_pNpcList[iNpcH];
@@ -1979,7 +1957,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 			}
 
 			//Magn0S:: Multiplicador de Gold
-			pItem->m_dwCount *= 10;
+			//pItem->m_dwCount *= 10;
 		}
 		else {
 

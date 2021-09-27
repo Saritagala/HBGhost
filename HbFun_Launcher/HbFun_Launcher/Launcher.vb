@@ -72,7 +72,8 @@ Public Class Launcher
                 DownloadClient()
             End If
         Catch ex As Exception
-            MsgBox(ex.Message)
+            'MsgBox(ex.Message)
+            DownloadClient()
         End Try
     End Sub
     Private Sub DownloadVersion()

@@ -377,7 +377,7 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 	class  CItem* pItem;
 	UINT32* dwp, dwTime, dwRemainItemAttr;
 	UINT16* wp, wWeaponType;
-	short sEqStatus, sRemainItemID;
+	short sEqStatus = -1, sRemainItemID;
 
 	dwTime = timeGetTime();
 
@@ -428,8 +428,8 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 				return;
 		}
 
-		if ((m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] != -1) ||
-			(m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)) return;
+		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1) //((m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_LHAND] != -1) || (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)) 
+			return;
 
 		if ((m_pClientList[iClientH]->m_iSpellCount > 1) && (bItemEffect == false)) {
 			wsprintf(G_cTxt, "TSearch Spell Hack: (%s) Player: (%s) - casting magic without precasting.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
@@ -439,9 +439,8 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 		}
 
 		//Magn0S:: Add to decreased the endurace of wands.
-		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND] != -1)
-			sEqStatus = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_TWOHAND];
-		else sEqStatus = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
+		if (m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND] != -1)
+			sEqStatus = m_pClientList[iClientH]->m_sItemEquipmentStatus[DEF_EQUIPPOS_RHAND];
 
 		if (sEqStatus != -1) {
 
@@ -3206,6 +3205,9 @@ void CGame::PlayerMagicHandler(int iClientH, int dX, int dY, short sType, bool b
 					// 2002-09-11 #3 Ã€Ã» Â¸Ã³Â½ÂºÃ…ÃÂ´Ã‚ Â±Â¤ÂºÃÂµÃ‡ÃÃ¶ Â¾ÃŠÃ€Â½
 					if (m_pClientList[iClientH]->m_cSide != m_pNpcList[sOwnerH]->m_cSide) goto MAGIC_NOEFFECT;
 
+					if (strcmp(m_pNpcList[sOwnerH]->m_cNpcName, "Guard-Aresden")) goto MAGIC_NOEFFECT; // centu: no effect on guards
+					if (strcmp(m_pNpcList[sOwnerH]->m_cNpcName, "Guard-Elvine")) goto MAGIC_NOEFFECT; // centu: no effect on guards
+
 					m_pNpcList[sOwnerH]->m_cMagicEffectStatus[DEF_MAGICTYPE_BERSERK] = (char)m_pMagicConfigList[sType]->m_sValue4;
 					SetBerserkFlag(sOwnerH, cOwnerType, true);
 					break;
@@ -5203,7 +5205,7 @@ bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bo
 
 			m_pClientList[iClientH]->m_cMagicMastery[iRet] = 1;
 			// Snoopy: notify sender function off the succes.
-			//bSucces = true;
+			bSucces = true;
 			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
@@ -5226,6 +5228,7 @@ bool CGame::RequestStudyMagicHandler(int iClientH, char* pName, bool bSucces, bo
 		}
 		else
 		{
+			bSucces = false;
 			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
 			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);

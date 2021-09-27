@@ -2140,20 +2140,31 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 		{	switch (m_pData[dX][dY].m_cOwnerAction) {
 			case DEF_OBJECTATTACK: // 3
 			case DEF_OBJECTATTACKMOVE:	// 8
-				iDelay = (m_pData[dX][dY].m_iStatus & 0x000F)*12;
+				iDelay = (m_pData[dX][dY].m_iStatus & 0x000F) * 12;
 				break;
 			case DEF_OBJECTMAGIC: // 4
-				if( m_pGame->m_cSkillMastery[4] == 100 ) iDelay = -13;
-				else iDelay = 0;
+				//if( m_pGame->m_cSkillMastery[4] == 100 ) iDelay = -13;
+				//else iDelay = 0;
+				if (memcmp(m_pData[dX][dY].m_cOwnerName, cPlayerName, 10) == 0)
+					iDelay = -(m_pGame->m_cSkillMastery[4] * 0.13f);
+				else
+					iDelay = -(100 * 0.13f);
 				break;
 			default:
 				iDelay = 0;
 				break;
 			}
 			// v1.42 Frozen
-			if ((m_pData[dX][dY].m_iStatus & 0x40) != 0)
-				iDelay += (m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime)>>2;
+			if ((m_pData[dX][dY].m_iStatus & 0x40) != 0) {
+				if (m_pData[dX][dY].m_sOwnerType <= 6)
+					// Player
+					iDelay += (m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime) >> 2;
+				else
+					// Monster
+					iDelay += (m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime) / 2;
 
+				//iDelay += (m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime) >> 2;
+			}
 			dwFrameTime = m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime + iDelay;
 
 			if ((dwTime - m_pData[dX][dY].m_dwOwnerTime) > dwFrameTime )
@@ -2223,7 +2234,8 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					case 4:
 					case 5:
 					case 6: // glowing armor/weapon
-						if ((m_pData[dX][dY].m_cOwnerFrame == 1) || (m_pData[dX][dY].m_cOwnerFrame == 5))
+						//if ((m_pData[dX][dY].m_cOwnerFrame == 1) || (m_pData[dX][dY].m_cOwnerFrame == 5))
+						if (m_pData[dX][dY].m_cOwnerFrame % 3)
 						{	if (((m_pData[dX][dY].m_sAppr4 & 0x000F) != 0) && ((m_pData[dX][dY].m_iStatus & 0x10) == 0))
 							{	m_pGame->bAddNewEffect(54, (m_sPivotX+dX)*32 +(rand()%20-10), (m_sPivotY+dY)*32 -(rand()%50) -5, 0, 0, -(rand()%8), 0);
 							}
@@ -2687,27 +2699,19 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						}
 						break;
 					case 54: // Dark-Elf
-						if (m_pData[dX][dY].m_cOwnerFrame == 2)
-						{
-							//Centu - Fixed by Drazz: Ahora las flechas si se ven correctamente
-							m_pGame->bAddNewEffect(2, m_sPivotX + dX, m_sPivotY + dY
-								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, 54);
-
-						}
-						break;
 					case 87: // Crossbow Turret (Heldenian)
 						if (m_pData[dX][dY].m_cOwnerFrame == 2)
 						{	
 							//Centu - Fixed by Drazz: Ahora las flechas si se ven correctamente
 							m_pGame->bAddNewEffect(2, m_sPivotX + dX, m_sPivotY + dY
-								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, 87);
+								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, m_pData[dX][dY].m_sOwnerType);
 							
 						}
 						break;
 					case 89: // AGT (Heldenian)
 						if (m_pData[dX][dY].m_cOwnerFrame == 2)
 						{	m_pGame->bAddNewEffect(2, m_sPivotX + m_pData[dX][dY].m_sV1, m_sPivotY + m_pData[dX][dY].m_sV2
-								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, 89);
+								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, m_pData[dX][dY].m_sOwnerType);
 							
 						}
 						break;

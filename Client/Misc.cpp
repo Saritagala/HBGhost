@@ -100,14 +100,14 @@ void CMisc::GetPoint(int x0, int y0, int x1, int y1, int * pX, int * pY, int * p
 
 void CMisc::GetDirPoint(char cDir, int * pX, int * pY)
 {	switch(cDir) {
-	case 1:	--*pY; break;
-	case 2:	--*pY; ++*pX;	break;
-	case 3:	++*pX; break;
-	case 4:	++*pX; ++*pY;	break;
-	case 5:	++*pY; break;
-	case 6:	--*pX; ++*pY;	break;
-	case 7:	--*pX; break;
-	case 8:	--*pX; --*pY;	break;
+	case 1:	*pY--; break;
+	case 2:	*pY--; *pX++;	break;
+	case 3:	*pX++; break;
+	case 4:	*pX++; *pY++;	break;
+	case 5:	*pY++; break;
+	case 6:	*pX--; *pY++;	break;
+	case 7:	*pX--; break;
+	case 8:	*pX--; *pY--;	break;
 	}
 }
 
