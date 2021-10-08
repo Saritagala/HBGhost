@@ -9693,7 +9693,7 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
-	UINT32 dwTime = m_dwCurTime;
+	UINT32 dwTime = timeGetTime(); //LifeX Fix User Refresh
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
 
@@ -9859,7 +9859,7 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 				}
 			}
 
-		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
 		{
 			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
 				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 255);
@@ -9888,6 +9888,9 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	sX = m_stDialogBoxInfo[60].sX;
 	sY = m_stDialogBoxInfo[60].sY;
 
+	//LifeX Fix User Refresh
+	UINT32 dwTime = timeGetTime();
+
 		for (i = 0; i < 17; i++)
 		{
 			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXCLIENTS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != 0))
@@ -9903,17 +9906,11 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 
 	if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18))
 	{
-		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
 		{
-			for (i = 0; i < DEF_MAXCLIENTS; i++)
-				if (m_pOnlineUsersList[i] != 0) m_pOnlineUsersList[i] = 0;
+			bSendCommand(MSGID_REQUEST_ONLINE);
 
-			for (i = 0; i < DEF_MAXCLIENTS; i++)
-				if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
-
-			bSendCommand(MSGID_REQUEST_ONLINE, 0, 0, 0, 0, 0, 0);
-
-			m_dwReqUsersTime = m_dwCurTime;
+			m_dwReqUsersTime = dwTime;
 			m_cCommandCount--;
 		}
 	}

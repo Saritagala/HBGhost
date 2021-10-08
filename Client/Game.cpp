@@ -3370,7 +3370,7 @@ void CGame::GameRecvMsgHandler(UINT32 dwMsgSize, char * pData)
 		EnableDialogBox(59, 0, 0, 0);
 		break;
 
-	case MSGID_REQUEST_ONLINE:
+	case MSGID_RESPONSE_ONLINE: //LifeX Fix User Refresh
 		ResponseOnlines(pData);
 		break;
 
@@ -17894,7 +17894,8 @@ void CGame::InitDataResponseHandler(char * pData)
 	m_sMonsterID = 0;
 	m_dwMonsterEventTime = 0;
 
-	m_dwReqUsersTime = m_dwCurTime + 30000;
+	//LifeX Fix User Refresh
+	m_dwReqUsersTime = 0;
 
 	//m_bHackMoveBlocked = false;
 
