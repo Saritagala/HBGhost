@@ -23424,6 +23424,12 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 				bServerTime = false;
 			else bServerTime = true;
 		}
+
+		//LifeX Fix BACK button for Event Schedule
+		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
+			m_stDialogBoxInfo[53].cMode = 0;
+			PlaySound('E', 14, 5);
+		}
 		break;
 
 	case 3:
