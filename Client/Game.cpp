@@ -20521,11 +20521,18 @@ void CGame::DlgBoxClick_ItemUpgrade(int msX, int msY)
 			iSoX = iSoM = 0;
 			for (i = 0; i < DEF_MAXITEMS; i++)
 			if (m_pItemList[i] != 0)
-			{	if (m_pItemList[i]->m_sIDnum == 656) iSoX++;
-				if (m_pItemList[i]->m_sIDnum == 657) iSoM++;
+			{
+				//LifeX Fix Merien Stone Upgrade
+				//Best to use sprite and sprite frame because IDNum can change, but sprite no wont for Stones.
+				if ((m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 128)) iSoX++;
+				if ((m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 129)) iSoM++;
+
+				//if (m_pItemList[i]->m_sIDnum == 656) iSoX++;
+				//if (m_pItemList[i]->m_sIDnum == 657) iSoM++;
 			}
 			if ((iSoX > 0) || (iSoM > 0))
-			{	m_stDialogBoxInfo[34].cMode = 6;
+			{	
+				m_stDialogBoxInfo[34].cMode = 6;
 				m_stDialogBoxInfo[34].sV2 = iSoX;
 				m_stDialogBoxInfo[34].sV3 = iSoM;
 			}
