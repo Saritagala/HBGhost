@@ -9838,9 +9838,8 @@ UINT32 * dwp, dwTimeRcv;
 				break;
 
 			case MSGID_REQUEST_ONLINE:
-				
-				if (m_pClientList[iClientH])
-					RequestOnlines(iClientH); //no necesitamos la data
+				//LifeX Fix User Refresh
+				RequestOnlines(m_pClientList[iClientH]);
 				break;
 
 			case MSGID_REQUEST_TOPEK:
@@ -18432,7 +18431,8 @@ void CGame::RequestOnlines(int iClientH)
 	char * cData = G_cData50000; //esta es el "buffer", onda, la memoria que neceisto para enviar
 	
 	UINT32 * dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
-	*dwp = MSGID_REQUEST_ONLINE;//a la memoria esa le escribo este mensaje
+	//LifeX Fix User Refresh
+	*dwp = MSGID_RESPONSE_ONLINE;//a la memoria esa le escribo este mensaje
 	UINT16 * wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);			   
 	*wp  = 0;//este no se usa, le mando 0
 
