@@ -35960,7 +35960,15 @@ void CGame::UpdateScreen_OnGame()
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
 			case 1://"Available for above Str %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				//LifeX Fix Light
+				// If not Class base will show the light required stats STR
+				if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 1)
+				{
+					if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+				}
+				else
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
 				break;
 			case 2: // "Available for above Dex %d"
 				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
@@ -36100,7 +36108,15 @@ void CGame::UpdateScreen_OnGame()
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
 			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
 				case 1://"Available for above Str %d"
-					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					//LifeX Fix Light
+					// If not Class base will show the light required stats STR
+					if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 1)
+					{
+						if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+					}
+					else
+						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
 					break;
 				case 2: // "Available for above Dex %d"
 					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);

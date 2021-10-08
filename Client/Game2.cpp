@@ -4043,10 +4043,24 @@ void CGame::ItemEquipHandler(char cItemID)
 	{
 		switch (m_pItemList[cItemID]->m_iReqStat) {
 		case 1://"Available for above Str %d"
-			if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
+			//LifeX Fix Light
+			// If not Class base will show the light required stats STR
+			if (m_pItemList[cItemID]->m_iReqStat != 1)
 			{
-				AddEventList("You need more STR to equip this item.", 10);
-				return;
+				if (m_iStr < (m_pItemList[cItemID]->m_wWeight % 100))
+				{
+					AddEventList("You need more STR to equip this item.", 10);
+					return;
+				}
+
+			}
+			else
+			{
+				if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
+				{
+					AddEventList("You need more STR to equip this item.", 10);
+					return;
+				}
 			}
 			break;
 		case 2: // "Available for above Dex %d"
