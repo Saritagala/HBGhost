@@ -15558,7 +15558,9 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					else
 					{
 						ZeroMemory(cTemp3, sizeof(cTemp3));
-						wsprintf(cTemp3, "%d/----", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+						//LifeX Fix SKill Visual
+						//wsprintf(cTemp3, "%d/----", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+						wsprintf(cTemp3, "-/-");
 					}
 					if ((msX >= sX + 25) && (msX <= sX + 180) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 					{
