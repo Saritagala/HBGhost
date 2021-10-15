@@ -1279,7 +1279,8 @@ public:
 
 		// VAMP - online users list
 	class OnlineUser * m_pOnlineUsersList[DEF_MAXCLIENTS];
-	void ResponseOnlines(char * pData);
+	//LifeX Fix User Refresh
+	void ResponseOnlines(char* pData);
 	char m_cTakeHeroItemName[100]; //Drajwer - hero item str
 
     //Aryes - DNS

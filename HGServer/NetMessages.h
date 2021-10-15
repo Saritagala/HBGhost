@@ -76,6 +76,8 @@
 // VAMP - online users list
 #define MSGID_REQUEST_ONLINE						0x3B1890EB
 #define DEF_NOTIFY_USERJOIN							0x0C04
+//LifeX Fix User Refresh
+#define MSGID_RESPONSE_ONLINE						0x3B1890EC
 
 //50Cent - Repair All
 #define DEF_COMMONTYPE_REQ_REPAIRALL            0x0F10

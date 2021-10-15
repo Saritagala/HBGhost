@@ -3370,7 +3370,10 @@ void CGame::GameRecvMsgHandler(UINT32 dwMsgSize, char * pData)
 		EnableDialogBox(59, 0, 0, 0);
 		break;
 
+<<<<<<< HEAD
 	//case MSGID_REQUEST_ONLINE:
+=======
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 	case MSGID_RESPONSE_ONLINE: //LifeX Fix User Refresh
 		ResponseOnlines(pData);
 		break;
@@ -17895,8 +17898,13 @@ void CGame::InitDataResponseHandler(char * pData)
 	m_sMonsterID = 0;
 	m_dwMonsterEventTime = 0;
 
+<<<<<<< HEAD
 	m_dwReqUsersTime = 0; //LifeX Fix User Refresh
 	m_dwCurTime + 30000;
+=======
+	//LifeX Fix User Refresh
+	m_dwReqUsersTime = 0;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 
 	//m_bHackMoveBlocked = false;
 
@@ -20523,16 +20531,25 @@ void CGame::DlgBoxClick_ItemUpgrade(int msX, int msY)
 			iSoX = iSoM = 0;
 			for (i = 0; i < DEF_MAXITEMS; i++)
 			if (m_pItemList[i] != 0)
+<<<<<<< HEAD
 			{	
+=======
+			{
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 				//LifeX Fix Merien Stone Upgrade
 				//Best to use sprite and sprite frame because IDNum can change, but sprite no wont for Stones.
 				if ((m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 128)) iSoX++;
 				if ((m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 129)) iSoM++;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 				//if (m_pItemList[i]->m_sIDnum == 656) iSoX++;
 				//if (m_pItemList[i]->m_sIDnum == 657) iSoM++;
 			}
 			if ((iSoX > 0) || (iSoM > 0))
-			{	m_stDialogBoxInfo[34].cMode = 6;
+			{	
+				m_stDialogBoxInfo[34].cMode = 6;
 				m_stDialogBoxInfo[34].sV2 = iSoX;
 				m_stDialogBoxInfo[34].sV3 = iSoM;
 			}
@@ -35947,10 +35964,40 @@ void CGame::UpdateScreen_OnGame()
 			}
 
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+<<<<<<< HEAD
 			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
 				wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
 				iEntry++;
 				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+=======
+			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
+			case 1://"Available for above Str %d"
+				//LifeX Fix Light
+				// If not Class base will show the light required stats STR
+				if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 1)
+				{
+					if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+				}
+				else
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				break;
+			case 2: // "Available for above Dex %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				break;
+			case 3: // "Available for above Vit %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				break;
+			case 4: // "Available for above Int %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				break;
+			case 5: // "Available for above Mag %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				break;
+			case 6: // "Available for above Agi %d"
+				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+				break;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 			}
 
 			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) &&

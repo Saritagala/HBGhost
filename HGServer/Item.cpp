@@ -1154,27 +1154,30 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 		break;
 
 		//LifeX Fix Attribute Potion
+<<<<<<< HEAD
 	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION: // kazin
 		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) 
+=======
+	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION:
+		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS))
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 		{
-			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != 0) 
+			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != 0)
 			{
-				auto attr = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute;
-				auto dwType1 = (attr & 0x00F00000) >> 20;
-				auto dwValue1 = (attr & 0x000F0000) >> 16;
-				auto dwType2 = (attr & 0x0000F000) >> 12;
-				auto dwValue2 = (attr & 0x00000F00) >> 8;
-
+				//Destination Attribute (Armor/Weapon)
 				auto& dst_attr = m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute;
-
 				auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
 				auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
+<<<<<<< HEAD
 				
+=======
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 				auto armorStat = (dst_attr & 0x0000F000) >> 12;
 				auto armorStatPerc = (dst_attr & 0x00000F00) >> 8;
 
 				switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1)
 				{
+<<<<<<< HEAD
 				case 1: //PA							
 					if (armorStat == 0)
 					{
@@ -1242,10 +1245,35 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 							else {
 								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting DR: 70%)");
 								return false;
+=======
+
+				case 1: //PA							
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_PA;
+						armorStatPerc = 1;
+					}
+					else
+					{
+						if (armorStat != ITEMSTAT2_PA)
+						{
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with PA.");
+							return FALSE;
+						}
+						else
+						{
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else
+							{
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting PA: 30%)");
+								return FALSE;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 							}
 						}
 					}
 					break;
+<<<<<<< HEAD
 
 				case 4: //MAGIC RES
 
@@ -1309,15 +1337,133 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 							else {
 								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MP Recovery: 70%)");
 								return false;
+=======
+
+				case 2: //MA
+
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_MA;
+						armorStatPerc = 1;
+					}
+					else
+					{
+						if (armorStat != ITEMSTAT2_MA)
+						{
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with MA.");
+							return FALSE;
+						}
+						else
+						{
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else
+							{
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting MA: 30%)");
+								return FALSE;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 							}
 						}
 					}
 					break;
 
+<<<<<<< HEAD
 				default: 
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Enchant Error. Report it to #bugs in Discord");  
 					break;
 				
+=======
+				case 3: //DFRATIO
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_DEF;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_DEF) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with DR.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting DR: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 4: //MAGIC RES
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_MR;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_MR) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with MR.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting MR: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 5: //HPREC
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_HPREC;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_HPREC) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with HP REC.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting HP Recovery: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 6: //MPREC
+
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_MPREC;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_MPREC) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with MP REC.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting MP Recovery: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				default: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Enchant Error. Report it to #bugs in Discord");  break;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 				}
 
 				dst_attr = 0;
@@ -1328,8 +1474,12 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 				dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
 				dst_attr = dst_attr | armorStat | armorStatPerc;
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, dst_attr, 0, 0);
+<<<<<<< HEAD
 				return true;
 				
+=======
+				return TRUE;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 			}
 		}
 		break;
@@ -8085,7 +8235,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iClass = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iClass = iTemp;
 					

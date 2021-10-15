@@ -4052,6 +4052,10 @@ void CGame::ItemEquipHandler(char cItemID)
 					AddEventList("You need more STR to equip this item.", 10);
 					return;
 				}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 			}
 			else
 			{
@@ -4370,6 +4374,7 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 	
 	if (!m_bUseOldPanels)
 	{
+		//LifeX Fix Change Stats
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
@@ -4380,6 +4385,7 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
 			PutAlignedString2(sX + DEF_RBTNPOSX + 10, sX + DEF_RBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Change", 180, 188, 180);
 		}
+
 
 		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
@@ -9690,7 +9696,10 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
+<<<<<<< HEAD
 	//UINT32 dwTime = m_dwCurTime;
+=======
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 	UINT32 dwTime = timeGetTime(); //LifeX Fix User Refresh
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
@@ -9857,7 +9866,10 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 				}
 			}
 
+<<<<<<< HEAD
 		//if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+=======
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
 		{
 			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
@@ -9890,6 +9902,9 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	sX = m_stDialogBoxInfo[60].sX;
 	sY = m_stDialogBoxInfo[60].sY;
 
+	//LifeX Fix User Refresh
+	UINT32 dwTime = timeGetTime();
+
 		for (i = 0; i < 17; i++)
 		{
 			if (((i + m_stDialogBoxInfo[60].sView) < DEF_MAXCLIENTS) && (m_pOnlineUsersList[i + m_stDialogBoxInfo[60].sView] != 0))
@@ -9905,6 +9920,7 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 
 	if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18))
 	{
+<<<<<<< HEAD
 		//if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
 		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
 		{
@@ -9917,6 +9933,13 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 			bSendCommand(MSGID_REQUEST_ONLINE);
 
 			m_dwReqUsersTime = dwTime; //m_dwCurTime;
+=======
+		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
+		{
+			bSendCommand(MSGID_REQUEST_ONLINE);
+
+			m_dwReqUsersTime = dwTime;
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 			m_cCommandCount--;
 		}
 	}
@@ -23435,6 +23458,10 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 				bServerTime = false;
 			else bServerTime = true;
 		}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 10f0a4ac8291f121f63942f223307f4e620a89a1
 		//LifeX Fix BACK button for Event Schedule
 		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
 			m_stDialogBoxInfo[53].cMode = 0;
