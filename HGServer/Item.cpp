@@ -1156,72 +1156,176 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 		}
 		break;
 
-	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION: // kazin
-		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) 
+		//LifeX Fix Attribute Potion
+	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION:
+		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS))
 		{
-			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != 0) 
+			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != 0)
 			{
-				auto attr = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute;
-				auto dwType1 = (attr & 0x00F00000) >> 20;
-				auto dwValue1 = (attr & 0x000F0000) >> 16;
-				auto dwType2 = (attr & 0x0000F000) >> 12;
-				auto dwValue2 = (attr & 0x00000F00) >> 8;
-
+				//Destination Attribute (Armor/Weapon)
 				auto& dst_attr = m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute;
-
 				auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
 				auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
-				auto dst_dwType2 = (dst_attr & 0x0000F000) >> 12;
-				auto dst_dwValue2 = (dst_attr & 0x00000F00) >> 8;
+				auto armorStat = (dst_attr & 0x0000F000) >> 12;
+				auto armorStatPerc = (dst_attr & 0x00000F00) >> 8;
 
-				if ((m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute & 0x0000F000) == 0)
+				switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1)
 				{
-					return false;
-				}
 
-				if (dst_dwType2 != dwType2)
-				{
-					return false;
-				}
-
-				auto dst_value = dst_dwValue2 + dwValue2;
-
-				switch (dwType2) {
-				case ITEMSTAT2_PSNRES: // 1
-				case ITEMSTAT2_HPREC: // 4
-				case ITEMSTAT2_MPREC: // 6
-				case ITEMSTAT2_SPREC: // 5
-				case ITEMSTAT2_MR: // 7
-				case ITEMSTAT2_PA: // 8
-				case ITEMSTAT2_MA: // 9
-				case ITEMSTAT2_DEF: // 3
-				case ITEMSTAT2_HITPROB: // 2
-
-					// Centuu : limite maximo para las attribute potion
-					if (dwType2 == ITEMSTAT2_PA || dwType2 == ITEMSTAT2_MA)
+				case 1: //PA							
+					if (armorStat == 0)
 					{
-						if (dst_value > 15) dst_value = 15;
+						armorStat = ITEMSTAT2_PA;
+						armorStatPerc = 1;
 					}
 					else
 					{
-						if (dst_value > 28) dst_value = 28;
+						if (armorStat != ITEMSTAT2_PA)
+						{
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with PA.");
+							return FALSE;
+						}
+						else
+						{
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else
+							{
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting PA: 30%)");
+								return FALSE;
+							}
+						}
 					}
-					dst_attr = 0;
-					dst_dwType1 = dst_dwType1 << 20;
-					dst_dwValue1 = dst_dwValue1 << 16;
-					dwType2 = dwType2 << 12;
-					dwValue2 = dst_value << 8;
-					dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
-					dst_attr = dst_attr | dwType2 | dwValue2;
 					break;
 
-				default:
-					return false;
+				case 2: //MA
+
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_MA;
+						armorStatPerc = 1;
+					}
+					else
+					{
+						if (armorStat != ITEMSTAT2_MA)
+						{
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with MA.");
+							return FALSE;
+						}
+						else
+						{
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else
+							{
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting MA: 30%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 3: //DFRATIO
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_DEF;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_DEF) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with DR.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting DR: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 4: //MAGIC RES
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_MR;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_MR) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with MR.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting MR: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 5: //HPREC
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_HPREC;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_HPREC) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with HP REC.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting HP Recovery: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				case 6: //MPREC
+
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_MPREC;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_MPREC) {
+							SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "This enchant must be used in a armor with MP REC.");
+							return FALSE;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Can not enchant this item anymore. (Max Enchanting MP Recovery: 70%)");
+								return FALSE;
+							}
+						}
+					}
+					break;
+
+				default: SendNotifyMsg(NULL, iClientH, DEF_NOTIFY_NOTICEMSG, NULL, NULL, NULL, "Enchant Error. Report it to #bugs in Discord");  break;
 				}
 
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute, 0, 0);
-				return true;
-				
+				dst_attr = 0;
+				dst_dwType1 = dst_dwType1 << 20;
+				dst_dwValue1 = dst_dwValue1 << 16;
+				armorStat = armorStat << 12;
+				armorStatPerc = armorStatPerc << 8;
+				dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
+				dst_attr = dst_attr | armorStat | armorStatPerc;
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, dst_attr, 0, 0);
+				return TRUE;
 			}
 		}
 		break;
@@ -4825,60 +4929,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 			dwItemCount = 1;
 			bIsCoin = true;
 		}
-		else if (memcmp(pItemName, "PAPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_PA;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "MAPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_MA;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "DRPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_DEF;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "PRPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_PSNRES;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "HitPPotion", 10) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_HITPROB;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "HPPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_HPREC;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "SPPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_SPREC;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "MPPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_MPREC;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "MRPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_MR;
-			bIsPotion = true;
-		}
+		//LifeX Fix Attribute Potion
 		else {
 			memcpy(cItemName, pItemName, 20);
 			dwItemCount = 1;
@@ -7980,7 +8031,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->bContrbSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bContrbSale = true;
 
@@ -7996,7 +8047,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->bEkSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bEkSale = true;
 
@@ -8012,7 +8063,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->bCoinSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bCoinSale = true;
 
@@ -8030,7 +8081,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iClass = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iClass = iTemp;
 					
@@ -8046,7 +8097,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = iTemp;
 
@@ -8061,7 +8112,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = iTemp;
 
@@ -8078,7 +8129,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp <= 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_bIsHero = false;
 					else m_pItemConfigList[iItemConfigListIndex]->m_bIsHero = true;
 
@@ -8094,7 +8145,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp <= 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iHeroBonus = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iHeroBonus = iTemp;
 
