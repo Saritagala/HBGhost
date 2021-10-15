@@ -10535,6 +10535,7 @@ void CGame::GetItemName(char* cItemName, UINT32 dwAttribute, char* pStr1, char* 
 	else if (0 == memcmp(cItemName, "Excaliber", 9)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Xelima", 6)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Kloness", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "Corrupt", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(cItemName, "aHeroOf", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "eHeroOf", 7)) m_bIsSpecial = true;
 	
