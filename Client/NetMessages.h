@@ -5,6 +5,9 @@
 #endif
 // NetMessages.h
 
+//LifeX Fix User Refresh
+#define MSGID_RESPONSE_ONLINE						0x3B1890EC
+
 #define DEF_NOTIFY_REQGUILDRANKANSWER 0x1F41
 #define DEF_COMMONTYPE_REQGUILDRANK 0x1F42
 

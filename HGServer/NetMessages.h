@@ -4,6 +4,9 @@
 #define DEF_VERSIONPLUSMODIFIER 0 // If the antihack was noy defined don't change any msgid
 #endif
 
+//LifeX Fix User Refresh
+#define MSGID_RESPONSE_ONLINE						0x3B1890EC
+
 #define MINIMAPORANGE_CLEAR 0x1F43
 #define MINIMAPORANGE_UPDATE 0x1F44
 

@@ -4043,10 +4043,23 @@ void CGame::ItemEquipHandler(char cItemID)
 	{
 		switch (m_pItemList[cItemID]->m_iReqStat) {
 		case 1://"Available for above Str %d"
-			if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
+			//LifeX Fix Light
+			// If not Class base will show the light required stats STR
+			if (m_pItemList[cItemID]->m_iReqStat != 1)
 			{
-				AddEventList("You need more STR to equip this item.", 10);
-				return;
+				if (m_iStr < (m_pItemList[cItemID]->m_wWeight % 100))
+				{
+					AddEventList("You need more STR to equip this item.", 10);
+					return;
+				}
+			}
+			else
+			{
+				if (m_iStr < m_pItemList[cItemID]->m_iQuantStat)
+				{
+					AddEventList("You need more STR to equip this item.", 10);
+					return;
+				}
 			}
 			break;
 		case 2: // "Available for above Dex %d"
@@ -4360,23 +4373,23 @@ void CGame::DrawDialogBox_ChangeStatsMajestic(short msX, short msY)
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 0);
-			PutAlignedString2(sX + DEF_RBTNPOSX + 10, sX + DEF_RBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Cancel", 255, 255, 100);
+			PutAlignedString2(sX + DEF_RBTNPOSX + 10, sX + DEF_RBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Change", 255, 255, 100);
 		}
 		else
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_RBTNPOSX, sY + DEF_BTNPOSY, 1);
-			PutAlignedString2(sX + DEF_RBTNPOSX + 10, sX + DEF_RBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Cancel", 180, 188, 180);
+			PutAlignedString2(sX + DEF_RBTNPOSX + 10, sX + DEF_RBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Change", 180, 188, 180);
 		}
 
 		if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 0);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Change", 255, 255, 100);
+			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Cancel", 255, 255, 100);
 		}
 		else
 		{
 			DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_BUTTONS, sX + DEF_LBTNPOSX, sY + DEF_BTNPOSY, 1);
-			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Change", 180, 188, 180);
+			PutAlignedString2(sX + DEF_LBTNPOSX + 10, sX + DEF_LBTNPOSX + DEF_BTNSZX + 10, sY + DEF_BTNPOSY + 1, "Cancel", 180, 188, 180);
 		}
 	}
 	else 
@@ -4669,6 +4682,8 @@ void CGame::DlgBoxClick_ChangeStatsMajestic(short msX, short msY)
 	}
 	if ((msX >= sX + DEF_LBTNPOSX) && (msX <= sX + DEF_LBTNPOSX + DEF_BTNSZX) && (msY > sY + DEF_BTNPOSY) && (msY < sY + DEF_BTNPOSY + DEF_BTNSZY)) {
 		DisableDialogBox(42);
+		//LifeX Fix Change Stats
+		m_cLU_Str = m_cLU_Vit = m_cLU_Dex = m_cLU_Int = m_cLU_Mag = m_cLU_Char = m_iLU_Point = 0;
 		PlaySound('E', 14, 5);
 	}
 }
@@ -9675,7 +9690,8 @@ void CGame::NotifyMsg_ItemTrade(char * pData) // MORLA 2.4 - Cuando realiza el t
 void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
-	UINT32 dwTime = m_dwCurTime;
+	//UINT32 dwTime = m_dwCurTime;
+	UINT32 dwTime = timeGetTime(); //LifeX Fix User Refresh
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
 
@@ -9841,7 +9857,8 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 				}
 			}
 
-		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		//if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
 		{
 			if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18)) {
 				PutString2(sX + 180, sY + 45 + (14 * 18), "Refresh", 255, 255, 255);
@@ -9867,6 +9884,9 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	short sX, sY;
 	char cTemp[21];
 
+	//LifeX Fix User Refresh
+	UINT32 dwTime = timeGetTime();
+
 	sX = m_stDialogBoxInfo[60].sX;
 	sY = m_stDialogBoxInfo[60].sY;
 
@@ -9885,7 +9905,8 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 
 	if ((msX > sX + 180) && (msX < sX + 180 + 40) && (msY > sY + 45 + 14 * 18) && (msY < sY + 45 + 15 * 18))
 	{
-		if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		//if ((m_dwCurTime - m_dwReqUsersTime) > 30000)
+		if ((dwTime - m_dwReqUsersTime) > 10000) //LifeX Fix User Refresh
 		{
 			for (i = 0; i < DEF_MAXCLIENTS; i++)
 				if (m_pOnlineUsersList[i] != 0) m_pOnlineUsersList[i] = 0;
@@ -9893,9 +9914,9 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 			for (i = 0; i < DEF_MAXCLIENTS; i++)
 				if (strlen(m_stOnlineGuild[i].cCharName) != 0) ZeroMemory(m_stOnlineGuild[i].cCharName, sizeof(m_stOnlineGuild[i].cCharName));
 
-			bSendCommand(MSGID_REQUEST_ONLINE, 0, 0, 0, 0, 0, 0);
+			bSendCommand(MSGID_REQUEST_ONLINE);
 
-			m_dwReqUsersTime = m_dwCurTime;
+			m_dwReqUsersTime = dwTime; //m_dwCurTime;
 			m_cCommandCount--;
 		}
 	}
@@ -10193,6 +10214,7 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 	else if (0 == memcmp(pItem->m_cName, "aHeroOf", 7)) m_bIsSpecial = true; 
 	else if (0 == memcmp(pItem->m_cName, "eHeroOf", 7)) m_bIsSpecial = true; 
 	else if (0 == memcmp(pItem->m_cName, "Kloness", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(pItem->m_cName, "Corrupt", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
 
 	if ((pItem->m_dwAttribute & 0x00000001) != 0)
 	{
@@ -10332,21 +10354,21 @@ void CGame::GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, cha
 				case 6:  wsprintf(cTxt, GET_ITEM_NAME29, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;//"MPrec
 				case 7:  wsprintf(cTxt, GET_ITEM_NAME30, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true; break;
+				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true; break;
 
 				case 9:  //wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);  if(dwValue2 > 11) m_bIsRare = true;  break;
 					//Magn0S:: Added magic abs by elements
 					switch (pItem->m_sNewEffect1)
 					{
 						//wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3); if(dwValue2 > 11) m_bIsRare = true;  break;
-					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 2: wsprintf(cTxt, "Air Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 3: wsprintf(cTxt, "Fire Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 4: wsprintf(cTxt, "Water Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 1: wsprintf(cTxt, "Earth Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 2: wsprintf(cTxt, "Air Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 3: wsprintf(cTxt, "Fire Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 4: wsprintf(cTxt, "Water Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 5: wsprintf(cTxt, "Holy Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 6: wsprintf(cTxt, "Unholy Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
 					default:
-						wsprintf(cTxt, "Magic Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+						wsprintf(cTxt, "Magic Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
 					}
 					break;
 
@@ -10520,6 +10542,7 @@ void CGame::GetItemName(char* cItemName, UINT32 dwAttribute, char* pStr1, char* 
 	else if (0 == memcmp(cItemName, "Excaliber", 9)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Xelima", 6)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "Kloness", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
+	else if (0 == memcmp(cItemName, "Corrupt", 7)) { m_bIsSpecial = true; m_bIsRare = true; }
 	else if (0 == memcmp(cItemName, "aHeroOf", 7)) m_bIsSpecial = true;
 	else if (0 == memcmp(cItemName, "eHeroOf", 7)) m_bIsSpecial = true;
 	
@@ -10637,21 +10660,21 @@ void CGame::GetItemName(char* cItemName, UINT32 dwAttribute, char* pStr1, char* 
 				case 6:  wsprintf(cTxt, GET_ITEM_NAME29, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
 				case 7:  wsprintf(cTxt, GET_ITEM_NAME30, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
 
-				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 7);  if (dwValue2 > 11) m_bIsRare = true; break;
+				case 8:  wsprintf(cTxt, GET_ITEM_NAME31, dwValue2 * 3);  if (dwValue2 > 11) m_bIsRare = true; break;
 
 				case 9:  //wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*7);   if(dwValue2 > 11) m_bIsRare = true;  break;
 					//Magn0S:: Added magic abs by elements
 					switch (sEffect1) //m_sItemSpecEffectValue2
 					{
 						//wsprintf(cTxt, GET_ITEM_NAME32, dwValue2*3); if(dwValue2 > 11) m_bIsRare = true;  break;
-					case 1: wsprintf(cTxt, "Earth Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 2: wsprintf(cTxt, "Air Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 3: wsprintf(cTxt, "Fire Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 4: wsprintf(cTxt, "Water Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 5: wsprintf(cTxt, "Holy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
-					case 6: wsprintf(cTxt, "Unholy Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 1: wsprintf(cTxt, "Earth Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 2: wsprintf(cTxt, "Air Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 3: wsprintf(cTxt, "Fire Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 4: wsprintf(cTxt, "Water Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 5: wsprintf(cTxt, "Holy Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
+					case 6: wsprintf(cTxt, "Unholy Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
 					default:
-						wsprintf(cTxt, "Magic Absorption+%d%%", dwValue2 * 7); if (dwValue2 > 11) m_bIsRare = true;  break;
+						wsprintf(cTxt, "Magic Absorption+%d", dwValue2 * 3); if (dwValue2 > 11) m_bIsRare = true;  break;
 					}
 					break;
 
@@ -15544,7 +15567,9 @@ void CGame::DrawDialogBox_Skill(short msX, short msY, short msZ, char cLB)
 					else
 					{
 						ZeroMemory(cTemp3, sizeof(cTemp3));
-						wsprintf(cTemp3, "%d/----", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+						//LifeX Fix SKill Visual
+						//wsprintf(cTemp3, "%d/----", m_iSkillSSN[i + m_stDialogBoxInfo[15].sView]);
+						wsprintf(cTemp3, "-/-");
 					}
 					if ((msX >= sX + 25) && (msX <= sX + 180) && (msY >= sY + 30 + (x * 15) + 15) && (msY <= sY + 44 + (x * 15) + 15))
 					{
@@ -23409,6 +23434,11 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 			if (bServerTime)
 				bServerTime = false;
 			else bServerTime = true;
+		}
+		//LifeX Fix BACK button for Event Schedule
+		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
+			m_stDialogBoxInfo[53].cMode = 0;
+			PlaySound('E', 14, 5);
 		}
 		break;
 

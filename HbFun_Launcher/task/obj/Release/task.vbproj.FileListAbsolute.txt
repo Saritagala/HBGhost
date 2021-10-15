@@ -44,7 +44,6 @@ C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\Hb
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\Updater.Resources.resources
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.GenerateResource.cache
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CoreCompileInputs.cache
-C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\task.vbproj.CopyComplete
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\Updater.exe
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\Updater.xml
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\task\obj\Release\Updater.pdb

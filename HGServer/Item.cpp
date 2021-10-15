@@ -387,19 +387,19 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000F00) >> 8;
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
-					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // armes HitProba
-					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
-					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100); break;
-					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100); break;
-					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100); break;
-					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
+					case 1:  m_pClientList[iClientH]->m_iAddPR += dwSWEValue * 7; break;
+					case 2:  m_pClientList[iClientH]->m_iAddAR += dwSWEValue * 7; break; // armes HitProba
+					case 3:  m_pClientList[iClientH]->m_iAddDR += dwSWEValue * 7; break;
+					case 4:  m_pClientList[iClientH]->m_iAddHP += dwSWEValue * 7; break;
+					case 5:  m_pClientList[iClientH]->m_iAddSP += dwSWEValue * 7; break;
+					case 6:  m_pClientList[iClientH]->m_iAddMP += dwSWEValue * 7; break;
+					case 7:  m_pClientList[iClientH]->m_iAddMR += dwSWEValue * 7; break;
 					
 					case 8:  
 						//m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
 						//if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
-						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
-						if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += dwSWEValue * 3;
+						//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 						break;
 
 					/*case 9:
@@ -410,39 +410,39 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					case 9:  
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:	
-							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
-							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
+							m_pClientList[iClientH]->m_iAddAbsEarth += dwSWEValue * 3; 
+							//if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
 							break;
 						case 2:	
-							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
-							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
+							m_pClientList[iClientH]->m_iAddAbsLight += dwSWEValue * 3; 
+							//if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
 							break;
 						case 3:	
-							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
-							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
+							m_pClientList[iClientH]->m_iAddAbsFire += dwSWEValue * 3; 
+							//if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
 							break;
 						case 4:	
-							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
-							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
+							m_pClientList[iClientH]->m_iAddAbsWater += dwSWEValue * 3; 
+							//if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
 							break;
 						case 5:	
-							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
-							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
+							m_pClientList[iClientH]->m_iAddAbsHoly += dwSWEValue * 3; 
+							//if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
 							break;
 						case 6:	
-							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
-							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
+							m_pClientList[iClientH]->m_iAddAbsUnholy += dwSWEValue * 3; 
+							//if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
 							break;
 						default: 
-							m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+							m_pClientList[iClientH]->m_iAddAbsMD += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 							break;
 						}
 						break;
 
-					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
-					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
+					case 10: m_pClientList[iClientH]->m_iAddCD += dwSWEValue * 4; break;
+					case 11: m_pClientList[iClientH]->m_iAddExp += dwSWEValue * 10; break;
+					case 12: m_pClientList[iClientH]->m_iAddGold += dwSWEValue * 10; break;
 					}
 				}
 
@@ -471,7 +471,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					m_pClientList[iClientH]->m_cAttackBonus_L = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
 					// Compute Mana save, max=80%
 					m_pClientList[iClientH]->m_iManaSaveRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue4;
-					if (m_pClientList[iClientH]->m_iManaSaveRatio > 80) m_pClientList[iClientH]->m_iManaSaveRatio = 80;
+					//if (m_pClientList[iClientH]->m_iManaSaveRatio > 80) m_pClientList[iClientH]->m_iManaSaveRatio = 80;
 					//Snoopy: Reintroduced defence for staves
 					m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
 					//Snoopy: Added Magic ToHit Bonus for some wands.
@@ -595,7 +595,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 
 				case 15: // Magin Emerald Magical damage decreased(% applied) by the purity formula.    
 					m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
-					if (m_pClientList[iClientH]->m_iAddAbsMD > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddAbsMD = DEF_MAXMAGICALABS;
+					//if (m_pClientList[iClientH]->m_iAddAbsMD > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddAbsMD = DEF_MAXMAGICALABS;
 					break;
 
 				case 30: // Magin Sapphire	Phisical damage decreased(% applied) by the purity formula.	
@@ -605,10 +605,10 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += iTemp;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += iTemp;
 
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] = 80;
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] = 80;
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] = 80;
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] = 80;
 					//m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
 					//if (m_pClientList[iClientH]->m_iAddAbsPD > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddAbsPD = DEF_MAXMAGICALABS;
 					break;
@@ -660,7 +660,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
 						//m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
 					}
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 				}
 				break;
 
@@ -748,17 +748,17 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000F00) >> 8;
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
-					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // adds Hit Proba
-					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
-					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100); break;
-					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100); break;
-					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100); break;
-					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
+					case 1:  m_pClientList[iClientH]->m_iAddPR += dwSWEValue * 7; break;
+					case 2:  m_pClientList[iClientH]->m_iAddAR += dwSWEValue * 7; break; // adds Hit Proba
+					case 3:  m_pClientList[iClientH]->m_iAddDR += dwSWEValue * 7; break;
+					case 4:  m_pClientList[iClientH]->m_iAddHP += dwSWEValue * 7; break;
+					case 5:  m_pClientList[iClientH]->m_iAddSP += dwSWEValue * 7; break;
+					case 6:  m_pClientList[iClientH]->m_iAddMP += dwSWEValue * 7; break;
+					case 7:  m_pClientList[iClientH]->m_iAddMR += dwSWEValue * 7; break;
 					case 8:  
-						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += dwSWEValue * 3;
 						//m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
-						if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+						//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 						break;
 					/*case 9:
 						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
@@ -768,43 +768,44 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					case 9:
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:
-							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
+							m_pClientList[iClientH]->m_iAddAbsEarth += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
 							break;
 						case 2:
-							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
+							m_pClientList[iClientH]->m_iAddAbsLight += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
 							break;
 						case 3:
-							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
+							m_pClientList[iClientH]->m_iAddAbsFire += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
 							break;
 						case 4:
-							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
+							m_pClientList[iClientH]->m_iAddAbsWater += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
 							break;
 						case 5:
-							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
+							m_pClientList[iClientH]->m_iAddAbsHoly += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
 							break;
 						case 6:
-							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
+							m_pClientList[iClientH]->m_iAddAbsUnholy += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
 							break;
 						default:
-							m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+							m_pClientList[iClientH]->m_iAddAbsMD += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 							break;
 						}
 						break;
 
-					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
-					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
+					case 10: m_pClientList[iClientH]->m_iAddCD += dwSWEValue * 4; break;
+					case 11: m_pClientList[iClientH]->m_iAddExp += dwSWEValue * 10; break;
+					case 12: m_pClientList[iClientH]->m_iAddGold += dwSWEValue * 10; break;
 					}
 				}
 				break;
 
+			case DEF_ITEMEFFECTTYPE_BIJOUTERIE:
 			case DEF_ITEMEFFECTTYPE_DEFENSE: // Notice that MainGauche is here as well .....			
 			case DEF_ITEMEFFECTTYPE_DEFENSE_SPECABLTY:
 				// SNOOPY: 2 values for Defence ratio fot PvP mode HIGH
@@ -883,74 +884,70 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					
 					case ITEMSTAT2_HPREC:  // HPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldHPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100);
-						else m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100);
+							iShieldHPrec += dwSWEValue * 7;
+						else m_pClientList[iClientH]->m_iAddHP += dwSWEValue * 7;
 						break;
 					case ITEMSTAT2_SPREC:  // SPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldSPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100);
-						else m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100);
+							iShieldSPrec += dwSWEValue * 7;
+						else m_pClientList[iClientH]->m_iAddSP += dwSWEValue * 7;
 						break;
 					case ITEMSTAT2_MPREC:   // MPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldMPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100);
-						else m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100);
+							iShieldMPrec += dwSWEValue * 7;
+						else m_pClientList[iClientH]->m_iAddMP += dwSWEValue * 7;
 						break;
 					case ITEMSTAT2_MR:
-						m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100);
+						m_pClientList[iClientH]->m_iAddMR += dwSWEValue * 7;
 						break;
 					case ITEMSTAT2_PA: // PA
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
 						{
-							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
-							if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Shield = 80;
+							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Shield = 80;
 						}
 						else
 						{
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100); //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
-							if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += dwSWEValue * 3; //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 
 						}
 						break;
-					case ITEMSTAT2_MA:
-					
+					case 9:
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:
-							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
+							m_pClientList[iClientH]->m_iAddAbsEarth += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
 							break;
 						case 2:
-							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
+							m_pClientList[iClientH]->m_iAddAbsLight += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
 							break;
 						case 3:
-							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
+							m_pClientList[iClientH]->m_iAddAbsFire += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
 							break;
 						case 4:
-							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
+							m_pClientList[iClientH]->m_iAddAbsWater += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
 							break;
 						case 5:
-							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
+							m_pClientList[iClientH]->m_iAddAbsHoly += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
 							break;
 						case 6:
-							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
+							m_pClientList[iClientH]->m_iAddAbsUnholy += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
 							break;
 						default:
-							m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-							if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+							m_pClientList[iClientH]->m_iAddAbsMD += dwSWEValue * 3;
+							//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 							break;
 						}
-						
-						//m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
-						//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
-					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
-					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
-					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
+					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += dwSWEValue * 4; break;
+					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += dwSWEValue * 10; break;
+					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += dwSWEValue * 10; break;
 					}
 
 				}
@@ -982,7 +979,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Shield += iTemp;
 
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Shield = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Shield = 80;
 
 					break;
 
@@ -992,17 +989,17 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 				case DEF_EQUIPPOS_HEAD:	// PA on Head
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
 					//m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
-					m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3);
+					//m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3);
 
 					// Merien Upgraded helmet +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
 					//m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
-					m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
+					//m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
 
 					//if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
-					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
-					if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+					//if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+					//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 					break;
 
 				default:
@@ -1156,6 +1153,7 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 		}
 		break;
 
+		//LifeX Fix Attribute Potion
 	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION: // kazin
 		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) 
 		{
@@ -1171,55 +1169,165 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 
 				auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
 				auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
-				auto dst_dwType2 = (dst_attr & 0x0000F000) >> 12;
-				auto dst_dwValue2 = (dst_attr & 0x00000F00) >> 8;
+				
+				auto armorStat = (dst_attr & 0x0000F000) >> 12;
+				auto armorStatPerc = (dst_attr & 0x00000F00) >> 8;
 
-				if ((m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute & 0x0000F000) == 0)
+				switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1)
 				{
-					return false;
-				}
-
-				if (dst_dwType2 != dwType2)
-				{
-					return false;
-				}
-
-				auto dst_value = dst_dwValue2 + dwValue2;
-
-				switch (dwType2) {
-				case ITEMSTAT2_PSNRES: // 1
-				case ITEMSTAT2_HPREC: // 4
-				case ITEMSTAT2_MPREC: // 6
-				case ITEMSTAT2_SPREC: // 5
-				case ITEMSTAT2_MR: // 7
-				case ITEMSTAT2_PA: // 8
-				case ITEMSTAT2_MA: // 9
-				case ITEMSTAT2_DEF: // 3
-				case ITEMSTAT2_HITPROB: // 2
-
-					// Centuu : limite maximo para las attribute potion
-					if (dwType2 == ITEMSTAT2_PA || dwType2 == ITEMSTAT2_MA)
+				case 1: //PA							
+					if (armorStat == 0)
 					{
-						if (dst_value > 15) dst_value = 15;
+						armorStat = ITEMSTAT2_PA;
+						armorStatPerc = 1;
 					}
 					else
 					{
-						if (dst_value > 28) dst_value = 28;
+						if (armorStat != ITEMSTAT2_PA)
+						{
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with PA.");
+							return false;
+						}
+						else
+						{
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else
+							{
+								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting PA: 30%)");
+								return false;
+							}
+						}
 					}
-					dst_attr = 0;
-					dst_dwType1 = dst_dwType1 << 20;
-					dst_dwValue1 = dst_dwValue1 << 16;
-					dwType2 = dwType2 << 12;
-					dwValue2 = dst_value << 8;
-					dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
-					dst_attr = dst_attr | dwType2 | dwValue2;
+					break;
+				case 2: //MA
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_MA;
+						armorStatPerc = 1;
+					}
+					else
+					{
+						if (armorStat != ITEMSTAT2_MA)
+						{
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with MA.");
+							return false;
+						}
+						else
+						{
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else
+							{
+								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MA: 30%)");
+								return false;
+							}
+						}
+					}
+					break;
+				case 3: //DFRATIO
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_DEF;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_DEF) {
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with DR.");
+							return false;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting DR: 70%)");
+								return false;
+							}
+						}
+					}
 					break;
 
-				default:
-					return false;
+				case 4: //MAGIC RES
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_MR;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_MR) {
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with MR.");
+							return false;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MR: 70%)");
+								return false;
+							}
+						}
+					}
+					break;
+
+				case 5: //HPREC
+
+					if (armorStat == 0) {
+						armorStat = ITEMSTAT2_HPREC;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_HPREC) {
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with HP REC.");
+							return false;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting HP Recovery: 70%)");
+								return false;
+							}
+						}
+					}
+					break;
+
+				case 6: //MPREC
+
+					if (armorStat == 0)
+					{
+						armorStat = ITEMSTAT2_MPREC;
+						armorStatPerc = 1;
+					}
+					else {
+						if (armorStat != ITEMSTAT2_MPREC) {
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with MP REC.");
+							return false;
+						}
+						else {
+							if (armorStatPerc < 10)
+								armorStatPerc++;
+							else {
+								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MP Recovery: 70%)");
+								return false;
+							}
+						}
+					}
+					break;
+
+				default: 
+					SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Enchant Error. Report it to #bugs in Discord");  
+					break;
+				
 				}
 
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute, 0, 0);
+				dst_attr = 0;
+				dst_dwType1 = dst_dwType1 << 20;
+				dst_dwValue1 = dst_dwValue1 << 16;
+				armorStat = armorStat << 12;
+				armorStatPerc = armorStatPerc << 8;
+				dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
+				dst_attr = dst_attr | armorStat | armorStatPerc;
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, dst_attr, 0, 0);
 				return true;
 				
 			}
@@ -4825,60 +4933,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 			dwItemCount = 1;
 			bIsCoin = true;
 		}
-		else if (memcmp(pItemName, "PAPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_PA;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "MAPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_MA;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "DRPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_DEF;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "PRPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_PSNRES;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "HitPPotion", 10) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_HITPROB;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "HPPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_HPREC;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "SPPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_SPREC;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "MPPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_MPREC;
-			bIsPotion = true;
-		}
-		else if (memcmp(pItemName, "MRPotion", 8) == 0) {
-			strcpy(cItemName, "AttributePotion");
-			dwItemCount = 1;
-			dwType2 = ITEMSTAT2_MR;
-			bIsPotion = true;
-		}
+		//LifeX Fix Attribute Potion
 		else {
 			memcpy(cItemName, pItemName, 20);
 			dwItemCount = 1;
@@ -7980,7 +8035,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->bContrbSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bContrbSale = true;
 
@@ -7996,7 +8051,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->bEkSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bEkSale = true;
 
@@ -8012,7 +8067,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->bCoinSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bCoinSale = true;
 
@@ -8046,7 +8101,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = iTemp;
 
@@ -8061,7 +8116,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = iTemp;
 
@@ -8078,7 +8133,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp <= 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_bIsHero = false;
 					else m_pItemConfigList[iItemConfigListIndex]->m_bIsHero = true;
 
@@ -8094,7 +8149,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp <= 0)
+					if (iTemp < 1)
 						m_pItemConfigList[iItemConfigListIndex]->m_iHeroBonus = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iHeroBonus = iTemp;
 

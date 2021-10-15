@@ -98,7 +98,7 @@ C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\Hb
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\HbFun_Launcher.vbproj.GenerateResource.cache
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.exe.licenses
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\HbFun_Launcher.vbproj.CoreCompileInputs.cache
-C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\HbFun_Launcher.vbproj.CopyComplete
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.exe
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.xml
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.pdb
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\bin\Release\System.IO.Compression.dll

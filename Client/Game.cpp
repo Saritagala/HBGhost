@@ -1133,7 +1133,7 @@ void CGame::SaveGameConfigFile()
 	char cFn2[1200];
 	char cTxt[120];
 
-	strcpy(cFn, "GameConfig");
+	strcpy(cFn, "CONTENTS\\GameConfig");
 	strcat(cFn, ".cfg");
 
 	hFile = CreateFile(cFn, GENERIC_READ, 0, 0, OPEN_EXISTING, 0, 0);
@@ -3370,7 +3370,8 @@ void CGame::GameRecvMsgHandler(UINT32 dwMsgSize, char * pData)
 		EnableDialogBox(59, 0, 0, 0);
 		break;
 
-	case MSGID_REQUEST_ONLINE:
+	//case MSGID_REQUEST_ONLINE:
+	case MSGID_RESPONSE_ONLINE: //LifeX Fix User Refresh
 		ResponseOnlines(pData);
 		break;
 
@@ -11019,7 +11020,7 @@ bool   CGame::DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, bool b
 
 	bInv = false;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = true; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -11558,7 +11559,7 @@ bool   CGame::DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bo
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12109,7 +12110,7 @@ bool   CGame::DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, bool bT
 
 	bInv = false;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = true; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 ||  _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInvy = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12334,7 +12335,7 @@ bool   CGame::DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, bool 
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -12584,7 +12585,7 @@ bool CGame::DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 81 ||  _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -13785,7 +13786,7 @@ bool   CGame::DrawObject_OnDead(int indexX, int indexY, int sX, int sY, bool bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) return false;
+	if( _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) return false;
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -14080,7 +14081,7 @@ bool   CGame::DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98)	bInv = true; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98)	bInv = true; //Energy-Ball, Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -14761,7 +14762,7 @@ bool CGame::DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool
  int iSkirtDraw = 0;
 
 	if(_tmp_sOwnerType == 67 || _tmp_sOwnerType == 68 || _tmp_sOwnerType == 69 || _tmp_sOwnerType == 81) return false;
-	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
+	if(_tmp_sOwnerType == 35 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
@@ -15586,7 +15587,7 @@ bool   CGame::DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTr
  int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
  int iSkirtDraw = 0;
 
-	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball, Wyvern
+	if(_tmp_sOwnerType == 35  || _tmp_sOwnerType == 81 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball, Wyvern
 	if (m_cDetailLevel == 0)
 	{	iWeaponColor = 0;
 		iShieldColor = 0;
@@ -17311,7 +17312,7 @@ bool CGame::DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans
 	int iWeaponColor, iShieldColor, iArmorColor, iMantleColor, iArmColor, iPantsColor, iBootsColor, iHelmColor;
 	int iSkirtDraw = 0;
 
-	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 73 || _tmp_sOwnerType == 66 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
+	if (_tmp_sOwnerType == 35 || _tmp_sOwnerType == 94 || _tmp_sOwnerType == 95 || _tmp_sOwnerType == 98) bInv = true; //Energy-Ball,Wyvern
 
 	if (m_cDetailLevel == 0)
 	{
@@ -17894,7 +17895,8 @@ void CGame::InitDataResponseHandler(char * pData)
 	m_sMonsterID = 0;
 	m_dwMonsterEventTime = 0;
 
-	m_dwReqUsersTime = m_dwCurTime + 30000;
+	m_dwReqUsersTime = 0; //LifeX Fix User Refresh
+	m_dwCurTime + 30000;
 
 	//m_bHackMoveBlocked = false;
 
@@ -20521,8 +20523,13 @@ void CGame::DlgBoxClick_ItemUpgrade(int msX, int msY)
 			iSoX = iSoM = 0;
 			for (i = 0; i < DEF_MAXITEMS; i++)
 			if (m_pItemList[i] != 0)
-			{	if (m_pItemList[i]->m_sIDnum == 656) iSoX++;
-				if (m_pItemList[i]->m_sIDnum == 657) iSoM++;
+			{	
+				//LifeX Fix Merien Stone Upgrade
+				//Best to use sprite and sprite frame because IDNum can change, but sprite no wont for Stones.
+				if ((m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 128)) iSoX++;
+				if ((m_pItemList[i]->m_sSprite == 6) && (m_pItemList[i]->m_sSpriteFrame == 129)) iSoM++;
+				//if (m_pItemList[i]->m_sIDnum == 656) iSoX++;
+				//if (m_pItemList[i]->m_sIDnum == 657) iSoM++;
 			}
 			if ((iSoX > 0) || (iSoM > 0))
 			{	m_stDialogBoxInfo[34].cMode = 6;
@@ -35543,6 +35550,7 @@ void CGame::UpdateScreen_OnGame()
 	static int   imX = 0, imY = 0;
 	//50Cent Item Description
 	char cStr5[256];
+	UINT16 _wWeight = 0;
 
 	int resi;
 
@@ -35565,7 +35573,8 @@ void CGame::UpdateScreen_OnGame()
 	// ----------------------------------------------------
 
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
-	m_dwCurTime = timeGetTime();
+	//m_dwCurTime = timeGetTime();
+	m_dwCurTime = dwTime;
 
 	if (m_bEnterPressed)
 	{
@@ -35856,244 +35865,111 @@ void CGame::UpdateScreen_OnGame()
 		DrawChatMsgs(-100, 0, 799, 599);
 		WhetherObjectFrameCounter();
 		DrawDialogBoxs(msX, msY, msZ, cLB);
-	}
-		
 
-	if ((iUpdateRet != 0) && m_bInputStatus)
-	{
-		if (((m_bIsDialogEnabled[7]) && (m_stDialogBoxInfo[7].cMode == 1)) ||
-			((m_bIsDialogEnabled[17]) && (m_stDialogBoxInfo[17].cMode == 1)))
+		if (m_bInputStatus)
+		{
+			if (((m_bIsDialogEnabled[7]) && (m_stDialogBoxInfo[7].cMode == 1)) ||
+				((m_bIsDialogEnabled[17]) && (m_stDialogBoxInfo[17].cMode == 1)))
 #ifdef RES_HIGH
-		{
-		}
-		else m_DDraw.DrawShadowBox(0, 531, 799, 549);
+			{
+			}
+			else m_DDraw.DrawShadowBox(0, 531, 799, 549);
 #else
-		{}
-		else m_DDraw.DrawShadowBox(0, 413, 639, 429);
+			{}
+			else m_DDraw.DrawShadowBox(0, 413, 639, 429);
 #endif
-		ShowReceivedString();
-	}
-
-	if (iUpdateRet != 0) ShowEventList(m_dwCurTime);
-
-	if ((iUpdateRet != 0) && (m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_ITEM) &&
-		(m_pItemList[m_stMCursor.sSelectedObjectID] != 0))
-	{
-		cItemColor = m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemColor;
-		if (cItemColor != 0) {
-			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_LHAND) ||
-				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_RHAND) ||
-				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
-			{
-				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteRGB(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
-					m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame,
-					m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0],
-					dwTime);
-			}
-			else
-			{
-				m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteRGB(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
-					m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame,
-					m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0],
-					dwTime);
-			}
+			ShowReceivedString();
 		}
-		else m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteFast(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
-			m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame, dwTime);
 
-		char cStr1[128], cStr2[128], cStr3[128], cStr4[128], cStr5[128], cStr6[128];
-		int iLoc, iEntry2 = 0;
-		GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
-		//Magn0S:: Reformulate Shadow box on item viewer
-		int iEntry = 0;
-		if (strlen(cStr1) != 0) iEntry++;
-		if (strlen(cStr2) != 0) iEntry++;
-		if (strlen(cStr3) != 0) iEntry++;
-		if (strlen(cStr4) != 0) iEntry++;
-		if (strlen(cStr5) != 0) iEntry++;
-		if (strlen(cStr6) != 0) iEntry++;
+		ShowEventList(m_dwCurTime);
 
-		int iLenSize = (int)strlen(cStr1);
-		if (iLenSize < (int)strlen(cStr2)) iLenSize = (int)strlen(cStr2);
-		if (iLenSize < (int)strlen(cStr3)) iLenSize = (int)strlen(cStr3);
-		if (iLenSize < (int)strlen(cStr4)) iLenSize = (int)strlen(cStr4);
-		if (iLenSize < (int)strlen(cStr5)) iLenSize = (int)strlen(cStr5);
-		if (iLenSize < (int)strlen(cStr6)) iLenSize = (int)strlen(cStr6);
-
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
-			&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
-				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
-				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
-				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
-			iEntry++;
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-		
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
-		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
-			iEntry++;
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-		
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
-			wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
-			iEntry++;
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-		
-		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BACK) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER) && m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 0)
+		if ((m_stMCursor.cSelectedObjectType == DEF_SELECTEDOBJTYPE_ITEM) &&
+			(m_pItemList[m_stMCursor.sSelectedObjectID] != 0))
 		{
+			cItemColor = m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemColor;
+			if (cItemColor != 0) {
+				if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_LHAND) ||
+					(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_RHAND) ||
+					(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND))
+				{
+					m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteRGB(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
+						m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame,
+						m_wWR[cItemColor] - m_wR[0], m_wWG[cItemColor] - m_wG[0], m_wWB[cItemColor] - m_wB[0],
+						dwTime);
+				}
+				else
+				{
+					m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteRGB(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
+						m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame,
+						m_wR[cItemColor] - m_wR[0], m_wG[cItemColor] - m_wG[0], m_wB[cItemColor] - m_wB[0],
+						dwTime);
+				}
+			}
+			else m_pSprite[DEF_SPRID_ITEMPACK_PIVOTPOINT + m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSprite]->PutSpriteFast(msX - m_stMCursor.sDistX, msY - m_stMCursor.sDistY,
+				m_pItemList[m_stMCursor.sSelectedObjectID]->m_sSpriteFrame, dwTime);
+
+			char cStr1[128], cStr2[128], cStr3[128], cStr4[128], cStr5[128], cStr6[128];
+			int iLoc, iEntry2 = 0;
+			GetItemName(m_pItemList[m_stMCursor.sSelectedObjectID], cStr1, cStr2, cStr3, cStr4, cStr5, cStr6);
+			//Magn0S:: Reformulate Shadow box on item viewer
+			int iEntry = 0;
+			if (strlen(cStr1) != 0) iEntry++;
+			if (strlen(cStr2) != 0) iEntry++;
+			if (strlen(cStr3) != 0) iEntry++;
+			if (strlen(cStr4) != 0) iEntry++;
+			if (strlen(cStr5) != 0) iEntry++;
+			if (strlen(cStr6) != 0) iEntry++;
+
+			int iLenSize = (int)strlen(cStr1);
+			if (iLenSize < (int)strlen(cStr2)) iLenSize = (int)strlen(cStr2);
+			if (iLenSize < (int)strlen(cStr3)) iLenSize = (int)strlen(cStr3);
+			if (iLenSize < (int)strlen(cStr4)) iLenSize = (int)strlen(cStr4);
+			if (iLenSize < (int)strlen(cStr5)) iLenSize = (int)strlen(cStr5);
+			if (iLenSize < (int)strlen(cStr6)) iLenSize = (int)strlen(cStr6);
+
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
-			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
-			case 1://"Available for above Str %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
-				break;
-			case 2: // "Available for above Dex %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
-				break;
-			case 3: // "Available for above Vit %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
-				break;
-			case 4: // "Available for above Int %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
-				break;
-			case 5: // "Available for above Mag %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
-				break;
-			case 6: // "Available for above Agi %d"
-				wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
-				break;
-			}
-
-			iEntry++;
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-		
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if  (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sIDnum == 650 || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
-		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
-			iEntry++;
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-		
-		// Centuu - Class
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
-		{
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
-			{
-				wsprintf(G_cTxt, "Only for Warrior.");
-			}
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
-			{
-				wsprintf(G_cTxt, "Only for Magician.");
-			}
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
-			{
-				wsprintf(G_cTxt, "Only for Archer.");
-			}
-			iEntry++;
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if (iEntry == 1)
-		{
-			//iEntry = 0;
-			for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++) {
-				if (m_pItemList[iTmp] != 0) {
-					if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry2++;
-			}	}
-			if (iEntry2 > 1) {
-				wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iEntry2);
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
+				&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
+					|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
+					|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
+					|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
+				wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
 				iEntry++;
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 			}
-			if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
-		}
-		
-		if (iLenSize <= 15)
-			iLenSize = iLenSize * 7.0f;
-		else if (iLenSize <= 28)
-			iLenSize = iLenSize * 5.5f;
-		else iLenSize = iLenSize * 6.2f;
 
-		m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize+22, msY + 26 + 15 * iEntry, 0, true);
-		//-----------------------------------------------------------------------------------------------------------------------------------
-		
-		iLoc = 0;
-		if (strlen(cStr1) != 0)
-		{	
-			if (m_bIsRare)
-				PutString(msX, msY + 25, cStr1, RGB(255, 232, 0), false, 1);
-			else if (m_bIsFragile)
-				PutString(msX, msY + 25, cStr1, RGB(50, 255, 255), false, 1);
-			else if (m_bIsSpecial)
-				PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), false, 1);
-			else
-				PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), false, 1);
-
-			iLoc += 15;
-		}
-		//Magn0S:: Itens extra description
-		if (strlen(cStr4) != 0)
-		{	PutString(msX, msY +25 +iLoc, cStr4, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		if (strlen(cStr5) != 0)
-		{	PutString(msX, msY +25 +iLoc, cStr5, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		if (strlen(cStr6) != 0)
-		{	PutString(msX, msY +25 +iLoc, cStr6, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-
-		if (strlen(cStr2) != 0)
-		{	PutString(msX, msY +25 +iLoc, cStr2, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		if (strlen(cStr3) != 0)
-		{	PutString(msX, msY +25 +iLoc, cStr3, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
-			&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
-				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
-				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
-				|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
-			wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
-			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1); 
-			iLoc += 15;
-		}
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if ( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0) )
-		{	wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
-			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
-			wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
-			PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
-			iLoc += 15;
-		}
-		if( (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) && 
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BACK) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER) &&
-			(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER) && m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 0)
-		{
 			ZeroMemory(G_cTxt, sizeof(G_cTxt));
-			switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0))
+			{
+				wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
+				iEntry++;
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+			}
+
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
+				wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+				iEntry++;
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
+			}
+
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) &&
+				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BACK) &&
+				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER) &&
+				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER) && m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 0)
+			{
+				ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
 				case 1://"Available for above Str %d"
-					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					//LifeX Fix Light
+					// If not Class base will show the light required stats STR
+					if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 1)
+					{
+						if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+					}
+					else
+						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
 					break;
 				case 2: // "Available for above Dex %d"
 					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
@@ -36110,52 +35986,216 @@ void CGame::UpdateScreen_OnGame()
 				case 6: // "Available for above Agi %d"
 					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
 					break;
+				}
+
+				iEntry++;
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 			}
-			
-			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if  (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sIDnum == 650 || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
-		{	wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
-			PutString(msX, msY +25 +iLoc, G_cTxt, RGB(150,150,150), false, 1);
-			iLoc += 15;
-		}
-		// Centuu - Class
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
-		{
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
+
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sIDnum == 650 || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
 			{
-				wsprintf(G_cTxt, "Only for Warrior");
+				wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
+				iEntry++;
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 			}
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
+
+			// Centuu - Class
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
 			{
-				wsprintf(G_cTxt, "Only for Magician");
+				if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
+				{
+					wsprintf(G_cTxt, "Only for Warrior.");
+				}
+				else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
+				{
+					wsprintf(G_cTxt, "Only for Magician.");
+				}
+				else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+				{
+					wsprintf(G_cTxt, "Only for Archer.");
+				}
+				iEntry++;
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 			}
-			else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (iEntry == 1)
 			{
-				wsprintf(G_cTxt, "Only for Archer");
+				//iEntry = 0;
+				for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++) {
+					if (m_pItemList[iTmp] != 0) {
+						if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iEntry2++;
+					}
+				}
+				if (iEntry2 > 1) {
+					wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iEntry2);
+					iEntry++;
+				}
+				if (iLenSize < (int)strlen(G_cTxt)) iLenSize = (int)strlen(G_cTxt);
 			}
-			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == m_iClass)
+
+			if (iLenSize <= 15)
+				iLenSize = iLenSize * 7.0f;
+			else if (iLenSize <= 28)
+				iLenSize = iLenSize * 5.5f;
+			else iLenSize = iLenSize * 6.2f;
+
+			m_DDraw.DrawShadowBox(msX - 3, msY + 25 - 1, msX + iLenSize + 22, msY + 26 + 15 * iEntry, 0, true);
+			//-----------------------------------------------------------------------------------------------------------------------------------
+
+			iLoc = 0;
+			if (strlen(cStr1) != 0)
 			{
-				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(0, 255, 0), false, 1);
+				if (m_bIsRare)
+					PutString(msX, msY + 25, cStr1, RGB(255, 232, 0), false, 1);
+				else if (m_bIsFragile)
+					PutString(msX, msY + 25, cStr1, RGB(50, 255, 255), false, 1);
+				else if (m_bIsSpecial)
+					PutString(msX, msY + 25, cStr1, RGB(0, 255, 50), false, 1);
+				else
+					PutString(msX, msY + 25, cStr1, RGB(255, 255, 255), false, 1);
+
+				iLoc += 15;
 			}
-			else PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(255, 0, 0), false, 1);
-			iLoc += 15;
-		}
-		ZeroMemory(G_cTxt, sizeof(G_cTxt));
-		if ( iLoc == 15 )
-		{	iLoc = 0;
-			for ( int iTmp = 0 ; iTmp < DEF_MAXITEMS ; iTmp++ )
-			{	if( m_pItemList[iTmp] != 0 )
-				{	if( strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName ) == 0 ) iLoc++;
+			//Magn0S:: Itens extra description
+			if (strlen(cStr4) != 0)
+			{
+				PutString(msX, msY + 25 + iLoc, cStr4, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			if (strlen(cStr5) != 0)
+			{
+				PutString(msX, msY + 25 + iLoc, cStr5, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			if (strlen(cStr6) != 0)
+			{
+				PutString(msX, msY + 25 + iLoc, cStr6, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+
+			if (strlen(cStr2) != 0)
+			{
+				PutString(msX, msY + 25 + iLoc, cStr2, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			if (strlen(cStr3) != 0)
+			{
+				PutString(msX, msY + 25 + iLoc, cStr3, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cItemType == DEF_ITEMTYPE_EQUIP)
+				&& ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_HEAD)
+					|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_BODY)
+					|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_ARMS)
+					|| (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos == DEF_EQUIPPOS_PANTS))) {
+				wsprintf(G_cTxt, "DR: %d - PA: %d - MA: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue1, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sItemEffectValue3);
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit != 0) && ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_dwAttribute & 0x00000001) == 0))
+			{
+				wsprintf(G_cTxt, "Level: %d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sLevelLimit);//"레벨 제한: %d"
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2 != 0) {
+				wsprintf(G_cTxt, "Can use until %.2d/%.2d/%.4d", m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect2, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect3, m_pItemList[m_stMCursor.sSelectedObjectID]->m_sNewEffect4);
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			if ((m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NECK) &&
+				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BACK) &&
+				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_BOOTS) && (m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_RFINGER) &&
+				(m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_LFINGER) && m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 0)
+			{
+				ZeroMemory(G_cTxt, sizeof(G_cTxt));
+				switch (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat) {
+				case 1://"Available for above Str %d"
+					//LifeX Fix Light
+					// If not Class base will show the light required stats STR
+					if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iReqStat != 1)
+					{
+						if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight % 100) _wWeight = 1;
+						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wWeight / 100 + _wWeight);
+					}
+					else
+						wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP15, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					break;
+				case 2: // "Available for above Dex %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP16, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					break;
+				case 3: // "Available for above Vit %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP17, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					break;
+				case 4: // "Available for above Int %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP18, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					break;
+				case 5: // "Available for above Mag %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP19, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					break;
+				case 6: // "Available for above Agi %d"
+					wsprintf(G_cTxt, DRAW_DIALOGBOX_SHOP20, m_pItemList[m_stMCursor.sSelectedObjectID]->m_iQuantStat);
+					break;
+				}
+
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_sIDnum == 650 || m_pItemList[m_stMCursor.sSelectedObjectID]->m_cEquipPos != DEF_EQUIPPOS_NONE)
+			{
+				wsprintf(G_cTxt, UPDATE_SCREEN_ONGAME10, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wCurLifeSpan, m_pItemList[m_stMCursor.sSelectedObjectID]->m_wMaxLifeSpan);
+				PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(150, 150, 150), false, 1);
+				iLoc += 15;
+			}
+			// Centuu - Class
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass != 0)
+			{
+				if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 1)
+				{
+					wsprintf(G_cTxt, "Only for Warrior");
+				}
+				else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 2)
+				{
+					wsprintf(G_cTxt, "Only for Magician");
+				}
+				else if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == 3)
+				{
+					wsprintf(G_cTxt, "Only for Archer");
+				}
+				if (m_pItemList[m_stMCursor.sSelectedObjectID]->m_iClass == m_iClass)
+				{
+					PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(0, 255, 0), false, 1);
+				}
+				else PutString(msX, msY + 25 + iLoc, G_cTxt, RGB(255, 0, 0), false, 1);
+				iLoc += 15;
+			}
+			ZeroMemory(G_cTxt, sizeof(G_cTxt));
+			if (iLoc == 15)
+			{
+				iLoc = 0;
+				for (int iTmp = 0; iTmp < DEF_MAXITEMS; iTmp++)
+				{
+					if (m_pItemList[iTmp] != 0)
+					{
+						if (strcmp(m_pItemList[iTmp]->m_cName, m_pItemList[m_stMCursor.sSelectedObjectID]->m_cName) == 0) iLoc++;
+					}
+				}
+				if (iLoc > 1)
+				{
+					wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
+					PutString(msX, msY + 40, G_cTxt, RGB(150, 150, 150), false, 1);
 				}
 			}
-			if( iLoc > 1 )
-			{	wsprintf(G_cTxt, DEF_MSG_TOTAL_NUMBER, iLoc);
-				PutString(msX, msY + 40, G_cTxt, RGB(150,150,150), false, 1);
-	}	}	}
+		}
+	}
 
 	//Snoopy: Add Apocalypse map effect (druncncity bubbles)
 	if (m_cMapIndex == 25)

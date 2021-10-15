@@ -870,7 +870,7 @@ void CGame::DisplayInfo(HDC hdc)
 	TextOut(hdc, 735, 55 + 30, cTxt, strlen(cTxt));
 
 	TextOut(hdc, 605, 70 + 30, "Max Absorption:", 16);
-	wsprintf(cTxt, "%d%%", m_iMaxAbs * 7);
+	wsprintf(cTxt, "%d%%", m_iMaxAbs * 3);
 	TextOut(hdc, 735, 70 + 30, cTxt, strlen(cTxt));
 
 	TextOut(hdc, 605, 85 + 30, "Max Recovery:", 14);
@@ -9839,8 +9839,9 @@ UINT32 * dwp, dwTimeRcv;
 
 			case MSGID_REQUEST_ONLINE:
 				
-				if (m_pClientList[iClientH])
-					RequestOnlines(iClientH); //no necesitamos la data
+				//if (m_pClientList[iClientH])
+				RequestOnlines(iClientH); //no necesitamos la data
+				
 				break;
 
 			case MSGID_REQUEST_TOPEK:
@@ -18432,7 +18433,9 @@ void CGame::RequestOnlines(int iClientH)
 	char * cData = G_cData50000; //esta es el "buffer", onda, la memoria que neceisto para enviar
 	
 	UINT32 * dwp  = (UINT32 *)(cData + DEF_INDEX4_MSGID);
-	*dwp = MSGID_REQUEST_ONLINE;//a la memoria esa le escribo este mensaje
+	//*dwp = MSGID_REQUEST_ONLINE;//a la memoria esa le escribo este mensaje
+	//LifeX Fix User Refresh
+	*dwp = MSGID_RESPONSE_ONLINE;//a la memoria esa le escribo este mensaje
 	UINT16 * wp   = (UINT16 *)(cData + DEF_INDEX2_MSGTYPE);			   
 	*wp  = 0;//este no se usa, le mando 0
 
