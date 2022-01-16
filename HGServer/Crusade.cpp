@@ -176,16 +176,18 @@ void CGame::LocalStartCrusadeMode(UINT32 dwCrusadeGUID)
 							break;
 						}
 
-						tX = (int)m_stCrusadeStructures[i].dX;
-						tY = (int)m_stCrusadeStructures[i].dY;
+						tX = m_stCrusadeStructures[i].dX;
+						tY = m_stCrusadeStructures[i].dY;
 						if (bCreateNewNpc(cNpcName, cName, m_pMapList[z]->m_cName, 0, 0, DEF_MOVETYPE_RANDOM,
 							&tX, &tY, cNpcWayPoint, 0, 0, -1, false) == false) {
 							// ½ÇÆÐÇßÀ¸¹Ç·Î ¿¹¾àµÈ NameValue¸¦ ÇØÁ¦½ÃÅ²´Ù.
 							m_pMapList[z]->SetNamingValueEmpty(iNamingValue);
+
+							
 						}
 						else {
 							// Centu - can't stay behind crusade shields and manastone
-							m_pMapList[m_pNpcList[m_stCrusadeStructures[i].cType]->m_cMapIndex]->SetStayAllowedFlag(tX, tY - 1, false);
+							m_pMapList[z]->SetStayAllowedFlag(tX, tY - 1, false);
 							wsprintf(G_cTxt, "(!) Creating Crusade Structure(%s) at %s(%d, %d)", cNpcName, m_stCrusadeStructures[i].cMapName, tX, tY);
 							PutLogList(G_cTxt);
 						}
@@ -855,7 +857,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 		wsprintf(G_cTxt, "Accessing crusade teleport: (%s) Player: (%s) - setting teleport location when crusade is disabled.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		//DeleteClient(iClientH, true, true);
+
 		return;
 	}
 
@@ -864,7 +866,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 		wsprintf(G_cTxt, "Accessing crusade teleport: (%s) Player: (%s) - teleporting when not in a guild",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		//DeleteClient(iClientH, true, true);
+
 		return;
 	}
 
@@ -964,7 +966,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 		wsprintf(G_cTxt, "Accessing Crusade Set Teleport:(%s) Player: (%s) - setting point when not a crusade.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		//DeleteClient(iClientH, true, true);
+
 		return;
 	}
 
@@ -973,7 +975,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 		wsprintf(G_cTxt, "Accessing Crusade Set Teleport: (%s) Player: (%s) - setting point when not a guildmaster.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-		//DeleteClient(iClientH, true, true);
+
 		return;
 	}
 
@@ -1174,7 +1176,7 @@ void CGame::MeteorStrikeHandler(int iMapIndex)
 		}
 
 		// 1ÃÊ ÈÄ ¸ÞÅ×¿À ½ºÆ®¶óÀÌÅ© °ø°Ý ´ë¹ÌÁö È¿°ú
-		//bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, 0, dwTime + 1000, 0, 0, iMapIndex, 0, 0, 0, 0, 0);
+
 		// 4ÃÊ ÈÄ ¸ÞÅ×¿À ½ºÆ®¶óÀÌÅ© °ø°Ý ´ë¹ÌÁö È¿°ú
 		bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, 0, dwTime + 5000, 0, 0, iMapIndex, 0, 0, 0, 0, 0);
 		// 6ÃÊ ÈÄ °ø°Ý °á°ú ÆÇ´Ü.
@@ -1341,7 +1343,7 @@ void CGame::LocalEndCrusadeMode(int iWinnerSide)
 			case 46:
 			case 47:
 			case 51:
-				NpcKilledHandler(0, 0, n, 0);//RemoveEventNpc(n);
+				NpcKilledHandler(0, 0, n, 0);
 				break;
 			}
 		}

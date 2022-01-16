@@ -233,7 +233,7 @@ void CGame::PartyOperationResultHandler(char* pData)
 		if ((iClientH < 1) || (iClientH > DEF_MAXCLIENTS)) return;
 
 		if (m_pClientList[iClientH] == 0) return;
-		if (strcmp(m_pClientList[iClientH]->m_cCharName, cName) != 0) return;
+		if (memcmp(m_pClientList[iClientH]->m_cCharName, cName, 10) != 0) return;
 
 		for (i = 0; i < DEF_MAXPARTYMEMBERS; i++)
 			if (m_stPartyInfo[m_pClientList[iClientH]->m_iPartyID].iIndex[i] == iClientH) {
@@ -878,7 +878,7 @@ void CGame::RequestAcceptJoinPartyHandler(int iClientH, int iResult)
 //New Party Status - ZeroEoyPnk - 06/09/2010
 void CGame::RefreshPartyStatus(int iClientH)
 {
-	int i, HPParty, NotifyClient, PartyId, x, MaxHpParty, TotalMembers, PartySex, MPParty, MaxMpParty;
+	int i, HPParty, NotifyClient, PartyId = 0, x, MaxHpParty, TotalMembers, PartySex, MPParty, MaxMpParty;
 
 	NotifyClient = 0;
 	HPParty = 0;

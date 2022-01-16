@@ -155,27 +155,7 @@ bool CGateCore::bReadProgramConfigFile(char * cFn)
 	}
 
 
-	//2003-1-17일 문성훈 추가 게이트 서버 아이피를 않넣어 주는 경우 
-	/*if ( m_cGateServerAddr == 0)
-	{
-				
-		char ServerAddr[50];
-		::gethostname(ServerAddr,50); 
-		struct hostent *pHostEnt;
-		pHostEnt = ::gethostbyname(ServerAddr);
-		if( pHostEnt != 0 ){
-			wsprintf(ServerAddr, "%d.%d.%d.%d",
-			( pHostEnt->h_addr_list[0][0] & 0x00ff ),
-			( pHostEnt->h_addr_list[0][1] & 0x00ff ),
-			( pHostEnt->h_addr_list[0][2] & 0x00ff ),
-			( pHostEnt->h_addr_list[0][3] & 0x00ff ) );
-		}
-		strcpy(m_cGateServerAddr,ServerAddr );
-
-		wsprintf(cTxt, "(*) Gate server address : %s", m_cGateServerAddr);
-		PutLogList(cTxt);
-	}*/
-
+	
 	return true;
 
 }
@@ -257,12 +237,7 @@ bool CGateCore::bAccept(class XSocket * pXSock)
 				m_pClientList[i] = 0; 
 				return false; 
 			} 
-			/*if (strlen(m_pClientList[i]->m_cAddress) < 10) {
-				delete m_pClientList[i]; 
-				m_pClientList[i] = 0; 
-				return false; 
-			}*/
-
+			
 		for(int j = 0;j < 10 ; j++)  //2002-11-27일 정진 수정 허가된 아이피 체크
 		{
 			if(memcmp(m_cAddress[j],m_pClientList[i]->m_cAddress,16) == 0) 
@@ -295,7 +270,6 @@ bool CGateCore::bAccept(class XSocket * pXSock)
 	pTmpSock = new class XSocket(m_hWnd, 300);
 	pXSock->bAccept(pTmpSock, 0); 
 	delete pTmpSock;
-	//delete pXSock;
 
 	return false;
 }
@@ -1162,10 +1136,6 @@ void CGateCore::PartyOperation(int iClientH, char *pData)
 	wp = (UINT16 *)cp;
 	iPartyID = (UINT16)*wp;
 	cp += 2;
-
-	//testcode
-	//wsprintf(G_cTxt, "Party Operation Type: %d Name: %s PartyID:%d", wRequestType, cName, iPartyID);
-	//PutLogList(G_cTxt);
 
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char *)cData;

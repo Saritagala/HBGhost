@@ -232,7 +232,7 @@ HRESULT DXC_ddraw::iFlip()
 		ddVal = m_lpBackB4flip->BltFast( 0, 0, m_lpBackB4, &m_rcFlipping, DDBLTFAST_NOCOLORKEY); 
 		
 		ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_NOVSYNC); // fps fix - farjat
-		//ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_WAIT);
+
 	}
 	else
 	{
@@ -574,7 +574,6 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 	UINT16 * pDst, wValue;
 	int ix, iy;
 
-	//pDst = (UINT16 *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 
 	if (sX < 0)
 		sX = 0;
@@ -650,7 +649,6 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 		G_pGame->DrawBorder(sX, dY, dX - 1, dY, R, G, B);  // 2ª Reta
 		G_pGame->DrawBorder(sX, sY, sX, dY - 1, R, G, B);  //Linha Esquerda
 
-	//	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
 		//m_lTransRB2
 	}
 }

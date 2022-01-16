@@ -240,10 +240,6 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 			pItem);
 
 		// 다른 클라이언트에게 아이템이 떨어진 것을 알린다. 
-		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
-			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-			pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4 color
-
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);

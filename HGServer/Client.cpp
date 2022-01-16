@@ -220,15 +220,11 @@ CClient::CClient(HWND hWnd)
 	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardAmount[i] = 0;
 	for (i = 0; i < DEF_MAXQUEST; i++) m_bIsQuestCompleted[i] = false;
 
-	//m_iQuest = 0;
-	//m_iQuestID = 0;
 	m_iAskedQuest = 0;
-	//m_iCurQuestCount = 0;
-	//m_iQuestRewardType = 0;
-	//m_iQuestRewardAmount = 0;
+	
 	m_iContribution = 0;
 	m_bQuestMatchFlag_Loc = false;
-	//m_bIsQuestCompleted = false;
+	
 	m_cHeroArmourBonus = 0;
 	m_bIsNeutral = false;
 	m_bIsObserverMode = false;
@@ -299,8 +295,7 @@ CClient::CClient(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////Modifications////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	//m_iHitRatio_ItemEffect_SM = 0;
-	//m_iHitRatio_ItemEffect_L  = 0;
+	
 	m_cAura = 0;
 	m_dwLogoutHackCheck = 0;
 	m_iAddTransMana = 0;

@@ -17,7 +17,7 @@ Team::Team()
 	for (int i = 0; i < 4; i++)
 	{
 		team[i].kills = 0;
-		//team[i].maxkills = 100;
+
 	}
 }
 
@@ -131,75 +131,15 @@ void Team::Kill(int iattacker, int itarget)
 	{
 		att->m_iMaxEK = att->m_iEnemyKillCount;
 	}
-	//att->Send(iattacker, DEF_NOTIFY_ENEMYKILLREWARD, itarget);
+
 	g->SendNotifyMsg(0, iattacker, DEF_NOTIFY_ENEMYKILLS, att->m_iEnemyKillCount, att->m_iMaxEK, 0, 0);
 	g->calcularTop15HB(iattacker);
 	team[att->iteam].kills++;
 	NotifyPoints();
-	//RequestRevive(itarget);
+
 	End(att->iteam);
 }
 
-/*
-void Team::RequestRevive(int client)
-{
-	auto g = G_pGame;
-	auto p = g->m_pClientList[client];
-	if (!p) return;
-
-	p->m_bIsBeingResurrected = true;
-	c_cmd->SendCommand(client, "/revive", 0, 0, 0, 0);
-}
-
-void Team::Revive(int client)
-{
-	auto g = G_pGame;
-	auto p = g->m_pClientList[client];
-	if (!p) return;
-
-	if (!p->m_bIsBeingResurrected) return;
-
-	wsprintf(G_cTxt, "(!) Resurrect Player! %s", p->m_cCharName);
-	PutLogList(G_cTxt);
-
-	p->m_bIsKilled = false;
-	p->m_iHP = g->iGetMaxHP(client) / 2;
-	p->m_iMP = ((p->m_iMag * 2) + (p->m_iLevel / 2)) + p->m_iInt / 2;
-	p->m_iSP = (p->m_iStr * 2) + (p->m_iLevel / 2);
-	p->m_iHungerStatus = 100;
-	p->m_bIsBeingResurrected = false;
-	p->m_cMagicEffectStatus[DEF_MAGICTYPE_HOLDOBJECT] = 0;
-	p->m_cMagicEffectStatus[DEF_MAGICTYPE_ICE] = 0;
-
-	g->RequestTeleportHandler(client, "2", p->m_cMapName, -1, -1);
-}
-
-void Team::DontRevive(int client)
-{
-	auto g = G_pGame;
-	auto p = g->m_pClientList[client];
-	if (!p) return;
-
-	if (!p->m_bIsBeingResurrected) return;
-
-	wsprintf(G_cTxt, "(!) Resurrect Player! %s", p->m_cCharName);
-	PutLogList(G_cTxt);
-
-	p->m_bIsKilled = false;
-	p->m_iHP = g->iGetMaxHP(client) / 2;
-	p->m_iMP = ((p->m_iMag * 2) + (p->m_iLevel / 2)) + p->m_iInt / 2;
-	p->m_iSP = (p->m_iStr * 2) + (p->m_iLevel / 2);
-	p->m_iHungerStatus = 100;
-	p->m_bIsBeingResurrected = false;
-	p->m_cMagicEffectStatus[DEF_MAGICTYPE_HOLDOBJECT] = 0;
-	p->m_cMagicEffectStatus[DEF_MAGICTYPE_ICE] = 0;
-
-	if (p->IsLocation("elvine"))
-		g->RequestTeleportHandler(client, "2", "elvine", -1, -1, true);
-	else
-		g->RequestTeleportHandler(client, "2", "aresden", -1, -1, true);
-}
-*/
 
 void Team::NotPoints(int client)
 {
@@ -207,14 +147,9 @@ void Team::NotPoints(int client)
 	auto p = g->m_pClientList[client];
 	if (!p) return;
 
-	//for (int i = 0; i < 4; i++)
-	//{
-		//c_cmd->SendCommand(client, "/teamkills", i, team[i].kills, 0, 0);
-		//c_cmd->SendCommand(client, "/teammaxkills", team[i].maxkills, 0, 0, 0);
-		G_pGame->SendNotifyMsg(0, client, DEF_NOTIFY_TEAMARENA, team[0].kills
-			, team[1].kills, team[2].kills, 0, team[3].kills
-			, 0, 0);
-	//}
+	G_pGame->SendNotifyMsg(0, client, DEF_NOTIFY_TEAMARENA, team[0].kills
+		, team[1].kills, team[2].kills, 0, team[3].kills
+		, 0, 0);
 
 }
 
@@ -225,10 +160,6 @@ void Team::NotifyPoints()
 	{
 		auto pi = g->m_pClientList[i];
 		if (!pi) continue;
-		/*c_cmd->SendCommand(i, "/teamkills", 0, team[0].kills, 0, 0);
-		c_cmd->SendCommand(i, "/teamkills", 1, team[1].kills, 0, 0);
-		c_cmd->SendCommand(i, "/teamkills", 2, team[2].kills, 0, 0);
-		c_cmd->SendCommand(i, "/teamkills", 3, team[3].kills, 0, 0);*/
 		G_pGame->SendNotifyMsg(0, i, DEF_NOTIFY_TEAMARENA, team[0].kills
 			, team[1].kills, team[2].kills, 0, team[3].kills
 			, 0, 0);
@@ -270,8 +201,7 @@ void Team::Reward(int iteam)
 		if (string(pi->m_cMapName) != "team") continue;
 		if (pi->iteam != iteam) continue;
 
-		//pi->m_iTokens += rew;
-
+	
 		pi->m_iEnemyKillCount += 150;
 		if (pi->m_iEnemyKillCount > pi->m_iMaxEK)
 		{
@@ -293,7 +223,7 @@ void Team::EnableEvent()
 	for (int i = 0; i < 4; i++)
 	{
 		team[i].kills = 0;
-		//team[i].maxkills = 200;
+
 	}
 
 	for (int i = 0; i < DEF_MAXCLIENTS; i++)

@@ -40,19 +40,6 @@ CSoundBuffer::CSoundBuffer(LPDIRECTSOUND lpDS, DSCAPS DSCaps, char * pWavFileNam
 	ZeroMemory(m_cWavFileName, sizeof(m_cWavFileName));
 	strcpy(m_cWavFileName, pWavFileName);
 
-	if (bIsSingleLoad == true) {
-		//m_lpDSB[0] = 0;
-		//bCreateBuffer_LoadWavFileContents(0);
-	}
-	else {
-		/*
-		for (i = 0; i < DEF_MAXSOUNDBUFFERS; i++) {
-			m_lpDSB[i] = 0;
-			bCreateBuffer_LoadWavFileContents(i);
-		}
-		*/
-	}
-
 	for (i = 0; i < DEF_MAXSOUNDBUFFERS; i++) m_lpDSB[i] = 0;
 	
 	m_cCurrentBufferIndex = 0;
@@ -243,8 +230,6 @@ LPDIRECTSOUNDBUFFER CSoundBuffer::GetIdleBuffer(void)
 				bCreateBuffer_LoadWavFileContents(m_cCurrentBufferIndex);
 			}
 			
-			//m_lpDSB[m_cCurrentBufferIndex]->Stop();
-			//m_lpDSB[m_cCurrentBufferIndex]->SetCurrentPosition(0);
 		}
 
 		Buffer = m_lpDSB[m_cCurrentBufferIndex];

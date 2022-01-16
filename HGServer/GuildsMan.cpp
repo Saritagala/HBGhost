@@ -284,10 +284,7 @@ void CGame::ResponseCreateNewGuildHandler(char* pData, UINT32 dwMsgSize)
 
 	// ÀÌ¸§ÀÌ ÀÏÄ¡ÇÏ´Â Å¬¶óÀÌ¾ðÆ®¸¦ Ã£´Â´Ù.
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
-		if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, cCharName, 10) == 0) //&&
-			//(m_pClientList[i]->m_iLevel >= 100) && (m_pClientList[i]->m_iCharisma >= 20) &&
-			// centu - guild cost gold
-			/*(dwGetItemCount(i, "Gold") >= m_iGuildCost)*/) {
+		if ((m_pClientList[i] != 0) && (memcmp(m_pClientList[i]->m_cCharName, cCharName, 10) == 0)) {
 
 			wp = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wp) {
@@ -370,7 +367,7 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, UINT32 dwMsg
 	}
 	else 
 	{
-		if ((m_pClientList[iClientH]->m_iLevel < 100) || //(m_pClientList[iClientH]->m_iCharisma < 20) ||
+		if ((m_pClientList[iClientH]->m_iLevel < 100) ||
 			(memcmp(m_pClientList[iClientH]->m_cLocation, "NONE", 4) == 0) ||
 			(memcmp(m_pClientList[iClientH]->m_cLocation, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cLocationName, 10) != 0))
 		{ // v1.4
@@ -410,7 +407,6 @@ void CGame::RequestCreateNewGuildHandler(int iClientH, char* pData, UINT32 dwMsg
 
 				bSendMsgToLS(MSGID_REQUEST_UPDATEGUILDINFO_NEWGUILDSMAN, iClientH);
 
-				//_CreateNewGuildFile(cGuildName);
 			}
 			else 
 			{

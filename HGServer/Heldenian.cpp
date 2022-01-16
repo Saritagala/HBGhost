@@ -648,7 +648,7 @@ void CGame::LocalEndHeldenianMode(UINT32 dwHeldenianGUID, int iWinner)
 				{
 					if (m_pNpcList[n]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(0, 0, n, 0);//RemoveEventNpc(n);
+						NpcKilledHandler(0, 0, n, 0);
 					}
 					else
 					{
@@ -877,7 +877,7 @@ void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, UINT32 dwMsg
 	cp = cData + 6;
 	listCount = (int*)cp;
 	*listCount = 0;
-	cp += 4; // sizeof(int)
+	cp += 4; // 
 	// Message must be sent by Gail...
 	if (strcmp(cNpcName, "Gail") != 0) return;
 	if ((m_bIsHeldenianMode == true)
@@ -1245,7 +1245,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 			SendNotifyMsg(0, i, DEF_NOTIFY_HELDENIANTELEPORT, 0, 0, 0, 0); // You can now, go to the battle field
 			m_pClientList[i]->m_dwHeldenianGUID = m_dwHeldenianGUID;
 			m_pClientList[i]->m_iWarContribution = 0;
-			m_pClientList[i]->m_iConstructionPoint = 10000; //+ (m_pClientList[i]->m_iCharisma * 100);
+			m_pClientList[i]->m_iConstructionPoint = 10000;
 			m_pClientList[i]->m_cWarType = 2;// character have been informed of heldenian starting...
 			SendNotifyMsg(0, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, 0); //0: Tell player of acquired points
 			UpdateHeldenianStatus(i);
@@ -1274,7 +1274,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 				{
 					if (m_pNpcList[i]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(0, 0, i, 0); //RemoveEventNpc(i);
+						NpcKilledHandler(0, 0, i, 0);
 					}
 					else
 					{	// Remove most mobs, and other Mobs become neutral
@@ -1282,7 +1282,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 						if (iDice(1, 10) != 5)
 						{
 							m_pNpcList[i]->m_bIsUnsummoned = true;
-							NpcKilledHandler(0, 0, i, 0); //RemoveEventNpc(i);
+							NpcKilledHandler(0, 0, i, 0);
 						}
 						else m_pNpcList[i]->m_cSide = 0;
 					}
@@ -1769,9 +1769,7 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
 		{
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 				m_pClientList[iClientH]->m_sY, pItem);
-			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
-				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4	
+			
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 				pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -1959,17 +1957,6 @@ void CGame::HeldenianEndWarNow()
 			m_cHeldenianWinner = m_sLastHeldenianWinner;
 		}
 	}
-	/*switch (m_cHeldenianWinner) {
-	case 1:
-		PutLogList("Heldenian Terminated, Aresden's victory.");
-		break;
-	case 2:
-		PutLogList("Heldenian Terminated, Elvine's victory.");
-		break;
-	default:
-		PutLogList("Heldenian Terminated, Draw.");
-		break;
-	}*/
 
 	GlobalEndHeldenianMode();
 }

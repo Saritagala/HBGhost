@@ -450,11 +450,6 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
 				, 0, m_pNpcList[iNpcH]->m_cMapIndex, 0, 0, 0, 0, 0);
 
-			/*for (i = 1; i < DEF_MAXCLIENTS; i++) {
-				if (m_pClientList[i] != 0) {
-					SendNotifyMsg(sAttackerH, i, DEF_NOTIFY_ABADDONKILLED, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-				}
-			}*/
 		}
 
 		if (m_bIsCrusadeMode == true || m_bIsHeldenianMode == true) {
@@ -471,16 +466,11 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 					if (m_pQuestConfigList[iQuestIndex] != 0) {
 						switch (m_pQuestConfigList[iQuestIndex]->m_iType) {
 						case DEF_QUESTTYPE_MONSTERHUNT:
-							//if ((m_pClientList[sAttackerH]->m_bQuestMatchFlag_Loc == true) &&
-							//	(m_pQuestConfigList[iQuestIndex]->m_iTargetType == m_pNpcList[iNpcH]->m_sType))
-							//{
 							ZeroMemory(cTargetName, sizeof(cTargetName));
 							memcpy(cTargetName, m_pQuestConfigList[iQuestIndex]->m_cTargetName, 20);
 							if ((memcmp(m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) && 
 								(m_pQuestConfigList[iQuestIndex]->m_iTargetType == m_pNpcList[iNpcH]->m_sType)) {
 								m_pClientList[sAttackerH]->m_iCurQuestCount[j]++;
-								//cQuestRemain = (m_pQuestConfigList[m_pClientList[sAttackerH]->m_iQuest[j]]->m_iMaxCount - m_pClientList[sAttackerH]->m_iCurQuestCount[j]);
-								//SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, cQuestRemain, 0, 0);
 								SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_QUESTCOUNTER, j, m_pClientList[sAttackerH]->m_iCurQuestCount[j], 0, 0);
 								_bCheckIsQuestCompleted(sAttackerH, j);
 							}
@@ -491,20 +481,6 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 			}
 		}
 	}
-
-	//Magn0S:: Removed.
-	/*if (cAttackerType == DEF_OWNERTYPE_PLAYER) {
-		switch (m_pNpcList[iNpcH]->m_sType) {
-		case 32:
-			m_pClientList[sAttackerH]->m_iRating -= 5;
-			// MORLA 2.4 - Actualizo la rep
-			SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_REPDGDEATHS, m_pClientList[sAttackerH]->m_iDGPoints, m_pClientList[sAttackerH]->m_iTotalDGKills, m_pClientList[sAttackerH]->m_iRating, 0);
-			break;
-
-		case 33:
-			break;
-		}
-	}*/
 
 	if (m_pNpcList[iNpcH]->m_sType == 91) // Remove bloqued area
 	{
@@ -547,8 +523,6 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 				if (m_pClientList[sAttackerH]->m_cSide != m_pNpcList[iNpcH]->m_cSide) {
 					m_pClientList[sAttackerH]->m_iConstructionPoint += iConstructionPoint;
 					m_pClientList[sAttackerH]->m_iWarContribution += iWarContribution;
-					//wsprintf(G_cTxt, "Enemy Npc Killed by player! Construction: +%d WarContribution: +%d", iConstructionPoint, iWarContribution);
-					//PutLogList(G_cTxt);
 
 					SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, 0, 0);
 				}
@@ -556,8 +530,6 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 					m_pClientList[sAttackerH]->m_iWarContribution -= (iWarContribution * 2);
 					if (m_pClientList[sAttackerH]->m_iWarContribution < 0)
 						m_pClientList[sAttackerH]->m_iWarContribution = 0;
-					//wsprintf(G_cTxt, "Friendly Npc Killed by player! WarContribution: -%d", iWarContribution);
-					//PutLogList(G_cTxt);
 
 					SendNotifyMsg(0, sAttackerH, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[sAttackerH]->m_iConstructionPoint, m_pClientList[sAttackerH]->m_iWarContribution, 0, 0);
 				}
@@ -571,8 +543,6 @@ void CGame::NpcKilledHandler(short sAttackerH, char cAttackerType, int iNpcH, sh
 								(m_pClientList[i]->m_iCrusadeDuty == 3)) {
 
 								m_pClientList[i]->m_iConstructionPoint += iConstructionPoint;
-								//wsprintf(G_cTxt, "Enemy Npc Killed by Npc! Construct point +%d", iConstructionPoint);
-								//PutLogList(G_cTxt);
 								SendNotifyMsg(0, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, 0);
 								goto NKH_GOTOPOINT1;
 							}
@@ -691,9 +661,8 @@ NKH_GOTOPOINT1:;
 	if (m_bIsApocalypseMode) {
 		for (i = 0; i < DEF_MAXCLIENTS; i++)
 			if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsOnApocMap == true) && (m_pClientList[i]->m_bIsInitComplete == true)) {
-				int iMonsterCount;
-				iMonsterCount = m_pMapList[m_pClientList[i]->m_cMapIndex]->m_iTotalAliveObject;
-				SendNotifyMsg(0, i, DEF_NOTIFY_MONSTERCOUNTAPOC, iMonsterCount, 0, 0, 0);
+				
+				SendNotifyMsg(0, i, DEF_NOTIFY_MONSTERCOUNTAPOC, m_pMapList[m_pClientList[i]->m_cMapIndex]->m_iTotalAliveObject, 0, 0, 0);
 			}
 	}
 }
@@ -1309,76 +1278,12 @@ void CGame::DeleteNpc(int iNpcH)
 					else
 						pItem->m_dwCount = dwCount;
 						
-					/*string st1 = pItem->m_cName;
-					if (IsFragile && iDice(1,100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
-					{
-						// Centuu : fragile items
-						pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
-
-						UINT32 dwType = 4;
-						UINT32 dwValue = 1;
-
-						pItem->m_dwAttribute = 0;
-						dwType = dwType << 20;
-						dwValue = dwValue << 16;
-						pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
-
-						_AdjustRareItemValue(pItem);
-
-						pItem->m_sNewEffect2 = SysTime.wDay + 15;
-						pItem->m_sNewEffect3 = SysTime.wMonth;
-						pItem->m_sNewEffect4 = SysTime.wYear;
-						if (SysTime.wMonth == 1 || SysTime.wMonth == 3 || SysTime.wMonth == 5 || SysTime.wMonth == 7 ||
-							SysTime.wMonth == 8 || SysTime.wMonth == 10 || SysTime.wMonth == 12)
-						{
-							if (pItem->m_sNewEffect2 > 31)
-							{
-								pItem->m_sNewEffect2 -= 31;
-								pItem->m_sNewEffect3++;
-							}
-						}
-						else if (SysTime.wMonth == 4 || SysTime.wMonth == 6 || SysTime.wMonth == 9 || SysTime.wMonth == 11)
-						{
-							if (pItem->m_sNewEffect2 > 30)
-							{
-								pItem->m_sNewEffect2 -= 30;
-								pItem->m_sNewEffect3++;
-							}
-						}
-						else if (SysTime.wMonth == 2)
-						{
-							if (isLeap(SysTime.wYear))
-							{
-								if (pItem->m_sNewEffect2 > 29)
-								{
-									pItem->m_sNewEffect2 -= 29;
-									pItem->m_sNewEffect3++;
-								}
-							}
-							else
-							{
-								if (pItem->m_sNewEffect2 > 28)
-								{
-									pItem->m_sNewEffect2 -= 28;
-									pItem->m_sNewEffect3++;
-								}
-							}
-						}
-						if (pItem->m_sNewEffect3 > 12)
-						{
-							pItem->m_sNewEffect3 = 1;
-							pItem->m_sNewEffect4++;
-						}
-					}*/
-
 					pItem->m_sTouchEffectType = DEF_ITET_ID;
 					pItem->m_sTouchEffectValue1 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue2 = iDice(1, 100000);
 					pItem->m_sTouchEffectValue3 = (short)timeGetTime();
 					m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem((short)ItemPositions[j].x, (short)ItemPositions[j].y, pItem);
 					
-					//SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
-					//	ItemPositions[j].x, ItemPositions[j].y, pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);
 					SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 						(short)ItemPositions[j].x, (short)ItemPositions[j].y, pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
@@ -1395,76 +1300,12 @@ void CGame::DeleteNpc(int iNpcH)
 			else {
 				pItem->m_dwCount = dwCount;
 
-				/*string st1 = pItem->m_cName;
-				if (IsFragile && iDice(1, 100) <= m_iFragileDropRate && st1.find("Manual") == string::npos)
-				{
-					// Centuu : fragile items
-					pItem->m_sNewEffect1 = DEF_FRAGILEITEM;
-					
-					UINT32 dwType = 4;
-					UINT32 dwValue = 1;
-
-					pItem->m_dwAttribute = 0;
-					dwType = dwType << 20;
-					dwValue = dwValue << 16;
-					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType | dwValue;
-
-					_AdjustRareItemValue(pItem);
-
-					pItem->m_sNewEffect2 = SysTime.wDay + 15;
-					pItem->m_sNewEffect3 = SysTime.wMonth;
-					pItem->m_sNewEffect4 = SysTime.wYear;
-					if (SysTime.wMonth == 1 || SysTime.wMonth == 3 || SysTime.wMonth == 5 || SysTime.wMonth == 7 ||
-						SysTime.wMonth == 8 || SysTime.wMonth == 10 || SysTime.wMonth == 12)
-					{
-						if (pItem->m_sNewEffect2 > 31)
-						{
-							pItem->m_sNewEffect2 -= 31;
-							pItem->m_sNewEffect3++;
-						}
-					}
-					else if (SysTime.wMonth == 4 || SysTime.wMonth == 6 || SysTime.wMonth == 9 || SysTime.wMonth == 11)
-					{
-						if (pItem->m_sNewEffect2 > 30)
-						{
-							pItem->m_sNewEffect2 -= 30;
-							pItem->m_sNewEffect3++;
-						}
-					}
-					else if (SysTime.wMonth == 2)
-					{
-						if (isLeap(SysTime.wYear))
-						{
-							if (pItem->m_sNewEffect2 > 29)
-							{
-								pItem->m_sNewEffect2 -= 29;
-								pItem->m_sNewEffect3++;
-							}
-						}
-						else
-						{
-							if (pItem->m_sNewEffect2 > 28)
-							{
-								pItem->m_sNewEffect2 -= 28;
-								pItem->m_sNewEffect3++;
-							}
-						}
-					}
-					if (pItem->m_sNewEffect3 > 12)
-					{
-						pItem->m_sNewEffect3 = 1;
-						pItem->m_sNewEffect4++;
-					}
-				}*/
-
 				pItem->m_sTouchEffectType = DEF_ITET_ID;
 				pItem->m_sTouchEffectValue1 = iDice(1, 100000);
 				pItem->m_sTouchEffectValue2 = iDice(1, 100000);
 				pItem->m_sTouchEffectValue3 = (short)timeGetTime();
 				m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem(m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, pItem);
 				
-				//SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
-				//	m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 					m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
 					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -1495,8 +1336,7 @@ void CGame::DeleteNpc(int iNpcH)
 				pItem2->m_sTouchEffectValue3 = (short)timeGetTime();
 
 				m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem(m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, pItem2);
-				//SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
-				//	m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY, pItem2->m_sSprite, pItem2->m_sSpriteFrame, pItem2->m_cItemColor);
+
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 					m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
 					pItem2->m_sIDnum, pItem2->m_sSpriteFrame, pItem2->m_cItemColor, pItem2->m_dwAttribute);
@@ -1659,23 +1499,6 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 	int iResMode, iQuestNum, iQuestType, iRewardType, iRewardAmount, iContribution, iX, iY, iRange, iTargetType, iTargetCount, iReward, i;
 
 	iQuestNum = 0;
-	/*ZeroMemory(cTargetName, sizeof(cTargetName));
-	if (m_pClientList[iClientH] == 0) return;
-	switch (iWho) {
-	case 1: break;
-	case 2:	break;
-	case 3:	break;
-	case 4:
-		iQuestNum = _iTalkToNpcResult_Cityhall(iClientH, &iQuestType, &iResMode, &iRewardType, &iRewardAmount, &iContribution, cTargetName, &iTargetType, &iTargetCount, &iX, &iY, &iRange);
-		break;
-	case 5: break;
-	case 6:	break;
-	case 32: break;
-	case 21:
-		iQuestNum = _iTalkToNpcResult_Guard(iClientH, &iQuestType, &iResMode, &iRewardType, &iRewardAmount, &iContribution, cTargetName, &iTargetType, &iTargetCount, &iX, &iY, &iRange);
-		if (iQuestNum >= 1000) return;
-		break;
-	}*/
 
 	ZeroMemory(cTargetName, sizeof(cTargetName));
 
@@ -1717,9 +1540,6 @@ void CGame::NpcTalkHandler(int iClientH, int iWho, int iQuest)
 				}
 
 				m_pClientList[iClientH]->m_iAskedQuest = iQuestNum;
-				//m_pClientList[iClientH]->m_iQuestRewardType[i] = iRewardType;
-				//m_pClientList[iClientH]->m_iQuestRewardAmount[i] = iRewardAmount;
-				//SendNotifyMsg(0, iClientH, DEF_NOTIFY_IPACCOUNTINFO, 0, 0, 0, "Send Quest Data");
 
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_NPCTALK, iQuestType, iResMode, iRewardAmount, cRewardName, iContribution,
 					iTargetType, iTargetCount, iX, iY, iRange, cTargetName);
@@ -1956,8 +1776,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				pItem->m_dwCount += (int)dTmp3;
 			}
 
-			//Magn0S:: Multiplicador de Gold
-			//pItem->m_dwCount *= 10;
 		}
 		else {
 
@@ -2014,8 +1832,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 				case 10: // Slime
 				case 16: // Giant-Ant
 				case 22: // Amphis
-				//case 55: // Rabbit
-				//case 56: //	Cat
 					iGenLevel = 1;
 					break;
 
@@ -2355,9 +2171,9 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						case 8: iItemID = 602; break; // Horned-Helm(W)
 						case 9: iItemID = 603; break; // Wings-Helm(W)
 						case 10: iItemID = 752; break; // Wizard-Cap(M) 
-						case 11: //break;
+						case 11: 
 						case 12: iItemID = 756; break; // Wizard-Cap(W) 
-						case 13: //break;
+						case 13: 
 						case 14: iItemID = 454; break; // Hauberk(M)
 						case 15: iItemID = 472; break; // Hauberk(W)
 						case 16: iItemID = 461; break; // ChainHose(M)
@@ -2518,13 +2334,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 							break;
 						case ITEMSTAT2_CAD: // CAD Vai do +1  até +7 só
-							//if (dwValue > 7) dwValue = 7;
+							
 							break;
 						case ITEMSTAT2_EXP: // Exp  +20%
-							//dwValue = 2;
+							
 							break;
 						case ITEMSTAT2_GOLD: // Gold +50%
-							//dwValue = 5;
+							
 							break;
 						}
 
@@ -2569,8 +2385,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 						break;
 					case ITEMSTAT_MANACONV:
 					case ITEMSTAT_CRITICAL2:
-						/*dwValue = (dwValue + 1) / 2;
-						if (dwValue < 1) dwValue = 1;*/
+						
 						if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
 						break;
 					}
@@ -2619,13 +2434,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 							break;
 						case ITEMSTAT2_CAD: // CAD Vai do +1  até +7 só
-							//if (dwValue > 7) dwValue = 7;
+							
 							break;
 						case ITEMSTAT2_EXP: // Exp  +20%
-							//dwValue = 2;
+							
 							break;
 						case ITEMSTAT2_GOLD: // Gold +50%
-							//dwValue = 5;
+							
 							break;
 						case ITEMSTAT2_SPREC:
 						case ITEMSTAT2_MPREC:
@@ -2708,13 +2523,13 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 							if (dwValue > m_iMaxHPCrit) dwValue = m_iMaxHPCrit;
 							break;
 						case ITEMSTAT2_CAD: // Cad vai de +1 até +7
-							//if (dwValue > 7) dwValue = 7;
+							
 							break;
 						case ITEMSTAT2_EXP: // Exp set +20%
-							//dwValue = 2;
+							
 							break;
 						case ITEMSTAT2_GOLD: // Gold Set +50%
-							//dwValue = 5;
+							
 							break;
 						}
 
@@ -2760,8 +2575,7 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 
 					case ITEMSTAT_MANACONV:
 					case ITEMSTAT_CRITICAL2:
-						/*dwValue = (dwValue + 1) / 2;
-						if (dwValue < 1) dwValue = 1;*/
+						
 						if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
 						break;
 					}
@@ -2876,10 +2690,6 @@ void CGame::NpcDeadItemGenerator(int iNpcH, short sAttackerH, char cAttackerType
 		m_pMapList[m_pNpcList[iNpcH]->m_cMapIndex]->bSetItem(m_pNpcList[iNpcH]->m_sX,
 			m_pNpcList[iNpcH]->m_sY,
 			pItem);
-
-		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
-			m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
-			pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ //v1.4 color
 
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[iNpcH]->m_cMapIndex,
 			m_pNpcList[iNpcH]->m_sX, m_pNpcList[iNpcH]->m_sY,
@@ -3076,10 +2886,6 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 						// vector¿¡ ÇöÀç ±îÁö ÀÐ¾î µå¸° °ªÀ» ³Ö´Â´Ù. 
 						m_pNpcConfigList[iNpcConfigListIndex]->m_vNpcItem.push_back(*pTempNpcItem);
 
-						// 2002-09-17 #1 NPCITEM Type 2ÀÏ °æ¿ì
-						/*if (m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax < pTempNpcItem->m_sSecondProbability)
-							m_pNpcConfigList[iNpcConfigListIndex]->m_iNpcItemMax = pTempNpcItem->m_sSecondProbability;*/
-
 						break;
 
 					} // switch #2
@@ -3117,7 +2923,6 @@ bool CGame::_bDecodeNpcItemConfigFileContents(char* cFn)
 }
 bool CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 {
-	if (m_bNpcItemConfig == true) {
 
 		class    CNpcItem	CTempNpcItem;
 		int    iResult;
@@ -3167,247 +2972,7 @@ bool CGame::bGetItemNameWhenDeleteNpc(int& iItemID, short sNpcType)
 
 		return true;
 
-	}
-	else {
-		
-		// NPCë¥¼ ì‚­ì œí• ë•Œ íŠ¹ìˆ˜ ì•„ì´í…œì„ ë°œìƒì‹œí‚¬ ê²ƒì¸ì§€ì˜ ì—¬ë¶€ë¥¼ ê³„ì‚°í•œë‹¤. 
 
-		switch (sNpcType) {
-		case 49: // Hellclaw 
-			switch (iDice(1, 18)) {
-			case 1: iItemID = 610; break; // XelimaBlade
-			case 2: iItemID = 611; break; // XelimaAxe
-			case 3: iItemID = 612; break; // XelimaRapier
-			case 4: iItemID = 620; break; // MerienShield
-			case 5: iItemID = 622; break; // MerienPlateMailW
-			case 6: iItemID = 621; break; // MerienPlateMailM
-			case 7: iItemID = 642; break; // KnecklaceOfIcePro
-			case 8: iItemID = 640; break; // KnecklaceOfSufferent
-			case 9: iItemID = 637; break; // KnecklaceOfLightPro
-			case 10: iItemID = 614; break; // SwordofIceElemental
-			case 11: iItemID = 634; break; // RingofWizard
-			case 12: iItemID = 635; break; // RingofMage
-			case 13: iItemID = 335; break; // EmeraldRing
-			case 14: iItemID = 311; break; // MagicNecklace(DF+10)
-			case 15: iItemID = 300; break; // MagicNecklace(RM10)
-			case 16: iItemID = 337; break; // RubyRing
-			case 17: iItemID = 308; break; // MagicNecklace(MS10)
-			case 18: iItemID = 259; break; // MagicWand(M.Shield)
-			}
-			break;
-
-		case 50: // Tigerworm
-			switch (iDice(1, 19)) {
-			case 1: iItemID = 610; break; // XelimaBlade
-			case 2: iItemID = 611; break; // XelimaAxe
-			case 3: iItemID = 612; break; // XelimaRapier
-			case 4: iItemID = 620; break; // MerienShield
-			case 5: iItemID = 622; break; // MerienPlateMailW
-			case 6: iItemID = 621; break; // MerienPlateMailM
-			case 7: iItemID = 642; break; // KnecklaceOfIcePro
-			case 8: iItemID = 640; break; // KnecklaceOfSufferent
-			case 9: iItemID = 637; break; // KnecklaceOfLightPro
-			case 10: iItemID = 614; break; // SwordofIceElemental
-			case 11: iItemID = 634; break; // RingofWizard
-			case 12: iItemID = 635; break; // RingofMage
-			case 13: iItemID = 335; break; // EmeraldRing
-			case 14: iItemID = 311; break; // MagicNecklace(DF+10)
-			case 15: iItemID = 300; break; // MagicNecklace(RM10)
-			case 16: iItemID = 337; break; // RubyRing
-			case 17: iItemID = 308; break; // MagicNecklace(MS10)
-			case 18: iItemID = 259; break; // MagicWand(M.Shield)
-			case 19: iItemID = 1037; break; // StunSB
-			}
-			break;
-		}
-
-		if (iDice(1, 45) == 13) {
-			switch (sNpcType) {
-			case 11: if (iDice(1, 550) != 11) return false; 	  // Skeleton   2 * 100	
-			case 12: if (iDice(1, 400) != 11) return false; 	  // Stone-Golem 2 * 100	
-			case 13: if (iDice(1, 100) != 11) return false; 	  // Cyclops  6 * 100	
-			case 14: if (iDice(1, 700) != 11) return false; 	  // Orc 4 * 100	
-			case 17: if (iDice(1, 600) != 11) return false; 	  // Scorpoin 5 * 100	
-			case 18: if (iDice(1, 850) != 11) return false; 	  // Zombie 1 * 100	
-			case 22: if (iDice(1, 600) != 11) return false; 	  // Amphis 5 * 100	
-			case 23: if (iDice(1, 400) != 11) return false; 	  // Clay-Golem 2 * 100	
-			case 27: if (iDice(1, 100) != 11) return false; 	  // Hellhound 7 * 100	
-			case 28: if (iDice(1, 100) != 11) return false; 	  // Troll 5 * 100	
-			case 29: if (iDice(1, 150) != 11) return false; 	  // Orge  7 * 100	
-			case 30: if (iDice(1, 120) != 11) return false; 	  // Liche 1 * 100   
-															  // Demon 5 * 100	
-			case 32: if (iDice(1, 200) != 11) return false; 	  // Unicorn 5 * 100	
-			case 33: if (iDice(1, 300) != 11) return false; 	  // WereWolf 7 * 100
-			case 48: if (iDice(1, 100) != 11) return false; 	  // Stalker 
-			case 52: if (iDice(1, 300) != 11) return false;    // Gagoyle
-			case 53: if (iDice(1, 500) != 11) return false; 	  // Beholder
-			case 54: if (iDice(1, 200) != 11) return false; 	  // Dark-Elf
-			case 57: if (iDice(1, 400) != 11) return false; 	  // Giant-Frog
-			case 63: if (iDice(1, 300) != 11) return false; 	  // Frost
-			case 79: if (iDice(1, 200) != 11) return false; 	  // Nizie
-			case 70: if (iDice(1, 200) != 11) return false; 	  // Barlog
-			case 71: if (iDice(1, 200) != 11) return false; 	  // Centaurus
-			default: break;
-			}
-		}
-		else return false;
-
-		switch (sNpcType) {
-
-		case 11: // Skeleton
-		case 17: // Scorpoin
-		case 14: // Orc
-		case 28: // Troll
-		case 57: // Giant-Frog
-			switch (iDice(1, 7)) {
-			case 1: iItemID = 334; break; // LuckyGoldRing
-			case 2: iItemID = 336; break; // SapphireRing
-			case 3: if (iDice(1, 15) == 3) iItemID = 335; break; // EmeraldRing
-			case 4: iItemID = 337; break; // RubyRing
-			case 5: iItemID = 333; break; // PlatinumRing
-			case 6: if (iDice(1, 15) == 3) iItemID = 634; break; // RingofWizard
-			case 7: if (iDice(1, 25) == 3) iItemID = 635; break; // RingofMage
-			}
-			return true;
-
-		case 13: // Cyclops
-		case 27: // Hellhound
-		case 29: // Orge
-			switch (iDice(1, 7)) {
-			case 1: iItemID = 311; break; // MagicNecklace(DF+10)
-			case 2: if (iDice(1, 20) == 13) iItemID = 308; break; // MagicNecklace(MS10)
-			case 3: if (iDice(1, 10) == 13) iItemID = 305; break; // MagicNecklace(DM+1)
-			case 4: iItemID = 300; break; // MagicNecklace(RM10)
-			case 5: if (iDice(1, 30) == 13) iItemID = 632; break; // RingofOgrepower
-			case 6: if (iDice(1, 30) == 13) iItemID = 637; break; // KnecklaceOfLightPro
-			case 7: if (iDice(1, 30) == 13) iItemID = 638; break; // KnecklaceOfFirePro
-			}
-			return true;
-
-		case 18: // Zombie
-		case 22: // Amphis
-			switch (iDice(1, 4)) {
-			case 1: if (iDice(1, 75) == 13) iItemID = 613; break; // SwordofMedusa
-			case 2: if (iDice(1, 20) == 13) iItemID = 639; break; // KnecklaceOfPoisonPro
-			case 3: if (iDice(1, 40) == 13) iItemID = 641; break; // KnecklaceOfMedusa
-			case 4: if (iDice(1, 30) == 13) iItemID = 640; break; // KnecklaceOfSufferent
-			}
-			return true;
-
-		case 12: // Stone-Golem
-			switch (iDice(1, 5)) {
-			case 1: if (iDice(1, 40) == 13) iItemID = 620; break; // MerienShield
-			case 2: if (iDice(1, 40) == 13) iItemID = 621; break; // MerienPlateMail(M)
-			case 3: if (iDice(1, 40) == 13) iItemID = 622; break; // MerienPlateMail(W)
-			case 4: if (iDice(1, 20) == 11) iItemID = 644; break; // KnecklaceOfAirEle
-			case 5: if (iDice(1, 20) == 11) iItemID = 647; break; // KnecklaceOfStoneGolem
-			}
-			return true;
-
-		case 23: // Clay-Golem
-			switch (iDice(1, 4)) {
-			case 1: if (iDice(1, 40) == 13) iItemID = 620; break; // MerienShield	
-			case 2: if (iDice(1, 40) == 13) iItemID = 621; break; // MerienPlateMail(M)
-			case 3: if (iDice(1, 40) == 13) iItemID = 622; break; // MerienPlateMail(W)
-			case 4: if (iDice(1, 20) == 11) iItemID = 644; break; // KnecklaceOfAirEle
-			}
-			return true;
-
-		case 32: // Unicorn
-			switch (iDice(1, 5)) {
-			case 1: if (iDice(1, 40) == 13) iItemID = 620; break; // MerienShield	
-			case 2: if (iDice(1, 40) == 13) iItemID = 621; break; // MerienPlateMail(M)
-			case 3: if (iDice(1, 40) == 13) iItemID = 622; break; // MerienPlateMail(W)
-			case 4: if (iDice(1, 20) == 11) iItemID = 644; break; // KnecklaceOfAirEle
-			case 5: if (iDice(1, 20) == 11) iItemID = 848; break; // Lighting Blade
-			}
-			return true;
-
-		case 33: // WereWolf
-		case 48: // Stalker
-			switch (iDice(1, 2)) {
-			case 1: if (iDice(1, 30) == 3) iItemID = 290; break; // Flameberge+3(LLF)
-			case 2: iItemID = 292; break; // GoldenAxe(LLF)
-			}
-			return true;
-
-		case 30: // Liche
-			switch (iDice(1, 8)) {
-			case 1: if (iDice(1, 10) == 3) iItemID = 380; break; // IceStormManual
-			case 2: iItemID = 259; break; // MagicWand(M.Shield)
-			case 3: if (iDice(1, 30) == 3) iItemID = 291; break; // MagicWand(MS30-LLF)
-			case 4: if (iDice(1, 10) == 3) iItemID = 614; break; // SwordofIceElemental	
-			case 5: if (iDice(1, 10) == 3) iItemID = 642; break; // KnecklaceOfIcePro
-			case 6: if (iDice(1, 15) == 3) iItemID = 643; break; // KnecklaceOfIceEle	
-			case 7: if (iDice(1, 30) == 3) iItemID = 636; break; // RingofGrandMage
-			case 8: if (iDice(1, 30) == 3) iItemID = 734; break; // RingOfArcmage
-			}
-			return true;
-
-		case 31: // Demon 
-			switch (iDice(1, 8)) {
-			case 1: if (iDice(1, 30) == 3) iItemID = 382; break; // BloodyShockW.Manual
-			case 2: iItemID = 491; break; // BloodAxe
-			case 3: if (iDice(1, 10) == 3) iItemID = 490; break; // BloodSword
-			case 4: iItemID = 492; break; // BloodRapier
-			case 5: if (iDice(1, 10) == 3) iItemID = 381; break; // MassFireStrikeManual
-			case 6: if (iDice(1, 30) == 3) iItemID = 633; break; // RingofDemonpower
-			case 7: if (iDice(1, 10) == 3) iItemID = 645; break; // KnecklaceOfEfreet
-			case 8: if (iDice(1, 20) == 3) iItemID = 616; break; // DemonSlayer
-			}
-			return true;
-
-		case 52: // Gagoyle
-			switch (iDice(1, 12)) {
-			case 1: if (iDice(1, 30) == 3) iItemID = 382; break; // BloodyShockW.Manual	
-			case 2: if (iDice(1, 20) == 3) iItemID = 610; break; // XelimaBlade	
-			case 3: if (iDice(1, 20) == 3) iItemID = 611; break; // XelimaAxe	
-			case 4: if (iDice(1, 20) == 3) iItemID = 612; break; // XelimaRapier
-			case 5: if (iDice(1, 10) == 3) iItemID = 381; break; // MassFireStrikeManual
-			case 6: break; // RingofDemonpower
-			case 7: if (iDice(1, 10) == 3) iItemID = 645; break; // KnecklaceOfEfreet
-			case 8: if (iDice(1, 40) == 3) iItemID = 630; break; // RingoftheXelima	
-			case 9: break; // RingoftheAbaddon
-			case 10: break; // RingOfDragonpower
-			case 11: if (iDice(1, 40) == 3) iItemID = 20; break; // Excalibur
-			case 12: break; // The_Devastator
-			}
-			return true;
-
-		case 53: // Beholder
-			if (iDice(1, 20) == 11) iItemID = 646;  // KnecklaceOfBeholder
-			return true;
-
-
-		case 54: // Dark-Elf
-			if (iDice(1, 20) == 11) iItemID = 618;  // DarkElfBow
-			return true;
-
-
-		case 63: // Frost
-			if (iDice(1, 40) == 11) iItemID = 845;  // StormBringer
-			return true;
-
-
-		case 79: // Nizie
-			if (iDice(1, 20) == 11) iItemID = 845;  // StormBringer	
-			return true;
-
-
-		case 70: // Barlog
-			if (iDice(1, 40) == 11) iItemID = 846;  // The_Devastator
-			return true;
-
-
-		case 71: // Centaurus
-			if (iDice(1, 20) == 11) iItemID = 848;  // Lighting Blade
-			return true;
-
-
-		}
-
-		return false;
-	}
 }
 
 void CGame::RemoveEventNpc(int iNpcH)
@@ -3849,7 +3414,7 @@ void CGame::MobGenerator()
 		}
 
 		if ((m_pMapList[i] != 0) && (m_pMapList[i]->m_bRandomMobGenerator == true) && (iResultNum > m_pMapList[i]->m_iTotalActiveObject)) {
-			if ((m_iMiddlelandMapIndex != -1) && (m_iMiddlelandMapIndex == i) && (m_bIsCrusadeMode == true)) continue;//break;
+			if ((m_iMiddlelandMapIndex != -1) && (m_iMiddlelandMapIndex == i) && (m_bIsCrusadeMode == true)) continue;
 
 			iNamingValue = m_pMapList[i]->iGetEmptyNamingValue();
 			if (iNamingValue != -1) {

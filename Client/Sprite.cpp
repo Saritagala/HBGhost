@@ -668,7 +668,7 @@ void CSprite::PutShadowSprite(int sX, int sY, int sFrame, UINT32 dwTime)
 
 	int iSangX, iSangY;
 	pSrc = (UINT16 *)m_pSurfaceAddr + sx + sy*m_sPitch;
-	pDst = (UINT16 *)m_pDDraw->m_pBackB4Addr;// + dX + ((dY+szy-1)*m_pDDraw->m_sBackB4Pitch);
+	pDst = (UINT16 *)m_pDDraw->m_pBackB4Addr;//
 
 	switch (m_pDDraw->m_cPixelFormat) {
 	case 1:

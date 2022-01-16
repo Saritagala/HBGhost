@@ -587,9 +587,9 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 					else wTemp = (UINT16)iTemp;
 
 					if (wTemp <= pItem->m_wMaxLifeSpan * 2) {
-						//pItem->m_wMaxLifeSpan = wTemp;
+
 						pItem->m_sItemSpecEffectValue1 = (short)wTemp;
-						//pItem->m_wCurLifeSpan = pItem->m_wMaxLifeSpan;
+
 					}
 					else pItem->m_sItemSpecEffectValue1 = (short)pItem->m_wMaxLifeSpan;
 					
@@ -688,7 +688,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 							break;
 
 						}
-						//if (dwValue > 7) dwValue = 7;
+
 
 						pItem->m_dwAttribute = 0;
 						dwType = dwType << 20;
@@ -731,12 +731,10 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 
 						case 11:
 						case 12:
-							//dwValue = (dwValue + 1) / 2;
-							//if (dwValue < 1) dwValue = 1;
-							//if (dwValue > 2) dwValue = 2;
+
 							break;
 						}
-						//if (dwValue > 7) dwValue = 7;
+
 
 						pItem->m_dwAttribute = 0;
 						dwType = dwType << 20;
@@ -808,7 +806,7 @@ void CGame::BuildItemHandler(int iClientH, char* pData)
 								if (dwValue <= 3) dwValue = 3;
 								break;
 							}
-							//if (dwValue > 7) dwValue = 7;
+
 
 							dwType = dwType << 12;
 							dwValue = dwValue << 8;
@@ -1159,10 +1157,6 @@ void CGame::_CheckMiningAction(int iClientH, int dX, int dY)
 				m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 					m_pClientList[iClientH]->m_sY, pItem);
 				// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
-				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
-					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4
-
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);

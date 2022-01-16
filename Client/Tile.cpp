@@ -16,9 +16,6 @@ CTile::CTile()
 	ZeroMemory(m_cDeadOwnerName, sizeof(m_cDeadOwnerName));
 	m_cDeadOwnerFrame     = -1;
 
-	//m_sItemSprite      = 0;
-	//m_sItemSpriteFrame = 0;
-
 	m_sDynamicObjectType  = 0;
 	m_cDynamicObjectFrame = 0;
 
@@ -57,8 +54,6 @@ void CTile::Clear()
 	m_cOwnerFrame  = 0;
 
 	m_sItemID = 0;
-	//m_sItemSprite      = 0;
-	//m_sItemSpriteFrame = 0;
 	m_cItemColor       = 0;
 	m_dwItemAttr = 0;
 

@@ -372,7 +372,7 @@ int XSocket::_iRegisterUnsentData(char * cData, int iSize)
 	memcpy(m_pUnsentDataList[m_sTail], cData, iSize);
 	m_iUnsentDataSize[m_sTail] = iSize;
 	m_sTail++;
-	//if (m_sTail >= DEF_XSOCKBLOCKLIMIT) m_sTail = 0;
+
 	if (m_sTail >= m_iBlockLimit) m_sTail = 0;
 
 	return 1;
@@ -394,7 +394,7 @@ int XSocket::_iSendUnsentData()
 			m_pUnsentDataList[m_sHead] = 0;
 			m_iUnsentDataSize[m_sHead] = 0;
 			m_sHead++;
-			//if (m_sHead >= DEF_XSOCKBLOCKLIMIT) m_sHead = 0;
+
 			if (m_sHead >= m_iBlockLimit) m_sHead = 0;
 		}else 
 		{	if (iRet < 0) 

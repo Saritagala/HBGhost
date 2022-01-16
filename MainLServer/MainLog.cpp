@@ -38,8 +38,6 @@ bool CMainLog::bAccept(class XSocket* pXSock, bool bWorld)
 				return false;
 			}
 
-			//wsprintf(G_cTxt,"Client Accepted(%d)", i);
-			//PutLogList(G_cTxt);
 			return true;
 		} //end client == null
 	} //end loop 1
@@ -94,7 +92,7 @@ bool CMainLog::bInit()
 	try
 	{
 		con.Connect(
-			"SOL-PC@HBGhost",
+			"localhost\\sqlexpress@HBGhost",
 			"",
 			"",
 			SA_SQLServer_Client);
@@ -237,8 +235,6 @@ void CMainLog::MsgProcess()
 
 			for (i = 0; i < DEF_MAXACCOUNTS; i++) {
 				if ((m_pAccountList[i] != 0) && (memcmp(m_pAccountList[i]->cAccountName, cTemp, 10) == 0)) {
-					//wsprintf(G_cTxt, "(!)Clear Account (%s)", cTemp);
-					//PutLogList(G_cTxt);
 					m_iValidAccounts--;
 					delete m_pAccountList[i];
 					m_pAccountList[i] = 0;
@@ -292,8 +288,6 @@ bool CMainLog::bPutMsgQuene(char cFrom, char* pData, UINT32 dwMsgSize, int iInde
 }
 void CMainLog::OnTimer()
 {
-	UINT32 dwTime;
-	dwTime = timeGetTime();
 	MsgProcess();
 }
 //send message to WLserver
@@ -394,9 +388,6 @@ void CMainLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPa
 		}
 		//delete an account
 		if (m_pClientList[iWorldH]->m_cMode == 2 && m_pClientList[iWorldH]->m_cWorldName != 0) {
-
-			//wsprintf(G_cTxt, "(onClientSubLogSocketEvent) Delete Account: %s", m_pClientList[iWorldH]->m_cWorldName);
-			//PutLogList(G_cTxt);
 
 			DeleteAccount(-1, m_pClientList[iWorldH]->m_cWorldName); //delete account name
 		}
@@ -611,24 +602,13 @@ void CMainLog::RequestLogin(int iClientH, char* pData)
 		break;
 	case 0: //successful log on
 		
-		//GetLocalTime(&SysTime);
-		m_pAccountList[iAccount]->dAccountID = iDBID;//(int)(SysTime.wYear + SysTime.wMonth + SysTime.wDay + SysTime.wHour + SysTime.wMinute + timeGetTime());
+		m_pAccountList[iAccount]->dAccountID = iDBID;
 
 		if (!(m_pAccountList[iAccount]->iClientH == iClientH))
 		{
 			DeleteAccount(iAccount);
 			return;
 		}
-
-		/*for (i = 0; i < DEF_MAXCHARACTER; i++)
-		{
-			if ((m_pCharList[i] != 0) && (m_pCharList[i]->iTracker == iDBID))
-			{
-				cTotalChar++;
-			}
-
-			if (cTotalChar > 3) break;
-		}*/
 
 		SendCharacterData(iAccount, iDBID, iClientH, cAccountName);
 		break;
@@ -747,7 +727,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 	}
 
 	char* pTotal;
-	//*cp = cTotalChar;
+	
 	pTotal = (char*)cp;
 	cp++;
 	//18
@@ -771,120 +751,83 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 			while (com.FetchNext())
 			{
 				// char map
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Name").asString());
 				memcpy(cp, com.Field("Character-Name").asString(), 10);
 				cp += 10;
 				//10
 				*cp = 1;
 				cp++;
 				//11
-				// db character ID
-				/*ZeroMemory(cTemp, sizeof(cTemp));
-				strcpy(cTemp, com.Field("Character-ID").asString());
-				iCharacterDBid = atoi(cTemp);*/
-
 				// char appr1
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Appr1").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Appr1").asLong();
 				cp += 2;
 				//13
 				// char appr2
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Appr2").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Appr2").asLong();
 				cp += 2;
 				//15
 				// char appr3
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Appr3").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Appr3").asLong();
 				cp += 2;
 				//17
 				// char appr1
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Appr4").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Appr4").asLong();
 				cp += 2;
 				//19
 				// char gender
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Sex").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Sex").asLong();
 				cp += 2;
 				//21
 				// char skin
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Skin").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Skin").asLong();
 				cp += 2;
 				//23
 				// char level
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Level").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Level").asLong();
 				cp += 2;
 				//25
 				// char exp
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Experience").asString());
 				dwp = (UINT32*)cp;
 				*dwp = com.Field("Character-Experience").asLong();
 				cp += 4;
 				//29
 				// char str
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Strength").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Strength").asLong();
 				cp += 2;
 				//31
 				// char vit
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Vitality").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Vitality").asLong();
 				cp += 2;
 				//33
 				// char dex
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Dexterity").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Dexterity").asLong();
 				cp += 2;
 				//35
 				// char int
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Intelligence").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Intelligence").asLong();
 				cp += 2;
 				//37
 				// char mag
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Magic").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Magic").asLong();
 				cp += 2;
 				//39
 				// char charisma
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Charisma").asString());
 				wp = (UINT16*)cp;
 				*wp = com.Field("Character-Charisma").asLong();
 				cp += 2;
 				//41
 				// char appr colour
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Appr-Colour").asString());
 				dwp = (UINT32*)cp;
 				*dwp = com.Field("Character-Appr-Colour").asLong();
 				cp += 4;
@@ -915,8 +858,6 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 				cp += 2;
 				//55
 				// char map
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Character-Loc-Map").asString());
 				memcpy(cp, com.Field("Character-Loc-Map").asString(), 10);
 				cp += 10;
 				//65
@@ -942,16 +883,6 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 		wsprintf(cTemp, "(!!!) SQL SERVER ERROR (SendCharacterData): %s", (const char*)x.ErrText());
 		PutLogList(cTemp);
 	}
-
-	/*if (iRows != cTotalChar)
-	{
-		//testlog
-		char cTest[256];
-		wsprintf(cTest, "Account: (%s), Rows Affected: (%i), Total Char: (%i)", cAccountName, iRows, cTotalChar);
-		PutLogList(cTest);
-		DeleteAccount(iAccount);
-		return;
-	}*/
 
 	dwp = (UINT32*)cp;
 	*dwp = 11758870;
@@ -1083,7 +1014,6 @@ void CMainLog::TotalChar(int iClientH, char* pData)
 			*cp2 = cTotalChar;
 			cp2++;
 
-			//cp2  = (char *)(cData + 20);
 			cp = (char*)(pData + 44); //incomeing
 			memcpy(cp2, cp, 8 + (65 * cTotalChar)); // get message between total*
 			cp2 += 8 + (65 * cTotalChar);
@@ -1136,8 +1066,8 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 		for (i = 0; i < DEF_MAXCHARACTER; i++) {
 			if ((m_pCharList[i] != 0) && (m_pCharList[i]->iTracker == iDBID)) cTotalChar++; // iAccount
 		}
-		//GetLocalTime(&SysTime);
-		m_pAccountList[iAccount]->dAccountID = iDBID; //(int)(SysTime.wYear + SysTime.wMonth + SysTime.wDay + SysTime.wHour + SysTime.wMinute + timeGetTime());
+		
+		m_pAccountList[iAccount]->dAccountID = iDBID; 
 
 		cp2 = (char*)(cData); //outgoing messag
 		cp = (char*)(pData + 6); //incomeing
@@ -1192,24 +1122,13 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 			}
 		}
 
-		/*cp = (char*)(pData + 26); //incomeing
-		memcpy(cAccountPass, cp, 10); //new char name
-		cp += 10;
-
-		cTotalChar = (char)*cp;
-
-		cp = (char*)(pData + 37); //incomeing
-		cp2 = (char*)(cData); //outgoing messag
-		memcpy(cp2, cp, 10 + (cTotalChar * 65)); // get message between total*
-		cp2 += 11 + (cTotalChar * 65);*/
-
 		cp = (char*)(pData + 20); //incomeing
 		cp2 = (char*)(cData); //outgoing messag
 		memcpy(cp2, cp, 10); //new char name
 		cp2 += 10;
 
 		char* pTotal;
-		//*cp = cTotalChar;
+		
 		pTotal = (char*)cp2;
 		cp2++;
 		//18
@@ -1235,120 +1154,83 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 				while (com.FetchNext())
 				{
 					// char map
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Name").asString());
 					memcpy(cp2, com.Field("Character-Name").asString(), 10);
 					cp2 += 10;
 					//10
 					*cp2 = 1;
 					cp2++;
 					//11
-					// db character ID
-					/*ZeroMemory(cTemp, sizeof(cTemp));
-					strcpy(cTemp, com.Field("Character-ID").asString());
-					iCharacterDBid = atoi(cTemp);*/
-
 					// char appr1
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr1").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr1").asLong();
 					cp2 += 2;
 					//13
 					// char appr2
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr2").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr2").asLong();
 					cp2 += 2;
 					//15
 					// char appr3
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr3").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr3").asLong();
 					cp2 += 2;
 					//17
 					// char appr1
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr4").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr4").asLong();
 					cp2 += 2;
 					//19
 					// char gender
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Sex").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Sex").asLong();
 					cp2 += 2;
 					//21
 					// char skin
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Skin").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Skin").asLong();
 					cp2 += 2;
 					//23
 					// char level
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Level").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Level").asLong();
 					cp2 += 2;
 					//25
 					// char exp
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Experience").asString());
 					dwp = (UINT32*)cp2;
 					*dwp = com.Field("Character-Experience").asLong();
 					cp2 += 4;
 					//29
 					// char str
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Strength").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Strength").asLong();
 					cp2 += 2;
 					//31
 					// char vit
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Vitality").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Vitality").asLong();
 					cp2 += 2;
 					//33
 					// char dex
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Dexterity").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Dexterity").asLong();
 					cp2 += 2;
 					//35
 					// char int
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Intelligence").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Intelligence").asLong();
 					cp2 += 2;
 					//37
 					// char mag
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Magic").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Magic").asLong();
 					cp2 += 2;
 					//39
 					// char charisma
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Charisma").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Charisma").asLong();
 					cp2 += 2;
 					//41
 					// char appr colour
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr-Colour").asString());
 					dwp = (UINT32*)cp2;
 					*dwp = com.Field("Character-Appr-Colour").asLong();
 					cp2 += 4;
@@ -1379,8 +1261,6 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 					cp2 += 2;
 					//55
 					// char map
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Loc-Map").asString());
 					memcpy(cp2, com.Field("Character-Loc-Map").asString(), 10);
 					cp2 += 10;
 					//65
@@ -1452,11 +1332,7 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 			SendEventToWLS(DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, 0, 0, iClientH);
 			return;
 		}
-		//delete charcter in account file
-		/*if(SaveAccountInfo(iAccount, 0, m_pAccountList[iAccount]->cWorldName, cCharName, 3, iClientH) == false) {
-			SendEventToWLS(DEF_LOGRESMSGTYPE_NOTEXISTINGCHARACTER, DEF_LOGRESMSGTYPE_NOTEXISTINGCHARACTER, 0, 0, iClientH);
-			return;
-		}*/
+		
 		for (i = 0; i < DEF_MAXCHARACTER; i++)
 			if ((m_pCharList[i] != 0) && (m_pCharList[i]->iTracker == iDBID)) {
 				if (memcmp(m_pCharList[i]->cCharacterName, cCharName, 10) == 0) {
@@ -1467,8 +1343,7 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 		for (i = 0; i < DEF_MAXCHARACTER; i++)
 			if ((m_pCharList[i] != 0) && (m_pCharList[i]->iTracker == iDBID))	cTotalChar++;
 
-		//GetLocalTime(&SysTime);
-		m_pAccountList[iAccount]->dAccountID = iDBID;//(int)(SysTime.wYear + SysTime.wMonth + SysTime.wDay + SysTime.wHour + SysTime.wMinute + timeGetTime()); 
+		m_pAccountList[iAccount]->dAccountID = iDBID;
 
 		cp2 = (char*)(cData); //outgoing messag
 
@@ -1529,24 +1404,11 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 			}
 		}
 
-		/*cp = (char*)(pData + 20); //incomeing
-		cp++;
-
-		cTotalChar = *cp;
-		cp++;
-
-		for (i = 0; i < cTotalChar; i++)
-			cp += 65;
-
-		cp2 = (char*)(cData); //outgoing messag
-		memcpy(cp2, cp, 2 + (cTotalChar * 65)); // get message between total*
-		cp2 += 2 + (cTotalChar * 65);*/
-
 		cp2 = (char*)(cData);
 		cp2++;
 
 		char* pTotal;
-		//*cp = cTotalChar;
+		
 		pTotal = (char*)cp2;
 		cp2++;
 		//18
@@ -1572,120 +1434,83 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 				while (com.FetchNext())
 				{
 					// char map
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Name").asString());
 					memcpy(cp2, com.Field("Character-Name").asString(), 10);
 					cp2 += 10;
 					//10
 					*cp2 = 1;
 					cp2++;
 					//11
-					// db character ID
-					/*ZeroMemory(cTemp, sizeof(cTemp));
-					strcpy(cTemp, com.Field("Character-ID").asString());
-					iCharacterDBid = atoi(cTemp);*/
-
 					// char appr1
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr1").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr1").asLong();
 					cp2 += 2;
 					//13
 					// char appr2
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr2").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr2").asLong();
 					cp2 += 2;
 					//15
 					// char appr3
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr3").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr3").asLong();
 					cp2 += 2;
 					//17
 					// char appr1
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr4").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Appr4").asLong();
 					cp2 += 2;
 					//19
 					// char gender
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Sex").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Sex").asLong();
 					cp2 += 2;
 					//21
 					// char skin
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Skin").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Skin").asLong();
 					cp2 += 2;
 					//23
 					// char level
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Level").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Level").asLong();
 					cp2 += 2;
 					//25
 					// char exp
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Experience").asString());
 					dwp = (UINT32*)cp2;
 					*dwp = com.Field("Character-Experience").asLong();
 					cp2 += 4;
 					//29
 					// char str
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Strength").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Strength").asLong();
 					cp2 += 2;
 					//31
 					// char vit
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Vitality").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Vitality").asLong();
 					cp2 += 2;
 					//33
 					// char dex
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Dexterity").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Dexterity").asLong();
 					cp2 += 2;
 					//35
 					// char int
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Intelligence").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Intelligence").asLong();
 					cp2 += 2;
 					//37
 					// char mag
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Magic").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Magic").asLong();
 					cp2 += 2;
 					//39
 					// char charisma
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Charisma").asString());
 					wp = (UINT16*)cp2;
 					*wp = com.Field("Character-Charisma").asLong();
 					cp2 += 2;
 					//41
 					// char appr colour
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Appr-Colour").asString());
 					dwp = (UINT32*)cp2;
 					*dwp = com.Field("Character-Appr-Colour").asLong();
 					cp2 += 4;
@@ -1716,8 +1541,6 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 					cp2 += 2;
 					//55
 					// char map
-					//ZeroMemory(cTemp, sizeof(cTemp));
-					//strcpy(cTemp, com.Field("Character-Loc-Map").asString());
 					memcpy(cp2, com.Field("Character-Loc-Map").asString(), 10);
 					cp2 += 10;
 					//65
@@ -1776,12 +1599,6 @@ void CMainLog::ChangePassword(int iClientH, char* pData)
 		return;
 	}
 
-	/*   if(CheckAccountLogin(pData, pData+10, iClientH, "NONE") == DEF_LOGRESMSGTYPE_PASSWORDMISMATCH, 0, 0, iClientH)
-	   {
-		   SendEventToWLS(DEF_LOGRESMSGTYPE_PASSWORDCHANGEFAIL, DEF_LOGRESMSGTYPE_PASSWORDCHANGEFAIL, 0, 0, iClientH);
-		   return;
-	   }*/
-
 	SACommand com, com2;
 
 	try
@@ -1835,10 +1652,6 @@ void CMainLog::RequestEnterGame(int iClientH, char* pData, char cMode)
 	ZeroMemory(cData2, sizeof(cData2));
 	ZeroMemory(G_cCmdLineTokenA, sizeof(G_cCmdLineTokenA));
 
-
-	/*wsprintf(G_cTxt, "(!)RequestEnterGame");
-	PutLogList(G_cTxt);*/
-
 	if (m_pClientList[iClientH] == 0) return;
 
 	switch (cMode) {
@@ -1875,12 +1688,9 @@ void CMainLog::RequestEnterGame(int iClientH, char* pData, char cMode)
 				iInUse = i;
 			}
 		if (bAccountUse == true) {
-			//cp2 = (char *)(cData); //outgoing messag - to WLserv
-			//*cp2 = 5;
-			//PutLogList("Account In Use");
-			//SendEventToWLS(DEF_ENTERGAMERESTYPE_REJECT, DEF_ENTERGAMERESTYPE_REJECT, cData, 1, iClientH);
+			
 			DeleteAccount(iInUse);
-			//return;
+			
 		}
 
 		//worldserver Decline messages
@@ -1989,12 +1799,9 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 	SACommand com;
 	SACommand com2;
 
-	//bool exists = bCheckAccountExists(cAccountName);
-
+	
 	try
 	{
-		//if(exists)
-		//{
 		com.setConnection(&con);
 		com.setCommandText("SELECT [Account-ID], RTRIM([Account-Name]) AS 'Account-Name', RTRIM([Account-Password]) AS 'Account-Password', [Account-Valid-Time], [Account-Valid-Year], [Account-Valid-Month], [Account-Valid-Day], [Account-Change-Password], [Account-Gender], [Account-Age], [Account-Birth-Year], [Account-Birth-Month], [Account-Birth-Day], [Account-Real-Name], [Account-SSN], [Account-Email], [Account-Quiz], [Account-Answer], [Account-Created-By], [Account-Created-Date], [Account-Locked] FROM Accounts WHERE [Account-Name] = :1 AND [Account-Password] = :2");
 
@@ -2017,15 +1824,11 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 			while (com.FetchNext())
 			{
 				// db account ID
-				/*ZeroMemory(cTemp, sizeof(cTemp));
-				strcpy(cTemp, com.Field("Account-ID").asString());
-				iAccountDBid = atoi(cTemp);*/
 				iAccountDBid = com.Field("Account-ID").asLong();
 
 				*iDBID = iAccountDBid;
 
 				// account name
-				//ZeroMemory(cTemp, sizeof(cTemp));
 				memcpy(cTemp, com.Field("Account-Name").asString(), 10);
 
 				for (i = 0; i < DEF_MAXACCOUNTS; i++) {
@@ -2046,61 +1849,31 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 					return 3;
 				}
 
-				//wsprintf(cTest, "Testing (%s) with (%s)", cTemp, cAccountName);
-				//PutLogList(cTest);
-				
-				/*if (memcmp(cTemp, cAccountName, 10) != 0)
-				{
-					DeleteAccount(iAccountid);
-					return 1;
-				}*/
-
 				m_pAccountList[iAccountid]->dAccountID = iAccountDBid;
 
 				// account password
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Account-Password").asString());
 				memcpy(m_pAccountList[iAccountid]->cPassword, com.Field("Account-Password").asString(), 10);
 
 				// account valid time
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Account-Valid-Time").asString());
 				m_pAccountList[iAccountid]->iAccountValid = com.Field("Account-Valid-Time").asLong();
 
 				// account valid year
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Account-Valid-Year").asString());
 				m_pAccountList[iAccountid]->m_iAccntYear = com.Field("Account-Valid-Year").asLong();
 
 				// account valid month
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Account-Valid-Month").asString());
 				m_pAccountList[iAccountid]->m_iAccntMonth = com.Field("Account-Valid-Month").asLong();
 
 				// account valid day
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, com.Field("Account-Valid-Day").asString());
 				m_pAccountList[iAccountid]->m_iAccntDay = com.Field("Account-Valid-Day").asLong();
 
 				// password change year
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, "0");//com.Field("Account-Change-Password").asString());
 				m_pAccountList[iAccountid]->m_iPassYear = 0;
 
 				// password change month
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, "0");//com.Field("Account-Change-Password").asString());
 				m_pAccountList[iAccountid]->m_iPassMonth = 0;
 
 				// account valid day
-				//ZeroMemory(cTemp, sizeof(cTemp));
-				//strcpy(cTemp, "0");//com.Field("Account-Change-Password").asString());
 				m_pAccountList[iAccountid]->m_iPassDay = 0;
-
-				// account locked status
-				/*ZeroMemory(cTemp, sizeof(cTemp));
-				strcpy(cTemp, com.Field("Account-Locked").asString());
-				m_pAccountList[iAccountid]->iLocked = atoi(cTemp);*/
 
 				// find characters associated with this account
 				com2.setConnection(&con);
@@ -2130,11 +1903,7 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 				}
 			}
 			com.Close();
-			//}
-			//else
-			//{
-			//	return 2;
-			//}
+			
 		}
 		else
 		{
@@ -2296,8 +2065,6 @@ void CMainLog::DeleteAccount(int iClientH, char cAccountName[11])
 					delete m_pClientList[m_pAccountList[i]->iClientH];
 					m_pClientList[m_pAccountList[i]->iClientH] = 0;
 				}
-				//wsprintf(G_cTxt, "(!)Account Deleted(%s)", m_pAccountList[i]->cAccountName);
-				//PutLogList(G_cTxt);
 				delete m_pAccountList[i];
 				m_pAccountList[i] = 0;
 			}
@@ -2315,8 +2082,6 @@ void CMainLog::DeleteAccount(int iClientH, char cAccountName[11])
 		delete m_pClientList[m_pAccountList[iClientH]->iClientH];
 		m_pClientList[m_pAccountList[iClientH]->iClientH] = 0;
 	}
-	//wsprintf(G_cTxt, "(!)Account Deleted(%s)", m_pAccountList[iClientH]->cAccountName);
-	//PutLogList(G_cTxt);
 	delete m_pAccountList[iClientH];
 	m_pAccountList[iClientH] = 0;
 
@@ -2325,36 +2090,17 @@ void CMainLog::DeleteAccount(int iClientH, char cAccountName[11])
 void CMainLog::CreateAccount(int iClientH, char* pData)
 {
 	char* cp;
-	char m_cAccountName[11], m_cAccountPassword[11], m_cEmailAddr[51];// , m_cGender[11], m_cAccountAge[11];
-	char /*m_cDno1[41], m_cDno2[21], m_cDno3[21], m_cAccountSSN[29], m_cAccountCountry[18],*/ m_cAccountQuiz[46];
-	char m_cAccountAnswe[21];//, G_cCmdLineTokenA_Lowercase[51];
-	char /*cFn[120], cFile[20000],*/ cBuffer[56];
-
-	/*SYSTEMTIME SysTime;
-
-	GetLocalTime(&SysTime);
-	FILE* pFile;
-	HANDLE hFile;
-
-	UINT32  dwFileSize;*/
+	char m_cAccountName[11], m_cAccountPassword[11], m_cEmailAddr[51];
+	char m_cAccountQuiz[46];
+	char m_cAccountAnswe[21];
+	char cBuffer[56];
 
 	ZeroMemory(m_cAccountName, sizeof(m_cAccountName));
 	ZeroMemory(m_cAccountPassword, sizeof(m_cAccountPassword));
 	ZeroMemory(m_cEmailAddr, sizeof(m_cEmailAddr));
-	/*ZeroMemory(m_cGender, sizeof(m_cGender));
-	ZeroMemory(m_cAccountAge, sizeof(m_cAccountAge));
-	ZeroMemory(m_cDno1, sizeof(m_cDno1));
-	ZeroMemory(m_cDno2, sizeof(m_cDno2));
-	ZeroMemory(m_cDno3, sizeof(m_cDno3));
-	ZeroMemory(m_cAccountCountry, sizeof(m_cAccountCountry));
-	ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));*/
 	ZeroMemory(m_cAccountQuiz, sizeof(m_cAccountQuiz));
 	ZeroMemory(m_cAccountAnswe, sizeof(m_cAccountAnswe));
-	//ZeroMemory(G_cCmdLineTokenA_Lowercase, sizeof(G_cCmdLineTokenA_Lowercase));
-	//ZeroMemory(cFile, sizeof(cFile));
 	ZeroMemory(cBuffer, sizeof(cBuffer));
-	//ZeroMemory(cFn, sizeof(cFn));
-
 
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -2367,25 +2113,18 @@ void CMainLog::CreateAccount(int iClientH, char* pData)
 	memcpy(m_cEmailAddr, cp, 50);
 	cp += 50;
 
-	//memcpy(m_cGender, cp, 10);
 	cp += 10;
 
-	//memcpy(m_cAccountAge, cp, 10);
 	cp += 10;
 
-	//memcpy(m_cDno1, cp, 4);
 	cp += 4;
 
-	//memcpy(m_cDno2, cp, 4);
 	cp += 2;
 
-	//memcpy(m_cDno3, cp, 4);
 	cp += 2;
 
-	//memcpy(m_cAccountCountry, cp, 17);
 	cp += 17;
 
-	//memcpy(m_cAccountSSN, cp, 28);
 	cp += 28;
 
 	memcpy(m_cAccountQuiz, cp, 45);
@@ -2394,7 +2133,6 @@ void CMainLog::CreateAccount(int iClientH, char* pData)
 	memcpy(m_cAccountAnswe, cp, 20);
 	cp += 20;
 
-	//memcpy(G_cCmdLineTokenA_Lowercase, cp, 50);
 	cp += 50;
 
 

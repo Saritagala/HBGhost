@@ -289,7 +289,7 @@ void EventLoop()
 {   MSG msg;
 	while( 1 ) 
 	{	if( PeekMessage( &msg, 0, 0, 0, PM_NOREMOVE ) ) 
-		{	if( !GetMessage( &msg, 0, 0, 0 ) ) return;// msg.wParam;
+		{	if( !GetMessage( &msg, 0, 0, 0 ) ) return;//
             TranslateMessage(&msg);
             DispatchMessage(&msg);
 		}

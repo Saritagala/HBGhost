@@ -17,7 +17,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996)
+#pragma warning (disable : 4996 4018 6031 6001)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -185,7 +185,7 @@ CMap::~CMap()
  int i;
 	
 	if (m_pTile != 0) 
-		delete []m_pTile;	
+		delete[] m_pTile;	
  	
 	for (i = 0; i < DEF_MAXTELEPORTLOC; i++)
 		if (m_pTeleportLoc[i] != 0) delete m_pTeleportLoc[i];
@@ -289,7 +289,7 @@ void CMap::GetDeadOwner(short * pOwner, char * pOwnerClass, short sX, short sY)
 	*pOwnerClass = pTile->m_cDeadOwnerClass;
 }
  								  
-bool CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*/)
+bool CMap::bGetMoveable(short dX, short dY, short * pDOtype)
 {
  class CTile * pTile;	
 	
@@ -297,7 +297,6 @@ bool CMap::bGetMoveable(short dX, short dY, short * pDOtype/*, short * pTopItem*
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	
 	if (pDOtype != 0) *pDOtype = pTile->m_sDynamicObjectType;
-	//if (pTopItem != 0) *pTopItem = pTile->m_cTotalItem;
 
 	if (pTile->m_sOwner != 0) return false;
 	if (pTile->m_bIsMoveAllowed == false) return false;
@@ -343,8 +342,7 @@ bool CMap::bApocalypseGateTeleporter(short dX, short dY, char * cMapName, short 
 	pTile = (class CTile *)(m_pTile + dX + dY*m_sSizeY);
 	if (pTile->m_bIsApocalypseGate == true) {
 		if (cMapName != 0) {
-			strlen(m_cDynamicGateDestMap);
-			memcpy(cMapName, m_cDynamicGateDestMap, pTile->m_cApocalypseGateMap); 
+			memcpy(cMapName, m_cDynamicGateDestMap, 10); 
 		}
 		if (tX != 0) {
 			tX = (short *)m_sDynamicGateTgtX;
@@ -423,39 +421,8 @@ bool CMap::bSetItem(short sX, short sY, class CItem * pItem)
 	return true;
 }
 
-/*class CItem * CMap::pGetItem(short sX, short sY, short * pRemainItemSprite, short * pRemainItemSpriteFrame, char * pRemainItemColor) //v1.4 color
-{
- class CTile * pTile;	
- class CItem * pItem;
- int i;
-	
-	if ((sX < 0) || (sX >= m_sSizeX) || (sY < 0) || (sY >= m_sSizeY)) return 0;
 
-	pTile = (class CTile *)(m_pTile + sX + sY*m_sSizeY);
-	pItem =  pTile->m_pItem[0];
-	if (pTile->m_cTotalItem == 0) return 0;
-
-	for (i = 0; i <= DEF_TILE_PER_ITEMS-2; i++)
-		pTile->m_pItem[i] = pTile->m_pItem[i+1];
-	pTile->m_cTotalItem--;
-	pTile->m_pItem[pTile->m_cTotalItem] = 0;
-	
-	if (pTile->m_pItem[0] == 0) {
-		*pRemainItemSprite      = 0;
-		*pRemainItemSpriteFrame = 0;	
-		*pRemainItemColor       = 0;
-	}
-	else
-	{
-		*pRemainItemSprite      = pTile->m_pItem[0]->m_sSprite;
-		*pRemainItemSpriteFrame = pTile->m_pItem[0]->m_sSpriteFrame;
-		*pRemainItemColor       = pTile->m_pItem[0]->m_cItemColor;
-	}
-
-	return pItem;
-}*/
-
-class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, UINT32* pRemainItemAttr) //v1.4 color
+class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID, char* pRemainItemColor, UINT32* pRemainItemAttr) //v1.4 color
 {
 	class CTile* pTile;
 	class CItem* pItem;
@@ -474,16 +441,12 @@ class CItem* CMap::pGetItem(short sX, short sY, short* pRemainItemID/*, short * 
 
 	if (pTile->m_pItem[0] == 0) {
 		*pRemainItemID = 0;
-		/**pRemainItemSprite      = 0;
-		*pRemainItemSpriteFrame = 0;*/
 		*pRemainItemColor = 0;
 		*pRemainItemAttr = 0;
 	}
 	else
 	{
 		*pRemainItemID = pTile->m_pItem[0]->m_sIDnum;
-		/**pRemainItemSprite      = pTile->m_pItem[0]->m_sSprite;
-		*pRemainItemSpriteFrame = pTile->m_pItem[0]->m_sSpriteFrame;*/
 		*pRemainItemColor = pTile->m_pItem[0]->m_cItemColor;
 		*pRemainItemAttr = pTile->m_pItem[0]->m_dwAttribute;
 	}
@@ -751,17 +714,6 @@ bool CMap::bGetIsFarm(short tX, short tY)
 
 int CMap::iAnalyze(char cType, int * pX, int * pY, int * pV1, int * pV2, int * pV3)
 {
-
- 
-	// ÇöÀç ¸ÊÀÇ »óÈ²À» ºÐ¼®ÇÏ¿© Äõ¸®¿¡ ¸Â´Â À§Ä¡¸¦ ¹ÝÈ¯ÇÑ´Ù. 
-	switch (cType) {
-	case 1:
-		// ÇöÀç ±³ÀüÀÌ ¹ú¾îÁö°í ÀÖ´Â °÷ÀÇ À§Ä¡¸¦ Ã£´Â´Ù. 
-
-		break;
-
-
-	}
 
 	return 0;
 }
@@ -3023,8 +2975,7 @@ void CGame::ClearMap()
 				{
 					do
 					{
-						//pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor);
-						pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemID/*, &sRemainItemSprite, &sRemainItemSpriteFrame*/, &cRemainItemColor, &dwRemainItemAttr);
+						pItem = m_pMapList[m]->pGetItem(j, k, &sRemainItemID, &cRemainItemColor, &dwRemainItemAttr);
 						if (pItem != 0)
 						{
 							delete pItem;
@@ -3055,7 +3006,7 @@ void CGame::ClearMap()
 int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 {
 	int* ip, ix, iy, iSize, iTileExists;
-	class CTile/** pTileSrc, */* pTile;
+	class CTile* pTile;
 	unsigned char ucHeader;
 	short* sp, * pTotal;
 	int iTemp, iTemp2;
@@ -3068,21 +3019,12 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 	cp = (char*)(pData + 2);
 	iSize = 2;
 	iTileExists = 0;
-	//pTileSrc = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX)+(sY)*m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+	
 	// centu - 800x600
 	for (iy = 0; iy < 19; iy++)
 		for (ix = 0; ix < 25; ix++) {
-			//if (((sX + ix) == 100) && ((sY + iy) == 100)) sX = sX;
-			//pTile = (class CTile*)(pTileSrc + ix + iy * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
+			
 			pTile = (class CTile*)(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_pTile + (sX + ix) + (sY + iy) * m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_sSizeY);
-
-			//If player not same side and is invied (Beholder Hack)
-			/*if ((m_pClientList[pTile->m_sOwner] != 0) && (pTile->m_sOwner != iClientH))
-				if ((m_pClientList[pTile->m_sOwner]->m_cSide != 0) &&
-					(m_pClientList[pTile->m_sOwner]->m_cSide != m_pClientList[iClientH]->m_cSide) &&
-					((m_pClientList[pTile->m_sOwner]->m_iStatus & 0x00000010) != 0)) {
-					continue;
-				}*/
 
 			if ((pTile->m_sOwner != 0) || (pTile->m_sDeadOwner != 0) ||
 				(pTile->m_pItem[0] != 0) || (pTile->m_sDynamicObjectType != 0)) {
@@ -3172,11 +3114,11 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 						// Status
 						ip = (int*)cp;
 
-						//iTemp = iGetPlayerStatus(iClientH, pTile->m_sOwner); // CHANGED - m_pClientList[pTile->m_sOwner]->m_iStatus;
+
 						iTemp = m_pClientList[pTile->m_sOwner]->m_iStatus;
 						
-						iTemp = 0x0FFFFFFF & iTemp;//Original : sTemp = 0x0FFF & sTemp;
-						iTemp2 = iGetPlayerABSStatus(pTile->m_sOwner, iClientH); //(short)iGetPlayerRelationship(iClientH, pTile->m_sOwner);
+						iTemp = 0x0FFFFFFF & iTemp;
+						iTemp2 = iGetPlayerABSStatus(pTile->m_sOwner, iClientH); 
 						iTemp = (iTemp | (iTemp2 << 28));
 						*ip = iTemp;
 						cp += 4;
@@ -3210,7 +3152,7 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 						// Status
 						ip = (int*)cp;
 						iTemp = m_pNpcList[pTile->m_sOwner]->m_iStatus;
-						iTemp = 0x0FFFFFFF & iTemp;//Original : sTemp = 0x0FFF & sTemp; // Â»Ã³Ã€Â§ 4ÂºÃ±Ã†Â® Ã…Â¬Â¸Â®Â¾Ã®
+						iTemp = 0x0FFFFFFF & iTemp;// Â»Ã³Ã€Â§ 4ÂºÃ±Ã†Â® Ã…Â¬Â¸Â®Â¾Ã®
 						iTemp2 = iGetNpcRelationship(pTile->m_sOwner, iClientH);
 						iTemp = (iTemp | (iTemp2 << 28));//Original : 12
 						*ip = iTemp;
@@ -3268,11 +3210,11 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 						// Status
 						ip = (int*)cp;
 						
-						//iTemp = iGetPlayerStatus(iClientH, pTile->m_sDeadOwner); // CHANGED - m_pClientList[pTile->m_sDeadOwner]->m_iStatus;
+
 						iTemp = m_pClientList[pTile->m_sDeadOwner]->m_iStatus;
 						
-						iTemp = 0x0FFFFFFF & iTemp;//Original : sTemp = 0x0FFF & sTemp;
-						iTemp2 = iGetPlayerABSStatus(pTile->m_sDeadOwner, iClientH); //(short)iGetPlayerRelationship(iClientH, pTile->m_sDeadOwner);
+						iTemp = 0x0FFFFFFF & iTemp;
+						iTemp2 = iGetPlayerABSStatus(pTile->m_sDeadOwner, iClientH); 
 						iTemp = (iTemp | (iTemp2 << 28));//Original : 12
 						*ip = iTemp;
 						cp += 4;
@@ -3306,7 +3248,7 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 						// Status
 						ip = (int*)cp;
 						iTemp = m_pNpcList[pTile->m_sDeadOwner]->m_iStatus;
-						iTemp = 0x0FFFFFFF & iTemp;//Original : sTemp = 0x0FFF & sTemp;
+						iTemp = 0x0FFFFFFF & iTemp;
 						iTemp2 = iGetNpcRelationship(pTile->m_sDeadOwner, iClientH);
 						iTemp = (iTemp | (iTemp2 << 28));//Original : 12
 						*ip = iTemp;
@@ -3327,16 +3269,6 @@ int CGame::iComposeInitMapData(short sX, short sY, int iClientH, char* pData)
 					*sp = pTile->m_pItem[0]->m_sIDnum;
 					cp += 2;
 					iSize += 2;
-
-					/*sp = (short*)cp;
-					*sp = pTile->m_pItem[0]->m_sSprite;
-					cp += 2;
-					iSize += 2;
-
-					sp = (short*)cp;
-					*sp = pTile->m_pItem[0]->m_sSpriteFrame;
-					cp += 2;
-					iSize += 2;*/
 
 					*cp = pTile->m_pItem[0]->m_cItemColor;
 					cp++;
@@ -3503,9 +3435,6 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 d
 		*cp_s = m_pClientList[sOwnerH]->m_cDir;
 		cp_s++;
 
-		//*cp_s = (unsigned char)sV1;
-		//cp_s++;
-
 		//50Cent - No Critical Damage Limit
 		ip = (int*)cp_s;
 		*ip = (int)sV1;
@@ -3599,25 +3528,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 d
 									iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt_Av, 13, cKey);
 							break;
 
-							/*case DEF_OBJECTMAGIC:
-							case DEF_OBJECTDAMAGE:
-							case DEF_OBJECTDAMAGEMOVE:
-								if (cOwnerSend == true)
-									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
-								else
-									if (i != sOwnerH)
-										iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
-								break;
-
-							case DEF_OBJECTDYING:
-								if (cOwnerSend == true)
-									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
-								else
-									if (i != sOwnerH)
-										iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
-								break;*/
-
-								//50Cent - No Critical Damage Limit
+						//50Cent - No Critical Damage Limit
 						case DEF_OBJECTMAGIC:
 							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
@@ -3672,25 +3583,7 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 d
 									iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt_Av, 13, cKey);
 							break;
 
-							/*case DEF_OBJECTMAGIC:
-							case DEF_OBJECTDAMAGE:
-							case DEF_OBJECTDAMAGEMOVE:
-								if (cOwnerSend == true)
-									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
-								else
-									if (i != sOwnerH)
-										iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
-								break;
-
-							case DEF_OBJECTDYING:
-								if (cOwnerSend == true)
-									iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
-								else
-									if (i != sOwnerH)
-										iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
-								break;*/
-
-								//50Cent - No Critical Damage Limit
+						//50Cent - No Critical Damage Limit
 						case DEF_OBJECTMAGIC:
 							if (cOwnerSend == true)
 								iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
@@ -3778,9 +3671,6 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 d
 		*cp_s = m_pNpcList[sOwnerH]->m_cDir;
 		cp_s++;
 
-		//*cp_s = (unsigned char)sV1;
-		//cp_s++;
-
 		//50Cent - No Critical Damage Limit
 		ip = (int*)cp_s;
 		*ip = (int)sV1;
@@ -3843,13 +3733,13 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 d
 							break;
 
 						case DEF_OBJECTDYING:
-							//iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
+
 							iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 18, cKey);//50Cent - No Critical Damage Limit 15
 							break;
 
 						case DEF_OBJECTDAMAGE:
 						case DEF_OBJECTDAMAGEMOVE:
-							//iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
+
 							iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 14, cKey);//50Cent - No Critical Damage Limit 11
 							break;
 
@@ -3873,13 +3763,13 @@ void CGame::SendEventToNearClient_TypeA(short sOwnerH, char cOwnerType, UINT32 d
 							break;
 
 						case DEF_OBJECTDYING:
-							//iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 15, cKey);
+
 							iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 18, cKey);//50Cent - No Critical Damage Limit 15
 							break;
 
 						case DEF_OBJECTDAMAGE:
 						case DEF_OBJECTDAMAGEMOVE:
-							//iRet = m_pClientList[ i ]->m_pXSock->iSendMsg(cData_Srt, 11, cKey);
+
 							iRet = m_pClientList[i]->m_pXSock->iSendMsg(cData_Srt, 14, cKey);//50Cent - No Critical Damage Limit 11
 							break;
 
@@ -3946,7 +3836,7 @@ void CGame::SendEventToNearClient_TypeB(UINT32 dwMsgID, UINT16 wMsgType, char cM
 
 	dwTime = timeGetTime();
 
-	//for (i = 1; i < DEF_MAXCLIENTS; i++)
+
 	bFlag = true;
 	iShortCutIndex = 0;
 	while (bFlag == true) {
@@ -4014,7 +3904,7 @@ void CGame::SendEventToNearClient_TypeB(UINT32 dwMsgID, UINT16 wMsgType, char cM
 
 	dwTime = timeGetTime();
 
-	//for (i = 1; i < DEF_MAXCLIENTS; i++)
+
 	bFlag = true;
 	iShortCutIndex = 0;
 	while (bFlag == true) {
@@ -4106,31 +3996,8 @@ void CGame::GetMapInitialPoint(int iMapIndex, short* pX, short* pY, char* pPlaye
 int CGame::iGetMapLocationSide(char* pMapName)
 {
 
-	//if (strcmp(pMapName, "aresden") == 0) return 1;
-	//if (strcmp(pMapName, "elvine") == 0) return 2;
-	//if (strcmp(pMapName, "arebrk11") == 0) return 1;
-	//if (strcmp(pMapName, "elvbrk11") == 0) return 2;
-
 	if (strcmp(pMapName, "cityhall_1") == 0) return 1;
 	if (strcmp(pMapName, "cityhall_2") == 0) return 2;
-	/*if (strcmp(pMapName, "cath_1") == 0) return 1;
-	if (strcmp(pMapName, "cath_2") == 0) return 2;
-	if (strcmp(pMapName, "gshop_1") == 0) return 1;
-	if (strcmp(pMapName, "gshop_2") == 0) return 2;
-	if (strcmp(pMapName, "bsmith_1") == 0) return 1;
-	if (strcmp(pMapName, "bsmith_2") == 0) return 2;
-	if (strcmp(pMapName, "wrhus_1") == 0) return 1;
-	if (strcmp(pMapName, "wrhus_2") == 0) return 2;
-	if (strcmp(pMapName, "gldhall_1") == 0) return 1;
-	if (strcmp(pMapName, "gldhall_2") == 0) return 2;
-	if (strcmp(pMapName, "wzdtwr_1") == 0) return 1;
-	if (strcmp(pMapName, "wzdtwr_2") == 0) return 2;
-	if (strcmp(pMapName, "arefarm") == 0) return 1;
-	if (strcmp(pMapName, "elvfarm") == 0) return 2;
-	if (strcmp(pMapName, "arewrhus") == 0) return 1;
-	if (strcmp(pMapName, "elvwrhus") == 0) return 2;
-	if (strcmp(pMapName, "cmdhall_1") == 0) return 1;
-	if (strcmp(pMapName, "Cmdhall_2") == 0) return 2;*/
 
 	return 0;
 }

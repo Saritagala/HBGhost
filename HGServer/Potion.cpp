@@ -301,10 +301,6 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 					m_pClientList[iClientH]->m_sY, pItem);
 
 				// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
-				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
-					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4
-
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -892,9 +888,6 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 			{
 				m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 					m_pClientList[iClientH]->m_sY, pItem);
-				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
-					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
-					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/
 
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,

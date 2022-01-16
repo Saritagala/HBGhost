@@ -40,7 +40,6 @@ void CGame::ApocalypseStarter()
 			(m_stApocalypseScheduleStart[i].iMinute == SysTime.wMinute)) {
 			wsprintf(G_cTxt, "(!) Apocalypse Start : time(%d %d:%d), index(%d) schedule", m_stApocalypseScheduleStart[i].iDay, m_stApocalypseScheduleStart[i].iHour, m_stApocalypseScheduleStart[i].iMinute, i);
 			PutLogList(G_cTxt);
-			//GlobalStartApocalypseMode(i, 0);
 
 			dwApocalypseGUID = timeGetTime();
 			if (dwApocalypseGUID < 10) dwApocalypseGUID += 10;
@@ -168,16 +167,6 @@ void CGame::_CreateApocalypseGUID(UINT32 dwApocalypseGUID)
 //**************************************************************************************
 void CGame::LocalStartApocalypse(UINT32 dwApocalypseGUID)
 {
-	/*if (dwApocalypseGUID == 1)// Means want to open Gate
-	{
-		ForceOpen_ApocalypseGate();
-		return;
-	}
-	else if (dwApocalypseGUID == 2)// Means want to close Gate
-	{
-		ForceClose_ApocalypseGate();
-		return;
-	}*/
 	int i;
 	m_bIsApocalypseMode = true;
 	if (dwApocalypseGUID != 0)
@@ -343,9 +332,9 @@ void CGame::LocalEndApocalypse()
 	m_bIsApocalypseMode = false;
 	m_bIsApocalypseGateOpen = false;
 	int i;
-	//UINT32  dwTime = timeGetTime();
-	m_dwApocalypseGateCloseTime = 0;//dwTime - 1;
-	m_dwApocalypseGateOpenTime = 0;//dwTime - 100; // alreaddy closed
+
+	m_dwApocalypseGateCloseTime = 0;
+	m_dwApocalypseGateOpenTime = 0;
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
 	{
 		if (m_pClientList[i] != 0)
@@ -615,16 +604,6 @@ void CGame::OpenCloseApocalypseGate()
 	// If nothing has changed return...
 	if (bIsOpen == m_bIsApocalypseGateOpen) return;
 
-	/*if (m_bIsApocalypseGateOpen == true)
-	{
-		wsprintf(G_cTxt, "(!)Apocalypse Gate opened.");
-	}
-	else
-	{
-		wsprintf(G_cTxt, "(!)Apocalypse Gate closed.");
-	}
-	PutLogList(G_cTxt);
-	PutLogEventFileList(G_cTxt);*/
 	// Then notify all clients of change,
 	int i;
 	for (i = 1; i < DEF_MAXCLIENTS; i++)
@@ -913,25 +892,12 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 			PutLogFileList(G_cTxt);
 			PutLogEventFileList(G_cTxt);
 		}
-		// Search npc ID
-		/*for (i5 = 1; i5 < DEF_MAXNPCS; i5++)
-		{
-			if ((m_pNpcList[i5] != 0) && (memcmp(m_pNpcList[i5]->m_cName, cName, 5) == 0))
-			{
-				break;
-			}
-		}*/
-		// Show Spawns on minimap, and tell everybody on Apocalypse server.					
-		//UINT32 wX = m_pNpcList[i5]->m_sX;
-		//UINT32 wY = m_pNpcList[i5]->m_sX;
+		
 		for (x = 1; x < DEF_MAXCLIENTS; x++)
+		{
 			if (m_pClientList[x] != 0)
-				
+
 			{
-				/*if (memcmp(m_pMapList[MapIndex]->m_cName, m_pMapList[m_pClientList[x]->m_cMapIndex]->m_cName, strlen(m_pMapList[MapIndex]->m_cName)) == 0)
-				{
-					SendNotifyMsg(0, x, DEF_NOTIFY_SPAWNEVENT, wX, wY, m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID, 0, 0, 0);
-				}*/
 				// Tell everybody on this server if Abaddon has appeared
 				if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
 				{
@@ -939,19 +905,7 @@ void CGame::GenerateApocalypseBoss(int MapIndex)
 					SendNotifyMsg(0, x, DEF_NOTIFY_ABBYAPPEAR, 0, 0, 0, 0);
 				}
 			}
-
-		// Prepare Abaddon's death, and Apocalypse end.
-		//if (m_pMapList[MapIndex]->m_iApocalypseBossMobNpcID == 99)
-		//{	// Abaddon should die by himself		
-		//	UINT32 dwTime = timeGetTime();
-		//	dwTime += 1000 * 60 * 1; // 1 minute
-		//	bRegisterDelayEvent(DEF_DELAYEVENTTYPE_KILL_ABADDON, 0, dwTime, i5
-		//		, DEF_OWNERTYPE_NPC, MapIndex, 0, 0, 0, 0, 0);
-		//	dwTime = timeGetTime();
-		//	dwTime += 1000 * 60 * 5; // 5 minutes
-		//	bRegisterDelayEvent(DEF_DELAYEVENTTYPE_END_APOCALYPSE, 0, dwTime, 0
-		//		, 0, MapIndex, 0, 0, 0, 0, 0);
-		//}
+		}
 
 		// Finally open the Exit Gate if type 3 & not 2
 		// NB: if m_iApocalypseMobGenType 2 with GateType 2, need to Kill the boss to open the gate.
@@ -1014,8 +968,8 @@ void CGame::ForceOpen_ApocalypseGate()
 void CGame::ForceClose_ApocalypseGate()
 {
 	if (m_bIsApocalypseMode == false)	return;
-	//UINT32  dwTime = timeGetTime();
-	m_dwApocalypseGateCloseTime = 0;//dwTime - 1;
-	m_dwApocalypseGateOpenTime = 0;//dwTime - 100; // alreaddy closed
+	
+	m_dwApocalypseGateCloseTime = 0;
+	m_dwApocalypseGateOpenTime = 0;
 	OpenCloseApocalypseGate();
 }
