@@ -4642,7 +4642,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, UINT32 dw
 				// v1.41 »ç¿ëÇÏÁö ¾Ê´Â ¾ÆÀÌÅÛÀ» ¼ÒÁöÇÏ°í ÀÖ¾ú´Ù¸é ÀåÂø»óÅÂ¸¦ ¸ðµÎ ¹«½Ã. 
 				if (bIsNotUsedItemFound == false) {
 					for (i = 0; i < DEF_MAXITEMS; i++) {
-						wsprintf(cTxt, "%d", token[i]);
+						
 						if ((token[i] == '1') && (m_pClientList[iClientH]->m_pItemList[i] != 0)) {
 							// ÀåÂøµÉ ¼ö ÀÖ´Â ¼ºÁúÀÇ ¾ÆÀÌÅÛÀÌ¶ó¸é ÀåÂø 
 							if (m_pClientList[iClientH]->m_pItemList[i]->m_cItemType == DEF_ITEMTYPE_EQUIP) 
@@ -5360,7 +5360,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, UINT32 dw
 				if (m_pClientList[iClientH]->m_ItemPosList[cReadModeB - 1].x < -10) m_pClientList[iClientH]->m_ItemPosList[cReadModeB - 1].x = -10;
 
 				cReadModeB++;
-				if (cReadModeB > 50) {
+				if (cReadModeB >= DEF_MAXITEMS) {
 					cReadModeA = 0;
 					cReadModeB = 0;
 				}
@@ -5371,7 +5371,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, UINT32 dw
 				// v1.3 Àß¸øµÈ À§Ä¡°ªÀ» º¸Á¤ÇÑ´Ù. 
 				if (m_pClientList[iClientH]->m_ItemPosList[cReadModeB-1].y < -10) m_pClientList[iClientH]->m_ItemPosList[cReadModeB-1].y = -10;
 				cReadModeB++;
-				if (cReadModeB > 50) {
+				if (cReadModeB >= DEF_MAXITEMS) {
 					cReadModeA = 0;
 					cReadModeB = 0;
 				}
