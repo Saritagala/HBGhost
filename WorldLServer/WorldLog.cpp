@@ -2281,7 +2281,7 @@ bool CWorldLog::iGetCharacterData(char* cCharName, char* cMapName, short* sAppr1
 void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, UINT32 dwMsgSize, bool bVar1, bool bVar2)
 {
 	char cAccountName[11], cCharName[11], cAccountPassword[11], cData[256], cTemp[128], cLocation[11], cGuildName[21];
-	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51], cSkillMastery[241], cSkillSSN[301];
+	char cMapName[11], cMagicM[101], cItemX[201], cItemY[201], cItemName[21], cEquipStatus[51], cSkillMastery[171], cSkillSSN[171];
 	int iGuildGUID, iGuildRank, iHP, iMP, iSP, iLevel, iRating, iStr, iInt, iDex, iVit, iMag, iCharisma, iLU_Pool;
 	int iEK, iPK, iHunger, iShutUp, iRatingTime, iForceRecall, iContribution, iCrits, iAbilityTime, iMajestics, iApprColour;
 	int iRewardGold, i, iWarContribution, iCrusadeDuty, iConstructPts;
@@ -2649,10 +2649,11 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, UINT32 dwMsgSiz
 	cp += 200;
 
 	// Skill
-	memcpy(cSkillMastery, cp, 240);
-	cp += 240;
-	memcpy(cSkillSSN, cp, 300);
-	cp += 300;
+	memcpy(cSkillMastery, cp, 170);
+	cp += 170;
+
+	memcpy(cSkillSSN, cp, 170);
+	cp += 170;
 
 	if ((dwMsgSize - 40) <= 0) {
 		PutLogList("(X) Character data body empty: Cannot create & save data file.");
@@ -3789,7 +3790,7 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 	memcpy(cInfo, cp, cTotalChar * 11);
 
 	if (G_bDBMode == true) {
-		SACommand com;
+		SACommand com, com2;
 
 		try
 		{
@@ -3801,6 +3802,14 @@ void CWorldLog::RequestDeleteCharacter(int iClientH, char* pData)
 
 			
 			com.Close();
+
+			com2.setConnection(&con);
+			com2.setCommandText("DELETE FROM GuildMembers WHERE [Character-Name] = :1");
+			com2.Param(1).setAsString() = cCharacterName;
+
+			com2.Execute();
+
+			com2.Close();
 
 			char cTemp[256];
 			ZeroMemory(cTemp, sizeof(cTemp));

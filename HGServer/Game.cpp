@@ -6513,642 +6513,641 @@ DPDC_STOP_DECODING:;
 
 int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 {
-		char  cTxt[256], cTmp[256];
-		char* cp;
+	char  cTxt[256], cTmp[256];
+	char* cp;
 
-		int   i, * ip, iSize = 0;
-		short* sp, * pIDX;
-		short Itemidx, BankItemidx;
-		UINT32* dwp;
+	int   i, * ip, iSize = 0;
+	short* sp, * pIDX;
+	short Itemidx, BankItemidx;
+	UINT32* dwp;
 
-		if (m_pClientList[iClientH] == 0) return 0;
+	if (m_pClientList[iClientH] == 0) return 0;
 
-		cp = pData;
+	cp = pData;
 
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sCharIDnum1;
-		cp += 2;
-		iSize += 2;
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sCharIDnum1;
+	cp += 2;
+	iSize += 2;
 
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sCharIDnum2;
-		cp += 2;
-		iSize += 2;
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sCharIDnum2;
+	cp += 2;
+	iSize += 2;
 
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sCharIDnum3;
-		cp += 2;
-		iSize += 2;
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sCharIDnum3;
+	cp += 2;
+	iSize += 2;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iLevel;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iStr;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iVit;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iDex;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iInt;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iMag;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iCharisma;
+	cp += 4;
+	iSize += 4;
+
+	dwp = (UINT32*)cp;
+	*dwp = m_pClientList[iClientH]->m_iExp;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iLU_Pool;
+	cp += 4;
+	iSize += 4;
+
+	*cp = m_pClientList[iClientH]->m_cSex;
+	cp++;
+	iSize++;
+
+	*cp = m_pClientList[iClientH]->m_cSkin;
+	cp++;
+	iSize++;
+
+	*cp = m_pClientList[iClientH]->m_cHairStyle;
+	cp++;
+	iSize++;
+
+	*cp = m_pClientList[iClientH]->m_cHairColor;
+	cp++;
+	iSize++;
+
+	*cp = m_pClientList[iClientH]->m_cUnderwear;
+	cp++;
+	iSize++;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iApprColor;
+	cp += 4;
+	iSize += 4;
+
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sAppr1;
+	cp += 2;
+	iSize += 2;
+
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sAppr2;
+	cp += 2;
+	iSize += 2;
+
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sAppr3;
+	cp += 2;
+	iSize += 2;
+
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sAppr4;
+	cp += 2;
+	iSize += 2;
+
+	memcpy(cp, m_pClientList[iClientH]->m_cLocation, 10);
+	cp += 10;
+	iSize += 10;
+
+	memcpy(cp, m_pClientList[iClientH]->m_cMapName, 10);
+	cp += 10;
+	iSize += 10;
+
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sX;
+	cp += 2;
+	iSize += 2;
+
+	sp = (short*)cp;
+	*sp = m_pClientList[iClientH]->m_sY;
+	cp += 2;
+	iSize += 2;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iContribution;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iSpecialAbilityTime;
+	cp += 4;
+	iSize += 4;
+
+	memcpy(cp, m_pClientList[iClientH]->m_cLockedMapName, 10);
+	cp += 10;
+	iSize += 10;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iLockedMapTime;
+	cp += 4;
+	iSize += 4;
+
+	//--
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iPenaltyBlockYear;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iPenaltyBlockMonth;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iPenaltyBlockDay;
+	cp += 4;
+	iSize += 4;
+	//--
+
+	memcpy(cp, m_pClientList[iClientH]->m_cGuildName, 20);
+	cp += 20;
+	iSize += 20;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iGuildGUID;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iGuildRank;
+	cp += 4;
+	iSize += 4;
+
+	for (i = 0; i < 5; i++)
+	{
+		ip = (int*)cp;
+		*ip = m_pClientList[iClientH]->m_iQuest[i];
+		cp += 4;
+		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iLevel;
+		*ip = m_pClientList[iClientH]->m_iQuestID[i];
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iStr;
+		*ip = m_pClientList[iClientH]->m_iCurQuestCount[i];
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iVit;
+		*ip = m_pClientList[iClientH]->m_iQuestRewardType[i];
 		cp += 4;
 		iSize += 4;
 
 		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iDex;
+		*ip = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
 		cp += 4;
 		iSize += 4;
 
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iInt;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iMag;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iCharisma;
-		cp += 4;
-		iSize += 4;
-
-		dwp = (UINT32*)cp;
-		*dwp = m_pClientList[iClientH]->m_iExp;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iLU_Pool;
-		cp += 4;
-		iSize += 4;
-
-		*cp = m_pClientList[iClientH]->m_cSex;
+		*cp = (char)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
 		cp++;
 		iSize++;
-
-		*cp = m_pClientList[iClientH]->m_cSkin;
-		cp++;
-		iSize++;
-
-		*cp = m_pClientList[iClientH]->m_cHairStyle;
-		cp++;
-		iSize++;
-
-		*cp = m_pClientList[iClientH]->m_cHairColor;
-		cp++;
-		iSize++;
-
-		*cp = m_pClientList[iClientH]->m_cUnderwear;
-		cp++;
-		iSize++;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iApprColor;
-		cp += 4;
-		iSize += 4;
-
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sAppr1;
-		cp += 2;
-		iSize += 2;
-
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sAppr2;
-		cp += 2;
-		iSize += 2;
-
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sAppr3;
-		cp += 2;
-		iSize += 2;
-
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sAppr4;
-		cp += 2;
-		iSize += 2;
-
-		memcpy(cp, m_pClientList[iClientH]->m_cLocation, 10);
-		cp += 10;
-		iSize += 10;
-
-		memcpy(cp, m_pClientList[iClientH]->m_cMapName, 10);
-		cp += 10;
-		iSize += 10;
-
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sX;
-		cp += 2;
-		iSize += 2;
-
-		sp = (short*)cp;
-		*sp = m_pClientList[iClientH]->m_sY;
-		cp += 2;
-		iSize += 2;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iAdminUserLevel;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iContribution;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iSpecialAbilityTime;
-		cp += 4;
-		iSize += 4;
-
-		memcpy(cp, m_pClientList[iClientH]->m_cLockedMapName, 10);
-		cp += 10;
-		iSize += 10;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iLockedMapTime;
-		cp += 4;
-		iSize += 4;
-
-		//--
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iPenaltyBlockYear;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iPenaltyBlockMonth;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iPenaltyBlockDay;
-		cp += 4;
-		iSize += 4;
-		//--
-
-		memcpy(cp, m_pClientList[iClientH]->m_cGuildName, 20);
-		cp += 20;
-		iSize += 20;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iGuildGUID;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iGuildRank;
-		cp += 4;
-		iSize += 4;
-
-		for (i = 0; i < 5; i++)
-		{
-			ip = (int*)cp;
-			*ip = m_pClientList[iClientH]->m_iQuest[i];
-			cp += 4;
-			iSize += 4;
-
-			ip = (int*)cp;
-			*ip = m_pClientList[iClientH]->m_iQuestID[i];
-			cp += 4;
-			iSize += 4;
-
-			ip = (int*)cp;
-			*ip = m_pClientList[iClientH]->m_iCurQuestCount[i];
-			cp += 4;
-			iSize += 4;
-
-			ip = (int*)cp;
-			*ip = m_pClientList[iClientH]->m_iQuestRewardType[i];
-			cp += 4;
-			iSize += 4;
-
-			ip = (int*)cp;
-			*ip = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
-			cp += 4;
-			iSize += 4;
-
-			*cp = (char)m_pClientList[iClientH]->m_bIsQuestCompleted[i];
-			cp++;
-			iSize++;
-		}
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iSpecialEventID;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iWarContribution;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iCrusadeDuty;
-		cp += 4;
-		iSize += 4;
-
-		dwp = (UINT32*)cp;
-		*dwp = m_pClientList[iClientH]->m_dwCrusadeGUID;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iConstructionPoint;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iRating;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iHP;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iMP;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iSP;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iEnemyKillCount;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iPKCount;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iRewardGold;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iHungerStatus;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iSuperAttackLeft;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iTimeLeft_ShutUp;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iTimeLeft_Rating;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iTimeLeft_ForceRecall;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iDeadPenaltyTime;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iPartyID;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iGizonItemUpgradeLeft;
-		cp += 4;
-		iSize += 4;
-
-		//
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iDeaths;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iTotalDGKills;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iDGPoints;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iTotalDGDeaths;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iDGKills;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iMaxEK;
-		cp += 4;
-		iSize += 4;
-
-		dwp = (UINT32*)cp;
-		*dwp = m_pClientList[iClientH]->m_dwHeldenianGUID;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iWantedLevel;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iCoinPoints;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->iteam;
-		cp += 4;
-		iSize += 4;
-
-		ip = (int*)cp;
-		*ip = m_pClientList[iClientH]->m_iClass;
-		cp += 4;
-		iSize += 4;
-		//
-
-		ZeroMemory(cTxt, sizeof(cTxt));
-		for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
-			wsprintf(cTmp, "%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
-			strcat(cTxt, cTmp);
-		}
-		memcpy(cp, cTxt, 100);
-		cp += 100;
-		iSize += 100;
-
-		ZeroMemory(cTxt, sizeof(cTxt));
-		for (i = 0; i < DEF_MAXITEMS; i++)
-		{
-			wsprintf(cTmp, "%d", (char)m_pClientList[iClientH]->m_bIsItemEquipped[i]);
-			strcat(cTxt, cTmp);
-		}
-		memcpy(cp, cTxt, 50);
-		cp += 50;
-		iSize += 50;
-
-		ZeroMemory(cTxt, sizeof(cTxt));
-		for (i = 0; i < DEF_MAXITEMS; i++)
-		{
-			wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].x);
-			strcat(cTxt, cTmp);
-		}
-		memcpy(cp, cTxt, 200);
-		cp += 200;
-		iSize += 200;
-
-		ZeroMemory(cTxt, sizeof(cTxt));
-		for (i = 0; i < DEF_MAXITEMS; i++)
-		{
-			wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].y);
-			strcat(cTxt, cTmp);
-		}
-		memcpy(cp, cTxt, 200);
-		cp += 200;
-		iSize += 200;
-
-		// skills
-		ZeroMemory(cTxt, sizeof(cTxt));
-		for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
-			wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_cSkillMastery[i]);
-			strcat(cTxt, cTmp);
-		}
-		memcpy(cp, cTxt, 240);
-		cp += 240;
-		iSize += 240;
-		ZeroMemory(cTxt, sizeof(cTxt));
-		for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
-			wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_iSkillSSN[i]);
-			strcat(cTxt, cTmp);
-		}
-		memcpy(cp, cTxt, 300);
-		cp += 300;
-		iSize += 300;
-		
-		Itemidx = 0;
-
-		pIDX = (short*)cp;
-		cp += 2;
-		iSize += 2;
-
-		UINT16* wp;
-
-		for (i = 0; i < DEF_MAXITEMS; i++)
-		{
-			if (m_pClientList[iClientH]->m_pItemList[i] != 0)
-			{
-				memcpy(cp, m_pClientList[iClientH]->m_pItemList[i]->m_cName, 20);
-				cp += 20;
-				iSize += 20;
-
-				dwp = (UINT32*)cp;
-				*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwCount;
-				cp += 4;
-				iSize += 4;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3;
-				cp += 2;
-				iSize += 2;
-
-				wp = (UINT16*)cp;
-				*wp = m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan;
-				cp += 2;
-				iSize += 2;
-
-				dwp = (UINT32*)cp;
-				*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute;
-				cp += 4;
-				iSize += 4;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect2;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect3;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect4;
-				cp += 2;
-				iSize += 2;
-
-				Itemidx++;
-			}
-		}
-
-		*pIDX = Itemidx;
-
-		pIDX = (short*)cp;
-		cp += 2;
-		iSize += 2;
-
-		BankItemidx = 0;
-
-		for (i = 0; i < DEF_MAXBANKITEMS; i++)
-		{
-			if (m_pClientList[iClientH]->m_pItemInBankList[i] != 0)
-			{
-				memcpy(cp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName, 20);
-				cp += 20;
-				iSize += 20;
-
-				dwp = (UINT32*)cp;
-				*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount;
-				cp += 4;
-				iSize += 4;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3;
-				cp += 2;
-				iSize += 2;
-
-				wp = (UINT16*)cp;
-				*wp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan;
-				cp += 2;
-				iSize += 2;
-
-				dwp = (UINT32*)cp;
-				*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute;
-				cp += 4;
-				iSize += 4;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect1;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect2;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect3;
-				cp += 2;
-				iSize += 2;
-
-				sp = (short*)cp;
-				*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect4;
-				cp += 2;
-				iSize += 2;
-
-				BankItemidx++;
-			}
-		}
-
-		*pIDX = BankItemidx;
-
-		return iSize;
+	}
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iSpecialEventID;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iWarContribution;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iCrusadeDuty;
+	cp += 4;
+	iSize += 4;
+
+	dwp = (UINT32*)cp;
+	*dwp = m_pClientList[iClientH]->m_dwCrusadeGUID;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iConstructionPoint;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iRating;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iHP;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iMP;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iSP;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iEnemyKillCount;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iPKCount;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iRewardGold;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iHungerStatus;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iSuperAttackLeft;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iTimeLeft_ShutUp;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iTimeLeft_Rating;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iTimeLeft_ForceRecall;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iTimeLeft_FirmStaminar;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iDeadPenaltyTime;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iPartyID;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iGizonItemUpgradeLeft;
+	cp += 4;
+	iSize += 4;
+
+	//
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iDeaths;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iTotalDGKills;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iDGPoints;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iTotalDGDeaths;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iDGKills;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iMaxEK;
+	cp += 4;
+	iSize += 4;
+
+	dwp = (UINT32*)cp;
+	*dwp = m_pClientList[iClientH]->m_dwHeldenianGUID;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iWantedLevel;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iCoinPoints;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->iteam;
+	cp += 4;
+	iSize += 4;
+
+	ip = (int*)cp;
+	*ip = m_pClientList[iClientH]->m_iClass;
+	cp += 4;
+	iSize += 4;
+	//
+
+	ZeroMemory(cTxt, sizeof(cTxt));
+	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
+		wsprintf(cTmp, "%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
+		strcat(cTxt, cTmp);
+	}
+	memcpy(cp, cTxt, 100);
+	cp += 100;
+	iSize += 100;
+
+	ZeroMemory(cTxt, sizeof(cTxt));
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		wsprintf(cTmp, "%d", (char)m_pClientList[iClientH]->m_bIsItemEquipped[i]);
+		strcat(cTxt, cTmp);
+	}
+	memcpy(cp, cTxt, 50);
+	cp += 50;
+	iSize += 50;
+
+	ZeroMemory(cTxt, sizeof(cTxt));
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].x);
+		strcat(cTxt, cTmp);
+	}
+	memcpy(cp, cTxt, 200);
+	cp += 200;
+	iSize += 200;
+
+	ZeroMemory(cTxt, sizeof(cTxt));
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].y);
+		strcat(cTxt, cTmp);
+	}
+	memcpy(cp, cTxt, 200);
+	cp += 200;
+	iSize += 200;
+
+	// skills
+	ZeroMemory(cTxt, sizeof(cTxt));
+	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
+		wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_cSkillMastery[i]);
+		strcat(cTxt, cTmp);
+	}
+	memcpy(cp, cTxt, 170);
+	cp += 170;
+	iSize += 170;
 	
+	ZeroMemory(cTxt, sizeof(cTxt));
+	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
+		wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_iSkillSSN[i]);
+		strcat(cTxt, cTmp);
+	}
+	memcpy(cp, cTxt, 170);
+	cp += 170;
+	iSize += 170;
+		
+	Itemidx = 0;
 
+	pIDX = (short*)cp;
+	cp += 2;
+	iSize += 2;
+
+	UINT16* wp;
+
+	for (i = 0; i < DEF_MAXITEMS; i++)
+	{
+		if (m_pClientList[iClientH]->m_pItemList[i] != 0)
+		{
+			memcpy(cp, m_pClientList[iClientH]->m_pItemList[i]->m_cName, 20);
+			cp += 20;
+			iSize += 20;
+
+			dwp = (UINT32*)cp;
+			*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwCount;
+			cp += 4;
+			iSize += 4;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectType;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue1;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue2;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sTouchEffectValue3;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemList[i]->m_cItemColor;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue1;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue2;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sItemSpecEffectValue3;
+			cp += 2;
+			iSize += 2;
+
+			wp = (UINT16*)cp;
+			*wp = m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan;
+			cp += 2;
+			iSize += 2;
+
+			dwp = (UINT32*)cp;
+			*dwp = m_pClientList[iClientH]->m_pItemList[i]->m_dwAttribute;
+			cp += 4;
+			iSize += 4;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect1;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect2;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect3;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemList[i]->m_sNewEffect4;
+			cp += 2;
+			iSize += 2;
+
+			Itemidx++;
+		}
+	}
+
+	*pIDX = Itemidx;
+
+	pIDX = (short*)cp;
+	cp += 2;
+	iSize += 2;
+
+	BankItemidx = 0;
+
+	for (i = 0; i < DEF_MAXBANKITEMS; i++)
+	{
+		if (m_pClientList[iClientH]->m_pItemInBankList[i] != 0)
+		{
+			memcpy(cp, m_pClientList[iClientH]->m_pItemInBankList[i]->m_cName, 20);
+			cp += 20;
+			iSize += 20;
+
+			dwp = (UINT32*)cp;
+			*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwCount;
+			cp += 4;
+			iSize += 4;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectType;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue1;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue2;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sTouchEffectValue3;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = (short)m_pClientList[iClientH]->m_pItemInBankList[i]->m_cItemColor;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue1;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue2;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sItemSpecEffectValue3;
+			cp += 2;
+			iSize += 2;
+
+			wp = (UINT16*)cp;
+			*wp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_wCurLifeSpan;
+			cp += 2;
+			iSize += 2;
+
+			dwp = (UINT32*)cp;
+			*dwp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_dwAttribute;
+			cp += 4;
+			iSize += 4;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect1;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect2;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect3;
+			cp += 2;
+			iSize += 2;
+
+			sp = (short*)cp;
+			*sp = m_pClientList[iClientH]->m_pItemInBankList[i]->m_sNewEffect4;
+			cp += 2;
+			iSize += 2;
+
+			BankItemidx++;
+		}
+	}
+
+	*pIDX = BankItemidx;
+
+	return iSize;
 }
 
 /*********************************************************************************************************************
@@ -17411,18 +17410,7 @@ void CGame::MultiplicadorExp(int Client, UINT32 Exp)
 {
 	if (m_pClientList[Client] == 0) return;
 
-		if		(m_pClientList[Client]->m_iLevel >= 1 && 
-				 m_pClientList[Client]->m_iLevel < 150)		Exp *= m_iExpSetting*10;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 150 &&
-				 m_pClientList[Client]->m_iLevel < 250)		Exp *= m_iExpSetting*5;
-
-		else if	(m_pClientList[Client]->m_iLevel >= 250 &&
-				 m_pClientList[Client]->m_iLevel <= 310)	Exp *= m_iExpSetting;
-
-		else if	(m_pClientList[Client]->m_iLevel > 310)	Exp = 1;	
-	
-	m_pClientList[Client]->m_iExp += Exp;
+	m_pClientList[Client]->m_iExp += Exp* m_iExpSetting;
 	
 	if (bCheckLimitedUser(Client) == false) {
 		// Ã¼ÇèÆÇ »ç¿ëÀÚ Á¦ÇÑ¿¡ ÇØ´çµÇÁö ¾ÊÀ¸¸é °æÇèÄ¡°¡ ¿Ã¶ú´Ù´Â Åëº¸¸¦ ÇÑ´Ù.

@@ -387,15 +387,13 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 
 	sSkillIndex = m_pClientList[iClientH]->m_pItemList[sWeaponIndex]->m_sRelatedSkill;
 	if ((sSkillIndex < 0) || (sSkillIndex >= DEF_MAXSKILLTYPE)) return;
-	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 0) return;
+	
+	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 100) return;
 
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
 	
-	if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] < 9999) {
+	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) {
 		m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
-		if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= 9999) {
-			m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 9999;
-		}
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
 	}
 
@@ -521,15 +519,12 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 	if ((sSkillIndex < 0) || (sSkillIndex >= DEF_MAXSKILLTYPE)) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
 
-	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 0) return;
+	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 100) return;
 	
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
 	
-	if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] < 9999) {
+	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) {
 		m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
-		if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= 9999) {
-			m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] = 9999;
-		}
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
 	}
 
