@@ -163,7 +163,7 @@ public:
 
 	int dice(int _throw, int range);
 
-	bool m_bNpcMap;
+	bool m_bNpcMap, m_bAutoSS;
 
 	void DrawDialogBox_SummonGuild(short msX, short msY);
 	void DlgBoxClick_SummonGuild(short msX, short msY);

@@ -44,6 +44,7 @@ CGame::CGame()
 	
 	m_bGrid = false; //Grid - by luqah
 	m_bNpcMap = false;
+	m_bAutoSS = false;
 
 	m_iTotalUsers = 0;
 	m_iPing = 0;
@@ -558,8 +559,8 @@ bool CGame::bInit(HWND hWnd, HINSTANCE hInst, char * pCmdLine)
 #ifdef DEF_ANTI_HACK
  if (CheckProcesses())
  {
-	 MessageBox(m_hWnd, "No Hacks Programs Permitted.", "ERROR2", MB_ICONEXCLAMATION | MB_OK);
-	 return false;
+	 /*MessageBox(m_hWnd, "No Hacks Programs Permitted.", "ERROR2", MB_ICONEXCLAMATION | MB_OK);
+	 return false;*/
  }
 #endif
  // CLEROTH - BUG
@@ -1240,7 +1241,12 @@ void CGame::SaveGameConfigFile()
 	strcat(cFn2, "use-old-panels = ");
 	wsprintf(cBuffer, "%d", (int)m_bUseOldPanels);
 	strcat(cFn2, cBuffer);
+	strcat(cFn2, "\n");
 
+	strcat(cFn2, "auto-ek-ss = ");
+	wsprintf(cBuffer, "%d", (int)m_bAutoSS);
+	strcat(cFn2, cBuffer);
+	
 
 	fwrite(cFn2, 1, strlen(cFn2), pFile);
 
@@ -1358,7 +1364,10 @@ bool CGame::bReadGameConfigFile(char* cFn)
 					m_bUseOldPanels = (bool)atoi(token);
 					cReadMode = 0;
 					break;
-					
+				case 21:
+					m_bAutoSS = (bool)atoi(token);
+					cReadMode = 0;
+					break;
 					
 				}
 			}
@@ -1383,6 +1392,7 @@ bool CGame::bReadGameConfigFile(char* cFn)
 				if (memcmp(token, "quest-helper", 12) == 0)				cReadMode = 18;
 				if (memcmp(token, "show-big-items", 14) == 0)				cReadMode = 19;
 				if (memcmp(token, "use-old-panels", 14) == 0)				cReadMode = 20;
+				if (memcmp(token, "auto-ek-ss", 10) == 0)				cReadMode = 21;
 			}
 			token = pStrTok->pGet();
 		}
@@ -1723,7 +1733,7 @@ bool CGame::bSendCommand(UINT32 dwMsgID, UINT16 wCommand, char cDir, int iV1, in
  int   * ip, iRet, i, * fightzonenum ;
 
 	if ((m_pGSock == 0) && (m_pLSock == 0)) return false;
-	dwTime = timeGetTime();
+	dwTime = m_dwCurTime;// timeGetTime();
 	ZeroMemory(cMsg, sizeof(cMsg));
 
 	cKey = (char)(rand() % 245) +1;
@@ -3325,7 +3335,7 @@ void CGame::GameRecvMsgHandler(UINT32 dwMsgSize, char * pData)
 		cp = (char *)(pData + DEF_INDEX2_MSGTYPE + 2);
         dwp = (UINT32 *)cp;
         dwTimeSent = *dwp;
-        dwTimeRcv = timeGetTime();
+		dwTimeRcv = m_dwCurTime;// timeGetTime();
         m_iPing = (dwTimeRcv - dwTimeSent)/2;
         break;
 
@@ -4573,7 +4583,7 @@ void CGame::UpdateScreen_OnLoading_Progress()
 void CGame::OnTimer()
 {
 	if( m_cGameMode < 0 ) return;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 
 	if (m_cGameMode != DEF_GAMEMODE_ONLOADING) {
 
@@ -4592,7 +4602,7 @@ void CGame::OnTimer()
 		{	m_dwCheckConnTime = dwTime;
 			if ((m_bIsCrusadeMode) && (m_iCrusadeDuty == 0)) EnableDialogBox(33, 1, 0, 0);
 #ifdef DEF_ANTI_HACK
-			CheckProcesses(); // centu
+			//CheckProcesses(); // centu
 #endif
 
 	}
@@ -7414,7 +7424,7 @@ void CGame::NotifyMsg_EnemyKillReward(char *pData)
 	m_iWarContribution = iWarContribution;
 	if (memcmp(m_cPlayerName, cName, 10) != 0)
 	{
-		if (sGuildRank == -1)
+		if (strcmp(cGuildName, "NONE") == 0) //(sGuildRank == -1)
 		{
 			wsprintf(cTxt, NOTIFYMSG_ENEMYKILL_REWARD1, cName);
 			AddEventList(cTxt, 10);
@@ -7458,7 +7468,7 @@ void CGame::NotifyMsg_EnemyKillReward(char *pData)
 		}
 	}
 	PlaySound('E', 23, 0);
-	CreateScreenShot();
+	if (m_bAutoSS) CreateScreenShot();
 }
 
 void CGame::NotifyMsg_ForceDisconn(char *pData)
@@ -9636,12 +9646,12 @@ void CGame::DrawEffects()
 			dX = (m_pEffectList[i]->m_dX * 32) - m_sViewPointX;
 			dY = (m_pEffectList[i]->m_dY * 32) - m_sViewPointY;
 			//Timed Logic
-			if ((timeGetTime() - m_pEffectList[i]->m_dwLoopEndTime) > 20)
+			if ((m_dwCurTime - m_pEffectList[i]->m_dwLoopEndTime) > 20)
 			{
 				int dwRand, dwOffsetX, dwOffsetY, dwSoundLoop;
 				dwSoundLoop = 0;
 				dwRand = dice(1, 3);
-				m_pEffectList[i]->m_dwLoopEndTime = timeGetTime();
+				m_pEffectList[i]->m_dwLoopEndTime = m_dwCurTime;
 
 				//Randomize the offsets of the X and Y
 				dwOffsetX = dice(1, 50);
@@ -18937,20 +18947,20 @@ void CGame::DrawDialogBox_IconPannel(short msX, short msY)
 
 	if (m_iHP > 0) {
 		if ((m_iLU_Point > 0) && (m_bIsDialogEnabled[12] == false)) {// Level-Up button
-			PutString_SprFont2(720 + 5, 510, "Level Up!", (timeGetTime() / 3) % 255, (timeGetTime() / 3) % 255, 0);
+			PutString_SprFont2(720 + 5, 510, "Level Up!", (dwTime / 3) % 255, (dwTime / 3) % 255, 0);
 
 			if (bSummonGuild && !m_bIsDialogEnabled[47])
-				PutString_SprFont2(720 + 5, 490, "Message!", (timeGetTime() / 3) % 255, (timeGetTime() / 3) % 255, 0);
+				PutString_SprFont2(720 + 5, 490, "Message!", (dwTime / 3) % 255, (dwTime / 3) % 255, 0);
 		}
 		else {
 			if (bSummonGuild && !m_bIsDialogEnabled[47])
-				PutString_SprFont2(720 + 5, 510, "Message!", (timeGetTime() / 3) % 255, (timeGetTime() / 3) % 255, 0);
+				PutString_SprFont2(720 + 5, 510, "Message!", (dwTime / 3) % 255, (dwTime / 3) % 255, 0);
 		}
 	}
 	else
 	{
 		if (m_cRestartCount == -1)
-			PutString_SprFont2(720 + 5, 510, "Restart", (timeGetTime() / 3) % 255, (timeGetTime() / 3) % 255, 0);
+			PutString_SprFont2(720 + 5, 510, "Restart", (dwTime / 3) % 255, (dwTime / 3) % 255, 0);
 	}
 
 	if (m_bIsSafeAttackMode) m_pSprite[DEF_SPRID_INTERFACE_ND_ICONPANNEL2]->PutSpriteFast(368 + resx + addx - 2, 440 + resy, 4, dwTime); // Safe Attack Icon
@@ -20113,7 +20123,7 @@ void CGame::DlgBoxClick_ItemUpgrade(int msX, int msY)
 			PlaySound('E', 14, 5);
 			PlaySound('E', 44, 0);
 			m_stDialogBoxInfo[34].cMode = 2;
-			m_stDialogBoxInfo[34].dwV1 = timeGetTime();
+			m_stDialogBoxInfo[34].dwV1 = m_dwCurTime;// timeGetTime();
 		}
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{	// Cancel
@@ -20173,7 +20183,7 @@ void CGame::DlgBoxClick_ItemUpgrade(int msX, int msY)
 			PlaySound('E', 14, 5);
 			PlaySound('E', 44, 0);
 			m_stDialogBoxInfo[34].cMode = 2;
-			m_stDialogBoxInfo[34].dwV1 = timeGetTime();
+			m_stDialogBoxInfo[34].dwV1 = m_dwCurTime;// timeGetTime();
 		}
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{	// Cancel
@@ -20213,7 +20223,7 @@ void CGame::DlgBoxClick_Enchanting(int msX, int msY)
 			m_bFirstStatSelected = false;
 			m_bSecondStatSelected = false;
 			m_stDialogBoxInfo[44].cMode = 2;
-			m_stDialogBoxInfo[44].dwV1 = timeGetTime();
+			m_stDialogBoxInfo[44].dwV1 = m_dwCurTime;// timeGetTime();
 		}
 		if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + DEF_BTNPOSY) && (msY <= sY + DEF_BTNPOSY + DEF_BTNSZY))
 		{	// Cancel
@@ -21116,7 +21126,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 
 	int iMIbuttonNum;
 
-	dwTime = timeGetTime();
+	dwTime = G_dwGlobalTime; //timeGetTime();
 	sX = 0;
 	sY = 0;
 	cTotalChar = 0;
@@ -21144,7 +21154,7 @@ void CGame::UpdateScreen_OnSelectCharacter()
 		m_cArrowPressed = 0;
 		m_bEnterPressed = false;
 
-		dwCTime = timeGetTime();
+		dwCTime = G_dwGlobalTime; //timeGetTime();
 	}
 
 	m_cGameModeCount++;
@@ -21731,7 +21741,7 @@ int iReqHeroItemID;
 			PlaySound('E', 14, 5);
 		}
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 120) && (msY < sY + 145))
-		{	if (m_iEnemyKillCount < 0) return;
+		{	if (m_iEnemyKillCount <= 0 && m_iContribution <= 0) return;
 			m_stDialogBoxInfo[13].cMode = 7;
 			PlaySound('E', 14, 5);
 		}
@@ -21773,6 +21783,7 @@ int iReqHeroItemID;
 		//MORLA 2.4 - DK Set		
 		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 260) && (msY < sY + 273))
 		{
+			if (m_iLevel < DEF_LEVEL_LIMIT) return;
 			m_stDialogBoxInfo[13].cMode = 13;
 			PlaySound('E', 14, 5);
 		}
@@ -22311,7 +22322,7 @@ void CGame::_DrawBlackRect(int iSize)
  int ix, iy, sx, sy, dcx, dcy;
  UINT32 dwTime;
 
-	dwTime = timeGetTime();
+ dwTime = G_dwGlobalTime;// timeGetTime();
 
 	dcx = 40 - iSize*2;
 	dcy = 30 - iSize*2;
@@ -22388,7 +22399,7 @@ bool CGame::_bIsItemOnHand() // Snoopy: Fixed to remove ShieldCast
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i]))
 	{	
-		if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND)
+		if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_TWOHAND || m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_LHAND)
 			return true;
 	}
 	for (i = 0; i < DEF_MAXITEMS; i++)
@@ -25036,7 +25047,6 @@ void CGame::CreateScreenShot()
 			}
 			wsprintf(G_cTxt, NOTIFYMSG_CREATE_SCREENSHOT1, cFn);
 			AddEventList(G_cTxt, 10);
-			fclose(pFile); // centu - missing fclose
 			return;
 		}
 		fclose(pFile);
@@ -25048,14 +25058,14 @@ void CGame::UpdateScreen_OnConnecting()
 {
  short sX, sY, msX, msY, msZ;
  char cLB, cRB;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = G_dwGlobalTime; //timeGetTime();
  static class CMouseInterface * pMI;
  static UINT32 dwMTime, dwCTime;
 
 	if (m_cGameModeCount == 0) {
 		m_bEnterPressed = false;
 		m_bEscPressed   = false;
-		dwCTime = dwMTime = timeGetTime();
+		dwCTime = dwMTime = G_dwGlobalTime; // timeGetTime();
 	}
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
@@ -25151,7 +25161,7 @@ void CGame::UpdateScreen_OnWaitInitData()
 {
  short msX, msY, msZ;
  char cLB, cRB;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = G_dwGlobalTime; //timeGetTime();
 
 	if (m_cGameModeCount == 0) {
 		m_bEnterPressed = false;
@@ -25198,7 +25208,8 @@ void CGame::UpdateScreen_OnConnectionLost()
  char cLB, cRB;
  static UINT32 dwTime;
 	if (m_cGameModeCount == 0)
-	{	dwTime = timeGetTime();
+	{
+		dwTime = G_dwGlobalTime; // timeGetTime();
 		if (m_bSoundFlag) m_pESound[38]->bStop();
 		if ((m_bSoundFlag) && (m_bMusicStat))
 		{	StopBGM();	// Snoopy: mp3 support
@@ -25216,7 +25227,7 @@ void CGame::UpdateScreen_OnConnectionLost()
 
 	if (m_DDraw.iFlip() == DDERR_SURFACELOST) RestoreSprites();
 
-	if ((timeGetTime() - m_dwTime) > 5000)
+	if ((G_dwGlobalTime - m_dwTime) > 5000)
 	{	if (strlen(G_cCmdLineTokenA) != 0)
 			 ChangeGameMode(DEF_GAMEMODE_ONQUIT);
 		else
@@ -25226,7 +25237,7 @@ void CGame::UpdateScreen_OnConnectionLost()
 bool CGame::_bDraw_OnCreateNewCharacter(char* pName, short msX, short msY, int iPoint)
 {
 	bool bFlag = true;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime; // timeGetTime();
 	int i = 0;
 
 	m_DDraw.ClearBackB4();
@@ -25355,7 +25366,7 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 	short msX, msY, msZ;
 	bool bFlag;
 	static UINT32 dwMTime;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime; // timeGetTime();
 
 	if (m_cGameModeCount == 0)
 	{
@@ -25409,7 +25420,7 @@ void CGame::UpdateScreen_OnCreateNewCharacter()
 		m_cMaxFocus = 6;
 		m_bEnterPressed = false;
 		m_cArrowPressed = 0;
-		dwMTime = timeGetTime();
+		dwMTime = G_dwGlobalTime; // timeGetTime();
 		StartInputString(193 + 4 + SCREENX, 65 + 45 + SCREENY, 11, cName);
 		ClearInputString();
 	}
@@ -25867,7 +25878,7 @@ void CGame::UpdateScreen_OnAgreement()
  char  cMIresult;
  static class CMouseInterface * pMI;
  int i, iTotalLines, iPointerLoc;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = G_dwGlobalTime; // timeGetTime();
  float d1,d2,d3;
  int iMIbuttonNum;
 
@@ -25976,7 +25987,7 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	int  iMIbuttonNum;
 	static class CMouseInterface* pMI;
 	static char cName[12], cPassword[12], cConfirm[12], cPrevFocus, cSSN_A[8], cSSN_B[8], cQuiz[44], cAnswer[20], cTempQuiz[44];
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 	int iFlag = 0;
 
 	if (m_cGameModeCount == 0)
@@ -26079,25 +26090,36 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	if (m_cCurFocus != 1) {
 		if (m_Misc.bCheckValidName(cName))
 			PutString2(427 + SCREENX, 84 + SCREENY, cName, 100, 200, 100);
-		else PutString2(427 + SCREENX, 84 + SCREENY, cName, 200, 100, 100);
+		else {
+			PutString2(427 + SCREENX, 84 + SCREENY, cName, 200, 100, 100);
+			iFlag = 6;
+		}
 	}
 	if (m_cCurFocus != 2) {
 		if (m_Misc.bCheckValidName(cPassword))
 			PutString(427 + SCREENX, 106 + SCREENY, cPassword, RGB(100, 200, 100), true, 1);
-		else PutString(427 + SCREENX, 106 + SCREENY, cPassword, RGB(200, 100, 100), true, 1);
+		else {
+			PutString(427 + SCREENX, 106 + SCREENY, cPassword, RGB(200, 100, 100), true, 1);
+			iFlag = 7;
+		}
 	}
 
 	if (m_cCurFocus != 3) {
-		if (memcmp(cPassword, cConfirm, 10) == 0)
+		if (strcmp(cPassword, cConfirm) == 0)
 			PutString(427 + SCREENX, 129 + SCREENY, cConfirm, RGB(100, 200, 100), true, 1);
-		else PutString(427 + SCREENX, 129 + SCREENY, cConfirm, RGB(200, 100, 100), true, 1);
-	}
-	if (memcmp(cPassword, cConfirm, 10) != 0) iFlag = 9;
+		else {
+			PutString(427 + SCREENX, 129 + SCREENY, cConfirm, RGB(200, 100, 100), true, 1);
+			iFlag = 9;
+		}
+	} 
 
 	if (m_cCurFocus != 4) {
 		if (m_Misc.bIsValidEmail(m_cEmailAddr))
 			PutString2(311 + SCREENX, 48 + 190 - 25 + 2 + SCREENY, m_cEmailAddr, 100, 200, 100);
-		else PutString2(311 + SCREENX, 48 + 190 - 25 + 2 + SCREENY, m_cEmailAddr, 200, 100, 100);
+		else {
+			PutString2(311 + SCREENX, 48 + 190 - 25 + 2 + SCREENY, m_cEmailAddr, 200, 100, 100);
+			iFlag = 5;
+		}
 	}
 
 	wsprintf(cTempQuiz, "%s", cQuiz);
@@ -26115,12 +26137,10 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 
 	if (strlen(cAnswer) == 0)							iFlag = 11;
 	if (strlen(cTempQuiz) == 0)							iFlag = 10;
-	if (m_Misc.bCheckValidName(cPassword) == false)		iFlag = 7;
-	if (m_Misc.bCheckValidName(cName) == false)			iFlag = 6;
-	if (m_Misc.bIsValidEmail(m_cEmailAddr) == false)	iFlag = 5;
+
 	if (strlen(cConfirm) == 0)							iFlag = 3;
 	if (strlen(cPassword) == 0)							iFlag = 2;
-	if ((strlen(cName) == 0))							iFlag = 1;
+	if (strlen(cName) == 0)								iFlag = 1;
 
 	// Centuu - Reintroducidos mensajes de CreateAccount del cliente original.
 	switch (m_cCurFocus) {
@@ -26222,7 +26242,6 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 		break;
 	}
 
-
 	if ((iFlag == 0) && (m_cCurFocus == 7))
 		m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(199 + 98 + SCREENX, 398 + SCREENY, 25, dwTime);
 	else m_pSprite[DEF_SPRID_INTERFACE_ND_BUTTON2]->PutSpriteFast(199 + 98 + SCREENX, 398 + SCREENY, 24, dwTime);
@@ -26238,79 +26257,82 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	DrawVersion(true);
 	m_DInput.UpdateMouseState(&msX, &msY, &msZ, &cLB, &cRB);
 	m_pSprite[DEF_SPRID_MOUSECURSOR]->PutSpriteFast(msX, msY, 0, dwTime);
+	
 	if (m_bEnterPressed)
 	{
-		PlaySound('E', 14, 5);
-		switch (m_cCurFocus) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-		case 5:
-		case 6:
-			m_cCurFocus++;
-			if (m_cCurFocus > m_cMaxFocus) m_cCurFocus = 1;
-			break;
+		if (iFlag == 0)
+		{
+			PlaySound('E', 14, 5);
+			switch (m_cCurFocus) {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			case 6:
+				m_cCurFocus++;
+				if (m_cCurFocus > m_cMaxFocus) m_cCurFocus = 1;
+				break;
 
-		case 7:
-			if (iFlag != 0) return;
-			ZeroMemory(m_cAccountName, sizeof(m_cAccountName));
-			ZeroMemory(m_cAccountPassword, sizeof(m_cAccountPassword));
+			case 7:
+				ZeroMemory(m_cAccountName, sizeof(m_cAccountName));
+				ZeroMemory(m_cAccountPassword, sizeof(m_cAccountPassword));
 
-			ZeroMemory(m_cAccountQuiz, sizeof(m_cAccountQuiz));
-			ZeroMemory(m_cAccountAnswer, sizeof(m_cAccountAnswer));
+				ZeroMemory(m_cAccountQuiz, sizeof(m_cAccountQuiz));
+				ZeroMemory(m_cAccountAnswer, sizeof(m_cAccountAnswer));
 
-			strcpy(m_cAccountName, cName);
-			strcpy(m_cAccountPassword, cPassword);
+				strcpy(m_cAccountName, cName);
+				strcpy(m_cAccountPassword, cPassword);
 
-			strcpy(m_cAccountQuiz, cTempQuiz);
-			strcpy(m_cAccountAnswer, cAnswer);
-			m_cAccountQuiz[45] = ' ';
-			m_cAccountAnswer[20] = ' ';
+				strcpy(m_cAccountQuiz, cTempQuiz);
+				strcpy(m_cAccountAnswer, cAnswer);
+				m_cAccountQuiz[45] = ' ';
+				m_cAccountAnswer[20] = ' ';
 
-			ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
-			wsprintf(m_cAccountSSN, "%s-%s", cSSN_A, cSSN_B);
+				ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
+				wsprintf(m_cAccountSSN, "%s-%s", cSSN_A, cSSN_B);
 
-			if (memcmp(cPassword, cConfirm, 10) != 0)
-			{
-				ChangeGameMode(DEF_GAMEMODE_ONMSG);
+				if (strcmp(cPassword, cConfirm) != 0)
+				{
+					ChangeGameMode(DEF_GAMEMODE_ONMSG);
+					ZeroMemory(m_cMsg, sizeof(m_cMsg));
+					strcpy(m_cMsg, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT82);
+					//"Cannot create account! - password not match!"
+					delete pMI;
+					return;
+				}
+				m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
+				m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
+				m_pLSock->bInitBufferSize(30000);
+
+				ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
+				m_dwConnectMode = MSGID_REQUEST_CREATENEWACCOUNT;
 				ZeroMemory(m_cMsg, sizeof(m_cMsg));
-				strcpy(m_cMsg, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT82);
-				//"Cannot create account! - password not match!"
+				strcpy(m_cMsg, "00");
+				delete pMI;
+				return;
+
+			case 8:
+				ZeroMemory(cName, sizeof(cName));
+				ZeroMemory(cPassword, sizeof(cPassword));
+				ZeroMemory(cConfirm, sizeof(cConfirm));
+				ZeroMemory(m_cAccountAge, sizeof(m_cAccountAge));
+				ZeroMemory(m_cAccountCountry, sizeof(m_cAccountCountry));
+				ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
+				ZeroMemory(m_cEmailAddr, sizeof(m_cEmailAddr));
+				ZeroMemory(cSSN_A, sizeof(cSSN_A));
+				ZeroMemory(cSSN_B, sizeof(cSSN_B));
+				ZeroMemory(cQuiz, sizeof(cQuiz));
+				ZeroMemory(cTempQuiz, sizeof(cTempQuiz));
+				ZeroMemory(cAnswer, sizeof(cAnswer));
+
+				break;
+
+			case 9:
+				ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
 				delete pMI;
 				return;
 			}
-			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
-			m_pLSock->bInitBufferSize(30000);
-
-			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
-			m_dwConnectMode = MSGID_REQUEST_CREATENEWACCOUNT;
-			ZeroMemory(m_cMsg, sizeof(m_cMsg));
-			strcpy(m_cMsg, "00");
-			delete pMI;
-			return;
-
-		case 8:
-			ZeroMemory(cName, sizeof(cName));
-			ZeroMemory(cPassword, sizeof(cPassword));
-			ZeroMemory(cConfirm, sizeof(cConfirm));
-			ZeroMemory(m_cAccountAge, sizeof(m_cAccountAge));
-			ZeroMemory(m_cAccountCountry, sizeof(m_cAccountCountry));
-			ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
-			ZeroMemory(m_cEmailAddr, sizeof(m_cEmailAddr));
-			ZeroMemory(cSSN_A, sizeof(cSSN_A));
-			ZeroMemory(cSSN_B, sizeof(cSSN_B));
-			ZeroMemory(cQuiz, sizeof(cQuiz));
-			ZeroMemory(cTempQuiz, sizeof(cTempQuiz));
-			ZeroMemory(cAnswer, sizeof(cAnswer));
-
-			break;
-
-		case 9:
-			ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
-			delete pMI;
-			return;
 		}
 		m_bEnterPressed = false;
 	}
@@ -26341,7 +26363,7 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 			ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
 			wsprintf(m_cAccountSSN, "%s-%s", cSSN_A, cSSN_B);
 
-			if (memcmp(cPassword, cConfirm, 10) != 0)
+			if (strcmp(cPassword, cConfirm) != 0)
 			{
 				ChangeGameMode(DEF_GAMEMODE_ONMSG);
 				ZeroMemory(m_cMsg, sizeof(m_cMsg));
@@ -26566,7 +26588,7 @@ void CGame::UpdateScreen_OnSelectServer()
  int  iMIbuttonNum;
  static class CMouseInterface * pMI;
  static char  cPrevFocus;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
  bool bFlag = true;
 
 	sX = 146;
@@ -26736,7 +26758,7 @@ void CGame::OnSysKeyUp(WPARAM wParam)
 void CGame::OnKeyUp(WPARAM wParam)
 {
  int i=0;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = m_dwCurTime;// timeGetTime();
 
 	switch (wParam) {
 	case VK_SHIFT:
@@ -27406,7 +27428,7 @@ void CGame::UpdateScreen_OnQueryForceLogin()
 
 	static class CMouseInterface* pMI;
 	static UINT32 dwCTime;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 
 	if (m_cGameModeCount == 0) {
 		pMI = new class CMouseInterface;
@@ -27416,7 +27438,7 @@ void CGame::UpdateScreen_OnQueryForceLogin()
 		m_bEscPressed = false;
 		m_cArrowPressed = 0;
 
-		dwCTime = timeGetTime();
+		dwCTime = G_dwGlobalTime;// timeGetTime();
 
 		PlaySound('E', 25, 0);
 	}
@@ -27512,7 +27534,7 @@ void CGame::UpdateScreen_OnSelectCharacter(short sX, short sY, short msX, short 
 	int iYear, iMonth, iDay, iHour, iMinute;
 	UINT32 iTemp1, iTemp2;
 	char cTotalChar = 0;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime; // timeGetTime();
 	sY = 10;
 	m_DDraw.ClearBackB4();
 	DrawNewDialogBox(DEF_SPRID_INTERFACE_ND_SELECTCHAR3, 0 + SCREENX, 0 + SCREENY, 0);
@@ -27647,14 +27669,14 @@ void CGame::UpdateScreen_OnWaitingResponse()
 	short sX, sY, msX, msY, msZ;
 	char cLB, cRB;
 
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 	static UINT32 dwCTime;
 
 	if (m_cGameModeCount == 0)
 	{
 		m_bEnterPressed = false;
 		m_bEscPressed = false;
-		dwCTime = timeGetTime();
+		dwCTime = G_dwGlobalTime;// timeGetTime();
 	}
 	m_cGameModeCount++;
 	if (m_cGameModeCount > 100) m_cGameModeCount = 100;
@@ -27752,7 +27774,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 
 	static class CMouseInterface* pMI;
 	static UINT32 dwCTime;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime; // timeGetTime();
 
 	if (m_cGameModeCount == 0)
 	{
@@ -27762,7 +27784,7 @@ void CGame::UpdateScreen_OnQueryDeleteCharacter()
 		m_bEnterPressed = false;
 		m_cArrowPressed = 0;
 
-		dwCTime = timeGetTime();
+		dwCTime = G_dwGlobalTime; // timeGetTime();
 
 		PlaySound('E', 25, 0);
 	}
@@ -27871,7 +27893,7 @@ void CGame::NotifyMsgHandler(char * pData)
  int   * ip, i, iV1, iV2, iV3, iV4, j;
  bool* bp;
 
-	dwTime = timeGetTime();
+	dwTime = m_dwCurTime; // timeGetTime();
 
 	wp   = (UINT16 *)(pData + DEF_INDEX2_MSGTYPE);
 	wEventType = *wp;
@@ -29500,7 +29522,7 @@ NMH_LOOPBREAK2:;
 		if (*sp == 1)
 		{	AddEventList(NOTIFY_MSG_HANDLER40);//"Observer Mode On. Press 'SHIFT + ESC' to Log Out..."
 			m_bIsObserverMode = true;
-			m_dwObserverCamTime = timeGetTime();
+			m_dwObserverCamTime = dwTime;// timeGetTime();
 			char cName[12];
 			ZeroMemory(cName, sizeof(cName));
 			memcpy(cName, m_cPlayerName, 10);
@@ -29842,30 +29864,6 @@ NMH_LOOPBREAK2:;
 
 	case DEF_NOTIFY_TOP15HB: // MORLA 2.4 - Recibe la info de ek y Death
 		NotifyMsg_Top15HB(pData);
-		break;
-
-	case DEF_NOTIFY_DOUBLEKILL:
-		PlaySound('E', 54, 0, 0);
-		dwTimeLastMsg = (timeGetTime()+2*1000);
-		iKillAnnouncer = 1;
-		break;
-		
-	case DEF_NOTIFY_MONSTERKILL:
-		PlaySound('E', 57, 0, 0);
-		dwTimeLastMsg = (timeGetTime()+2*1000);
-		iKillAnnouncer = 2;
-		break;
-
-	case DEF_NOTIFY_KILLSPRING:
-		PlaySound('E', 56, 0, 0);
-		dwTimeLastMsg = (timeGetTime()+2*1000);
-		iKillAnnouncer = 3;
-		break;
-
-	case DEF_NOTIFY_HOLYSHIT:
-		PlaySound('E', 55, 0, 0);
-		dwTimeLastMsg = (timeGetTime()+2*1000);
-		iKillAnnouncer = 4;
 		break;
 
 	case DEF_NOTIFY_DOWNSKILLINDEXSET:
@@ -30477,7 +30475,7 @@ void CGame::UpdateScreen_OnLogResMsg()
 {
  short msX, msY, msZ, sX, sY;
  char  cLB, cRB;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
  static UINT32 dwCTime;
  static class CMouseInterface * pMI;
  int   iMIbuttonNum;
@@ -30491,7 +30489,7 @@ void CGame::UpdateScreen_OnLogResMsg()
 		m_bEnterPressed = false;
 		m_bEscPressed   = false;
 		m_cArrowPressed = 0;
-		dwCTime = timeGetTime();
+		dwCTime = G_dwGlobalTime;// timeGetTime();
 		if (m_bSoundFlag) m_pESound[38]->bStop();
 	}
 
@@ -31477,7 +31475,7 @@ void CGame::DlbBoxDoubleClick_Inventory(short msX, short msY)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_ARROW)
 				|| (m_pItemList[cItemID]->m_cItemType == DEF_ITEMTYPE_EAT) )
 			{	if (bCheckItemOperationEnabled(cItemID) == false) return;
-				if ((timeGetTime() - m_dwDamagedTime) < 10000)
+				if ((m_dwCurTime - m_dwDamagedTime) < 10000)
 				{	if ((m_pItemList[cItemID]->m_sSprite == 6) && (m_pItemList[cItemID]->m_sSpriteFrame == 9))
 					{	wsprintf(G_cTxt, BDLBBOX_DOUBLE_CLICK_INVENTORY3, cStr1);//"Item %s: Scrolls cannot be used until 10 seconds after taking damage."
 						AddEventList(G_cTxt, 10);
@@ -31617,7 +31615,7 @@ void CGame::UpdateScreen_OnChangePassword()
 	static class CMouseInterface* pMI;
 	static char  cName[12], cPassword[12], cNewPassword[12], cNewPassConfirm[12], cPrevFocus;
 	static UINT32 dwCTime;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 	bool bFlag = true;
 
 	if (m_cGameModeCount == 0) {
@@ -31995,7 +31993,7 @@ void CGame::DlgBoxClick_SysMenu(short msX, short msY)
 	if ((m_iHP <= 0) && (m_cRestartCount == -1))
 	{	if ((msX >= sX + DEF_RBTNPOSX) && (msX <= sX + DEF_RBTNPOSX + DEF_BTNSZX) && (msY >= sY + 225) && (msY <= sY + 225 + DEF_BTNSZY))
 		{	m_cRestartCount = 5;
-			m_dwRestartCountTime = timeGetTime();
+			m_dwRestartCountTime = m_dwCurTime;// timeGetTime();
 			DisableDialogBox(19);
 			wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 			AddEventList(G_cTxt, 10);
@@ -32102,7 +32100,7 @@ void CGame::DrawObjectName(short sX, short sY, char * pName, int iStatus)
 	short sR, sG, sB;
 	int i, iGuildIndex, iFOE, iAddY=0;
 	bool bPK, bCitizen, bAresden, bHunter, bGM = false;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = m_dwCurTime;// timeGetTime();
 	iFOE = _iGetFOE(iStatus);
 	if( iFOE < 0 )
 	{	sR = 255; sG = 0; sB = 0;
@@ -32336,7 +32334,7 @@ void CGame::UpdateScreen_OnVersionNotMatch()
  char cMIresult;
  int  iMIbuttonNum;
  static class CMouseInterface * pMI;
- UINT32 dwTime = timeGetTime();
+ UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 	if (m_cGameModeCount == 0)
 	{	if (G_pCalcSocket != 0)
 		{	delete G_pCalcSocket;
@@ -32385,7 +32383,8 @@ void CGame::UpdateScreen_OnVersionNotMatch()
 }
 
 void CGame::DrawVersion(bool bAuthor)
-{UINT32 dwTime = timeGetTime();
+{
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
  UINT16  wR, wG, wB;
 
 	m_Misc.ColorTransfer(m_DDraw.m_cPixelFormat, RGB(140, 140, 140), &wR, &wG, &wB);
@@ -33048,7 +33047,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 	short  sX, sY, sObjectType, tX, tY;
 	int iObjectStatus;
 	int    iRet;
-	UINT32  dwTime = timeGetTime();
+	UINT32  dwTime = m_dwCurTime;// timeGetTime();
 	UINT16   wType = 0;
 	int i;
 	char   cTxt[120];
@@ -33165,7 +33164,7 @@ void CGame::CommandProcessor(short msX, short msY, short indexX, short indexY, c
 							if (m_cRestartCount == -1)
 							{
 								m_cRestartCount = 5;
-								m_dwRestartCountTime = timeGetTime();
+								m_dwRestartCountTime = m_dwCurTime;// timeGetTime();
 								wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 								AddEventList(G_cTxt, 10);
 								PlaySound('E', 14, 5);
@@ -33386,7 +33385,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 			else PointCommandHandler(indexX, indexY);
 
 			m_bCommandAvailable = false;
-			m_dwCommandTime = timeGetTime();
+			m_dwCommandTime = m_dwCurTime;// timeGetTime();
 			m_bIsGetPointingMode = false;
 			return;
 		}
@@ -34418,7 +34417,7 @@ CP_SKIPMOUSEBUTTONSTATUS:;
 				10);
 			
 			m_bCommandAvailable = false;
-			m_dwCommandTime = timeGetTime();
+			m_dwCommandTime = m_dwCurTime;// timeGetTime();
 			return;
 		}
 	}
@@ -34481,12 +34480,16 @@ MOTION_COMMAND_PROCESS:;
 				if (m_pChatMsgList[i] == 0)
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
-					wsprintf(cTxt, "-%dHp", m_sDamageMoveAmount);
+					
+					if (m_sDamageMoveAmount > 0)
+						wsprintf(cTxt, "-%dHp", m_sDamageMoveAmount);
+					else 
+						wsprintf(cTxt, "Miss");
 
 					int iFontType;
-					if ((m_sDamageMoveAmount >= 0) && (m_sDamageMoveAmount < 20))        iFontType = 21;
+					if ((m_sDamageMoveAmount > 0) && (m_sDamageMoveAmount < 20))        iFontType = 21;
 					else if ((m_sDamageMoveAmount >= 20) && (m_sDamageMoveAmount < 50)) iFontType = 22;
-					else if (m_sDamageMoveAmount >= 50 || m_sDamageMoveAmount < 0) iFontType = 23;
+					else if (m_sDamageMoveAmount >= 50 || m_sDamageMoveAmount <= 0) iFontType = 23;
 
 					m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
@@ -34556,16 +34559,15 @@ MOTION_COMMAND_PROCESS:;
 						m_iPlayerStatus, m_cPlayerName,
 						m_cCommand, 0, 0, 0);
 					m_bCommandAvailable = false;
-					m_dwCommandTime = timeGetTime();
+					m_dwCommandTime = m_dwCurTime;// timeGetTime();
 					m_iPrevMoveX = m_sPlayerX;
 					m_iPrevMoveY = m_sPlayerY;
-				}
 
-				// Centuu : auto pickup gold
-				if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
-				{
-					bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, 0, 0, 0, 0);
-					
+					// Centuu : auto pickup gold
+					if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
+					{
+						bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, 0, 0, 0, 0);
+					}
 				}
 			}
 
@@ -34607,7 +34609,7 @@ MOTION_COMMAND_PROCESS:;
 					DEF_OBJECTATTACK,
 					m_sCommX - m_sPlayerX, m_sCommY - m_sPlayerY, wType);
 				m_bCommandAvailable = false;
-				m_dwCommandTime = timeGetTime();
+				m_dwCommandTime = m_dwCurTime;// timeGetTime();
 			}
 			m_cCommand = DEF_OBJECTSTOP;
 			break;
@@ -34649,15 +34651,15 @@ MOTION_COMMAND_PROCESS:;
 						m_iPlayerStatus, m_cPlayerName,
 						m_cCommand, m_sCommX - m_sPlayerX, m_sCommY - m_sPlayerY, wType);
 					m_bCommandAvailable = false;
-					m_dwCommandTime = timeGetTime();
+					m_dwCommandTime = m_dwCurTime;// timeGetTime();
 					m_iPrevMoveX = m_sPlayerX;
 					m_iPrevMoveY = m_sPlayerY;
-				}
-				// Centuu : auto pickup gold
-				if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
-				{
-					bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, 0, 0, 0, 0);
 
+					// Centuu : auto pickup gold
+					if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
+					{
+						bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, 0, 0, 0, 0);
+					}
 				}
 			}
 			m_cCommand = DEF_OBJECTSTOP;
@@ -34680,7 +34682,7 @@ MOTION_COMMAND_PROCESS:;
 				m_iPlayerStatus, m_cPlayerName,
 				DEF_OBJECTMAGIC, m_iCastingMagicType, 0, 0);
 			m_bCommandAvailable = false;
-			m_dwCommandTime = timeGetTime();
+			m_dwCommandTime = m_dwCurTime;// timeGetTime();
 			m_bIsGetPointingMode = true;
 			m_cCommand = DEF_OBJECTSTOP;
 			_RemoveChatMsgListByObjectID(m_sPlayerObjectID);
@@ -34689,7 +34691,7 @@ MOTION_COMMAND_PROCESS:;
 				{
 					ZeroMemory(cTxt, sizeof(cTxt));
 					wsprintf(cTxt, "%s!", m_pMagicCfgList[m_iCastingMagicType]->m_cName);
-					m_pChatMsgList[i] = new class CMsg(41, cTxt, timeGetTime());
+					m_pChatMsgList[i] = new class CMsg(41, cTxt, m_dwCurTime);
 					m_pChatMsgList[i]->m_iObjectID = m_sPlayerObjectID;
 					m_pMapData->bSetChatMsgOwner(m_sPlayerObjectID, -10, -10, i);
 					return;
@@ -34698,6 +34700,13 @@ MOTION_COMMAND_PROCESS:;
 
 		default:
 			break;
+		}
+	}
+	else {
+		// Centuu : auto pickup gold
+		if (m_pMapData->m_pData[m_sPlayerX - m_pMapData->m_sPivotX][m_sPlayerY - m_pMapData->m_sPivotY].m_sItemID == 90)
+		{
+			bSendCommand(MSGID_COMMAND_MOTION, DEF_OBJECTGETITEM, m_cPlayerDir, 0, 0, 0, 0);
 		}
 	}
 }
@@ -34759,7 +34768,7 @@ void CGame::UpdateScreen_OnGame()
 	char cLB, cRB;
 	char cItemColor;
 	int  i, iAmount;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime; //timeGetTime();
 	static UINT32 dwPrevChatTime = 0;
 	static int   imX = 0, imY = 0;
 	//50Cent Item Description

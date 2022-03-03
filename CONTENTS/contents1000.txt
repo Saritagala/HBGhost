@@ -1,10 +1,5 @@
-;Welcome to Helbreath Ghost!
+Welcome to Helbreath Ghost!
 .
-_Administration and Coordination by Nixu
-.
-/Coding and Features by Centuu
+by Centuu.-
 .
 .
-:Initial Release v1.0
-.
-^Beta Testing

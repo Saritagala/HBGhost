@@ -2312,6 +2312,11 @@ void CWorldLog::RequestSavePlayerData(int iClientH, char* pData, UINT32 dwMsgSiz
 	ZeroMemory(cGuildName, sizeof(cGuildName));
 	ZeroMemory(cMapName, sizeof(cMapName));
 	ZeroMemory(cMagicM, sizeof(cMagicM));
+	
+	ZeroMemory(cEquipStatus, sizeof(cEquipStatus));
+	ZeroMemory(cSkillMastery, sizeof(cSkillMastery));
+	ZeroMemory(cSkillSSN, sizeof(cSkillSSN));
+
 	ZeroMemory(cItemX, sizeof(cItemX));
 	ZeroMemory(cItemY, sizeof(cItemY));
 

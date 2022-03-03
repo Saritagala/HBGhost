@@ -2114,7 +2114,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							m_pData[dX][dY].m_iDeadStatus          = m_pData[dX][dY].m_iStatus;
 							m_pData[dX][dY].m_iDeadChatMsg         = m_pData[dX][dY].m_iChatMsg; // v1.411
 							m_pData[dX][dY].m_cDeadOwnerFrame	   = -1;
-							memcpy(m_pData[dX][dY].m_cDeadOwnerName, m_pData[dX][dY].m_cOwnerName, 11);
+							memcpy(m_pData[dX][dY].m_cDeadOwnerName, m_pData[dX][dY].m_cOwnerName, 10);
 							m_pData[dX][dY].m_wObjectID  = 0;
 							m_pData[dX][dY].m_sOwnerType = 0;
 							ZeroMemory(m_pData[dX][dY].m_cOwnerName, sizeof(m_pData[dX][dY].m_cOwnerName));

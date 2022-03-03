@@ -390,12 +390,7 @@ void CGame::OnClientSocketEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	case DEF_XSOCKEVENT_SOCKETCLOSED:
 		wsprintf(G_cTxt,"<%d> Client connection Lost! (%s)", iClientH, m_pClientList[iClientH]->m_cIPaddress);
 		PutLogList(G_cTxt); 
-		/****MODIFICATION****/
-		if ((dwTime - m_pClientList[iClientH]->m_dwLogoutHackCheck) < 10000) { // 1000 -> 10000
-			wsprintf(G_cTxt, "Logout Hack: (%s) Player: (%s) - disconnected within 10 seconds of most recent damage. Hack? Lag?", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
-			PutHackLogFileList(G_cTxt);
-		}
-		/********END*********/
+		
 		DeleteClient(iClientH, true, true, true, false);
 		break;
 	}													    
@@ -4327,7 +4322,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, UINT32 dw
 				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwCount = (UINT32)iTemp;
 				cReadModeB = 3;
 
-				if (memcmp(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName, "Gold", 4) == 0)
+				if (strcmp(m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_cName, "Gold") == 0)
 					iTotalGold += iTemp;
 				break;
 
@@ -4901,7 +4896,7 @@ bool CGame::_bDecodePlayerDatafileContents(int iClientH, char * pData, UINT32 dw
 				m_pClientList[iClientH]->m_pItemInBankList[iItemInBankIndex]->m_dwCount = (UINT32)iTemp;
 				cReadModeB = 3;
 
-				if (memcmp(m_pClientList[iClientH]->m_pItemInBankList[iItemInBankIndex]->m_cName, "Gold", 4) == 0)
+				if (strcmp(m_pClientList[iClientH]->m_pItemInBankList[iItemInBankIndex]->m_cName, "Gold") == 0)
 					iTotalGold += iTemp;
 				break;
 
@@ -6898,8 +6893,10 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 	//
 
 	ZeroMemory(cTxt, sizeof(cTxt));
+	ZeroMemory(cTmp, sizeof(cTmp));
+
 	for (i = 0; i < DEF_MAXMAGICTYPE; i++) {
-		wsprintf(cTmp, "%d", (int)m_pClientList[iClientH]->m_cMagicMastery[i]);
+		wsprintf(cTmp, "%d", m_pClientList[iClientH]->m_cMagicMastery[i]);
 		strcat(cTxt, cTmp);
 	}
 	memcpy(cp, cTxt, 100);
@@ -6907,6 +6904,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 	iSize += 100;
 
 	ZeroMemory(cTxt, sizeof(cTxt));
+	ZeroMemory(cTmp, sizeof(cTmp));
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{
 		wsprintf(cTmp, "%d", (char)m_pClientList[iClientH]->m_bIsItemEquipped[i]);
@@ -6917,6 +6915,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 	iSize += 50;
 
 	ZeroMemory(cTxt, sizeof(cTxt));
+	ZeroMemory(cTmp, sizeof(cTmp));
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{
 		wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].x);
@@ -6927,6 +6926,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 	iSize += 200;
 
 	ZeroMemory(cTxt, sizeof(cTxt));
+	ZeroMemory(cTmp, sizeof(cTmp));
 	for (i = 0; i < DEF_MAXITEMS; i++)
 	{
 		wsprintf(cTmp, "%d ", (short)m_pClientList[iClientH]->m_ItemPosList[i].y);
@@ -6938,6 +6938,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 
 	// skills
 	ZeroMemory(cTxt, sizeof(cTxt));
+	ZeroMemory(cTmp, sizeof(cTmp));
 	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
 		wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_cSkillMastery[i]);
 		strcat(cTxt, cTmp);
@@ -6947,6 +6948,7 @@ int CGame::_iComposePlayerDataFileContents(int iClientH, char* pData)
 	iSize += 170;
 	
 	ZeroMemory(cTxt, sizeof(cTxt));
+	ZeroMemory(cTmp, sizeof(cTmp));
 	for (i = 0; i < DEF_MAXSKILLTYPE; i++) {
 		wsprintf(cTmp, "%d ", m_pClientList[iClientH]->m_iSkillSSN[i]);
 		strcat(cTxt, cTmp);
@@ -9920,13 +9922,13 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 			if (m_pClientList[iClientH]->m_iPKCount == 0) {
 				// Innocent
 				if (m_pClientList[iAttackerH]->m_cSide == 0) {
-					m_pClientList[iClientH]->m_iExp -= iDice(1, 10000);
+					if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) m_pClientList[iClientH]->m_iExp -= iDice(1, 10000);
 					if (m_pClientList[iClientH]->m_iExp < 0) m_pClientList[iClientH]->m_iExp = 0;
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_EXP, 0, 0, 0, 0);
 				}
 				else {
 					if (m_pClientList[iClientH]->m_cSide == m_pClientList[iAttackerH]->m_cSide) {
-						m_pClientList[iClientH]->m_iExp -= iDice(1, 10000);
+						if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) m_pClientList[iClientH]->m_iExp -= iDice(1, 10000);
 						if (m_pClientList[iClientH]->m_iExp < 0) m_pClientList[iClientH]->m_iExp = 0;
 						SendNotifyMsg(0, iClientH, DEF_NOTIFY_EXP, 0, 0, 0, 0);
 					}
@@ -9952,6 +9954,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 			ZeroMemory(cTxt, sizeof(cTxt));
 			wsprintf(cTxt, "%s killed %s", m_pClientList[iAttackerH]->m_cCharName, m_pClientList[iClientH]->m_cCharName);
 			for (Killedi = 0; Killedi < DEF_MAXCLIENTS; Killedi++) {
+				if (Killedi == iAttackerH) continue;
 				if (m_pClientList[Killedi] != 0) {
 					SendNotifyMsg(0, Killedi, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, cTxt);
 				}
@@ -10003,7 +10006,7 @@ void CGame::ClientKilledHandler(int iClientH, int iAttackerH, char cAttackerType
 	else if (cAttackerType == DEF_OWNERTYPE_PLAYER_INDIRECT) {
 		_bPKLog(DEF_PKLOG_BYOTHER,iClientH,0,0) ;
 		// ÇÃ·¹ÀÌ¾î°¡ Á×¾úÁö¸¸ °ø°ÝÀÚ°¡ °£Á¢ÀûÀÌ´Ù. ¾Æ¹«·± ¿µÇâÀÌ ¾ø´Ù.
-		m_pClientList[iClientH]->m_iExp -= iDice(1, 10000);
+		if (m_pClientList[iClientH]->m_iAdminUserLevel < 1) m_pClientList[iClientH]->m_iExp -= iDice(1, 10000);
 		if (m_pClientList[iClientH]->m_iExp < 0) m_pClientList[iClientH]->m_iExp = 0;
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_EXP, 0, 0, 0, 0);
 	}
@@ -17410,7 +17413,10 @@ void CGame::MultiplicadorExp(int Client, UINT32 Exp)
 {
 	if (m_pClientList[Client] == 0) return;
 
-	m_pClientList[Client]->m_iExp += Exp* m_iExpSetting;
+	if (m_pClientList[Client]->m_iAdminUserLevel > 0)
+		m_pClientList[Client]->m_iExp = 0;
+	else
+		m_pClientList[Client]->m_iExp += Exp* m_iExpSetting;
 	
 	if (bCheckLimitedUser(Client) == false) {
 		// ÃƒÂ¼Ã‡Ã¨Ã†Ã‡ Â»Ã§Â¿Ã«Ã€Ãš ÃÂ¦Ã‡Ã‘Â¿Â¡ Ã‡Ã˜Â´Ã§ÂµÃ‡ÃÃ¶ Â¾ÃŠÃ€Â¸Â¸Ã© Â°Ã¦Ã‡Ã¨Ã„Â¡Â°Â¡ Â¿ÃƒÂ¶ÃºÂ´Ã™Â´Ã‚ Ã…Ã«ÂºÂ¸Â¸Â¦ Ã‡Ã‘Â´Ã™.
@@ -17907,7 +17913,7 @@ void CGame::bCheckClientAttackFrequency(int iClientH, UINT32 dwClientTime)
 		dwTimeGap = dwClientTime - m_pClientList[iClientH]->m_dwAttackFreqTime;
 		m_pClientList[iClientH]->m_dwAttackFreqTime = dwClientTime;
 
-		if (dwTimeGap < 450) {
+		if (dwTimeGap < 1000) {
 			wsprintf(G_cTxt, "Swing Hack: (%s) Player: (%s) - attacking with weapon at irregular rates.", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 			PutHackLogFileList(G_cTxt);
 
@@ -23575,6 +23581,7 @@ void CGame::bCheckLevelUp(int iClientH)
 {
 	class CItem* pItem;
 	if (m_pClientList[iClientH] == 0) return;
+	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0) return;
 	while (m_pClientList[iClientH]->m_iExp >= m_pClientList[iClientH]->m_iNextLevelExp)
 	{ 
 		if (m_pClientList[iClientH]->m_iLevel < m_iPlayerMaxLevel)
@@ -24379,8 +24386,6 @@ void CGame::InitPlayerData(int iClientH, char * pData, UINT32 dwSize)
 	if (m_pClientList[iClientH]->m_iLevel > 49 && m_pClientList[iClientH]->m_bIsPlayerCivil) {
 		ForceChangePlayMode(iClientH);
 	}
-
-	m_pClientList[iClientH]->m_iNextLevelExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel + 1];
 	
 	CalcTotalItemEffect(iClientH, -1, true);
 	iCalcTotalWeight(iClientH);
@@ -24393,7 +24398,10 @@ void CGame::InitPlayerData(int iClientH, char * pData, UINT32 dwSize)
 	
 	if (m_pClientList[iClientH]->m_iAdminUserLevel > 0) {
 		SetInvisibilityFlag(iClientH, DEF_OWNERTYPE_PLAYER, true);
+		m_pClientList[iClientH]->m_iNextLevelExp = 1;
 	}		
+	else m_pClientList[iClientH]->m_iNextLevelExp = m_iLevelExpTable[m_pClientList[iClientH]->m_iLevel + 1];
+
 	if ((cGuildStatus == 0) && (memcmp(m_pClientList[iClientH]->m_cGuildName, "NONE", 4) != 0)) {
 		ZeroMemory(m_pClientList[iClientH]->m_cGuildName, sizeof(m_pClientList[iClientH]->m_cGuildName));
 		strcpy(m_pClientList[iClientH]->m_cGuildName, "NONE");

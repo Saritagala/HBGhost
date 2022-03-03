@@ -30,7 +30,7 @@ Public Class Settings
         Me.Close()
     End Sub
     Private Sub SaveSettings()
-        Dim FileLine(19) As String
+        Dim FileLine(20) As String
         If Me.Text.Contains("*") Then
             Me.Text = actualText
             FileLine(0) = "[CONFIG]"
@@ -53,24 +53,25 @@ Public Class Settings
             FileLine(17) = "quest-helper = " & chkQuestHelper.CheckState
             FileLine(18) = "show-big-items = " & chkBigItems.CheckState
             FileLine(19) = "use-old-panels = " & chkOldPanels.CheckState
-            Dim objWriter As New StreamWriter(FILE_NAME)
-            For i = 0 To 19
-                objWriter.WriteLine(FileLine(i))
-            Next
-            objWriter.Close()
+            FileLine(20) = "auto-ek-ss = " & chkAutoSS.CheckState
+            Using objWriter As New StreamWriter(FILE_NAME)
+                For i = 0 To 20
+                    objWriter.WriteLine(FileLine(i))
+                Next
+            End Using
         End If
         MsgBox("Changes saved!", vbOKOnly + vbInformation, "Done")
     End Sub
     Private Sub LoadSettings()
-        Dim FileLine(19) As String
+        Dim FileLine(20) As String
         Dim line As String()
-        Dim reader As New StreamReader(FILE_NAME, Encoding.Default)
-        For i = 0 To 19
-            line = reader.ReadLine().Split("=")
-            If line.Contains("[CONFIG]") Then Continue For
-            FileLine(i) = line(1)
-        Next
-        reader.Close()
+        Using reader As New StreamReader(FILE_NAME)
+            For i = 0 To 20
+                line = reader.ReadLine().Split("=")
+                If line.Contains("[CONFIG]") Then Continue For
+                FileLine(i) = line(1)
+            Next
+        End Using
         chkMusic.CheckState = FileLine(1).Trim
         scrMusic.Value = FileLine(2).Trim
         chkSound.CheckState = FileLine(3).Trim
@@ -90,6 +91,7 @@ Public Class Settings
         chkQuestHelper.CheckState = FileLine(17).Trim
         chkBigItems.CheckState = FileLine(18).Trim
         chkOldPanels.CheckState = FileLine(19).Trim
+        chkAutoSS.CheckState = FileLine(20).Trim
     End Sub
     Private Sub chkMusic_CheckedChanged(sender As Object, e As EventArgs) Handles chkMusic.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
@@ -140,6 +142,9 @@ Public Class Settings
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
     End Sub
     Private Sub CheckBox1_CheckedChanged_1(sender As Object, e As EventArgs) Handles chkOldPanels.CheckedChanged
+        If Not Me.Text.Contains("*") Then Me.Text &= "*"
+    End Sub
+    Private Sub CheckBox1_CheckedChanged_2(sender As Object, e As EventArgs) Handles chkAutoSS.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"
     End Sub
 End Class

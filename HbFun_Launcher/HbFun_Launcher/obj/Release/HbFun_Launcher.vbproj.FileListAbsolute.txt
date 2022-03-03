@@ -65,7 +65,6 @@ C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbF
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\bin\Release\System.Numerics.Vectors.xml
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\bin\Release\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\bin\Release\System.Text.Encoding.CodePages.xml
-C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\HbFun_Launcher.vbprojAssemblyReference.cache
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.Launcher.resources
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.Resources.resources
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.Settings.resources
@@ -102,3 +101,5 @@ C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\Hb
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.xml
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\Launcher.pdb
 C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HBGhost\HBGhost\HbFun_Launcher\HbFun_Launcher\bin\Release\System.IO.Compression.dll
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\bin\Release\System.IO.Compression.dll
+C:\Users\jcenturion\OneDrive - DXC Production\Desktop\HBGhost\HbFun_Launcher\HbFun_Launcher\obj\Release\HbFun_Launcher.vbproj.AssemblyReference.cache

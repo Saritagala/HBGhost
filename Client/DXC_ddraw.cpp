@@ -98,7 +98,7 @@ bool DXC_ddraw::bInit(HWND hWnd)
 		if (ddVal != DD_OK) return false;
 
 #ifdef RES_HIGH
-		ddVal = m_lpDD4->SetDisplayMode(800, 600, 16, 60, DDSDM_STANDARDVGAMODE);
+		ddVal = m_lpDD4->SetDisplayMode(800, 600, 16, 0, 0);
 #else
 		ddVal = m_lpDD4->SetDisplayMode(640, 480, 16,0,0);
 #endif
@@ -317,7 +317,7 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 		ddVal = m_lpDD4->SetCooperativeLevel(hWnd, DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
 		if (ddVal != DD_OK) return;
 #ifdef RES_HIGH
-		ddVal = m_lpDD4->SetDisplayMode(800, 600, 16, 60, DDSDM_STANDARDVGAMODE);
+		ddVal = m_lpDD4->SetDisplayMode(800, 600, 16, 0, 0);
 #else
 		ddVal = m_lpDD4->SetDisplayMode(640, 480, 16,0,0);
 #endif

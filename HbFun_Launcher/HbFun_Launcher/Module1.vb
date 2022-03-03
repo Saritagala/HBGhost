@@ -1,6 +1,6 @@
 ﻿Module Module1
     Private Declare Auto Function SetProcessWorkingSetSize Lib "kernel32.dll" (procHandle As IntPtr, min As Int32, max As Int32) As Boolean
-    'Public ip As String = "helbreathghost.ddns.net"
+    'Public ip As String = "181.44.105.64:8080"
     Public ip As String = "192.168.0.28:8080"
     Public Sub LiberarMemoria()
         Try

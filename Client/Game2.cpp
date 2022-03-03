@@ -1017,7 +1017,7 @@ void CGame::DrawDialogBox_CrusadeJob(short msX, short msY)
 void CGame::_Draw_OnLogin(char *pAccount, char *pPassword, int msX, int msY, int iFrame)
 {
 	bool bFlag = true;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = G_dwGlobalTime;// timeGetTime();
 
 	m_DDraw.ClearBackB4();
 
@@ -1400,11 +1400,16 @@ void CGame::MotionEventHandler(char* pData)
 			{	/* Showing real damage done to NPCs instead of Critical!
 				Credit goes to: 50Cent, SleeQ, Matt */
 				ZeroMemory(cTxt, sizeof(cTxt));
-				wsprintf(cTxt, "-%dHp", iDamage);
+				
+				if (iDamage > 0)
+					wsprintf(cTxt, "-%dHp", iDamage);
+				else
+					wsprintf(cTxt, "Miss");
+
 				int iFontType;
-				if ((iDamage >= 0) && (iDamage < 20))        iFontType = 21;
+				if ((iDamage > 0) && (iDamage < 20))        iFontType = 21;
 				else if ((iDamage >= 20) && (iDamage < 50)) iFontType = 22;
-				else if (iDamage >= 50 || iDamage < 0)    iFontType = 23;
+				else if (iDamage >= 50 || iDamage <= 0)    iFontType = 23;
 				m_pChatMsgList[i] = new class CMsg(iFontType, cTxt, m_dwCurTime);
 				m_pChatMsgList[i]->m_iObjectID = wObjectID - 30000;
 				if (m_pMapData->bSetChatMsgOwner(wObjectID - 30000, -10, -10, i) == false)
@@ -2626,7 +2631,7 @@ void CGame::DrawDialogBox_ItemUpgrade(int msX, int msY)
 {
 	int i, sX, sY, iValue;
 	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = m_dwCurTime;// timeGetTime();
 
 	sX = m_stDialogBoxInfo[34].sX;
 	sY = m_stDialogBoxInfo[34].sY;
@@ -3174,7 +3179,7 @@ void CGame::DrawDialogBox_Enchanting(int msX, int msY)
 {
 	int i, sX, sY;
 	char cItemColor, cStr1[120], cStr2[120], cStr3[120], cStr4[120], cStr5[120], cStr6[120];
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = m_dwCurTime;// timeGetTime();
 	int iLoc, iLenSize, iEntry = 0;
 
 	sX = m_stDialogBoxInfo[44].sX;
@@ -3947,16 +3952,16 @@ void CGame::UseMagic(int iMagicNo)
 	}
 
 	// centu: release shield when cast
-	for (int i = 0; i < DEF_MAXITEMS; i++)
-	if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))
-	{
-		if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_LHAND) 
-		{
-			bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, 0, i, 0, 0, 0); //
-			m_bIsItemEquipped[i] = false;
-			m_sItemEquipmentStatus[m_pItemList[i]->m_cEquipPos] = -1;
-		}
-	}
+	//for (int i = 0; i < DEF_MAXITEMS; i++)
+	//if ((m_pItemList[i] != 0) && (m_bIsItemEquipped[i] == true))
+	//{
+	//	if (m_pItemList[i]->m_cEquipPos == DEF_EQUIPPOS_LHAND) 
+	//	{
+	//		bSendCommand(MSGID_COMMAND_COMMON, DEF_COMMONTYPE_RELEASEITEM, 0, i, 0, 0, 0); //
+	//		m_bIsItemEquipped[i] = false;
+	//		m_sItemEquipmentStatus[m_pItemList[i]->m_cEquipPos] = -1;
+	//	}
+	//}
 	
 	if (m_bSkillUsingStatus == true)
 	{
@@ -9509,7 +9514,7 @@ void CGame::DrawDialogBox_OnlineUsers(short msX, short msY, short msZ, char cLB)
 {
 	short sX, sY;
 
-	UINT32 dwTime = timeGetTime(); //LifeX Fix User Refresh
+	UINT32 dwTime = m_dwCurTime;// timeGetTime(); //LifeX Fix User Refresh
 	int  i, iTemp;
 	char cTemp[255], cTemp2[255], cStr2[255], cStr3[255];
 
@@ -9703,7 +9708,7 @@ void CGame::DlgBoxClick_OnlineUsers(int msX, int msY)
 	char cTemp[21];
 
 	//LifeX Fix User Refresh
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = m_dwCurTime;// timeGetTime();
 
 	sX = m_stDialogBoxInfo[60].sX;
 	sY = m_stDialogBoxInfo[60].sY;
@@ -10708,7 +10713,7 @@ void CGame::DrawDialogBox_Bank(short msX, short msY, short msZ, char cLB)
 	int  iMaxPage, j, i, iLoc;
 	char cTotalItems, cItemColor, cStr1[64], cStr2[64], cStr3[64], cStr4[64], cStr5[64], cStr6[64];
 	bool bFlag;
-	UINT32 dwTime = timeGetTime();
+	UINT32 dwTime = m_dwCurTime;// timeGetTime();
 	sX = m_stDialogBoxInfo[14].sX;
 	sY = m_stDialogBoxInfo[14].sY;
 	szX = m_stDialogBoxInfo[14].sSizeX - 5;
@@ -11912,18 +11917,18 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		else    PutAlignedString(sX, sX + szX, sY + 95, DRAW_DIALOGBOX_CITYHALL_MENU4, 65, 65, 65);			//"
 
 		// 3.51 Cityhall Menu - Request Hero's Items - Diuuude
-		if ((m_iEnemyKillCount >= 0) && (m_iContribution >= 0))
+		if ((m_iEnemyKillCount > 0) && (m_iContribution > 0))
 		{
 			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 120) && (msY < sY + 145))
 				PutAlignedString(sX, sX + szX, sY + 120, DRAW_DIALOGBOX_CITYHALL_MENU8, 255, 255, 255);
 			else PutAlignedString(sX, sX + szX, sY + 120, DRAW_DIALOGBOX_CITYHALL_MENU8, 4, 0, 50);
 		}
-		else    PutAlignedString(sX, sX + szX, sY + 120, DRAW_DIALOGBOX_CITYHALL_MENU8, 65, 65, 65);
+		else PutAlignedString(sX, sX + szX, sY + 120, DRAW_DIALOGBOX_CITYHALL_MENU8, 65, 65, 65);
 
 		// Cancel quest
-				if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 145) && (msY < sY + 170))
-					PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 255, 255, 255);//"
-				else PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 4, 0, 50);//"
+		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 145) && (msY < sY + 170))
+			PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 255, 255, 255);//"
+		else PutAlignedString(sX, sX + szX, sY + 145, "Quest List", 4, 0, 50);//"
 
 		// change playmode
 		if ((m_bIsCrusadeMode == false) && m_bCitizen && (m_iPKCount == 0))
@@ -11971,10 +11976,12 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 		else PutAlignedString(sX, sX + szX, sY + 240, "Trade Market", 4, 0, 50);//"
 
 		//MORLA 2.4 - DK Set
-		if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 260) && (msY < sY + 273))
-			PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 255, 255, 255);//"Change the crusade assignment."
-		else PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 4, 0, 50);//"
-
+		if (m_iLevel >= DEF_LEVEL_LIMIT) {
+			if ((msX > sX + 35) && (msX < sX + 220) && (msY > sY + 260) && (msY < sY + 273))
+				PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 255, 255, 255);//"Change the crusade assignment."
+			else PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 4, 0, 50);//"
+		}
+		else    PutAlignedString(sX, sX + szX, sY + 220, "Take the Dark Knight's items.", 65, 65, 65);
 
 		break;
 
@@ -17715,7 +17722,7 @@ void CGame::NotifyMsg_HP(char * pData) //LifeX Fix HP Regen Bugs MP 01/01
 			m_cLogOutCount = -1;
 			AddEnergyList(NOTIFYMSG_HP2, 2);
 		}
-		m_dwDamagedTime = timeGetTime();
+		m_dwDamagedTime = m_dwCurTime;// timeGetTime();
 		if (m_iHP < 20) AddEnergyList(NOTIFYMSG_HP3, 2);
 		if ((iPrevHP - m_iHP) < 10) return;
 		wsprintf(cTxt, NOTIFYMSG_HP_DOWN, iPrevHP - m_iHP);
@@ -21723,7 +21730,7 @@ void CGame::MotionResponseHandler(char * pData)
 			{
 				wsprintf(G_cTxt, NOTIFYMSG_HP_DOWN, iPreHP - m_iHP);
 				AddEnergyList(G_cTxt, 2);
-				m_dwDamagedTime = timeGetTime();
+				m_dwDamagedTime = m_dwCurTime;// timeGetTime();
 				if ((m_cLogOutCount>0) && (m_bForceDisconn == false))
 				{
 					m_cLogOutCount = -1;
@@ -22469,7 +22476,7 @@ void CGame::DlgBoxClick_ArenaRestart(short msX, short msY)
 	if ((msX >= sX + 30) && (msX <= sX + 30 + DEF_BTNSZX) && (msY >= sY + 55) && (msY <= sY + 55 + DEF_BTNSZY))
 	{   // yes
 		m_cRestartCount = 5;
-		m_dwRestartCountTime = timeGetTime();
+		m_dwRestartCountTime = m_dwCurTime;// timeGetTime();
 		DisableDialogBox(46);
 		wsprintf(G_cTxt, DLGBOX_CLICK_SYSMENU1, m_cRestartCount); // "Restarting game....%d"
 		AddEventList(G_cTxt, 10);
@@ -22925,7 +22932,9 @@ void CGame::DlgBoxClick_GeneralPanel(short msX, short msY)
 		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
 			if (m_bUseOldPanels) m_bUseOldPanels = false; else m_bUseOldPanels = true;
 
-		
+		iNext++;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+			if (m_bAutoSS) m_bAutoSS = false; else m_bAutoSS = true;
 
 		//Back
 		if ((msX > sX + 220) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330)) {
@@ -23453,6 +23462,16 @@ void CGame::DrawDialogBox_GeneralPanel(short msX, short msY, short msZ, char cLB
 		else PutString2(sX + 25, sY + iNext * 17 + 45, "Use Old-Style Panels", 19, 104, 169);
 
 		if (m_bUseOldPanels) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
+		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
+
+		iNext++;
+		if ((msX >= sX + 20) && (msX <= sX + 220) && (msY >= sY + iNext * 17 + 45) && (msY <= sY + iNext * 17 + 59))
+		{
+			PutString2(sX + 25, sY + iNext * 17 + 45, "Auto EK Screenshot", 255, 255, 255);
+		}
+		else PutString2(sX + 25, sY + iNext * 17 + 45, "Auto EK Screenshot", 19, 104, 169);
+
+		if (m_bAutoSS) PutString2(sX + 200, sY + iNext * 17 + 45, "ON", 0, 255, 0);
 		else PutString2(sX + 200, sY + iNext * 17 + 45, "OFF", 255, 0, 0);
 
 		if ((msX > sX + 210) && (msX < sX + 240) && (msY > sY + 315) && (msY < sY + 330))
@@ -24042,7 +24061,7 @@ void CGame::minimapblue_update(char* cp)
 	u.id = h;
 	u.x = x;
 	u.y = y;
-	auto t = timeGetTime();
+	auto t = m_dwCurTime;// timeGetTime();
 	u.time = t;
 	m_minimapblue.Remove(h);
 	m_minimapblue.list.push_back(u);
@@ -24077,7 +24096,7 @@ void CGame::minimapred_update(char* cp)
 	u.id = h;
 	u.x = x;
 	u.y = y;
-	auto t = timeGetTime();
+	auto t = m_dwCurTime;// timeGetTime();
 	u.time = t;
 	m_minimapred.Remove(h);
 
@@ -24114,7 +24133,7 @@ void CGame::minimapgreen_update(char* cp)
 	u.id = h;
 	u.x = x;
 	u.y = y;
-	auto t = timeGetTime();
+	auto t = m_dwCurTime;// timeGetTime();
 	u.time = t;
 	m_minimapgreen.Remove(h);
 	m_minimapgreen.list.push_back(u);
@@ -24149,7 +24168,7 @@ void CGame::minimapyellow_update(char* cp)
 	u.id = h;
 	u.x = x;
 	u.y = y;
-	auto t = timeGetTime();
+	auto t = m_dwCurTime;// timeGetTime();
 	u.time = t;
 	m_minimapyellow.Remove(h);
 	m_minimapyellow.list.push_back(u);
@@ -24184,7 +24203,7 @@ void CGame::minimaporange_update(char* cp)
 	u.id = h;
 	u.x = x;
 	u.y = y;
-	auto t = timeGetTime();
+	auto t = m_dwCurTime;// timeGetTime();
 	u.time = t;
 	m_minimaporange.Remove(h);
 	m_minimaporange.list.push_back(u);
