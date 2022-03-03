@@ -11981,7 +11981,7 @@ void CGame::DrawDialogBox_CityHallMenu(short msX, short msY)
 				PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 255, 255, 255);//"Change the crusade assignment."
 			else PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 4, 0, 50);//"
 		}
-		else    PutAlignedString(sX, sX + szX, sY + 220, "Take the Dark Knight's items.", 65, 65, 65);
+		else    PutAlignedString(sX, sX + szX, sY + 260, "Take the Dark Knight's items.", 65, 65, 65);
 
 		break;
 

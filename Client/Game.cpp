@@ -26260,80 +26260,79 @@ void CGame::UpdateScreen_OnCreateNewAccount()
 	
 	if (m_bEnterPressed)
 	{
-		if (iFlag == 0)
-		{
-			PlaySound('E', 14, 5);
-			switch (m_cCurFocus) {
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-				m_cCurFocus++;
-				if (m_cCurFocus > m_cMaxFocus) m_cCurFocus = 1;
-				break;
+		PlaySound('E', 14, 5);
+		switch (m_cCurFocus) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+			m_cCurFocus++;
+			if (m_cCurFocus > m_cMaxFocus) m_cCurFocus = 1;
+			break;
 
-			case 7:
-				ZeroMemory(m_cAccountName, sizeof(m_cAccountName));
-				ZeroMemory(m_cAccountPassword, sizeof(m_cAccountPassword));
+		case 7:
+			if (iFlag != 0) return;
+			ZeroMemory(m_cAccountName, sizeof(m_cAccountName));
+			ZeroMemory(m_cAccountPassword, sizeof(m_cAccountPassword));
 
-				ZeroMemory(m_cAccountQuiz, sizeof(m_cAccountQuiz));
-				ZeroMemory(m_cAccountAnswer, sizeof(m_cAccountAnswer));
+			ZeroMemory(m_cAccountQuiz, sizeof(m_cAccountQuiz));
+			ZeroMemory(m_cAccountAnswer, sizeof(m_cAccountAnswer));
 
-				strcpy(m_cAccountName, cName);
-				strcpy(m_cAccountPassword, cPassword);
+			strcpy(m_cAccountName, cName);
+			strcpy(m_cAccountPassword, cPassword);
 
-				strcpy(m_cAccountQuiz, cTempQuiz);
-				strcpy(m_cAccountAnswer, cAnswer);
-				m_cAccountQuiz[45] = ' ';
-				m_cAccountAnswer[20] = ' ';
+			strcpy(m_cAccountQuiz, cTempQuiz);
+			strcpy(m_cAccountAnswer, cAnswer);
+			m_cAccountQuiz[45] = ' ';
+			m_cAccountAnswer[20] = ' ';
 
-				ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
-				wsprintf(m_cAccountSSN, "%s-%s", cSSN_A, cSSN_B);
+			ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
+			wsprintf(m_cAccountSSN, "%s-%s", cSSN_A, cSSN_B);
 
-				if (strcmp(cPassword, cConfirm) != 0)
-				{
-					ChangeGameMode(DEF_GAMEMODE_ONMSG);
-					ZeroMemory(m_cMsg, sizeof(m_cMsg));
-					strcpy(m_cMsg, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT82);
-					//"Cannot create account! - password not match!"
-					delete pMI;
-					return;
-				}
-				m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
-				m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
-				m_pLSock->bInitBufferSize(30000);
-
-				ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
-				m_dwConnectMode = MSGID_REQUEST_CREATENEWACCOUNT;
+			if (strcmp(cPassword, cConfirm) != 0)
+			{
+				ChangeGameMode(DEF_GAMEMODE_ONMSG);
 				ZeroMemory(m_cMsg, sizeof(m_cMsg));
-				strcpy(m_cMsg, "00");
-				delete pMI;
-				return;
-
-			case 8:
-				ZeroMemory(cName, sizeof(cName));
-				ZeroMemory(cPassword, sizeof(cPassword));
-				ZeroMemory(cConfirm, sizeof(cConfirm));
-				ZeroMemory(m_cAccountAge, sizeof(m_cAccountAge));
-				ZeroMemory(m_cAccountCountry, sizeof(m_cAccountCountry));
-				ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
-				ZeroMemory(m_cEmailAddr, sizeof(m_cEmailAddr));
-				ZeroMemory(cSSN_A, sizeof(cSSN_A));
-				ZeroMemory(cSSN_B, sizeof(cSSN_B));
-				ZeroMemory(cQuiz, sizeof(cQuiz));
-				ZeroMemory(cTempQuiz, sizeof(cTempQuiz));
-				ZeroMemory(cAnswer, sizeof(cAnswer));
-
-				break;
-
-			case 9:
-				ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
+				strcpy(m_cMsg, UPDATE_SCREEN_ON_CREATE_NEW_ACCOUNT82);
+				//"Cannot create account! - password not match!"
 				delete pMI;
 				return;
 			}
+			m_pLSock = new class XSocket(m_hWnd, DEF_SOCKETBLOCKLIMIT);
+			m_pLSock->bConnect(m_cLogServerAddr, m_iLogServerPort, WM_USER_LOGSOCKETEVENT);
+			m_pLSock->bInitBufferSize(30000);
+
+			ChangeGameMode(DEF_GAMEMODE_ONCONNECTING);
+			m_dwConnectMode = MSGID_REQUEST_CREATENEWACCOUNT;
+			ZeroMemory(m_cMsg, sizeof(m_cMsg));
+			strcpy(m_cMsg, "00");
+			delete pMI;
+			return;
+
+		case 8:
+			ZeroMemory(cName, sizeof(cName));
+			ZeroMemory(cPassword, sizeof(cPassword));
+			ZeroMemory(cConfirm, sizeof(cConfirm));
+			ZeroMemory(m_cAccountAge, sizeof(m_cAccountAge));
+			ZeroMemory(m_cAccountCountry, sizeof(m_cAccountCountry));
+			ZeroMemory(m_cAccountSSN, sizeof(m_cAccountSSN));
+			ZeroMemory(m_cEmailAddr, sizeof(m_cEmailAddr));
+			ZeroMemory(cSSN_A, sizeof(cSSN_A));
+			ZeroMemory(cSSN_B, sizeof(cSSN_B));
+			ZeroMemory(cQuiz, sizeof(cQuiz));
+			ZeroMemory(cTempQuiz, sizeof(cTempQuiz));
+			ZeroMemory(cAnswer, sizeof(cAnswer));
+
+			break;
+
+		case 9:
+			ChangeGameMode(DEF_GAMEMODE_ONMAINMENU);
+			delete pMI;
+			return;
 		}
+		
 		m_bEnterPressed = false;
 	}
 
