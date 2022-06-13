@@ -30,7 +30,7 @@ public:
 	int	 m_iMaxValue;
 	int  m_iAverageValue;	
 	int   m_iMaxSkill;					// 이 아이템을 제작해서 올릴 수 있는 최대 스킬
-	UINT16  m_wAttribute;					// 아이템의 속성을 부여할 수 있다.
+	WORD  m_wAttribute;					// 아이템의 속성을 부여할 수 있다.
 };
 
 #endif // !defined(AFX_BUILDITEM_H__D8858F0E_7737_4E39_9BF9_960C73B0727A__INCLUDED_)

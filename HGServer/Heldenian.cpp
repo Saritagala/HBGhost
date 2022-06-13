@@ -54,7 +54,7 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 	int ix, iy;
 	int   iDynamicObjectIndex, iIndex;
 	class CTile* pTile;
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 	if (m_pMapList[cMapIndex] == 0)									return false;
 	if ((m_bHeldenianWarInitiated == false) && (bAutoFlag == false))		return false; // War must be started is player flag
 	if (m_cHeldenianWinner != -1)										return false; // War must not be finished
@@ -141,7 +141,7 @@ bool CGame::__bSetOccupyFlag(char cMapIndex, int dX, int dY, int iSide, int iEKN
 			&& (m_pClientList[iClientH]->m_cSide != m_sLastHeldenianWinner) // only by attacker side
 			&& (m_iGodHMapIndex == cMapIndex))								// only on GodHMap
 		{
-			m_pClientList[iClientH]->m_iWarContribution += (1000 * iEKNum); // float bonus for gm putting the flag...
+			m_pClientList[iClientH]->m_iWarContribution += (1000 * iEKNum); // double bonus for gm putting the flag...
 			HeldenianVictoryNow(m_pClientList[iClientH]->m_cSide);
 		}
 		// give some Summon points in case the character was killed, he will be able to catch more scrolls..
@@ -207,9 +207,9 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 	int   i, iNum, iRet, iEraseReq, iEKNum;
 	char* cp, cData[256], cItemName[21];
 	class CItem* pItem;
-	UINT32* dwp;
+	DWORD* dwp;
 	short* sp;
-	UINT16* wp;
+	WORD* wp;
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iEnemyKillCount < 10) return;
 	if (m_pClientList[iClientH]->m_cSide < 0) return;
@@ -258,16 +258,16 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 				PutLogList(G_cTxt);
 				PutItemLogFileList(G_cTxt);
 				PutLogEventFileList(G_cTxt);
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_ITEMOBTAINED;
 				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 				*cp = 1;
 				cp++;
 				memcpy(cp, pItem->m_cName, 20);
 				cp += 20;
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwCount;
 				cp += 4;
 				*cp = pItem->m_cItemType;
@@ -281,10 +281,10 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 				cp += 2;
 				*cp = pItem->m_cGenderLimit;
 				cp++;
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = pItem->m_wCurLifeSpan;
 				cp += 2;
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = pItem->m_wWeight;
 				cp += 2;
 				sp = (short*)cp;
@@ -297,7 +297,7 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 				cp++;
 				*cp = (char)pItem->m_sItemSpecEffectValue2;
 				cp++;
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwAttribute;
 				cp += 4;
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ENEMYKILLS, m_pClientList[iClientH]->m_iEnemyKillCount, 0, 0, 0);
@@ -318,9 +318,9 @@ void CGame::GetOccupyFlagHandler(int iClientH)
 			{
 				delete pItem;
 				iCalcTotalWeight(iClientH);
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
 				switch (iRet) {
@@ -368,7 +368,7 @@ int CGame::_iComposeFlagStatusContents(char* pData)
 	return strlen(pData);
 }
 
-bool CGame::_bDecodeOccupyFlagSaveFileContents(char* pData, UINT32 dwMsgSize)
+bool CGame::_bDecodeOccupyFlagSaveFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token;
 	char seps[] = "= \t\n";
@@ -489,7 +489,7 @@ void CGame::_DeleteRandomOccupyFlag(int iMapIndex)
 	int i, iCount, iTotalFlags, iTargetFlag, iDynamicObjectIndex;
 	int tx, ty, fx, fy, iLocalSide, iLocalEKNum, iPrevStatus;
 	class CTile* pTile;
-	UINT32 dwTime;
+	DWORD dwTime;
 
 	if (m_pMapList[iMapIndex] == 0) return;
 
@@ -583,17 +583,17 @@ void CGame::_DeleteRandomOccupyFlag(int iMapIndex)
 void CGame::GlobalEndHeldenianMode()
 {
 	char* cp, cData[32];
-	UINT32* dwp;
+	DWORD* dwp;
 	if (m_cHeldenianWinner == -1) return;
 	if (m_bIsHeldenianMode == false) return;
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char*)cData;
 	*cp = GSM_ENDHELDENIAN;
 	cp++;
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	*dwp = m_dwHeldenianGUID;
 	cp += 4;
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	*dwp = (int)m_cHeldenianWinner;
 	cp += 4;
 	bStockMsgToGateServer(cData, 9);
@@ -601,12 +601,12 @@ void CGame::GlobalEndHeldenianMode()
 }
 
 /*********************************************************************************************************************
-**  void CGame::LocalEndHeldenianMode(UINT32 dwHeldenianGUID, int iWinner)											**
+**  void CGame::LocalEndHeldenianMode(DWORD dwHeldenianGUID, int iWinner)											**
 **  description		:: Called by global end or Gate if global end commes from another gserver             			**
 **             		:: & writes the GUID file																		**
 **					::																								**
 *********************************************************************************************************************/
-void CGame::LocalEndHeldenianMode(UINT32 dwHeldenianGUID, int iWinner)
+void CGame::LocalEndHeldenianMode(DWORD dwHeldenianGUID, int iWinner)
 {
 	if (m_bIsHeldenianMode == false) return;
 
@@ -648,7 +648,7 @@ void CGame::LocalEndHeldenianMode(UINT32 dwHeldenianGUID, int iWinner)
 				{
 					if (m_pNpcList[n]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(0, 0, n, 0);
+						NpcKilledHandler(0, 0, n, 0);//RemoveEventNpc(n);
 					}
 					else
 					{
@@ -671,7 +671,7 @@ void CGame::LocalEndHeldenianMode(UINT32 dwHeldenianGUID, int iWinner)
 *********************************************************************************************************************/
 void CGame::RemoveOccupyFlags(int iMapIndex)
 {
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 	int i;
 	short dX, dY;
 	int iDynamicObjectIndex;
@@ -720,12 +720,12 @@ void CGame::RemoveOccupyFlags(int iMapIndex)
 }
 
 /*********************************************************************************************************************
-**  void CGame::_CreateHeldenianGUID(UINT32 dwHeldenianGUID, int iWinnerSide)										**
+**  void CGame::_CreateHeldenianGUID(DWORD dwHeldenianGUID, int iWinnerSide)										**
 **  description		:: Create GUID file at event's strating, & finishing for each server	              			**
 **             		:: Used when server starts																		**
 **																													**
 *********************************************************************************************************************/
-void CGame::_CreateHeldenianGUID(UINT32 dwHeldenianGUID, int iWinnerSide)
+void CGame::_CreateHeldenianGUID(DWORD dwHeldenianGUID, int iWinnerSide)
 {
 	char* cp, cTxt[256], cTemp[1024];
 	FILE* pFile;
@@ -838,10 +838,10 @@ bool CGame::bCheckHeldenianMap(int sAttackerH, char cType)
 }
 
 /*********************************************************************************************************************
-**  bool CGame::RequestHeldenianTeleportList(int iClientH, char * pData, UINT32 dwMsgSize)							**
+**  bool CGame::RequestHeldenianTeleportList(int iClientH, char * pData, DWORD dwMsgSize)							**
 **  description		:: A player requested to go Heldenian maps...										 			**
 *********************************************************************************************************************/
-void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -857,8 +857,8 @@ void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, UINT32 dwMsg
 	if ((m_iGodHMapIndex != -1) && (m_pClientList[iClientH]->m_cMapIndex == m_iGodHMapIndex)) return;
 	char* cp, cData[512];
 	int		iRet;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	int* listCount;
 	char	cNpcName[21];
 	int* ip;
@@ -870,14 +870,14 @@ void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, UINT32 dwMsg
 	strncpy(cNpcName, cp, 20);
 	cp += 20;
 	ZeroMemory(cData, sizeof(cData));
-	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_RESPONSE_HELDENIAN_TP_LIST;
-	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_MSGTYPE_CONFIRM;
 	cp = cData + 6;
 	listCount = (int*)cp;
 	*listCount = 0;
-	cp += 4; // 
+	cp += 4; // sizeof(int)
 	// Message must be sent by Gail...
 	if (strcmp(cNpcName, "Gail") != 0) return;
 	if ((m_bIsHeldenianMode == true)
@@ -1009,11 +1009,11 @@ void CGame::RequestHeldenianTeleportList(int iClientH, char* pData, UINT32 dwMsg
 	}
 }
 /*********************************************************************************************************************
-**  bool CGame::RequestHeldenianTeleportNow(int iClientH, char * pData, UINT32 dwMsgSize)							**
+**  bool CGame::RequestHeldenianTeleportNow(int iClientH, char * pData, DWORD dwMsgSize)							**
 **  description		:: Suposed to be free TP to ML for heldenian winners								 			**
 **  TP is available from Gail, here, but winner TP is also available at CH for higher price							**
 *********************************************************************************************************************/
-void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -1024,10 +1024,10 @@ void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, UINT32 dwMsgS
 	ZeroMemory(m_cTargetMap, sizeof(m_cTargetMap));
 	char* cp, cData[64];
 	int		iRet;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	int		index;
-	UINT16	wConfirm = DEF_MSGTYPE_CONFIRM;
+	WORD	wConfirm = DEF_MSGTYPE_CONFIRM;
 	short	sError = 0;
 	// CHARGED_TELEPORT index
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
@@ -1140,7 +1140,7 @@ void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, UINT32 dwMsgS
 	}
 	if (wConfirm == DEF_MSGTYPE_CONFIRM)
 	{
-		UINT32 dwGoldCount = dwGetItemCount(iClientH, "Gold");
+		DWORD dwGoldCount = dwGetItemCount(iClientH, "Gold");
 		if (dwGoldCount >= m_iCost)
 		{
 			int iGoldWeight = SetItemCount(iClientH, "Gold", dwGoldCount - m_iCost);
@@ -1156,9 +1156,9 @@ void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, UINT32 dwMsgS
 	if (wConfirm == DEF_MSGTYPE_REJECT)
 	{
 		ZeroMemory(cData, sizeof(cData));
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_RESPONSE_CHARGED_TELEPORT;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = wConfirm;
 		cp = cData + DEF_INDEX2_MSGTYPE + 2;
 		short* sp;
@@ -1190,20 +1190,20 @@ void CGame::RequestHeldenianTeleportNow(int iClientH, char* pData, UINT32 dwMsgS
 void CGame::GlobalStartHeldenianMode()
 {
 	char cData[120], * cp;
-	UINT32 dwNewHeldenianGUID, * dwp;
-	UINT16* wp;
+	DWORD dwNewHeldenianGUID, * dwp;
+	WORD* wp;
 	dwNewHeldenianGUID = timeGetTime();
 	ZeroMemory(cData, sizeof(cData));
 	cp = (char*)cData;
 	*cp = GSM_STARTHELDENIAN; // 21
 	cp++;
-	wp = (UINT16*)cp;
+	wp = (WORD*)cp;
 	*wp = m_cHeldenianType;
 	cp += 2;
-	wp = (UINT16*)cp;
+	wp = (WORD*)cp;
 	*wp = m_sLastHeldenianWinner;
 	cp += 2;
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	*dwp = dwNewHeldenianGUID;
 	cp += 4;
 	bStockMsgToGateServer(cData, 9);
@@ -1211,12 +1211,12 @@ void CGame::GlobalStartHeldenianMode()
 }
 
 /*********************************************************************************************************************
-**  void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID)								**
+**  void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)								**
 **  description		:: localy performs all required tasks upon recieving heldenian initiate message					**
 **					::																								**
 **	Called locally if Heldenian started from this serger, or called by gate message									**
 *********************************************************************************************************************/
-void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID)
+void CGame::LocalStartHeldenianMode(short sV1, short sV2, DWORD dwHeldenianGUID)
 {
 	int i, x, iNamingValue;
 	char cName[11], cTmp[21], cNpcWaypointIndex[10], cSide, cOwnerType;
@@ -1245,7 +1245,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 			SendNotifyMsg(0, i, DEF_NOTIFY_HELDENIANTELEPORT, 0, 0, 0, 0); // You can now, go to the battle field
 			m_pClientList[i]->m_dwHeldenianGUID = m_dwHeldenianGUID;
 			m_pClientList[i]->m_iWarContribution = 0;
-			m_pClientList[i]->m_iConstructionPoint = 10000;
+			m_pClientList[i]->m_iConstructionPoint = 10000; //+ (m_pClientList[i]->m_iCharisma * 100);
 			m_pClientList[i]->m_cWarType = 2;// character have been informed of heldenian starting...
 			SendNotifyMsg(0, i, DEF_NOTIFY_CONSTRUCTIONPOINT, m_pClientList[i]->m_iConstructionPoint, m_pClientList[i]->m_iWarContribution, 0, 0); //0: Tell player of acquired points
 			UpdateHeldenianStatus(i);
@@ -1274,7 +1274,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 				{
 					if (m_pNpcList[i]->m_bIsSummoned == true)
 					{
-						NpcKilledHandler(0, 0, i, 0);
+						NpcKilledHandler(0, 0, i, 0); //RemoveEventNpc(i);
 					}
 					else
 					{	// Remove most mobs, and other Mobs become neutral
@@ -1282,7 +1282,7 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 						if (iDice(1, 10) != 5)
 						{
 							m_pNpcList[i]->m_bIsUnsummoned = true;
-							NpcKilledHandler(0, 0, i, 0);
+							NpcKilledHandler(0, 0, i, 0); //RemoveEventNpc(i);
 						}
 						else m_pNpcList[i]->m_cSide = 0;
 					}
@@ -1445,12 +1445,12 @@ void CGame::LocalStartHeldenianMode(short sV1, short sV2, UINT32 dwHeldenianGUID
 }
 
 /*********************************************************************************************************************
-**  void CGame::ManualStartHeldenianMode(int iClientH, char *pData, UINT32 dwMsgSize)								**
+**  void CGame::ManualStartHeldenianMode(int iClientH, char *pData, DWORD dwMsgSize)								**
 **  description		:: Admin order to star Heldenian, starts heldenian			                        			**
 **             		:: "/beginheldenian 1" or "/beginheldenian 2"													**
 **	Called by Amin order																							**
 *********************************************************************************************************************/
-void CGame::ManualStartHeldenianMode(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::ManualStartHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	char cBuff[256], * token, seps[] = "= \t\n";
 	class CStrTok* pStrTok;
@@ -1489,12 +1489,12 @@ void CGame::ManualStartHeldenianMode(int iClientH, char* pData, UINT32 dwMsgSize
 }
 
 /*********************************************************************************************************************
-**  void CGame::ManualEndHeldenianMode(int iClientH, char *pData, UINT32 dwMsgSize)									**
+**  void CGame::ManualEndHeldenianMode(int iClientH, char *pData, DWORD dwMsgSize)									**
 **  description		:: Called by Amin order, stops heldenian					                        			**
 **             		:: "/endheldenian 0" or"/endheldenian 1" or "/endheldenian 2"									**
 **																													**
 *********************************************************************************************************************/
-void CGame::ManualEndHeldenianMode(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::ManualEndHeldenianMode(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	char	seps[] = "= \t\n";
 	char* token, cBuff[256];
@@ -1552,7 +1552,7 @@ void CGame::ManualEndHeldenianMode(int iClientH, char* pData, UINT32 dwMsgSize)
 
 void CGame::CheckHeldenianResultCalculation(int iClientH)
 {
-	float dV1, dV2, dV3;
+	double dV1, dV2, dV3;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_cWarType != 2) return;
@@ -1568,8 +1568,8 @@ void CGame::CheckHeldenianResultCalculation(int iClientH)
 			else if (m_pClientList[iClientH]->m_iLevel > 100) {
 				m_pClientList[iClientH]->m_iWarContribution += (m_pClientList[iClientH]->m_iLevel) * 30;
 			}
-			dV2 = (float)m_pClientList[iClientH]->m_iExp;
-			dV3 = (float)m_pClientList[iClientH]->m_iWarContribution * 1.2f;
+			dV2 = (double)m_pClientList[iClientH]->m_iExp;
+			dV3 = (double)m_pClientList[iClientH]->m_iWarContribution * 1.2f;
 			dV1 = dV2 + dV3;
 			GetExp(iClientH, (int)dV1);
 		}
@@ -1628,20 +1628,20 @@ bool CGame::UpdateHeldenianStatus(int iClientH)
 }
 
 /*********************************************************************************************************************
-**  bool CGame::RequestHeldenianScroll(int iClientH, char * pData, UINT32 dwMsgSize)									**
+**  bool CGame::RequestHeldenianScroll(int iClientH, char * pData, DWORD dwMsgSize)									**
 **  description		:: A player requested some scroll										 						**
 **  Scrolls are only available for current battle, and usable only by the player that brought it					**
 **																													**
 *********************************************************************************************************************/
-void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::RequestHeldenianScroll(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	char* cp, cData[256], cTmpName[5];
 	int   iItemNbe;
 	class CItem* pItem;
 	int   iRet, iEraseReq, iNeededPts;
 	short* sp;
-	UINT16* wp;
-	UINT32* dwp;
+	WORD* wp;
+	DWORD* dwp;
 	if (m_pClientList[iClientH] == 0)					 return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	if (m_bIsHeldenianMode == false)						 return;
@@ -1654,7 +1654,7 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, cp);
 	cp += 5;
-	wp = (UINT16*)cp;
+	wp = (WORD*)cp;
 	iItemNbe = (int)*wp; // 0x00 l a i
 	cp += 2;
 	wsprintf(G_cTxt, "PC(%s) obtained a summon scroll (%d).   %s(%d %d)"
@@ -1712,16 +1712,16 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
 		if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true)
 		{
 			ZeroMemory(cData, sizeof(cData));
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_ITEMOBTAINED;
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 			*cp = 1;
 			cp++;
 			memcpy(cp, pItem->m_cName, 20);
 			cp += 20;
-			dwp = (UINT32*)cp;
+			dwp = (DWORD*)cp;
 			*dwp = pItem->m_dwCount;
 			cp += 4;
 			*cp = pItem->m_cItemType;
@@ -1735,10 +1735,10 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
 			cp += 2;
 			*cp = pItem->m_cGenderLimit;
 			cp++;
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wCurLifeSpan;
 			cp += 2;
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wWeight;
 			cp += 2;
 			sp = (short*)cp;
@@ -1751,7 +1751,7 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
 			cp++;
 			*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 			cp++;
-			dwp = (UINT32*)cp;
+			dwp = (DWORD*)cp;
 			*dwp = pItem->m_dwAttribute;
 			cp += 4;
 			if (iEraseReq == 1) delete pItem;
@@ -1769,14 +1769,16 @@ void CGame::RequestHeldenianScroll(int iClientH, char* pData, UINT32 dwMsgSize)
 		{
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 				m_pClientList[iClientH]->m_sY, pItem);
-			
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4	
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 				pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
 			switch (iRet) {
@@ -1806,7 +1808,7 @@ void CGame::HeldenianStartWarNow()
 {
 	if (m_bHeldenianWarInitiated == true)	return; // Already started
 	if (m_cHeldenianWinner != -1)			return; // Battle is already won
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 	if (dwTime < m_dwHeldenianWarStartTime) return;	// Not yet time to start battle
 	m_bHeldenianWarInitiated = true;
 	PutLogList("(!) HELDENIAN Start: Fight starting now...");
@@ -1842,7 +1844,7 @@ void CGame::HeldenianStartWarNow()
 void CGame::HeldenianVictoryNow(int iSide)
 {
 	if (m_bHeldenianWarInitiated == false) return;
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 	m_bHeldenianWarInitiated = false;
 	m_cHeldenianWinner = iSide;
 	switch (m_cHeldenianWinner) {
@@ -1910,7 +1912,7 @@ void CGame::HeldenianVictoryNow(int iSide)
 void CGame::HeldenianEndWarNow()
 {
 	if (m_bIsHeldenianMode == false) return;
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 	if (dwTime < m_dwHeldenianFinishTime) return;
 	if (m_cHeldenianType == 1)
 	{
@@ -1957,6 +1959,17 @@ void CGame::HeldenianEndWarNow()
 			m_cHeldenianWinner = m_sLastHeldenianWinner;
 		}
 	}
+	/*switch (m_cHeldenianWinner) {
+	case 1:
+		PutLogList("Heldenian Terminated, Aresden's victory.");
+		break;
+	case 2:
+		PutLogList("Heldenian Terminated, Elvine's victory.");
+		break;
+	default:
+		PutLogList("Heldenian Terminated, Draw.");
+		break;
+	}*/
 
 	GlobalEndHeldenianMode();
 }
@@ -1994,7 +2007,7 @@ void CGame::bReadHeldenianGUIDFile(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
-	UINT32  dwFileSize;
+	DWORD  dwFileSize;
 	char* cp, * token, cReadMode;
 	char seps[] = "= \t\n";
 	class CStrTok* pStrTok;
@@ -2022,7 +2035,7 @@ void CGame::bReadHeldenianGUIDFile(char* cFn)
 			{
 				switch (cReadMode) {
 				case 1:
-					m_dwHeldenianGUID = (UINT32)atoi(token);
+					m_dwHeldenianGUID = (DWORD)atoi(token);
 					cReadMode = 0;
 					break;
 				case 2:

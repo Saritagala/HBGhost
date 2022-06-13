@@ -62,7 +62,7 @@ CMainLog::CMainLog(HWND hWnd)
 	ZeroMemory(m_cMainServerAddress, sizeof(m_cMainServerAddress));
 	m_iQueueHead = 0;
 	m_iQueueTail = 0;
-	m_iMainServerInternalPort = 0;
+	//m_iMainServerInternalPort = 0;
 	m_iValidAccounts = m_iTotalWorld = m_iTotalGame = 0;
 
 }
@@ -86,7 +86,7 @@ CMainLog::~CMainLog(void)
 
 bool CMainLog::bInit()
 {
-	if (bReadServerConfigFile("HMLServer.cfg") == false) return false;
+	if (bReadServerConfigFile("LServer.cfg") == false) return false;
 
 	// VAMP - sql connection
 	try
@@ -113,8 +113,8 @@ bool CMainLog::bInit()
 void CMainLog::MsgProcess()
 {
 	char* pData = 0, * cp, cFrom, cKey, cTemp[11];
-	UINT32    dwMsgSize, * dwpMsgID;
-	UINT16* wpMsgType;
+	DWORD    dwMsgSize, * dwpMsgID;
+	WORD* wpMsgType;
 	int     i, iClientH;
 	ZeroMemory(cTemp, sizeof(cTemp));
 
@@ -122,7 +122,7 @@ void CMainLog::MsgProcess()
 	pData = (char*)m_pMsgBuffer;
 	while (bGetMsgQuene(&cFrom, pData, &dwMsgSize, &iClientH, &cKey) == true)
 	{
-		dwpMsgID = (UINT32*)(pData + DEF_INDEX4_MSGID);
+		dwpMsgID = (DWORD*)(pData + DEF_INDEX4_MSGID);
 		switch (*dwpMsgID) {
 			//----------From Client-------------//
 		case MSGID_REQUEST_LOGIN: //client request login
@@ -145,7 +145,7 @@ void CMainLog::MsgProcess()
 			break;
 			//---------From WLserver-------------//
 		case MSGID_REGISTER_WORLDSERVERSOCKET: //last message for activation
-			wpMsgType = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
+			wpMsgType = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wpMsgType) {
 			case DEF_MSGTYPE_CONFIRM:
 				RegisterSocketWL(iClientH, pData, true);
@@ -168,7 +168,7 @@ void CMainLog::MsgProcess()
 			break;
 
 		case MSGID_REQUEST_REMOVEGAMESERVER: //remove game server
-			wpMsgType = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
+			wpMsgType = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wpMsgType) {
 			case DEF_MSGTYPE_CONFIRM:
 				RegisterGameServer(iClientH, pData, false);
@@ -177,7 +177,7 @@ void CMainLog::MsgProcess()
 			break;
 
 		case MSGID_REGISTER_WORLDSERVER_GAMESERVER: //ad game server
-			wpMsgType = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
+			wpMsgType = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wpMsgType) {
 			case DEF_MSGTYPE_CONFIRM:
 				RegisterGameServer(iClientH, pData, true);
@@ -190,7 +190,7 @@ void CMainLog::MsgProcess()
 			break;
 
 		case MSGID_RESPONSE_CHARACTERLOG:
-			wpMsgType = (UINT16*)(pData + DEF_INDEX2_MSGTYPE);
+			wpMsgType = (WORD*)(pData + DEF_INDEX2_MSGTYPE);
 			switch (*wpMsgType) {
 			case DEF_LOGRESMSGTYPE_NEWCHARACTERDELETED:
 				DeleteCharacter(iClientH, pData, 1);
@@ -257,7 +257,7 @@ void CMainLog::MsgProcess()
 	UpdateScreen();
 }
 
-bool CMainLog::bGetMsgQuene(char* pFrom, char* pData, UINT32* pMsgSize, int* pIndex, char* pKey)
+bool CMainLog::bGetMsgQuene(char* pFrom, char* pData, DWORD* pMsgSize, int* pIndex, char* pKey)
 {
 
 	if (m_pMsgQueue[m_iQueueHead] == 0) return false;
@@ -272,7 +272,7 @@ bool CMainLog::bGetMsgQuene(char* pFrom, char* pData, UINT32* pMsgSize, int* pIn
 
 	return true;
 }
-bool CMainLog::bPutMsgQuene(char cFrom, char* pData, UINT32 dwMsgSize, int iIndex, char cKey)
+bool CMainLog::bPutMsgQuene(char cFrom, char* pData, DWORD dwMsgSize, int iIndex, char cKey)
 {
 	if (m_pMsgQueue[m_iQueueTail] != 0) return false;
 
@@ -291,12 +291,12 @@ void CMainLog::OnTimer()
 	MsgProcess();
 }
 //send message to WLserver
-void CMainLog::SendEventToWLS(UINT32 dwMsgID, UINT16 wMsgType, char* pData, UINT32 dwMsgSize, int iWorldH)
+void CMainLog::SendEventToWLS(DWORD dwMsgID, WORD wMsgType, char* pData, DWORD dwMsgSize, int iWorldH)
 {
 	int iRet;
-	UINT32* dwp;
+	DWORD* dwp;
 	char* cp;
-	UINT16* wp;
+	WORD* wp;
 	int m_iCurWorldLogSockIndex;
 
 	if (iWorldH == -1) return;
@@ -304,9 +304,9 @@ void CMainLog::SendEventToWLS(UINT32 dwMsgID, UINT16 wMsgType, char* pData, UINT
 
 	ZeroMemory(G_cData50000, sizeof(G_cData50000));
 
-	dwp = (UINT32*)(G_cData50000 + DEF_INDEX4_MSGID);
+	dwp = (DWORD*)(G_cData50000 + DEF_INDEX4_MSGID);
 	*dwp = dwMsgID;
-	wp = (UINT16*)(G_cData50000 + DEF_INDEX2_MSGTYPE);
+	wp = (WORD*)(G_cData50000 + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 
 	cp = (char*)(G_cData50000 + DEF_INDEX2_MSGTYPE + 2);
@@ -341,7 +341,7 @@ void CMainLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPa
 {
 	int iWorldH, iRet, iTmp, i, iTotalSock;
 	char* pData, cKey;
-	UINT32  dwMsgSize;
+	DWORD  dwMsgSize;
 	iTotalSock = 0;
 
 	iTmp = WM_ONCLIENTSOCKETEVENT;
@@ -399,7 +399,7 @@ void CMainLog::OnClientSubLogSocketEvent(UINT message, WPARAM wParam, LPARAM lPa
 void CMainLog::RegisterSocketWL(int iClientH, char* pData, bool bRegister)
 {
 	char cData[100];
-	UINT32* dwp;
+	DWORD* dwp;
 	char* cp;
 	ZeroMemory(cData, sizeof(cData));
 	if (m_pClientList[iClientH] == 0) return; //WL socket connected
@@ -419,7 +419,7 @@ void CMainLog::RegisterSocketWL(int iClientH, char* pData, bool bRegister)
 	memcpy(m_pClientList[iClientH]->m_cWorldServerAddress, cp, 16);
 	cp += 16;
 
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	m_pClientList[iClientH]->m_iWorldPort = *dwp;
 	cp += 4;
 
@@ -431,7 +431,7 @@ void CMainLog::RegisterSocketWL(int iClientH, char* pData, bool bRegister)
 void CMainLog::RegisterGameServer(int iClientH, char* pData, bool bRegister)
 {
 	char cData[100], m_cWorldName[31], m_cGameName[11], m_cGameAddress[16];
-	UINT32* dwp;
+	DWORD* dwp;
 	char* cp, * cMapNames;
 	int m_iGamePort, m_iTotalMaps, i, x;
 	bool bwlregister;
@@ -455,11 +455,11 @@ void CMainLog::RegisterGameServer(int iClientH, char* pData, bool bRegister)
 		memcpy(m_cGameAddress, cp, 16);
 		cp += 16;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		m_iGamePort = *dwp;
 		cp += 4;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		m_iTotalMaps = *dwp;
 		cp += 4;
 
@@ -545,7 +545,7 @@ void CMainLog::RequestLogin(int iClientH, char* pData)
 {
 	int  iMessage, iAccount, i, iDBID = -1;
 	char cData[200], cMesg;
-	UINT32* dwp;
+	DWORD* dwp;
 
 	char cTotalChar;
 	
@@ -667,8 +667,8 @@ int CMainLog::iGetAccountDatabaseID(char* cAccName)
 void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, char* cAccountName)
 {
 	char* cp, cData[2000];
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	int i;
 	bool bConnected = false;
 	char iRows;
@@ -677,39 +677,39 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 
 	cp = (char*)(cData); //outgoing messag
 
-	dwp = (UINT32*)cp;
-	*dwp = DEF_UPERVERSION;
+	wp = (WORD*)cp;
+	*wp = DEF_UPERVERSION;
 	cp += 2;
 	//2
-	dwp = (UINT32*)cp;
-	*dwp = DEF_LOWERVERSION;
+	wp = (WORD*)cp;
+	*wp = DEF_LOWERVERSION;
 	cp += 2;
 	//4
-		//used for account status
+	//used for account status
 	cp++;
 	//5
-	dwp = (UINT32*)cp;
-	*dwp = m_pAccountList[iAccount]->m_iAccntYear;
+	wp = (WORD*)cp;
+	*wp = m_pAccountList[iAccount]->m_iAccntYear;
 	cp += 2;
 	//7
-	dwp = (UINT32*)cp;
-	*dwp = m_pAccountList[iAccount]->m_iAccntMonth;
+	wp = (WORD*)cp;
+	*wp = m_pAccountList[iAccount]->m_iAccntMonth;
 	cp += 2;
 	//9
-	dwp = (UINT32*)cp;
-	*dwp = m_pAccountList[iAccount]->m_iAccntDay;
+	wp = (WORD*)cp;
+	*wp = m_pAccountList[iAccount]->m_iAccntDay;
 	cp += 2;
 	//11
-	dwp = (UINT32*)cp;
-	*dwp = m_pAccountList[iAccount]->m_iPassYear;
+	wp = (WORD*)cp;
+	*wp = m_pAccountList[iAccount]->m_iPassYear;
 	cp += 2;
 	//13
-	dwp = (UINT32*)cp;
-	*dwp = m_pAccountList[iAccount]->m_iPassMonth;
+	wp = (WORD*)cp;
+	*wp = m_pAccountList[iAccount]->m_iPassMonth;
 	cp += 2;
 	//15
-	dwp = (UINT32*)cp;
-	*dwp = m_pAccountList[iAccount]->m_iPassDay;
+	wp = (WORD*)cp;
+	*wp = m_pAccountList[iAccount]->m_iPassDay;
 	cp += 2;
 	//17
 	
@@ -758,102 +758,102 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 				cp++;
 				//11
 				// char appr1
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr1").asLong();
 				cp += 2;
 				//13
 				// char appr2
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr2").asLong();
 				cp += 2;
 				//15
 				// char appr3
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr3").asLong();
 				cp += 2;
 				//17
 				// char appr1
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Appr4").asLong();
 				cp += 2;
 				//19
 				// char gender
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Sex").asLong();
 				cp += 2;
 				//21
 				// char skin
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Skin").asLong();
 				cp += 2;
 				//23
 				// char level
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Level").asLong();
 				cp += 2;
 				//25
 				// char exp
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = com.Field("Character-Experience").asLong();
 				cp += 4;
 				//29
 				// char str
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Strength").asLong();
 				cp += 2;
 				//31
 				// char vit
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Vitality").asLong();
 				cp += 2;
 				//33
 				// char dex
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Dexterity").asLong();
 				cp += 2;
 				//35
 				// char int
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Intelligence").asLong();
 				cp += 2;
 				//37
 				// char mag
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Magic").asLong();
 				cp += 2;
 				//39
 				// char charisma
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = com.Field("Character-Charisma").asLong();
 				cp += 2;
 				//41
 				// char appr colour
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = com.Field("Character-Appr-Colour").asLong();
 				cp += 4;
 				//45
 				// char save year
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
 				//47
 				// char save month
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
 				//49
 				// char save day
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
 				//51
 				// char save hour
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
 				//53
 				// char save minute
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = 0;
 				cp += 2;
 				//55
@@ -884,11 +884,11 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 		PutLogList(cTemp);
 	}
 
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	*dwp = 11758870;
 	cp += 4;
 //22
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	*dwp = 11758874;
 	cp += 4;
 //26
@@ -912,7 +912,7 @@ void CMainLog::SendCharacterData(int iAccount, int iAccountID, int iClientH, cha
 void CMainLog::TotalChar(int iClientH, char* pData)
 {
 	char* cp, * cp2, cAccountName[11], cWorldName[11], cData[2000], cTotalChar; //cp2 out going message
-	UINT32* dwp, dAccountid, dMsg, dMsgType;
+	DWORD* dwp, dAccountid, dMsg, dMsgType;
 	int i, iAccount, iTracker, iAccountDBID;
 	short iUperVersion, iLowerVersion;
 	ZeroMemory(cAccountName, sizeof(cAccountName));
@@ -929,15 +929,15 @@ void CMainLog::TotalChar(int iClientH, char* pData)
 	memcpy(cAccountName, cp, 10);
 	cp += 10;
 
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	dAccountid = *dwp;
 	cp += 4;
 
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	dMsg = *dwp;
 	cp += 4;
 
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	dMsgType = *dwp;
 	cp += 2;
 
@@ -976,38 +976,38 @@ void CMainLog::TotalChar(int iClientH, char* pData)
 
 			cp2 = (char*)(cData); //outgoing messag
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = iUperVersion;
 			cp2 += 2;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = iLowerVersion;
 			cp2 += 2;
 
 			//used for account status
 			cp2++;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = m_pAccountList[iAccount]->m_iAccntYear;
 			cp2 += 2;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = m_pAccountList[iAccount]->m_iAccntMonth;
 			cp2 += 2;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = m_pAccountList[iAccount]->m_iAccntDay;
 			cp2 += 2;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = m_pAccountList[iAccount]->m_iPassYear;
 			cp2 += 2;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = m_pAccountList[iAccount]->m_iPassMonth;
 			cp2 += 2;
 
-			dwp = (UINT32*)cp2;
+			dwp = (DWORD*)cp2;
 			*dwp = m_pAccountList[iAccount]->m_iPassDay;
 			cp2 += 2;
 
@@ -1028,7 +1028,7 @@ void CMainLog::TotalChar(int iClientH, char* pData)
 void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 {
 	char* cp, * cp2, cAccountName[11], cAccountPass[11], cWorldName[30], cData[2000], cTotalChar; //cp2 out going message
-	UINT32* dwp, dwAccountid;
+	DWORD* dwp, dwAccountid;
 	int i, iMessage, iAccount, iTracker, iDBID = -1;
 	
 	ZeroMemory(cAccountName, sizeof(cAccountName));
@@ -1074,7 +1074,7 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 		memcpy(cp2, cp, 71); // get message between total*
 		cp2 += 71;
 
-		dwp = (UINT32*)cp2;
+		dwp = (DWORD*)cp2;
 		*dwp = m_pAccountList[iAccount]->dAccountID;
 		cp2 += 4;
 
@@ -1101,7 +1101,7 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 		memcpy(cAccountName, cp, 10);
 		cp += 10;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		dwAccountid = *dwp;
 		cp += 4;
 
@@ -1138,8 +1138,8 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 
 		SACommand com;
 
-		UINT16* wp;
-		UINT32* dwp;
+		WORD* wp;
+		DWORD* dwp;
 
 		try
 		{
@@ -1161,102 +1161,102 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 					cp2++;
 					//11
 					// char appr1
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr1").asLong();
 					cp2 += 2;
 					//13
 					// char appr2
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr2").asLong();
 					cp2 += 2;
 					//15
 					// char appr3
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr3").asLong();
 					cp2 += 2;
 					//17
 					// char appr1
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr4").asLong();
 					cp2 += 2;
 					//19
 					// char gender
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Sex").asLong();
 					cp2 += 2;
 					//21
 					// char skin
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Skin").asLong();
 					cp2 += 2;
 					//23
 					// char level
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Level").asLong();
 					cp2 += 2;
 					//25
 					// char exp
-					dwp = (UINT32*)cp2;
+					dwp = (DWORD*)cp2;
 					*dwp = com.Field("Character-Experience").asLong();
 					cp2 += 4;
 					//29
 					// char str
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Strength").asLong();
 					cp2 += 2;
 					//31
 					// char vit
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Vitality").asLong();
 					cp2 += 2;
 					//33
 					// char dex
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Dexterity").asLong();
 					cp2 += 2;
 					//35
 					// char int
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Intelligence").asLong();
 					cp2 += 2;
 					//37
 					// char mag
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Magic").asLong();
 					cp2 += 2;
 					//39
 					// char charisma
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Charisma").asLong();
 					cp2 += 2;
 					//41
 					// char appr colour
-					dwp = (UINT32*)cp2;
+					dwp = (DWORD*)cp2;
 					*dwp = com.Field("Character-Appr-Colour").asLong();
 					cp2 += 4;
 					//45
 					// char save year
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//47
 					// char save month
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//49
 					// char save day
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//51
 					// char save hour
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//53
 					// char save minute
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//55
@@ -1294,7 +1294,7 @@ void CMainLog::ResponseCharacter(int iClientH, char* pData, char cMode)
 void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 {
 	char* cp, * cp2, cAccountName[11], cAccountPass[11], cWorldName[30], cData[500], cTotalChar, cCharName[11]; //cp2 out going message
-	UINT32* dwp, dwAccountid;
+	DWORD* dwp, dwAccountid;
 	int i, iMessage, iAccount, iTracker, iDBID;
 	
 	ZeroMemory(cAccountName, sizeof(cAccountName));
@@ -1350,7 +1350,7 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 		memcpy(cp2, cAccountName, 10);
 		cp2 += 10;
 
-		dwp = (UINT32*)cp2;
+		dwp = (DWORD*)cp2;
 		*dwp = m_pAccountList[iAccount]->dAccountID;
 		cp2 += 4;
 
@@ -1378,7 +1378,7 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 		memcpy(cAccountName, cp, 10);
 		cp += 10;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		dwAccountid = *dwp;
 		cp += 4;
 
@@ -1418,8 +1418,8 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 
 		SACommand com;
 
-		UINT16* wp;
-		UINT32* dwp;
+		WORD* wp;
+		DWORD* dwp;
 
 		try
 		{
@@ -1441,102 +1441,102 @@ void CMainLog::DeleteCharacter(int iClientH, char* pData, char cMode)
 					cp2++;
 					//11
 					// char appr1
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr1").asLong();
 					cp2 += 2;
 					//13
 					// char appr2
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr2").asLong();
 					cp2 += 2;
 					//15
 					// char appr3
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr3").asLong();
 					cp2 += 2;
 					//17
 					// char appr1
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Appr4").asLong();
 					cp2 += 2;
 					//19
 					// char gender
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Sex").asLong();
 					cp2 += 2;
 					//21
 					// char skin
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Skin").asLong();
 					cp2 += 2;
 					//23
 					// char level
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Level").asLong();
 					cp2 += 2;
 					//25
 					// char exp
-					dwp = (UINT32*)cp2;
+					dwp = (DWORD*)cp2;
 					*dwp = com.Field("Character-Experience").asLong();
 					cp2 += 4;
 					//29
 					// char str
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Strength").asLong();
 					cp2 += 2;
 					//31
 					// char vit
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Vitality").asLong();
 					cp2 += 2;
 					//33
 					// char dex
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Dexterity").asLong();
 					cp2 += 2;
 					//35
 					// char int
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Intelligence").asLong();
 					cp2 += 2;
 					//37
 					// char mag
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Magic").asLong();
 					cp2 += 2;
 					//39
 					// char charisma
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = com.Field("Character-Charisma").asLong();
 					cp2 += 2;
 					//41
 					// char appr colour
-					dwp = (UINT32*)cp2;
+					dwp = (DWORD*)cp2;
 					*dwp = com.Field("Character-Appr-Colour").asLong();
 					cp2 += 4;
 					//45
 					// char save year
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//47
 					// char save month
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//49
 					// char save day
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//51
 					// char save hour
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//53
 					// char save minute
-					wp = (UINT16*)cp2;
+					wp = (WORD*)cp2;
 					*wp = 0;
 					cp2 += 2;
 					//55
@@ -1604,10 +1604,9 @@ void CMainLog::ChangePassword(int iClientH, char* pData)
 	try
 	{
 		com2.setConnection(&con);
-		com2.setCommandText("UPDATE Accounts SET [Account-Password] = :3 WHERE [Account-Name] = :1 AND [Account-Password] = :2");
+		com2.setCommandText("UPDATE Accounts SET [Account-Password] = :2 WHERE [Account-Name] = :1");
 		com2.Param(1).setAsString() = cAccName;
-		com2.Param(2).setAsString() = cAccPass;
-		com2.Param(3).setAsString() = cAccNewPass;
+		com2.Param(2).setAsString() = cAccNewPass;
 
 		com2.Execute();
 
@@ -1640,7 +1639,7 @@ void CMainLog::RequestEnterGame(int iClientH, char* pData, char cMode)
 {
 	char* cp, * cp2, cData[100], cData2[100], cAccountName[11], cAccountPass[11], cWorldName[30], m_cMapName[31], cCharName[15], G_cCmdLineTokenA[120];
 	int  i, x, m_iLevel, iMessage, iAccount, iGameServer, iDBID = -1, iInUse;
-	UINT32* dwp;
+	DWORD* dwp;
 	bool bMapOnline, bAccountUse;
 	bMapOnline = false;
 	bAccountUse = false;
@@ -1671,7 +1670,7 @@ void CMainLog::RequestEnterGame(int iClientH, char* pData, char cMode)
 		memcpy(cAccountPass, cp, 10);
 		cp += 10;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		m_iLevel = *dwp;
 		cp += 4;
 
@@ -1738,7 +1737,7 @@ void CMainLog::RequestEnterGame(int iClientH, char* pData, char cMode)
 		memcpy(cp2, cAccountPass, 10);
 		cp2 += 10;
 
-		dwp = (UINT32*)cp2;
+		dwp = (DWORD*)cp2;
 		*dwp = m_iLevel;
 		cp2 += 4;
 
@@ -1755,7 +1754,7 @@ void CMainLog::RequestEnterGame(int iClientH, char* pData, char cMode)
 		memcpy(cp2, m_pGameList[iGameServer]->m_cGameServerAddress, 16);
 		cp2 += 16;
 
-		dwp = (UINT32*)cp2;
+		dwp = (DWORD*)cp2;
 		*dwp = m_pGameList[iGameServer]->m_iGamePort;
 		cp2 += 2;
 
@@ -1932,7 +1931,7 @@ int CMainLog::GetAccountInfo(int iClientH, char cAccountName[11], char cAccountP
 	return 0;
 }
 
-void CMainLog::PutPacketLogData(UINT32 dwMsgID, char* cData, UINT32 dwMsgSize)
+void CMainLog::PutPacketLogData(DWORD dwMsgID, char* cData, DWORD dwMsgSize)
 {
 	FILE* pFile;
 	char DbgBuffer[15000];
@@ -1973,7 +1972,7 @@ bool CMainLog::bReadServerConfigFile(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
-	UINT32  dwFileSize;
+	DWORD  dwFileSize;
 	char* cp, * token, cReadMode, cTotalList;
 	char seps[] = "= \t\n";
 	class CStrTok* pStrTok;
@@ -2008,23 +2007,44 @@ bool CMainLog::bReadServerConfigFile(char* cFn)
 					break;
 
 				case 2: // backup-drive-letter
-					m_cBackupDrive = token[0];
+					/*m_cBackupDrive = token[0];
 					wsprintf(G_cTxt, "(*) Backup Drive Letter : %c", m_cBackupDrive);
-					PutLogList(G_cTxt);
+					PutLogList(G_cTxt);*/
 					cReadMode = 0;
 					break;
 
 				case 3: // internal-main-server-port
-					m_iMainServerInternalPort = atoi(token);
+					/*m_iMainServerInternalPort = atoi(token);
 					wsprintf(G_cTxt, "(*) Main-Server Internal port : %d", m_iMainServerInternalPort);
-					PutLogList(G_cTxt);
+					PutLogList(G_cTxt);*/
 					cReadMode = 0;
 					break;
 
 				case 4:	// log server port
 					m_iMainServerPort = atoi(token);
-					wsprintf(G_cTxt, "(*) Main-Server Internal port : %d", m_iMainServerPort);
+					wsprintf(G_cTxt, "(*) Main-Log-Server Port : %d", m_iMainServerPort);
 					PutLogList(G_cTxt);
+					cReadMode = 0;
+					break;
+
+				case 5:
+					if (strlen(token) > 0)
+						strcpy(dbUser, token);
+					else
+						strcpy(dbUser, "");
+					cReadMode = 0;
+					break;
+
+				case 6:
+					if (strlen(token) > 0)
+						strcpy(dbPass, token);
+					else
+						strcpy(dbPass, "");
+					cReadMode = 0;
+					break;
+
+				case 7:
+					strcpy(dbConnStr, token);
 					cReadMode = 0;
 					break;
 
@@ -2032,9 +2052,13 @@ bool CMainLog::bReadServerConfigFile(char* cFn)
 			}
 			else {
 				if (memcmp(token, "log-server-address", 18) == 0)			cReadMode = 1;
-				if (memcmp(token, "backup-drive-letter", 19) == 0)			cReadMode = 2;
-				if (memcmp(token, "internal-log-server-port", 24) == 0)	cReadMode = 3;
+				//if (memcmp(token, "backup-drive-letter", 19) == 0)			cReadMode = 2;
+				//if (memcmp(token, "internal-log-server-port", 24) == 0)	cReadMode = 3;
 				if (memcmp(token, "log-server-port", 15) == 0)			cReadMode = 4;
+
+				if (strcmp(token, "database-user") == 0) cReadMode = 5;
+				if (strcmp(token, "database-pass") == 0) cReadMode = 6;
+				if (strcmp(token, "database-conn") == 0) cReadMode = 7;
 			}
 			token = pStrTok->pGet();
 		}

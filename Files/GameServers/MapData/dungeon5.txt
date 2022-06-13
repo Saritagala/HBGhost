@@ -1,0 +1,142 @@
+[MAP-INFO]
+
+map-location  = dungeon5
+initial-point = 1 45 40
+
+
+//-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
+teleport-loc     =      40     37     2ndmiddle           125    125    1
+teleport-loc     =      40     38     2ndmiddle           125    125    1
+teleport-loc     =      40     39     2ndmiddle           125    125    1
+teleport-loc     =      41     37     2ndmiddle           125    125    1
+teleport-loc     =      41     38     2ndmiddle           125    125    1
+teleport-loc     =      41     39     2ndmiddle           125    125    1
+teleport-loc     =      42     37     2ndmiddle           125    125    1
+teleport-loc     =      42     38     2ndmiddle           125    125    1
+teleport-loc     =      42     39     2ndmiddle           125    125    1
+teleport-loc     =      43     37     2ndmiddle           125    125    1
+teleport-loc     =      43     38     2ndmiddle           125    125    1
+teleport-loc     =      43     39     2ndmiddle           125    125    1
+
+
+//teleport-loc     =      79     20     huntzone2           116    176    1
+
+
+//-WayPoint-Set---------Num-----X-----Y----;
+waypoint          =     0       55    94
+waypoint          =     1       113   76
+waypoint          =     2       156   104
+waypoint          =     3       187   140
+waypoint          =     4       161   164
+waypoint          =     5       135   169
+waypoint          =     6       109   191
+waypoint          =     7       98    162
+waypoint          =     8       64    137
+waypoint          =     9       198   105
+
+//-----------------------Num-Type-RECT---------------Mob-MobNum-Event
+//spot-mob-generator	= 1  1    84 57 75 93         50  10 0
+spot-mob-generator	= 2  1    27 28 57 46         30  10 0 //Tigerworm50 ->Liche30
+spot-mob-generator	= 4  1    57 122 49 151       73  1 0 // Fire-Wyvern
+spot-mob-generator      = 5  1    100 43 107 48	      49  2 0 //Hellclaw
+spot-mob-generator	= 6  1    45 92 50 112	      66  1 0 //IceWyvern
+spot-mob-generator	= 7  1    130 150 122 180     73  1 0 //FireWyvern
+spot-mob-generator	= 8  1    165 65 200 90       50  5 0 //Tigerworm 
+spot-mob-generator	= 9  1    164 66 201 89       31  5 0 //Demon 
+spot-mob-generator	= 18  1    163 65 200 90       92  1 0 //Black Demon
+
+//spot mobs added by Tav
+spot-mob-generator	= 10 1 68 67 91 62 50   1 0 //Tw Pit 3
+spot-mob-generator	= 11 1 60 80 90 83 50   1 0 //Tw Pit 3
+spot-mob-generator	= 3  1 90 110 107 104 53  15 0 //Beholder Pit 15
+spot-mob-generator	= 12 1 91 88 113 76 50   1 0 //Tw Pit 2
+spot-mob-generator	= 13 1 125 84 155 64 50   1 0 //Tw Pit 2
+
+spot-mob-generator      = 14 1    121  64 125 66         49   2 0 //Hellclaw
+spot-mob-generator      = 15 1     80  30  88 37         49   2 0 //Hellclaw
+spot-mob-generator	     = 16 1    57 122 49 151       66  1 0 //IceWyvern
+
+//-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
+
+
+maximum-object		= 400
+
+fixed-dayornight-mode = 1
+
+
+mineral-generator = 1 4
+max-mineral   = 61
+
+mineral-point = 0  99 31
+mineral-point = 1  100 31
+mineral-point = 2  101 32
+mineral-point = 3  104 34
+mineral-point = 4  103 35
+
+mineral-point = 5  133 65
+mineral-point = 6  133 66
+mineral-point = 7  132 67
+
+mineral-point = 8  67 52
+mineral-point = 9  66 53
+
+mineral-point = 10  61 83
+mineral-point = 11  62 84
+
+mineral-point = 12  21 139
+mineral-point = 13  22 138
+mineral-point = 14  24 139
+mineral-point = 15  25 138
+
+mineral-point = 16  111 177
+mineral-point = 17  113 178
+mineral-point = 18  116 180
+mineral-point = 19  121 183
+mineral-point = 20  124 184
+mineral-point = 21  126 183
+mineral-point = 22  128 182
+mineral-point = 23  129 181
+mineral-point = 24  47 150
+mineral-point = 25  48 151
+mineral-point = 26  49 151
+mineral-point = 27  50 150
+mineral-point = 28  65 112
+mineral-point = 29  65 111
+mineral-point = 30  31 103
+mineral-point = 31  29 102
+mineral-point = 32  29 101
+mineral-point = 33  68 88
+mineral-point = 34  69 89
+mineral-point = 35  70 102
+mineral-point = 36  72 103
+mineral-point = 37  73 103
+mineral-point = 38  72 101
+mineral-point = 39  115 100
+mineral-point = 40  114 100
+mineral-point = 41  113 101
+mineral-point = 42  113 102
+mineral-point = 43  125 107
+mineral-point = 44  127 108
+mineral-point = 45  144 123
+mineral-point = 46  145 123
+mineral-point = 47  146 122
+mineral-point = 48  146 121
+mineral-point = 49  111 74
+mineral-point = 50  112 74
+mineral-point = 51  123 85
+mineral-point = 52  124 85
+mineral-point = 53  159 58
+mineral-point = 54  160 58
+mineral-point = 55  161 60
+mineral-point = 56  176 55
+mineral-point = 57  178 54
+mineral-point = 58  182 53
+mineral-point = 59  185 55
+mineral-point = 60  187 56
+
+[END-MAP-INFO]
+
+
+
+
+

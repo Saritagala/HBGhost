@@ -8,7 +8,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CDynamicObject::CDynamicObject(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, UINT32 dwRegisterTime, UINT32 dwLastTime, int iV1, int iV2, int iV3)
+CDynamicObject::CDynamicObject(short sOwner, char cOwnerType, short sType, char cMapIndex, short sX, short sY, DWORD dwRegisterTime, DWORD dwLastTime, int iV1, int iV2, int iV3)
 {
 	m_sOwner         = sOwner;
 	m_cOwnerType     = cOwnerType;

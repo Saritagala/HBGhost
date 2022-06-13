@@ -17,6 +17,6 @@ void OnDestroy();
 void Initialize();
 void TextOut2();
 void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw2);
-MMRESULT _StartTimer(UINT32 dwTime);
+MMRESULT _StartTimer(DWORD dwTime);
 void _StopTimer(MMRESULT timerid);
 void PutLogOnline(char* cStr);

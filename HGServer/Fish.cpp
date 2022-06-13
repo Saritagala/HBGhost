@@ -30,7 +30,7 @@ CFish::~CFish()
 	if (m_pItem != 0) delete m_pItem;
 }
 
-int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CItem* pItem, int iDifficulty, UINT32 dwLastTime)
+int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CItem* pItem, int iDifficulty, DWORD dwLastTime)
 {
 	int i, iDynamicHandle;
 
@@ -84,7 +84,7 @@ int CGame::iCreateFish(char cMapIndex, short sX, short sY, short sType, class CI
 bool CGame::bDeleteFish(int iHandle, int iDelMode)
 {
 	int i, iH;
-	UINT32 dwTime;
+	DWORD dwTime;
 
 	if (m_pFish[iHandle] == 0) return false;
 
@@ -104,7 +104,7 @@ bool CGame::bDeleteFish(int iHandle, int iDelMode)
 	}
 
 	// ÀÌ ¹°°í±â¿Í ¿¬°áµÇ¾î ÀÖ´Â ÇÃ·¹ÀÌ¾îµé¿¡°Ô ¹°°í±â°¡ »ç¶óÁ® ³¬½Ã°¡ Ãë¼ÒµÇ¾úÀ½À» ¾Ë·ÁÁØ´Ù. 
-	for (i = 1; i < DEF_MAXCLIENTS; i++) {
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true) &&
 			(m_pClientList[i]->m_iAllocatedFish == iHandle)) {
 			// ¸Þ½ÃÁö Àü¼Û 
@@ -132,7 +132,7 @@ int CGame::iCheckFish(int iClientH, char cMapIndex, short dX, short dY)
 	if ((cMapIndex < 0) || (cMapIndex >= DEF_MAXMAPS)) return 0;
 
 	// ¸ÊÀÇ Æ¯Á¤ À§Ä¡ ³»¿¡ ¹°°í±â ´ÙÀÌ³ª¹Í ¿ÀºêÁ§Æ®°¡ ÀÖ´ÂÁö ÆÇ´ÜÇÑ´Ù. 
-	for (i = 1; i < DEF_MAXDYNAMICOBJECTS; i++)
+	for (i = 0; i < DEF_MAXDYNAMICOBJECTS; i++)
 		if (m_pDynamicObjectList[i] != 0) {
 			sDistX = abs(m_pDynamicObjectList[i]->m_sX - dX);
 			sDistY = abs(m_pDynamicObjectList[i]->m_sY - dY);
@@ -172,7 +172,7 @@ void CGame::FishProcessor()
 	int i, iSkillLevel, iResult, iChangeValue;
 
 	// �̺�Ʈ ���� ��尡 �Ҵ�� �÷��̾���� ó���Ѵ�.
-	for (i = 1; i < DEF_MAXCLIENTS; i++) {
+	for (i = 0; i < DEF_MAXCLIENTS; i++) {
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true) &&
 			(m_pClientList[i]->m_iAllocatedFish != 0)) {
 
@@ -240,6 +240,10 @@ void CGame::ReqGetFishThisTimeHandler(int iClientH)
 			pItem);
 
 		// �ٸ� Ŭ���̾�Ʈ���� �������� ������ ���� �˸���. 
+		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+			pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4 color
+
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -267,7 +271,7 @@ void CGame::FishGenerator()
 	int i, iP, tX, tY, iRet;
 	char  cItemName[21];
 	short sDifficulty;
-	UINT32 dwLastTime;
+	DWORD dwLastTime;
 	class CItem* pItem;
 
 	for (i = 0; i < DEF_MAXMAPS; i++) {

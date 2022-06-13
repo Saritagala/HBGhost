@@ -220,11 +220,15 @@ CClient::CClient(HWND hWnd)
 	for (i = 0; i < DEF_MAXQUEST; i++) m_iQuestRewardAmount[i] = 0;
 	for (i = 0; i < DEF_MAXQUEST; i++) m_bIsQuestCompleted[i] = false;
 
+	//m_iQuest = 0;
+	//m_iQuestID = 0;
 	m_iAskedQuest = 0;
-	
+	//m_iCurQuestCount = 0;
+	//m_iQuestRewardType = 0;
+	//m_iQuestRewardAmount = 0;
 	m_iContribution = 0;
 	m_bQuestMatchFlag_Loc = false;
-	
+	//m_bIsQuestCompleted = false;
 	m_cHeroArmourBonus = 0;
 	m_bIsNeutral = false;
 	m_bIsObserverMode = false;
@@ -295,7 +299,8 @@ CClient::CClient(HWND hWnd)
 	///////////////////////////////////////////////////////////////////////////////////////
 	//////////////////////////////////Modifications////////////////////////////////////////
 	///////////////////////////////////////////////////////////////////////////////////////
-	
+	//m_iHitRatio_ItemEffect_SM = 0;
+	//m_iHitRatio_ItemEffect_L  = 0;
 	m_cAura = 0;
 	m_dwLogoutHackCheck = 0;
 	m_iAddTransMana = 0;
@@ -386,9 +391,9 @@ bool CClient::IsTeamPlayer()
 }
 
 
-void CClient::Send(int h, UINT16 msg, UINT32 sV1, UINT32 sV2, UINT32 sV3,
-	char* pString, UINT32 sV4, UINT32 sV5,
-	UINT32 sV6, UINT32 sV7, UINT32 sV8, UINT32 sV9, char* pString2)
+void CClient::Send(int h, WORD msg, DWORD sV1, DWORD sV2, DWORD sV3,
+	char* pString, DWORD sV4, DWORD sV5,
+	DWORD sV6, DWORD sV7, DWORD sV8, DWORD sV9, char* pString2)
 {
 
 	G_pGame->SendNotifyMsg(0, h, msg, sV1, sV2, sV3, pString,

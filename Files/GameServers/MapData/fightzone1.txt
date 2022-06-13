@@ -1,0 +1,16 @@
+[MAP-INFO]
+
+map-location  = fightzone1
+initial-point = 1  51 56
+initial-point = 2  54 50
+initial-point = 3  46 52
+initial-point = 4  53 61
+initial-point = 5  51 47
+initial-point = 6  41 62
+initial-point = 7  56 62
+initial-point = 8  61 50
+initial-point = 9  39 48
+
+maximum-object = 0
+
+[END-MAP-INFO]

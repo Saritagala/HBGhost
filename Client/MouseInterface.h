@@ -27,7 +27,7 @@ public:
 	virtual ~CMouseInterface();
 	RECT * m_pRect[DEF_MAXRECTS];
 	char   m_cPrevPress;
-	UINT32  m_dwTime;
+	DWORD  m_dwTime;
 };
 
 #endif // !defined(AFX_MOUSEINTERFACE_H__8EB34B20_7FC7_11D2_A8E6_00001C7030A6__INCLUDED_)

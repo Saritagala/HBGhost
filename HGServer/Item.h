@@ -33,7 +33,7 @@ public:
 	short m_sItemEffectType;     
 	short m_sItemEffectValue1, m_sItemEffectValue2, m_sItemEffectValue3; 
 	short m_sItemEffectValue4, m_sItemEffectValue5, m_sItemEffectValue6; 
-	UINT16  m_wMaxLifeSpan;
+	WORD  m_wMaxLifeSpan;
 	short m_sSpecialEffect;
 	
 	//v1.432 명중률 가감 사용 안한다. 대신 특수 능력 수치가 들어간다.
@@ -45,8 +45,8 @@ public:
 	char  m_cApprValue;
 	char  m_cSpeed;
 
-	UINT32 m_wPrice; 
-	UINT16  m_wWeight;
+	DWORD m_wPrice; 
+	WORD  m_wWeight;
 	short m_sLevelLimit;	
 	char  m_cGenderLimit;
 
@@ -55,13 +55,13 @@ public:
 	char  m_cCategory;
 	bool  m_bIsForSale;
 
-	UINT32 m_dwCount;
+	DWORD m_dwCount;
 	short m_sTouchEffectType;
 	short m_sTouchEffectValue1, m_sTouchEffectValue2, m_sTouchEffectValue3;
 	char  m_cItemColor; // v1.4 에서 아이템 색으로 변경되었다. 
 	short m_sItemSpecEffectValue1, m_sItemSpecEffectValue2, m_sItemSpecEffectValue3;
 	short m_wCurLifeSpan;
-	UINT32 m_dwAttribute;				// aaaa bbbb cccc dddd eeee ffff xxxx xxx1 
+	DWORD m_dwAttribute;				// aaaa bbbb cccc dddd eeee ffff xxxx xxx1 
 										// 1: Custom-Made Item flag 
 										// a: Item 속성 종류 
 										// b: Item 속성 정도
@@ -100,7 +100,7 @@ short sItemEffectType
 short sItemEffectValue1, 2, 3 ... 
  - 아이템 효과의 수치 1, 2, 3...
 
-UINT16 wMaxLifeSpan
+WORD wMaxLifeSpan
  - 아이템의 최대 수명 
 
 short sMaxFixCount
@@ -110,9 +110,9 @@ short sSprite
 short sSpriteFrame
  - 아이템 스프라이트 번호 
 
-UINT16  wPrice 
+WORD  wPrice 
  - 아이템 가격 
-UINT16  wWeight
+WORD  wWeight
  - 아이템 무게 
 short sLevelLimit
  - 아이템 레벨 제한 
@@ -127,10 +127,10 @@ short sRelatedSkill
 
 플레이어 데이터 파일에 저장되어야 할 정보 - 로그 서버용 
 
-UINT32 dwCount
+DWORD dwCount
  - 아이템의 갯수. (같은 종류의 화살이나 포션, Gold등만이 의미를 갖는다)
 
-UINT16 wCurLifeSpan
+WORD wCurLifeSpan
  - 현재 남은 수명 
 
 short sCurFixCount

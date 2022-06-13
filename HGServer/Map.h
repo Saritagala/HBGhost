@@ -48,14 +48,14 @@ public:
 	bool bGetIsMoveAllowedTile(short dX, short dY);
 	void SetNamingValueEmpty(int iValue);
 	int iGetEmptyNamingValue();
-	bool bGetDynamicObject(short sX, short sY, short * pType, UINT32 * pRegisterTime, int * pIndex = 0);
-	void SetDynamicObject(UINT16 wID, short sType, short sX, short sY, UINT32 dwRegisterTime);
+	bool bGetDynamicObject(short sX, short sY, short * pType, DWORD * pRegisterTime, int * pIndex = 0);
+	void SetDynamicObject(WORD wID, short sType, short sX, short sY, DWORD dwRegisterTime);
 	bool bGetIsTeleport(short dX, short dY);
 	bool bSearchTeleportDest(int sX, int sY, char * pMapName, int * pDx, int * pDy, char * pDir);
 	bool bInit(char * pName);
 	bool bIsValidLoc(short sX, short sY);
 	//class CItem * pGetItem(short sX, short sY, short * pRemainItemSprite, short * pRemainItemSpriteFrame, char * pRemainItemColor);
-	class CItem* pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, UINT32* pRemainItemAttr);
+	class CItem* pGetItem(short sX, short sY, short* pRemainItemID/*, short * pRemainItemSprite, short * pRemainItemSpriteFrame*/, char* pRemainItemColor, DWORD* pRemainItemAttr);
 	bool bSetItem(short sX, short sY, class CItem * pItem);
 	void ClearDeadOwner(short sX, short sY);
 	void ClearOwner(int iDebugCode, short sOwnerH, char cOwnerType, short sX, short sY);
@@ -82,7 +82,7 @@ public:
 	
 	POINT m_pInitialPoint[DEF_MAXINITIALPOINT];
 
-	bool  m_bNamingValueUsingStatus[15000]; //LifeX Fix Mobs Respawn Limit 01/01
+	bool  m_bNamingValueUsingStatus[DEF_MAXNPCS]; //LifeX Fix Mobs Respawn Limit 01/01
 	bool  m_bRandomMobGenerator;
 	char  m_cRandomMobGeneratorLevel;
 	int   m_iTotalActiveObject;
@@ -150,7 +150,7 @@ public:
 	int   m_iTotalMineralPoint, m_iMaxMineral, m_iCurMineral;
 
 	char  m_cWhetherStatus;		// 기상 상태. 0이면 없음. 1~3 비 4~6 눈 7~9 폭풍 
-	UINT32 m_dwWhetherLastTime, m_dwWhetherStartTime;  // 날씨 지속, 시작 시간 
+	DWORD m_dwWhetherLastTime, m_dwWhetherStartTime;  // 날씨 지속, 시작 시간 
 
 	int   m_iLevelLimit;
 	int   m_iUpperLevelLimit;	// 상위 렙 제한 

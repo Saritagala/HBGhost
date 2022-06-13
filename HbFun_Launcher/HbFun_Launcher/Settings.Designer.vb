@@ -77,9 +77,11 @@ Partial Class Settings
         Me.GroupBox1.Controls.Add(Me.chkSound)
         Me.GroupBox1.Controls.Add(Me.chkMusic)
         Me.GroupBox1.Controls.Add(Me.Button1)
-        Me.GroupBox1.Location = New System.Drawing.Point(12, 137)
+        Me.GroupBox1.Location = New System.Drawing.Point(18, 211)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(289, 211)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GroupBox1.Size = New System.Drawing.Size(434, 325)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Options"
@@ -87,11 +89,10 @@ Partial Class Settings
         'chkAutoSS
         '
         Me.chkAutoSS.AutoSize = True
-        Me.chkAutoSS.Location = New System.Drawing.Point(101, 146)
-        Me.chkAutoSS.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.chkAutoSS.Location = New System.Drawing.Point(152, 225)
         Me.chkAutoSS.Name = "chkAutoSS"
         Me.chkAutoSS.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkAutoSS.Size = New System.Drawing.Size(82, 17)
+        Me.chkAutoSS.Size = New System.Drawing.Size(121, 24)
         Me.chkAutoSS.TabIndex = 24
         Me.chkAutoSS.Text = "Auto EK-SS"
         Me.chkAutoSS.UseVisualStyleBackColor = True
@@ -99,10 +100,11 @@ Partial Class Settings
         'chkOldPanels
         '
         Me.chkOldPanels.AutoSize = True
-        Me.chkOldPanels.Location = New System.Drawing.Point(3, 146)
+        Me.chkOldPanels.Location = New System.Drawing.Point(4, 225)
+        Me.chkOldPanels.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkOldPanels.Name = "chkOldPanels"
         Me.chkOldPanels.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkOldPanels.Size = New System.Drawing.Size(77, 17)
+        Me.chkOldPanels.Size = New System.Drawing.Size(112, 24)
         Me.chkOldPanels.TabIndex = 23
         Me.chkOldPanels.Text = "Old-Panels"
         Me.chkOldPanels.UseVisualStyleBackColor = True
@@ -110,10 +112,11 @@ Partial Class Settings
         'chkBigItems
         '
         Me.chkBigItems.AutoSize = True
-        Me.chkBigItems.Location = New System.Drawing.Point(205, 124)
+        Me.chkBigItems.Location = New System.Drawing.Point(308, 191)
+        Me.chkBigItems.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkBigItems.Name = "chkBigItems"
         Me.chkBigItems.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkBigItems.Size = New System.Drawing.Size(69, 17)
+        Me.chkBigItems.Size = New System.Drawing.Size(102, 24)
         Me.chkBigItems.TabIndex = 22
         Me.chkBigItems.Text = "Big Items"
         Me.chkBigItems.UseVisualStyleBackColor = True
@@ -121,10 +124,11 @@ Partial Class Settings
         'chkQuestHelper
         '
         Me.chkQuestHelper.AutoSize = True
-        Me.chkQuestHelper.Location = New System.Drawing.Point(95, 124)
+        Me.chkQuestHelper.Location = New System.Drawing.Point(142, 191)
+        Me.chkQuestHelper.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkQuestHelper.Name = "chkQuestHelper"
         Me.chkQuestHelper.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkQuestHelper.Size = New System.Drawing.Size(88, 17)
+        Me.chkQuestHelper.Size = New System.Drawing.Size(129, 24)
         Me.chkQuestHelper.TabIndex = 21
         Me.chkQuestHelper.Text = "Quest Helper"
         Me.chkQuestHelper.UseVisualStyleBackColor = True
@@ -132,11 +136,10 @@ Partial Class Settings
         'chkShowNPC
         '
         Me.chkShowNPC.AutoSize = True
-        Me.chkShowNPC.Location = New System.Drawing.Point(2, 124)
-        Me.chkShowNPC.Margin = New System.Windows.Forms.Padding(2, 2, 2, 2)
+        Me.chkShowNPC.Location = New System.Drawing.Point(3, 191)
         Me.chkShowNPC.Name = "chkShowNPC"
         Me.chkShowNPC.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkShowNPC.Size = New System.Drawing.Size(78, 17)
+        Me.chkShowNPC.Size = New System.Drawing.Size(111, 24)
         Me.chkShowNPC.TabIndex = 20
         Me.chkShowNPC.Text = "Show NPC"
         Me.chkShowNPC.UseVisualStyleBackColor = True
@@ -144,10 +147,11 @@ Partial Class Settings
         'chkEvents
         '
         Me.chkEvents.AutoSize = True
-        Me.chkEvents.Location = New System.Drawing.Point(194, 56)
+        Me.chkEvents.Location = New System.Drawing.Point(291, 86)
+        Me.chkEvents.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkEvents.Name = "chkEvents"
         Me.chkEvents.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkEvents.Size = New System.Drawing.Size(80, 17)
+        Me.chkEvents.Size = New System.Drawing.Size(116, 24)
         Me.chkEvents.TabIndex = 19
         Me.chkEvents.Text = "Events Info"
         Me.chkEvents.UseVisualStyleBackColor = True
@@ -156,27 +160,30 @@ Partial Class Settings
         '
         Me.cboDetail.FormattingEnabled = True
         Me.cboDetail.Items.AddRange(New Object() {"Low", "Normal", "High"})
-        Me.cboDetail.Location = New System.Drawing.Point(107, 175)
+        Me.cboDetail.Location = New System.Drawing.Point(160, 269)
+        Me.cboDetail.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.cboDetail.Name = "cboDetail"
-        Me.cboDetail.Size = New System.Drawing.Size(76, 21)
+        Me.cboDetail.Size = New System.Drawing.Size(112, 28)
         Me.cboDetail.TabIndex = 18
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(64, 178)
+        Me.Label5.Location = New System.Drawing.Point(96, 274)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(37, 13)
+        Me.Label5.Size = New System.Drawing.Size(54, 20)
         Me.Label5.TabIndex = 17
         Me.Label5.Text = "Detail:"
         '
         'chkGrid
         '
         Me.chkGrid.AutoSize = True
-        Me.chkGrid.Location = New System.Drawing.Point(229, 102)
+        Me.chkGrid.Location = New System.Drawing.Point(344, 157)
+        Me.chkGrid.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkGrid.Name = "chkGrid"
         Me.chkGrid.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkGrid.Size = New System.Drawing.Size(45, 17)
+        Me.chkGrid.Size = New System.Drawing.Size(65, 24)
         Me.chkGrid.TabIndex = 16
         Me.chkGrid.Text = "Grid"
         Me.chkGrid.UseVisualStyleBackColor = True
@@ -184,10 +191,11 @@ Partial Class Settings
         'chkWhisper
         '
         Me.chkWhisper.AutoSize = True
-        Me.chkWhisper.Location = New System.Drawing.Point(15, 102)
+        Me.chkWhisper.Location = New System.Drawing.Point(22, 157)
+        Me.chkWhisper.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkWhisper.Name = "chkWhisper"
         Me.chkWhisper.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkWhisper.Size = New System.Drawing.Size(65, 17)
+        Me.chkWhisper.Size = New System.Drawing.Size(93, 24)
         Me.chkWhisper.TabIndex = 15
         Me.chkWhisper.Text = "Whisper"
         Me.chkWhisper.UseVisualStyleBackColor = True
@@ -195,10 +203,11 @@ Partial Class Settings
         'chkShout
         '
         Me.chkShout.AutoSize = True
-        Me.chkShout.Location = New System.Drawing.Point(220, 33)
+        Me.chkShout.Location = New System.Drawing.Point(330, 51)
+        Me.chkShout.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkShout.Name = "chkShout"
         Me.chkShout.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkShout.Size = New System.Drawing.Size(54, 17)
+        Me.chkShout.Size = New System.Drawing.Size(78, 24)
         Me.chkShout.TabIndex = 14
         Me.chkShout.Text = "Shout"
         Me.chkShout.UseVisualStyleBackColor = True
@@ -206,10 +215,11 @@ Partial Class Settings
         'chkDialog
         '
         Me.chkDialog.AutoSize = True
-        Me.chkDialog.Location = New System.Drawing.Point(94, 102)
+        Me.chkDialog.Location = New System.Drawing.Point(141, 157)
+        Me.chkDialog.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkDialog.Name = "chkDialog"
         Me.chkDialog.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkDialog.Size = New System.Drawing.Size(89, 17)
+        Me.chkDialog.Size = New System.Drawing.Size(128, 24)
         Me.chkDialog.TabIndex = 13
         Me.chkDialog.Text = ".Dialog Trans"
         Me.chkDialog.UseVisualStyleBackColor = True
@@ -217,10 +227,11 @@ Partial Class Settings
         'chkMap
         '
         Me.chkMap.AutoSize = True
-        Me.chkMap.Location = New System.Drawing.Point(196, 79)
+        Me.chkMap.Location = New System.Drawing.Point(294, 122)
+        Me.chkMap.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkMap.Name = "chkMap"
         Me.chkMap.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkMap.Size = New System.Drawing.Size(78, 17)
+        Me.chkMap.Size = New System.Drawing.Size(113, 24)
         Me.chkMap.TabIndex = 12
         Me.chkMap.Text = "Guide Map"
         Me.chkMap.UseVisualStyleBackColor = True
@@ -228,10 +239,11 @@ Partial Class Settings
         'chkParty
         '
         Me.chkParty.AutoSize = True
-        Me.chkParty.Location = New System.Drawing.Point(112, 79)
+        Me.chkParty.Location = New System.Drawing.Point(168, 122)
+        Me.chkParty.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkParty.Name = "chkParty"
         Me.chkParty.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkParty.Size = New System.Drawing.Size(71, 17)
+        Me.chkParty.Size = New System.Drawing.Size(103, 24)
         Me.chkParty.TabIndex = 8
         Me.chkParty.Text = "Party Info"
         Me.chkParty.UseVisualStyleBackColor = True
@@ -239,10 +251,11 @@ Partial Class Settings
         'chkTrees
         '
         Me.chkTrees.AutoSize = True
-        Me.chkTrees.Location = New System.Drawing.Point(130, 56)
+        Me.chkTrees.Location = New System.Drawing.Point(195, 86)
+        Me.chkTrees.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkTrees.Name = "chkTrees"
         Me.chkTrees.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkTrees.Size = New System.Drawing.Size(53, 17)
+        Me.chkTrees.Size = New System.Drawing.Size(75, 24)
         Me.chkTrees.TabIndex = 7
         Me.chkTrees.Text = "Trees"
         Me.chkTrees.UseVisualStyleBackColor = True
@@ -250,10 +263,11 @@ Partial Class Settings
         'chkFrames
         '
         Me.chkFrames.AutoSize = True
-        Me.chkFrames.Location = New System.Drawing.Point(123, 33)
+        Me.chkFrames.Location = New System.Drawing.Point(184, 51)
+        Me.chkFrames.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkFrames.Name = "chkFrames"
         Me.chkFrames.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkFrames.Size = New System.Drawing.Size(60, 17)
+        Me.chkFrames.Size = New System.Drawing.Size(89, 24)
         Me.chkFrames.TabIndex = 4
         Me.chkFrames.Text = "Frames"
         Me.chkFrames.UseVisualStyleBackColor = True
@@ -261,10 +275,11 @@ Partial Class Settings
         'chkEmblems
         '
         Me.chkEmblems.AutoSize = True
-        Me.chkEmblems.Location = New System.Drawing.Point(12, 79)
+        Me.chkEmblems.Location = New System.Drawing.Point(18, 122)
+        Me.chkEmblems.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkEmblems.Name = "chkEmblems"
         Me.chkEmblems.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkEmblems.Size = New System.Drawing.Size(68, 17)
+        Me.chkEmblems.Size = New System.Drawing.Size(101, 24)
         Me.chkEmblems.TabIndex = 3
         Me.chkEmblems.Text = "Emblems"
         Me.chkEmblems.UseVisualStyleBackColor = True
@@ -272,10 +287,11 @@ Partial Class Settings
         'chkSound
         '
         Me.chkSound.AutoSize = True
-        Me.chkSound.Location = New System.Drawing.Point(23, 56)
+        Me.chkSound.Location = New System.Drawing.Point(34, 86)
+        Me.chkSound.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkSound.Name = "chkSound"
         Me.chkSound.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkSound.Size = New System.Drawing.Size(57, 17)
+        Me.chkSound.Size = New System.Drawing.Size(82, 24)
         Me.chkSound.TabIndex = 2
         Me.chkSound.Text = "Sound"
         Me.chkSound.UseVisualStyleBackColor = True
@@ -283,10 +299,11 @@ Partial Class Settings
         'chkMusic
         '
         Me.chkMusic.AutoSize = True
-        Me.chkMusic.Location = New System.Drawing.Point(26, 33)
+        Me.chkMusic.Location = New System.Drawing.Point(39, 51)
+        Me.chkMusic.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.chkMusic.Name = "chkMusic"
         Me.chkMusic.RightToLeft = System.Windows.Forms.RightToLeft.Yes
-        Me.chkMusic.Size = New System.Drawing.Size(54, 17)
+        Me.chkMusic.Size = New System.Drawing.Size(76, 24)
         Me.chkMusic.TabIndex = 1
         Me.chkMusic.Text = "Music"
         Me.chkMusic.UseVisualStyleBackColor = True
@@ -294,9 +311,10 @@ Partial Class Settings
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(215, 173)
+        Me.Button1.Location = New System.Drawing.Point(322, 266)
+        Me.Button1.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(59, 23)
+        Me.Button1.Size = New System.Drawing.Size(88, 35)
         Me.Button1.TabIndex = 0
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
@@ -309,9 +327,11 @@ Partial Class Settings
         Me.GroupBox2.Controls.Add(Me.scrSound)
         Me.GroupBox2.Controls.Add(Me.Label2)
         Me.GroupBox2.Controls.Add(Me.Label1)
-        Me.GroupBox2.Location = New System.Drawing.Point(12, 12)
+        Me.GroupBox2.Location = New System.Drawing.Point(18, 18)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(289, 101)
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 5, 4, 5)
+        Me.GroupBox2.Size = New System.Drawing.Size(434, 155)
         Me.GroupBox2.TabIndex = 1
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Volume"
@@ -319,71 +339,76 @@ Partial Class Settings
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(249, 61)
+        Me.Label4.Location = New System.Drawing.Point(374, 94)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(25, 13)
+        Me.Label4.Size = New System.Drawing.Size(36, 20)
         Me.Label4.TabIndex = 5
         Me.Label4.Text = "100"
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(249, 32)
+        Me.Label3.Location = New System.Drawing.Point(374, 49)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(25, 13)
+        Me.Label3.Size = New System.Drawing.Size(36, 20)
         Me.Label3.TabIndex = 4
         Me.Label3.Text = "100"
         '
         'scrMusic
         '
-        Me.scrMusic.Location = New System.Drawing.Point(60, 57)
+        Me.scrMusic.Location = New System.Drawing.Point(90, 88)
         Me.scrMusic.Maximum = 109
         Me.scrMusic.Name = "scrMusic"
-        Me.scrMusic.Size = New System.Drawing.Size(186, 17)
+        Me.scrMusic.Size = New System.Drawing.Size(279, 17)
         Me.scrMusic.TabIndex = 3
         '
         'scrSound
         '
-        Me.scrSound.Location = New System.Drawing.Point(60, 28)
+        Me.scrSound.Location = New System.Drawing.Point(90, 43)
         Me.scrSound.Maximum = 109
         Me.scrSound.Name = "scrSound"
-        Me.scrSound.Size = New System.Drawing.Size(186, 17)
+        Me.scrSound.Size = New System.Drawing.Size(279, 17)
         Me.scrSound.TabIndex = 2
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(19, 61)
+        Me.Label2.Location = New System.Drawing.Point(28, 94)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(38, 13)
+        Me.Label2.Size = New System.Drawing.Size(54, 20)
         Me.Label2.TabIndex = 1
         Me.Label2.Text = "Music:"
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(16, 32)
+        Me.Label1.Location = New System.Drawing.Point(24, 49)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(41, 13)
+        Me.Label1.Size = New System.Drawing.Size(60, 20)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Sound:"
         '
         'Settings
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 20.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(313, 357)
+        Me.ClientSize = New System.Drawing.Size(470, 549)
         Me.Controls.Add(Me.GroupBox2)
         Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
+        Me.Margin = New System.Windows.Forms.Padding(4, 5, 4, 5)
         Me.MaximizeBox = False
         Me.MinimizeBox = False
         Me.Name = "Settings"
         Me.ShowIcon = False
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Settings"
+        Me.Text = "Game Settings"
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.GroupBox2.ResumeLayout(False)

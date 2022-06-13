@@ -19,15 +19,15 @@
 class CMsg  								 
 {
 public:
-	void Get(char * pFrom, char * pData, UINT32 * pSize, int * pIndex, char * pKey);
-	bool bPut(char cFrom, char * pData, UINT32 dwSize, int iIndex, char cKey);
+	void Get(char * pFrom, char * pData, DWORD * pSize, int * pIndex, char * pKey);
+	bool bPut(char cFrom, char * pData, DWORD dwSize, int iIndex, char cKey);
 	CMsg();
 	virtual ~CMsg();
 
 	char   m_cFrom;
 
 	char * m_pData;
-	UINT32  m_dwSize;
+	DWORD  m_dwSize;
 
 	int    m_iIndex;
 	char   m_cKey;   // v1.4

@@ -1,8 +1,8 @@
 ﻿Imports System.IO
-Imports System.Text
 Public Class Settings
     Dim actualText As String
-    Dim FILE_NAME As String = Application.StartupPath & "\CONTENTS\GameConfig.cfg"
+    Dim fileName As String = AppDomain.CurrentDomain.BaseDirectory() & "CONTENTS\GameConfig.cfg"
+    Dim fileLength As Integer = 20
     Private Sub Settings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         actualText = Me.Text
         LoadSettings()
@@ -30,7 +30,7 @@ Public Class Settings
         Me.Close()
     End Sub
     Private Sub SaveSettings()
-        Dim FileLine(20) As String
+        Dim FileLine(fileLength) As String
         If Me.Text.Contains("*") Then
             Me.Text = actualText
             FileLine(0) = "[CONFIG]"
@@ -54,44 +54,56 @@ Public Class Settings
             FileLine(18) = "show-big-items = " & chkBigItems.CheckState
             FileLine(19) = "use-old-panels = " & chkOldPanels.CheckState
             FileLine(20) = "auto-ek-ss = " & chkAutoSS.CheckState
-            Using objWriter As New StreamWriter(FILE_NAME)
-                For i = 0 To 20
-                    objWriter.WriteLine(FileLine(i))
-                Next
-            End Using
+            Try
+                Using objWriter As New StreamWriter(fileName)
+                    For i = 0 To fileLength
+                        objWriter.WriteLine(FileLine(i))
+                    Next
+                End Using
+            Catch ex As Exception
+                GenerateLog(ex.Message)
+                Exit Sub
+            End Try
         End If
         MsgBox("Changes saved!", vbOKOnly + vbInformation, "Done")
     End Sub
     Private Sub LoadSettings()
-        Dim FileLine(20) As String
-        Dim line As String()
-        Using reader As New StreamReader(FILE_NAME)
-            For i = 0 To 20
-                line = reader.ReadLine().Split("=")
-                If line.Contains("[CONFIG]") Then Continue For
-                FileLine(i) = line(1)
-            Next
-        End Using
-        chkMusic.CheckState = FileLine(1).Trim
-        scrMusic.Value = FileLine(2).Trim
-        chkSound.CheckState = FileLine(3).Trim
-        scrSound.Value = FileLine(4).Trim
-        chkEmblems.CheckState = FileLine(5).Trim
-        chkFrames.CheckState = FileLine(6).Trim
-        chkTrees.CheckState = FileLine(7).Trim
-        chkParty.CheckState = FileLine(8).Trim
-        chkEvents.CheckState = FileLine(9).Trim
-        cboDetail.SelectedIndex = FileLine(10).Trim
-        chkMap.CheckState = FileLine(11).Trim
-        chkDialog.CheckState = FileLine(12).Trim
-        chkShout.CheckState = FileLine(13).Trim
-        chkWhisper.CheckState = FileLine(14).Trim
-        chkGrid.CheckState = FileLine(15).Trim
-        chkShowNPC.CheckState = FileLine(16).Trim
-        chkQuestHelper.CheckState = FileLine(17).Trim
-        chkBigItems.CheckState = FileLine(18).Trim
-        chkOldPanels.CheckState = FileLine(19).Trim
-        chkAutoSS.CheckState = FileLine(20).Trim
+        Dim FileLine(fileLength) As String
+        Dim line As String
+        Dim fieldValue As String()
+        Try
+            Using reader As New StreamReader(fileName)
+                For i = 0 To fileLength
+                    line = reader.ReadLine()
+                    If line.Contains("[CONFIG]") Then Continue For
+                    fieldValue = line.Split("=")
+                    FileLine(i) = fieldValue(1).Trim
+                Next
+            End Using
+        Catch ex As Exception
+            GenerateLog(ex.Message)
+            Exit Sub
+        End Try
+        chkMusic.CheckState = FileLine(1)
+        scrMusic.Value = FileLine(2)
+        chkSound.CheckState = FileLine(3)
+        scrSound.Value = FileLine(4)
+        chkEmblems.CheckState = FileLine(5)
+        chkFrames.CheckState = FileLine(6)
+        chkTrees.CheckState = FileLine(7)
+        chkParty.CheckState = FileLine(8)
+        chkEvents.CheckState = FileLine(9)
+        cboDetail.SelectedIndex = FileLine(10)
+        chkMap.CheckState = FileLine(11)
+        chkDialog.CheckState = FileLine(12)
+        chkShout.CheckState = FileLine(13)
+        chkWhisper.CheckState = FileLine(14)
+        chkGrid.CheckState = FileLine(15)
+        chkShowNPC.CheckState = FileLine(16)
+        chkQuestHelper.CheckState = FileLine(17)
+        chkBigItems.CheckState = FileLine(18)
+        chkOldPanels.CheckState = FileLine(19)
+        chkAutoSS.CheckState = FileLine(20)
     End Sub
     Private Sub chkMusic_CheckedChanged(sender As Object, e As EventArgs) Handles chkMusic.CheckedChanged
         If Not Me.Text.Contains("*") Then Me.Text &= "*"

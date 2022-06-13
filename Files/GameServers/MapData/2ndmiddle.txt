@@ -1,0 +1,81 @@
+[MAP-INFO]
+
+map-location = 2ndmiddle
+initial-point = 1  125 125
+
+
+//-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
+//-Dir
+//------7(8)---8(1)---9(2)
+//------4(7)---5------6(3)
+//------1(6)---2(5)---3(4)
+
+teleport-loc     =     135    228     aresden             278    206    5
+teleport-loc     =     136    228     aresden             278    206    5
+teleport-loc     =     137    228     aresden             278    206    5
+teleport-loc     =     138    228     aresden             278    206    5
+teleport-loc     =     139    228     aresden             278    206    5
+teleport-loc     =     140    228     aresden             278    206    5
+teleport-loc     =     141    228     aresden             278    206    5
+teleport-loc     =     142    228     aresden             278    206    5
+teleport-loc     =     143    228     aresden             278    206    5
+teleport-loc     =     144    228     aresden             278    206    5
+teleport-loc     =     145    228     aresden             278    206    5
+
+teleport-loc     =     121     21     elvine             276    195   1
+teleport-loc     =     122     21     elvine             276    195   1
+teleport-loc     =     123     21     elvine             276    195   1
+teleport-loc     =     124     21     elvine             276    195   1
+teleport-loc     =     125     21     elvine             276    195   1
+teleport-loc     =     126     21     elvine             276    195   1
+teleport-loc     =     127     21     elvine             276    195   1
+teleport-loc     =     128     21     elvine             276    195   1
+teleport-loc     =     129     21     elvine             276    195   1
+teleport-loc     =     130     21     elvine             276    195   1
+teleport-loc     =     131     21     elvine             276    195   1
+
+
+//-WayPoint-Set---------Num-----X-----Y----;
+waypoint          =     0       75    75
+waypoint          =     1       75   200
+waypoint          =     2      200   200
+waypoint          =     3      200    75
+waypoint          =     4      125   125
+
+
+
+//-No-Attack-Area----------Num-----RECT-------------
+no-attack-area           = 1       115  18 135  25
+no-attack-area           = 2       130 224 150 233
+
+
+maximum-object		= 400
+
+//-----------------------Num-Type-RECT---------------Mob-MobNum
+
+//Cyclops & Troll
+spot-mob-generator	= 1   1    112 110 139 137	13	10
+spot-mob-generator	= 2   1    112 110 139 137	28	10
+
+//Unicorn
+spot-mob-generator	= 3   1     38 157  73 173	32	20
+spot-mob-generator	= 4   1     45  85  66 100	32	20
+
+//Beholder
+spot-mob-generator	= 5   1     81 198 100 210	53	10
+spot-mob-generator	= 6   1    152  51 167  67	53	10
+
+//Giant-Crayfish
+spot-mob-generator	= 7   1     47  38  63  57	74	10
+spot-mob-generator	= 8   1    167 179 185 200	74	10
+
+//Rudolph
+spot-mob-generator	= 9   1    192 107 217 122	61	20
+spot-mob-generator	= 10  1    192 144 218 162	61	20
+
+//Troll
+spot-mob-generator	= 11  1    109  63 141  83	28	20
+spot-mob-generator	= 12  1    126 193 150 210	28	20
+
+
+[END-MAP-INFO]

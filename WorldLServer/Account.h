@@ -15,7 +15,7 @@ class CAccount
 {
 public:
 		
-	CAccount(char * pData, UINT32 dwTime);
+	CAccount(char * pData, DWORD dwTime);
 	virtual ~CAccount();
 
 	char cAccountType;			// 4h
@@ -24,7 +24,7 @@ public:
 	char cCharacterName[11];	// 18h
 	char m_cOnGameServer[11];	// 1Bh
 	int  m_iLevel;				// 28h
-	UINT32 dwLogInTime;			// 2Ch
+	DWORD dwLogInTime;			// 2Ch
 	int Timeout;
 
 };

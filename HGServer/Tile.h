@@ -31,9 +31,9 @@ public:
 	class CItem * m_pItem[DEF_TILE_PER_ITEMS];
 	char  m_cTotalItem;
 
-	UINT16  m_wDynamicObjectID;
+	WORD  m_wDynamicObjectID;
 	short m_sDynamicObjectType;
-	UINT32 m_dwDynamicObjectRegisterTime;
+	DWORD m_dwDynamicObjectRegisterTime;
 
 	bool  m_bIsMoveAllowed, m_bIsTeleport, m_bIsWater, m_bIsFarm, m_bIsTempMoveAllowed;
 

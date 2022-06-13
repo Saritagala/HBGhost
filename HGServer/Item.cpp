@@ -20,7 +20,7 @@ extern void PutPvPLogFileList(char* cStr);
 extern FILE* pLogFile;
 extern HWND	G_hWnd;
 
-#pragma warning (disable : 4996 4018 4700)
+#pragma warning (disable : 4996 4018)
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -127,10 +127,10 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 	short sItemIndex;
 	int  i, iPrevSAType, iTemp;
 	char cEquipPos;
-	float dV1, dV2, dV3;
-	UINT32  dwSWEType, dwSWEValue;
+	double dV1, dV2, dV3;
+	DWORD  dwSWEType, dwSWEValue;
 	short  sTemp;
-	int iShieldHPrec, iShieldSPrec, iShieldMPrec;
+	int iShieldHPrec, iShieldSPrec, iShieldMPrec, iTotalAngelicstatas;
 
 	iShieldHPrec = iShieldSPrec = iShieldMPrec = 0;
 
@@ -152,6 +152,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 	m_pClientList[iClientH]->m_iAngelicDex = 0; // By Snoopy81
 	m_pClientList[iClientH]->m_iAngelicMag = 0; // By Snoopy81 
 	SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 0, 0);
+
+	//if (m_pClientList[iClientH]->m_iWantedLevel > 0) 
+		//SetWantedFlag(iClientH, DEF_OWNERTYPE_PLAYER, 1); // Wanted System
 
 	m_pClientList[iClientH]->m_cAttackDiceThrow_SM = 0;
 	m_pClientList[iClientH]->m_cAttackDiceRange_SM = 0;
@@ -306,7 +309,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 
 					if (m_pClientList[iClientH]->m_iCustomItemValue_Attack > 0)
 					{	// Completion >100%
-						dV2 = (float)m_pClientList[iClientH]->m_iCustomItemValue_Attack;
+						dV2 = (double)m_pClientList[iClientH]->m_iCustomItemValue_Attack;
 						dV1 = (dV2 / 100.0f) * (5.0f);
 						m_pClientList[iClientH]->m_iMinAP_SM = m_pClientList[iClientH]->m_cAttackDiceThrow_SM +
 							m_pClientList[iClientH]->m_cAttackBonus_SM + (int)dV1;
@@ -321,7 +324,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					}
 					else if (m_pClientList[iClientH]->m_iCustomItemValue_Attack < 0)
 					{	// Completion <100%
-						dV2 = (float)m_pClientList[iClientH]->m_iCustomItemValue_Attack;
+						dV2 = (double)m_pClientList[iClientH]->m_iCustomItemValue_Attack;
 						dV1 = (dV2 / 100.0f) * (5.0f);
 						m_pClientList[iClientH]->m_iMaxAP_SM = m_pClientList[iClientH]->m_cAttackDiceThrow_SM * m_pClientList[iClientH]->m_cAttackDiceRange_SM
 							+ m_pClientList[iClientH]->m_cAttackBonus_SM + (int)dV1;
@@ -364,9 +367,11 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						break;
 					case ITEMSTAT_MANACONV: // ManaConv 
 						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
+						//if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
 						break;
 					case ITEMSTAT_CRITICAL2: // Crit Increase 
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
+						//if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
 					default: // All others
 						m_pClientList[iClientH]->m_iSpecialWeaponEffectType = dwSWEType;
@@ -382,48 +387,62 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000F00) >> 8;
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += dwSWEValue * 7; break;
-					case 2:  m_pClientList[iClientH]->m_iAddAR += dwSWEValue * 7; break; // armes HitProba
-					case 3:  m_pClientList[iClientH]->m_iAddDR += dwSWEValue * 7; break;
-					case 4:  m_pClientList[iClientH]->m_iAddHP += dwSWEValue * 7; break;
-					case 5:  m_pClientList[iClientH]->m_iAddSP += dwSWEValue * 7; break;
-					case 6:  m_pClientList[iClientH]->m_iAddMP += dwSWEValue * 7; break;
-					case 7:  m_pClientList[iClientH]->m_iAddMR += dwSWEValue * 7; break;
+					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
+					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // armes HitProba
+					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
+					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100); break;
+					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100); break;
+					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100); break;
+					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
 					
 					case 8:  
-						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += dwSWEValue * 3;
+						//m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						//if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
+						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 						break;
 
+					/*case 9:
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+						break;*/
 					//Magn0S:: Magic Abs by elements
 					case 9:  
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:	
-							m_pClientList[iClientH]->m_iAddAbsEarth += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
 							break;
 						case 2:	
-							m_pClientList[iClientH]->m_iAddAbsLight += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
 							break;
 						case 3:	
-							m_pClientList[iClientH]->m_iAddAbsFire += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
 							break;
 						case 4:	
-							m_pClientList[iClientH]->m_iAddAbsWater += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
 							break;
 						case 5:	
-							m_pClientList[iClientH]->m_iAddAbsHoly += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
 							break;
 						case 6:	
-							m_pClientList[iClientH]->m_iAddAbsUnholy += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100); 
+							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
 							break;
 						default: 
-							m_pClientList[iClientH]->m_iAddAbsMD += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 							break;
 						}
 						break;
 
-					case 10: m_pClientList[iClientH]->m_iAddCD += dwSWEValue * 4; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += dwSWEValue * 10; break;
-					case 12: m_pClientList[iClientH]->m_iAddGold += dwSWEValue * 10; break;
+					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
+					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
+					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 				}
 
@@ -452,6 +471,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					m_pClientList[iClientH]->m_cAttackBonus_L = (char)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3;
 					// Compute Mana save, max=80%
 					m_pClientList[iClientH]->m_iManaSaveRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue4;
+					if (m_pClientList[iClientH]->m_iManaSaveRatio > 80) m_pClientList[iClientH]->m_iManaSaveRatio = 80;
 					//Snoopy: Reintroduced defence for staves
 					m_pClientList[iClientH]->m_iDefenseRatio += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
 					//Snoopy: Added Magic ToHit Bonus for some wands.
@@ -459,6 +479,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					break;
 
 				case DEF_ITEMEFFECTTYPE_ATTACK_DEFENSE: // PA for some weapons
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
+					//m_pClientList[iClientH]->m_iAddAbsPD += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpecialEffect;
+					//if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
 					break;
 
 				case DEF_ITEMEFFECTTYPE_ATTACK_SPECABLTY:
@@ -511,6 +534,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 				case 5:	// Lucky Gold Ring
 					// SNOOPY: changed to use m_sItemEffectValue2 as Lucky % value
 					//         and cumulative betxeen items
+					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 > 0)
+						m_pClientList[iClientH]->m_bIsLuckyEffect += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+					else m_pClientList[iClientH]->m_bIsLuckyEffect += 10;
+					// Merien Upgraded items
+					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
+					m_pClientList[iClientH]->m_bIsLuckyEffect += (iTemp * 10);
 					break;
 
 				case 6:	// Add Magic Damage. 
@@ -566,6 +595,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 
 				case 15: // Magin Emerald Magical damage decreased(% applied) by the purity formula.    
 					m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
+					if (m_pClientList[iClientH]->m_iAddAbsMD > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddAbsMD = DEF_MAXMAGICALABS;
 					break;
 
 				case 30: // Magin Sapphire	Phisical damage decreased(% applied) by the purity formula.	
@@ -575,6 +605,12 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] += iTemp;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] += iTemp;
 
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] = 80;
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] = 80;
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] = 80;
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] = 80;
+					//m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2 / 10);
+					//if (m_pClientList[iClientH]->m_iAddAbsPD > DEF_MAXMAGICALABS) m_pClientList[iClientH]->m_iAddAbsPD = DEF_MAXMAGICALABS;
 					break;
 
 					/*
@@ -590,37 +626,41 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iAngelicStr = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 1, iTemp);
+					//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SETTING_SUCCESS, 0, 0, 0, 0);
 					break;
 				case 17: // Angel DEX //AngelicPandent(DEX)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iAngelicDex = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 2, iTemp);
+					//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SETTING_SUCCESS, 0, 0, 0, 0);
 					break;
 				case 18: // Angel INT//AngelicPandent(INT)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iAngelicInt = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 3, iTemp);
+					//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SETTING_SUCCESS, 0, 0, 0, 0);
 					break;
 				case 19: // Angel MAG//AngelicPandent(MAG)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iAngelicMag = iTemp;
 					SetAngelFlag(iClientH, DEF_OWNERTYPE_PLAYER, 4, iTemp);
+					//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SETTING_SUCCESS, 0, 0, 0, 0);
 					break;
 				}
 				if (cEquipPos == DEF_EQUIPPOS_BACK || cEquipPos == DEF_EQUIPPOS_BOOTS)
 				{	// Snoopy Special effect capes/ mantles still have small DefRatio & PA
 					m_pClientList[iClientH]->m_iDefenseRatio += 3;	// Standard DR
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] ++;
-					
+					//m_pClientList[iClientH]->m_iAddAbsPD++;
 					// Merien Upgraded diverse (capes?)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					if (iTemp != 0)
 					{
 						m_pClientList[iClientH]->m_iDefenseRatio += (iTemp * 5);
 						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
-					
+						//m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
 					}
-				
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 				}
 				break;
 
@@ -708,51 +748,63 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					dwSWEValue = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000F00) >> 8;
 					switch (dwSWEType) {
 					case 0:  break;
-					case 1:  m_pClientList[iClientH]->m_iAddPR += dwSWEValue * 7; break;
-					case 2:  m_pClientList[iClientH]->m_iAddAR += dwSWEValue * 7; break; // adds Hit Proba
-					case 3:  m_pClientList[iClientH]->m_iAddDR += dwSWEValue * 7; break;
-					case 4:  m_pClientList[iClientH]->m_iAddHP += dwSWEValue * 7; break;
-					case 5:  m_pClientList[iClientH]->m_iAddSP += dwSWEValue * 7; break;
-					case 6:  m_pClientList[iClientH]->m_iAddMP += dwSWEValue * 7; break;
-					case 7:  m_pClientList[iClientH]->m_iAddMR += dwSWEValue * 7; break;
+					case 1:  m_pClientList[iClientH]->m_iAddPR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[23]) / 100); break;
+					case 2:  m_pClientList[iClientH]->m_iAddAR += (int)dwSWEValue * 7; break; // adds Hit Proba
+					case 3:  m_pClientList[iClientH]->m_iAddDR += (int)dwSWEValue * 7; break;
+					case 4:  m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100); break;
+					case 5:  m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100); break;
+					case 6:  m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100); break;
+					case 7:  m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100); break;
 					case 8:  
-						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += dwSWEValue * 3;
+						m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						//m_pClientList[iClientH]->m_iAddAbsPD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+						if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
 						break;
+					/*case 9:
+						m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
+						break;*/
 					//Magn0S:: Add elemental abs
 					case 9:
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:
-							m_pClientList[iClientH]->m_iAddAbsEarth += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
 							break;
 						case 2:
-							m_pClientList[iClientH]->m_iAddAbsLight += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
 							break;
 						case 3:
-							m_pClientList[iClientH]->m_iAddAbsFire += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
 							break;
 						case 4:
-							m_pClientList[iClientH]->m_iAddAbsWater += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
 							break;
 						case 5:
-							m_pClientList[iClientH]->m_iAddAbsHoly += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
 							break;
 						case 6:
-							m_pClientList[iClientH]->m_iAddAbsUnholy += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
 							break;
 						default:
-							m_pClientList[iClientH]->m_iAddAbsMD += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 							break;
 						}
 						break;
 
-					case 10: m_pClientList[iClientH]->m_iAddCD += dwSWEValue * 4; break;
-					case 11: m_pClientList[iClientH]->m_iAddExp += dwSWEValue * 10; break;
-					case 12: m_pClientList[iClientH]->m_iAddGold += dwSWEValue * 10; break;
+					case 10: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
+					case 11: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
+					case 12: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 				}
 				break;
 
-			case DEF_ITEMEFFECTTYPE_BIJOUTERIE:
 			case DEF_ITEMEFFECTTYPE_DEFENSE: // Notice that MainGauche is here as well .....			
 			case DEF_ITEMEFFECTTYPE_DEFENSE_SPECABLTY:
 				// SNOOPY: 2 values for Defence ratio fot PvP mode HIGH
@@ -767,9 +819,9 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 				if ((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0x00000001) != 0)
 				{
 					m_pClientList[iClientH]->m_iCustomItemValue_Defense += m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2;
-					dV2 = (float)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2;
-					dV3 = (float)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
-					dV1 = (float)(dV2 / 100.0f) * dV3;
+					dV2 = (double)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2;
+					dV3 = (double)m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
+					dV1 = (double)(dV2 / 100.0f) * dV3;
 					dV1 = dV1 / 2.0f;
 					m_pClientList[iClientH]->m_iDefenseRatio += (int)dV1;
 					if (m_pClientList[iClientH]->m_iDefenseRatio <= 0) m_pClientList[iClientH]->m_iDefenseRatio = 1;
@@ -807,9 +859,11 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 						break;
 					case ITEMSTAT_MANACONV: // ManaConv  Total max 20
 						m_pClientList[iClientH]->m_iAddTransMana += dwSWEValue;	// SNOOPY changed to 20 as for Crit increase
+						//if (m_pClientList[iClientH]->m_iAddTransMana > 20) m_pClientList[iClientH]->m_iAddTransMana = 20;
 						break;
 					case ITEMSTAT_CRITICAL2: // Crit Increase Total max 20
 						m_pClientList[iClientH]->m_iAddChargeCritical += dwSWEValue;
+						//if (m_pClientList[iClientH]->m_iAddChargeCritical > 20) m_pClientList[iClientH]->m_iAddChargeCritical = 20;
 						break;
 					default:
 						break;
@@ -829,65 +883,92 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					
 					case ITEMSTAT2_HPREC:  // HPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldHPrec += dwSWEValue * 7;
-						else m_pClientList[iClientH]->m_iAddHP += dwSWEValue * 7;
+							iShieldHPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100);
+						else m_pClientList[iClientH]->m_iAddHP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iVit) / 100);
 						break;
 					case ITEMSTAT2_SPREC:  // SPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldSPrec += dwSWEValue * 7;
-						else m_pClientList[iClientH]->m_iAddSP += dwSWEValue * 7;
+							iShieldSPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100);
+						else m_pClientList[iClientH]->m_iAddSP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iStr) / 100);
 						break;
 					case ITEMSTAT2_MPREC:   // MPrec
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
-							iShieldMPrec += dwSWEValue * 7;
-						else m_pClientList[iClientH]->m_iAddMP += dwSWEValue * 7;
+							iShieldMPrec += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100);
+						else m_pClientList[iClientH]->m_iAddMP += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_iMag) / 100);
 						break;
 					case ITEMSTAT2_MR:
-						m_pClientList[iClientH]->m_iAddMR += dwSWEValue * 7;
+						m_pClientList[iClientH]->m_iAddMR += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_cSkillMastery[3]) / 100);
 						break;
 					case ITEMSTAT2_PA: // PA
 						if (cEquipPos == DEF_EQUIPPOS_LHAND)
 						{
-							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += dwSWEValue * 3;
-						
+							m_pClientList[iClientH]->m_iDamageAbsorption_Shield += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100);
+							if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Shield = 80;
 						}
 						else
 						{
-							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += dwSWEValue * 3; 
+							m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2) / 100); //m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (int)dwSWEValue * 3;
+							if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+
 						}
 						break;
-					case 9:
+					case ITEMSTAT2_MA:
+					
 						switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sNewEffect1) {
 						case 1:
-							m_pClientList[iClientH]->m_iAddAbsEarth += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsEarth += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsEarth > 80) m_pClientList[iClientH]->m_iAddAbsEarth = 80;
 							break;
 						case 2:
-							m_pClientList[iClientH]->m_iAddAbsLight += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsLight += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsLight > 80) m_pClientList[iClientH]->m_iAddAbsLight = 80;
 							break;
 						case 3:
-							m_pClientList[iClientH]->m_iAddAbsFire += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsFire += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsFire > 80) m_pClientList[iClientH]->m_iAddAbsFire = 80;
 							break;
 						case 4:
-							m_pClientList[iClientH]->m_iAddAbsWater += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsWater += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsWater > 80) m_pClientList[iClientH]->m_iAddAbsWater = 80;
 							break;
 						case 5:
-							m_pClientList[iClientH]->m_iAddAbsHoly += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsHoly += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsHoly > 80) m_pClientList[iClientH]->m_iAddAbsHoly = 80;
 							break;
 						case 6:
-							m_pClientList[iClientH]->m_iAddAbsUnholy += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsUnholy += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsUnholy > 80) m_pClientList[iClientH]->m_iAddAbsUnholy = 80;
 							break;
 						default:
-							m_pClientList[iClientH]->m_iAddAbsMD += dwSWEValue * 3;
+							m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+							if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 							break;
 						}
+						
+						//m_pClientList[iClientH]->m_iAddAbsMD += (int)(((dwSWEValue * 7) * m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3) / 100);
+						//if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 						break;
-					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += dwSWEValue * 4; break;
-					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += dwSWEValue * 10; break;
-					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += dwSWEValue * 10; break;
+					case ITEMSTAT2_CAD: m_pClientList[iClientH]->m_iAddCD += (int)dwSWEValue; break;
+					case ITEMSTAT2_EXP: m_pClientList[iClientH]->m_iAddExp += (int)(((dwSWEValue * 10) * m_pClientList[iClientH]->m_iExp) / 100); break;
+					case ITEMSTAT2_GOLD: m_pClientList[iClientH]->m_iAddGold += (int)dwSWEValue * 10; break;
 					}
 
 				}
 				switch (cEquipPos) { // Sub-cases of DEF_ITEMEFFECTTYPE_DEFENSE
+				/*case DEF_EQUIPPOS_LHAND:
+					if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2 != 0)
+					{
+						m_pClientList[iClientH]->m_iDamageAbsorption_Shield = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2;
+					}
+					else // Snoopy individual PA setting for shields...
+					{
+						m_pClientList[iClientH]->m_iDamageAbsorption_Shield = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1) - (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1) / 3;
+					}
+					// Merien Upgraded shield +1 PA
+					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
+					m_pClientList[iClientH]->m_iDamageAbsorption_Shield += iTemp;
+
+					break;*/
 				case DEF_EQUIPPOS_TWOHAND:
 
 				case DEF_EQUIPPOS_RHAND:
@@ -901,6 +982,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Shield += iTemp;
 
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Shield = 80;
 
 					break;
 
@@ -909,17 +991,26 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 				case DEF_EQUIPPOS_BODY:
 				case DEF_EQUIPPOS_HEAD:	// PA on Head
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
-
+					//m_pClientList[iClientH]->m_iAddAbsPD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					m_pClientList[iClientH]->m_iAddAbsMD += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue3);
 
 					// Merien Upgraded helmet +1 PA
 					iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
 					m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
+					//m_pClientList[iClientH]->m_iAddAbsPD += iTemp;
+					m_pClientList[iClientH]->m_iAddAbsMD += iTemp;
 
-
+					//if (m_pClientList[iClientH]->m_iAddAbsPD > 80) m_pClientList[iClientH]->m_iAddAbsPD = 80;
+					if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] > 80) m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] = 80;
+					if (m_pClientList[iClientH]->m_iAddAbsMD > 80) m_pClientList[iClientH]->m_iAddAbsMD = 80;
 					break;
 
 				default:
 					// SNOOPY: Kept this here so we can use Damage absorbtion for something else (ie: Cape)
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue2);
+					// Merien Upgraded diverse (capes?)
+					//iTemp = (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute & 0xF0000000) >> 28;
+					//m_pClientList[iClientH]->m_iDamageAbsorption_Armor[cEquipPos] += iTemp;
 					break;
 				}
 
@@ -973,7 +1064,7 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 	if (m_pClientList[iClientH]->m_iAddMP > 100) m_pClientList[iClientH]->m_iAddMP = 100;
 	
 	m_pClientList[iClientH]->m_cHeroArmourBonus = _cCheckHeroItemEquipped(iClientH);
-
+	//m_pClientList[iClientH]->m_cHeroArmourBonus = 0;
 	SendNotifyMsg(0, iClientH, DEF_NOTIFY_HEROBONUS, m_pClientList[iClientH]->m_cHeroArmourBonus, 0, 0, 0);
 	
 	// Snoopy: Bonus for Angels	
@@ -986,10 +1077,24 @@ void CGame::CalcTotalItemEffect(int iClientH, int iEquipItemID, bool bNotify)
 	if (m_pClientList[iClientH]->m_iMP > iGetMaxMP(iClientH)) m_pClientList[iClientH]->m_iMP = iGetMaxMP(iClientH);
 	if (m_pClientList[iClientH]->m_iSP > iGetMaxSP(iClientH)) m_pClientList[iClientH]->m_iSP = iGetMaxSP(iClientH);
 
+	// Maximum value for  PA, here instead of iCalculateAttackEffect
+	/*if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] > DEF_MAXPHYSICALABS)	// Torse,  max 60
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BODY] = DEF_MAXPHYSICALABS;
+	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] > DEF_MAXPHYSICALABS)	// T�te    max 60
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_HEAD] = DEF_MAXPHYSICALABS;
+	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] > DEF_MAXPHYSICALABS)	// Membres max 60
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_ARMS] = DEF_MAXPHYSICALABS;
+	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] > DEF_MAXPHYSICALABS)	// Membres max 60 
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BOOTS] = DEF_MAXPHYSICALABS;
+	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] > DEF_MAXPHYSICALABS)	// Pieds   max 60 
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_LEGGINGS] = DEF_MAXPHYSICALABS;
+	if (m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] > DEF_MAXPHYSICALABS)	// Dos     max 60
+		m_pClientList[iClientH]->m_iDamageAbsorption_Armor[DEF_EQUIPPOS_BACK] = DEF_MAXPHYSICALABS;*/
 	if (m_pClientList[iClientH]->m_iDamageAbsorption_Shield > DEF_MAXPHYSICALABS)						// Shield  max 60
 		m_pClientList[iClientH]->m_iDamageAbsorption_Shield = DEF_MAXPHYSICALABS;
 
 	NotifyPlayerAttributes(iClientH);
+	//SendNotifyMsg(0, iClientH, DEF_NOTIFY_ARMOURVALUES, 0, 0, 0, 0);
 }
 
 bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short sItemIndex, short sDestItemID)
@@ -1051,178 +1156,70 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 		}
 		break;
 
-		//LifeX Fix Attribute Potion
 	case DEF_ITEMEFFECTTYPE_ATTRIBUTEPOTION: // kazin
 		if ((sDestItemID >= 0) && (sDestItemID < DEF_MAXITEMS)) 
 		{
-			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != 0)
+			if (m_pClientList[iClientH]->m_pItemList[sDestItemID] != 0) 
 			{
-				//Destination Attribute (Armor/Weapon)
+				auto attr = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute;
+				auto dwType1 = (attr & 0x00F00000) >> 20;
+				auto dwValue1 = (attr & 0x000F0000) >> 16;
+				auto dwType2 = (attr & 0x0000F000) >> 12;
+				auto dwValue2 = (attr & 0x00000F00) >> 8;
+
 				auto& dst_attr = m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute;
+
 				auto dst_dwType1 = (dst_attr & 0x00F00000) >> 20;
 				auto dst_dwValue1 = (dst_attr & 0x000F0000) >> 16;
-				auto armorStat = (dst_attr & 0x0000F000) >> 12;
-				auto armorStatPerc = (dst_attr & 0x00000F00) >> 8;
+				auto dst_dwType2 = (dst_attr & 0x0000F000) >> 12;
+				auto dst_dwValue2 = (dst_attr & 0x00000F00) >> 8;
 
-				switch (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1)
+				if ((m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute & 0x0000F000) == 0)
 				{
-
-				case 1: //PA							
-					if (armorStat == 0)
-					{
-						armorStat = ITEMSTAT2_PA;
-						armorStatPerc = 1;
-					}
-					else
-					{
-						if (armorStat != ITEMSTAT2_PA)
-						{
-							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with PA.");
-							return false;
-						}
-						else
-						{
-							if (armorStatPerc < 10)
-								armorStatPerc++;
-							else
-							{
-								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting PA: 30%)");
-								return false;
-							}
-						}
-					}
-					break;
-
-				case 2: //MA
-
-					if (armorStat == 0)
-					{
-						armorStat = ITEMSTAT2_MA;
-						armorStatPerc = 1;
-					}
-					else
-					{
-						if (armorStat != ITEMSTAT2_MA)
-						{
-							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with MA.");
-							return false;
-						}
-						else
-						{
-							if (armorStatPerc < 10)
-								armorStatPerc++;
-							else
-							{
-								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MA: 30%)");
-								return false;
-
-							}
-						}
-					}
-					break;
-
-				case 3: //DFRATIO
-
-					if (armorStat == 0) {
-						armorStat = ITEMSTAT2_DEF;
-						armorStatPerc = 1;
-					}
-					else {
-						if (armorStat != ITEMSTAT2_DEF) {
-							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with DR.");
-							return false;
-						}
-						else {
-							if (armorStatPerc < 10)
-								armorStatPerc++;
-							else {
-								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting DR: 70%)");
-								return false;
-							}
-						}
-					}
-					break;
-
-				case 4: //MAGIC RES
-
-					if (armorStat == 0) {
-						armorStat = ITEMSTAT2_MR;
-						armorStatPerc = 1;
-					}
-					else {
-						if (armorStat != ITEMSTAT2_MR) {
-							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with MR.");
-							return false;
-						}
-						else {
-							if (armorStatPerc < 10)
-								armorStatPerc++;
-							else {
-								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MR: 70%)");
-								return false;
-							}
-						}
-					}
-					break;
-
-				case 5: //HPREC
-
-					if (armorStat == 0) {
-						armorStat = ITEMSTAT2_HPREC;
-						armorStatPerc = 1;
-					}
-					else {
-						if (armorStat != ITEMSTAT2_HPREC) {
-							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with HP REC.");
-							return false;
-						}
-						else {
-							if (armorStatPerc < 10)
-								armorStatPerc++;
-							else {
-								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting HP Recovery: 70%)");
-								return false;
-							}
-						}
-					}
-					break;
-
-				case 6: //MPREC
-
-					if (armorStat == 0)
-					{
-						armorStat = ITEMSTAT2_MPREC;
-						armorStatPerc = 1;
-					}
-					else {
-						if (armorStat != ITEMSTAT2_MPREC) {
-							SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "This enchant must be used in a armor with MP REC.");
-							return false;
-						}
-						else {
-							if (armorStatPerc < 10)
-								armorStatPerc++;
-							else {
-								SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Can not enchant this item anymore. (Max Enchanting MP Recovery: 70%)");
-								return false;
-							}
-						}
-					}
-					break;
-
-				default: 
-					SendNotifyMsg(0, iClientH, DEF_NOTIFY_NOTICEMSG, 0, 0, 0, "Enchant Error. Report it to #bugs in Discord"); 
-					break;
+					return false;
 				}
 
-				dst_attr = 0;
-				dst_dwType1 = dst_dwType1 << 20;
-				dst_dwValue1 = dst_dwValue1 << 16;
-				armorStat = armorStat << 12;
-				armorStatPerc = armorStatPerc << 8;
-				dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
-				dst_attr = dst_attr | armorStat | armorStatPerc;
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, dst_attr, 0, 0);
+				if (dst_dwType2 != dwType2)
+				{
+					return false;
+				}
+
+				auto dst_value = dst_dwValue2 + dwValue2;
+
+				switch (dwType2) {
+				case ITEMSTAT2_PSNRES: // 1
+				case ITEMSTAT2_HPREC: // 4
+				case ITEMSTAT2_MPREC: // 6
+				case ITEMSTAT2_SPREC: // 5
+				case ITEMSTAT2_MR: // 7
+				case ITEMSTAT2_PA: // 8
+				case ITEMSTAT2_MA: // 9
+				case ITEMSTAT2_DEF: // 3
+				case ITEMSTAT2_HITPROB: // 2
+
+					// Centuu : limite maximo para las attribute potion
+					if (dwType2 == ITEMSTAT2_PA || dwType2 == ITEMSTAT2_MA)
+					{
+						if (dst_value > 15) dst_value = 15;
+					}
+					else
+					{
+						if (dst_value > 28) dst_value = 28;
+					}
+					dst_attr = 0;
+					dst_dwType1 = dst_dwType1 << 20;
+					dst_dwValue1 = dst_dwValue1 << 16;
+					dwType2 = dwType2 << 12;
+					dwValue2 = dst_value << 8;
+					dst_attr = dst_attr | dst_dwType1 | dst_dwValue1;
+					dst_attr = dst_attr | dwType2 | dwValue2;
+					break;
+
+				default:
+					return false;
+				}
+
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_ITEMATTRIBUTECHANGE, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_dwAttribute, 0, 0);
 				return true;
 				
 			}
@@ -1271,7 +1268,7 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 					return true;
 				}
 				else {
-
+					//SendNotifyMsg(0, iClientH, DEF_NOTIFY_CURLIFESPAN, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_wCurLifeSpan, 0, 0);
 					return false;
 				}
 			}
@@ -1285,7 +1282,7 @@ bool CGame::_bDepleteDestTypeItemUseEffect(int iClientH, int dX, int dY, short s
 				if ((m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_cCategory == 6) && (m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_sNewEffect1 == 0)) {
 					m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_sNewEffect1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_ATTUNEARMOUR, sDestItemID, m_pClientList[iClientH]->m_pItemList[sDestItemID]->m_sNewEffect1, 0, 0);
-
+					//RequestUpdateItem(iClientH);
 					return true;
 				}
 				else {
@@ -1327,9 +1324,9 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 	int   iRet, iEraseReq, iMonth, iDay, iHour;
 	char* cp, cData[256], cItemName[21];
 	class CItem* pItem;
-	UINT32* dwp;
+	DWORD* dwp;
 	short* sp;
-	UINT16* wp;
+	WORD* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 
@@ -1378,9 +1375,9 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 		ZeroMemory(cData, sizeof(cData));
 
 		// ¾ÆÀÌÅÛ ¾ò¾ú´Ù´Â ¸Þ½ÃÁö¸¦ Àü¼ÛÇÑ´Ù.
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_ITEMOBTAINED;
 
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -1391,7 +1388,7 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 		memcpy(cp, pItem->m_cName, 20);
 		cp += 20;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwCount;
 		cp += 4;
 
@@ -1411,11 +1408,11 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 		*cp = pItem->m_cGenderLimit;
 		cp++;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wCurLifeSpan;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wWeight;
 		cp += 2;
 
@@ -1433,7 +1430,7 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 		*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 		cp++;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwAttribute;
 		cp += 4;
 
@@ -1457,9 +1454,9 @@ void CGame::GetFightzoneTicketHandler(int iClientH)
 
 		iCalcTotalWeight(iClientH);
 
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -1483,7 +1480,8 @@ void CGame::GetHeroMantleHandler(int iClientH, int iItemID, char* pString)
 	class CItem* pItem;
 
 	if (m_pClientList[iClientH] == 0) return;
-
+	//if (m_pClientList[iClientH]->m_iEnemyKillCount < 100) return;
+	//if (m_pClientList[iClientH]->m_iContribution < 10) return;
 	if (m_pClientList[iClientH]->m_cSide == 0) return;
 
 	if (_iGetItemSpaceLeft(iClientH) == 0) {
@@ -1710,19 +1708,19 @@ void CGame::CheckUniqueItemEquipment(int iClientH)
 }
 
 /*********************************************************************************************************************
-** bool CGame::GetAngelHandler(int iClientH, char * pData, UINT32 dwMsgSize)											**
+** bool CGame::GetAngelHandler(int iClientH, char * pData, DWORD dwMsgSize)											**
 ** description   :: Reversed and coded by Snoopy																	**
 *********************************************************************************************************************/
-void CGame::GetAngelHandler(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::GetAngelHandler(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	char* cp, cData[256], cTmpName[5];
 	int   iAngel, iItemNbe;
 	class CItem* pItem;
 	int   iRet, iEraseReq;
 	
-	UINT16* wp;
+	WORD* wp;
 	int* ip;
-	UINT32* dwp;
+	DWORD* dwp;
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 	// Centuu: Razones distintas por la cu�l no puedes obtener un angel.
@@ -1736,7 +1734,11 @@ void CGame::GetAngelHandler(int iClientH, char* pData, UINT32 dwMsgSize)
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ANGEL_FAILED, 2, 0, 0, 0); //"You need additional Majesty Points."	
 		return;
 	}
-
+	/*if (m_pClientList[iClientH]->m_iLevel < m_iPlayerMaxLevel)
+	{
+		SendNotifyMsg(0, iClientH, DEF_NOTIFY_ANGEL_FAILED, 3, 0, 0, 0); //"Only Majesty characters can receive Tutelary Angel."
+		return;
+	}*/
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, cp);
@@ -1781,11 +1783,13 @@ void CGame::GetAngelHandler(int iClientH, char* pData, UINT32 dwMsgSize)
 		else
 		{
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem);
-
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4 
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
 			switch (iRet) {
@@ -2126,7 +2130,7 @@ void CGame::ConfirmExchangeItem(int iClientH)
 
 /*********************************************************************************************************************
 **  void CGame::ExchangeItemHandler(int iClientH, short sItemIndex, int iAmount,									**
-**									short dX, short dY, UINT16 wObjectID, char *pItemName)							**
+**									short dX, short dY, WORD wObjectID, char *pItemName)							**
 **  DESCRIPTION			:: exchange item handler																	**
 **  LAST_UPDATED		:: March 20, 2005; 6:31 PM; Hypnotoad														**
 **	RETURN_VALUE		:: void																						**
@@ -2134,7 +2138,7 @@ void CGame::ConfirmExchangeItem(int iClientH)
 **							- counts total item numbers																**
 **  MODIFICATION		::	- fixed exchange bug by Rambox															**
 **********************************************************************************************************************/
-void CGame::ExchangeItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, UINT16 wObjectID, char* pItemName)
+void CGame::ExchangeItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, WORD wObjectID, char* pItemName)
 {
 	short sOwnerH;
 	char  cOwnerType;
@@ -2162,7 +2166,7 @@ void CGame::ExchangeItemHandler(int iClientH, short sItemIndex, int iAmount, sho
 			if (wObjectID < 10000) {
 				// �÷��̾� 
 				if (m_pClientList[wObjectID] != 0) {
-					if ((UINT16)sOwnerH != wObjectID) sOwnerH = 0;
+					if ((WORD)sOwnerH != wObjectID) sOwnerH = 0;
 				}
 			}
 			else sOwnerH = 0;
@@ -2276,8 +2280,8 @@ void CGame::CancelExchangeItem(int iClientH)
 void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 {
 	int i, iItemX, iItemY, iSoM, iSoX, iSomH, iSoxH, iValue; // v2.172
-	UINT32 dwTemp, dwSWEType;
-	float dV1, dV2, dV3;
+	DWORD dwTemp, dwSWEType;
+	double dV1, dV2, dV3;
 	int sItemUpgrade = 2;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -3567,12 +3571,12 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 				dwTemp = dwTemp & 0x0FFFFFFF;
 				m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
 				if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00000001) != 0) {
-					dV1 = (float)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
+					dV1 = (double)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
 					dV2 = 0.2f * dV1;
 					dV3 = dV1 + dV2;
 				}
 				else {
-					dV1 = (float)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
+					dV1 = (double)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
 					dV2 = 0.15f * dV1;
 					dV3 = dV1 + dV2;
 				}
@@ -3648,12 +3652,12 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 					dwTemp = dwTemp & 0x0FFFFFFF;
 					m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = dwTemp | (iValue << 28);
 					if ((m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute & 0x00000001) != 0) {
-						dV1 = (float)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
+						dV1 = (double)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
 						dV2 = 0.2f * dV1;
 						dV3 = dV1 + dV2;
 					}
 					else {
-						dV1 = (float)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
+						dV1 = (double)m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_wMaxLifeSpan;
 						dV2 = 0.15f * dV1;
 						dV3 = dV1 + dV2;
 					}
@@ -3851,7 +3855,7 @@ void CGame::RequestItemUpgradeHandler(int iClientH, int iItemIndex)
 // Enchanting System by Centuu
 void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttributeType)
 {
-	UINT32 dwType, dwValue;
+	DWORD dwType, dwValue;
 	char cColor;
 	int iResult, iSkillLevel = (int)m_pClientList[iClientH]->m_cSkillMastery[20]; 
 	short sElement;
@@ -3950,7 +3954,8 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 				if (dwValue <= 2) dwValue = 2;
 				break;
 			}
-
+			// Max 7
+			//if (dwValue > 7) dwValue = 7;
 
 			// Main
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
@@ -3992,17 +3997,18 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 				if (dwValue <= 3) dwValue = 3;
 				break;
 			case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
-
+				//if (dwValue > 7) dwValue = 7;
 				break;
 			case ITEMSTAT2_EXP: // Exp  +20%
-
+				//dwValue = 2;
 				break;
 			case ITEMSTAT2_GOLD: // Gold +50%
-
+				//dwValue = 5;
 				break;
 			}
 
-
+			// Demais stats max � 7 (para mobs fracos iGenLevel)
+			//if (dwValue > 7) dwValue = 7;
 
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 
@@ -4041,7 +4047,7 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
 			else dwValue = 1; // v2.03 906
 
-
+			//if (dwValue > 7) dwValue = 7;
 
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 			dwType = dwType << 20;
@@ -4076,20 +4082,20 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 			else if ((iResult >= 2997) && (iResult <= 3000))  dwValue = 13; // 68/29348 = 0.1%
 			else dwValue = 1; // v2.03 906
 
-
+			//if (dwValue > 7) dwValue = 7;
 
 			switch (dwType) {
 			case ITEMSTAT2_HITPROB: // Hit Prob Min +21%
 				if (dwValue <= 3) dwValue = 3;
 				break;
 			case ITEMSTAT2_CAD: // Cad vai de +1 at� +7
-
+				//if (dwValue > 7) dwValue = 7;
 				break;
 			case ITEMSTAT2_EXP: // Exp set +20%
-
+				//dwValue = 2;
 				break;
 			case ITEMSTAT2_GOLD: // Gold Set +50%
-
+				//dwValue = 5;
 				break;
 			}
 
@@ -4141,10 +4147,13 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 
 			case ITEMSTAT_MANACONV:
 			case ITEMSTAT_CRITICAL2:
-
+				/*dwValue = (dwValue + 1) / 2;
+				if (dwValue < 1) dwValue = 1;
+				if (dwValue > 2) dwValue = 2;*/
 				break;
 			}
-
+			// Max = 7
+			//if (dwValue > 7) dwValue = 7;
 
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 			dwType = dwType << 20;
@@ -4208,7 +4217,8 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 				break;
 
 			}
-
+			// Max = 7
+			//if (dwValue > 7) dwValue = 7;
 
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 
@@ -4254,10 +4264,13 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 				break;
 			case ITEMSTAT_MANACONV:
 			case ITEMSTAT_CRITICAL2:
-
+				/*dwValue = (dwValue + 1) / 2;
+				if (dwValue < 1) dwValue = 1;*/
+				//if ((iGenLevel <= 3) && (dwValue > 2)) dwValue = 2;
 				break;
 			}
-
+			// Max = 7
+			//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 			dwType = dwType << 20;
@@ -4301,16 +4314,18 @@ void CGame::RequestItemEnchantHandler(int iClientH, int iItemIndex, int iAttribu
 				if (dwValue <= 3) dwValue = 3;
 				break;
 			case ITEMSTAT2_CAD: // CAD Vai do +1  at� +7 s�
-
+				//if (dwValue > 7) dwValue = 7;
 				break;
 			case ITEMSTAT2_EXP: // Exp  +20%
-
+				//dwValue = 2;
 				break;
 			case ITEMSTAT2_GOLD: // Gold +50%
-
+				//dwValue = 5;
 				break;
 			}
 
+			// Max = 7
+			//if ((iGenLevel <= 2) && (dwValue > 7)) dwValue = 7;
 
 			m_pClientList[iClientH]->m_pItemList[iItemIndex]->m_dwAttribute = 0;
 
@@ -4667,7 +4682,7 @@ bool CGame::iUpgradeHeroItemRequirements(int iClientH, int iItemIndex)
 void CGame::RequestRepairAllItemsHandler(int iClientH)
 {
 	int i, price;
-	float d1, d2, d3;
+	double d1, d2, d3;
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
 
@@ -4688,13 +4703,13 @@ void CGame::RequestRepairAllItemsHandler(int iClientH)
 					price = (m_pClientList[iClientH]->m_pItemList[i]->m_wPrice / 2);
 				else
 				{
-					d1 = (float)(m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan);
+					d1 = (double)(m_pClientList[iClientH]->m_pItemList[i]->m_wCurLifeSpan);
 					if (m_pClientList[iClientH]->m_pItemList[i]->m_wMaxLifeSpan != 0)
-						d2 = (float)(m_pClientList[iClientH]->m_pItemList[i]->m_wMaxLifeSpan);
+						d2 = (double)(m_pClientList[iClientH]->m_pItemList[i]->m_wMaxLifeSpan);
 					else
 						d2 = 1.0f;
 					d3 = ((d1 / d2) * 0.5f);
-					d2 = (float)(m_pClientList[iClientH]->m_pItemList[i]->m_wPrice);
+					d2 = (double)(m_pClientList[iClientH]->m_pItemList[i]->m_wPrice);
 					d3 = (d3 * d2);
 					price = ((m_pClientList[iClientH]->m_pItemList[i]->m_wPrice / 2) - (short)(d3));
 				}
@@ -4723,8 +4738,8 @@ void CGame::RequestRepairAllItemsDeleteHandler(int iClientH, int index)
 void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 {
 	char* cp, cData[120];
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	int      iRet, i, totalPrice = 0;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -4735,11 +4750,11 @@ void CGame::RequestRepairAllItemsConfirmHandler(int iClientH)
 		totalPrice += m_pClientList[iClientH]->m_stRepairAll[i].price;
 	}
 
-	if (dwGetItemCount(iClientH, "Gold") < (UINT32)totalPrice)
+	if (dwGetItemCount(iClientH, "Gold") < (DWORD)totalPrice)
 	{
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_NOTENOUGHGOLD;
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 		*cp = 0;
@@ -4779,13 +4794,13 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 	class CItem* pItem;
 	char cItemName[21], cData[100];
 	
-	UINT32* dwp, dwItemCount;
-	UINT16* wp;
+	DWORD* dwp, dwItemCount;
+	WORD* wp;
 	int   i, iRet, iEraseReq, iCost = 0;
 
 	bool bIsCoin = false, bIsPotion = false;
 
-	UINT32 dwType1, dwType2, dwValue;
+	DWORD dwType1, dwType2, dwValue;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -4810,7 +4825,60 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 			dwItemCount = 1;
 			bIsCoin = true;
 		}
-		//LifeX Fix Attribute Potion
+		else if (memcmp(pItemName, "PAPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_PA;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "MAPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_MA;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "DRPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_DEF;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "PRPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_PSNRES;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "HitPPotion", 10) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_HITPROB;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "HPPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_HPREC;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "SPPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_SPREC;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "MPPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_MPREC;
+			bIsPotion = true;
+		}
+		else if (memcmp(pItemName, "MRPotion", 8) == 0) {
+			strcpy(cItemName, "AttributePotion");
+			dwItemCount = 1;
+			dwType2 = ITEMSTAT2_MR;
+			bIsPotion = true;
+		}
 		else {
 			memcpy(cItemName, pItemName, 20);
 			dwItemCount = 1;
@@ -4897,7 +4965,7 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 					dwValue = dwValue << 16;
 					pItem->m_dwAttribute = pItem->m_dwAttribute | dwType1 | dwValue;
 
-					
+					//dwType2 = ITEMSTAT2_DEF;
 					dwValue = 1;
 
 					dwType2 = dwType2 << 12;
@@ -4950,9 +5018,9 @@ void CGame::RequestPurchaseItemHandler2(int iClientH, char* pItemName, int iNum,
 				delete pItem;
 				iCalcTotalWeight(iClientH);
 
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -4981,7 +5049,7 @@ void CGame::GetDkSet(int iClientH)
 	int daW[] = {143,144,145,146,138};
 	int iItemID, i, iEraseReq;
 	char cTxt[120];
-	UINT32  dwGoldCount = dwGetItemCount(iClientH, "Gold");
+	DWORD  dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_iLevel < m_iPlayerMaxLevel) return;
@@ -5064,13 +5132,13 @@ int CGame::_iGetArrowItemIndex(int iClientH)
 void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, short sDestItemID)
 {
 	int iMax, iV1, iV2, iV3, iSEV1, iEffectResult = 0;
-	UINT32 dwTime, dwGUID;
+	DWORD dwTime, dwGUID;
 	short sTemp, sTmpType, sTmpAppr1;
-	
+	char cSlateType[20];
 	bool bDepleteNow = true;
 
 	dwTime = timeGetTime();
-	
+	ZeroMemory(cSlateType, sizeof(cSlateType));
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsKilled == true) return;
@@ -5125,26 +5193,27 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 						bRegisterDelayEvent(DEF_DELAYEVENTTYPE_MAGICRELEASE, DEF_MAGICTYPE_BERSERK, dwTime + (1000 * 600),
 							iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
 						SendNotifyMsg(0, iClientH, DEF_NOTIFY_MAGICEFFECTON, DEF_MAGICTYPE_BERSERK, 1, 0, 0);
-	
+						
 						break;
 
 					case 1: // Invincible slate
-						
 						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_INVINCIBLE, 0, 0, 0, 0);
 						break;
 					case 3: // Mana slate
-						
 						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_MANA, 0, 0, 0, 0);
 						break;
 					case 4: // Exp slate
-						
 						SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_EXP, 0, 0, 0, 0);
 						break;
 					}
+
 					SetSlateFlag(iClientH, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2, true);
 					bRegisterDelayEvent(DEF_DELAYEVENTTYPE_ANCIENT_TABLET, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemSpecEffectValue2,
-							dwTime + (1000 * 600), iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
+						dwTime + (1000 * 600), iClientH, DEF_OWNERTYPE_PLAYER, 0, 0, 0, 1, 0, 0);
+
 				}
+				if (strlen(cSlateType) > 0)
+					_bItemLog(DEF_ITEMLOG_USE, iClientH, strlen(cSlateType), m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 			}
 			break;
 
@@ -5267,7 +5336,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 			if (bDepleteNow)
 				ItemDepleteHandler(iClientH, sItemIndex, true, true);
 
-			return;
+			return; // break;
 
 		//Magn0S:: Reputation Increased Potion.
 		case DEF_ITEMEFFECTTYPE_REP:
@@ -5280,7 +5349,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 			break;
 
 		case DEF_ITEMEFFECTTYPE_COINS:
-			iV1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount;
+			iV1 = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount; //m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sItemEffectValue1;
 			m_pClientList[iClientH]->m_iCoinPoints += iV1;
 			SendNotifyMsg(0, iClientH, DEF_NOTIFY_COINPOINTS, m_pClientList[iClientH]->m_iCoinPoints, 0, 0, 0);
 			break;
@@ -5304,7 +5373,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
 				{
 					ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
-
+					//goto MAGIC_NOEFFECT;
 				}
 				else RequestTeleportHandler(iClientH, "1  ");
 				break;
@@ -5315,7 +5384,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 				if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
 				{
 					ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
-
+					//goto MAGIC_NOEFFECT;
 				}
 				else PlayerMagicHandler(iClientH, m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, 32, true);
 				break;
@@ -5334,7 +5403,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 					if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
 					{
 						ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
-
+						//goto MAGIC_NOEFFECT;
 					}
 					else {
 						// ºí¸®µù ¾ÆÀÏ·Î °£´Ù 
@@ -5359,7 +5428,7 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 					if (m_bIsCTFEvent && (m_pClientList[iClientH]->m_iStatus & 0x80000) != 0)
 					{
 						ShowClientMsg(iClientH, " You can not use that item being a flag carrier.");
-
+						//goto MAGIC_NOEFFECT;
 					}
 					else {
 						// °áÅõÀåÀ¸·Î °£´Ù. 
@@ -5514,7 +5583,6 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 		// *** Request Teleport Handler°¡ ÀÛµ¿µÇ¸é ÀÌ¹Ì µ¥ÀÌÅÍ ÀúÀåÀÌ ¿äÃ»µÈ »óÅÂÀÌ¹Ç·Î ÀÌÈÄ¿¡ ¾ÆÀÌÅÛÀ» ¾ø¾ÖºÁ¾ß ¼Ò¿ëÀÌ ¾ø´Ù. 
 		// ¾ÆÀÌÅÛÀ» ¸ÕÀú ¾ø¾Ø´Ù.
 		ItemDepleteHandler(iClientH, sItemIndex, true, true);
-
 	}
 	else if (m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_USE_DEPLETE_DEST) {
 		// »ç¿ëÇÏ¸é¼­ ¸ñÇ¥ÁöÁ¡À» ÁöÁ¤ÇÏ´Â ¾ÆÀÌÅÛ.
@@ -5600,8 +5668,8 @@ void CGame::UseItemHandler(int iClientH, short sItemIndex, short dX, short dY, s
 bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 {
 	int i, iRet, *ip;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	char* cp;
 	short* sp;
 	char cData[100];
@@ -5621,9 +5689,9 @@ bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 
 			iCalcTotalWeight(iClientH);
 
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_ITEMTOBANK;
 
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -5637,7 +5705,7 @@ bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			memcpy(cp, pItem->m_cName, 20);
 			cp += 20;
 
-			dwp = (UINT32*)cp;
+			dwp = (DWORD*)cp;
 			*dwp = pItem->m_dwCount;
 			cp += 4;
 
@@ -5657,11 +5725,11 @@ bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			*cp = pItem->m_cGenderLimit;
 			cp++;
 
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wCurLifeSpan;
 			cp += 2;
 
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wWeight;
 			cp += 2;
 
@@ -5682,7 +5750,7 @@ bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			cp += 2;
 
 			// v1.42
-			dwp = (UINT32*)cp;
+			dwp = (DWORD*)cp;
 			*dwp = pItem->m_dwAttribute;
 			cp += 4;
 
@@ -5736,7 +5804,7 @@ bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 			*sp = pItem->m_sItemEffectType;
 			cp += 2;
 
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wMaxLifeSpan;
 			cp += 2;
 
@@ -5768,8 +5836,8 @@ bool CGame::bSetItemToBankItem(int iClientH, short sItemIndex)
 bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 {
 	int i, iRet, *ip;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	char* cp;
 	short* sp;
 	char cData[100];
@@ -5783,9 +5851,9 @@ bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 
 			m_pClientList[iClientH]->m_pItemInBankList[i] = pItem;
 
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_ITEMTOBANK;
 
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -5799,7 +5867,7 @@ bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			memcpy(cp, pItem->m_cName, 20);
 			cp += 20;
 
-			dwp = (UINT32*)cp;
+			dwp = (DWORD*)cp;
 			*dwp = pItem->m_dwCount;
 			cp += 4;
 
@@ -5819,11 +5887,11 @@ bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			*cp = pItem->m_cGenderLimit;
 			cp++;
 
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wCurLifeSpan;
 			cp += 2;
 
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wWeight;
 			cp += 2;
 
@@ -5844,7 +5912,7 @@ bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			cp += 2;
 
 			// v1.42
-			dwp = (UINT32*)cp;
+			dwp = (DWORD*)cp;
 			*dwp = pItem->m_dwAttribute;
 			cp += 4;
 
@@ -5898,7 +5966,7 @@ bool CGame::bSetItemToBankItem(int iClientH, class CItem* pItem)
 			*sp = pItem->m_sItemEffectType;
 			cp += 2;
 
-			wp = (UINT16*)cp;
+			wp = (WORD*)cp;
 			*wp = pItem->m_wMaxLifeSpan;
 			cp += 2;
 
@@ -5934,9 +6002,9 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 	char cItemCategory, cItemName[21];
 	short sRemainLife;
 	int   iPrice;
-	float d1, d2, d3;
+	double d1, d2, d3;
 	bool   bNeutral;
-	UINT32  dwSWEType, dwSWEValue, dwAddPrice1, dwAddPrice2, dwMul1, dwMul2;
+	DWORD  dwSWEType, dwSWEValue, dwAddPrice1, dwAddPrice2, dwMul1, dwMul2;
 	CItem* m_pGold;
 
 	// »ç¿ëÀÚÀÇ ¾ÆÀÌÅÛ ÆÈ±â ¿ä±¸.
@@ -5977,7 +6045,7 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 			if (iPrice <= 0)    iPrice = 1;
 			if (iPrice > 1000000) iPrice = 1000000;
 
-			if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(m_pGold, iPrice) > (UINT32)_iCalcMaxLoad(iClientH)) {
+			if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(m_pGold, iPrice) > (DWORD)_iCalcMaxLoad(iClientH)) {
 				// v2.12 ÆÈ °æ¿ì ¹«°Ô°¡ ÃÊ°úµÇ¾î¼­ ÆÈ ¼ö ¾ø´Ù.
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_CANNOTSELLITEM, cItemID, 4, 0, m_pClientList[iClientH]->m_pItemList[cItemID]->m_cName);
 			}
@@ -5993,12 +6061,12 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_CANNOTSELLITEM, cItemID, 2, 0, m_pClientList[iClientH]->m_pItemList[cItemID]->m_cName);
 			}
 			else {
-				d1 = (float)sRemainLife;
+				d1 = (double)sRemainLife;
 				if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan != 0)
-					d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
+					d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
 				else d2 = 1.0f;
 				d3 = (d1 / d2) * 0.5f;
-				d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
+				d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
 				d3 = d3 * d2; // Ãß»êµÈ °¡°Ý 
 
 				iPrice = (int)d3;
@@ -6023,7 +6091,7 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 					default: dwMul1 = 1; break;
 					}
 
-					d1 = (float)iPrice * dwMul1;
+					d1 = (double)iPrice * dwMul1;
 					switch (dwSWEValue) {
 					case 1: d2 = 10.0f; break;
 					case 2: d2 = 20.0f; break;
@@ -6067,7 +6135,7 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 					case 11: dwMul2 = 6; break;
 					}
 
-					d1 = (float)iPrice * dwMul2;
+					d1 = (double)iPrice * dwMul2;
 					switch (dwSWEValue) {
 					case 1: d2 = 10.0f; break;
 					case 2: d2 = 20.0f; break;
@@ -6097,7 +6165,7 @@ void CGame::ReqSellItemHandler(int iClientH, char cItemID, char cSellToWhom, int
 				if (iPrice <= 0)    iPrice = 1;
 				if (iPrice > 1000000) iPrice = 1000000;
 
-				if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(m_pGold, iPrice) > (UINT32)_iCalcMaxLoad(iClientH)) {
+				if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(m_pGold, iPrice) > (DWORD)_iCalcMaxLoad(iClientH)) {
 					// v2.12 ÆÈ °æ¿ì ¹«°Ô°¡ ÃÊ°úµÇ¾î¼­ ÆÈ ¼ö ¾ø´Ù.
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_CANNOTSELLITEM, cItemID, 4, 0, m_pClientList[iClientH]->m_pItemList[cItemID]->m_cName);
 				}
@@ -6119,10 +6187,10 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 	class CItem* pItemGold;
 	short sRemainLife;
 	int   iPrice;
-	float d1, d2, d3;
+	double d1, d2, d3;
 	char cItemName[21], cData[120], cItemCategory;
-	UINT32* dwp, dwMul1, dwMul2, dwSWEType, dwSWEValue, dwAddPrice1, dwAddPrice2;
-	UINT16* wp;
+	DWORD* dwp, dwMul1, dwMul2, dwSWEType, dwSWEValue, dwAddPrice1, dwAddPrice2;
+	WORD* wp;
 	int    iEraseReq, iRet;
 	
 	bool   bNeutral;
@@ -6156,12 +6224,12 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 		if (sRemainLife > 0) {
 			// ¸Á°¡Áø ¾ÆÀÌÅÛÀº ÆÈÁö ¸øÇÑ´Ù.	
 
-			d1 = (float)sRemainLife;
+			d1 = (double)sRemainLife;
 			if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan != 0)
-				d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
+				d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
 			else d2 = 1.0f;
 			d3 = (d1 / d2) * 0.5f;
-			d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
+			d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
 			d3 = d3 * d2; // Ãß»êµÈ °¡°Ý 
 
 			iPrice = (short)d3;
@@ -6189,7 +6257,7 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 				default: dwMul1 = 1; break;
 				}
 
-				d1 = (float)iPrice * dwMul1;
+				d1 = (double)iPrice * dwMul1;
 				switch (dwSWEValue) {
 				case 1: d2 = 10.0f; break;
 				case 2: d2 = 20.0f; break;
@@ -6236,7 +6304,7 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 				case 11: dwMul2 = 6; break;
 				}
 
-				d1 = (float)iPrice * dwMul2;
+				d1 = (double)iPrice * dwMul2;
 				switch (dwSWEValue) {
 				case 1: d2 = 10.0f; break;
 				case 2: d2 = 20.0f; break;
@@ -6326,15 +6394,19 @@ void CGame::ReqSellItemConfirmHandler(int iClientH, char cItemID, int iNum, char
 		m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 			m_pClientList[iClientH]->m_sY, pItemGold);
 
+		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+			pItemGold->m_sSprite, pItemGold->m_sSpriteFrame, pItemGold->m_cItemColor);*/ // v1.4 color
+
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 			pItemGold->m_sIDnum, pItemGold->m_sSpriteFrame, pItemGold->m_cItemColor, pItemGold->m_dwAttribute);
 
 		iCalcTotalWeight(iClientH);
 
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -6354,7 +6426,7 @@ void CGame::ReqRepairItemHandler(int iClientH, char cItemID, char cRepairWhom, c
 {
 	char cItemCategory;
 	short sRemainLife, sPrice;
-	float d1, d2, d3;
+	double d1, d2, d3;
 
 	// ¾ÆÀÌÅÛÀ» °íÄ¡°Ú´Ù´Â ¿ä±¸.
 	if (m_pClientList[iClientH] == 0) return;
@@ -6387,12 +6459,12 @@ void CGame::ReqRepairItemHandler(int iClientH, char cItemID, char cRepairWhom, c
 			sPrice = (short)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice / 2;
 		}
 		else {
-			d1 = (float)sRemainLife;
+			d1 = (double)sRemainLife;
 			if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan != 0)
-				d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
+				d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
 			else d2 = 1.0f;
 			d3 = (d1 / d2) * 0.5f;
-			d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
+			d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
 			d3 = d3 * d2; // Ãß»êµÈ °¡°Ý 
 
 			sPrice = (short)(m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice / 2) - (short)d3;
@@ -6416,12 +6488,12 @@ void CGame::ReqRepairItemHandler(int iClientH, char cItemID, char cRepairWhom, c
 			sPrice = (short)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice / 2;
 		}
 		else {
-			d1 = (float)sRemainLife;
+			d1 = (double)sRemainLife;
 			if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan != 0)
-				d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
+				d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
 			else d2 = 1.0f;
 			d3 = (d1 / d2) * 0.5f;
-			d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
+			d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
 			d3 = d3 * d2; // Ãß»êµÈ °¡°Ý 
 
 			sPrice = (short)(m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice / 2) - (short)d3;
@@ -6439,9 +6511,9 @@ void CGame::ReqRepairItemCofirmHandler(int iClientH, char cItemID, char* pString
 {
 	short    sRemainLife, sPrice;
 	char* cp, cItemCategory, cData[120];
-	float   d1, d2, d3, dV1, dV2, dV3;
-	UINT32* dwp, dwGoldCount, dwSWEType, dwSWEValue;
-	UINT16* wp;
+	double   d1, d2, d3, dV1, dV2, dV3;
+	DWORD* dwp, dwGoldCount, dwSWEType, dwSWEValue;
+	WORD* wp;
 	int      iRet, iGoldWeight;
 
 	// ¾ÆÀÌÅÛÀ» ¼ö¸®ÇÏ°Ú´Ù´Â °ÍÀÌ °áÁ¤µÇ¾ú´Ù.
@@ -6474,12 +6546,12 @@ void CGame::ReqRepairItemCofirmHandler(int iClientH, char cItemID, char* pString
 			sPrice = (short)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice / 2;
 		}
 		else {
-			d1 = (float)abs(sRemainLife);
+			d1 = (double)abs(sRemainLife);
 			if (m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan != 0)
-				d2 = (float)abs(m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan);
+				d2 = (double)abs(m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan);
 			else d2 = 1.0f;
 			d3 = (d1 / d2) * 0.5f;
-			d2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
+			d2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice; // ¿ø·¡ °¡°Ý 
 			d3 = d3 * d2; // Ãß»êµÈ °¡°Ý 
 
 			sPrice = (short)(m_pClientList[iClientH]->m_pItemList[cItemID]->m_wPrice / 2) - (short)d3;
@@ -6488,11 +6560,11 @@ void CGame::ReqRepairItemCofirmHandler(int iClientH, char cItemID, char* pString
 		// sPrice¸¸Å­ÀÇ µ·ÀÌ µÇ¸é °íÄ¥ ¼ö ÀÖÀ¸³ª ºÎÁ·ÇÏ¸é °íÄ¥ ¼ö ¾ø´Ù. 
 		dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
-		if (dwGoldCount < (UINT32)sPrice) {
+		if (dwGoldCount < (DWORD)sPrice) {
 			// ÇÃ·¹ÀÌ¾î°¡ °®°íÀÖ´Â Gold°¡ ¾ÆÀÌÅÛ ¼ö¸® ºñ¿ë¿¡ ºñÇØ Àû´Ù. °íÄ¥ ¼ö ¾øÀ½.
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_NOTENOUGHGOLD;
 			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 			*cp = cItemID;
@@ -6524,8 +6596,8 @@ void CGame::ReqRepairItemCofirmHandler(int iClientH, char cItemID, char* pString
 						switch (dwSWEType) {
 						case 8: // Strong
 						case 9: // Ancient
-							dV2 = (float)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
-							dV3 = (float)(dwSWEValue * 7);
+							dV2 = (double)m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan;
+							dV3 = (double)(dwSWEValue * 7);
 							dV1 = (dV3 / 100.0f) * dV2;
 							m_pClientList[iClientH]->m_pItemList[cItemID]->m_wMaxLifeSpan += (int)dV1;
 							break;
@@ -6587,8 +6659,8 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 	class CItem* pItem;
 	char* cp, cItemName[21], cData[100];
 	
-	UINT32* dwp, dwGoldCount, dwItemCount;
-	UINT16* wp;
+	DWORD* dwp, dwGoldCount, dwItemCount;
+	WORD* wp;
 	int   i, iRet, iEraseReq, iGoldWeight;
 	int   iCost;
 
@@ -6627,16 +6699,46 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 
 			pItem->m_dwCount = dwItemCount;
 
+			//Heldenian Price Fix Thing
+			/*if (m_pClientList[iClientH]->m_cSide == m_sLastHeldenianWinner) 
+			{
+				iCost = (int)((double)(pItem->m_wPrice) * 0.9f + 0.5f);
+				iCost = iCost * pItem->m_dwCount;
+				iCost2 = pItem->m_wPrice * pItem->m_dwCount;
+			}
+			else 
+			{
+				iCost2 = iCost = (pItem->m_wPrice * pItem->m_dwCount); //LifeX Fix gold price 11/2
+			}
+
+			dwGoldCount = dwGetItemCount(iClientH, "Gold");
+
+			// Charisma
+			iDiscountRatio = (int)((m_pClientList[iClientH]->m_iCharisma - 10) / 4);
+
+			dTmp1 = (double)(iDiscountRatio);
+			dTmp2 = dTmp1 / 100.0f;
+			dTmp1 = (double)iCost;
+			dTmp3 = dTmp1 * dTmp2;
+			iDiscountCost = (int)dTmp3;
+
+			//Fix For Heldenian Price =x	
+			if ((iCost - iDiscountCost) <= (int)(iCost2 / 2)) 
+			{
+				iDiscountCost = (int)(iCost - (iCost2 / 2) + 1);
+			}*/
+
 			dwGoldCount = dwGetItemCount(iClientH, "Gold");
 
 			iCost = (pItem->m_wPrice * pItem->m_dwCount);
 
-			if (dwGoldCount < (UINT32)(iCost)) {
+			//if (dwGoldCount < (DWORD)(iCost - iDiscountCost)) {
+			if (dwGoldCount < (DWORD)(iCost)) {
 				delete pItem;
 
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_NOTENOUGHGOLD;
 				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 				*cp = -1;
@@ -6657,11 +6759,13 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
 				if (m_pClientList[iClientH]->m_iCurWeightLoad < 0) m_pClientList[iClientH]->m_iCurWeightLoad = 0;
 
+				//wTempPrice = (iCost - iDiscountCost);
+				//wTempPrice = iCost;
 				SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMPURCHASED, pItem, iCost);
 
 				if (iEraseReq == 1) delete pItem;
 
-				iGoldWeight = SetItemCount(iClientH, "Gold", dwGoldCount - (UINT32)iCost);
+				iGoldWeight = SetItemCount(iClientH, "Gold", dwGoldCount - (DWORD)iCost);
 				iCalcTotalWeight(iClientH);
 			}
 			else
@@ -6670,9 +6774,9 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 
 				iCalcTotalWeight(iClientH);
 
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -6689,13 +6793,13 @@ void CGame::RequestPurchaseItemHandler(int iClientH, char* pItemName, int iNum)
 	}
 }
 
-void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, UINT16 wObjectID, char* pItemName)
+void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short dX, short dY, WORD wObjectID, char* pItemName)
 {
 	int iRet, iEraseReq;
 	short sOwnerH;
 	char cOwnerType, cData[100], cCharName[21];
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	class CItem* pItem;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -6715,7 +6819,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 
 	if (((m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_CONSUME) ||
 		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemType == DEF_ITEMTYPE_ARROW)) &&
-		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount > (UINT32)iAmount)) {
+		(m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount > (DWORD)iAmount)) {
 
 		pItem = new class CItem;
 		if (_bInitItemAttr(pItem, m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cName) == false) {
@@ -6736,7 +6840,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 			if (wObjectID < 10000) {
 				if ((wObjectID > 0) && (wObjectID < DEF_MAXCLIENTS)) {
 					if (m_pClientList[wObjectID] != 0) {
-						if ((UINT16)sOwnerH != wObjectID) sOwnerH = 0;
+						if ((WORD)sOwnerH != wObjectID) sOwnerH = 0;
 					}
 				}
 			}
@@ -6744,17 +6848,28 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 				// NPC
 				if ((wObjectID - 10000 > 0) && (wObjectID - 10000 < DEF_MAXNPCS)) {
 					if (m_pNpcList[wObjectID - 10000] != 0) {
-						if ((UINT16)sOwnerH != (wObjectID - 10000)) sOwnerH = 0;
+						if ((WORD)sOwnerH != (wObjectID - 10000)) sOwnerH = 0;
 					}
 				}
 			}
 		}
+
+		// Snoopy: Bock attemps to give item to a far character.
+		/*if (((abs(m_pClientList[iClientH]->m_sX) - dX) > 5)
+			|| ((abs(m_pClientList[iClientH]->m_sY) - dY) > 5))
+		{
+			sOwnerH = 0;
+		}*/
 
 		if (sOwnerH == 0) {
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem);
 
 			// v1.411  
 			_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, pItem);
+
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ //v1.4 color
 
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -6788,13 +6903,17 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 					// v1.411  
 					_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, pItem);
 
+					/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+						pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ //v1.4 color
+
 					SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 						pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-					dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+					dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 					*dwp = MSGID_NOTIFY;
-					wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+					wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 					*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 					iRet = m_pClientList[sOwnerH]->m_pXSock->iSendMsg(cData, 6);
@@ -6830,6 +6949,10 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 						_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, pItem);
 
 						// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+						/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+							m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+							pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4 color
+
 						SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 							m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 							pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -6844,6 +6967,10 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 					_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, pItem);
 
 					// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+					/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+						pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4 color
+
 					SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 						pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
@@ -6868,7 +6995,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 				// ÇÃ·¹ÀÌ¾î 
 				if ((wObjectID > 0) && (wObjectID < DEF_MAXCLIENTS)) {
 					if (m_pClientList[wObjectID] != 0) {
-						if ((UINT16)sOwnerH != wObjectID) sOwnerH = 0;
+						if ((WORD)sOwnerH != wObjectID) sOwnerH = 0;
 					}
 				}
 			}
@@ -6876,17 +7003,29 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 				// NPC
 				if ((wObjectID - 10000 > 0) && (wObjectID - 10000 < DEF_MAXNPCS)) {
 					if (m_pNpcList[wObjectID - 10000] != 0) {
-						if ((UINT16)sOwnerH != (wObjectID - 10000)) sOwnerH = 0;
+						if ((WORD)sOwnerH != (wObjectID - 10000)) sOwnerH = 0;
 					}
 				}
 			}
 		}
+
+		// Snoopy: Bock attemps to give item to a far character.
+		/*if (((abs(m_pClientList[iClientH]->m_sX) - dX) > 5)
+			|| ((abs(m_pClientList[iClientH]->m_sY) - dY) > 5))
+		{
+			sOwnerH = 0;
+		}*/
 
 		if (sOwnerH == 0) {
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 				m_pClientList[iClientH]->m_sY,
 				m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 			_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, m_pClientList[iClientH]->m_pItemList[sItemIndex]);
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSprite,
+				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpriteFrame,
+				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor);*/ // v1.4 color
 
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -6944,6 +7083,11 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 						m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 					_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 
+					/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSprite,
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpriteFrame,
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor);*/ // v1.4 color
 
 					SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -6952,9 +7096,9 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor,
 						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwAttribute);
 
-					dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+					dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 					*dwp = MSGID_NOTIFY;
-					wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+					wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 					*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 					iRet = m_pClientList[sOwnerH]->m_pXSock->iSendMsg(cData, 6);
@@ -6991,6 +7135,11 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 						_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 
 						// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+						/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+							m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+							m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSprite,
+							m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpriteFrame,
+							m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor);*/ // v1.4 color
 
 						SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 							m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -7031,6 +7180,11 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 
 						_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 
+						/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+							m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+							m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSprite,
+							m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpriteFrame,
+							m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor);*/ // v1.4 color
 
 						SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 							m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -7049,6 +7203,12 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 						m_pClientList[iClientH]->m_pItemList[sItemIndex]);
 
 					_bItemLog(DEF_ITEMLOG_DROP, iClientH, 0, m_pClientList[iClientH]->m_pItemList[sItemIndex]);
+
+					/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSprite,
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpriteFrame,
+						m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor);*/ // v1.4 color
 
 					SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 						m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -7076,7 +7236,7 @@ void CGame::GiveItemHandler(int iClientH, short sItemIndex, int iAmount, short d
 	iCalcTotalWeight(iClientH);
 }
 
-UINT32 CGame::dwGetItemCount(int iClientH, char* pName)
+DWORD CGame::dwGetItemCount(int iClientH, char* pName)
 {
 	int i;
 	char cTmpName[21];
@@ -7095,16 +7255,19 @@ UINT32 CGame::dwGetItemCount(int iClientH, char* pName)
 	return 0;
 }
 
-int CGame::SetItemCount(int iClientH, char* pItemName, UINT32 dwCount)
+int CGame::SetItemCount(int iClientH, char* pItemName, DWORD dwCount)
 {
 	int i;
 	char cTmpName[21];
-	UINT16 wWeight;
+	WORD wWeight;
 
 	if (m_pClientList[iClientH] == 0) return -1;
 
 	ZeroMemory(cTmpName, sizeof(cTmpName));
 	strcpy(cTmpName, pItemName);
+
+	//m_pClientList[iClientH]->m_dwGold = dwCount;
+	//SendNotifyMsg(0, iClientH, DEF_NOTIFY_GOLD, m_pClientList[iClientH]->m_dwGold, 0, 0, 0);
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
 		if ((m_pClientList[iClientH]->m_pItemList[i] != 0) && (memcmp(m_pClientList[iClientH]->m_pItemList[i]->m_cName, cTmpName, 20) == 0)) {
@@ -7128,9 +7291,9 @@ int CGame::SetItemCount(int iClientH, char* pItemName, UINT32 dwCount)
 }
 
 
-int CGame::SetItemCount(int iClientH, int iItemIndex, UINT32 dwCount)
+int CGame::SetItemCount(int iClientH, int iItemIndex, DWORD dwCount)
 {
-	UINT16 wWeight;
+	WORD wWeight;
 
 	if (m_pClientList[iClientH] == 0) return -1;
 	if (m_pClientList[iClientH]->m_pItemList[iItemIndex] == 0) return -1;
@@ -7154,14 +7317,13 @@ int CGame::SetItemCount(int iClientH, int iItemIndex, UINT32 dwCount)
 void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 {
 	int i, iRet;
-	short* sp;
 	char cItemID[4], ctr[4];
 	char* cp, cSlateColour, cData[120];
 	bool bIsSlatePresent = false;
 	CItem* pItem;
 	int iSlateType, iEraseReq;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == true) return;
@@ -7172,10 +7334,10 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 	}
 
 	cp = (char*)pData;
-	cp += 11;
+	cp += 10;
 
 	// 14% chance of creating slates
-	if (iDice(1, 100) <= m_sSlateSuccessRate) bIsSlatePresent = true; // 40
+	if (iDice(1, 100) <= m_sSlateSuccessRate) bIsSlatePresent = true;
 
 	try {
 		// make sure slates really exist
@@ -7205,14 +7367,14 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 		bIsSlatePresent = false;
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SLATE_CREATEFAIL, 0, 0, 0, 0);
 		wsprintf(G_cTxt, "TSearch Slate Hack: (%s) Player: (%s) - creating slates without correct item!", m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
-		PutLogList(G_cTxt);
-		DeleteClient(iClientH, true, true);
+		PutHackLogFileList(G_cTxt);
+		//DeleteClient(iClientH, true, true);
 		return;
 	}
 
 	// Are all 4 slates present ??
 	if (ctr[0] != 1 || ctr[1] != 1 || ctr[2] != 1 || ctr[3] != 1) {
-		bIsSlatePresent = true;
+		bIsSlatePresent = false;
 		return;
 	}
 
@@ -7244,19 +7406,19 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 		iSlateType = 1;
 		cSlateColour = 32;
 	}
-	else if (i < 250) { // Bezerk slate
+	else if (i >= 50 && i < 250) { // Bezerk slate
 		iSlateType = 2;
 		cSlateColour = 3;
 	}
-	else if (i < 750) { // Exp slate
+	else if (i >= 250 && i < 750) { // Exp slate
 		iSlateType = 4;
 		cSlateColour = 7;
 	}
-	else if (i < 950) { // Mana slate
+	else if (i >= 750 && i < 950) { // Mana slate
 		iSlateType = 3;
 		cSlateColour = 37;
 	}
-	else if (i < 1001) { // Hp slate
+	else if (i >= 950) { // Hp slate
 		iSlateType = 1;
 		cSlateColour = 32;
 	}
@@ -7267,7 +7429,7 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 	ZeroMemory(cData, sizeof(cData));
 
 	// Create slates
-	if (!_bInitItemAttr(pItem, 867)) {
+	if (_bInitItemAttr(pItem, 867) == false) {
 		delete pItem;
 		return;
 	}
@@ -7281,93 +7443,24 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 
 		pItem->m_sItemSpecEffectValue2 = iSlateType;
 		pItem->m_cItemColor = cSlateColour;
-		if (_bAddClientItemList(iClientH, pItem, &iEraseReq)) {
-			ZeroMemory(cData, sizeof(cData));
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
-			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
-			*wp = DEF_NOTIFY_ITEMOBTAINED;
-
-			cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
-			*cp = 1;
-			cp++;
-
-			memcpy(cp, pItem->m_cName, 20);
-			cp += 20;
-
-			dwp = (UINT32*)cp;
-			*dwp = pItem->m_dwCount;
-			cp += 4;
-
-			*cp = pItem->m_cItemType;
-			cp++;
-
-			*cp = pItem->m_cEquipPos;
-			cp++;
-
-			*cp = (char)0; // �??�|?????e��??�??
-			cp++;
-
-			sp = (short*)cp;
-			*sp = pItem->m_sLevelLimit;
-			cp += 2;
-
-			*cp = pItem->m_cGenderLimit;
-			cp++;
-
-			wp = (UINT16*)cp;
-			*wp = pItem->m_wCurLifeSpan;
-			cp += 2;
-
-			wp = (UINT16*)cp;
-			*wp = pItem->m_wWeight;
-			cp += 2;
-
-			sp = (short*)cp;
-			*sp = pItem->m_sSprite;
-			cp += 2;
-
-			sp = (short*)cp;
-			*sp = pItem->m_sSpriteFrame;
-			cp += 2;
-
-			*cp = pItem->m_cItemColor;
-			cp++;
-
-			*cp = (char)pItem->m_sItemSpecEffectValue2;
-			cp++;
-
-			dwp = (UINT32*)cp;
-			*dwp = pItem->m_dwAttribute;
-			cp += 4;
-
-			*cp = (char)pItem->m_sItemSpecEffectValue3;
-			cp++;
+		if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
+			SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, 0);
 
 			if (iEraseReq == 1) delete pItem;
-
-			// �|??d�� |�?
-			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 54);
-			switch (iRet) {
-			case DEF_XSOCKEVENT_QUENEFULL:
-			case DEF_XSOCKEVENT_SOCKETERROR:
-			case DEF_XSOCKEVENT_CRITICALERROR:
-			case DEF_XSOCKEVENT_SOCKETCLOSED:
-				// �?a?������ ������ �???��???
-				DeleteClient(iClientH, true, true);
-				return;
-			}
 		}
 		else {
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem);
-			
+			/*SendEventToNearClient_TypeB(MSGID_MAGICCONFIGURATIONCONTENTS, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem->m_sSprite, pItem->m_sSpriteFrame,
+				pItem->m_cItemColor);*/
+
 			SendEventToNearClient_TypeB(MSGID_MAGICCONFIGURATIONCONTENTS, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY, pItem->m_sIDnum, pItem->m_sSpriteFrame,
 				pItem->m_cItemColor, pItem->m_dwAttribute);
 
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -7376,13 +7469,12 @@ void CGame::ReqCreateSlateHandler(int iClientH, char* pData)
 			case DEF_XSOCKEVENT_SOCKETERROR:
 			case DEF_XSOCKEVENT_CRITICALERROR:
 			case DEF_XSOCKEVENT_SOCKETCLOSED:
-				// �?a?������ ������ �???��???
+				// �޽����� ������ ������ �߻��ߴٸ� �����Ѵ�.
 				DeleteClient(iClientH, true, true);
 				break;
 			}
 		}
 	}
-	return;
 }
 
 void CGame::SetSlateFlag(int iClientH, short sType, bool bFlag)
@@ -7396,7 +7488,7 @@ void CGame::SetSlateFlag(int iClientH, short sType, bool bFlag)
 		return;
 	}
 
-	if (bFlag) {
+	if (bFlag == true) {
 		if (sType == 1) { // Invincible slate
 			m_pClientList[iClientH]->m_iStatus |= 0x400000;
 		}
@@ -7468,14 +7560,14 @@ bool CGame::bCheckIsItemUpgradeSuccess(int iClientH, int iItemIndex, int iSomH, 
 }
 
 /*********************************************************************************************************************
-**  bool CGame::_bDecodeItemConfigFileContents(char * pData, UINT32 dwMsgSize)										**
+**  bool CGame::_bDecodeItemConfigFileContents(char * pData, DWORD dwMsgSize)										**
 **  DESCRIPTION			:: decodes Item.cfg file																	**
 **  LAST_UPDATED		:: March 17, 2005; 2:09 PM; Hypnotoad														**
 **	RETURN_VALUE		:: bool																						**
 **  NOTES				::	n/a																						**
 **	MODIFICATION		::	n/a																						**
 **********************************************************************************************************************/
-bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
+bool CGame::_bDecodeItemConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -7627,7 +7719,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						delete pStrTok;
 						return false;
 					}
-					m_pItemConfigList[iItemConfigListIndex]->m_wMaxLifeSpan = (UINT16)atoi(token);
+					m_pItemConfigList[iItemConfigListIndex]->m_wMaxLifeSpan = (WORD)atoi(token);
 					cReadModeB = 13;
 					break;
 				case 13:
@@ -7808,7 +7900,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp < 0)
 						m_pItemConfigList[iItemConfigListIndex]->bContrbSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bContrbSale = true;
 
@@ -7824,7 +7916,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp < 0)
 						m_pItemConfigList[iItemConfigListIndex]->bEkSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bEkSale = true;
 
@@ -7840,7 +7932,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 						return false;
 					}
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp < 0)
 						m_pItemConfigList[iItemConfigListIndex]->bCoinSale = false;
 					else m_pItemConfigList[iItemConfigListIndex]->bCoinSale = true;
 
@@ -7858,7 +7950,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp < 0)
 						m_pItemConfigList[iItemConfigListIndex]->m_iClass = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iClass = iTemp;
 					
@@ -7874,7 +7966,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp < 0)
 						m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iReqStat = iTemp;
 
@@ -7889,7 +7981,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp < 0)
 						m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iQuantStat = iTemp;
 
@@ -7906,7 +7998,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp <= 0)
 						m_pItemConfigList[iItemConfigListIndex]->m_bIsHero = false;
 					else m_pItemConfigList[iItemConfigListIndex]->m_bIsHero = true;
 
@@ -7922,7 +8014,7 @@ bool CGame::_bDecodeItemConfigFileContents(char* pData, UINT32 dwMsgSize)
 					}
 
 					iTemp = atoi(token);
-					if (iTemp < 1)
+					if (iTemp <= 0)
 						m_pItemConfigList[iItemConfigListIndex]->m_iHeroBonus = 0;
 					else m_pItemConfigList[iItemConfigListIndex]->m_iHeroBonus = iTemp;
 
@@ -7993,7 +8085,7 @@ bool CGame::_bInitItemAttr(class CItem* pItem, char* pItemName)
 				pItem->m_sItemEffectValue5 = m_pItemConfigList[i]->m_sItemEffectValue5;
 				pItem->m_sItemEffectValue6 = m_pItemConfigList[i]->m_sItemEffectValue6;
 				pItem->m_wMaxLifeSpan = m_pItemConfigList[i]->m_wMaxLifeSpan;
-				pItem->m_wCurLifeSpan = pItem->m_wMaxLifeSpan;
+				pItem->m_wCurLifeSpan = m_pItemConfigList[i]->m_wMaxLifeSpan;
 				pItem->m_sSpecialEffect = m_pItemConfigList[i]->m_sSpecialEffect;
 				pItem->m_sSprite = m_pItemConfigList[i]->m_sSprite;
 				pItem->m_sSpriteFrame = m_pItemConfigList[i]->m_sSpriteFrame;
@@ -8059,7 +8151,7 @@ bool CGame::_bInitItemAttr(class CItem* pItem, int iItemID)
 				pItem->m_sItemEffectValue5 = m_pItemConfigList[i]->m_sItemEffectValue5;
 				pItem->m_sItemEffectValue6 = m_pItemConfigList[i]->m_sItemEffectValue6;
 				pItem->m_wMaxLifeSpan = m_pItemConfigList[i]->m_wMaxLifeSpan;
-				pItem->m_wCurLifeSpan = pItem->m_wMaxLifeSpan;
+				pItem->m_wCurLifeSpan = m_pItemConfigList[i]->m_wMaxLifeSpan;
 				pItem->m_sSpecialEffect = m_pItemConfigList[i]->m_sSpecialEffect;
 				pItem->m_sSprite = m_pItemConfigList[i]->m_sSprite;
 				pItem->m_sSpriteFrame = m_pItemConfigList[i]->m_sSpriteFrame;
@@ -8113,8 +8205,8 @@ int CGame::_iGetItemSpaceLeft(int iClientH)
 bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 {
 	char* cp, cData[256];
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	short* sp;
 	int iRet, iEraseReq, *ip;
 
@@ -8122,9 +8214,9 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 	ZeroMemory(cData, sizeof(cData));
 	if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
 		// ¾ÆÀÌÅÛÀ» È¹µæÇß´Ù.
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_ITEMOBTAINED;
 
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -8136,7 +8228,7 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		memcpy(cp, pItem->m_cName, 20);
 		cp += 20;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwCount;	// ¼ö·®À» ÀÔ·Â 
 		cp += 4;
 
@@ -8156,11 +8248,11 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		*cp = pItem->m_cGenderLimit;
 		cp++;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wCurLifeSpan;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wWeight;
 		cp += 2;
 
@@ -8178,7 +8270,7 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 		cp++;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwAttribute;
 		cp += 4;
 
@@ -8227,7 +8319,7 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 		*sp = pItem->m_sItemEffectType;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
@@ -8257,13 +8349,17 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 			m_pClientList[iClientH]->m_sY,
 			pItem);
 
+		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+			pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ //v1.4 color
+
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -8274,19 +8370,19 @@ bool CGame::bAddItem(int iClientH, CItem* pItem, char cMode)
 	return false;
 }
 
-void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int iV1)
+void CGame::SendItemNotifyMsg(int iClientH, WORD wMsgType, CItem* pItem, int iV1)
 {
 	char* cp, cData[512];
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	short* sp;
 	int     iRet, *ip;
 
 	if (m_pClientList[iClientH] == 0) return;
 
-	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_NOTIFY;
-	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = wMsgType;
 	cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 
@@ -8298,7 +8394,7 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		memcpy(cp, pItem->m_cName, 20);
 		cp += 20;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwCount;
 		cp += 4;
 
@@ -8318,11 +8414,11 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		*cp = pItem->m_cGenderLimit;
 		cp++;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wCurLifeSpan;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wWeight;
 		cp += 2;
 
@@ -8340,7 +8436,7 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 		cp++;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwAttribute;
 		cp += 4;
 
@@ -8389,7 +8485,7 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		*sp = pItem->m_sItemEffectType;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
@@ -8415,7 +8511,7 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		memcpy(cp, pItem->m_cName, 20);
 		cp += 20;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwCount;
 		cp += 4;
 
@@ -8435,11 +8531,11 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		*cp = pItem->m_cGenderLimit;
 		cp++;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wCurLifeSpan;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wWeight;
 		cp += 2;
 
@@ -8503,7 +8599,7 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		*sp = pItem->m_sItemEffectType;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = pItem->m_wMaxLifeSpan;
 		cp += 2;
 
@@ -8519,7 +8615,7 @@ void CGame::SendItemNotifyMsg(int iClientH, UINT16 wMsgType, CItem* pItem, int i
 		*ip = pItem->m_iQuantStat;
 		cp += 4;
 
-		dwp = (UINT32*)cp;
+		dwp = (DWORD*)cp;
 		*dwp = pItem->m_dwAttribute;
 		cp += 4;
 
@@ -8539,7 +8635,7 @@ bool CGame::_bCheckItemReceiveCondition(int iClientH, CItem* pItem)
 	if (m_pClientList[iClientH] == 0) return false;
 
 
-	if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, pItem->m_dwCount) > (UINT32)_iCalcMaxLoad(iClientH))
+	if (m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, pItem->m_dwCount) > (DWORD)_iCalcMaxLoad(iClientH))
 		return false;
 
 	for (i = 0; i < DEF_MAXITEMS; i++)
@@ -8589,13 +8685,13 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 				delete pItem;
 				return;
 			}
-			pItem->m_dwCount = (UINT32)iAmount;
+			pItem->m_dwCount = (DWORD)iAmount;
 		}
 
 		// ¼ö·® °¨¼Ò 
 
 		// ¿¡·¯. °¨¼Ò½ÃÅ°°íÀÚ ÇÏ´Â ¾çÀÌ ´õ ¸¹´Ù. 
-		if ((UINT32)iAmount > m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount) {
+		if ((DWORD)iAmount > m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_dwCount) {
 			delete pItem;
 			return;
 		}
@@ -8618,6 +8714,10 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 			_bItemLog(DEF_ITEMLOG_DROP, iClientH, (int)-1, pItem, true);
 
 		// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+			pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4 color
+
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 			m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute); 
@@ -8656,6 +8756,12 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 				_bItemLog(DEF_ITEMLOG_DROP, iClientH, (int)-1, m_pClientList[iClientH]->m_pItemList[sItemIndex], true);
 
 			// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSprite,
+				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sSpriteFrame,
+				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cItemColor);*/ //v1.4 color
+
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 				m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_sIDnum,
@@ -8688,8 +8794,8 @@ void CGame::DropItemHandler(int iClientH, short sItemIndex, int iAmount, char* p
 /////////////////////////////////////////////////////////////////////////////////////
 int CGame::iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char cDir)
 {
-	UINT32* dwp, dwRemainItemAttr;
-	UINT16* wp;
+	DWORD* dwp, dwRemainItemAttr;
+	WORD* wp;
 	short sRemainItemID;
 	char  cRemainItemColor, cData[100];
 	int   iRet, iEraseReq;
@@ -8720,13 +8826,18 @@ int CGame::iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char 
 	m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->ClearOwner(0, iClientH, DEF_OWNERTYPE_PLAYER, sX, sY);
 	m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->SetOwner(iClientH, DEF_OWNERTYPE_PLAYER, sX, sY);
 
-	pItem = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->pGetItem(sX, sY, &sRemainItemID, &cRemainItemColor, &dwRemainItemAttr); // v1.4
+	//pItem = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->pGetItem(sX, sY, &sRemainItemSprite, &sRemainItemSpriteFrame, &cRemainItemColor);
+	pItem = m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->pGetItem(sX, sY, &sRemainItemID/*, &sRemainItemSpriteFrame*/, &cRemainItemColor, &dwRemainItemAttr); // v1.4
 	if (pItem != 0) {
 		if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
 			_bItemLog(DEF_ITEMLOG_GET, iClientH, 0, pItem);
 			SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, 0);
 
 			if (iEraseReq == 1) delete pItem;
+
+			/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_SETITEM, m_pClientList[iClientH]->m_cMapIndex,
+				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+				sRemainItemSprite, sRemainItemSpriteFrame, cRemainItemColor);*/
 
 			SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_SETITEM, m_pClientList[iClientH]->m_cMapIndex,
 				m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
@@ -8736,9 +8847,9 @@ int CGame::iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char 
 		{
 			m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(sX, sY, pItem);
 
-			dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -8753,9 +8864,9 @@ int CGame::iClientMotion_GetItem_Handler(int iClientH, short sX, short sY, char 
 		}
 	}
 
-	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 	*dwp = MSGID_RESPONSE_MOTION;
-	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_OBJECTMOTION_CONFIRM;
 
 	iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -8781,12 +8892,12 @@ bool CGame::_bAddClientItemList(int iClientH, class CItem* pItem, int* pDelReq)
 	// ÁýÀ» ¾ÆÀÌÅÛ Áß·®°è»ê  
 	if ((pItem->m_cItemType == DEF_ITEMTYPE_CONSUME) || (pItem->m_cItemType == DEF_ITEMTYPE_ARROW)) {
 		// ¼ö·®°³³äÀÌ ÀÖ´Â ¾ÆÀÌÅÛ 
-		if ((m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, pItem->m_dwCount)) > (UINT32)_iCalcMaxLoad(iClientH))
+		if ((m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, pItem->m_dwCount)) > (DWORD)_iCalcMaxLoad(iClientH))
 			return false;
 	}
 	else {
 		// ¼ö·® °³³äÀÌ ¾ø´Â ¾ÆÀÌÅÛ 
-		if ((m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, 1)) > (UINT32)_iCalcMaxLoad(iClientH))
+		if ((m_pClientList[iClientH]->m_iCurWeightLoad + iGetItemWeight(pItem, 1)) > (DWORD)_iCalcMaxLoad(iClientH))
 			return false;
 	}
 
@@ -8880,6 +8991,8 @@ bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 			break;
 		}
 	}
+
+	//if (iGetItemWeight(m_pClientList[iClientH]->m_pItemList[sItemIndex], 1) > (m_pClientList[iClientH]->m_iStr + m_pClientList[iClientH]->m_iAngelicStr) * 100) return false;
 
 	cEquipPos = m_pClientList[iClientH]->m_pItemList[sItemIndex]->m_cEquipPos;
 
@@ -9071,6 +9184,7 @@ bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
+	//case DEF_EQUIPPOS_PANTS:
 	case DEF_EQUIPPOS_LEGGINGS:
 		sTemp = m_pClientList[iClientH]->m_sAppr3;
 		sTemp = sTemp & 0xF0FF;	// ¹ÙÁö Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
@@ -9083,6 +9197,7 @@ bool CGame::bEquipItemHandler(int iClientH, short sItemIndex, bool bNotify)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
+	//case DEF_EQUIPPOS_LEGGINGS:
 	case DEF_EQUIPPOS_BOOTS:
 		sTemp = m_pClientList[iClientH]->m_sAppr4;
 		sTemp = sTemp & 0x0FFF;	// ºÎÃ÷ Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
@@ -9383,6 +9498,7 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, bool bNotice)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
+	//case DEF_EQUIPPOS_BOOTS:
 	case DEF_EQUIPPOS_LEGGINGS:
 		sTemp = m_pClientList[iClientH]->m_sAppr3;
 		sTemp = sTemp & 0xF0FF;	// °Ñ¿Ê Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
@@ -9393,6 +9509,7 @@ void CGame::ReleaseItemHandler(int iClientH, short sItemIndex, bool bNotice)
 		m_pClientList[iClientH]->m_iApprColor = iTemp;
 		break;
 
+	//case DEF_EQUIPPOS_LEGGINGS:
 	case DEF_EQUIPPOS_BOOTS:
 		sTemp = m_pClientList[iClientH]->m_sAppr4;
 		sTemp = sTemp & 0x0FFF;	// °Ñ¿Ê Æ¯¼ºÄ¡ ºñÆ®¸¦ Å¬¸®¾î.
@@ -9506,8 +9623,8 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 {
 	char* cp, cBankItemIndex, cMsg[100];
 	int i, j, iRet, iItemWeight;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -9521,9 +9638,9 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 	if (m_pClientList[iClientH]->m_pItemInBankList[cBankItemIndex] == 0) {
 		ZeroMemory(cMsg, sizeof(cMsg));
 
-		dwp = (UINT32*)(cMsg + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 		*dwp = MSGID_RESPONSE_RETRIEVEITEM;
-		wp = (UINT16*)(cMsg + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_MSGTYPE_REJECT;
 
 		iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cMsg, 8);
@@ -9534,9 +9651,9 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 		if ((iItemWeight + m_pClientList[iClientH]->m_iCurWeightLoad) > _iCalcMaxLoad(iClientH)) {
 			ZeroMemory(cMsg, sizeof(cMsg));
 
-			dwp = (UINT32*)(cMsg + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 			*dwp = MSGID_NOTIFY;
-			wp = (UINT16*)(cMsg + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cMsg, 6);
@@ -9572,9 +9689,9 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 
 					ZeroMemory(cMsg, sizeof(cMsg));
 
-					dwp = (UINT32*)(cMsg + DEF_INDEX4_MSGID);
+					dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 					*dwp = MSGID_RESPONSE_RETRIEVEITEM;
-					wp = (UINT16*)(cMsg + DEF_INDEX2_MSGTYPE);
+					wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 					*wp = DEF_MSGTYPE_CONFIRM;
 
 					cp = (char*)(cMsg + DEF_INDEX2_MSGTYPE + 2);
@@ -9623,9 +9740,9 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 
 					ZeroMemory(cMsg, sizeof(cMsg));
 
-					dwp = (UINT32*)(cMsg + DEF_INDEX4_MSGID);
+					dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 					*dwp = MSGID_RESPONSE_RETRIEVEITEM;
-					wp = (UINT16*)(cMsg + DEF_INDEX2_MSGTYPE);
+					wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 					*wp = DEF_MSGTYPE_CONFIRM;
 
 					cp = (char*)(cMsg + DEF_INDEX2_MSGTYPE + 2);
@@ -9651,9 +9768,9 @@ void CGame::RequestRetrieveItemHandler(int iClientH, char* pData)
 				}
 			ZeroMemory(cMsg, sizeof(cMsg));
 
-			dwp = (UINT32*)(cMsg + DEF_INDEX4_MSGID);
+			dwp = (DWORD*)(cMsg + DEF_INDEX4_MSGID);
 			*dwp = MSGID_RESPONSE_RETRIEVEITEM;
-			wp = (UINT16*)(cMsg + DEF_INDEX2_MSGTYPE);
+			wp = (WORD*)(cMsg + DEF_INDEX2_MSGTYPE);
 			*wp = DEF_MSGTYPE_REJECT;
 
 			iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cMsg, 8);
@@ -9682,6 +9799,12 @@ void CGame::_PenaltyItemDrop(int iClientH, int iTotal, bool bIsSAattacked)
 	// kazin
 	if (m_pClientList[iClientH]->IsInMap("team") || m_pClientList[iClientH]->IsInMap("fightzone1"))
 		return;
+
+	// SNOOPY: Lucky effect will prevent drops,  even of a ZEM.
+	if ((m_pClientList[iClientH]->m_bIsLuckyEffect > 0) && ((iDice(1, 100) <= m_pClientList[iClientH]->m_bIsLuckyEffect)))
+	{
+		return;
+	}
 
 	if ((m_pClientList[iClientH]->m_iAlterItemDropIndex != -1) && (m_pClientList[iClientH]->m_pItemList[m_pClientList[iClientH]->m_iAlterItemDropIndex] != 0)) {
 		// Testcode
@@ -10299,7 +10422,7 @@ int CGame::_cCheckHeroItemEquipped(int iClientH)
 	return iBonus;
 }
 
-void CGame::_bDecodeDupItemIDFileContents(char* pData, UINT32 dwMsgSize)
+void CGame::_bDecodeDupItemIDFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -10398,7 +10521,7 @@ void CGame::_bDecodeDupItemIDFileContents(char* pData, UINT32 dwMsgSize)
 						delete pStrTok;
 						return;
 					}
-					m_pDupItemIDList[iIndex]->m_wPrice = (UINT16)atoi(token);
+					m_pDupItemIDList[iIndex]->m_wPrice = (WORD)atoi(token);
 					cReadModeA = 0;
 					cReadModeB = 0;
 
@@ -10453,14 +10576,14 @@ bool CGame::_bCheckDupItemID(CItem* pItem)
 
 void CGame::_AdjustRareItemValue(CItem* pItem)
 {
-	UINT32 dwSWEType, dwSWEValue;
-	float dV1, dV2, dV3;
+	DWORD dwSWEType, dwSWEValue;
+	double dV1, dV2, dV3;
 
 	if ((pItem->m_dwAttribute & 0x00F00000) != 0) {
 		dwSWEType = (pItem->m_dwAttribute & 0x00F00000) >> 20;
 		dwSWEValue = (pItem->m_dwAttribute & 0x000F0000) >> 16;
-
-		switch (dwSWEType) {
+		//if (iDice(1, 10000) >= m_iRareDropRate) { // Centuu : Agregado para controlar el drop rare.
+			switch (dwSWEType) {
 			case 0:
 				break;
 
@@ -10470,8 +10593,8 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 				break;
 
 			case ITEMSTAT_LIGHT:
-				dV2 = (float)pItem->m_wWeight;
-				dV3 = (float)(dwSWEValue * 4);
+				dV2 = (double)pItem->m_wWeight;
+				dV3 = (double)(dwSWEValue * 4);
 				dV1 = (dV3 / 100.0f) * dV2;
 				pItem->m_wWeight -= (int)dV1;
 
@@ -10480,13 +10603,13 @@ void CGame::_AdjustRareItemValue(CItem* pItem)
 
 			case ITEMSTAT_STRONG:
 			case ITEMSTAT_ANCIENT:
-				dV2 = (float)pItem->m_wMaxLifeSpan;
-				dV3 = (float)(dwSWEValue * 7);
+				dV2 = (double)pItem->m_wMaxLifeSpan;
+				dV3 = (double)(dwSWEValue * 7);
 				dV1 = (dV3 / 100.0f) * dV2;
 				pItem->m_wMaxLifeSpan += (int)dV1;
 				break;
-		}
-		
+			}
+		//}
 	}
 }
 
@@ -10656,6 +10779,11 @@ bool CGame::_bCheckGoodItem(class CItem* pItem)
 {
 	if (pItem == 0) return false;
 
+	/*if (pItem->m_sIDnum == 90)
+	{
+		if (pItem->m_dwCount > 10000) return true;  //Gold¿¡ ÇÑÇØ 10000¿ø ÀÌ»ó¸¸ ·Î±×¿¡ ³²±ä´Ù.
+		else return false;
+	}*/
 	switch (pItem->m_sIDnum) {
 		// Gold Ãß°¡ 
 	case 259:
@@ -10816,7 +10944,7 @@ int CGame::iGetItemWeight(CItem* pItem, int iCount)
 	iWeight = pItem->m_wWeight;
 	if (iCount < 0) iCount = 1;
 	iWeight = iWeight * iCount;
-	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77 || pItem->m_sIDnum == 1002) iWeight = 1; // Centuu : el oro no tiene peso :D
+	if (pItem->m_sIDnum == 90 || pItem->m_sIDnum == 77 || pItem->m_sIDnum == 1002) iWeight = 1; //iWeight = iWeight / 20; // Centuu : el oro no tiene peso :D
 	if (iWeight < 0) iWeight = 1;
 
 	return iWeight;

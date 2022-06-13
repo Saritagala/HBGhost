@@ -1,0 +1,41 @@
+[MAP-INFO]
+map-location  		= abaddon
+initial-point 		= 1  168 168
+fixed-dayornight-mode	= 1
+CitizenLimit		= 1
+pk-mode 			= 0
+type          		= 3
+drop-type 			= 0
+
+ApocalypseMap 		= 1
+ApocalypseMobGenType    = 2
+
+RecallImpossible        = 1
+not-permanent-map		= 1
+
+//------------------------NpcID---RECT----------------------
+ApocalypseBossMob       = 99      79 76 136 107
+
+//------------------------RECT-----------------TargetMap---TargetCoord
+DynamicGateCoord		= 167 169 168 170        procella	   59 195
+DynamicGateType		= 3
+// Will spawn Abaddon and open Gate when all monsters dead
+
+
+//-No-Attack-Area----------Num-----RECT-------------
+no-attack-area           = 1       164 166 172 174
+
+//------------------------Num-Type-waypoints--------------Mob-MobNum
+spot-mob-generator	= 1   1    71 64 143 112          75  100 // Lizard
+spot-mob-generator	= 2   1    75 134 133 170         77  30 // Master-Mague-Orc
+spot-mob-generator	= 3   1    71 64 143 112          52  20 	// Gagoyle
+spot-mob-generator	= 4   1    71 64 143 112          71  20 //Centaurus
+spot-mob-generator	= 5   1    71 64 143 112          73  3 
+spot-mob-generator	= 6   1    71 64 143 112          50  4 
+spot-mob-generator	= 7   1    71 64 143 112          31  20 
+spot-mob-generator	= 8   1    71 64 143 112          77  20 
+spot-mob-generator	= 9   1    71 64 143 112          29  2
+
+maximum-object		= 150
+
+[END-MAP-INFO]

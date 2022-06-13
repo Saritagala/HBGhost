@@ -26,8 +26,8 @@ public:
 	bool   m_bIsShutDown;       // v2.17 셧다운 중인가 판별용
 	char   m_cName[11];			// 게임 서버의 이름. 
 	char   m_cAddress[16];		// 게임 서버의 주소 
-	UINT32  m_dwProcessHandle;	// 게임서버의 프로세스 핸들 
-	UINT32  m_dwAliveTime;		// 게임서버로부터의 살아있음을 알리는 메시지
+	DWORD  m_dwProcessHandle;	// 게임서버의 프로세스 핸들 
+	DWORD  m_dwAliveTime;		// 게임서버로부터의 살아있음을 알리는 메시지
 	int    m_iTotalClients;		// 게임서버의 총 사용자 수 
 	// v2.17 2002-6-3 고광현 수정
 	short   m_sIsActivated;

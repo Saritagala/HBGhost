@@ -155,6 +155,8 @@ class CGame
 {
 public:
 
+	int _iCalcSkillSSNpoint(int iLevel);
+
 	void ChangeBigItems();
 
 	int m_iAddAbsHoly = 0, m_iAddAbsUnholy = 0;
@@ -163,7 +165,7 @@ public:
 
 	int dice(int _throw, int range);
 
-	bool m_bNpcMap, m_bAutoSS;
+	bool m_bNpcMap;
 
 	void DrawDialogBox_SummonGuild(short msX, short msY);
 	void DlgBoxClick_SummonGuild(short msX, short msY);
@@ -207,8 +209,8 @@ public:
 	int m_iRango_REP = 0;
 	char m_cRango[10];
 
-	void DrawGM(short sX, short sY, UINT32 dwTime);
-	void DrawFlagHolder(short sX, short sY, UINT32 dwTime);
+	void DrawGM(short sX, short sY, DWORD dwTime);
+	void DrawFlagHolder(short sX, short sY, DWORD dwTime);
 
 	//MORLA2.2 - Deathmach Game
 	int iDGKill1 = 0, iDGKill2 = 0, iDGKill3 = 0, iDGKill4 = 0, iDGKill5 = 0, iDGKill6 = 0, iDGKill7 = 0, iDGKill8 = 0, iDGKill9 = 0,
@@ -217,7 +219,7 @@ public:
 		iDGDeath10 = 0;
 	char cDGName1[12], cDGName2[10], cDGName3[10], cDGName4[10], cDGName5[10], cDGName6[10], cDGName7[10], cDGName8[10],
 		cDGName9[10], cDGName10[10];
-	UINT32 dwTimeLastMsg;
+	DWORD dwTimeLastMsg;
 	int iKillAnnouncer;
 	int m_iPlayerDeaths = 0, m_iPlayerDGPoints = 0;
 
@@ -226,9 +228,9 @@ public:
 	int _tmp_iStatus;
 	char  _tmp_cAction, _tmp_cDir, _tmp_cFrame, _tmp_cName[12];
 	int   _tmp_iChatIndex, _tmp_dx, _tmp_dy, _tmp_iApprColor, _tmp_iEffectType, _tmp_iEffectFrame, _tmp_dX, _tmp_dY; // 21.171 2002-6-14
-	UINT16  _tmp_wObjectID;
+	WORD  _tmp_wObjectID;
 	char cDynamicObjectData1, cDynamicObjectData2, cDynamicObjectData3, cDynamicObjectData4;
-	UINT16  wFocusObjectID;
+	WORD  wFocusObjectID;
 	short sFocus_dX, sFocus_dY;
 	char  cFocusAction, cFocusFrame, cFocusDir, cFocusName[12];
 	short sFocusX, sFocusY, sFocusOwnerType, sFocusAppr1, sFocusAppr2, sFocusAppr3, sFocusAppr4;
@@ -271,8 +273,8 @@ public:
     void GetIPByDNS();
 
 	// CLEROTH - AURAS
-	void CheckActiveAura(short sX, short sY, UINT32 dwTime, short sOwnerType);
-	void CheckActiveAura2(short sX, short sY, UINT32 dwTime, short sOwnerType);
+	void CheckActiveAura(short sX, short sY, DWORD dwTime, short sOwnerType);
+	void CheckActiveAura2(short sX, short sY, DWORD dwTime, short sOwnerType);
 
 	// MJ Stats Change Related functions - Alastor
 	void DrawDialogBox_ChangeStatsMajestic(short msX, short msY);		// Change stats using majestic - Alastor
@@ -378,7 +380,7 @@ public:
 	void DrawDialogBox_WarningMsg(short msX, short msY);//6
 	void DrawDialogBox_15AgeMsg(short msX, short msY);//5
 	void DrawDialogBox_FeedBackCard(short msX, short msY);//40
-	void DisplayCommaNumber_G_cTxt(int iGold);// Name changed by Snoopy (easyer to understand...)
+	void DisplayCommaNumber_G_cTxt(DWORD iGold);// Name changed by Snoopy (easyer to understand...)
 
 	void DrawDialogBox_ConfirmExchange(short msX, short msY); //41
 
@@ -506,9 +508,9 @@ public:
 	void _SetIlusionEffect(int iOwnerH);
 	int _iGetFOE(int iStatus);
 	void NoticementHandler(char * pData);
-	//void GetItemName(char * cItemName, UINT32 dwAttribute, char *pStr1, char *pStr2, char *pStr3);
+	//void GetItemName(char * cItemName, DWORD dwAttribute, char *pStr1, char *pStr2, char *pStr3);
 	//Magn0S:: Changed
-	void GetItemName(char* cItemName, UINT32 dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1 = 0, short sEffect2 = 0, short sEffect3 = 0, short sEffect4 = 0);
+	void GetItemName(char* cItemName, DWORD dwAttribute, char* pStr1, char* pStr2, char* pStr3, short sEffect1 = 0, short sEffect2 = 0, short sEffect3 = 0, short sEffect4 = 0);
 	//void GetItemName(class CItem * pItem, char * pStr1, char * pStr2, char * pStr3);
 	void GetItemName(CItem* pItem, char* pStr1, char* pStr2, char* pStr3, char* pStr4, char* pStr5, char* pStr6);
 	void _InitOnCreateNewCharacter();
@@ -560,7 +562,7 @@ public:
 	bool bCheckExID(char * pName);
 	bool bCheckLocalChatCommand(char * pMsg);
 	char GetOfficialMapName(char * pMapName, char * pName);
-	UINT32 iGetLevelExp(int iLevel);
+	DWORD iGetLevelExp(int iLevel);
 	int _iCalcTotalWeight();
 	void DrawVersion(bool bAuthor = false);
 	bool _bIsItemOnHand();
@@ -574,7 +576,7 @@ public:
 	void _LoadTextDlgContents(int cType);
 	int  _iLoadTextDlgContents2(int iType);
 	void DrawChatMsgs(short sX, short sY, short dX, short dY);
-	void RequestFullObjectData(UINT16 wObjectID);
+	void RequestFullObjectData(WORD wObjectID);
 	bool bInitSkillCfgList();
 	bool bCheckImportantFile();
 	void DlbBoxDoubleClick_Inventory(short msX, short msY);
@@ -603,8 +605,8 @@ public:
 	void AddEventList(char * pTxt, char cColor = 0, bool bDupAllow = true);
 	void AddEnergyList(char * pTxt, char cColor);
 
-	void ShowEventList(UINT32 dwTime);
-	void SetItemCount(char * pItemName, UINT32 dwCount);
+	void ShowEventList(DWORD dwTime);
+	void SetItemCount(char * pItemName, DWORD dwCount);
 	void _ShiftGuildOperationList();
 	void _PutGuildOperationList(char * pName, char cOpMode);
 	void DisbandGuildResponseHandler(char * pData);
@@ -621,18 +623,18 @@ public:
 	void InitItemList(char * pData);
 	int _iCheckDlgBoxFocus(short msX, short msY, char cButtonSide);
 	void GetPlayerTurn();
-	bool __fastcall DrawObject_OnDead(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnDying(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
-	bool __fastcall DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, bool bTrans, UINT32 dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnDead(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnDying(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnMagic(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnAttack(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnAttackMove(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnStop(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnMove_ForMenu(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnMove(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnDamageMove(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnRun(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnDamage(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
+	bool __fastcall DrawObject_OnGetItem(int indexX, int indexY, int sX, int sY, bool bTrans, DWORD dwTime, int msX, int msY);
 	bool bEffectFrameCounter();
 	void ClearGuildNameList();
 	void DrawBackground(short sDivX, short sModX, short sDivY, short sModY);
@@ -664,9 +666,9 @@ public:
 	void InitPlayerResponseHandler(char * pData);
 	void ConnectionEstablishHandler(char cWhere);
 	void MotionResponseHandler(char * pData);
-	void GameRecvMsgHandler(UINT32 dwMsgSize, char * pData);
+	void GameRecvMsgHandler(DWORD dwMsgSize, char * pData);
 	void DrawObjects(short sPivotX, short sPivotY, short sDivX, short sDivY, short sModX, short sModY, short msX, short msY);
-	bool bSendCommand(UINT32 dwMsgID, UINT16 wCommand = 0, char cDir = 0, int iV1 = 0, int iV2 = 0, int iV3 = 0, char * pString = 0, int iV4 = 0); // v1.4
+	bool bSendCommand(DWORD dwMsgID, WORD wCommand = 0, char cDir = 0, int iV1 = 0, int iV2 = 0, int iV3 = 0, char * pString = 0, int iV4 = 0); // v1.4
 	char cGetNextMoveDir(short sX, short sY, short dstX, short dstY, bool bMoveCheck = false, bool bMIM = false);
 	void RestoreSprites();
 	void CommandProcessor(short msX, short msY, short indexX, short indexY, char cLB, char cRB);
@@ -701,7 +703,7 @@ public:
 
 	bool bSummonGuild = false;
 	short sSummonGuild = 0;
-	UINT32 m_dwSummonTime;
+	DWORD m_dwSummonTime;
 
 	class Minimap {
 	public:
@@ -712,7 +714,7 @@ public:
 			Unit() {}
 			short x, y;
 			int id;
-			UINT32 time;
+			DWORD time;
 		};
 
 		std::vector<Unit> list;
@@ -729,7 +731,7 @@ public:
 			Unit() {}
 			short x, y;
 			int id;
-			UINT32 time;
+			DWORD time;
 		};
 
 		std::vector<Unit> list;
@@ -746,7 +748,7 @@ public:
 			Unit() {}
 			short x, y;
 			int id;
-			UINT32 time;
+			DWORD time;
 		};
 
 		std::vector<Unit> list;
@@ -763,7 +765,7 @@ public:
 			Unit() {}
 			short x, y;
 			int id;
-			UINT32 time;
+			DWORD time;
 		};
 
 		std::vector<Unit> list;
@@ -780,7 +782,7 @@ public:
 			Unit() {}
 			short x, y;
 			int id;
-			UINT32 time;
+			DWORD time;
 		};
 
 		std::vector<Unit> list;
@@ -797,7 +799,7 @@ public:
 			Unit() {}
 			short x, y;
 			int id;
-			UINT32 time;
+			DWORD time;
 		};
 
 		std::vector<Unit> list;
@@ -844,9 +846,9 @@ public:
 	void DrawDruncncity();
 	void DlgBoxClick_ConfirmExchange(short msX, short msY);
 	void Abaddon_corpse(int sX, int sY);
-	void DrawAngel(int iSprite, short sX, short sY, char cFrame, UINT32 dwTime);
+	void DrawAngel(int iSprite, short sX, short sY, char cFrame, DWORD dwTime);
 
-	void DrawPartyStatus(UINT32 dwTime);
+	void DrawPartyStatus(DWORD dwTime);
 
 	LONG GetRegKey(HKEY key, LPCTSTR subkey, LPTSTR retdata);
 	void GoHomepage();
@@ -870,13 +872,13 @@ public:
 		char  cSelectedObjectType;
 		short sSelectedObjectID;
 		short sPrevX, sPrevY, sDistX, sDistY;
-		UINT32 dwSelectClickTime;
+		DWORD dwSelectClickTime;
 		short sClickX, sClickY;
 	} m_stMCursor;
 
 	struct {
 		int   sV1, sV2, sV3, sV4, sV5, sV6, sV7, sV8, sV9, sV10, sV11, sV12, sV13, sV14; // v1.4 short
-		UINT32 dwV1, dwV2, dwT1;
+		DWORD dwV1, dwV2, dwT1;
 		bool  bFlag;
 		short sX, sY;
 		short sSizeX, sSizeY;
@@ -890,9 +892,9 @@ public:
 //Snoopy=>>>>>>>>>>>>>>>>>>>>>
 	struct {
 		int   sV1, sV2, sV3, sV4, sV5, sV6, sV7, sItemID;
-		UINT32 dwV1;
+		DWORD dwV1;
 		char  cStr1[32], cStr2[32];
-	} m_stDialogBoxExchangeInfo[16];
+	} m_stDialogBoxExchangeInfo[8];
 //Snoopy end<<<<<<<<<<<<<<<<<<
 	struct {
 		int iIndex;
@@ -905,13 +907,13 @@ public:
 	} m_stGuildOpList[100];
 
 	struct {
-		UINT32 dwTime;
+		DWORD dwTime;
 		char  cColor;
 		char  cTxt[96];
 	} m_stEventHistory[6];
 
 	struct {
-		UINT32 dwTime;
+		DWORD dwTime;
 		char  cColor;
 		char  cTxt[96];
 	} m_stEventHistory2[6];
@@ -938,7 +940,7 @@ public:
 
 	// v2.171 2002-6-14
 	struct {
-		UINT32 dwRefTime;
+		DWORD dwRefTime;
 		int iGuildRank;
 		char cCharName[12];
 		char cGuildName[24];
@@ -991,25 +993,27 @@ public:
 
 	char * m_pInputBuffer;
 
-	UINT32 G_dwGlobalTime;
-	UINT32 m_dwCommandTime; //v2.15 SpeedHack
-	UINT32 m_dwConnectMode;
-	UINT32 m_dwTime;
-	UINT32 m_dwCurTime;
-	UINT32 m_dwCheckConnTime, m_dwCheckSprTime, m_dwCheckChatTime;
-	UINT32 m_dwDialogCloseTime;
-	UINT32  m_dwLogOutCountTime;//was UINT32
-	UINT32 m_dwRestartCountTime;
-	UINT32 m_dwWOFtime; //v1.4
-	UINT32 m_dwObserverCamTime;
-	UINT32 m_dwDamagedTime;
-	UINT32 m_dwSpecialAbilitySettingTime;
-	UINT32 m_dwCommanderCommandRequestedTime;
-	UINT32 m_dwTopMsgTime;
-	UINT32 m_dwEnvEffectTime;
+	DWORD G_dwGlobalTime;
+	DWORD m_dwCommandTime; //v2.15 SpeedHack
+	DWORD m_dwConnectMode;
+	DWORD m_dwTime;
+	DWORD m_dwCurTime;
+	DWORD m_dwCheckConnTime, m_dwCheckSprTime, m_dwCheckChatTime;
+	DWORD m_dwDialogCloseTime;
+	DWORD  m_dwLogOutCountTime;//was DWORD
+	DWORD m_dwRestartCountTime;
+	DWORD m_dwWOFtime; //v1.4
+	DWORD m_dwObserverCamTime;
+	DWORD m_dwDamagedTime;
+	DWORD m_dwSpecialAbilitySettingTime;
+	DWORD m_dwCommanderCommandRequestedTime;
+	DWORD m_dwTopMsgTime;
+	DWORD m_dwEnvEffectTime;
+
+	bool m_bAutoSS;
 
 	//v2.2
-	UINT32 m_dwMonsterEventTime;
+	DWORD m_dwMonsterEventTime;
 	short m_sMonsterID;
 	short m_sEventX, m_sEventY;
 
@@ -1022,7 +1026,7 @@ public:
 
 	bool m_bIsPolymorph, m_bShowEmblems;
 
-	UINT32 m_dwAuraTime; // morla venite
+	DWORD m_dwAuraTime; // morla venite
     short m_sZerk, m_sInv, m_sPfm, m_sPfa, m_sShield; 
 
 	//New Party Status - ZeroEoyPnk
@@ -1080,7 +1084,7 @@ public:
 
 	int m_sFrameCount;
 	int m_sFPS;
-	UINT32 m_dwFPStime;
+	DWORD m_dwFPStime;
 	bool  m_bShowFPS;
 
 	int m_iFightzoneNumber;
@@ -1095,7 +1099,7 @@ public:
 	int srvHour, srvMinute;
 
 	int m_iLevel, m_iStr, m_iInt, m_iVit, m_iDex, m_iMag, m_iCharisma, m_iContribution;
-	UINT32 m_iExp;
+	DWORD m_iExp;
 
 	//50Cent - HP Bar
 	bool Mandando;
@@ -1131,8 +1135,8 @@ public:
 	int m_iRating; //Rating
 
 	// VAMP - ek stuff
-	UINT32 dwEKNotifyTime;
-	char cEKNotifySubject[120];
+	/*DWORD dwEKNotifyTime;
+	char cEKNotifySubject[120];*/
 
 	int m_iPrevMoveX, m_iPrevMoveY;
 	int m_iBlockYear, m_iBlockMonth, m_iBlockDay;
@@ -1164,10 +1168,10 @@ public:
 	short m_sViewPointX, m_sViewPointY;
 	short m_sVDL_X, m_sVDL_Y;
 
-	UINT16 m_wCommObjectID;
-	UINT16 m_wEnterGameType;
-	UINT16 m_wR[16], m_wG[16], m_wB[16];
-	UINT16 m_wWR[16], m_wWG[16], m_wWB[16];
+	WORD m_wCommObjectID;
+	WORD m_wEnterGameType;
+	WORD m_wR[16], m_wG[16], m_wB[16];
+	WORD m_wWR[16], m_wWG[16], m_wWB[16];
 
 	unsigned char m_cInputMaxLen;
 	char m_cEdit[4];
@@ -1213,12 +1217,12 @@ public:
 	short m_cLU_Str, m_cLU_Vit, m_cLU_Dex, m_cLU_Int, m_cLU_Mag, m_cLU_Char; // sleeq - fix for negative level up points
 
 
-	UINT32 m_dwCheckWhoTime;
+	DWORD m_dwCheckWhoTime;
 	int m_iTotalUsers, m_iDeaths, m_iPing;
-	UINT32 m_dwCheckPingTime;
+	DWORD m_dwCheckPingTime;
 
 	//ShowTiming by ZeroEoyPnk
-    UINT32 m_dwTimingCountTime;
+    DWORD m_dwTimingCountTime;
     short m_sTiming;
 
 	int m_iSkillSSN[DEF_MAXSKILLTYPE]; // centu
@@ -1279,8 +1283,7 @@ public:
 
 		// VAMP - online users list
 	class OnlineUser * m_pOnlineUsersList[DEF_MAXCLIENTS];
-	//LifeX Fix User Refresh
-	void ResponseOnlines(char* pData);
+	void ResponseOnlines(char * pData);
 	char m_cTakeHeroItemName[100]; //Drajwer - hero item str
 
     //Aryes - DNS
@@ -1297,7 +1300,7 @@ public:
 	//Grid - by luqah
 	bool m_bGrid;
 
-	UINT32 m_dwReqUsersTime;
+	DWORD m_dwReqUsersTime;
 
 	//LifeX Fix Declaration Bugs 01/01
 	int DEF_STATS_LIMIT, DEF_LEVEL_LIMIT;
@@ -1406,8 +1409,6 @@ public:
 	short m_sEarthValue, m_sAirValue, m_sFireValue, m_sWaterValue, m_sHolyValue, m_sUnholyValue;
 	void NotifyMsg_ArmourValues(char* pData);
 	//Magn0S End ---------------------------------------------------------------------------------------------------------------
-
-	int _iCalcSkillSSNpoint(int iLevel);
 };
 
 #endif // !defined(AFX_GAME_H__0089D9E3_74E6_11D2_A8E6_00001C7030A6__INCLUDED_)

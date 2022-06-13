@@ -174,7 +174,7 @@ bool DXC_ddraw::bInit(HWND hWnd)
 #endif
 	ddsd.dwSize = sizeof(ddsd);
 	if (m_lpBackB4->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return false;
-	m_pBackB4Addr        = (UINT16 *)ddsd.lpSurface;
+	m_pBackB4Addr        = (WORD *)ddsd.lpSurface;
 	m_sBackB4Pitch       = (short)ddsd.lPitch >> 1;
 	m_lpBackB4->Unlock(0);
 
@@ -232,7 +232,7 @@ HRESULT DXC_ddraw::iFlip()
 		ddVal = m_lpBackB4flip->BltFast( 0, 0, m_lpBackB4, &m_rcFlipping, DDBLTFAST_NOCOLORKEY); 
 		
 		ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_NOVSYNC); // fps fix - farjat
-
+		//ddVal = m_lpFrontB4->Flip(m_lpBackB4flip, DDFLIP_WAIT);
 	}
 	else
 	{
@@ -247,7 +247,7 @@ HRESULT DXC_ddraw::iFlip()
 		
 		ddsd2.dwSize = sizeof(ddsd2);
 		if (m_lpBackB4->Lock(0, &ddsd2, DDLOCK_WAIT, 0) != DD_OK) return false;
-		m_pBackB4Addr  = (UINT16 *)ddsd2.lpSurface;
+		m_pBackB4Addr  = (WORD *)ddsd2.lpSurface;
 		m_lpBackB4->Unlock(0);
 
 		return DDERR_SURFACELOST;
@@ -360,12 +360,12 @@ void DXC_ddraw::ChangeDisplayMode(HWND hWnd)
 #endif
 	ddsd.dwSize = sizeof(ddsd);
 	if (m_lpBackB4->Lock(0, &ddsd, DDLOCK_WAIT, 0) != DD_OK) return;
-	m_pBackB4Addr        = (UINT16 *)ddsd.lpSurface;
+	m_pBackB4Addr        = (WORD *)ddsd.lpSurface;
 	m_sBackB4Pitch       = (short)ddsd.lPitch >> 1;
 	m_lpBackB4->Unlock(0);
 }
 
-IDirectDrawSurface7 * DXC_ddraw::pCreateOffScreenSurface(UINT16 wSzX, UINT16 wSzY)
+IDirectDrawSurface7 * DXC_ddraw::pCreateOffScreenSurface(WORD wSzX, WORD wSzY)
 {
 	DDSURFACEDESC2 ddsd;
 	IDirectDrawSurface7 * pdds4;
@@ -375,8 +375,8 @@ IDirectDrawSurface7 * DXC_ddraw::pCreateOffScreenSurface(UINT16 wSzX, UINT16 wSz
     ddsd.dwSize  = sizeof(ddsd);
     ddsd.dwFlags = DDSD_CAPS | DDSD_HEIGHT |DDSD_WIDTH;
 	ddsd.ddsCaps.dwCaps = DDSCAPS_OFFSCREENPLAIN | DDSCAPS_SYSTEMMEMORY;
-	ddsd.dwWidth  = (UINT32)wSzX;
-    ddsd.dwHeight = (UINT32)wSzY;
+	ddsd.dwWidth  = (DWORD)wSzX;
+    ddsd.dwHeight = (DWORD)wSzY;
     if (m_lpDD4->CreateSurface(&ddsd, &pdds4, 0) != DD_OK) return 0;
 	return pdds4;
 }
@@ -390,7 +390,7 @@ HRESULT DXC_ddraw::iSetColorKey(IDirectDrawSurface7 * pdds4, COLORREF rgb)
     return pdds4->SetColorKey(DDCKEY_SRCBLT, &ddck);
 }
 
-HRESULT DXC_ddraw::iSetColorKey(IDirectDrawSurface7 * pdds4, UINT16 wColorKey)
+HRESULT DXC_ddraw::iSetColorKey(IDirectDrawSurface7 * pdds4, WORD wColorKey)
 {
  DDCOLORKEY ddck;
 
@@ -399,11 +399,11 @@ HRESULT DXC_ddraw::iSetColorKey(IDirectDrawSurface7 * pdds4, UINT16 wColorKey)
     return pdds4->SetColorKey(DDCKEY_SRCBLT, &ddck);
 }
 
-UINT32 DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, COLORREF rgb)
+DWORD DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, COLORREF rgb)
 {
  COLORREF rgbT;
  HDC hdc;
- UINT32 dw = CLR_INVALID;
+ DWORD dw = CLR_INVALID;
  DDSURFACEDESC2 ddsd2;
  HRESULT hres;
 
@@ -419,7 +419,7 @@ UINT32 DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, COLORREF rgb)
 
     if (hres == DD_OK)
     {
-        dw  = *(UINT32 *)ddsd2.lpSurface;                     
+        dw  = *(DWORD *)ddsd2.lpSurface;                     
         dw &= (1 << ddsd2.ddpfPixelFormat.dwRGBBitCount)-1;  
         pdds4->Unlock(0);
     }
@@ -433,9 +433,9 @@ UINT32 DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, COLORREF rgb)
     return dw;
 }
 
-UINT32 DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, UINT16 wColorKey)
+DWORD DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, WORD wColorKey)
 {
- UINT32 dw = CLR_INVALID, * dwp;
+ DWORD dw = CLR_INVALID, * dwp;
  DDSURFACEDESC2 ddsd2;
  HRESULT hres;
    
@@ -444,9 +444,9 @@ UINT32 DXC_ddraw::_dwColorMatch(IDirectDrawSurface7 * pdds4, UINT16 wColorKey)
 
     if (hres == DD_OK)
     {
-        dwp = (UINT32 *)ddsd2.lpSurface;
-		*dwp = (UINT32)wColorKey;
-		dw  = *(UINT32 *)ddsd2.lpSurface;                     
+        dwp = (DWORD *)ddsd2.lpSurface;
+		*dwp = (DWORD)wColorKey;
+		dw  = *(DWORD *)ddsd2.lpSurface;                     
         dw &= (1 << ddsd2.ddpfPixelFormat.dwRGBBitCount)-1;  
         pdds4->Unlock(0);
     }
@@ -487,14 +487,14 @@ void DXC_ddraw::_TestPixelFormat()
 	}
 }
 
-long DXC_ddraw::_CalcMaxValue(int iS, int iD, char cMode, char cMethod, float dAlpha)
+long DXC_ddraw::_CalcMaxValue(int iS, int iD, char cMode, char cMethod, double dAlpha)
 {
  long Sum;
- float dTmp;
+ double dTmp;
  
 	switch (cMethod) {
 	case 1:
-		dTmp = (float)iS;
+		dTmp = (double)iS;
 		dTmp = dTmp * dAlpha;
 		iS = (int)dTmp;
 		Sum = (iS) + (iD);
@@ -571,9 +571,10 @@ void DXC_ddraw::ClearBackB4()
 //Magn0S:: Updated.
 void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType, bool border)
 {
-	UINT16 * pDst, wValue;
+	WORD * pDst, wValue;
 	int ix, iy;
 
+	//pDst = (WORD *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 
 	if (sX < 0)
 		sX = 0;
@@ -581,16 +582,16 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 	if (sY <= 0) 
 		sY = 0;
 
-	if (dX >= 800)
-		dX = dX - (dX - 800);
+	if (dX >= 799)
+		dX = dX - (dX - 799);
 
-	if (dY >= 600)
-		dY = dY - (dY - 600);
+	if (dY >= 599)
+		dY = dY - (dY - 599);
 
 	if (iType == 0) {
 		switch (m_cPixelFormat) {
 		case 1:
-			pDst = (UINT16*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
+			pDst = (WORD*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 			for (iy = 0; iy <= (dY - sY); iy++) {
 				for (ix = 0; ix <= (dX - sX); ix++) 
 					pDst[ix] = (pDst[ix] & 0xf7de) >> 1; 	
@@ -600,7 +601,7 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 			break;
 
 		case 2:
-			pDst = (UINT16*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
+			pDst = (WORD*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 			for (iy = 0; iy <= (dY - sY); iy++) {
 				for (ix = 0; ix <= (dX - sX); ix++) 
 					pDst[ix] = (pDst[ix] & 0x7bde) >> 1;
@@ -627,7 +628,7 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 			break;
 		}
 		
-		pDst = (UINT16*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
+		pDst = (WORD*)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 		for (iy = 0; iy <= (dY - sY); iy++) {
 			for (ix = 0; ix <= (dX - sX); ix++)
 				pDst[ix] = wValue;
@@ -649,26 +650,27 @@ void DXC_ddraw::DrawShadowBox(short sX, short sY, short dX, short dY, int iType,
 		G_pGame->DrawBorder(sX, dY, dX - 1, dY, R, G, B);  // 2ª Reta
 		G_pGame->DrawBorder(sX, sY, sX, dY - 1, R, G, B);  //Linha Esquerda
 
+	//	DrawLine2(toX, toY, toX - 1, limitY, R, G, B);  //Linha Esquerda
 		//m_lTransRB2
 	}
 }
 
-void DXC_ddraw::PutPixel(short sX, short sY, UINT16 wR, UINT16 wG, UINT16 wB)
+void DXC_ddraw::PutPixel(short sX, short sY, WORD wR, WORD wG, WORD wB)
 {
- UINT16 * pDst;
+ WORD * pDst;
 #ifdef RES_HIGH
 	if ((sX < 0) || (sY < 0) || (sX > 799) || (sY > 599)) return;
 #else
 	if ((sX < 0) || (sY < 0) || (sX > 639) || (sY > 479)) return;
 #endif
-	pDst = (UINT16 *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
+	pDst = (WORD *)m_pBackB4Addr + sX + ((sY)*m_sBackB4Pitch);
 	
 	switch (m_cPixelFormat) {
 	case 1:
-		*pDst = (UINT16)( ((wR>>3)<<11) | ((wG>>2)<<5) | (wB>>3) );
+		*pDst = (WORD)( ((wR>>3)<<11) | ((wG>>2)<<5) | (wB>>3) );
 		break;
 	case 2:
-		*pDst = (UINT16)( ((wR>>3)<<10) | ((wG>>3)<<5) | (wB>>3) );
+		*pDst = (WORD)( ((wR>>3)<<10) | ((wG>>3)<<5) | (wB>>3) );
 		break;
 	}
 }
@@ -731,28 +733,28 @@ HRESULT DXC_ddraw::InitFlipToGDI(HWND hWnd)
 
 void DXC_ddraw::ColorTransferRGB(COLORREF fcolor, int * iR, int * iG, int * iB)
 {
- UINT16 wR, wG, wB;
+ WORD wR, wG, wB;
 
 	switch(m_cPixelFormat)
 	{
 	case 1:
 		// R
-		wR = (UINT16)((fcolor&0x000000f8)>>3);
+		wR = (WORD)((fcolor&0x000000f8)>>3);
 		// G
-		wG = (UINT16)((fcolor&0x0000fc00)>>10);
+		wG = (WORD)((fcolor&0x0000fc00)>>10);
 		// B
-		wB = (UINT16)((fcolor&0x00f80000)>>19);
+		wB = (WORD)((fcolor&0x00f80000)>>19);
 		*iR = (int)wR;
 		*iG = (int)wG;
 		*iB = (int)wB;
 		break;
 	case 2:
 		// R
-		wR = (UINT16)((fcolor&0x000000f8)>>3);
+		wR = (WORD)((fcolor&0x000000f8)>>3);
 		// G
-		wG = (UINT16)((fcolor&0x0000f800)>>11);
+		wG = (WORD)((fcolor&0x0000f800)>>11);
 		// B
-		wB = (UINT16)((fcolor&0x00f80000)>>19);
+		wB = (WORD)((fcolor&0x00f80000)>>19);
 		*iR = (int)wR;
 		*iG = (int)wG;
 		*iB = (int)wB;

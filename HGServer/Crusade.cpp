@@ -93,7 +93,7 @@ void CGame::NpcBehavior_Stop(int iNpcH)
 	}
 }
 
-void CGame::LocalStartCrusadeMode(UINT32 dwCrusadeGUID)
+void CGame::LocalStartCrusadeMode(DWORD dwCrusadeGUID)
 {
 	int i, z, tX, tY, iNamingValue, c, m;
 	char cName[6], cNpcName[21], cNpcWayPoint[11];
@@ -108,12 +108,12 @@ void CGame::LocalStartCrusadeMode(UINT32 dwCrusadeGUID)
 		m_dwCrusadeGUID = dwCrusadeGUID;
 	}
 
-	for (c = 1; c < DEF_MAXCLIENTS; c++)
+	for (c = 0; c < DEF_MAXCLIENTS; c++)
 		if ((m_pClientList[c] != 0) && (m_pClientList[c]->m_bIsInitComplete == true)) {
 			m_pClientList[c]->m_iCrusadeDuty = 0;
 			m_pClientList[c]->m_iConstructionPoint = 0;
 			m_pClientList[c]->m_dwCrusadeGUID = m_dwCrusadeGUID;
-			SendNotifyMsg(0, c, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, m_pClientList[c]->m_iCrusadeDuty, 0, 0);
+			SendNotifyMsg(0, c, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, m_pClientList[c]->m_iCrusadeDuty, 0, 0);
 		}
 
 	for (m = 0; m < DEF_MAXMAPS; m++)
@@ -176,14 +176,12 @@ void CGame::LocalStartCrusadeMode(UINT32 dwCrusadeGUID)
 							break;
 						}
 
-						tX = m_stCrusadeStructures[i].dX;
-						tY = m_stCrusadeStructures[i].dY;
+						tX = (int)m_stCrusadeStructures[i].dX;
+						tY = (int)m_stCrusadeStructures[i].dY;
 						if (bCreateNewNpc(cNpcName, cName, m_pMapList[z]->m_cName, 0, 0, DEF_MOVETYPE_RANDOM,
 							&tX, &tY, cNpcWayPoint, 0, 0, -1, false) == false) {
 							// ½ÇÆÐÇßÀ¸¹Ç·Î ¿¹¾àµÈ NameValue¸¦ ÇØÁ¦½ÃÅ²´Ù.
 							m_pMapList[z]->SetNamingValueEmpty(iNamingValue);
-
-							
 						}
 						else {
 							// Centu - can't stay behind crusade shields and manastone
@@ -223,7 +221,7 @@ void CGame::LocalStartCrusadeMode(UINT32 dwCrusadeGUID)
 	}
 }
 
-void CGame::_CreateCrusadeGUID(UINT32 dwCrusadeGUID, int iWinnerSide)
+void CGame::_CreateCrusadeGUID(DWORD dwCrusadeGUID, int iWinnerSide)
 {
 	char* cp, cTxt[256], cTemp[1024];
 	FILE* pFile;	
@@ -259,7 +257,7 @@ void CGame::bReadCrusadeGUIDFile(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
-	UINT32  dwFileSize;
+	DWORD  dwFileSize;
 	char* cp, * token, cReadMode;
 	char seps[] = "= \t\n";
 	class CStrTok* pStrTok;
@@ -332,7 +330,7 @@ void CGame::bReadCrusadeStructureConfigFile(char* cFn)
 {
 	FILE* pFile;
 	HANDLE hFile;
-	UINT32  dwFileSize;
+	DWORD  dwFileSize;
 	char* cp, * token, cReadModeA, cReadModeB;
 	char seps[] = "= \t\n";
 	int   iIndex;
@@ -452,7 +450,7 @@ void CGame::CheckCrusadeResultCalculation(int iClientH)
 		if (m_pClientList[iClientH]->m_dwCrusadeGUID == m_dwCrusadeGUID) {
 			if (m_iCrusadeWinnerSide == 0) {
 				GetExp(iClientH, (m_pClientList[iClientH]->m_iWarContribution / 6));
-				SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, 0, m_pClientList[iClientH]->m_iWarContribution, 0);
+				SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, 0, m_pClientList[iClientH]->m_iWarContribution, 0);
 				_bCrusadeLog(DEF_CRUSADELOG_GETEXP, iClientH, (m_pClientList[iClientH]->m_iWarContribution / 6), 0);
 			}
 			else {
@@ -468,19 +466,19 @@ void CGame::CheckCrusadeResultCalculation(int iClientH)
 						m_pClientList[iClientH]->m_iWarContribution += m_pClientList[iClientH]->m_iLevel;
 					}
 					GetExp(iClientH, m_pClientList[iClientH]->m_iWarContribution);
-					SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, 0, m_pClientList[iClientH]->m_iWarContribution, 0);
+					SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, 0, m_pClientList[iClientH]->m_iWarContribution, 0);
 					_bCrusadeLog(DEF_CRUSADELOG_GETEXP, iClientH, m_pClientList[iClientH]->m_iWarContribution, 0);
 				}
 				else if (m_iCrusadeWinnerSide != m_pClientList[iClientH]->m_cSide) {
 					m_pClientList[iClientH]->m_iWarContribution += m_pClientList[iClientH]->m_iLevel;
 					GetExp(iClientH, (m_pClientList[iClientH]->m_iWarContribution / 10));
-					SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, 0, -1 * m_pClientList[iClientH]->m_iWarContribution, 0);
+					SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, 0, -1 * m_pClientList[iClientH]->m_iWarContribution, 0);
 					_bCrusadeLog(DEF_CRUSADELOG_GETEXP, iClientH, (m_pClientList[iClientH]->m_iWarContribution / 10), 0);
 				}
 			}
 		}
 		else {
-			SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, 0, 0, 0, -1);
+			SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, 0, 0, 0, -1);
 		}
 		m_pClientList[iClientH]->m_iCrusadeDuty = 0;
 		m_pClientList[iClientH]->m_iWarContribution = 0;
@@ -496,7 +494,7 @@ void CGame::DoMeteorStrikeDamageHandler(int iMapIndex)
 	int i, iDamage;
 
 	// ÇØ´ç ¸ÊÀÇ ÇÃ·¹ÀÌ¾îµéÀÇ HP¸¦ ÀÏ°ý »è°¨
-	for (i = 1; i < DEF_MAXCLIENTS; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_cSide != 0) && (m_pClientList[i]->m_cMapIndex == iMapIndex)) {
 
 			if (m_pClientList[i]->m_iLevel < 80)
@@ -593,7 +591,7 @@ void CGame::SyncMiddlelandMapInfo()
 void CGame::GSM_SetGuildConstructLoc(int iGuildGUID, int dX, int dY, char* pMapName)
 {
 	int i, iIndex;
-	UINT32 dwTemp, dwTime;
+	DWORD dwTemp, dwTime;
 
 	// Å¬¶óÀÌ¾ðÆ®·ÎºÎÅÍÀÇ ¿äÃ»ÀÌ ¾Æ´Ï¶ó ´Ù¸¥ ¼­¹ö·ÎºÎÅÍÀÇ ÅÚ·¹Æ÷Æ® ÁÂÇ¥ ¼³Á¤ ¿äÃ»ÀÓ. ÀÀ´äÇÒ ÇÊ¿ä ¾øÀ½.
 
@@ -702,7 +700,7 @@ void CGame::GSM_ConstructionPoint(int iGuildGUID, int iPoint)
 {
 	int i;
 
-	for (i = 1; i < DEF_MAXCLIENTS; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_iCrusadeDuty == 3) &&
 			(m_pClientList[i]->m_iGuildGUID == iGuildGUID)) {
 			// ÇØ´ç ±æµå¸¶½ºÅÍ ÁöÈÖ°üÀ» Ã£¾Ò´Ù.
@@ -718,7 +716,7 @@ void CGame::GSM_ConstructionPoint(int iGuildGUID, int iPoint)
 void CGame::ManualEndCrusadeMode(int iWinnerSide)
 {
 	char* cp, cData[256];
-	UINT16* wp;
+	WORD* wp;
 
 	// ¸Å´º¾ó·Î Å©·ç¼¼ÀÌµå ¸ðµå¸¦ Á¾·á½ÃÅ²´Ù. ºñ±ä »óÅÂ·Î Á¾·á½ÃÅ²´Ù.
 	if (m_bIsCrusadeMode == false) return;
@@ -734,15 +732,15 @@ void CGame::ManualEndCrusadeMode(int iWinnerSide)
 	*cp = (char)iWinnerSide;
 	cp++;
 
-	wp = (UINT16*)cp;
+	wp = (WORD*)cp;
 	*wp = 0;
 	cp += 2;
 
-	wp = (UINT16*)cp;
+	wp = (WORD*)cp;
 	*wp = 0;
 	cp += 2;
 
-	wp = (UINT16*)cp;
+	wp = (WORD*)cp;
 	*wp = 0;
 	cp += 2;
 
@@ -816,7 +814,7 @@ void CGame::CrusadeWarStarter()
 void CGame::GlobalStartCrusadeMode()
 {
 	char* cp, cData[120];
-	UINT32* dwp, dwCrusadeGUID;
+	DWORD* dwp, dwCrusadeGUID;
 	SYSTEMTIME SysTime;
 
 	// ������ ���� �Ϸ翡 �ι� �������� �߻��ϴ� ���� ���� �ڵ� 
@@ -832,7 +830,7 @@ void CGame::GlobalStartCrusadeMode()
 	cp = (char*)cData;
 	*cp = GSM_BEGINCRUSADE;
 	cp++;
-	dwp = (UINT32*)cp;
+	dwp = (DWORD*)cp;
 	*dwp = dwCrusadeGUID;
 	cp += 4;
 
@@ -857,7 +855,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 		wsprintf(G_cTxt, "Accessing crusade teleport: (%s) Player: (%s) - setting teleport location when crusade is disabled.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-
+		//DeleteClient(iClientH, true, true);
 		return;
 	}
 
@@ -866,7 +864,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 		wsprintf(G_cTxt, "Accessing crusade teleport: (%s) Player: (%s) - teleporting when not in a guild",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-
+		//DeleteClient(iClientH, true, true);
 		return;
 	}
 
@@ -893,7 +891,7 @@ void CGame::RequestGuildTeleportHandler(int iClientH)
 void CGame::GSM_SetGuildTeleportLoc(int iGuildGUID, int dX, int dY, char* pMapName)
 {
 	int i, iIndex;
-	UINT32 dwTemp, dwTime;
+	DWORD dwTemp, dwTime;
 
 	// Ŭ���̾�Ʈ�κ����� ��û�� �ƴ϶� �ٸ� �����κ����� �ڷ���Ʈ ��ǥ ���� ��û��. ������ �ʿ� ����.
 
@@ -956,7 +954,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 	char* cp, cData[120];
 	int i;
 	int* ip, iIndex;
-	UINT32 dwTemp, dwTime;
+	DWORD dwTemp, dwTime;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == true) return;
@@ -966,7 +964,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 		wsprintf(G_cTxt, "Accessing Crusade Set Teleport:(%s) Player: (%s) - setting point when not a crusade.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-
+		//DeleteClient(iClientH, true, true);
 		return;
 	}
 
@@ -975,7 +973,7 @@ void CGame::RequestSetGuildTeleportLocHandler(int iClientH, int dX, int dY, int 
 		wsprintf(G_cTxt, "Accessing Crusade Set Teleport: (%s) Player: (%s) - setting point when not a guildmaster.",
 			m_pClientList[iClientH]->m_cIPaddress, m_pClientList[iClientH]->m_cCharName);
 		PutHackLogFileList(G_cTxt);
-
+		//DeleteClient(iClientH, true, true);
 		return;
 	}
 
@@ -1074,7 +1072,7 @@ void CGame::MeteorStrikeHandler(int iMapIndex)
 	int iTargetArray[DEF_MAXSTRIKEPOINTS];
 	short sOwnerH;
 	char  cOwnerType;
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 
 	PutLogList("(!) Beginning Meteor Strike Procedure...");
 
@@ -1120,7 +1118,7 @@ void CGame::MeteorStrikeHandler(int iMapIndex)
 	else {
 
 		// ÇØ´ç ¸ÊÀÇ Å¬¶óÀÌ¾ðÆ®µé¿¡°Ô ¸ÞÅ×¿À °ø°Ý È¿°ú¸¦ º¸¿©ÁÖ¶ó´Â ¸Þ½ÃÁö Àü¼Û
-		for (i = 1; i < DEF_MAXCLIENTS; i++)
+		for (i = 0; i < DEF_MAXCLIENTS; i++)
 			if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true) && (m_pClientList[i]->m_cMapIndex == iMapIndex)) {
 				SendNotifyMsg(0, i, DEF_NOTIFY_METEORSTRIKEHIT, 0, 0, 0, 0);
 			}
@@ -1176,7 +1174,7 @@ void CGame::MeteorStrikeHandler(int iMapIndex)
 		}
 
 		// 1ÃÊ ÈÄ ¸ÞÅ×¿À ½ºÆ®¶óÀÌÅ© °ø°Ý ´ë¹ÌÁö È¿°ú
-
+		//bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, 0, dwTime + 1000, 0, 0, iMapIndex, 0, 0, 0, 0, 0);
 		// 4ÃÊ ÈÄ ¸ÞÅ×¿À ½ºÆ®¶óÀÌÅ© °ø°Ý ´ë¹ÌÁö È¿°ú
 		bRegisterDelayEvent(DEF_DELAYEVENTTYPE_DOMETEORSTRIKEDAMAGE, 0, dwTime + 5000, 0, 0, iMapIndex, 0, 0, 0, 0, 0);
 		// 6ÃÊ ÈÄ °ø°Ý °á°ú ÆÇ´Ü.
@@ -1188,7 +1186,7 @@ void CGame::CalcMeteorStrikeEffectHandler(int iMapIndex)
 {
 	int i, iActiveStructure, iStructureHP[DEF_MAXSTRIKEPOINTS];
 	char* cp, * cp2, cData[120], cWinnerSide, cTempData[120];
-	UINT16* wp;
+	WORD* wp;
 
 	if (m_bIsCrusadeMode == false) return;
 	for (i = 0; i < DEF_MAXSTRIKEPOINTS; i++) iStructureHP[i] = 0;
@@ -1254,15 +1252,15 @@ void CGame::CalcMeteorStrikeEffectHandler(int iMapIndex)
 		*cp = cWinnerSide;
 		cp++;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = m_stMeteorStrikeResult.iCrashedStructureNum;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = m_stMeteorStrikeResult.iStructureDamageAmount;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = m_stMeteorStrikeResult.iCasualties;
 		cp += 2;
 
@@ -1280,32 +1278,32 @@ void CGame::CalcMeteorStrikeEffectHandler(int iMapIndex)
 		memcpy(cp, m_pMapList[iMapIndex]->m_cName, 10);
 		cp += 10;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = m_stMeteorStrikeResult.iCrashedStructureNum;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = m_stMeteorStrikeResult.iStructureDamageAmount;
 		cp += 2;
 
-		wp = (UINT16*)cp;
+		wp = (WORD*)cp;
 		*wp = m_stMeteorStrikeResult.iCasualties;
 		cp += 2;
 
-		wp = (UINT16*)cp;
-		*wp = (UINT16)iActiveStructure;
+		wp = (WORD*)cp;
+		*wp = (WORD)iActiveStructure;
 		cp += 2;
 
 		ZeroMemory(cTempData, sizeof(cTempData));
 		cp2 = (char*)(cTempData);
 
-		wp = (UINT16*)cp2;
-		*wp = (UINT16)m_pMapList[iMapIndex]->m_iTotalStrikePoints;
+		wp = (WORD*)cp2;
+		*wp = (WORD)m_pMapList[iMapIndex]->m_iTotalStrikePoints;
 		cp2 += 2;
 
 		for (i = 1; i <= m_pMapList[iMapIndex]->m_iTotalStrikePoints;i++) {
-			wp = (UINT16*)cp2;
-			*wp = (UINT16)iStructureHP[i];
+			wp = (WORD*)cp2;
+			*wp = (WORD)iStructureHP[i];
 			cp2 += 2;
 		}
 		memcpy(cp, cTempData, (m_pMapList[iMapIndex]->m_iTotalStrikePoints * 2) + 2);
@@ -1343,7 +1341,7 @@ void CGame::LocalEndCrusadeMode(int iWinnerSide)
 			case 46:
 			case 47:
 			case 51:
-				NpcKilledHandler(0, 0, n, 0);
+				NpcKilledHandler(0, 0, n, 0);//RemoveEventNpc(n);
 				break;
 			}
 		}
@@ -1353,12 +1351,12 @@ void CGame::LocalEndCrusadeMode(int iWinnerSide)
 	m_iCrusadeWinnerSide = iWinnerSide;
 	m_iLastCrusadeWinner = iWinnerSide;
 
-	for (i = 1; i < DEF_MAXCLIENTS; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true)) {
 			m_pClientList[i]->m_iCrusadeDuty = 0;
 			m_pClientList[i]->m_iConstructionPoint = 0;
 			m_pClientList[i]->m_iTimeLeft_ForceRecall = 0;
-			SendNotifyMsg(0, i, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, 0, 0, 0, m_iCrusadeWinnerSide);
+			SendNotifyMsg(0, i, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, 0, 0, 0, m_iCrusadeWinnerSide);
 		}
 
 	if (iWinnerSide == 2) {
@@ -1375,7 +1373,7 @@ void CGame::LocalEndCrusadeMode(int iWinnerSide)
 void CGame::SendCollectedMana()
 {
 	char* cp, cData[120];
-	UINT16* wp;
+	WORD* wp;
 
 	// ���� ������ ���ٸ� �޽��� �������� �ʴ´�. ���� ������ ���� �ʿ��� �޽����� �����ϸ� �ȵȴ�.
 	if ((m_iCollectedMana[1] == 0) && (m_iCollectedMana[2] == 0)) return;
@@ -1385,12 +1383,12 @@ void CGame::SendCollectedMana()
 	*cp = GSM_COLLECTEDMANA;
 	cp++;
 
-	wp = (UINT16*)cp;
-	*wp = (UINT16)m_iCollectedMana[1];
+	wp = (WORD*)cp;
+	*wp = (WORD)m_iCollectedMana[1];
 	cp += 2;
 
-	wp = (UINT16*)cp;
-	*wp = (UINT16)m_iCollectedMana[2];
+	wp = (WORD*)cp;
+	*wp = (WORD)m_iCollectedMana[2];
 	cp += 2;
 
 	CollectedManaHandler(m_iCollectedMana[1], m_iCollectedMana[2]);
@@ -1403,7 +1401,7 @@ void CGame::SendCollectedMana()
 	m_iCollectedMana[2] = 0;
 }
 
-void CGame::CollectedManaHandler(UINT16 wAresdenMana, UINT16 wElvineMana)
+void CGame::CollectedManaHandler(WORD wAresdenMana, WORD wElvineMana)
 {
 	if (m_iAresdenMapIndex != -1) {
 		m_iAresdenMana += wAresdenMana;
@@ -1445,7 +1443,7 @@ void CGame::GrandMagicResultHandler(char* cMapName, int iCrashedStructureNum, in
 {
 	int i;
 
-	for (i = 1; i < DEF_MAXCLIENTS; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++)
 		if (m_pClientList[i] != 0) {
 			SendNotifyMsg(0, i, DEF_NOTIFY_GRANDMAGICRESULT, iCrashedStructureNum, iStructureDamageAmount, iCasualities, cMapName, iActiveStructure, 0, 0, 0, 0, iTotalStrikePoints, cData);
 		}
@@ -1455,19 +1453,19 @@ void CGame::GrandMagicResultHandler(char* cMapName, int iCrashedStructureNum, in
 void CGame::_GrandMagicLaunchMsgSend(int iType, char cAttackerSide)
 {
 	char* cp, cBuff[120];
-	UINT16* wp;
+	WORD* wp;
 
 	ZeroMemory(cBuff, sizeof(cBuff));
 	cp = (char*)cBuff;
 	*cp = GSM_GRANDMAGICLAUNCH;
 	cp++;
 
-	wp = (UINT16*)cp;
-	*wp = (UINT16)iType;
+	wp = (WORD*)cp;
+	*wp = (WORD)iType;
 	cp += 2;
 
-	wp = (UINT16*)cp;
-	*wp = (UINT16)cAttackerSide;
+	wp = (WORD*)cp;
+	*wp = (WORD)cAttackerSide;
 	cp += 2;
 
 	bStockMsgToGateServer(cBuff, 5);
@@ -1479,7 +1477,7 @@ bool CGame::_bNpcBehavior_ManaCollector(int iNpcH)
 	int dX, dY, iMaxMP, iTotal;
 	short sOwnerH;
 	char  cOwnerType;
-	float dV1, dV2, dV3;
+	double dV1, dV2, dV3;
 	bool bRet;
 
 	if (m_pNpcList[iNpcH] == 0) return false;
@@ -1497,8 +1495,8 @@ bool CGame::_bNpcBehavior_ManaCollector(int iNpcH)
 						if (m_pClientList[sOwnerH]->m_iMP < iMaxMP) {
 							iTotal = iDice(1, (m_pClientList[sOwnerH]->m_iMag));
 							if (m_pClientList[sOwnerH]->m_iAddMP != 0) {
-								dV2 = (float)iTotal;
-								dV3 = (float)m_pClientList[sOwnerH]->m_iAddMP;
+								dV2 = (double)iTotal;
+								dV3 = (double)m_pClientList[sOwnerH]->m_iAddMP;
 								dV1 = (dV3 / 100.0f) * dV2;
 								iTotal += (int)dV1;
 							}
@@ -1537,12 +1535,12 @@ bool CGame::_bNpcBehavior_ManaCollector(int iNpcH)
 void CGame::MeteorStrikeMsgHandler(char cAttackerSide)
 {
 	int i;
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 
 	switch (cAttackerSide) {
 	case 1:
 		if (m_iElvineMapIndex != -1) {
-			for (i = 1; i < DEF_MAXCLIENTS; i++)
+			for (i = 0; i < DEF_MAXCLIENTS; i++)
 				if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true)) {
 					if (strcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cLocationName, "elvine") == 0) {
 						SendNotifyMsg(0, i, DEF_NOTIFY_METEORSTRIKECOMING, 1, 0, 0, 0);
@@ -1554,7 +1552,7 @@ void CGame::MeteorStrikeMsgHandler(char cAttackerSide)
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_METEORSTRIKE, 0, dwTime + 5000, 0, 0, m_iElvineMapIndex, 0, 0, 0, 0, 0);
 		}
 		else {
-			for (i = 1; i < DEF_MAXCLIENTS; i++)
+			for (i = 0; i < DEF_MAXCLIENTS; i++)
 				if (m_pClientList[i] != 0) {
 					SendNotifyMsg(0, i, DEF_NOTIFY_METEORSTRIKECOMING, 2, 0, 0, 0);
 				}
@@ -1563,7 +1561,7 @@ void CGame::MeteorStrikeMsgHandler(char cAttackerSide)
 
 	case 2:
 		if (m_iAresdenMapIndex != -1) {
-			for (i = 1; i < DEF_MAXCLIENTS; i++)
+			for (i = 0; i < DEF_MAXCLIENTS; i++)
 				if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_bIsInitComplete == true)) {
 					if (strcmp(m_pMapList[m_pClientList[i]->m_cMapIndex]->m_cLocationName, "aresden") == 0) {
 						SendNotifyMsg(0, i, DEF_NOTIFY_METEORSTRIKECOMING, 3, 0, 0, 0);
@@ -1575,7 +1573,7 @@ void CGame::MeteorStrikeMsgHandler(char cAttackerSide)
 			bRegisterDelayEvent(DEF_DELAYEVENTTYPE_METEORSTRIKE, 0, dwTime + 5000, 0, 0, m_iAresdenMapIndex, 0, 0, 0, 0, 0);
 		}
 		else {
-			for (i = 1; i < DEF_MAXCLIENTS; i++)
+			for (i = 0; i < DEF_MAXCLIENTS; i++)
 				if (m_pClientList[i] != 0) {
 					SendNotifyMsg(0, i, DEF_NOTIFY_METEORSTRIKECOMING, 4, 0, 0, 0);
 				}
@@ -1745,7 +1743,7 @@ void CGame::RequestSetGuildConstructLocHandler(int iClientH, int dX, int dY, int
 	char* cp, cData[120];
 	int i;
 	int* ip, iIndex;
-	UINT32 dwTemp, dwTime;
+	DWORD dwTemp, dwTime;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsOnServerChange == true) return;
@@ -1845,7 +1843,7 @@ void CGame::RequestSummonWarUnitHandler(int iClientH, int dX, int dY, char cType
 	int iNamingValue, tX, tY, ix, iy;
 	bool bRet;
 	short sOwnerH;
-	UINT32 dwTime = timeGetTime();
+	DWORD dwTime = timeGetTime();
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -2130,7 +2128,7 @@ void CGame::SelectCrusadeDutyHandler(int iClientH, int iDuty)
 	}
 	m_pClientList[iClientH]->m_iCrusadeDuty = iDuty;
 
-	SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (UINT32)m_bIsCrusadeMode, m_pClientList[iClientH]->m_iCrusadeDuty, 0, 0);
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_CRUSADE, (DWORD)m_bIsCrusadeMode, m_pClientList[iClientH]->m_iCrusadeDuty, 0, 0);
 	if (iDuty == 1)
 		_bCrusadeLog(DEF_CRUSADELOG_SELECTDUTY, iClientH, 0, "Fighter");
 	else if (iDuty == 2)
@@ -2294,7 +2292,7 @@ void CGame::RequestHelpHandler(int iClientH)
 	if (m_pClientList[iClientH]->m_iGuildRank == -1) return;
 	if (m_pClientList[iClientH]->m_iCrusadeDuty != 1) return;
 
-	for (i = 1; i < DEF_MAXCLIENTS; i++)
+	for (i = 0; i < DEF_MAXCLIENTS; i++)
 		if ((m_pClientList[i] != 0) && (m_pClientList[i]->m_iGuildRank == 0 || m_pClientList[i]->m_iGuildRank == 3) &&
 			(m_pClientList[i]->m_iCrusadeDuty == 3) && (m_pClientList[i]->m_iGuildGUID == m_pClientList[iClientH]->m_iGuildGUID)) {
 			// °°Àº ±æµå ¸¶½ºÅÍÀÌ°í ÁöÈÖ°ü ¿ªÈ°À» ¸ÃÀº »óÅÂÀÌ´Ù.

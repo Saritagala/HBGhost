@@ -56,7 +56,7 @@ XSocket::~XSocket()
 	_CloseConn(); 
 }
 
-bool XSocket::bInitBufferSize(UINT32 dwBufferSize)
+bool XSocket::bInitBufferSize(DWORD dwBufferSize)
 {
 	if (m_pRcvBuffer != 0) delete m_pRcvBuffer;
 	if (m_pSndBuffer != 0) delete m_pSndBuffer;
@@ -126,7 +126,7 @@ bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
  SOCKADDR_IN	 saTemp;
  u_long          arg;
  int             iRet;
- UINT32			 dwOpt;
+ DWORD			 dwOpt;
 
 	// 리스닝 소켓으로 초기화된 클래스는 이 함수를 사용할 수 없다.
 	if (m_cType == DEF_XSOCK_LISTENSOCK) return false;
@@ -173,7 +173,7 @@ bool XSocket::bConnect(char * pAddr, int iPort, unsigned int uiMsg)
 int XSocket::_iOnRead()
 {
  int iRet, WSAErr;
- UINT16  * wp;	
+ WORD  * wp;	
 
 	if (m_cStatus == DEF_XSOCKSTATUS_READINGHEADER) {
 		
@@ -201,7 +201,7 @@ int XSocket::_iOnRead()
 			// 헤더를 다 읽었다. 
 			m_cStatus = DEF_XSOCKSTATUS_READINGBODY;
 			// 읽어야 할 몸체 사이즈를 계산한다.
-			wp = (UINT16 *)(m_pRcvBuffer + 1);
+			wp = (WORD *)(m_pRcvBuffer + 1);
 			m_dwReadSize = (int)(*wp - 3); // 헤더 사이즈는 포함하지 않는다. 
 			
 			if (m_dwReadSize == 0) {
@@ -414,10 +414,10 @@ int XSocket::_iSendUnsentData()
 	return DEF_XSOCKEVENT_UNSENTDATASENDCOMPLETE;
 }
 
-//marley fix, i changed dwSize from UINT32 to INT since it deals with numbers
-int XSocket::iSendMsg(char * cData, UINT32 dwSize, char cKey)
+//marley fix, i changed dwSize from DWORD to INT since it deals with numbers
+int XSocket::iSendMsg(char * cData, DWORD dwSize, char cKey)
 {
- UINT16 * wp;
+ WORD * wp;
  int    i, iRet;
 
 	// 메시지 크기가 버퍼보다 크면 보낼 수 없다.
@@ -431,7 +431,7 @@ int XSocket::iSendMsg(char * cData, UINT32 dwSize, char cKey)
 	// 키 입력 
 	m_pSndBuffer[0] = cKey;
 
-	wp  = (UINT16 *)(m_pSndBuffer + 1);
+	wp  = (WORD *)(m_pSndBuffer + 1);
 	*wp = dwSize + 3;
 
 	memcpy((char *)(m_pSndBuffer + 3), cData, dwSize);
@@ -494,7 +494,7 @@ bool XSocket::bAccept(class XSocket * pXSock, unsigned int uiMsg)
  SOCKET			AcceptedSock;
  sockaddr		Addr;
  int	iLength;
- UINT32			dwOpt;
+ DWORD			dwOpt;
 
 	if (m_cType != DEF_XSOCK_LISTENSOCK) return false;
 	if (pXSock == 0) return false;
@@ -545,18 +545,18 @@ SOCKET XSocket::iGetSocket()
 	return m_Sock;
 }
 
-char * XSocket::pGetRcvDataPointer(UINT32 * pMsgSize, char * pKey)
+char * XSocket::pGetRcvDataPointer(DWORD * pMsgSize, char * pKey)
 {
- UINT16 * wp;
+ WORD * wp;
  //marley changed to int*
-UINT32  dwSize;
+DWORD  dwSize;
  int i;
  char cKey;
 	
 	cKey = m_pRcvBuffer[0];
 	if (pKey != 0) *pKey = cKey;		// v1.4
 
-	wp = (UINT16 *)(m_pRcvBuffer + 1);
+	wp = (WORD *)(m_pRcvBuffer + 1);
 	*pMsgSize = (*wp) - 3;				// 헤더크기는 제외해서 반환한다. 
 	dwSize    = (*wp) - 3;
 
@@ -579,7 +579,7 @@ UINT32  dwSize;
 bool _InitWinsock()
 {
  int     iErrCode;
- UINT16	 wVersionRequested;
+ WORD	 wVersionRequested;
  WSADATA wsaData;
 
 	// 소켓의 버젼을 체크한다.

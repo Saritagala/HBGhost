@@ -51,9 +51,9 @@ public:
 	char m_cOriginalSide;
 
 	// Taming
-	UINT32 m_dwTamingTime;
+	DWORD m_dwTamingTime;
 	char  m_cFollowOwnerCharName[11];
-	UINT32 m_dwSummonWaitTime;
+	DWORD m_dwSummonWaitTime;
 
 	char m_sAreaSize;
 	char  m_cName[6];	// 이 이름은 프로그램을 위한 식별자임
@@ -73,21 +73,21 @@ public:
 	short m_sAppr2;
 	int	  m_iStatus;
 
-	UINT32 m_dwTime;
-	UINT32 m_dwActionTime;
-	UINT32 m_dwHPupTime, m_dwMPupTime;
-	UINT32 m_dwDeadTime, m_dwRegenTime;
+	DWORD m_dwTime;
+	DWORD m_dwActionTime;
+	DWORD m_dwHPupTime, m_dwMPupTime;
+	DWORD m_dwDeadTime, m_dwRegenTime;
 
 	int  m_iHP;						// Hit Point 
-	UINT32  m_iExp;                    // 죽였을 경우 얻는 경험치. ExpDice에 의해 결정된다.
+	DWORD  m_iExp;                    // 죽였을 경우 얻는 경험치. ExpDice에 의해 결정된다.
 
 	int  m_iHitDice;				// 몬스터의 Hit Dice. 이것에 의해 HP가 결정된다.
 	int  m_iDefenseRatio;			// Defense Ratio
 	int  m_iHitRatio;				// HitRatio
 	int  m_iMagicHitRatio;			// v1.4 마법 공격 Ratio
 	int  m_iMinBravery;			    // 최소 용감치 
-	UINT32 m_iExpDiceMin;
-	UINT32 m_iExpDiceMax;
+	DWORD m_iExpDiceMin;
+	DWORD m_iExpDiceMax;
 	int  m_iGoldDiceMin;
 	int  m_iGoldDiceMax;
 
@@ -115,7 +115,7 @@ public:
 	int   m_iFollowOwnerIndex;		// NPC가 따라가고 있는 객체 인덱스 
 	char  m_cFollowOwnerType;		// 따라가는 객체의 종류 (NPC or Player)
 	bool  m_bIsSummoned;            // 소환된 NPC라면 HP가 오르지 않는다. 
-	UINT32 m_dwSummonedTime;			// 소환몹이 생성시간 
+	DWORD m_dwSummonedTime;			// 소환몹이 생성시간 
 
 	int   m_iTargetIndex;			// NPC의 공격목표 인덱스
 	char  m_cTargetType;			// 공격목표의 종류 (NPC or Player)
@@ -127,7 +127,7 @@ public:
 	char  m_cMagicEffectStatus[DEF_MAXMAGICEFFECTS];
 
 	bool  m_bIsPermAttackMode;		// 이 플래그가 활성화 되어 있으면 공격도중 목표를 바꾸지 않는다.
-	UINT32   m_iNoDieRemainExp;		// 죽지 않고 명중시에 얻을 수 있는 경험치 
+	DWORD   m_iNoDieRemainExp;		// 죽지 않고 명중시에 얻을 수 있는 경험치 
 	int   m_iAttackStrategy; 		// 전투 교리 인공지능 타입  
 	int   m_iAILevel;				// 지능 레벨 
 

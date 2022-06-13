@@ -27,7 +27,7 @@ public:
 	bool bCheckIMEString(char *str);
 	bool bDecode(char cKey, char * pStr);
 	bool bEncode(char cKey, char * pStr);
-	void ColorTransfer(char cPixelFormat, COLORREF fcolor, UINT16 * wR, UINT16 * wG, UINT16 * wB);
+	void ColorTransfer(char cPixelFormat, COLORREF fcolor, WORD * wR, WORD * wG, WORD * wB);
 	char cCalcDirection(short sX, short sY, short dX, short dY);
 	void ReplaceString(char * pStr, char cFrom, char cTo);
 	bool bCheckValidString(char * str);

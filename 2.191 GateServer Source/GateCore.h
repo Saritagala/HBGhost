@@ -27,14 +27,15 @@
 #define DEF_MAXGAMESERVERS	20
 #define DEF_NORESPONSELIMIT 30000	// 30초간 응답이 없으면 서버가 비정상적으로 종료된 것이다.
 #define DEF_MAXMONITORS		10
+#define DEF_MAXHGSERVERLIST 10
 
 class CGateCore  
 {
 public:
 	void PartyOperation(int iClientH, char * pData);
-	void SendMsgToMonitor(char * pData, UINT32 dwMsgSize);
+	void SendMsgToMonitor(char * pData, DWORD dwMsgSize);
 	void CheckAutoShutdownProcess();
-	void SendMsgToAllGameServers(int iClientH, char * pData, UINT32 dwMsgSize, bool bIsOwnSend = true);
+	void SendMsgToAllGameServers(int iClientH, char * pData, DWORD dwMsgSize, bool bIsOwnSend = true);
 	void ItemLog(char * pData);
 	void _SendServerShutDownMsg(int iClientH, char cCode);
 	void SendServerShutDownMsg(char cCode, bool bISShutdown = false);
@@ -42,7 +43,7 @@ public:
 	void OnKeyDown(WPARAM wParam, LPARAM lParam);
 	void _SendTotalGameServerClients(int iClientH, int iTotalClients);
 	void SendTotalClientsToGameServer();
-	void SendMsgToMonitor(UINT32 dwMsg, UINT16 wMsgType, char * pGameServerName, short sTotalClient = 0);
+	void SendMsgToMonitor(DWORD dwMsg, WORD wMsgType, char * pGameServerName, short sTotalClient = 0);
 	void CheckGameServerActivity();
 	void OnTimer(int iID);
 	void OnKeyUp(WPARAM wParam, LPARAM lParam);
@@ -67,10 +68,11 @@ public:
 
 	bool  m_bIsAutoShutdownProcess;
 	int   m_iAutoShutdownCount;
-	UINT32 m_dwAutoShutdownTime;
+	DWORD m_dwAutoShutdownTime;
 
 	//2002-11-27일 정진 수정
-	char m_cAddress[10][16];	
+	char m_cAddress[DEF_MAXHGSERVERLIST][16];
+	bool m_bGameServerList;
 
 	// v2.17 고광현 수정 
 	int m_iBuildDate;

@@ -14,7 +14,7 @@ extern HWND	G_hWnd;
 
 #pragma warning (disable : 4996)
 
-bool CGame::_bDecodeQuestConfigFileContents(char* pData, UINT32 dwMsgSize)
+bool CGame::_bDecodeQuestConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -499,6 +499,8 @@ void CGame::QuestAcceptedHandler(int iClientH)
 
 				if (m_pClientList[iClientH]->m_iQuest[i] != 0)
 				{
+					//cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
+					//SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, 0, 0);
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, m_pClientList[iClientH]->m_iCurQuestCount[i], 0, 0);
 					_bCheckIsQuestCompleted(iClientH, i);
 				}
@@ -542,11 +544,15 @@ void CGame::_SendQuestContents(int iClientH)
 				//------------------------------------------------------------------------------------------------------
 				if (m_pClientList[iClientH]->m_iQuestRewardType[i] > 0) {
 					iAmount = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
-	
+					//wsprintf(G_cTxt, "Amount: %d, Name: %s", iAmount, m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]]->m_cName);
+					//PutLogList(G_cTxt);
 					SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTPRIZE, i, m_pClientList[iClientH]->m_iQuestRewardType[i], iAmount, m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]]->m_cName);
 				}
 				//------------------------------------------------------------------------------------------------------
 
+				//Magn0S:: Add to fix.
+				//cQuestRemain = (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iMaxCount - m_pClientList[iClientH]->m_iCurQuestCount[i]);
+				//SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, cQuestRemain, 0, 0);
 				SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTCOUNTER, i, m_pClientList[iClientH]->m_iCurQuestCount[i], 0, 0);
 			}
 		}
@@ -561,6 +567,7 @@ void CGame::_CheckQuestEnvironment(int iClientH)
 	if (m_pClientList[iClientH] == 0) return;
 
 	for (i = 0; i < DEF_MAXQUEST; i++) { //Magn0S:: Multi Quest
+	//	if (m_pClientList[iClientH]->m_iQuest[i] != 0) {
 
 			iIndex = m_pClientList[iClientH]->m_iQuest[i];
 			if (iIndex == 0) return;
@@ -595,7 +602,7 @@ void CGame::_CheckQuestEnvironment(int iClientH)
 				else m_pClientList[iClientH]->m_bQuestMatchFlag_Loc = false;
 				break;
 			}
-
+	//	}
 	}
 }
 
@@ -607,17 +614,20 @@ bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 	if (m_pClientList[iClientH] == 0) return false;
 
 	//Magn0S:: Multi Quest
-	if (m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] == true) return false;
+	//for (i = 0; i < DEF_MAXQUEST; i++) {
+		//if (m_pClientList[iClientH]->m_iQuest[i] != 0) {
+			if (m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] == true) return false;
 
-	iQuestIndex = m_pClientList[iClientH]->m_iQuest[iQuest];
-	if (iQuestIndex == 0) return false;
+			iQuestIndex = m_pClientList[iClientH]->m_iQuest[iQuest];
+			if (iQuestIndex == 0) return false;
 
 			if (m_pQuestConfigList[iQuestIndex] != 0) {
 				switch (m_pQuestConfigList[iQuestIndex]->m_iType) {
 				case DEF_QUESTTYPE_MONSTERHUNT:
-					ZeroMemory(cTargetName, sizeof(cTargetName));
-					memcpy(cTargetName, m_pQuestConfigList[iQuestIndex]->m_cTargetName, 20);
-					if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) &&
+				//	if ((m_pClientList[iClientH]->m_bQuestMatchFlag_Loc == true) &&
+						ZeroMemory(cTargetName, sizeof(cTargetName));
+						memcpy(cTargetName, m_pQuestConfigList[iQuestIndex]->m_cTargetName, 20);
+						if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) &&
 						(m_pClientList[iClientH]->m_iCurQuestCount[iQuest] >= m_pQuestConfigList[iQuestIndex]->m_iMaxCount)) {
 						m_pClientList[iClientH]->m_bIsQuestCompleted[iQuest] = true;
 						m_pClientList[iClientH]->m_iCurQuestCount[iQuest] = m_pQuestConfigList[iQuestIndex]->m_iMaxCount;
@@ -627,6 +637,7 @@ bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 					break;
 
 				case DEF_QUESTTYPE_GOPLACE:
+					//if ((m_pClientList[iClientH]->m_bQuestMatchFlag_Loc == true) &&
 					ZeroMemory(cTargetName, sizeof(cTargetName));
 					memcpy(cTargetName, m_pQuestConfigList[iQuestIndex]->m_cTargetName, 20);
 					if ((memcmp(m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cName, cTargetName, 10) == 0) &&
@@ -641,7 +652,9 @@ bool CGame::_bCheckIsQuestCompleted(int iClientH, int iQuest)
 					break;
 				}
 			}
-		
+		//}
+	//}
+
 	return false;
 }
 
@@ -658,6 +671,80 @@ int CGame::_iTalkToNpcResult_Cityhall(int iClientH, int* pQuestType, int* pMode,
 
 	if (m_pClientList[iClientH] == 0) return 0;
 
+	//Magn0S:: Canceled this part... Now to receive the quest prize, added a new and unique function for that.
+	/*for (i = 0; i < DEF_MAXQUEST; i++) { // Magn0S:: Multi Quest
+		if (m_pClientList[iClientH]->m_iQuest[i] != 0) {
+			if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]] == 0) return -4;
+			else if (m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iFrom == 4) {
+				if (m_pClientList[iClientH]->m_bIsQuestCompleted[i] == true) {
+					if ((m_pClientList[iClientH]->m_iQuestRewardType > 0) &&
+						(m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]] != 0)) {
+						pItem = new class CItem;
+						_bInitItemAttr(pItem, m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]]->m_cName);
+						pItem->m_dwCount = m_pClientList[iClientH]->m_iQuestRewardAmount[i];
+						if (_bCheckItemReceiveCondition(iClientH, pItem) == true) {
+							_bAddClientItemList(iClientH, pItem, &iEraseReq);
+							SendItemNotifyMsg(iClientH, DEF_NOTIFY_ITEMOBTAINED, pItem, 0);
+							if (iEraseReq == 1) delete pItem;
+
+							m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iContribution;
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, m_pClientList[iClientH]->m_iQuestRewardAmount[i],
+								m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]]->m_cName, m_pClientList[iClientH]->m_iContribution, i);
+
+							_ClearQuestStatus(iClientH, i);
+							return -5;
+						}
+						else {
+							delete pItem;
+							SendItemNotifyMsg(iClientH, DEF_NOTIFY_CANNOTCARRYMOREITEM, 0, 0);
+
+							SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 0, m_pClientList[iClientH]->m_iQuestRewardAmount[i],
+								m_pItemConfigList[m_pClientList[iClientH]->m_iQuestRewardType[i]]->m_cName, m_pClientList[iClientH]->m_iContribution, i);
+
+							return -5;
+						}
+					}
+					else if (m_pClientList[iClientH]->m_iQuestRewardType[i] == -1) {
+						GetExp(iClientH, iDice(1, m_pClientList[iClientH]->m_iQuestRewardAmount[i]));
+						m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iContribution;
+
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, m_pClientList[iClientH]->m_iQuestRewardAmount[i],
+							"Exp", m_pClientList[iClientH]->m_iContribution, i);
+
+						_ClearQuestStatus(iClientH, i);
+						return -5;
+					}
+					else if (m_pClientList[iClientH]->m_iQuestRewardType[i] == -2) {
+						// * m_pClientList[iClientH]->m_iQuestRewardAmount
+						//***
+						iExp = (iDice(1, (10 * (m_pClientList[iClientH]->m_iLevel))) * m_pClientList[iClientH]->m_iQuestRewardAmount[i]);
+
+						GetExp(iClientH, iDice(1, iExp));
+						m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iContribution;
+
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, iExp,
+							"Exp", m_pClientList[iClientH]->m_iContribution, i);
+
+						_ClearQuestStatus(iClientH, i);
+						return -5;
+					}
+					else {
+						m_pClientList[iClientH]->m_iContribution += m_pQuestConfigList[m_pClientList[iClientH]->m_iQuest[i]]->m_iContribution;
+
+						SendNotifyMsg(0, iClientH, DEF_NOTIFY_QUESTREWARD, 4, 1, 0,
+							"                     ", m_pClientList[iClientH]->m_iContribution, i);
+
+						_ClearQuestStatus(iClientH, i);
+						return -5;
+					}
+				}
+				else return -1;
+			}
+			return -4;
+		}
+	}*/
+
+
 	if (memcmp(m_pClientList[iClientH]->m_cLocation, m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->m_cLocationName, 10) == 0) {
 		if (m_pClientList[iClientH]->m_iPKCount > 0) return -3;
 
@@ -672,10 +759,12 @@ int CGame::_iTalkToNpcResult_Cityhall(int iClientH, int* pQuestType, int* pMode,
 
 void CGame::_ClearQuestStatus(int iClientH, int iQuest)
 {
+	//int i;
 
 	if (m_pClientList[iClientH] == 0) return;
 	if (iQuest < 0 && iQuest > 4) return;
 
+	//for (i = 0; i < DEF_MAXQUEST; i++) {
 		m_pClientList[iClientH]->m_iQuest[iQuest] = 0;
 		m_pClientList[iClientH]->m_iQuestID[iQuest] = 0;
 		m_pClientList[iClientH]->m_iQuestRewardType[iQuest] = 0;
@@ -684,7 +773,7 @@ void CGame::_ClearQuestStatus(int iClientH, int iQuest)
 
 		//Magn0S:: Update quest list after finising
 		_SendQuestContents(iClientH);
-	
+	//}
 }
 
 void CGame::CancelQuestHandler(int iClientH, int iQuest)
@@ -695,7 +784,7 @@ void CGame::CancelQuestHandler(int iClientH, int iQuest)
 }
 
 //Magn0S:: Quest List
-void CGame::RequestQuestList(int iClientH, char* pData, UINT32 dwMsgSize)
+void CGame::RequestQuestList(int iClientH, char* pData, DWORD dwMsgSize)
 {
 	if (m_pClientList[iClientH] == 0) return;
 	if (m_pClientList[iClientH]->m_bIsInitComplete == false) return;
@@ -704,8 +793,8 @@ void CGame::RequestQuestList(int iClientH, char* pData, UINT32 dwMsgSize)
 
 	char* cp, cData[5000];
 	int  iRet;
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	int* listCount;
 	int* ip;
 
@@ -713,16 +802,16 @@ void CGame::RequestQuestList(int iClientH, char* pData, UINT32 dwMsgSize)
 	cp = (char*)(pData + DEF_INDEX2_MSGTYPE + 2);
 
 	ZeroMemory(cData, sizeof(cData));
-	dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+	dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 	*dwp = DEF_MSGID_RESPONSE_QUEST_LIST;
-	wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+	wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 	*wp = DEF_MSGTYPE_CONFIRM;
 
 	cp = cData + 6;
 
 	listCount = (int*)cp;
 	*listCount = 0;
-	cp += 4; // 
+	cp += 4; // sizeof(int)
 
 	for (int index = 0; index < DEF_MAXQUESTTYPE; index++)
 	{
@@ -731,7 +820,7 @@ void CGame::RequestQuestList(int iClientH, char* pData, UINT32 dwMsgSize)
 			if ((m_pClientList[iClientH]->m_iLevel >= m_pQuestConfigList[index]->m_iMinLevel) &&
 				(m_pClientList[iClientH]->m_iLevel <= m_pQuestConfigList[index]->m_iMaxLevel) &&
 				(m_pQuestConfigList[index]->m_cSide == m_pClientList[iClientH]->m_cSide) &&
-				
+				//for (i = 0; i < DEF_MAXQUEST; i++) {
 				(m_pQuestConfigList[index]->m_iQuestID != m_pClientList[iClientH]->m_iQuest[index]) &&
 				(m_pQuestConfigList[index]->m_iReqContribution <= m_pClientList[iClientH]->m_iContribution) &&
 				(m_pQuestConfigList[index]->m_iContributionLimit >= m_pClientList[iClientH]->m_iContribution) &&
@@ -752,6 +841,17 @@ void CGame::RequestQuestList(int iClientH, char* pData, UINT32 dwMsgSize)
 				ip = (int*)cp;
 				*ip = m_pQuestConfigList[index]->m_iTargetType;
 				cp += 4;
+
+				//Magn0S:: Canceled to improve the code (now send NPC Type and Reward item name)
+				/*for (int o = 0; o < DEF_MAXNPCS; o++)
+				{
+					if ((m_pNpcConfigList[o] != 0) && (m_pNpcConfigList[o]->m_sType == m_pQuestConfigList[index]->m_iTargetType))
+					{
+						memcpy(cp, m_pNpcConfigList[o]->m_cNpcName, 20);
+						cp += 20;
+						break;
+					}
+				}*/
 
 				if (m_pQuestConfigList[index]->m_iRewardType[1] > 0) {
 					memcpy(cp, m_pItemConfigList[m_pQuestConfigList[index]->m_iRewardType[1]]->m_cName, 20);

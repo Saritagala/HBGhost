@@ -5,11 +5,11 @@
 #endif
 // NetMessages.h
 
-//LifeX Fix User Refresh
-#define MSGID_RESPONSE_ONLINE						0x3B1890EC
-
 #define DEF_NOTIFY_REQGUILDRANKANSWER 0x1F41
 #define DEF_COMMONTYPE_REQGUILDRANK 0x1F42
+
+//LifeX Fix User Refresh
+#define MSGID_RESPONSE_ONLINE						0x3B1890ED
 
 #define MINIMAPORANGE_CLEAR 0x1F43
 #define MINIMAPORANGE_UPDATE 0x1F44
@@ -73,8 +73,6 @@
 // VAMP - online users list
 #define MSGID_REQUEST_ONLINE						0x3B1890EB
 #define DEF_NOTIFY_USERJOIN							0x0C04
-//LifeX Fix User Refresh
-#define MSGID_RESPONSE_ONLINE						0x3B1890EC
 
 
 // Centuu : EVENT CODE

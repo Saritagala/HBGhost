@@ -41,8 +41,8 @@ CPotion::~CPotion()
 
 void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 {
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	char* cp, cI[6], cPotionName[21], cData[120];
 	int    iRet, i, j, iEraseReq, iSkillLimit, iSkillLevel, iResult, iDifficulty;
 	short* sp, sItemIndex[6], sTemp;
@@ -218,9 +218,9 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true) {
 				ZeroMemory(cData, sizeof(cData));
 				// ¾ÆÀÌÅÛÀ» È¹µæÇß´Ù.
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_ITEMOBTAINED;
 
 				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -232,7 +232,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				memcpy(cp, pItem->m_cName, 20);
 				cp += 20;
 
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwCount;	// ¼ö·®À» ÀÔ·Â 
 				cp += 4;
 
@@ -252,11 +252,11 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				*cp = pItem->m_cGenderLimit;
 				cp++;
 
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = pItem->m_wCurLifeSpan;
 				cp += 2;
 
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = pItem->m_wWeight;
 				cp += 2;
 
@@ -274,7 +274,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 				*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 				cp++;
 
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwAttribute;
 				cp += 4;
 
@@ -301,14 +301,18 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 					m_pClientList[iClientH]->m_sY, pItem);
 
 				// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/ // v1.4
+
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
 // ´õÀÌ»ó °¡Áú¼ö ¾ø´Ù´Â ¸Þ½ÃÁö¸¦ º¸³½´Ù.
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
@@ -330,7 +334,7 @@ void CGame::ReqCreatePotionHandler(int iClientH, char* pData)
 	}
 }
 
-bool CGame::_bDecodePotionConfigFileContents(char* pData, UINT32 dwMsgSize)
+bool CGame::_bDecodePotionConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -537,8 +541,8 @@ bool CGame::_bDecodePotionConfigFileContents(char* pData, UINT32 dwMsgSize)
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 {
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	char* cp, cI[6], cCraftingName[21], cData[120];
 	int    iRet, i, j, iEraseReq, iRiskLevel, iDifficulty, iNeededContrib = 0;
 	short* sp, sTemp;
@@ -830,16 +834,16 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 			if (_bAddClientItemList(iClientH, pItem, &iEraseReq) == true)
 			{
 				ZeroMemory(cData, sizeof(cData));
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_ITEMOBTAINED;
 				cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
 				*cp = 1;
 				cp++;
 				memcpy(cp, pItem->m_cName, 20);
 				cp += 20;
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwCount;
 				cp += 4;
 				*cp = pItem->m_cItemType;
@@ -853,10 +857,10 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 				cp += 2;
 				*cp = pItem->m_cGenderLimit;
 				cp++;
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = pItem->m_wCurLifeSpan;
 				cp += 2;
-				wp = (UINT16*)cp;
+				wp = (WORD*)cp;
 				*wp = pItem->m_wWeight;
 				cp += 2;
 				sp = (short*)cp;
@@ -869,7 +873,7 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 				cp++;
 				*cp = (char)pItem->m_sItemSpecEffectValue2; // v1.41 
 				cp++;
-				dwp = (UINT32*)cp;
+				dwp = (DWORD*)cp;
 				*dwp = pItem->m_dwAttribute;
 				cp += 4;
 
@@ -888,14 +892,17 @@ void CGame::ReqCreateCraftingHandler(int iClientH, char* pData)
 			{
 				m_pMapList[m_pClientList[iClientH]->m_cMapIndex]->bSetItem(m_pClientList[iClientH]->m_sX,
 					m_pClientList[iClientH]->m_sY, pItem);
+				/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
+					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
+					pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor);*/
 
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[iClientH]->m_cMapIndex,
 					m_pClientList[iClientH]->m_sX, m_pClientList[iClientH]->m_sY,
 					pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 
-				dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+				dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 				*dwp = MSGID_NOTIFY;
-				wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+				wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 				*wp = DEF_NOTIFY_CANNOTCARRYMOREITEM;
 				iRet = m_pClientList[iClientH]->m_pXSock->iSendMsg(cData, 6);
 				switch (iRet) {

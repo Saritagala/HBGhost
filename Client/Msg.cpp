@@ -8,7 +8,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CMsg::CMsg(char cType, char * pMsg, UINT32 dwTime)
+CMsg::CMsg(char cType, char * pMsg, DWORD dwTime)
 {
 	m_cType = cType;
 

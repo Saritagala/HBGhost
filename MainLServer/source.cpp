@@ -230,7 +230,7 @@ void Initialize()
 
 	//G_pInternalLogSock = new class XSocket(G_hWnd, DEF_SERVERSOCKETBLOCKLIMIT);
 	//G_pInternalLogSock->bListen(G_pMainLog->m_cMainServerAddress, G_pMainLog->m_iMainServerInternalPort, WM_INTERNAL_LOG_ACCEPT);
-	PutLogList("(!) Internal-log-Socket Listening...");
+	//PutLogList("(!) Internal-log-Socket Listening...");
 	G_mmTimer = _StartTimer(300);
 	
 	G_bIsMainLogActive = true;
@@ -365,7 +365,7 @@ void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw
 	PostMessage(G_hWnd, WM_USER_TIMERSIGNAL, wID, 0);
 }
 
-MMRESULT _StartTimer(UINT32 dwTime)
+MMRESULT _StartTimer(DWORD dwTime)
 {
  TIMECAPS caps;
  MMRESULT timerid;

@@ -326,7 +326,7 @@ void CALLBACK _TimerFunc(UINT wID, UINT wUser, DWORD dwUSer, DWORD dw1, DWORD dw
 }
 
 
-MMRESULT _StartTimer(UINT32 dwTime)
+MMRESULT _StartTimer(DWORD dwTime)
 {
  TIMECAPS caps;
  MMRESULT timerid;

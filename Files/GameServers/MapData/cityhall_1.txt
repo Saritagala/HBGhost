@@ -1,0 +1,51 @@
+[MAP-INFO]
+
+map-location  = aresden
+initial-point = 1  50 41
+
+DynamicGateCoord	= 33 43 34 44        arebrk11	   30  45
+DynamicGateType	= 10
+
+
+//-Teleportation-Set----SX-----SY-----DestMapName---------DX-----DY----Dir---;
+teleport-loc     =      60     43     aresden             149    127    4
+teleport-loc     =      59     42     aresden             149    127    4
+teleport-loc     =      58     42     aresden             149    127    4
+teleport-loc     =      32     44     arebrk11            32     44     4
+teleport-loc     =      33     44     arebrk11            33     44     4
+teleport-loc     =      32     45     arebrk11            54     39     4
+teleport-loc     =      35     43     arebrk11            54     39     4
+teleport-loc     =      34     43     arebrk11            54     39     4
+teleport-loc     =      34     44     arebrk11            62     39     4
+
+//-WayPoint-Set---------Num-----X-----Y----;
+waypoint          =     1      43     42
+waypoint          =     2      50     43
+waypoint          =     3      56     46
+waypoint          =     4      54     50
+waypoint          =     5      46     51
+waypoint          =     6      40     48
+waypoint          =     7      42     44
+waypoint          =     8      45     43
+waypoint          =     9      45     43
+waypoint          =     10     45     43
+
+
+//-NPC-setting--------Name---------------MoveType----WaypointIndex(10)-------NamePrefix-------;
+npc               =   William            1           1 2 3 4 5 6 7 8 9 10         1  
+npc               =   ShopKeeper-W       1           2 2 3 4 5 6 7 8 9 10         1  
+npc               =   Kennedy            1           3 2 3 4 5 6 7 8 9 10         1  
+npc               =   Gail               1           4 2 3 4 5 6 7 8 9 10         1  
+npc               =   Tom                1           5 2 3 4 5 6 7 8 9 10         1  
+npc               =   Howard             1           6 2 3 4 5 6 7 8 9 10         1 
+npc               =   Gandlf             1           7 2 3 4 5 6 7 8 9 10         1   
+
+
+
+
+//-No-Attack-Area----------Num-----RECT-------------
+no-attack-area           = 1       -10 -10 -10 -10
+
+fixed-dayornight-mode = 1
+
+[END-MAP-INFO]

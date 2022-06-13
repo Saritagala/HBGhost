@@ -45,7 +45,7 @@ char   G_cSpriteAlphaDegree;
 class CGame * G_pGame;
 class XSocket * G_pCalcSocket = 0;
 bool  G_bIsCalcSocketConnected = true;
-UINT32 G_dwCalcSocketTime = 0, G_dwCalcSocketSendTime = 0;
+DWORD G_dwCalcSocketTime = 0, G_dwCalcSocketSendTime = 0;
 
 char G_cCmdLine[256], G_cCmdLineTokenA[120], G_cCmdLineTokenA_Lowercase[120], G_cCmdLineTokenB[120], G_cCmdLineTokenC[120], G_cCmdLineTokenD[120], G_cCmdLineTokenE[120];
 
@@ -198,7 +198,7 @@ int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	G_pGame = new class CGame;
 	ZeroMemory(cRealName, sizeof(cRealName));
 	strcpy(cRealName, cSearchDll);
-	for (UINT16 i = 0; i < strlen(cRealName); i++)
+	for (WORD i = 0; i < strlen(cRealName); i++)
 	if (cRealName[i] != 0) cRealName[i]++;
 
 	hDll = LoadLibrary(cRealName);
@@ -289,7 +289,7 @@ void EventLoop()
 {   MSG msg;
 	while( 1 ) 
 	{	if( PeekMessage( &msg, 0, 0, 0, PM_NOREMOVE ) ) 
-		{	if( !GetMessage( &msg, 0, 0, 0 ) ) return;//
+		{	if( !GetMessage( &msg, 0, 0, 0 ) ) return;// msg.wParam;
             TranslateMessage(&msg);
             DispatchMessage(&msg);
 		}
@@ -318,7 +318,7 @@ MMRESULT _StartTimer(DWORD dwTime)
 {TIMECAPS caps;
 	timeGetDevCaps(&caps, sizeof(caps));
 	timeBeginPeriod(caps.wPeriodMin);
-	return timeSetEvent(dwTime,0,(LPTIMECALLBACK)_TimerFunc,0, (UINT)TIME_PERIODIC);
+	return timeSetEvent(dwTime,0,_TimerFunc,0, (UINT)TIME_PERIODIC);
 }
 
 
@@ -336,7 +336,7 @@ void _StopTimer(MMRESULT timerid)
 void Initialize(char * pCmdLine)
 {int iX, iY, iSum;
  int     iErrCode;
- UINT16	 wVersionRequested;
+ WORD	 wVersionRequested;
  WSADATA wsaData;
 	wVersionRequested = MAKEWORD( 2, 2 ); 
 	iErrCode = WSAStartup( wVersionRequested, &wsaData );

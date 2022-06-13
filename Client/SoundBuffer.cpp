@@ -12,18 +12,18 @@
 struct Waveheader
 {
 	BYTE        RIFF[4];          // "RIFF"
-	UINT32       dwSize;           // Size of data to follow
+	DWORD       dwSize;           // Size of data to follow
 	BYTE        WAVE[4];          // "WAVE"
 	BYTE        fmt_[4];          // "fmt "
-	UINT32       dw16;             // 16
-	UINT16        wOne_0;           // 1
-	UINT16        wChnls;           // Number of Channels
-	UINT32       dwSRate;          // Sample Rate
-	UINT32       BytesPerSec;      // Sample Rate
-	UINT16        wBlkAlign;        // 1
-	UINT16        BitsPerSample;    // Sample size
+	DWORD       dw16;             // 16
+	WORD        wOne_0;           // 1
+	WORD        wChnls;           // Number of Channels
+	DWORD       dwSRate;          // Sample Rate
+	DWORD       BytesPerSec;      // Sample Rate
+	WORD        wBlkAlign;        // 1
+	WORD        BitsPerSample;    // Sample size
 	BYTE        DATA[4];          // "DATA"
-	UINT32       dwDSize;          // Number of Samples
+	DWORD       dwDSize;          // Number of Samples
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -39,6 +39,19 @@ CSoundBuffer::CSoundBuffer(LPDIRECTSOUND lpDS, DSCAPS DSCaps, char * pWavFileNam
 
 	ZeroMemory(m_cWavFileName, sizeof(m_cWavFileName));
 	strcpy(m_cWavFileName, pWavFileName);
+
+	if (bIsSingleLoad == true) {
+		//m_lpDSB[0] = 0;
+		//bCreateBuffer_LoadWavFileContents(0);
+	}
+	else {
+		/*
+		for (i = 0; i < DEF_MAXSOUNDBUFFERS; i++) {
+			m_lpDSB[i] = 0;
+			bCreateBuffer_LoadWavFileContents(i);
+		}
+		*/
+	}
 
 	for (i = 0; i < DEF_MAXSOUNDBUFFERS; i++) m_lpDSB[i] = 0;
 	
@@ -62,7 +75,7 @@ CSoundBuffer::~CSoundBuffer()
 	}
 }
 
-bool CSoundBuffer::_bCreateSoundBuffer(char cBufferIndex, UINT32 dwBufSize, DWORD dwFreq, DWORD dwBitsPerSample, DWORD dwBlkAlign, bool bStereo)
+bool CSoundBuffer::_bCreateSoundBuffer(char cBufferIndex, DWORD dwBufSize, DWORD dwFreq, DWORD dwBitsPerSample, DWORD dwBlkAlign, bool bStereo)
 {
 	PCMWAVEFORMAT pcmwf;
 	DSBUFFERDESC dsbdesc;
@@ -72,9 +85,9 @@ bool CSoundBuffer::_bCreateSoundBuffer(char cBufferIndex, UINT32 dwBufSize, DWOR
 	pcmwf.wf.wFormatTag         = WAVE_FORMAT_PCM;
 	pcmwf.wf.nChannels          = bStereo ? 2 : 1;
 	pcmwf.wf.nSamplesPerSec     = dwFreq;
-	pcmwf.wf.nBlockAlign        = (UINT16)dwBlkAlign;
+	pcmwf.wf.nBlockAlign        = (WORD)dwBlkAlign;
 	pcmwf.wf.nAvgBytesPerSec    = pcmwf.wf.nSamplesPerSec * pcmwf.wf.nBlockAlign;
-	pcmwf.wBitsPerSample        = (UINT16)dwBitsPerSample;
+	pcmwf.wBitsPerSample        = (WORD)dwBitsPerSample;
 
 	memset(&dsbdesc, 0, sizeof(DSBUFFERDESC));
 	dsbdesc.dwSize              = sizeof(DSBUFFERDESC);
@@ -91,7 +104,7 @@ bool CSoundBuffer::bCreateBuffer_LoadWavFileContents(char cBufferIndex)
 {
  FILE		*	pFile;
  Waveheader		Wavhdr;
- UINT32			dwSize;
+ DWORD			dwSize;
  bool			bStereo;
 	
 	if (m_lpDSB[cBufferIndex] != 0) return false;
@@ -187,7 +200,7 @@ bool CSoundBuffer::Play(bool bLoop, long lPan, int iVol)
 
 LPDIRECTSOUNDBUFFER CSoundBuffer::GetIdleBuffer(void)
 {
-	DWORD Status;
+ DWORD Status;
  HRESULT rval;
  LPDIRECTSOUNDBUFFER Buffer;
 	
@@ -230,6 +243,8 @@ LPDIRECTSOUNDBUFFER CSoundBuffer::GetIdleBuffer(void)
 				bCreateBuffer_LoadWavFileContents(m_cCurrentBufferIndex);
 			}
 			
+			//m_lpDSB[m_cCurrentBufferIndex]->Stop();
+			//m_lpDSB[m_cCurrentBufferIndex]->SetCurrentPosition(0);
 		}
 
 		Buffer = m_lpDSB[m_cCurrentBufferIndex];

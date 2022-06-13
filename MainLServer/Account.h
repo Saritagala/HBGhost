@@ -17,7 +17,7 @@ public:
 	short m_iPassYear, m_iPassMonth, m_iPassDay;
 	char cWorldName[30];
 	char cCharName[11];
-	UINT32 dAccountID;
+	DWORD dAccountID;
 };
 class CCharacter  								 
 {

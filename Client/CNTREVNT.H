@@ -60,7 +60,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (Invoke)( DISPID, REFIID, LCID, UINT16, DISPPARAMS *, VARIANT *, EXCEPINFO *, unsigned int * )
+   STDMETHOD (Invoke)( DISPID, REFIID, LCID, WORD, DISPPARAMS *, VARIANT *, EXCEPINFO *, unsigned int * )
    {
       return S_OK;
    }
@@ -132,7 +132,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (GetMoniker)( UINT32, UINT32, LPMONIKER * )
+   STDMETHOD (GetMoniker)( DWORD, DWORD, LPMONIKER * )
    {
       return E_NOTIMPL;
    }
@@ -294,7 +294,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (TranslateAccelerator)( LPMSG, UINT16 )
+   STDMETHOD (TranslateAccelerator)( LPMSG, WORD )
    {
       return S_OK;
    }
@@ -315,12 +315,12 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (TransformCoords)( POINTL *, POINTF *, UINT32 )
+   STDMETHOD (TransformCoords)( POINTL *, POINTF *, DWORD )
    {
       return E_NOTIMPL;
    }
 
-   STDMETHOD (TranslateAccelerator)( LPMSG, UINT32 )
+   STDMETHOD (TranslateAccelerator)( LPMSG, DWORD )
    {
       return E_NOTIMPL;
    }
@@ -352,7 +352,7 @@ public:
       return E_NOTIMPL;
    }
 
-   STDMETHOD (Invoke)( DISPID, REFIID, LCID, UINT16, DISPPARAMS *, VARIANT *, EXCEPINFO *, unsigned int * )
+   STDMETHOD (Invoke)( DISPID, REFIID, LCID, WORD, DISPPARAMS *, VARIANT *, EXCEPINFO *, unsigned int * )
    {
       return DISP_E_MEMBERNOTFOUND;
    }
@@ -376,7 +376,7 @@ private:
    IUnknown      *m_punk;
    RECT           m_rect;
    CWebEventSink *m_pEvent;
-   UINT32          m_eventCookie;
+   DWORD          m_eventCookie;
 };
 
 #endif

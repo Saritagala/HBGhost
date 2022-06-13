@@ -27,13 +27,13 @@ public:
 		HeapFree(GetProcessHeap(), HEAP_NO_SERIALIZE, mem); 		
 	};
 
-	CMsg(char cType, char * pMsg, UINT32 dwTime);
+	CMsg(char cType, char * pMsg, DWORD dwTime);
 	virtual ~CMsg();
 
 	char   m_cType;
 	char * m_pMsg;
 	short  m_sX, m_sY;
-	UINT32  m_dwTime;
+	DWORD  m_dwTime;
 
 	int    m_iObjectID;
 

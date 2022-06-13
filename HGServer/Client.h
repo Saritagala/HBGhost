@@ -24,7 +24,7 @@ class CClient
 {
 public:
 
-	UINT32 m_dwCharID;
+	DWORD m_dwCharID;
 
 	int GetItemCount()
 	{
@@ -47,9 +47,9 @@ public:
 
 	int iteam, stoptime;
 
-	void Send(int h, UINT16 msg, UINT32 sV1 = 0, UINT32 sV2 = 0, UINT32 sV3 = 0,
-		char* pString = 0, UINT32 sV4 = 0, UINT32 sV5 = 0,
-		UINT32 sV6 = 0, UINT32 sV7 = 0, UINT32 sV8 = 0, UINT32 sV9 = 0, char* pString2 = 0);
+	void Send(int h, WORD msg, DWORD sV1 = 0, DWORD sV2 = 0, DWORD sV3 = 0,
+		char* pString = 0, DWORD sV4 = 0, DWORD sV5 = 0,
+		DWORD sV6 = 0, DWORD sV7 = 0, DWORD sV8 = 0, DWORD sV9 = 0, char* pString2 = 0);
 	
 	int  m_iAngelicStr; // By Snoopy81
 	int  m_iAngelicInt; // By Snoopy81
@@ -57,7 +57,7 @@ public:
 	int  m_iAngelicMag; // By Snoopy81
 	int m_iWantedLevel; // Wanted System
 
-	UINT32 m_dwGold;
+	DWORD m_dwGold;
 
 	bool m_bIsInsideEnemyBuilding;
 	char m_cWarType;
@@ -71,9 +71,9 @@ public:
 	bool m_bIsExchangeMode;
 
 	// Hack Checkers
-	UINT32 m_dwMagicFreqTime, m_dwMoveFreqTime, m_dwAttackFreqTime;
+	DWORD m_dwMagicFreqTime, m_dwMoveFreqTime, m_dwAttackFreqTime;
 	bool m_bIsMoveBlocked, m_bMagicItem;
-	UINT32 dwClientTime;
+	DWORD dwClientTime;
 	bool m_bMagicConfirm;
 	int m_iSpellCount;
 	bool m_bMagicPauseTime;
@@ -108,7 +108,7 @@ public:
 	int   m_iStatus;
 	int   m_iStatus2;
 
-	UINT32 m_dwTime, m_dwHPTime, m_dwMPTime, m_dwSPTime, m_dwAutoSaveTime, m_dwHungerTime, m_dwWarmEffectTime;
+	DWORD m_dwTime, m_dwHPTime, m_dwMPTime, m_dwSPTime, m_dwAutoSaveTime, m_dwHungerTime, m_dwWarmEffectTime;
 	// Player 특성치 
 
 	char m_cSex, m_cSkin, m_cHairStyle, m_cHairColor, m_cUnderwear;
@@ -117,8 +117,8 @@ public:
 	int  m_iHPstock;
 	int  m_iMP;
 	int  m_iSP;
-	UINT32  m_iExp;
-	UINT32 m_iNextLevelExp;
+	DWORD  m_iExp;
+	DWORD m_iNextLevelExp;
 	bool m_bIsKilled;
 
 	int  m_iDefenseRatio;		// Defense Ratio
@@ -182,12 +182,12 @@ public:
 
 	int   m_iHungerStatus;		// 배고픔 포인트. 이게 0이되면 스태미너가 오르지 않으며 체력도 절반이상 차지 않습니다. 
 
-	UINT32 m_dwWarBeginTime;		// 적국에 들어가는 순간에 기록되는 시간. 
+	DWORD m_dwWarBeginTime;		// 적국에 들어가는 순간에 기록되는 시간. 
 	bool  m_bIsWarLocation;		// 현재 적국에 있는지를 표시 
 
 	bool  m_bIsPoisoned;		// 중독되었는지의 여부 
 	int   m_iPoisonLevel;       // 독의 강도 
-	UINT32 m_dwPoisonTime;		// 중독 시간.
+	DWORD m_dwPoisonTime;		// 중독 시간.
 	
 	int   m_iPenaltyBlockYear, m_iPenaltyBlockMonth, m_iPenaltyBlockDay; // v1.4
 
@@ -206,18 +206,18 @@ public:
 
 	bool  m_bIsOnServerChange;     // 이 값이 활성화 되어 있으면 삭제시 데이터 저장 및 카운팅을 하지 않는다.
 
-	UINT32   m_iExpStock;			 // 쌓여있는 경험치 
-	UINT32 m_dwExpStockTime;		 // ExpStock 계산 시간.
+	DWORD   m_iExpStock;			 // 쌓여있는 경험치 
+	DWORD m_dwExpStockTime;		 // ExpStock 계산 시간.
 
-	UINT32   m_iAutoExpAmount;		 // Auto-Exp 시간 동안 얻은 경험치 
-	UINT32 m_dwAutoExpTime;		 // Auto-Exp 계산 시간.
+	DWORD   m_iAutoExpAmount;		 // Auto-Exp 시간 동안 얻은 경험치 
+	DWORD m_dwAutoExpTime;		 // Auto-Exp 계산 시간.
 
-	UINT32 m_dwRecentAttackTime;  // 가장 최근에 공격했던 시간 
+	DWORD m_dwRecentAttackTime;  // 가장 최근에 공격했던 시간 
 
 	int   m_iAllocatedFish;		 // 이 값이 0이 아니면 이벤트 낚시모드라는 이야기다. 
 	int   m_iFishChance;		 // 현재 낚을 상태 
 
-	UINT32 m_dwAFKCheckTime;
+	DWORD m_dwAFKCheckTime;
 
 	bool m_bIsPolymorph;
 	
@@ -305,7 +305,7 @@ public:
 	int   m_iAddAR, m_iAddPR, m_iAddDR;
 	int   m_iAddMR, m_iAddAbsPD, m_iAddAbsMD; 
 	int   m_iAddCD, m_iAddGold;		// 고정 마법 대미지 흡수율. 반지류와는 독립적으로 계산된다.
-	UINT32 m_iAddExp;
+	DWORD m_iAddExp;
 
 	int   m_iAddResistMagic;					// v1.2 추가 마법 저항 
 	int   m_iAddPhysicalDamage;					// v1.2 고정 대미지 추가 포인트 
@@ -320,7 +320,7 @@ public:
 	int   m_iAddAbsUnholy;
 	int   m_iAddElementAbs;
 
-	UINT32 m_dwDSLAT, m_dwDSLATOld, m_dwDSLATS;
+	DWORD m_dwDSLAT, m_dwDSLATOld, m_dwDSLATS;
 	int m_iDSCount;
 
 	// re introduced by SNOOPY
@@ -331,11 +331,11 @@ public:
 	int   m_iLastDamage;
 
 	int   m_iMoveMsgRecvCount, m_iAttackMsgRecvCount, m_iRunMsgRecvCount, m_iSkillMsgRecvCount;
-	UINT32 m_dwMoveLAT, m_dwRunLAT, m_dwAttackLAT;
+	DWORD m_dwMoveLAT, m_dwRunLAT, m_dwAttackLAT;
 
 	int   m_iSpecialAbilityTime;				// 특수 능력을 사용하기 위해서는 이 값이 0이 되어야 한다. 
 	bool  m_bIsSpecialAbilityEnabled;			// 특수 능력이 활성화 된 상태인가?
-	UINT32 m_dwSpecialAbilityStartTime;			// 특수 능력을 사용하기 시작한 시간
+	DWORD m_dwSpecialAbilityStartTime;			// 특수 능력을 사용하기 시작한 시간
 	int   m_iSpecialAbilityLastSec;				// 특수 능력 지속 시간.
 
 	int   m_iSpecialAbilityType;				// 할당된 특수 능력 종류
@@ -348,21 +348,21 @@ public:
 
 	int   m_iWarContribution;					// 전쟁 공헌도 
 
-	UINT32 m_dwSpeedHackCheckTime;				// 속도버그 검사 루틴 
-	UINT32   m_iSpeedHackCheckExp;
-	UINT32 m_dwLogoutHackCheck;
+	DWORD m_dwSpeedHackCheckTime;				// 속도버그 검사 루틴 
+	DWORD   m_iSpeedHackCheckExp;
+	DWORD m_dwLogoutHackCheck;
 
-	UINT32 m_dwInitCCTimeRcv;
-	UINT32 m_dwInitCCTime;
+	DWORD m_dwInitCCTimeRcv;
+	DWORD m_dwInitCCTime;
 
-	UINT32 m_dwCTFHolderTime;
+	DWORD m_dwCTFHolderTime;
 
 	char  m_cLockedMapName[12];					// 갖힌 맵 이름
 	int   m_iLockedMapTime;						// 이 값이 0 이상이면 어디로 텔레포트 해도 위의 맵으로 간다.
 
 	int   m_iCrusadeDuty;						// 크루세이드에서 맡은 역할: 1-용병. 2-건설자. 3-지휘관
-	UINT32 m_dwCrusadeGUID;						// 크루세이드 GUID
-	UINT32 m_dwHeldenianGUID;
+	DWORD m_dwCrusadeGUID;						// 크루세이드 GUID
+	DWORD m_dwHeldenianGUID;
 	bool m_bIsImpossibleZone;
 
 	// 이 스트럭쳐는 맵의 내용을 복사하는 것이다. 한번에 보내 줄 수 없기 때문에 여러번에 걸쳐 나누어 전송한다.
@@ -402,7 +402,7 @@ public:
 	} m_stPartyMemberName[DEF_MAXPARTYMEMBERS];
 
 	// New 07/05/2004
-	UINT32 m_dwLastActionTime;
+	DWORD m_dwLastActionTime;
 	int m_iDeadPenaltyTime;
 
 	// New 16/05/2004
@@ -422,7 +422,7 @@ public:
 	// New 25/05/2004
 	bool m_bIsBeingResurrected;
 
-	UINT32 m_dwFightzoneDeadTime;
+	DWORD m_dwFightzoneDeadTime;
 	char m_cSaveCount;
 
 	//50Cent - Repair All

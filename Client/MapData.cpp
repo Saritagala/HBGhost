@@ -1130,6 +1130,59 @@ void CMapData::ShiftMapData(char cDir)
 	switch (cDir) {
 #ifdef RES_HIGH
 	//Magn0S saving Centuu
+	/*case 1: //arriba ok
+		for (iy = 0; iy < 20-1; iy++)
+			for (ix = 0; ix < 26; ix++)
+				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotY--;
+		break;
+	case 2: //arriba derecha ok
+		for (iy = 0; iy < 20-1; iy++)
+			for (ix = 0; ix < 26-1; ix++)
+				memcpy(&m_pTmpData[9 + ix - 3][11 + iy - 2], &m_pData[10 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX++;
+		m_sPivotY--;
+		break;
+	case 3: //derecha (bug: desaparecen items en el piso)
+		for (iy = 0; iy < 20; iy++)
+			for (ix = 0; ix < 26-1; ix++)
+				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[10 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX++;
+		break;
+	case 4: //abajo derecha ok
+		for (iy = 0; iy < 20-1; iy++)
+			for (ix = 0; ix < 26 - 1; ix++)
+				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[10 + ix - 3][11 + iy - 2], sizeof(class CTile));
+		m_sPivotX++;
+		m_sPivotY++;
+		break;
+	case 5: //abajo ok
+		for (iy = 0; iy < 20 - 1; iy++)
+			for (ix = 0; ix < 26; ix++)
+				memcpy(&m_pTmpData[9 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][11 + iy - 2], sizeof(class CTile));
+		m_sPivotY++;
+		break;
+	case 6: //abajo izquierda ok
+		for (iy = 0; iy < 20-1; iy++)
+			for (ix = 0; ix < 26-1; ix++)
+				memcpy(&m_pTmpData[10 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][11 + iy - 2], sizeof(class CTile));
+		m_sPivotX--;
+		m_sPivotY++;
+		break;
+	case 7: //izquierda ok
+		for (iy = 0; iy < 20; iy++)
+			for (ix = 0; ix < 26-1; ix++)
+				memcpy(&m_pTmpData[10 + ix - 3][10 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX--;
+		break;
+	case 8: //arriba izquierda ok
+		for (iy = 0; iy < 20-1; iy++)
+			for (ix = 0; ix < 26-1; ix++)
+				memcpy(&m_pTmpData[10 + ix - 3][11 + iy - 2], &m_pData[9 + ix - 3][10 + iy - 2], sizeof(class CTile));
+		m_sPivotX--;
+		m_sPivotY--;
+		break;*/
+
 	case 1:
 		for (ix = 0; ix < 25; ix++)
 			for (iy = 0; iy < 19; iy++)
@@ -1305,11 +1358,11 @@ bool CMapData::bIsTeleportLoc(short sX, short sY)
 	return true;
 }
 
-bool __fastcall CMapData::bSetOwner(UINT16 wObjectID, int sX, int sY, int sType, int cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName, short sAction, short sV1, short sV2, short sV3, int iPreLoc, int iFrame)
+bool __fastcall CMapData::bSetOwner(WORD wObjectID, int sX, int sY, int sType, int cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName, short sAction, short sV1, short sV2, short sV3, int iPreLoc, int iFrame)
 {int   iX, iY, dX, dY;
  int   iChatIndex, iAdd;
  char  cTmpName[12];
- UINT32 dwTime;
+ DWORD dwTime;
  int   iEffectType, iEffectFrame, iEffectTotalFrame;
 
 	if ((m_sPivotX == -1) || (m_sPivotY == -1)) return false;
@@ -1519,7 +1572,7 @@ bool __fastcall CMapData::bSetOwner(UINT16 wObjectID, int sX, int sY, int sType,
 				default:
 					break;
 				}
-				if (   (wObjectID != (UINT16)m_pGame->m_sPlayerObjectID)
+				if (   (wObjectID != (WORD)m_pGame->m_sPlayerObjectID)
 					&& (m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1581,7 +1634,7 @@ bool __fastcall CMapData::bSetOwner(UINT16 wObjectID, int sX, int sY, int sType,
 				default:
 					break;
 				}
-				if ((wObjectID != (UINT16)m_pGame->m_sPlayerObjectID) &&
+				if ((wObjectID != (WORD)m_pGame->m_sPlayerObjectID) &&
 					(m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1634,7 +1687,7 @@ bool __fastcall CMapData::bSetOwner(UINT16 wObjectID, int sX, int sY, int sType,
 				default:
 					break;
 				}
-				if (   (wObjectID != (UINT16)m_pGame->m_sPlayerObjectID) 
+				if (   (wObjectID != (WORD)m_pGame->m_sPlayerObjectID) 
 					&& (m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1688,7 +1741,7 @@ bool __fastcall CMapData::bSetOwner(UINT16 wObjectID, int sX, int sY, int sType,
 				default:
 					break;
 				}
-				if ((wObjectID != (UINT16)m_pGame->m_sPlayerObjectID) &&
+				if ((wObjectID != (WORD)m_pGame->m_sPlayerObjectID) &&
 					(m_pData[dX][dY].m_sOwnerType != 0) && (m_pData[dX][dY].m_wObjectID != wObjectID))
 				{	m_pGame->RequestFullObjectData(wObjectID);
 					ZeroMemory(pName, strlen(pName));
@@ -1757,8 +1810,8 @@ EXIT_SEARCH_LOOP:;
 	}	}
 
 	if (m_pData[dX][dY].m_sOwnerType != 0)
-	{	if (   (wObjectID != (UINT16)m_pGame->m_sPlayerObjectID)
-			&& (m_pData[dX][dY].m_wObjectID == (UINT16)m_pGame->m_sPlayerObjectID))
+	{	if (   (wObjectID != (WORD)m_pGame->m_sPlayerObjectID)
+			&& (m_pData[dX][dY].m_wObjectID == (WORD)m_pGame->m_sPlayerObjectID))
 		{	return false;
 		}else
 		{	return false;
@@ -1863,15 +1916,48 @@ bool __fastcall CMapData::bGetOwner(short sX, short sY, short * pOwnerType, char
 
 	return true;
 }
+/*
+bool __fastcall CMapData::bGetDeadOwner(short sX, short sY, short * pOwnerType, char * pDir, short * pAppr1, short * pAppr2, short * pAppr3, short * pAppr4, int * pApprColor, char * pFrame, char * pName, short * pItemSprite, short * pItemSpriteFrame, int * pChatIndex)
+{
+ int dX, dY;
 
+	if ((sX < m_sPivotX) || (sX > m_sPivotX + MAPDATASIZEX) ||
+		(sY < m_sPivotY) || (sY > m_sPivotY + MAPDATASIZEY)) {
+
+		ZeroMemory(pName, sizeof(pName));
+		*pItemSprite = 0;
+		return false;
+	}
+
+	dX = sX - m_sPivotX;
+	dY = sY - m_sPivotY;
+
+	*pOwnerType = m_pData[dX][dY].m_sDeadOwnerType;
+	*pDir       = m_pData[dX][dY].m_cDeadDir;
+	*pAppr1     = m_pData[dX][dY].m_sDeadAppr1;
+	*pAppr2     = m_pData[dX][dY].m_sDeadAppr2;
+	*pAppr3     = m_pData[dX][dY].m_sDeadAppr3;
+	*pAppr4     = m_pData[dX][dY].m_sDeadAppr4;
+	*pApprColor = m_pData[dX][dY].m_iDeadApprColor; // v1.4
+	*pFrame     = m_pData[dX][dY].m_cDeadOwnerFrame;
+	*pChatIndex = m_pData[dX][dY].m_iDeadChatMsg;
+
+	strcpy(pName, m_pData[dX][dY].m_cDeadOwnerName);
+
+	*pItemSprite      = m_pData[dX][dY].m_sItemSprite;
+	*pItemSpriteFrame = m_pData[dX][dY].m_sItemSpriteFrame;
+
+	return true;
+}
+*/
 int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short sViewPointY)
 {
  int dX,dY, sVal;
- UINT32 dwTime, dwRealTime, dwFrameTime;
+ DWORD dwTime, dwRealTime, dwFrameTime;
  int  iDelay;
  int  iRet, iSoundIndex, iSkipFrame;
  int  cDir, cTotalFrame, cFrameMoveDots;
- static UINT32 S_dwUpdateTime = timeGetTime();
+ static DWORD S_dwUpdateTime = timeGetTime();
  int   sWeaponType, sCenterX, sCenterY, sDist;
  bool  bAutoUpdate = false;
  short dx, dy;
@@ -2054,9 +2140,11 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 		{	switch (m_pData[dX][dY].m_cOwnerAction) {
 			case DEF_OBJECTATTACK: // 3
 			case DEF_OBJECTATTACKMOVE:	// 8
-				iDelay = (m_pData[dX][dY].m_iStatus & 0x000F) * 12;
+				iDelay = (m_pData[dX][dY].m_iStatus & 0x000F)*12;
 				break;
 			case DEF_OBJECTMAGIC: // 4
+				//if( m_pGame->m_cSkillMastery[4] == 100 ) iDelay = -13;
+				//else iDelay = 0;
 				if (memcmp(m_pData[dX][dY].m_cOwnerName, cPlayerName, 10) == 0)
 					iDelay = -(m_pGame->m_cSkillMastery[4] * 0.13f);
 				else
@@ -2075,6 +2163,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					// Monster
 					iDelay += (m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime) / 2;
 
+				//iDelay += (m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime) >> 2;
 			}
 			dwFrameTime = m_stFrame[m_pData[dX][dY].m_sOwnerType][m_pData[dX][dY].m_cOwnerAction].m_sFrameTime + iDelay;
 
@@ -2114,7 +2203,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 							m_pData[dX][dY].m_iDeadStatus          = m_pData[dX][dY].m_iStatus;
 							m_pData[dX][dY].m_iDeadChatMsg         = m_pData[dX][dY].m_iChatMsg; // v1.411
 							m_pData[dX][dY].m_cDeadOwnerFrame	   = -1;
-							memcpy(m_pData[dX][dY].m_cDeadOwnerName, m_pData[dX][dY].m_cOwnerName, 10);
+							memcpy(m_pData[dX][dY].m_cDeadOwnerName, m_pData[dX][dY].m_cOwnerName, 11);
 							m_pData[dX][dY].m_wObjectID  = 0;
 							m_pData[dX][dY].m_sOwnerType = 0;
 							ZeroMemory(m_pData[dX][dY].m_cOwnerName, sizeof(m_pData[dX][dY].m_cOwnerName));
@@ -2145,7 +2234,7 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 					case 4:
 					case 5:
 					case 6: // glowing armor/weapon
-
+						//if ((m_pData[dX][dY].m_cOwnerFrame == 1) || (m_pData[dX][dY].m_cOwnerFrame == 5))
 						if (m_pData[dX][dY].m_cOwnerFrame % 3)
 						{	if (((m_pData[dX][dY].m_sAppr4 & 0x000F) != 0) && ((m_pData[dX][dY].m_iStatus & 0x10) == 0))
 							{	m_pGame->bAddNewEffect(54, (m_sPivotX+dX)*32 +(rand()%20-10), (m_sPivotY+dY)*32 -(rand()%50) -5, 0, 0, -(rand()%8), 0);
@@ -2610,19 +2699,27 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 						}
 						break;
 					case 54: // Dark-Elf
+						if (m_pData[dX][dY].m_cOwnerFrame == 2)
+						{
+							//Centu - Fixed by Drazz: Ahora las flechas si se ven correctamente
+							m_pGame->bAddNewEffect(2, m_sPivotX + dX, m_sPivotY + dY
+								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, 54);
+
+						}
+						break;
 					case 87: // Crossbow Turret (Heldenian)
 						if (m_pData[dX][dY].m_cOwnerFrame == 2)
 						{	
 							//Centu - Fixed by Drazz: Ahora las flechas si se ven correctamente
 							m_pGame->bAddNewEffect(2, m_sPivotX + dX, m_sPivotY + dY
-								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, m_pData[dX][dY].m_sOwnerType);
+								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, 87);
 							
 						}
 						break;
 					case 89: // AGT (Heldenian)
 						if (m_pData[dX][dY].m_cOwnerFrame == 2)
 						{	m_pGame->bAddNewEffect(2, m_sPivotX + m_pData[dX][dY].m_sV1, m_sPivotY + m_pData[dX][dY].m_sV2
-								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, m_pData[dX][dY].m_sOwnerType);
+								, m_sPivotX + m_pData[dX][dY].m_sV1 + dX, m_sPivotY + m_pData[dX][dY].m_sV2 + dY, 0, 89);
 							
 						}
 						break;
@@ -3965,8 +4062,43 @@ int CMapData::iObjectFrameCounter(char * cPlayerName, short sViewPointX, short s
 }
 
 
+/*bool CMapData::bSetItem(short sX, short sY, short sItemSpr, short sItemSprFrame, char cItemColor, bool bDropEffect)
+{int dX, dY;
+ int sAbsX, sAbsY, sDist;
+	if ((sX < m_sPivotX) || (sX >= m_sPivotX + MAPDATASIZEX) ||
+		(sY < m_sPivotY) || (sY >= m_sPivotY + MAPDATASIZEY))
+	{	return false;
+	}
 
-bool CMapData::bSetItem(short sX, short sY, short sIDnum, char cItemColor, UINT32 dwItemAttr, bool bDropEffect)
+	dX = sX - m_sPivotX;
+	dY = sY - m_sPivotY;
+
+	m_pData[dX][dY].m_sItemSprite      = sItemSpr;
+	m_pData[dX][dY].m_sItemSpriteFrame = sItemSprFrame;
+	m_pData[dX][dY].m_cItemColor       = cItemColor;
+
+#ifdef RES_HIGH
+	sAbsX = abs(((m_pGame->m_sViewPointX / 32) + 12) - sX);
+	sAbsY = abs(((m_pGame->m_sViewPointY / 32) + 9) - sY);
+#else
+	sAbsX = abs(((m_pGame->m_sViewPointX / 32) + 10) - sX);
+	sAbsY = abs(((m_pGame->m_sViewPointY / 32) + 7)  - sY);
+#endif
+	if (sAbsX > sAbsY) sDist = sAbsX;
+	else sDist = sAbsY;
+
+	if (sItemSpr != 0)
+	{	if (bDropEffect == true) 
+		{	m_pGame->PlaySound('E', 11, sDist);
+			m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32, (m_sPivotY+dY)*32, 0, 0, 0, 0);
+			m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), 0, 0, (rand() % 2), 0);
+			//m_pGame->bAddNewEffect(14, (m_sPivotX+dX)*32 +(10-(rand()%20)), (m_sPivotY+dY)*32 +(10-(rand()%20)), 0, 0, (rand() % 2), 0);
+	}	}
+
+	return true;
+}*/
+
+bool CMapData::bSetItem(short sX, short sY, short sIDnum/*, short sItemSpr, short sItemSprFrame*/, char cItemColor, DWORD dwItemAttr, bool bDropEffect)
 {
 	int dX, dY;
 	int sAbsX, sAbsY, sDist;
@@ -3979,6 +4111,8 @@ bool CMapData::bSetItem(short sX, short sY, short sIDnum, char cItemColor, UINT3
 	dX = sX - m_sPivotX;
 	dY = sY - m_sPivotY;
 
+	/*m_pData[dX][dY].m_sItemSprite      = sItemSpr;
+	m_pData[dX][dY].m_sItemSpriteFrame = sItemSprFrame;*/
 	m_pData[dX][dY].m_sItemID = sIDnum;
 	m_pData[dX][dY].m_cItemColor = cItemColor;
 	m_pData[dX][dY].m_dwItemAttr = dwItemAttr;
@@ -4006,7 +4140,7 @@ bool CMapData::bSetItem(short sX, short sY, short sIDnum, char cItemColor, UINT3
 	return true;
 }
 
-bool __fastcall CMapData::bSetDeadOwner(UINT16 wObjectID, short sX, short sY, short sType, char cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName)
+bool __fastcall CMapData::bSetDeadOwner(WORD wObjectID, short sX, short sY, short sType, char cDir, short sAppr1, short sAppr2, short sAppr3, short sAppr4, int iApprColor, int iStatus, char * pName)
 {
  int  dX, dY;
  char pTmpName[12];
@@ -4065,7 +4199,7 @@ bool __fastcall CMapData::bSetDeadOwner(UINT16 wObjectID, short sX, short sY, sh
 	m_pData[dX][dY].m_iDeadApprColor  = iApprColor;
 	m_pData[dX][dY].m_iDeadStatus     = iStatus;
 	m_pData[dX][dY].m_cDeadOwnerFrame = -1;
-	memcpy(m_pData[dX][dY].m_cDeadOwnerName, pTmpName, 10);
+	strcpy(m_pData[dX][dY].m_cDeadOwnerName, pTmpName);
 
 	m_iObjectIDcacheLocX[wObjectID] = -1*sX; 
 	m_iObjectIDcacheLocY[wObjectID] = -1*sY; 
@@ -4075,7 +4209,7 @@ bool __fastcall CMapData::bSetDeadOwner(UINT16 wObjectID, short sX, short sY, sh
 	return true;
 }
 
-bool __fastcall CMapData::bSetChatMsgOwner(UINT16 wObjectID, short sX, short sY, int iIndex)
+bool __fastcall CMapData::bSetChatMsgOwner(WORD wObjectID, short sX, short sY, int iIndex)
 {
  int dX, dY;
 
@@ -4138,7 +4272,7 @@ void CMapData::ClearDeadChatMsg(short sX, short sY)
 	m_pData[sX - m_sPivotX][sY - m_sPivotY].m_iDeadChatMsg = 0;
 }
 
-bool __fastcall CMapData::bGetOwner(short sX, short sY, char * pName, short * pOwnerType, int * pOwnerStatus, UINT16 * pObjectID)
+bool __fastcall CMapData::bGetOwner(short sX, short sY, char * pName, short * pOwnerType, int * pOwnerStatus, WORD * pObjectID)
 {
  int dX, dY;
 
@@ -4159,7 +4293,7 @@ bool __fastcall CMapData::bGetOwner(short sX, short sY, char * pName, short * pO
 	return true;
 }
 
-bool CMapData::bSetDynamicObject(short sX, short sY, UINT16 wID, short sType, bool bIsEvent)
+bool CMapData::bSetDynamicObject(short sX, short sY, WORD wID, short sType, bool bIsEvent)
 {
  int dX, dY, sPrevType;
 
@@ -4223,7 +4357,7 @@ bool CMapData::bSetDynamicObject(short sX, short sY, UINT16 wID, short sType, bo
 	return true;
 }
 
-void CMapData::GetOwnerStatusByObjectID(UINT16 wObjectID, char *pOwnerType, char *pDir, short *pAppr1, short *pAppr2, short *pAppr3, short *pAppr4, int * pStatus, int * pColor, char * pName)
+void CMapData::GetOwnerStatusByObjectID(WORD wObjectID, char *pOwnerType, char *pDir, short *pAppr1, short *pAppr2, short *pAppr3, short *pAppr4, int * pStatus, int * pColor, char * pName)
 { int iX, iY;
 	for (iX = 0; iX < MAPDATASIZEX; iX++)
 	for (iY = 0; iY < MAPDATASIZEY; iY++)

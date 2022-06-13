@@ -34,7 +34,7 @@ CSkill::~CSkill()
 
 int CGame::_iGetWeaponSkillType(int iClientH)
 {
-	UINT16 wWeaponType;
+	WORD wWeaponType;
 
 	if (m_pClientList[iClientH] == 0) return 0;
 
@@ -99,7 +99,7 @@ void CGame::PoisonEffect(int iClientH, int iV1)
 }
 bool CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 {
-	int iResist = 0, iResult;
+	int iResist, iResult;
 
 	// µ¶¼º ÀúÇ×ÀÌ ¼º°øÇß´ÂÁö¸¦ °è»êÇÑ´Ù. 
 	switch (cOwnerType) {
@@ -125,7 +125,7 @@ bool CGame::bCheckResistingPoisonSuccess(short sOwnerH, char cOwnerType)
 	return true;
 }
 
-bool CGame::_bDecodeSkillConfigFileContents(char* pData, UINT32 dwMsgSize)
+bool CGame::_bDecodeSkillConfigFileContents(char* pData, DWORD dwMsgSize)
 {
 	char* pContents, * token, cTxt[120];
 	char seps[] = "= \t\n";
@@ -293,8 +293,8 @@ bool CGame::_bDecodeSkillConfigFileContents(char* pData, UINT32 dwMsgSize)
 void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int iSkillLevel)
 {
 	char* cp, cData[100];
-	UINT32* dwp;
-	UINT16* wp;
+	DWORD* dwp;
+	WORD* wp;
 	int   iRet;
 
 	if (m_pClientList[iClientH] == 0) return;
@@ -309,9 +309,9 @@ void CGame::TrainSkillResponse(bool bSuccess, int iClientH, int iSkillNum, int i
 		m_pClientList[iClientH]->m_cSkillMastery[iSkillNum] = iSkillLevel;
 		bCheckTotalSkillMasteryPoints(iClientH, iSkillNum);
 
-		dwp = (UINT32*)(cData + DEF_INDEX4_MSGID);
+		dwp = (DWORD*)(cData + DEF_INDEX4_MSGID);
 		*dwp = MSGID_NOTIFY;
-		wp = (UINT16*)(cData + DEF_INDEX2_MSGTYPE);
+		wp = (WORD*)(cData + DEF_INDEX2_MSGTYPE);
 		*wp = DEF_NOTIFY_SKILLTRAINSUCCESS;
 
 		cp = (char*)(cData + DEF_INDEX2_MSGTYPE + 2);
@@ -387,20 +387,16 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 
 	sSkillIndex = m_pClientList[iClientH]->m_pItemList[sWeaponIndex]->m_sRelatedSkill;
 	if ((sSkillIndex < 0) || (sSkillIndex >= DEF_MAXSKILLTYPE)) return;
-	
 	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] == 100) return;
 
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
 	
-	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) {
-		m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
-		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
-	}
+	m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
 
 	iSSNpoint = m_iSkillSSNpoint[m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] + 1];
 
-	if ((m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) &&
-		(m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= iSSNpoint)) {
+	if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= iSSNpoint) {
 
 		m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]++;
 
@@ -503,6 +499,7 @@ void CGame::CalculateSSN_ItemIndex(int iClientH, short sWeaponIndex, int iValue)
 			}
 		
 			bCheckTotalSkillMasteryPoints(iClientH, sSkillIndex);
+			//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], 0, 0);
 			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0);
 		}
 	}
@@ -523,15 +520,12 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 	
 	iOldSSN = m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex];
 	
-	if (m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) {
-		m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
-		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
-	}
+	m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] += iValue;
+	SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILLPOINT, sSkillIndex, m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0, 0);
 
 	iSSNpoint = m_iSkillSSNpoint[m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] + 1];
 
-	if ((m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex] < 100) &&
-		(m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= iSSNpoint)) {
+	if (m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex] >= iSSNpoint) {
 
 		// ½ºÅ³ÀÌ ¿Ã¶ú´Ù.
 		m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex]++;
@@ -645,6 +639,7 @@ void CGame::CalculateSSN_SkillIndex(int iClientH, short sSkillIndex, int iValue)
 			bCheckTotalSkillMasteryPoints(iClientH, sSkillIndex);
 
 			// SkillÀÌ ¿Ã¶ú´Ù´Â °ÍÀ» Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾Ë·ÁÁØ´Ù.
+			//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], 0, 0);
 			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, sSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sSkillIndex], 0);
 		}
 	}
@@ -776,6 +771,9 @@ int CGame::iCalculateUseSkillItemEffect(int iOwnerH, char cOwnerType, char cOwne
 				m_pMapList[cMapIndex]->bSetItem(lX, lY, pItem);
 
 				// ´Ù¸¥ Å¬¶óÀÌ¾ðÆ®¿¡°Ô ¾ÆÀÌÅÛÀÌ ¶³¾îÁø °ÍÀ» ¾Ë¸°´Ù. 
+				//SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, cMapIndex,
+				//	lX, lY, pItem->m_sSprite, pItem->m_sSpriteFrame, pItem->m_cItemColor); //v1.4
+
 				SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, cMapIndex,
 					lX, lY, pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 			}
@@ -922,6 +920,22 @@ void CGame::_TamingHandler(int iClientH, int iSkillNum, char cMapIndex, int dX, 
 	if (m_pMapList[cMapIndex] == 0) return;
 	if (m_pClientList[iClientH]->m_iAdminUserLevel == 0)
 	{
+		/*if ((m_pClientList[iClientH]->m_iStr > 100)
+			&& (m_pClientList[iClientH]->m_iInt > 49))
+		{
+			iTamingType = 1; // War
+		}
+		else if ((m_pClientList[iClientH]->m_iMag > 100)
+			&& (m_pClientList[iClientH]->m_iInt > 49))
+		{
+			iTamingType = 2; // Mage
+		}
+		else if ((m_pClientList[iClientH]->m_iCharisma > 100)
+			&& (m_pClientList[iClientH]->m_iInt > 49))
+		{
+			iTamingType = 3; // Archer
+		}*/
+
 		iTamingType = m_pClientList[iClientH]->m_iClass;
 	}
 	else iTamingType = 4; // GameMaster
@@ -1209,26 +1223,30 @@ void CGame::_CheckFarmingAction(short sAttackerH, short sTargetH, bool bType)
 	}
 
 	pItem = new class CItem;
-	if (!_bInitItemAttr(pItem, iItemID)) 
-	{
+	if (_bInitItemAttr(pItem, iItemID) == false) {
 		delete pItem;
 	}
-	if (!bType) 
-	{
+	if (bType == 0) {
 		m_pMapList[m_pClientList[sAttackerH]->m_cMapIndex]->bSetItem(m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY, pItem);
-	
+		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[sAttackerH]->m_cMapIndex,
+			m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY, pItem->m_sSprite,
+			pItem->m_sSpriteFrame, pItem->m_cItemColor, false);*/
+
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pClientList[sAttackerH]->m_cMapIndex,
 			m_pClientList[sAttackerH]->m_sX, m_pClientList[sAttackerH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 	}
-	else  
-	{
+	else if (bType == 1) {
 		m_pMapList[m_pNpcList[sTargetH]->m_cMapIndex]->bSetItem(m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY, pItem);
+		/*SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[sTargetH]->m_cMapIndex,
+			m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY, pItem->m_sSprite,
+			pItem->m_sSpriteFrame, pItem->m_cItemColor, false);*/
 		
 		SendEventToNearClient_TypeB(MSGID_EVENT_COMMON, DEF_COMMONTYPE_ITEMDROP, m_pNpcList[sTargetH]->m_cMapIndex,
 			m_pNpcList[sTargetH]->m_sX, m_pNpcList[sTargetH]->m_sY,
 			pItem->m_sIDnum, pItem->m_sSpriteFrame, pItem->m_cItemColor, pItem->m_dwAttribute);
 	}
+
 }
 
 //LifeX Auto Skills
@@ -1243,7 +1261,7 @@ void CGame::AutoSkill(int iClientH)
 		m_pClientList[iClientH]->m_cSkillMastery[i] = 100;
 		SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, i, m_pClientList[iClientH]->m_cSkillMastery[i], 0, 0);
 	}
-
+	//m_pClientList[iClientH]->m_cMagicMastery[12] = true;
 }
 
 void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)
@@ -1310,7 +1328,7 @@ void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)
 					if (m_pClientList[iClientH]->m_iHitRatio < 0) m_pClientList[iClientH]->m_iHitRatio = 0;
 				}
 			}
-
+			//SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, sDownSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sDownSkillIndex], 0, 0);
 			SendNotifyMsg(0, iClientH, DEF_NOTIFY_SKILL, sDownSkillIndex, m_pClientList[iClientH]->m_cSkillMastery[sDownSkillIndex], m_pClientList[iClientH]->m_iSkillSSN[sDownSkillIndex], 0);
 		}
 		else 
@@ -1323,7 +1341,7 @@ void CGame::bCheckTotalSkillMasteryPoints(int iClientH, int iSkill)
 // 05/24/2004 - Hypnotoad - Hammer and Wand train to 100% fixed
 void CGame::_CheckAttackType(int iClientH, short* spType)
 {
-	UINT16 wType;
+	WORD wType;
 
 	if (m_pClientList[iClientH] == 0) return;
 	wType = ((m_pClientList[iClientH]->m_sAppr2 & 0x0FF0) >> 4);

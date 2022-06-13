@@ -4,9 +4,6 @@
 #define DEF_VERSIONPLUSMODIFIER 0 // If the antihack was noy defined don't change any msgid
 #endif
 
-//LifeX Fix User Refresh
-#define MSGID_RESPONSE_ONLINE						0x3B1890EC
-
 #define MINIMAPORANGE_CLEAR 0x1F43
 #define MINIMAPORANGE_UPDATE 0x1F44
 
@@ -20,6 +17,9 @@
 #define DEF_NOTIFY_HEROBONUS 0x1F32
 
 #define DEF_UPDATE_GUILDRANK 0x1F40
+
+//LifeX Fix User Refresh
+#define MSGID_RESPONSE_ONLINE						0x3B1890ED
 
 #define DEF_NOTIFY_ITEMBLOOD 0x002072
 
@@ -76,8 +76,6 @@
 // VAMP - online users list
 #define MSGID_REQUEST_ONLINE						0x3B1890EB
 #define DEF_NOTIFY_USERJOIN							0x0C04
-//LifeX Fix User Refresh
-#define MSGID_RESPONSE_ONLINE						0x3B1890EC
 
 //50Cent - Repair All
 #define DEF_COMMONTYPE_REQ_REPAIRALL            0x0F10
